@@ -407,7 +407,8 @@ rm BTC.xz; mksquashfs DB/BTC BTC.xz -comp xz -b 1048576 -comp xz -Xdict-size 102
 
 void mainloop(struct supernet_info *myinfo)
 {
-    struct iguana_info *coin,*tmp; int32_t i,depth; portable_mutex_t *stack[IGUANA_MAXCOINS];
+    struct iguana_info *coin,*tmp; int32_t i,counter=0,depth; portable_mutex_t *stack[IGUANA_MAXCOINS];
+    double lastmilli = 0;
     sleep(3);
     printf("mainloop\n");
     while ( 1 )
@@ -415,19 +416,27 @@ void mainloop(struct supernet_info *myinfo)
         //printf("main iteration\n");
         if ( 1 )
         {
-            coin = 0;
-            depth = 0;
-            HASH_ITER(hh,myinfo->allcoins,coin,tmp)
+            if ( OS_milliseconds() > lastmilli+100 )
             {
-                portable_mutex_lock(&coin->allcoins_mutex);
-                stack[depth++] = &coin->allcoins_mutex;
+                //fprintf(stderr,".");
+                counter++;
+                coin = 0;
+                depth = 0;
+                HASH_ITER(hh,myinfo->allcoins,coin,tmp)
+                {
+                    portable_mutex_lock(&coin->allcoins_mutex);
+                    stack[depth++] = &coin->allcoins_mutex;
+                }
+                while ( iguana_jsonQ() != 0 )
+                    ;
+                if ( depth > 0 )
+                {
+                    for (i=depth-1; i>=0; i--)
+                        portable_mutex_unlock(stack[i]);
+                }
+                lastmilli = OS_milliseconds();
             }
-            iguana_jsonQ();
-            if ( depth > 0 )
-            {
-                for (i=depth-1; i>=0; i--)
-                    portable_mutex_unlock(stack[i]);
-            }
+            usleep(30000);
         }
         //pangea_queues(SuperNET_MYINFO(0));
         //if ( flag == 0 )
@@ -1284,7 +1293,7 @@ STRING_ARG(SuperNET,priv2wif,priv)
 
 STRING_ARG(SuperNET,myipaddr,ipaddr)
 {
-    int32_t i; cJSON *retjson = cJSON_CreateObject();
+    cJSON *retjson = cJSON_CreateObject();
     myinfo->RELAYID = -1;
     if ( myinfo->ipaddr[0] == 0 )
     {
@@ -1292,12 +1301,7 @@ STRING_ARG(SuperNET,myipaddr,ipaddr)
         {
             strcpy(myinfo->ipaddr,ipaddr);
             myinfo->myaddr.myipbits = (uint32_t)calc_ipbits(ipaddr);
-            for (i=0; i<myinfo->numrelays; i++)
-                if ( myinfo->relays[i].ipbits == myinfo->myaddr.myipbits )
-                {
-                    myinfo->RELAYID = i;
-                    break;
-                }
+            basilisk_setmyid(myinfo);
         }
     }
     jaddstr(retjson,"result",myinfo->ipaddr);
@@ -1315,6 +1319,7 @@ STRING_ARG(SuperNET,setmyipaddr,ipaddr)
     if ( is_ipaddr(ipaddr) != 0 )
     {
         strcpy(myinfo->ipaddr,ipaddr);
+        basilisk_setmyid(myinfo);
         jaddstr(retjson,"result",myinfo->ipaddr);
     } else jaddstr(retjson,"error","illegal ipaddr");
     return(jprint(retjson,1));
@@ -1496,9 +1501,13 @@ FOUR_STRINGS(SuperNET,login,handle,password,permanentfile,passphrase)
 void iguana_relays_init(struct supernet_info *myinfo)
 {
     char *str;
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("78.47.196.146"),GENESIS_PUBKEY)) != 0 )
+    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.237"),GENESIS_PUBKEY)) != 0 ) //"78.47.196.146"
         free(str);
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("5.9.102.210"),GENESIS_PUBKEY)) != 0 )
+    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.238"),GENESIS_PUBKEY)) != 0 ) //"5.9.102.210"
+        free(str);
+    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.239"),GENESIS_PUBKEY)) != 0 )
+        free(str);
+    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.240"),GENESIS_PUBKEY)) != 0 )
         free(str);
 }
 
