@@ -476,8 +476,9 @@ int32_t iguana_utxogen(struct supernet_info *myinfo,struct iguana_info *coin,int
         printf("skip utxogen as spendvectorsaved.%u\n",coin->spendvectorsaved);
         return(0);
     }
-    if ( (incr= IGUANA_NUMHELPERS) > 8 )
-        incr = 8;
+    //if ( (incr= IGUANA_NUMHELPERS) > 8 )
+    //    incr = 8;
+    incr = IGUANA_NUMHELPERS;
     max = coin->bundlescount;
     if ( coin->bundles[max-1] == coin->current || coin->bundles[max-1] == 0 || (coin->bundles[max-1] != 0 && coin->bundles[max-1]->emitfinish <= 1) )
         max--;
@@ -690,7 +691,7 @@ void iguana_helper(void *arg)
                         allcurrent = 0;
                     //printf("h.%d [%d] bundleQ size.%d lag.%ld\n",helperid,bp->hdrsi,queue_size(&bundlesQ),time(NULL) - bp->nexttime);
                     coin->numbundlesQ--;
-                    if ( coin->started != 0 && (bp->nexttime == 0 || time(NULL) > bp->nexttime) && coin->active != 0 )
+                    if ( coin->started != 0 && (bp->nexttime == 0 || time(NULL) >= bp->nexttime) && coin->active != 0 )
                     {
                         flag += iguana_bundleiters(myinfo,ptr->coin,&MEM,MEMB,bp,ptr->timelimit,IGUANA_DEFAULTLAG);
                     }

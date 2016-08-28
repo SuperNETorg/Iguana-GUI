@@ -17,6 +17,13 @@
 
 typedef char *basilisk_servicefunc(struct supernet_info *myinfo,char *CMD,void *addr,char *remoteaddr,uint32_t basilisktag,cJSON *valsobj,uint8_t *data,int32_t datalen,bits256 hash,int32_t from_basilisk);
 
+int32_t basilisk_specialcmd(char *cmd)
+{
+    if ( strcmp(cmd,"PIN") != 0 && strcmp(cmd,"DEX") != 0 && strcmp(cmd,"ACC") != 0 && strcmp(cmd,"RID") != 0 && strcmp(cmd,"OUT") != 0 && strcmp(cmd,"MSG") != 0 )
+    return(0);
+    else return(1);
+}
+
 uint32_t basilisk_calcnonce(struct supernet_info *myinfo,uint8_t *data,int32_t datalen,uint32_t nBits)
 {
     int32_t i,numiters = 0; bits256 hash,hash2,threshold; uint32_t basilisktag;
@@ -141,7 +148,7 @@ int32_t basilisk_sendcmd(struct supernet_info *myinfo,char *destipaddr,char *typ
 {
     int32_t i,r,l,s,val,n=0,retval = -1; char cmd[12]; struct iguana_info *coin,*tmp; struct iguana_peer *addr; bits256 hash; uint32_t *alreadysent;
     if ( fanout <= 0 )
-        fanout = BASILISK_MINFANOUT;
+        fanout = sqrt(myinfo->numrelays) + 1;
     else if ( fanout > BASILISK_MAXFANOUT )
         fanout = BASILISK_MAXFANOUT;
     if ( type == 0 )
@@ -209,7 +216,7 @@ int32_t basilisk_sendcmd(struct supernet_info *myinfo,char *destipaddr,char *typ
                         continue;
                 if ( s == n && (addr->supernet != 0 || addr->basilisk != 0) && (destipaddr == 0 || strcmp(addr->ipaddr,destipaddr) == 0) )
                 {
-                    //printf("i.%d l.%d [%s].tag%d send %s.(%s) [%x] datalen.%d addr->supernet.%u basilisk.%u to (%s).%d destip.%s\n",i,l,cmd,*(uint32_t *)data,type,(char *)&data[4],*(int32_t *)&data[datalen-4],datalen,addr->supernet,addr->basilisk,addr->ipaddr,addr->A.port,destipaddr!=0?destipaddr:"broadcast");
+                    //printf("n.%d/fanout.%d i.%d l.%d [%s].tag%d send %s.(%s) [%x] datalen.%d addr->supernet.%u basilisk.%u to (%s).%d destip.%s\n",n,fanout,i,l,cmd,*(uint32_t *)data,type,(char *)&data[4],*(int32_t *)&data[datalen-4],datalen,addr->supernet,addr->basilisk,addr->ipaddr,addr->A.port,destipaddr!=0?destipaddr:"broadcast");
                     if ( encryptflag != 0 && bits256_nonz(addr->pubkey) != 0 )
                     {
                         void *ptr; uint8_t *cipher,space[8192]; int32_t cipherlen; bits256 privkey;
@@ -311,7 +318,7 @@ struct basilisk_item *basilisk_issueremote(struct supernet_info *myinfo,struct i
             {
                 if ( pending->numresults >= pending->numrequired )//|| (retstr= pending->retstr) != 0 )
                 {
-                    printf("numresults.%d vs numrequired.%d\n",pending->numresults,pending->numrequired);
+                    //printf("numresults.%d vs numrequired.%d\n",pending->numresults,pending->numrequired);
                     break;
                 }
                 usleep(10000);
@@ -332,7 +339,7 @@ struct basilisk_item *basilisk_issueremote(struct supernet_info *myinfo,struct i
 
 struct basilisk_item *basilisk_requestservice(struct supernet_info *myinfo,struct iguana_peer *addr,char *CMD,int32_t blockflag,cJSON *valsobj,bits256 hash,uint8_t *data,int32_t datalen,uint32_t nBits)
 {
-    int32_t numrequired,timeoutmillis,numsent,delaymillis,encryptflag,fanout; struct basilisk_item *ptr; char buf[4096],*symbol,*str = 0; struct iguana_info *virt;
+    int32_t minfanout,numrequired,timeoutmillis,numsent,delaymillis,encryptflag,fanout; struct basilisk_item *ptr; char buf[4096],*symbol,*str = 0; struct iguana_info *virt;
     //printf("request.(%s)\n",jprint(valsobj,0));
     basilisk_addhexstr(&str,valsobj,buf,sizeof(buf),data,datalen);
     if ( bits256_cmp(hash,GENESIS_PUBKEY) != 0 && bits256_nonz(hash) != 0 )
@@ -345,9 +352,12 @@ struct basilisk_item *basilisk_requestservice(struct supernet_info *myinfo,struc
         numrequired = 1;
     if ( (timeoutmillis= jint(valsobj,"timeout")) == 0 )
         timeoutmillis = BASILISK_TIMEOUT;
+    minfanout = sqrt(myinfo->numrelays)+1;
     if ( jobj(valsobj,"fanout") == 0 )
-        fanout = 1;
+        fanout = minfanout;
     else fanout = jint(valsobj,"fanout");
+    if ( fanout < minfanout )
+        fanout = minfanout;
     if ( (symbol= jstr(valsobj,"coin")) != 0 || (symbol= jstr(valsobj,"symbol")) != 0 )
     {
         if ( (virt= iguana_coinfind(symbol)) != 0 )
@@ -368,6 +378,8 @@ struct basilisk_item *basilisk_requestservice(struct supernet_info *myinfo,struc
 char *basilisk_standardservice(char *CMD,struct supernet_info *myinfo,void *_addr,bits256 hash,cJSON *valsobj,char *hexstr,int32_t blockflag) // client side
 {
     uint32_t nBits = 0; uint8_t space[4096],*allocptr=0,*data = 0; struct basilisk_item *ptr; int32_t datalen = 0; cJSON *retjson; char *retstr=0;
+    if ( myinfo->RELAYID >= 0 && basilisk_specialcmd(CMD) == 0 )
+        return(clonestr("{\"error\":\"unsupported special relay command\"}"));
     data = get_dataptr(BASILISK_HDROFFSET,&allocptr,&datalen,space,sizeof(space),hexstr);
     ptr = basilisk_requestservice(myinfo,_addr,CMD,blockflag,valsobj,hash,data,datalen,nBits);
     if ( allocptr != 0 )
@@ -561,6 +573,9 @@ void basilisk_msgprocess(struct supernet_info *myinfo,void *_addr,uint32_t sende
     {
         { (void *)"OUT", &basilisk_respond_OUT }, // send MSG to hash/id/num
         { (void *)"MSG", &basilisk_respond_MSG }, // get MSG (hash, id, num)
+        { (void *)"DEX", &basilisk_respond_DEX },
+        { (void *)"RID", &basilisk_respond_RID },
+        { (void *)"ACC", &basilisk_respond_ACC },
 
         { (void *)"BYE", &basilisk_respond_goodbye },    // disconnect
         
@@ -572,9 +587,7 @@ void basilisk_msgprocess(struct supernet_info *myinfo,void *_addr,uint32_t sende
         { (void *)"GTX", &basilisk_respond_geckotx },       // reports virtchain tx
         
         { (void *)"ADD", &basilisk_respond_addrelay },   // relays register with each other bus
-        { (void *)"DEX", &basilisk_respond_DEX },
-        { (void *)"RID", &basilisk_respond_RID },
-        { (void *)"ACC", &basilisk_respond_ACC },
+        
         
         // encrypted data for jumblr
         { (void *)"HOP", &basilisk_respond_forward },    // message forwarding
@@ -592,6 +605,8 @@ void basilisk_msgprocess(struct supernet_info *myinfo,void *_addr,uint32_t sende
         { (void *)"VAL", &basilisk_respond_value },
         { (void *)"BAL", &basilisk_respond_balances },
     };
+    if ( myinfo->RELAYID >= 0 && basilisk_specialcmd(type) == 0 )
+        return;
     symbol = "BTCD";
     if ( senderipbits == 0 )
         expand_ipbits(remoteaddr,myinfo->myaddr.myipbits);
@@ -799,7 +814,7 @@ void basilisks_loop(void *arg)
                 }
             }
             //portable_mutex_unlock(&myinfo->allcoins_mutex);
-            if ( (rand() % 10) == 0 && myinfo->RELAYID >= 0 )
+            if ( myinfo->RELAYID >= 0 )
             {
                 basilisk_ping_send(myinfo,btcd);
             }
@@ -813,7 +828,7 @@ void basilisks_loop(void *arg)
                 coin->lastunspentsupdate = (uint32_t)time(NULL);
             }
         }
-        //if ( (myinfo->RELAYID >= 0 || time(NULL) < myinfo->DEXactive) )
+        if ( myinfo->RELAYID < 0 )
             basilisk_requests_poll(myinfo);
         now = (uint32_t)time(NULL);
         portable_mutex_lock(&myinfo->messagemutex);
@@ -828,7 +843,7 @@ void basilisks_loop(void *arg)
         }
         portable_mutex_unlock(&myinfo->messagemutex);
         if ( myinfo->RELAYID >= 0 )
-            usleep(100000);
+            usleep(5000000);
         else sleep(1);
     }
 }
@@ -853,6 +868,8 @@ void basilisks_init(struct supernet_info *myinfo)
 HASH_ARRAY_STRING(basilisk,balances,hash,vals,hexstr)
 {
     char *retstr=0,*symbol; uint32_t basilisktag; struct basilisk_item *ptr,Lptr; int32_t timeoutmillis;
+    if ( myinfo->RELAYID >= 0 )
+        return(clonestr("{\"error\":\"special relays only do OUT and MSG\"}"));
     if ( vals == 0 )
         return(clonestr("{\"error\":\"need vals object\"}"));
     //if ( coin == 0 )

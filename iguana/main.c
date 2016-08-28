@@ -427,6 +427,7 @@ void mainloop(struct supernet_info *myinfo)
                     portable_mutex_lock(&coin->allcoins_mutex);
                     stack[depth++] = &coin->allcoins_mutex;
                 }
+                //printf("check jsonQ\n");
                 while ( iguana_jsonQ() != 0 )
                     ;
                 if ( depth > 0 )
@@ -558,8 +559,9 @@ int32_t iguana_commandline(struct supernet_info *myinfo,char *arg)
         }
         else
         {
+            IGUANA_NUMHELPERS = juint(argjson,"numhelpers");
             free_json(argjson);
-            printf("Will run (%s) after initialized\n",COMMANDLINE_ARGFILE);
+            printf("Will run (%s) after initialized with %d threads\n",COMMANDLINE_ARGFILE,IGUANA_NUMHELPERS);
         }
     }
     else if ( arg != 0 )
@@ -683,7 +685,7 @@ void iguana_urlinit(struct supernet_info *myinfo,int32_t ismainnet,int32_t usess
 void iguana_launchdaemons(struct supernet_info *myinfo)
 {
     int32_t i; char *helperargs,helperstr[512];
-    if ( IGUANA_NUMHELPERS == 0 || COMMANDLINE_ARGFILE != 0 )
+    if ( IGUANA_NUMHELPERS == 0 )//|| COMMANDLINE_ARGFILE != 0 )
         IGUANA_NUMHELPERS = 1;
     for (i=0; i<IGUANA_NUMHELPERS; i++)
     {
@@ -1500,15 +1502,11 @@ FOUR_STRINGS(SuperNET,login,handle,password,permanentfile,passphrase)
 
 void iguana_relays_init(struct supernet_info *myinfo)
 {
-    char *str;
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.237"),GENESIS_PUBKEY)) != 0 ) //"78.47.196.146"
-        free(str);
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.238"),GENESIS_PUBKEY)) != 0 ) //"5.9.102.210"
-        free(str);
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.239"),GENESIS_PUBKEY)) != 0 )
-        free(str);
-    if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits("89.248.160.240"),GENESIS_PUBKEY)) != 0 )
-        free(str);
+    static char *ipaddrs[] = { "89.248.160.237", "89.248.160.238", "89.248.160.239", "89.248.160.240", "89.248.160.241", "89.248.160.242", "89.248.160.243", "89.248.160.244" };
+    char *str; int32_t i;
+    for (i=0; i<sizeof(ipaddrs)/sizeof(*ipaddrs); i++)
+        if ( (str= basilisk_addrelay_info(myinfo,0,(uint32_t)calc_ipbits(ipaddrs[i]),GENESIS_PUBKEY)) != 0 )
+            free(str);
 }
 
 void iguana_main(void *arg)
