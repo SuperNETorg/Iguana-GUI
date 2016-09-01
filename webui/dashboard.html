@@ -6,18 +6,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<title>Iguana / Dashboard</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/jquery-ui.css">
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/budicon.css">
 		<link rel="stylesheet" href="css/dashboard.css">
 		<link rel="stylesheet" href="css/cryptocoins.css">
 		<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/api.js"></script>
 		<script type="text/javascript" src="js/localstorage.js"></script>
 		<script type="text/javascript" src="js/dashboard.js"></script>
 		<script type="text/javascript" src="js/helpers.js"></script>
 	</head>
 	<body>
-		<section class="dashboard unselectable hidden">
+		<section class="dashboard unselectable">
 			<nav class="top">
 				<div class="left">Iguana</div>
 				<div class="center">
@@ -61,7 +63,7 @@
 							<span class="currency"></span>
 						</div>
 						<div class="action-buttons">
-							<button class="btn btn-send">Send</button>
+							<button class="btn btn-send" id="send">Send</button>
 							<button class="btn btn-receive">Receive</button>
 						</div>
 						<div class="info">
@@ -94,5 +96,239 @@
 				</div>
 			</div>
 		</section>
+
+
+
+
+
+		<!-- Code for send Popup -->
+		 	<div id="sendCoinModal" style="display: none">
+		        <div class="rs_model">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <div class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
+		                    <h4 class="modal-title" id="myModalLabel">Sending</h4>
+		                </div>
+		                <div class="modal-body">
+		                    <div class="mian-popup">
+		                        <div class="popup-head">
+		                            <div class="headd">
+		                                <div class="row">
+		                                    <div class="col-sm-6 hd-left col-xs-6">
+		                                        <img src="images/bitcoin.png">
+		                                        <span>Bitcoin</span>
+		                                    </div>
+		                                    <div class="col-sm-6 hd-right col-xs-6">
+		                                        <span> 17.5 BTC</span>
+		                                        <p class="rs">11763.03 USD</p>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="pop-form">
+		                                <div class="pop-detail send">
+		                                    <h4>Send to:</h4>
+		                                    <p>Enter a wallet Address or Select a Contact</p>
+		                                    <input type="text">
+		                                </div>
+		                                <div class="pop-detail crncy">
+		                                    <h4>Amount:</h4>
+		                                    <p>Enter in any Currency</p>
+		                                    <input type="text" placeholder="0 BTC"><span>=</span><input type="text" placeholder="0 USD">
+		                                </div>
+		                                <div class="pop-detail crncy">
+		                                    <h4>Fee:</h4>
+		                                    <p>Minimum fee. Increase it to speed up transaction.</p>
+		                                    <input type="text" placeholder="1 BTC"><span>=</span><input type="text" placeholder="580 USD">
+		                                </div>
+		                                <div class="pop-detail">
+		                                    <h4>Note (optional): </h4>
+		                                    <textarea></textarea>
+		                                </div>
+		                                <input type="submit" value="Next" id="nextsend">
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		    	</div>
+			</div>
+
+		 <div id="confirmation" style="display: none">
+			 <div class="rs_model">
+			 	<div class="modal-content">
+		            <div class="modal-header">
+		                <div type="button" class="close back" data-dismiss="modal" aria-label="Close">
+						   <img src="images/arrow-left.png">
+		                </div>
+		                <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+		            </div>
+		            <div class="modal-body">
+		                <div class="mian-popup">
+		                    <div class="popup-head">
+		                        <div class="headd">
+		                            <div class="row">
+		                                <div class="col-sm-6 hd-left col-xs-6">
+		                                    <img src="images/bitcoin.png">
+		                                    <span>Bitcoin</span>
+		                                </div>
+		                                <div class="col-sm-6 hd-right col-xs-6">
+		                                    <span> 17.5 BTC</span>
+		                                    <p class="rs ">11763.03 USD</p>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="pop-form">
+		                            <div class="pop-detail send check">
+		                                <h4>Send to:</h4>
+		                                <p>jfdsflkkljkfkldsjfjldsfjjdsfjkldsjfkljds</p>
+		                                
+		                            </div>
+		                            <div class="pop-detail crncy chk-crncy crncy_btc_rs">
+		                                <h4>Amount:</h4>
+		                                <h3>1 BTC</h3>
+		                                <h5>or 192 USD</h5>
+		                            </div>
+		                            <div class="pop-detail crncy chk-crncy crncy_btc_fee">
+		                                <h4>Fee:</h4>
+		                                <h3>10 BTC</h3>
+		                                <h5>or 580 USD</h5>
+		                            </div>
+		                            <div class="pop-detail pay-dtl">
+		                                <h4>Note: </h4>
+		                                <p>This is my Payment. Have a nice day :)</p>
+		                            </div>
+		                            <input type="submit" value="Send 11 BTC" id="sendingModal">
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+	        </div>
+		</div>
+
+
+		<div id="sending" style="display: none">
+			<div class="rs_model">
+				<div class="modal-dialog" role="document">
+			        <div class="refrshing">
+			        	<div class="refrsh-center">
+			      			<div class="cntnt-cntr"> <h5>Sending....</h5></div>
+						</div>
+		            </div>
+					<div class="modal-content">
+		                <div class="modal-header">
+		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		                    <h4 class="modal-title" id="myModalLabel">Sending</h4>
+		                </div>
+		                <div class="modal-body">
+		                    <div class="mian-popup">
+		                        <div class="popup-head">
+		                            <div class="headd">
+		                                <div class="row">
+		                                    <div class="col-sm-6 hd-left col-xs-6">
+		                                        <img src="images/bitcoin.png">
+		                                        <span>Bitcoin</span>
+		                                    </div>
+		                                    <div class="col-sm-6 hd-right col-xs-6">
+		                                        <span> 17.5 BTC</span>
+		                                       <p class="rs"> 11763.03 USD</p>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="pop-form">
+		                                <div class="pop-detail send">
+		                                    <h4>Send to:</h4>
+		                                    <p>Enter a wallet Address or Select a Contact</p>
+		                                    <input type="text">
+		                                </div>
+		                                <div class="pop-detail crncy">
+		                                    <h4>Amount:</h4>
+		                                    <p>Enter in any Currency</p>
+		                                    <input type="text" placeholder="0 BTC"><span>=</span><input type="text" placeholder="0 USD">
+		                                </div>
+		                                <div class="pop-detail crncy">
+		                                    <h4>Fee:</h4>
+		                                    <p>Minimum fee. Increase it to speed up transaction.</p>
+		                                    <input type="text" placeholder="1 BTC"><span>=</span><input type="text" placeholder="580 USD">
+		                                </div>
+		                                <div class="pop-detail">
+		                                    <h4>Note (optional): </h4>
+		                                    <textarea></textarea>
+		                                </div>
+		                                <input type="submit" value="&#8634;" id="transactionsentmodal" >
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+			</div>
+		</div>
+
+
+		<div id="transactionsent" style="display: none">
+			<div class="rs_model">
+				<div id="myModal3">
+					<div class="modal-dialog" role="document">
+			        	<div class="refrshing">
+			        		<div class="refrsh-center">
+			      				<div class="cntnt-cntr">
+			      					<h5>Transaction is sent. <br> Check the status in a few minutes to verify.</h5>
+		      					</div>
+							</div>
+	                    </div>
+						<div class="modal-content">
+			                <div class="modal-header">
+			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			                    <h4 class="modal-title" id="myModalLabel">Sending</h4>
+			                </div>
+			                <div class="modal-body">
+			                    <div class="mian-popup">
+			                        <div class="popup-head">
+			                            <div class="headd">
+			                                <div class="row">
+			                                    <div class="col-sm-6 hd-left col-xs-6">
+			                                        <img src="images/bitcoin.png">
+			                                        <span>Bitcoin</span>
+			                                    </div>
+			                                    <div class="col-sm-6 hd-right col-xs-6">
+			                                        <span> 17.5 BTC</span>
+			                                       <p class="rs"> 11763.03 USD</p>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="pop-form">
+			                                <div class="pop-detail send">
+			                                    <h4>Send to:</h4>
+			                                    <p>Enter a wallet Address or Select a Contact</p>
+			                                    <input type="text">
+			                                </div>
+			                                <div class="pop-detail crncy">
+			                                    <h4>Amount:</h4>
+			                                    <p>Enter in any Currency</p>
+			                                    <input type="text" placeholder="0 BTC"><span>=</span><input type="text" placeholder="0 USD">
+			                                </div>
+			                                <div class="pop-detail crncy">
+			                                    <h4>Fee:</h4>
+			                                    <p>Minimum fee. Increase it to speed up transaction.</p>
+			                                    <input type="text" placeholder="1 BTC"><span>=</span><input type="text" placeholder="580 USD">
+			                                </div>
+			                                <div class="pop-detail">
+			                                    <h4>Note (optional): </h4>
+			                                    <textarea></textarea>
+			                                </div>
+			                                <input type="submit" value="&#10003;" id="transactioncomplete">
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+				</div>
+			</div>
+		</div>
+		<!-- End Code for send Popup -->
+
+
 	</body>
 </html>
