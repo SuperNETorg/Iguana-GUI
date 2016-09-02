@@ -1,0 +1,328 @@
+/*
+Send Button to send coin another address Js
+*/
+.ui-dialog .ui-dialog-content {
+    padding: 0;
+    margin: -4px;
+}
+
+.rs-model .modal-header{   
+    background: #fe600d;
+    background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
+    background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
+}
+
+.rs-model  .coin-head-section{   
+    background: #fe600d;
+    background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
+    background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
+    border-radius: 4px;
+    color: #fff;
+    padding: 25px 21px 22px;
+    position: relative;
+    box-shadow: 0px 0px 7px 4px #e8cec6;
+
+}
+
+.rs-model .coin-head-section .bi-interface-bottom {
+    bottom: -43px;
+    color: #b1b1b1;
+    font-size: 35px;
+    height: 40px;
+    left: 0;
+    margin: auto;
+    opacity: 0.7;
+    position: absolute;
+    right: 0;
+    width: 40px;
+}
+
+.rs-model .modal-content .modal-header {
+    border-bottom: medium none;
+    color: #fff;
+    padding: 16px 40px;
+    position: relative;
+    text-align: center; border-radius: 6px 6px 0 0;
+}
+
+.modal .modal-content {
+    border-radius: 6px 6px 0 0;
+}
+
+.rs-model .modal-content .modal-header .close {
+    color: #fff;
+    font-size: 37px;
+    font-weight: 100;
+    left: 26px;
+    opacity: 1;
+    position: absolute;
+    top: 8px;
+}
+
+.modal-header .modal-title {
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.rs-model .mian-popup {
+    margin: 0 auto;
+    max-width: 301px;
+}
+
+.rs-model .pop-detail {
+    margin-bottom: 22px;
+}
+
+.rs-model .pop-detail.send {
+    margin-bottom: 31px;
+}
+
+.rs-model .modal-content .modal-body {
+    padding: 0;
+}
+
+.rs-model .modal-content .modal-body {
+    background: #f5f8fb none repeat scroll 0 0;
+    padding: 50px 0;
+}
+
+.rs-model .hd-right > span {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.rs-model .pop-form {
+    margin-top: 51px;
+}
+
+.book-sec i {
+    color: #fd4d14;
+    font-size: 21px;
+    position: absolute;
+    right: 2px; top: 0;
+}
+
+.book-sec {
+    position: relative;
+}
+
+.rs-model .rs-model .pop-detail h4 {
+    color: #282828;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.rs-model .pop-detail p {
+    color: #90929b;
+    font-size: 13px;
+    margin-bottom: 5.2px;
+    margin-top: 6px;
+}
+
+.rs-model .pop-detail input[type="text"] {
+    border: 1px solid #c7ccd0;
+    border-radius: 4px;
+    color: #333333;
+    font-weight: 500;
+    height: 34px;
+    padding: 1px 6px;
+    width: 100%;
+}
+
+.rs-model .pop-detail > textarea {
+    border: 1px solid #c7ccd0;
+    border-radius: 4px;
+    height: 34px !important;
+    margin-top: 9px;
+    resize: none;
+    width: 100%;
+}
+
+.rs-model .modal {
+    padding-left: 0 !important;
+}
+
+.pop-detail h4 {
+    font-size: 14.6px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.hd-right {
+    text-align: right; font-size:12px;
+}
+
+.rs-model .pop-detail.crncy input[type="text"] {
+    float: left;
+    width: 46.7%;
+}
+
+.pop-detail.crncy {
+    display: inline-block;
+    width: 100%;
+}
+
+.rs-model .pop-detail.crncy span {
+    color: #fc6538;
+    float: left;
+    font-size: 21px;
+    font-weight: 500;
+    padding: 0 1.2%;
+}
+
+.rs-model .pop-form > input[type="submit"]{
+    background: #fe600d;
+    background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
+    background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
+    border: 0 none;
+    border-radius: 4px;
+    box-shadow: 0 0 7px 4px #e8cec6;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 26px;
+    padding: 6px 0;
+    width: 100%;
+    position: relative;
+    z-index: 99;
+}
+
+.chk-crncy h3 {
+    font-size: 21px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.chk-crncy h4 {
+    color: #a2a3ac;
+    margin-bottom: 5px;
+}
+
+.pop-detail.pay-dtl p {
+    color: #37373a;
+    font-size: 13px;
+}
+
+.chk-crncy h5 {
+    font-size: 16px;
+    margin-top: -1px;
+}
+
+.pop-detail.crncy.chk-crncy {
+    margin: 30px 0;
+}
+
+.refrshing {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.92);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9;
+}
+
+.rs-model #myModal2 .pop-form > input[type="submit"], .rs-model #myModal3 .pop-form > input[type="submit"] {
+    font-size: 23px;
+    line-height: 27px;
+    padding: 5px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.rs-model #myModal3 .pop-form > input[type="submit"]{
+    background: #08bb5a;
+    background: -moz-linear-gradient(left, #08bb5a 0%, #13d76c 47%, #08b959 100%);
+    background: -webkit-linear-gradient(left, #08bb5a 0%,#13d76c 47%,#08b959 100%);
+    background: linear-gradient(to right, #08bb5a 0%,#13d76c 47%,#08b959 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', endColorstr='#08b959',GradientType=1 );
+}
+
+.cntnt-cntr > h5 {
+    font-size: 19px;
+    line-height: 27px;
+    margin: 0 auto;
+}
+
+.cntnt-cntr{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.refrsh-center{
+    display: table;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.rs {
+    margin: 0;
+    position: relative;
+    top: -3px;
+}
+
+.rs-model .modal-dialog {
+    margin: 0px auto;
+    width: 800px;
+}
+
+.pop-detail.send.check > h4 {
+    color: #a2a3ac;
+}
+
+.pop-detail.send.check > p {
+    color: #000000;
+    font-size: 14px;
+    letter-spacing: 0.9px;
+    margin-top: 7px;
+}
+
+.pop-detail.pay-dtl > h4 {
+    color: #a2a3ac;
+}
+
+.chk-crncy.crncy-btc-rs h5 {
+    margin-top: -1px;
+}
+
+.pop-detail.crncy.chk-crncy.crncy-btc-rs {
+    margin: 0px 0 10px;
+}
+
+.pop-detail.crncy.chk-crncy.crncy-btc-fee {
+    margin: 0px 0 13px;
+}
+
+.rs-model #myModal1 .pop-form > input[type="submit"] {
+    margin-top: 30px;
+}
+
+.btc-font {
+    display: table;
+}
+
+.btc-font .cc.BTC-alt {
+    font-size: 45px;
+    display: inline-block;
+}
+
+.btc-font span {
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+    right: 10px;
+}
+
+.back .bi-interface-arrow-left{
+    font-size: 29px;
+}
