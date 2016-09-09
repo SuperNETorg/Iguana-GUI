@@ -96,6 +96,7 @@ helperProto.prototype.logout = function() {
   var localStorage = new localStorageProto();
   localStorage.setVal("iguana-auth", { "timestamp" : 1471620867 }); // Jan 01 1970
   helperProto.prototype.openPage("login");
+  apiProto.prototype.walletLock();
 }
 
 helperProto.prototype.setCurrency = function(currencyShortName) {

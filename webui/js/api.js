@@ -375,6 +375,50 @@ apiProto.prototype.getBalance = function(account) {
   return result;
 }
 
+apiProto.prototype.walletLock = function() {
+  var result = false;
+  var fullUrl = isIguana ? apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf().server.port + "/api/bitcoinrpc/walletlock" : proxy + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf().server.port;
+  var postData = "{ \"agent\": \"bitcoinrpc\", \"method\": \"walletlock\" }";
+  var postAuthHeaders = isIguana ? "" : { "Authorization": "Basic " + btoa(apiProto.prototype.getConf().coins[activeCoin].user + ":" + apiProto.prototype.getConf().coins[activeCoin].pass) };
+
+  $.ajax({
+    url: fullUrl,
+    cache: false,
+    async: false,
+    dataType: "json",
+    type: "POST",
+    data: postData,
+    headers: postAuthHeaders
+  })
+  .done(function(_response) {
+    apiProto.prototype.errorHandler(_response);
+
+    if (_response.result) {
+      // non-iguana
+      result = _response.result;
+    } else {
+      console.log(_response);
+
+      // iguana
+      var response = $.parseJSON(_response);
+
+      if (response.error) {
+        // do something
+        console.log("error: " + response.error);
+        result = false;
+      } else {
+        if (response) {
+          result = response;
+        } else {
+          result = false;
+        }
+      }
+    }
+  });
+
+  return result;
+}
+
 apiProto.prototype.addCoin = function(coin) {
   var result = false;
 
