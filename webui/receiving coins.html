@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Receiving coins </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/receiving-coins.css">
+  <script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/receiving-coins.js"></script>
+  <script src="js/jquery.qrcode.min.js"></script> 
+</head>
+<body>
+<div class="container">
+  <h2>Receiving coins </h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Address</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog model-popup">
+      <!-- Modal content-->
+      <div class="modal-content receiving-coin-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"> &times;</button>
+          <h4 class="modal-title">Receiving coins</h4>
+        </div>
+          <div class="modal-body">
+        	<div class="row">
+              <div class="col-xs-12 col-md-5 col-md-offset-3  share-address-section">
+          	    <div class="my-lable">My address:</div>
+          	    <h4 id="address">32ro Y89f h8OF hfOO PIFO FJ9w hio1 132y</h4>
+          	    <div><span class="text-section">Something 2</span></div>
+          	    <div class="col-md-6 buttons">
+          	    	<button type="button" class="copy-btn" onclick="copyToClipboard('#address')" ><a data-toggle="modal" href="#clipboard">copy</a></button>
+          	    </div>
+          	    <div class="col-md-6 buttons">
+          	    	<button type="button" class="share-btn">Share</button>
+          	    </div>
+				<div class="qr-code"  id="qr-code"></div>
+                <div class="amount-lable"><span>Amount:</span></div>
+                <div ><span class="text-section">Enter in any currency</span></div>
+                <div class="currency-input">
+                  <input type="number" class="crypto-currency" value=0>
+                  <span class="unit">BTC</span>
+                </div>
+                <div class="currency-input"><span class="equals-sign">=</span></div>
+                <div class="currency-input">
+                    <input type="number" class="currency crypto-currency" value=0>
+                    <span class="unit">USD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+       </div>
+     </div>
+  </div>
+  <div class="modal fade" id="clipboard" role="dialog">
+    <div class="modal-dialog">
+  	  <div class="modal-content msg-content">
+        <div class="modal-header msgbox-header">
+          <div class="clipboard-msg">Address is copied to clipboard </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
