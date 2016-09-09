@@ -233,8 +233,16 @@ function constructTransactionUnitRepeater() {
           // iguana
           txAddress = transactionsList[i].address || transactionDetails.address;
           txAmount = transactionDetails.vout[1].value;
-          txStatus = transactionDetails.category;
-          txCategory = transactionDetails.category;
+          txStatus = transactionDetails.category || transactionsList[i].category;
+          txCategory = transactionDetails.category || transactionsList[i].category;
+
+          if (txStatus === "send") {
+            txIncomeOrExpenseFlag = "bi_interface-minus";
+            txStatus = "sent";
+          } else {
+            txIncomeOrExpenseFlag = "bi_interface-plus";
+            txStatus = "received";
+          }
         }
 
       if (transactionDetails && txStatus !== "N/A") {

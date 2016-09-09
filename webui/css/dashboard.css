@@ -275,11 +275,13 @@
   }
   .transactions-list-repeater .item .hash {
     width: 40%;
-    margin-left: 10%;
+    margin-left: 5%;
   }
   .transactions-list-repeater .item .in-out {
     font-size: 0.8em;
     margin-right: 2px;
+    position: relative;
+    top: 1px;
   }
   .transactions-list-repeater .item.timestamp-single .timestamp.two-lines,
   .transactions-list-repeater .item.timestamp-multi .timestamp {
@@ -317,7 +319,7 @@
     font-weight: normal;
     position: relative;
     top: 2px;
-    padding-left: 27px;
+    padding-left: 70%;
   }
   .transactions-list-repeater .item.receive .progress-status .icon:before {
     content: "\eb47";
