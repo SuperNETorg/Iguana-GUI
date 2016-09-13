@@ -58,7 +58,7 @@ helperProto.prototype.openPage = function(url) {
 
   switch (url) {
     case "login":
-      localPageUrl = "login.html";
+      localPageUrl = "index.html";
       break;
     case "create-account":
       localPageUrl = "create-account.html";
@@ -91,20 +91,31 @@ helperProto.prototype.checkSession = function(returnVal) {
   }
 }
 
-// TODO: add walletlock
+helperProto.prototype.ratesUpdateElapsedTime = function() {
+  var localStorage = new localStorageProto();
+  var currentEpochTime = new Date(Date.now()) / 1000;
+  var secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal("iguana-rates").updatedAt / 1000);
+
+  return secondsElapsed;
+}
+
 helperProto.prototype.logout = function() {
   var localStorage = new localStorageProto();
+
+  apiProto.prototype.walletLock();
   localStorage.setVal("iguana-auth", { "timestamp" : 1471620867 }); // Jan 01 1970
   helperProto.prototype.openPage("login");
-  apiProto.prototype.walletLock();
 }
 
 helperProto.prototype.setCurrency = function(currencyShortName) {
   var localStorage = new localStorageProto();
+
   localStorage.setVal("iguana-currency", { "name" : currencyShortName });
+  localStorage.setVal("iguana-rates", { "shortName" : null, "value": null, "updatedAt": 1471620867 }); // force currency update
 }
 
 helperProto.prototype.getCurrency = function() {
   var localStorage = new localStorageProto();
+
   return localStorage.getVal("iguana-currency");
 }
