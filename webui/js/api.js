@@ -101,7 +101,8 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf) {
   if (conf)
     return isIguana ? "" : { "Authorization": "Basic " + btoa(conf.user + ":" + conf.pass) };
   else
-    return isIguana ? "" : { "Authorization": "Basic " + btoa(apiProto.prototype.getConf().coins[activeCoin].user + ":" + apiProto.prototype.getConf().coins[activeCoin].pass) };
+    if (activeCoin)
+      return isIguana ? "" : { "Authorization": "Basic " + btoa(apiProto.prototype.getConf().coins[activeCoin].user + ":" + apiProto.prototype.getConf().coins[activeCoin].pass) };
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
@@ -140,22 +141,25 @@ apiProto.prototype.testCoinPorts = function() {
         console.log(response);
 
         if (response.result.walletversion || response.result === "success") {
-          // non-iguana
-          var networkCurrentHeight = apiProto.prototype.getCoinCurrentHeight(index);
           console.log('portp2p con test passed');
           console.log(index + ' daemon is detected');
-          console.log("Connections: " + response.result.connections);
-          console.log("Blocks: " + response.result.blocks + "/" + networkCurrentHeight + " (" + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + "% synced)");
           activeCoin = index;
 
-          if (response.result.blocks === networkCurrentHeight) {
-            isRT = true;
-          } else {
-            isRT = false;
-            console.log("RT is not ready yet!");
+          // non-iguana
+          if (!isIguana) {
+            var networkCurrentHeight = apiProto.prototype.getCoinCurrentHeight(index);
+            console.log("Connections: " + response.result.connections);
+            console.log("Blocks: " + response.result.blocks + "/" + networkCurrentHeight + " (" + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + "% synced)");
+
+            if (response.result.blocks === networkCurrentHeight) {
+              isRT = true;
+            } else {
+              isRT = false;
+              console.log("RT is not ready yet!");
+            }
           }
         }
-        if (response.status) {
+        if (response.status)
           // iguana
           if (response.status.indexOf(".RT0 ") > -1) {
             var iguanaGetInfo = response.status.split(" ");
@@ -172,15 +176,13 @@ apiProto.prototype.testCoinPorts = function() {
           } else {
             isRT = true;
           }
-        } else {
-        }
       },
       error: function(response) {
         apiProto.prototype.errorHandler(response);
 
         if (response.statusText === "error" && !isIguana) console.log("is proxy server running?");
         else if (!response.statusCode) console.log("server is busy, check back later");
-        if (response.responseText.indexOf("Verifying blocks...") > -1) console.log("coind is verifying blocks...");
+        if (response.responseText && response.responseText.indexOf("Verifying blocks...") > -1) console.log(index + " is verifying blocks...");
 
         console.log(response.responseText);
 
@@ -472,7 +474,7 @@ apiProto.prototype.walletLock = function() {
       console.log(_response);
 
       // iguana
-      var response = $.parseJSON(_response);
+      var response = typeof _response === 'object' ? _response : $.parseJSON(_response);
 
       if (response.error) {
         // do something

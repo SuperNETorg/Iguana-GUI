@@ -99,7 +99,7 @@ helperProto.prototype.ratesUpdateElapsedTime = function() {
   return secondsElapsed;
 }
 
-helperProto.prototype.logout = function() {
+helperProto.prototype.logout = function(noRedirect) {
   var localStorage = new localStorageProto();
 
   apiProto.prototype.walletLock();
