@@ -14,6 +14,10 @@
 // if no portp2p is specified iguana picks default port
 // possible solution: check adjacent ports to verify which one is responding
 
+// add rt sync check for btc and btcd
+// https://blockexplorer.com/api/status?q=getBlockCount
+// http://explorebtcd.info/api/status?q=getBlockCount
+
 var apiProto = function() {};
 
 var activeCoin,
@@ -48,13 +52,15 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort) {
           "services": 129,
           "portp2p": 8332,
           "user": "pbca26", // add your rpc pair here
-          "pass": "pbca26"
+          "pass": "pbca26",
+          "currentBlockHeightExtSource": "https://blockexplorer.com/api/status?q=getBlockCount"
         },
         "btcd": {
           "services": 0,
           "portp2p": 14632,
           "user": "user", // add your rpc pair here
-          "pass": "pass"
+          "pass": "pass",
+          "currentBlockHeightExtSource": "http://explorebtcd.info/api/status?q=getBlockCount"
         }
       }
   };
@@ -132,25 +138,57 @@ apiProto.prototype.testCoinPorts = function() {
       success: function(response) {
         apiProto.prototype.errorHandler(response);
         console.log(response);
+
         if (response.result.walletversion || response.result === "success") {
+          // non-iguana
+          var networkCurrentHeight = apiProto.prototype.getCoinCurrentHeight(index);
           console.log('portp2p con test passed');
           console.log(index + ' daemon is detected');
+          console.log("Connections: " + response.result.connections);
+          console.log("Blocks: " + response.result.blocks + "/" + networkCurrentHeight + " (" + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + "% synced)");
           activeCoin = index;
-        }
-        if (response.status)
-          if (response.status.indexOf(".RT0 ") > -1) {
+
+          if (response.result.blocks === networkCurrentHeight) {
+            isRT = true;
+          } else {
             isRT = false;
             console.log("RT is not ready yet!");
+          }
+        }
+        if (response.status) {
+          // iguana
+          if (response.status.indexOf(".RT0 ") > -1) {
+            var iguanaGetInfo = response.status.split(" ");
+            var totalBundles = iguanaGetInfo[20].split(":");
+            var currentHeight = iguanaGetInfo[9].replace("h.", "");
+            var peers = iguanaGetInfo[16].split("/");
+
+            console.log("Connections: " + peers[0].replace("peers.", ""));
+            console.log("Blocks: " + currentHeight);
+            console.log("Bundles: " + iguanaGetInfo[14].replace("E.", "") + "/" + totalBundles[0] + " (" + (iguanaGetInfo[14].replace("E.", "") * 100 / totalBundles[0]).toFixed(2) + "% synced)");
+            console.log("RT is not ready yet!");
+
+            isRT = false;
           } else {
             isRT = true;
           }
+        } else {
+        }
       },
       error: function(response) {
         apiProto.prototype.errorHandler(response);
+
+        if (response.statusText === "error" && !isIguana) console.log("is proxy server running?");
+        else if (!response.statusCode) console.log("server is busy, check back later");
+        if (response.responseText.indexOf("Verifying blocks...") > -1) console.log("coind is verifying blocks...");
+
         console.log(response.responseText);
+
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin is detected, at least one daemon must be running!");
+        _index++;
       }
     }).done(function() {
-      if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin detected, at least one daemon must be running!");
+      if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin is detected, at least one daemon must be running!");
       _index++;
     });
   });
@@ -482,6 +520,32 @@ apiProto.prototype.walletLock = function() {
 
   return result;
 }*/
+
+/* external block explorer website */
+apiProto.prototype.getCoinCurrentHeight = function(coin) {
+  var result = false;
+
+  $.ajax({
+    url: apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource,
+    cache: false,
+    dataType: "text",
+    async: false
+  })
+  .done(function(_response) {
+    var response = $.parseJSON(_response);
+    console.log(response);
+
+    if (response.blockcount || response.info.blocks) {
+      if (response.blockcount) result = response.blockcount;
+      if (response.info) result = response.info.blocks;
+    } else {
+      console.log("error retrieving current block height from " + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
+      result = false;
+    }
+  });
+
+  return result;
+}
 
 /* !requires the latest iguana build! */
 apiProto.prototype.getIguanaRate = function(quote) {
