@@ -46,7 +46,7 @@ function addAuthorizationButtonAction(buttonClassName) {
 
     if (totalSubstr && totalSubstrAlpha && totalSpaces)
       // wallet passphrase check is temp disabled to work in coind env
-      if (true /*totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23*/) {
+      if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
         if (buttonClassName === "signin" ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
           toggleLoginErrorStyling(false);
 

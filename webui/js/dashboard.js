@@ -211,12 +211,21 @@ var transactionUnitRepeater = "<div class=\"item {{ status_class }} {{ timestamp
 // construct transaction unit array
 // TODO: add edge case "no transactions" for a selected coin
 function constructTransactionUnitRepeater() {
-  var result = "";
-  var helper = new helperProto();
-  var api = new apiProto();
+  var result = "",
+      helper = new helperProto(),
+      api = new apiProto(),
+      coinName,
+      selectedCoin = $(".account-coins-repeater .item.active");
 
-  var selectedCoin = $(".account-coins-repeater .item.active");
-  var coinName = selectedCoin.attr("data-coin-id").toUpperCase();
+  // reload page until server responds with normal timeout
+  if (selectedCoin.length === 0) {
+    console.log("something is wrong, reload page in 4 sec");
+    setTimeout(function() {
+      location.reload();
+    }, 4000);
+  } else {
+    coinName = selectedCoin.attr("data-coin-id").toUpperCase();
+  }
 
   var transactionsList = api.listTransactions(defaultAccount);
   // sort tx in desc order by timestamp
@@ -280,6 +289,9 @@ function constructTransactionUnitRepeater() {
       }
     }
   }
+  if (coinName === undefined && transactionsList.length) {
+    result = "<strong>Connection failure. The page will reload automatically in 4 seconds.</strong>";
+  }
   return result;
 }
 
@@ -315,7 +327,7 @@ function updateAccountCoinRepeater() {
     var coin = $(this).attr("data-coin-id");
     var coinValue = $(this).find(".coin-value .val");
     var currencyValue = $(this).find(".currency-value .val");
-    var currenyValueCalculated = (Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true)).toFixed(decimalPlacesCoin);
+    var currenyValueCalculated = (Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true)).toFixed(decimalPlacesCurrency);
 
     currencyValue.html(Number(currenyValueCalculated) ? currenyValueCalculated : 0);
   });
