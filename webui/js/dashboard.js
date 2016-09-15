@@ -9,11 +9,9 @@
  */
 
 var defaultCurrency = "",
-    defaultCoin = "BTCD"; // temp deprecated
-    defaultCoinValue = 0,
-    defaultCurrencyValue = 0,
+    defaultCoin = "",
     coinToCurrencyRate = 0,
-    defaultAccount = "*", // note: change to a specific account name if needed
+    defaultAccount = "default", // note: change to a specific account name if needed
     coinsSelectedByUser = [],
     ratesUpdateTimeout = 15, // sec
     decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
@@ -163,7 +161,13 @@ function constructAccountCoinRepeater() {
       // addCoin(coinsSelectedByUser[i]);
       var api = new apiProto();
       var coinBalance = api.getBalance(defaultAccount);
-      console.log(coinBalance);
+
+      // fix for small balance values
+      if (coinBalance.toString().indexOf(".") > -1 && coinBalance < 1) {
+        var coinBalanceSplit = coinBalance.toString().split(".");
+        decimalPlacesCoin = coinBalanceSplit[1].length;
+        decimalPlacesCurrency = decimalPlacesCoin;
+      }
 
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) {
         coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true);
@@ -171,14 +175,15 @@ function constructAccountCoinRepeater() {
       var coinData = getCoinData(coinsSelectedByUser[i]);
 
       if (i === 0 && !isActiveCoinSet) activeCoin = coinData.id;
-      result += accountCoinRepeaterTemplate.replace("{{ id }}", coinData.id.toUpperCase()).
-                                            replace("{{ name }}", coinData.name).
-                                            replace("{{ coin_id }}", coinData.id.toLowerCase()).
-                                            replace("{{ coin_id }}", coinData.id.toUpperCase()).
-                                            replace("{{ currency_name }}", defaultCurrency).
-                                            replace("{{ coin_value }}", coinBalance ? coinBalance.toFixed(decimalPlacesCoin) : 0).
-                                            replace("{{ currency_value }}", (coinBalance * coinLocalRate).toFixed(decimalPlacesCurrency)).
-                                            replace("{{ active }}", i === 0 && !isActiveCoinSet ? " active" : "");
+      if (coinData)
+        result += accountCoinRepeaterTemplate.replace("{{ id }}", coinData.id.toUpperCase()).
+                                              replace("{{ name }}", coinData.name).
+                                              replace("{{ coin_id }}", coinData.id.toLowerCase()).
+                                              replace("{{ coin_id }}", coinData.id.toUpperCase()).
+                                              replace("{{ currency_name }}", defaultCurrency).
+                                              replace("{{ coin_value }}", coinBalance ? coinBalance.toFixed(decimalPlacesCoin) : 0).
+                                              replace("{{ currency_value }}", (coinBalance * coinLocalRate).toFixed(decimalPlacesCurrency)).
+                                              replace("{{ active }}", i === 0 && !isActiveCoinSet ? " active" : "");
     }
   }
 
@@ -318,7 +323,10 @@ function updateAccountCoinRepeater() {
 
 function updateDashboardView(timeout) {
   var helper = new helperProto();
+
   var dashboardUpdateTimer = setInterval(function() {
+    if (!isRT) apiProto.prototype.testCoinPorts();
+
     console.clear();
     helper.checkSession();
     updateRates();

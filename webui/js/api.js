@@ -65,20 +65,11 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort) {
       }
   };
 
-  //if (!portsTested) apiProto.prototype.testConnection();
-
   // coin port switch hook
   if (activeCoin && !discardCoinSpecificPort)
     conf.server.port = conf.coins[activeCoin].portp2p;
   else
     conf.server.port = conf.server.iguanaPort;
-
-  // bitcoind rpc hook
-  // if rpc user and password are supplied it should communicate with bitcoin/altcoin
-  /*if (activeCoin && !iguanaEnv && conf.coins[activeCoin].user && conf.coins[activeCoin].pass) // inject user:pass@
-    conf.server.ip = conf.coins[activeCoin].user + ":" + conf.coins[activeCoin].pass + "@" + conf.server.ip;*/
-
-  //console.log(conf.server);
 
   return conf;
 }
@@ -90,6 +81,7 @@ apiProto.prototype.errorHandler = function(response) {
   }
   if (response.error === "iguana jsonstr expired") {
     console.log("server is busy");
+    alert("Server is not responding. Please try to reload a page in a few minutes.");
   }
 }
 
@@ -106,7 +98,7 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf) {
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
-  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"params\": [" + (!params ? "" : params) + "] }";
+  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"timeout\": \"3000\", \"params\": [" + (!params ? "" : params) + "] }";
 }
 
 apiProto.prototype.getFullApiRoute = function(method, conf) {
@@ -157,6 +149,11 @@ apiProto.prototype.testCoinPorts = function() {
               isRT = false;
               console.log("RT is not ready yet!");
             }
+            // temp code
+            if (isRT)
+              $("#temp-out-of-sync").addClass("hidden");
+            else
+              $("#temp-out-of-sync").removeClass("hidden");
           }
         }
         if (response.status)
@@ -176,6 +173,12 @@ apiProto.prototype.testCoinPorts = function() {
           } else {
             isRT = true;
           }
+
+          // temp code
+          if (isRT)
+            $("#temp-out-of-sync").addClass("hidden");
+          else
+            $("#temp-out-of-sync").removeClass("hidden");
       },
       error: function(response) {
         apiProto.prototype.errorHandler(response);
@@ -184,7 +187,7 @@ apiProto.prototype.testCoinPorts = function() {
         else if (!response.statusCode) console.log("server is busy, check back later");
         if (response.responseText && response.responseText.indexOf("Verifying blocks...") > -1) console.log(index + " is verifying blocks...");
 
-        console.log(response.responseText);
+        if (response.responseText) console.log("coind response: " + response.responseText);
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin is detected, at least one daemon must be running!");
         _index++;
