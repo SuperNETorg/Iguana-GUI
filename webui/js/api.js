@@ -24,6 +24,7 @@ var activeCoin,
     portsTested = false,
     isIguana = false,
     isRT = false,
+    syncDebugInfo,
     proxy = "http://localhost:1337/"; // https://github.com/gr2m/CORS-Proxy
 
 apiProto.prototype.getConf = function(discardCoinSpecificPort) {
@@ -61,6 +62,22 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort) {
           "user": "user", // add your rpc pair here
           "pass": "pass",
           "currentBlockHeightExtSource": "http://explorebtcd.info/api/status?q=getBlockCount"
+        },
+        "ltc": {
+          "services": 129,
+          "portp2p": 9332,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": "http://ltc.blockr.io/api/v1/coin/info"
+          // alt. url: https://api.blockcypher.com/v1/ltc/main
+          // beware if you abuse it you get temp ban
+        },
+        "sys": {
+          "services": 129,
+          "portp2p": 8368,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary" // universal resource for many coins
         }
       }
   };
@@ -81,7 +98,7 @@ apiProto.prototype.errorHandler = function(response) {
   }
   if (response.error === "iguana jsonstr expired") {
     console.log("server is busy");
-    alert("Server is not responding. Please try to reload a page in a few minutes.");
+    //alert("Server is not responding. Please try to reload a page in a few minutes.");
   }
 }
 
@@ -114,6 +131,7 @@ apiProto.prototype.testCoinPorts = function() {
   var result = false,
       _index = 0; /*,
       repeat = 3; // check default port, port+1, port-1*/
+  $("#debug-sync-info").html("");
 
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
     var fullUrl = apiProto.prototype.getFullApiRoute("getinfo", conf);
@@ -149,6 +167,11 @@ apiProto.prototype.testCoinPorts = function() {
               isRT = false;
               console.log("RT is not ready yet!");
             }
+
+            if (isDev && showSyncDebug)
+              if ($("#debug-sync-info").html().indexOf("coin: " + index) < 0)
+                $("#debug-sync-info").append("coin: " + index + ", con " + response.result.connections + ", blocks " + response.result.blocks + "/" + networkCurrentHeight + " (" + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + "% synced), RT: " + (isRT ? "yes" : "no") + "<br/>");
+
             // temp code
             if (isRT)
               $("#temp-out-of-sync").addClass("hidden");
@@ -173,6 +196,11 @@ apiProto.prototype.testCoinPorts = function() {
           } else {
             isRT = true;
           }
+
+          if (isDev && showSyncDebug)
+            if ($("#debug-sync-info").html().indexOf("coin: " + index) < 0)
+              $("#debug-sync-info").append("coin: " + index + ", con " + peers[0].replace("peers.", "") + ", bundles: " + iguanaGetInfo[14].replace("E.", "") + "/" + totalBundles[0] + " (" + (iguanaGetInfo[14].replace("E.", "") * 100 / totalBundles[0]).toFixed(2) + "% synced), RT: " + (isRT ? "yes" : "no") + "<br/>");
+
 
           // temp code
           if (isRT)
@@ -538,11 +566,15 @@ apiProto.prototype.getCoinCurrentHeight = function(coin) {
   })
   .done(function(_response) {
     var response = $.parseJSON(_response);
+    console.log('height');
     console.log(response);
 
-    if (response.blockcount || response.info.blocks) {
+    if (response.blockcount || response.info || response.height || response.data || response[coin]) {
       if (response.blockcount) result = response.blockcount;
       if (response.info) result = response.info.blocks;
+      if (response.height) result = response.height;
+      if (response.data) result = response.data.last_block.nb;
+      if (response[coin]) result = response[coin].height;
     } else {
       console.log("error retrieving current block height from " + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
       result = false;

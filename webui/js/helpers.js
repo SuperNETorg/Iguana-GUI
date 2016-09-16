@@ -5,7 +5,7 @@
 
 var helperProto = function() {};
 
-var defaultSessionLifetime = 3600; // sec
+var defaultSessionLifetime = 7200; // sec
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000);
@@ -119,3 +119,17 @@ helperProto.prototype.getCurrency = function() {
 
   return localStorage.getVal("iguana-currency");
 }
+
+helperProto.prototype.syncStatus = function() {
+  $(document).ready(function() {
+    $("body").append("<div id=\"debug-sync-info\" style=\"position:fixed;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>");
+    apiProto.prototype.testCoinPorts();
+
+    setInterval(function() {
+      console.clear();
+      apiProto.prototype.testCoinPorts();
+    }, 30000); // every 30 sec
+  });
+}
+
+if (isDev && showSyncDebug) helperProto.prototype.syncStatus();
