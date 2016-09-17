@@ -14,17 +14,12 @@
 // if no portp2p is specified iguana picks default port
 // possible solution: check adjacent ports to verify which one is responding
 
-// add rt sync check for btc and btcd
-// https://blockexplorer.com/api/status?q=getBlockCount
-// http://explorebtcd.info/api/status?q=getBlockCount
-
 var apiProto = function() {};
 
 var activeCoin,
     portsTested = false,
     isIguana = false,
     isRT = false,
-    syncDebugInfo,
     proxy = "http://localhost:1337/"; // https://github.com/gr2m/CORS-Proxy
 
 apiProto.prototype.getConf = function(discardCoinSpecificPort) {
@@ -115,7 +110,7 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf) {
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
-  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"timeout\": \"3000\", \"params\": [" + (!params ? "" : params) + "] }";
+  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"timeout\": \"30000\", \"params\": [" + (!params ? "" : params) + "] }";
 }
 
 apiProto.prototype.getFullApiRoute = function(method, conf) {
@@ -180,27 +175,26 @@ apiProto.prototype.testCoinPorts = function() {
           }
         }
         if (response.status)
+          var iguanaGetInfo = response.status.split(" ");
+          var totalBundles = iguanaGetInfo[20].split(":");
+          var currentHeight = iguanaGetInfo[9].replace("h.", "");
+          var peers = iguanaGetInfo[16].split("/");
+
           // iguana
           if (response.status.indexOf(".RT0 ") > -1) {
-            var iguanaGetInfo = response.status.split(" ");
-            var totalBundles = iguanaGetInfo[20].split(":");
-            var currentHeight = iguanaGetInfo[9].replace("h.", "");
-            var peers = iguanaGetInfo[16].split("/");
-
-            console.log("Connections: " + peers[0].replace("peers.", ""));
-            console.log("Blocks: " + currentHeight);
-            console.log("Bundles: " + iguanaGetInfo[14].replace("E.", "") + "/" + totalBundles[0] + " (" + (iguanaGetInfo[14].replace("E.", "") * 100 / totalBundles[0]).toFixed(2) + "% synced)");
-            console.log("RT is not ready yet!");
-
             isRT = false;
+            console.log("RT is not ready yet!");
           } else {
             isRT = true;
           }
 
+          console.log("Connections: " + peers[0].replace("peers.", ""));
+          console.log("Blocks: " + currentHeight);
+          console.log("Bundles: " + iguanaGetInfo[14].replace("E.", "") + "/" + totalBundles[0] + " (" + (iguanaGetInfo[14].replace("E.", "") * 100 / totalBundles[0]).toFixed(2) + "% synced)");
+
           if (isDev && showSyncDebug)
             if ($("#debug-sync-info").html().indexOf("coin: " + index) < 0)
               $("#debug-sync-info").append("coin: " + index + ", con " + peers[0].replace("peers.", "") + ", bundles: " + iguanaGetInfo[14].replace("E.", "") + "/" + totalBundles[0] + " (" + (iguanaGetInfo[14].replace("E.", "") * 100 / totalBundles[0]).toFixed(2) + "% synced), RT: " + (isRT ? "yes" : "no") + "<br/>");
-
 
           // temp code
           if (isRT)
