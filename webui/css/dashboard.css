@@ -270,7 +270,7 @@
     width: 100px;
   }
   .transactions-list-repeater .item .amount {
-    width: 126px;
+    width: 150px;
     text-align: right;
   }
   .transactions-list-repeater .item .hash {

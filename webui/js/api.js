@@ -20,9 +20,10 @@ var activeCoin,
     portsTested = false,
     isIguana = false,
     isRT = false,
+    coinsInfo = [], // cointains coin related info
     proxy = "http://localhost:1337/"; // https://github.com/gr2m/CORS-Proxy
 
-apiProto.prototype.getConf = function(discardCoinSpecificPort) {
+apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
   var conf = {
       "server": {
         "protocol": "http://",
@@ -69,7 +70,8 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort) {
         },
         "sys": {
           "services": 129,
-          "portp2p": 8368,
+          "portp2p": 8370,
+          "coindPort": 8368,
           "user": "user", // add your rpc pair here
           "pass": "pass",
           "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary" // universal resource for many coins
@@ -78,10 +80,20 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort) {
   };
 
   // coin port switch hook
-  if (activeCoin && !discardCoinSpecificPort)
+  if (coin && conf.coins[coin].coindPort && !isIguana) {
+    conf.server.port = conf.coins[coin].coindPort;
+    return conf;
+  }
+
+  if (activeCoin && !discardCoinSpecificPort) {
     conf.server.port = conf.coins[activeCoin].portp2p;
-  else
+    if (!isIguana)
+      if (conf.coins[activeCoin].coindPort) conf.server.port = conf.coins[activeCoin].coindPort;
+  } else {
     conf.server.port = conf.server.iguanaPort;
+  }
+
+  if (coin) conf.server.port = conf.coins[coin].portp2p;
 
   return conf;
 }
@@ -95,29 +107,33 @@ apiProto.prototype.errorHandler = function(response) {
     console.log("server is busy");
     //alert("Server is not responding. Please try to reload a page in a few minutes.");
   }
+  if (response.error === "coin is busy processing") {
+    console.log("server is busy");
+    // show something
+  }
 }
 
 apiProto.prototype.getServerUrl = function(discardCoinSpecificPort) {
-  return apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(discardCoinSpecificPort).server.port + "/api/";
+  //return apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(discardCoinSpecificPort).server.port + "/api/";
 }
 
-apiProto.prototype.getBasicAuthHeaderObj = function(conf) {
+apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
   if (conf)
     return isIguana ? "" : { "Authorization": "Basic " + btoa(conf.user + ":" + conf.pass) };
   else
-    if (activeCoin)
-      return isIguana ? "" : { "Authorization": "Basic " + btoa(apiProto.prototype.getConf().coins[activeCoin].user + ":" + apiProto.prototype.getConf().coins[activeCoin].pass) };
+    if (activeCoin || coin)
+      return isIguana ? "" : { "Authorization": "Basic " + btoa(apiProto.prototype.getConf().coins[coin ? coin : activeCoin].user + ":" + apiProto.prototype.getConf().coins[coin ? coin : activeCoin].pass) };
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
   return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"timeout\": \"30000\", \"params\": [" + (!params ? "" : params) + "] }";
 }
 
-apiProto.prototype.getFullApiRoute = function(method, conf) {
+apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
   if (conf)
-    return isIguana ? apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + conf.portp2p + "/api/bitcoinrpc/" + method : proxy + apiProto.prototype.getConf().server.ip + ":" + conf.portp2p;
+    return isIguana ? apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + conf.portp2p + "/api/bitcoinrpc/" + method : proxy + apiProto.prototype.getConf().server.ip + ":" + (conf.coindPort ? conf.coindPort : conf.portp2p);
   else
-    return isIguana ? apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf().server.port + "/api/bitcoinrpc/" + method : proxy + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf().server.port;
+    return isIguana ? apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(false, coin).server.port + "/api/bitcoinrpc/" + method : proxy + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(false, coin).server.port;
 }
 
 // test must be hooked to initial gui start or addcoin method
@@ -133,14 +149,18 @@ apiProto.prototype.testCoinPorts = function() {
     var postData = apiProto.prototype.getBitcoinRPCPayloadObj("getinfo");
     var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(conf);
 
+    if (!coinsInfo[index]) coinsInfo[index] = [];
+    coinsInfo[index].connection = false;
+
     $.ajax({
       url: fullUrl,
       cache: false,
-      async: true,
+      async: false,
       dataType: "json",
       type: "POST",
       data: postData,
       headers: postAuthHeaders,
+      //timeout: '3000',
       success: function(response) {
         apiProto.prototype.errorHandler(response);
         console.log(response);
@@ -148,7 +168,8 @@ apiProto.prototype.testCoinPorts = function() {
         if (response.result.walletversion || response.result === "success") {
           console.log('portp2p con test passed');
           console.log(index + ' daemon is detected');
-          activeCoin = index;
+          //activeCoin = index;
+          coinsInfo[index].connection = true;
 
           // non-iguana
           if (!isIguana) {
@@ -158,8 +179,10 @@ apiProto.prototype.testCoinPorts = function() {
 
             if (response.result.blocks === networkCurrentHeight) {
               isRT = true;
+              coinsInfo[index].RT = true;
             } else {
               isRT = false;
+              coinsInfo[index].RT = false;
               console.log("RT is not ready yet!");
             }
 
@@ -174,18 +197,22 @@ apiProto.prototype.testCoinPorts = function() {
               $("#temp-out-of-sync").removeClass("hidden");
           }
         }
-        if (response.status)
+        if (response.status && isIguana) {
           var iguanaGetInfo = response.status.split(" ");
           var totalBundles = iguanaGetInfo[20].split(":");
           var currentHeight = iguanaGetInfo[9].replace("h.", "");
           var peers = iguanaGetInfo[16].split("/");
 
+          coinsInfo[index].connection = true;
+
           // iguana
           if (response.status.indexOf(".RT0 ") > -1) {
             isRT = false;
+            coinsInfo[index].RT = false;
             console.log("RT is not ready yet!");
           } else {
             isRT = true;
+            coinsInfo[index].RT = true;
           }
 
           console.log("Connections: " + peers[0].replace("peers.", ""));
@@ -201,6 +228,7 @@ apiProto.prototype.testCoinPorts = function() {
             $("#temp-out-of-sync").addClass("hidden");
           else
             $("#temp-out-of-sync").removeClass("hidden");
+        }
       },
       error: function(response) {
         apiProto.prototype.errorHandler(response);
@@ -235,6 +263,7 @@ apiProto.prototype.testConnection = function() {
     dataType: "text",
     async: false,
     type: 'GET',
+    timeout: '1000',
     success: function (response) {
       apiProto.prototype.errorHandler(response);
       // iguana env
@@ -253,15 +282,16 @@ apiProto.prototype.testConnection = function() {
   portsTested = true;
 }
 
-apiProto.prototype.walletLogin = function(passphrase, timeout) {
+apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute("walletpassphrase");
+  var fullUrl = apiProto.prototype.getFullApiRoute("walletpassphrase", null, coin);
+  var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf().server.iguanaPort + "/api/bitcoinrpc/walletpassphrase";
   var postData = apiProto.prototype.getBitcoinRPCPayloadObj("walletpassphrase", "\"" + passphrase + "\", " + timeout);
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
-    url: fullUrl,
+    url: isIguana ? defaultIguanaServerUrl : fullUrl,
     cache: false,
     async: false,
     dataType: "json",
@@ -289,9 +319,9 @@ apiProto.prototype.walletLogin = function(passphrase, timeout) {
 apiProto.prototype.walletCreate = function(passphrase) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute("encryptwallet");
+  var fullUrl = apiProto.prototype.getFullApiRoute("encryptwallet", null, coin);
   var postData = apiProto.prototype.getBitcoinRPCPayloadObj("encryptwallet", "\"" + passphrase + "\"");
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
     url: fullUrl,
@@ -305,6 +335,7 @@ apiProto.prototype.walletCreate = function(passphrase) {
   .done(function(_response) {
     console.log(_response);
     apiProto.prototype.errorHandler(_response);
+
     if (_response.result) {
       // non-iguana
       if (_response.result) {
@@ -333,12 +364,16 @@ apiProto.prototype.walletCreate = function(passphrase) {
   return result;
 }
 
-apiProto.prototype.listTransactions = function(account) {
+apiProto.prototype.listTransactions = function(account, coin) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute("listtransactions");
+  if (coinAccountsDev)
+    if (coinAccountsDev.coind[coin])
+      account = coinAccountsDev.coind[coin];
+
+  var fullUrl = apiProto.prototype.getFullApiRoute("listtransactions", null, coin);
   var postData = apiProto.prototype.getBitcoinRPCPayloadObj("listtransactions", "\"" + account + "\", 19"); // last 20 tx
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
     url: fullUrl,
@@ -428,12 +463,16 @@ apiProto.prototype.getTransaction = function(txid) {
   return result;
 }
 
-apiProto.prototype.getBalance = function(account) {
+apiProto.prototype.getBalance = function(account, coin) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute("getbalance");
-  var postData = apiProto.prototype.getBitcoinRPCPayloadObj("getbalance", "\"" + account + "\"");
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  if (coinAccountsDev)
+    if (coinAccountsDev.coind[coin])
+      account = coinAccountsDev.coind[coin];
+
+  var fullUrl = apiProto.prototype.getFullApiRoute("getbalance", null, coin);
+  var postData = apiProto.prototype.getBitcoinRPCPayloadObj("getbalance", coin === "btcd" ? null : "\"" + account + "\""); // avoid using account names in bitcoindarkd
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
     url: fullUrl,
@@ -442,12 +481,19 @@ apiProto.prototype.getBalance = function(account) {
     dataType: "json",
     type: "POST",
     data: postData,
-    headers: postAuthHeaders
+    headers: postAuthHeaders,
+    /*success: function(response) {
+      console.log(response);
+    },*/
+    error: function(response) {
+      if (response.responseText)
+        if (response.responseText.indexOf("Accounting API is deprecated") > -1 || response.responseText.indexOf("If you want to use accounting API")) console.log("add enableaccounts=1 and staking=0 in btcd conf file");
+    }
   })
   .done(function(_response) {
     apiProto.prototype.errorHandler(_response);
 
-    if (_response.result) {
+    if (_response.result > -1) {
       // non-iguana
       result = _response.result;
     } else {
@@ -473,12 +519,12 @@ apiProto.prototype.getBalance = function(account) {
   return result;
 }
 
-apiProto.prototype.walletLock = function() {
+apiProto.prototype.walletLock = function(coin) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute("walletlock");
+  var fullUrl = apiProto.prototype.getFullApiRoute("walletlock", null, coin);
   var postData = apiProto.prototype.getBitcoinRPCPayloadObj("walletlock");
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
     url: fullUrl,
@@ -627,7 +673,7 @@ apiProto.prototype.getExternalRate = function(quote) {
 
       if (response && response[quoteComponents[1]]) {
         result = response[quoteComponents[1]];
-        console.log("rates source https://min-api.cryptocompare.com");
+        console.log("rates source https://min-api.cryptocompare.com/data/price?fsym=" + quoteComponents[0] + "&tsyms=" + quoteComponents[1]);
       } else {
         result = false;
       }

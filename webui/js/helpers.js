@@ -76,27 +76,34 @@ helperProto.prototype.openPage = function(url) {
 
 helperProto.prototype.checkSession = function(returnVal) {
   var localStorage = new localStorageProto();
-  if (!localStorage.getVal("iguana-auth")) helperProto.prototype.logout();
-  var currentEpochTime = new Date(Date.now()) / 1000; // calc difference in seconds between current time and session timestamp
-  var secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal("iguana-auth").timestamp / 1000);
-
-  if (secondsElapsedSinceLastAuth > defaultSessionLifetime) {
-    if (!returnVal) {
-      if (!$(".login-form").width()) helperProto.prototype.openPage("login"); // redirect to login when session is expired
-    } else {
-      return false;
-    }
+  if (!localStorage.getVal("iguana-auth")) {
+    helperProto.prototype.logout();
   } else {
-    return true;
+    var currentEpochTime = new Date(Date.now()) / 1000; // calc difference in seconds between current time and session timestamp
+    var secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal("iguana-auth").timestamp / 1000);
+
+    if (secondsElapsedSinceLastAuth > defaultSessionLifetime) {
+      if (!returnVal) {
+        if (!$(".login-form").width()) helperProto.prototype.openPage("login"); // redirect to login when session is expired
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 }
 
-helperProto.prototype.ratesUpdateElapsedTime = function() {
+helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
   var localStorage = new localStorageProto();
-  var currentEpochTime = new Date(Date.now()) / 1000;
-  var secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal("iguana-rates").updatedAt / 1000);
+  if (localStorage.getVal("iguana-rates-" + coin)) {
+    var currentEpochTime = new Date(Date.now()) / 1000;
+    var secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal("iguana-rates-" + coin).updatedAt / 1000);
 
-  return secondsElapsed;
+    return secondsElapsed;
+  } else {
+    return false;
+  }
 }
 
 helperProto.prototype.logout = function(noRedirect) {
@@ -122,13 +129,13 @@ helperProto.prototype.getCurrency = function() {
 
 helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
-    $("body").append("<div id=\"debug-sync-info\" style=\"position:fixed;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>");
+    $("body").append("<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>");
     apiProto.prototype.testCoinPorts();
 
     setInterval(function() {
       console.clear();
       apiProto.prototype.testCoinPorts();
-    }, 30000); // every 30 sec
+    }, isIguana ? 30000 : 60000); // every 30 sec
   });
 }
 

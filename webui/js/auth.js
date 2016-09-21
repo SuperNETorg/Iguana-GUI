@@ -11,6 +11,11 @@ $(document).ready(function() {
 
   // ugly login form check
   if ($(".login-form")) {
+    $("#passphrase").val(isDev ? "using walletpassphrase in dev.js" : "");
+
+    if (isDev)
+      $(".btn-signin").removeClass("disabled");
+
     if (helper.checkSession(true)) {
       helper.openPage("dashboard");
     } else {
@@ -32,6 +37,10 @@ $(document).ready(function() {
   }
 });
 
+function authWallet() {
+  api.walletLogin(passphraseInput, defaultSessionLifetime);
+}
+
 function addAuthorizationButtonAction(buttonClassName) {
   $(".btn-" + buttonClassName).click(function() {
     // validate passphrase
@@ -44,27 +53,50 @@ function addAuthorizationButtonAction(buttonClassName) {
     var helper = new helperProto();
     var localStorage = new localStorageProto();
 
-    if (totalSubstr && totalSubstrAlpha && totalSpaces)
-      // wallet passphrase check is temp disabled to work in coind env
-      if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
-        if (buttonClassName === "signin" ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
-          toggleLoginErrorStyling(false);
+    if (isIguana) {
+      if (totalSubstr && totalSubstrAlpha && totalSpaces)
+        // wallet passphrase check is temp disabled to work in coind env
+        if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+          if (buttonClassName === "signin" ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
+            toggleLoginErrorStyling(false);
 
-          if (buttonClassName === "add-account") {
-            helper.openPage("login");
+            if (buttonClassName === "add-account") {
+              helper.openPage("login");
+            } else {
+              localStorage.setVal("iguana-auth", { "timestamp": Date.now() });
+              helper.openPage("dashboard");
+            }
           } else {
-            localStorage.setVal("iguana-auth", { "timestamp": Date.now() });
-            helper.openPage("dashboard");
+            toggleLoginErrorStyling(true);
           }
         } else {
           toggleLoginErrorStyling(true);
         }
-      } else {
+      else
         toggleLoginErrorStyling(true);
-      }
-    else
-      toggleLoginErrorStyling(true);
+    } else {
+      authAllAvailableCoind();
+    }
   });
+}
+
+function authAllAvailableCoind() {
+  var coindAuthResults = [];
+  var api = new apiProto();
+  var helper = new helperProto();
+  var localStorage = new localStorageProto();
+
+  var index = 0;
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) {
+      var coindWalletLogin = api.walletLogin(coinPW.coind[key], defaultSessionLifetime, key);
+      coindAuthResults.push(coindWalletLogin);
+    }
+  };
+
+  console.log(coindAuthResults);
+  localStorage.setVal("iguana-auth", { "timestamp": Date.now() });
+  helper.openPage("dashboard");
 }
 
 function watchPassphraseKeyUpEvent(buttonClassName) {

@@ -11,11 +11,12 @@
 var defaultCurrency = "",
     defaultCoin = "",
     coinToCurrencyRate = 0,
-    defaultAccount = "default", // note: change to a specific account name if needed
     coinsSelectedByUser = [],
+    defaultAccount,
     ratesUpdateTimeout = 15, // sec
     decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
     decimalPlacesCurrency = 2, //   in case you have too small coin balance value e.g. 0.0001 BTC
+    decimalPlacesTxUnit = 5,
     dashboardUpdateTimout = 15; // sec
 
 var availableCoinsToAdd = [ // temp, only for demo purposes
@@ -24,16 +25,17 @@ var availableCoinsToAdd = [ // temp, only for demo purposes
   { id: "ltc", name: "Litecoin", color: "yellow" },
   { id: "nxt", name: "NXT", color: "light-blue" },
   { id: "nmc", name: "Namecoin", color: "orange" },
+  { id: "sys", name: "SysCoin", color: "orange" },
   { id: "unity", name: "SuperNET", color: "breeze" }
 ];
 
 $(document).ready(function() {
   var session = new helperProto();
   var helper = new helperProto();
+  defaultAccount = isIguana ? "default" : ""; // note: change to a specific account name if needed; default coind account name is empty string
 
-  defaultCurrency = helper.getCurrency().name || "USD";
+  defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : "USD";
 
-  // current implementation works only with one coin at a time
   // coin is auto detected based on available portp2p
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
@@ -41,6 +43,7 @@ $(document).ready(function() {
     $(".dashboard").removeClass("hidden");
     updateRates();
     $(".account-coins-repeater").html(constructAccountCoinRepeater());
+    bindClickInAccountCoinRepeater();
     $(".transactions-list-repeater").html(constructTransactionUnitRepeater());
     updateTotalBalance();
     updateTransactionUnitBalance();
@@ -90,8 +93,8 @@ function updateRates(coin, currency, returnValue) {
       localStorage = new localStorageProto(),
       helper = new helperProto();
 
-  console.log('sec. elapsed since last rates update ' + Math.floor(helper.ratesUpdateElapsedTime()));
-  if (helper.ratesUpdateElapsedTime() >= ratesUpdateTimeout || !localStorage.getVal("iguana-rates")) {
+  //console.log('sec. elapsed since last rates update ' + Math.floor(helper.ratesUpdateElapsedTime()));
+  if (helper.ratesUpdateElapsedTime(coin) >= ratesUpdateTimeout || !localStorage.getVal("iguana-rates-" + coin)) {
     if (!coin) coin = defaultCoin;
     if (!currency) currency = defaultCurrency;
 
@@ -104,17 +107,18 @@ function updateRates(coin, currency, returnValue) {
       coinToCurrencyRate = apiExternalRate;
 
       if (returnValue) {
-        localStorage.setVal("iguana-rates", { "shortName" : defaultCurrency, "value": apiExternalRate, "updatedAt": Date.now() });
+        localStorage.setVal("iguana-rates-" + coin, { "shortName" : defaultCurrency, "value": apiExternalRate, "updatedAt": Date.now() });
         return apiExternalRate;
       }
     } else {
-      localStorage.setVal("iguana-rates", { "shortName" : defaultCurrency, "value": coinToCurrencyRate, "updatedAt": Date.now() });
+      localStorage.setVal("iguana-rates-" + coin, { "shortName" : defaultCurrency, "value": coinToCurrencyRate, "updatedAt": Date.now() });
       return coinToCurrencyRate;
     }
   } else {
-    if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal("iguana-rates").value;
-    return localStorage.getVal("iguana-rates").value;
+    if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal("iguana-rates-" + coin).value;
+    return localStorage.getVal("iguana-rates-" + coin).value;
   }
+  //console.log(localStorage.getVal("iguana-rates-" + coin));
 }
 
 // construct coins to add array
@@ -152,7 +156,16 @@ function constructAccountCoinRepeater() {
     coinsSelectedByUser[0] = defaultCoin.toLowerCase();
   }
 
+  var index = 0;
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) {
+      coinsSelectedByUser[index] = key;
+      index++;
+    }
+  };
+
   for (var i=0; i < coinsSelectedByUser.length; i++) {
+    //console.log(coinsSelectedByUser[i]);
     if (accountCoinRepeaterHTML.indexOf('data-coin-id="' + coinsSelectedByUser[i] + '"') === -1) {
       var coinLocalRate = coinToCurrencyRate;
 
@@ -160,18 +173,46 @@ function constructAccountCoinRepeater() {
       // note(!): if coin is not added yet it will take a while iguana to enable RT relay
       // addCoin(coinsSelectedByUser[i]);
       var api = new apiProto();
-      var coinBalance = api.getBalance(defaultAccount);
+      var coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]);
+      //console.log(coinBalance);
 
       // fix for small balance values
-      if (coinBalance.toString().indexOf(".") > -1 && coinBalance < 1) {
-        var coinBalanceSplit = coinBalance.toString().split(".");
-        decimalPlacesCoin = coinBalanceSplit[1].length;
-        decimalPlacesCurrency = decimalPlacesCoin;
+      // temp disabled
+      if (coinBalance < 1 && coinBalance > 0) {
+        var coinBalanceFloat = coinBalance.toString().split(".");
+
+        for (var a=0; a < coinBalanceFloat[1].length; a++) {
+          if (Number(coinBalanceFloat[1][a]) !== 0) {
+            decimalPlacesCoin = a + 1;
+            decimalPlacesCurrency = a;
+            break;
+          }
+        }
+      } else {
+        decimalPlacesCoin = 1;
+        decimalPlacesCurrency = 2;
       }
 
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) {
         coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true);
       }
+
+      var currencyCalculatedValue = coinBalance * coinLocalRate;
+      if (currencyCalculatedValue < 1 && currencyCalculatedValue > 0) {
+        var currencyCalculatedValueFloat = currencyCalculatedValue.toString().split(".");
+
+        for (var a=0; a < currencyCalculatedValueFloat[1].length; a++) {
+          if (Number(currencyCalculatedValueFloat[1][a]) !== 0) {
+            decimalPlacesCurrency = a + 1;
+            break;
+          }
+        }
+      } else {
+        decimalPlacesCurrency = 2;
+      }
+
+      console.log("rate: " + coinLocalRate + ", coinbal: " +  coinBalance + ", calc: " + currencyCalculatedValue + ", dplaces: " + decimalPlacesCurrency);
+
       var coinData = getCoinData(coinsSelectedByUser[i]);
 
       if (i === 0 && !isActiveCoinSet) activeCoin = coinData.id;
@@ -182,7 +223,7 @@ function constructAccountCoinRepeater() {
                                               replace("{{ coin_id }}", coinData.id.toUpperCase()).
                                               replace("{{ currency_name }}", defaultCurrency).
                                               replace("{{ coin_value }}", coinBalance ? coinBalance.toFixed(decimalPlacesCoin) : 0).
-                                              replace("{{ currency_value }}", (coinBalance * coinLocalRate).toFixed(decimalPlacesCurrency)).
+                                              replace("{{ currency_value }}", currencyCalculatedValue.toFixed(decimalPlacesCurrency)).
                                               replace("{{ active }}", i === 0 && !isActiveCoinSet ? " active" : "");
     }
   }
@@ -214,20 +255,21 @@ function constructTransactionUnitRepeater() {
   var result = "",
       helper = new helperProto(),
       api = new apiProto(),
-      coinName,
-      selectedCoin = $(".account-coins-repeater .item.active");
+      coinName = activeCoin || $(".account-coins-repeater .item.active");
+      //selectedCoin = activeCoin || $(".account-coins-repeater .item.active");
 
   // reload page until server responds with normal timeout
-  if (selectedCoin.length === 0) {
-    console.log("something is wrong, reload page in 4 sec");
-    setTimeout(function() {
+  //if (selectedCoin.length === 0 || !selectedCoin.length) {
+    //console.log("something is wrong, reload page in 4 sec");
+    /*setTimeout(function() {
       location.reload();
-    }, 4000);
-  } else {
+    }, 4000);*/
+  /*} else {
     coinName = selectedCoin.attr("data-coin-id").toUpperCase();
-  }
+  }*/
 
-  var transactionsList = api.listTransactions(defaultAccount);
+  //alert(coinName);
+  var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
   // sort tx in desc order by timestamp
   // iguana transactionslist method is missing timestamp field in response, straight forward sorting cannot be done
   if (transactionsList[0])
@@ -280,18 +322,18 @@ function constructTransactionUnitRepeater() {
         result += transactionUnitRepeater.replace("{{ status }}", txStatus).
                                           replace("{{ status_class }}", txCategory).
                                           replace("{{ in_out }}", txIncomeOrExpenseFlag).
-                                          replace("{{ amount }}", txAmount).
+                                          replace("{{ amount }}", txAmount.toFixed(decimalPlacesTxUnit)).
                                           replace("{{ timestamp_format }}", "timestamp-multi").
-                                          replace("{{ coin }}", coinName).
+                                          replace("{{ coin }}", coinName.toUpperCase()).
                                           replace("{{ hash }}", txAddress !== undefined ? txAddress : "N/A").
                                           replace("{{ timestamp_date }}", helper.convertUnixTime(transactionDetails.timestamp || transactionDetails.time, "DDMMMYYYY")).
                                           replace("{{ timestamp_time }}", helper.convertUnixTime(transactionDetails.timestamp || transactionDetails.time, "HHMM"));
       }
     }
   }
-  if (coinName === undefined && transactionsList.length) {
+  /*if (coinName === undefined && transactionsList.length) {
     result = "<strong>Connection failure. The page will reload automatically in 4 seconds.</strong>";
-  }
+  }*/
   return result;
 }
 
@@ -316,10 +358,12 @@ function updateTransactionUnitBalance(isAuto) {
   var selectedCoinValue = Number($(".account-coins-repeater .item.active .coin-value .val").html()) ? Number($(".account-coins-repeater .item.active .coin-value .val").html()) : 0;
   var curencyValue = (selectedCoinValue * currentCoinRate).toFixed(decimalPlacesCurrency);
 
-  $(".transactions-unit .active-coin-balance .value").html(selectedCoinValue.toFixed(decimalPlacesCoin));
-  $(".transactions-unit .active-coin-balance .coin-name").html(selectedCoin.attr("data-coin-id").toUpperCase());
-  $(".transactions-unit .active-coin-balance-currency .value").html(curencyValue !== "NaN" ? curencyValue : (0.00).toFixed(decimalPlacesCurrency));
-  $(".transactions-unit .active-coin-balance-currency .currency").html(defaultCurrency.toUpperCase());
+  if (selectedCoin.length !== 0) {
+    $(".transactions-unit .active-coin-balance .value").html(selectedCoinValue.toFixed(decimalPlacesCoin));
+    $(".transactions-unit .active-coin-balance .coin-name").html(selectedCoin.attr("data-coin-id").toUpperCase());
+    $(".transactions-unit .active-coin-balance-currency .value").html(curencyValue !== "NaN" ? curencyValue : (0.00).toFixed(decimalPlacesCurrency));
+    $(".transactions-unit .active-coin-balance-currency .currency").html(defaultCurrency.toUpperCase());
+  }
 }
 
 function updateAccountCoinRepeater() {
@@ -339,7 +383,7 @@ function updateDashboardView(timeout) {
   var dashboardUpdateTimer = setInterval(function() {
     if (!isRT) apiProto.prototype.testCoinPorts();
 
-    console.clear();
+    //console.clear();
     helper.checkSession();
     updateRates();
     updateTotalBalance();
@@ -367,12 +411,10 @@ function bindClickInAccountCoinRepeater() {
         $(this).removeClass("active");
       } else {
         $(this).addClass("active");
-        /* don't remove
-        console.log($(this).attr("data-coin-id"));
         activeCoin = $(this).attr("data-coin-id");
-        */
         updateTransactionUnitBalance();
         constructTransactionUnitRepeater();
+        $(".transactions-list-repeater").html(constructTransactionUnitRepeater());
       }
     });
   });
