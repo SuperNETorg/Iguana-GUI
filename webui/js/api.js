@@ -108,8 +108,10 @@ apiProto.prototype.errorHandler = function(response) {
     //alert("Server is not responding. Please try to reload a page in a few minutes.");
   }
   if (response.error === "coin is busy processing") {
+    if ($("#debug-sync-info"))
+      $("#debug-sync-info").html("coin is busy processing");
+
     console.log("server is busy");
-    // show something
   }
 }
 
@@ -126,7 +128,7 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
-  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", \"timeout\": \"30000\", \"params\": [" + (!params ? "" : params) + "] }";
+  return "{ \"agent\": \"bitcoinrpc\", \"method\": \"" + method + "\", " + (!isIguana ? "\"timeout\": \"30000\"" : "\"immediate\": \"100\"") + ", \"params\": [" + (!params ? "" : params) + "] }";
 }
 
 apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
@@ -140,8 +142,7 @@ apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
 // test 1 port for a single coin
 apiProto.prototype.testCoinPorts = function() {
   var result = false,
-      _index = 0; /*,
-      repeat = 3; // check default port, port+1, port-1*/
+      _index = 0;
   $("#debug-sync-info").html("");
 
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
@@ -239,11 +240,11 @@ apiProto.prototype.testCoinPorts = function() {
 
         if (response.responseText) console.log("coind response: " + response.responseText);
 
-        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin is detected, at least one daemon must be running!");
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
         _index++;
       }
     }).done(function() {
-      if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && !activeCoin) console.log("no coin is detected, at least one daemon must be running!");
+      if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
       _index++;
     });
   });
@@ -367,7 +368,7 @@ apiProto.prototype.walletCreate = function(passphrase) {
 apiProto.prototype.listTransactions = function(account, coin) {
   var result = false;
 
-  if (coinAccountsDev)
+  if (coinAccountsDev && !isIguana)
     if (coinAccountsDev.coind[coin])
       account = coinAccountsDev.coind[coin];
 
@@ -466,12 +467,12 @@ apiProto.prototype.getTransaction = function(txid) {
 apiProto.prototype.getBalance = function(account, coin) {
   var result = false;
 
-  if (coinAccountsDev)
+  if (coinAccountsDev && !isIguana)
     if (coinAccountsDev.coind[coin])
       account = coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute("getbalance", null, coin);
-  var postData = apiProto.prototype.getBitcoinRPCPayloadObj("getbalance", coin === "btcd" ? null : "\"" + account + "\""); // avoid using account names in bitcoindarkd
+  var postData = apiProto.prototype.getBitcoinRPCPayloadObj("getbalance", coin === "btcd" && !isIguana ? null : "\"" + account + "\""); // avoid using account names in bitcoindarkd
   var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
