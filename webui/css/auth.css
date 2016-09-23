@@ -7,6 +7,14 @@
 	html {
 		display: table;
 	}
+	.coin input[type="checkbox"] + label {
+		display: inline-block;
+	}
+	.coin {
+		padding: 20px;
+		width: 130px;
+		display: inline-block;
+	}
 	.container-fluid {
 		display: table-cell;
 		vertical-align: middle;

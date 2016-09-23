@@ -13,14 +13,15 @@ $(document).ready(function() {
   if ($(".login-form")) {
     $("#passphrase").val(isDev ? "using walletpassphrase in dev.js" : "");
 
-    if (isDev)
-      $(".btn-signin").removeClass("disabled");
+    if (isDev) $(".btn-signin").removeClass("disabled");
 
     if (helper.checkSession(true)) {
       helper.openPage("dashboard");
     } else {
       $(".login-form").removeClass("hidden");
     }
+
+    constructIguanaCoinsRepeater();
 
     addAuthorizationButtonAction("signin");
     watchPassphraseKeyUpEvent("signin");
@@ -54,30 +55,68 @@ function addAuthorizationButtonAction(buttonClassName) {
     var localStorage = new localStorageProto();
 
     if (isIguana) {
-      if (totalSubstr && totalSubstrAlpha && totalSpaces)
-        // wallet passphrase check is temp disabled to work in coind env
-        if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
-          if (buttonClassName === "signin" ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
-            toggleLoginErrorStyling(false);
+      if (checkIguanaCoinsSelection()) {
 
-            if (buttonClassName === "add-account") {
-              helper.openPage("login");
+      } else {
+        if (totalSubstr && totalSubstrAlpha && totalSpaces)
+          // wallet passphrase check is temp disabled to work in coind env
+          if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+            if (buttonClassName === "signin" ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
+              toggleLoginErrorStyling(false);
+
+              if (buttonClassName === "add-account") {
+                helper.openPage("login");
+              } else {
+                localStorage.setVal("iguana-auth", { "timestamp": Date.now() });
+                helper.openPage("dashboard");
+              }
             } else {
-              localStorage.setVal("iguana-auth", { "timestamp": Date.now() });
-              helper.openPage("dashboard");
+              toggleLoginErrorStyling(true);
             }
           } else {
             toggleLoginErrorStyling(true);
           }
-        } else {
+        else
           toggleLoginErrorStyling(true);
-        }
-      else
-        toggleLoginErrorStyling(true);
+      }
     } else {
       authAllAvailableCoind();
     }
   });
+}
+
+var iguanaCoinsRepeaterTemplate = "<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">" +
+                                    "<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ checked }} />" +
+                                    "<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox-label cursor-pointer\">" +
+                                      "<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>" +
+                                    "</label>" +
+                                  "</div>";
+
+function constructIguanaCoinsRepeater() {
+  var result = "<hr/>";
+
+  for (var key in coinsInfo) {
+    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true))
+      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
+                                            replace("{{ id }}", key.toUpperCase()).
+                                            replace("{{ checked }}", isIguana ? "" : "checked disabled").
+                                            replace("{{ name }}", key.toUpperCase());
+  };
+
+  $(".iguana-coins-repeater").html(result);
+}
+
+function checkIguanaCoinsSelection() {
+  for (var key in apiProto.prototype.getConf().coins) {
+    console.log(key);
+    /*if (coinsInfo[key].connection === true) {
+      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
+                                            replace("{{ id }}", key.toUpperCase()).
+                                            replace("{{ name }}", key.toUpperCase());
+    }*/
+  };
+
+  return false;
 }
 
 function authAllAvailableCoind() {

@@ -75,6 +75,41 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
           "user": "user", // add your rpc pair here
           "pass": "pass",
           "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary" // universal resource for many coins
+        },
+        "uno": {
+          "services": 129,
+          "portp2p": 65535,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary" // universal resource for many coins
+        },
+        "gmc": {
+          "services": 129,
+          "portp2p": 40001,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": proxy + "159.203.226.245:3000/api/status?q=getInfo"
+        },
+        "mzc": {
+          "services": 129,
+          "portp2p": 12832,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": proxy + "explorer.cryptoadhd.com:2750/chain/Mazacoin/q/getblockcount"
+        },
+        "frk": {
+          "services": 129,
+          "portp2p": 7913,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": "disabled" //"https://crossorigin.me/https://prohashing.com/explorerJson/getInfo?coin_name=Franko" // double req, too slow
+        },
+        "doge": {
+          "services": 129,
+          "portp2p": 22555,
+          "user": "user", // add your rpc pair here
+          "pass": "pass",
+          "currentBlockHeightExtSource": proxy + "api.blockcypher.com/v1/doge/main"
         }
       }
   };
@@ -116,7 +151,7 @@ apiProto.prototype.errorHandler = function(response) {
 }
 
 apiProto.prototype.getServerUrl = function(discardCoinSpecificPort) {
-  //return apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(discardCoinSpecificPort).server.port + "/api/";
+  return apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ":" + apiProto.prototype.getConf(discardCoinSpecificPort).server.port + "/api/";
 }
 
 apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
@@ -494,9 +529,9 @@ apiProto.prototype.getBalance = function(account, coin) {
   .done(function(_response) {
     apiProto.prototype.errorHandler(_response);
 
-    if (_response.result > -1) {
+    if (_response.result > -1 || Number(_response) === 0) {
       // non-iguana
-      result = _response.result;
+      result = _response.result || _response;
     } else {
       console.log(_response);
 
@@ -599,28 +634,32 @@ apiProto.prototype.walletLock = function(coin) {
 apiProto.prototype.getCoinCurrentHeight = function(coin) {
   var result = false;
 
-  $.ajax({
-    url: apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource,
-    cache: false,
-    dataType: "text",
-    async: false
-  })
-  .done(function(_response) {
-    var response = $.parseJSON(_response);
-    console.log('height');
-    console.log(response);
+  if (apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource !== "disabled")
+    $.ajax({
+      url: apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource,
+      cache: false,
+      dataType: "text",
+      async: false
+    })
+    .done(function(_response) {
+      var response = $.parseJSON(_response);
+      console.log('height');
+      console.log(response);
 
-    if (response.blockcount || response.info || response.height || response.data || response[coin]) {
-      if (response.blockcount) result = response.blockcount;
-      if (response.info) result = response.info.blocks;
-      if (response.height) result = response.height;
-      if (response.data) result = response.data.last_block.nb;
-      if (response[coin]) result = response[coin].height;
-    } else {
-      console.log("error retrieving current block height from " + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
-      result = false;
-    }
-  });
+      if (response.blockcount || response.info || response.height || response.data || response[coin] || response.blocks) {
+        if (response.blockcount) result = response.blockcount;
+        if (response.info) result = response.info.blocks;
+        if (response.height) result = response.height;
+        if (response.blocks) result = response.blocks;
+        if (response.data) result = response.data.last_block.nb;
+        if (response[coin]) result = response[coin].height;
+      } else {
+        console.log("error retrieving current block height from " + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
+        result = false;
+      }
+    });
+  else
+    result = "NA";
 
   return result;
 }

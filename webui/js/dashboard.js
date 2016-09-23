@@ -19,14 +19,17 @@ var defaultCurrency = "",
     decimalPlacesTxUnit = 5,
     dashboardUpdateTimout = 15; // sec
 
-var availableCoinsToAdd = [ // temp, only for demo purposes
+var availableCoinsToAdd = [
   { id: "btc", name: "Bitcoin", color: "orange" },
   { id: "btcd", name: "Bitcoin D.", color: "breeze" },
-  { id: "ltc", name: "Litecoin", color: "yellow" },
-  { id: "nxt", name: "NXT", color: "light-blue" },
-  { id: "nmc", name: "Namecoin", color: "orange" },
+  { id: "doge", name: "Dogecoin", color: "light-blue" },
+  { id: "frk", name: "Franko", color: "yellow" },
+  { id: "gmc", name: "GameCredits", color: "orange" },
+  { id: "ltc", name: "Litecoin", color: "breeze" },
+  { id: "mzc", name: "Mazacoin", color: "light-blue" },
+  { id: "nmc", name: "Namecoin", color: "yellow" },
   { id: "sys", name: "SysCoin", color: "orange" },
-  { id: "unity", name: "SuperNET", color: "breeze" }
+  { id: "uno", name: "Unobtaium", color: "breeze" }
 ];
 
 $(document).ready(function() {
@@ -74,7 +77,18 @@ $(document).ready(function() {
   $(".btn-next").click(function() {
     helper.toggleModalWindow("add-new-coin-form", 300);
     coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
-    $(".account-coins-repeater").append(constructAccountCoinRepeater());
+    console.log(coinsSelectedByUser);
+
+    // prompt walletpassphrase to add coind
+    for (var key in coinsSelectedByUser) {
+      if (isIguana) {
+        var coindPassphrasePrompt = prompt("Please enter your " + coinsSelectedByUser[key].toUpperCase() + " passphrase", "");
+        if (coindPassphrasePrompt < 1) alert("Try again");
+        console.log(coindPassphrasePrompt);
+      }
+    }
+
+    $(".account-coins-repeater").html(constructAccountCoinRepeater());
     bindClickInAccountCoinRepeater();
     updateTotalBalance();
   });
@@ -174,7 +188,7 @@ function constructAccountCoinRepeater() {
       // addCoin(coinsSelectedByUser[i]);
       var api = new apiProto();
       var coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]);
-      //console.log(coinBalance);
+      console.log("coin balance: " + coinBalance);
 
       // fix for small balance values
       // temp disabled
@@ -274,6 +288,7 @@ function constructTransactionUnitRepeater() {
   // iguana transactionslist method is missing timestamp field in response, straight forward sorting cannot be done
   if (transactionsList[0])
     if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time });
+    if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime });
 
   for (var i=0; i < transactionsList.length; i++) {
     if (transactionsList[i].txid) {
@@ -304,7 +319,7 @@ function constructTransactionUnitRepeater() {
         } else {
           // iguana
           txAddress = transactionsList[i].address || transactionDetails.address;
-          txAmount = transactionDetails.vout[1].value;
+          txAmount = transactionsList[i].amount;
           txStatus = transactionDetails.category || transactionsList[i].category;
           txCategory = transactionDetails.category || transactionsList[i].category;
 
@@ -326,8 +341,8 @@ function constructTransactionUnitRepeater() {
                                           replace("{{ timestamp_format }}", "timestamp-multi").
                                           replace("{{ coin }}", coinName.toUpperCase()).
                                           replace("{{ hash }}", txAddress !== undefined ? txAddress : "N/A").
-                                          replace("{{ timestamp_date }}", helper.convertUnixTime(transactionDetails.timestamp || transactionDetails.time, "DDMMMYYYY")).
-                                          replace("{{ timestamp_time }}", helper.convertUnixTime(transactionDetails.timestamp || transactionDetails.time, "HHMM"));
+                                          replace("{{ timestamp_date }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "DDMMMYYYY")).
+                                          replace("{{ timestamp_time }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "HHMM"));
       }
     }
   }
