@@ -102,7 +102,7 @@ function initDashboard() {
         if (coindPassphrasePrompt < 1) alert("Try again");
         console.log(coindPassphrasePrompt);
       } else {
-        if (api.addCoin(coinsSelectedByUser[key])) {
+        if (api.addCoin(coinsSelectedByUser[key]) && $(".account-coins-repeater").html().indexOf("data-coin-id=\"" + coinsSelectedByUser[key] + "\"") === -1) {
           $("#debug-sync-info").append(coinsSelectedByUser[key] + " coin added<br/>");
           coinsInfo[coinsSelectedByUser[key]].connection = true;
           result = true;
@@ -435,7 +435,7 @@ function updateDashboardView(timeout) {
   var dashboardUpdateTimer = setInterval(function() {
     if (!isRT) apiProto.prototype.testCoinPorts();
 
-    //console.clear();
+    console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
     //initDashboard();
