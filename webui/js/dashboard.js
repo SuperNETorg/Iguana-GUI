@@ -17,6 +17,7 @@ var defaultCurrency = "",
     decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
     decimalPlacesCurrency = 2, //   in case you have too small coin balance value e.g. 0.0001 BTC
     decimalPlacesTxUnit = 5,
+    sidebarSelectedCoin,
     dashboardUpdateTimout = 15; // sec
 
 var availableCoinsToAdd = [
@@ -33,8 +34,14 @@ var availableCoinsToAdd = [
 ];
 
 $(document).ready(function() {
+  initDashboard();
+});
+
+function initDashboard() {
   var session = new helperProto();
   var helper = new helperProto();
+  var api = new apiProto();
+
   defaultAccount = isIguana ? "default" : ""; // note: change to a specific account name if needed; default coind account name is empty string
 
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : "USD";
@@ -68,7 +75,14 @@ $(document).ready(function() {
     session.logout();
   });
 
-  $(".btn-add-coin,.btn-close").click(function() {
+  $(".btn-add-coin").click(function() {
+    if (!$(".add-new-coin-form").hasClass("fade")) $(".add-new-coin-form").addClass("fade");
+    helper.toggleModalWindow("add-new-coin-form", 300);
+    coinsSelectedByUser = [];
+    $(".supported-coins-repeater").html(constructCoinRepeater());
+    bindClickInCoinRepeater();
+  });
+  $(".btn-close").click(function() {
     helper.toggleModalWindow("add-new-coin-form", 300);
     coinsSelectedByUser = [];
     $(".supported-coins-repeater").html(constructCoinRepeater());
@@ -79,14 +93,24 @@ $(document).ready(function() {
     coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
     console.log(coinsSelectedByUser);
 
+    var result = false;
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedByUser) {
-      if (isIguana) {
+      if (!isIguana) {
         var coindPassphrasePrompt = prompt("Please enter your " + coinsSelectedByUser[key].toUpperCase() + " passphrase", "");
+
         if (coindPassphrasePrompt < 1) alert("Try again");
         console.log(coindPassphrasePrompt);
+      } else {
+        if (api.addCoin(coinsSelectedByUser[key])) {
+          $("#debug-sync-info").append(coinsSelectedByUser[key] + " coin added<br/>");
+          coinsInfo[coinsSelectedByUser[key]].connection = true;
+          result = true;
+        }
       }
     }
+
+    if (result) initDashboard();
 
     $(".account-coins-repeater").html(constructAccountCoinRepeater());
     bindClickInAccountCoinRepeater();
@@ -94,7 +118,15 @@ $(document).ready(function() {
   });
 
   bindCoinRepeaterSearch();
-});
+
+  /*setInterval(function() {
+    console.log("coin length " + $(".account-coins-repeater .coin").length);
+    if (!$(".account-coins-repeater .coin").length) {
+      apiProto.prototype.testConnection();
+      initDashboard();
+    }
+  }, 2000);*/
+}
 
 var coinRepeaterTemplate = "<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">" +
                               "<i class=\"icon cc {{ id }}-alt col-{{ color }}\"></i>" +
@@ -140,10 +172,12 @@ function constructCoinRepeater() {
   var result = "";
 
   for (var i=0; i < availableCoinsToAdd.length; i++) {
-    result += coinRepeaterTemplate.replace("{{ id }}", availableCoinsToAdd[i].id.toUpperCase()).
-                                   replace("{{ coin_id }}", availableCoinsToAdd[i].id.toLowerCase()).
-                                   replace("{{ name }}", availableCoinsToAdd[i].name).
-                                   replace("{{ color }}", availableCoinsToAdd[i].color);
+    if (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection !== true) {
+      result += coinRepeaterTemplate.replace("{{ id }}", availableCoinsToAdd[i].id.toUpperCase()).
+                                     replace("{{ coin_id }}", availableCoinsToAdd[i].id.toLowerCase()).
+                                     replace("{{ name }}", availableCoinsToAdd[i].name).
+                                     replace("{{ color }}", availableCoinsToAdd[i].color);
+    }
   }
 
   return result;
@@ -163,7 +197,7 @@ var accountCoinRepeaterTemplate = "<div class=\"item{{ active }}\" data-coin-id=
 // construct account coins array
 function constructAccountCoinRepeater() {
   var result = "";
-  var accountCoinRepeaterHTML = $(".account-coins-repeater").html();
+  var accountCoinRepeaterHTML = ""; //$(".account-coins-repeater").html();
   var isActiveCoinSet = accountCoinRepeaterHTML.indexOf("item active") > -1 ? true : false;
 
   if (!$(".account-coins-repeater .item").length) {
@@ -177,6 +211,8 @@ function constructAccountCoinRepeater() {
       index++;
     }
   };
+
+  console.log(coinsSelectedByUser);
 
   for (var i=0; i < coinsSelectedByUser.length; i++) {
     //console.log(coinsSelectedByUser[i]);
@@ -229,7 +265,7 @@ function constructAccountCoinRepeater() {
 
       var coinData = getCoinData(coinsSelectedByUser[i]);
 
-      if (i === 0 && !isActiveCoinSet) activeCoin = coinData.id;
+      if ((i === 0 && !isActiveCoinSet) && !activeCoin) activeCoin = coinData.id;
       if (coinData)
         result += accountCoinRepeaterTemplate.replace("{{ id }}", coinData.id.toUpperCase()).
                                               replace("{{ name }}", coinData.name).
@@ -238,7 +274,7 @@ function constructAccountCoinRepeater() {
                                               replace("{{ currency_name }}", defaultCurrency).
                                               replace("{{ coin_value }}", coinBalance ? coinBalance.toFixed(decimalPlacesCoin) : 0).
                                               replace("{{ currency_value }}", currencyCalculatedValue.toFixed(decimalPlacesCurrency)).
-                                              replace("{{ active }}", i === 0 && !isActiveCoinSet ? " active" : "");
+                                              replace("{{ active }}", activeCoin === coinData.id ? " active" : "");
     }
   }
 
@@ -270,85 +306,81 @@ function constructTransactionUnitRepeater() {
       helper = new helperProto(),
       api = new apiProto(),
       coinName = activeCoin || $(".account-coins-repeater .item.active");
-      //selectedCoin = activeCoin || $(".account-coins-repeater .item.active");
-
-  // reload page until server responds with normal timeout
-  //if (selectedCoin.length === 0 || !selectedCoin.length) {
-    //console.log("something is wrong, reload page in 4 sec");
-    /*setTimeout(function() {
-      location.reload();
-    }, 4000);*/
-  /*} else {
-    coinName = selectedCoin.attr("data-coin-id").toUpperCase();
-  }*/
 
   //alert(coinName);
-  var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
-  // sort tx in desc order by timestamp
-  // iguana transactionslist method is missing timestamp field in response, straight forward sorting cannot be done
-  if (transactionsList[0])
-    if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time });
-    if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime });
+  if (coinName.length) {
+    var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
+    console.log(transactionsList);
+    // sort tx in desc order by timestamp
+    // iguana transactionslist method is missing timestamp field in response, straight forward sorting cannot be done
+    if (transactionsList) {
+      console.log(transactionsList[0]);
+      if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time });
+      if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime });
 
-  for (var i=0; i < transactionsList.length; i++) {
-    if (transactionsList[i].txid) {
-      // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. "a moment ago", "1 day ago" etc
-      // timestamp is converted to 24h format
-      var transactionDetails = api.getTransaction(transactionsList[i].txid),
-          txIncomeOrExpenseFlag = "",
-          txStatus = "N/A",
-          txCategory = "",
-          txAddress = "",
-          txAmount = "N/A";
+      for (var i=0; i < transactionsList.length; i++) {
+        if (transactionsList[i].txid) {
+          // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. "a moment ago", "1 day ago" etc
+          // timestamp is converted to 24h format
+          var transactionDetails = api.getTransaction(transactionsList[i].txid),
+              txIncomeOrExpenseFlag = "",
+              txStatus = "N/A",
+              txCategory = "",
+              txAddress = "",
+              txAmount = "N/A";
 
-      if (transactionDetails)
-        if (transactionDetails.details) {
-          txAddress = transactionDetails.details[0].address;
-          txAmount = Math.abs(transactionDetails.details[0].amount);
-          // non-iguana
-          if (transactionDetails.details[0].category)
-            txCategory = transactionDetails.details[0].category;
+          if (transactionDetails)
+            if (transactionDetails.details) {
+              txAddress = transactionDetails.details[0].address;
+              txAmount = Math.abs(transactionDetails.details[0].amount);
+              // non-iguana
+              if (transactionDetails.details[0].category)
+                txCategory = transactionDetails.details[0].category;
 
-            if (transactionDetails.details[0].category === "send") {
-              txIncomeOrExpenseFlag = "bi_interface-minus";
-              txStatus = "sent";
+                if (transactionDetails.details[0].category === "send") {
+                  txIncomeOrExpenseFlag = "bi_interface-minus";
+                  txStatus = "sent";
+                } else {
+                  txIncomeOrExpenseFlag = "bi_interface-plus";
+                  txStatus = "received";
+                }
             } else {
-              txIncomeOrExpenseFlag = "bi_interface-plus";
-              txStatus = "received";
-            }
-        } else {
-          // iguana
-          txAddress = transactionsList[i].address || transactionDetails.address;
-          txAmount = transactionsList[i].amount;
-          txStatus = transactionDetails.category || transactionsList[i].category;
-          txCategory = transactionDetails.category || transactionsList[i].category;
+              // iguana
+              txAddress = transactionsList[i].address || transactionDetails.address;
+              txAmount = transactionsList[i].amount;
+              txStatus = transactionDetails.category || transactionsList[i].category;
+              txCategory = transactionDetails.category || transactionsList[i].category;
 
-          if (txStatus === "send") {
-            txIncomeOrExpenseFlag = "bi_interface-minus";
-            txStatus = "sent";
-          } else {
-            txIncomeOrExpenseFlag = "bi_interface-plus";
-            txStatus = "received";
+              if (txStatus === "send") {
+                txIncomeOrExpenseFlag = "bi_interface-minus";
+                txStatus = "sent";
+              } else {
+                txIncomeOrExpenseFlag = "bi_interface-plus";
+                txStatus = "received";
+              }
+            }
+
+          if (transactionDetails && txStatus !== "N/A") {
+            //console.log(transactionDetails);
+            result += transactionUnitRepeater.replace("{{ status }}", txStatus).
+                                              replace("{{ status_class }}", txCategory).
+                                              replace("{{ in_out }}", txIncomeOrExpenseFlag).
+                                              replace("{{ amount }}", txAmount.toFixed(decimalPlacesTxUnit)).
+                                              replace("{{ timestamp_format }}", "timestamp-multi").
+                                              replace("{{ coin }}", coinName.toUpperCase()).
+                                              replace("{{ hash }}", txAddress !== undefined ? txAddress : "N/A").
+                                              replace("{{ timestamp_date }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "DDMMMYYYY")).
+                                              replace("{{ timestamp_time }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "HHMM"));
           }
         }
-
-      if (transactionDetails && txStatus !== "N/A") {
-        //console.log(transactionDetails);
-        result += transactionUnitRepeater.replace("{{ status }}", txStatus).
-                                          replace("{{ status_class }}", txCategory).
-                                          replace("{{ in_out }}", txIncomeOrExpenseFlag).
-                                          replace("{{ amount }}", txAmount.toFixed(decimalPlacesTxUnit)).
-                                          replace("{{ timestamp_format }}", "timestamp-multi").
-                                          replace("{{ coin }}", coinName.toUpperCase()).
-                                          replace("{{ hash }}", txAddress !== undefined ? txAddress : "N/A").
-                                          replace("{{ timestamp_date }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "DDMMMYYYY")).
-                                          replace("{{ timestamp_time }}", helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, "HHMM"));
       }
     }
+
+    if (!transactionsList.length) {
+      result = "No trasaction history is available";
+    }
   }
-  /*if (coinName === undefined && transactionsList.length) {
-    result = "<strong>Connection failure. The page will reload automatically in 4 seconds.</strong>";
-  }*/
+
   return result;
 }
 
@@ -379,6 +411,11 @@ function updateTransactionUnitBalance(isAuto) {
     $(".transactions-unit .active-coin-balance-currency .value").html(curencyValue !== "NaN" ? curencyValue : (0.00).toFixed(decimalPlacesCurrency));
     $(".transactions-unit .active-coin-balance-currency .currency").html(defaultCurrency.toUpperCase());
   }
+
+  if (selectedCoinValue === 0)
+    $(".transactions-unit .action-buttons .btn-send").hide();
+  else
+    $(".transactions-unit .action-buttons .btn-send").show();
 }
 
 function updateAccountCoinRepeater() {
@@ -400,9 +437,13 @@ function updateDashboardView(timeout) {
 
     //console.clear();
     helper.checkSession();
+    if (activeCoin) defaultCoin = activeCoin.toUpperCase();
+    //initDashboard();
     updateRates();
+    $(".account-coins-repeater").html(constructAccountCoinRepeater());
+    bindClickInAccountCoinRepeater();
     updateTotalBalance();
-    updateAccountCoinRepeater();
+    //updateAccountCoinRepeater();
     updateTransactionUnitBalance(true);
     $(".transactions-list-repeater").html(constructTransactionUnitRepeater());
     console.log("dashboard updated");

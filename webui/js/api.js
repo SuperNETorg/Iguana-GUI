@@ -142,13 +142,22 @@ apiProto.prototype.errorHandler = function(response, index) {
   }
   if (response.error === "iguana jsonstr expired") {
     console.log("server is busy");
-    //alert("Server is not responding. Please try to reload a page in a few minutes.");
+
+    return 10;
   }
   if (response.error === "coin is busy processing") {
-    if ($("#debug-sync-info"))
-      $("#debug-sync-info").append("coin " + index + " is busy processing");
+    if ($("#debug-sync-info") && index !== undefined)
+      $("#debug-sync-info").append("coin " + index + " is busy processing<br/>");
 
     console.log("server is busy");
+
+    return 10;
+  }
+  if (response.error === "null return from iguana_bitcoinRPC") {
+    console.log("iguana crashed?");
+
+    return 10;
+    //location.reload();
   }
 }
 
@@ -282,12 +291,12 @@ apiProto.prototype.testCoinPorts = function() {
 
         if (response.responseText) console.log("coind response: " + response.responseText);
 
-        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
-        _index++;
+        /*if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
+        _index++;*/
       }
     }).done(function() {
-      if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
-      _index++;
+      /*if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log("no coin is detected, at least one daemon must be running!");
+      _index++;*/
     });
   });
 
@@ -425,32 +434,35 @@ apiProto.prototype.listTransactions = function(account, coin) {
     dataType: "json",
     type: "POST",
     data: postData,
-    headers: postAuthHeaders
+    headers: postAuthHeaders,
+    error: function(response) {
+      apiProto.prototype.errorHandler(response);
+    }
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
-
-    console.log(_response);
-    if (_response.result) {
-      // non-iguana
-      if (_response.result.length) {
-        result = _response.result;
-      } else {
-        result = false;
-      }
-    } else {
-      // iguana
-      var response = $.parseJSON(_response);
-
-      if (response.error) {
-        // do something
-        console.log("error: " + response.error);
-        result = false;
-      } else {
-        if (response.result.length) {
-          result = response.result;
+    if (apiProto.prototype.errorHandler(_response) !== 10) {
+      console.log(_response);
+      if (_response.result) {
+        // non-iguana
+        if (_response.result.length) {
+          result = _response.result;
         } else {
           result = false;
+        }
+      } else {
+        // iguana
+        var response = $.parseJSON(_response);
+
+        if (response.error) {
+          // do something
+          console.log("error: " + response.error);
+          result = false;
+        } else {
+          if (response.result.length) {
+            result = response.result;
+          } else {
+            result = false;
+          }
         }
       }
     }
@@ -473,7 +485,10 @@ apiProto.prototype.getTransaction = function(txid) {
     dataType: "json",
     type: "POST",
     data: postData,
-    headers: postAuthHeaders
+    headers: postAuthHeaders,
+    error: function(response) {
+      apiProto.prototype.errorHandler(response);
+    }
   })
   .done(function(_response) {
     apiProto.prototype.errorHandler(_response);
@@ -534,26 +549,26 @@ apiProto.prototype.getBalance = function(account, coin) {
     }
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
-
-    if (_response.result > -1 || Number(_response) === 0) {
-      // non-iguana
-      result = _response.result || _response;
-    } else {
-      console.log(_response);
-
-      // iguana
-      var response = $.parseJSON(_response);
-
-      if (response.error) {
-        // do something
-        console.log("error: " + response.error);
-        result = false;
+    if (apiProto.prototype.errorHandler(_response) !== 10) {
+      if (_response.result > -1 || Number(_response) === 0) {
+        // non-iguana
+        result = _response.result || _response;
       } else {
-        if (response) {
-          result = response;
-        } else {
+        console.log(_response);
+
+        // iguana
+        var response = $.parseJSON(_response);
+
+        if (response.error) {
+          // do something
+          console.log("error: " + response.error);
           result = false;
+        } else {
+          if (response) {
+            result = response;
+          } else {
+            result = false;
+          }
         }
       }
     }

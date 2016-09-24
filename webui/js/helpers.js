@@ -127,14 +127,21 @@ helperProto.prototype.getCurrency = function() {
   return localStorage.getVal("iguana-currency");
 }
 
+helperProto.prototype.getCurrentPage = function() {
+  var currentPageComponents = window.location.href.split("/");
+  var currentPage = currentPageComponents[currentPageComponents.length - 1].split(".html");
+
+  return currentPage[0];
+}
+
 helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
     $("body").append("<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>");
-    apiProto.prototype.testCoinPorts();
+    apiProto.prototype.testConnection();
 
     setInterval(function() {
-      console.clear();
-      apiProto.prototype.testCoinPorts();
+      //console.clear();
+      apiProto.prototype.testConnection();
     }, isIguana ? 30000 : 60000); // every 30 sec
   });
 }
