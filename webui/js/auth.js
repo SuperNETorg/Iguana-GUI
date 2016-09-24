@@ -11,7 +11,7 @@ $(document).ready(function() {
 
   // ugly login form check
   if ($(".login-form")) {
-    $("#passphrase").val(isDev ? "using walletpassphrase in dev.js" : "");
+    //$("#passphrase").val(isDev ? "using walletpassphrase in dev.js" : "");
 
     if (isDev) $(".btn-signin").removeClass("disabled");
 
@@ -56,8 +56,6 @@ function addAuthorizationButtonAction(buttonClassName) {
 
     if (isIguana) {
       if (checkIguanaCoinsSelection()) {
-
-      } else {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
           // wallet passphrase check is temp disabled to work in coind env
           if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
@@ -78,6 +76,8 @@ function addAuthorizationButtonAction(buttonClassName) {
           }
         else
           toggleLoginErrorStyling(true);
+      } else {
+        alert("Please select at least one coin");
       }
     } else {
       authAllAvailableCoind();
@@ -107,16 +107,26 @@ function constructIguanaCoinsRepeater() {
 }
 
 function checkIguanaCoinsSelection() {
-  for (var key in apiProto.prototype.getConf().coins) {
-    console.log(key);
-    /*if (coinsInfo[key].connection === true) {
-      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                            replace("{{ id }}", key.toUpperCase()).
-                                            replace("{{ name }}", key.toUpperCase());
-    }*/
-  };
+  var result = false;
+  var api = new apiProto();
 
-  return false;
+  for (var key in coinsInfo) {
+    if ($("#iguana-coin-" + key + "-checkbox").prop("checked")) {
+      if (api.addCoin(key)) {
+        $("#debug-sync-info").append(key + " coin added<br/>");
+        coinsInfo[key].connection = true;
+        result = true;
+      }
+    }
+
+    if (isIguana && coinsInfo[key].connection === true || result === true) {
+      result = true;
+    }
+  }
+
+  constructIguanaCoinsRepeater();
+
+  return result;
 }
 
 function authAllAvailableCoind() {
