@@ -11,7 +11,7 @@ $(document).ready(function() {
 
   // ugly login form check
   if ($(".login-form")) {
-    //$("#passphrase").val(isDev ? "using walletpassphrase in dev.js" : "");
+    $("#passphrase").val(isDev && isIguana ? coinPW.iguana : "");
 
     if (isDev) $(".btn-signin").removeClass("disabled");
 
@@ -92,18 +92,30 @@ var iguanaCoinsRepeaterTemplate = "<div class=\"coin\" data-coin-id=\"{{ coin_id
                                     "</label>" +
                                   "</div>";
 
+var nonIguanaCoinsRepeaterTemplate = "<div class=\"coin block\" data-coin-id=\"{{ coin_id }}\">" +
+                                    "<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ checked }} />" +
+                                    "<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox-label cursor-pointer\">" +
+                                      "<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>" +
+                                    "</label>" +
+                                    "<textarea name=\"iguana-coin-{{ coin_id }}-textarea\" id=\"iguana-coin-{{ coin_id }}-textarea\" class=\"iguana-coin-{{ coin_id }}-textarea offset-bottom-sm row center\">{{ value }}</textarea>" +
+                                  "</div>";
+
 function constructIguanaCoinsRepeater() {
-  var result = "<hr/>";
+  var result = isIguana ? "<hr/>" : "";
+  var coinsRepeaterTemplate = isIguana ? iguanaCoinsRepeaterTemplate : nonIguanaCoinsRepeaterTemplate;
 
   for (var key in coinsInfo) {
-    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true))
-      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
+    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false))
+      result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
                                             replace("{{ id }}", key.toUpperCase()).
                                             replace("{{ checked }}", isIguana ? "" : "checked disabled").
-                                            replace("{{ name }}", key.toUpperCase());
+                                            replace("{{ name }}", key.toUpperCase()).
+                                            replace("{{ value }}", isDev && !isIguana ? coinPW.coind[key] : "");
   };
 
-  $(".iguana-coins-repeater").html(result);
+  if (!isIguana) $("#passphrase").hide();
+  result = result + (!isIguana ? "<hr/>" : "");
+  $(isIguana ? ".iguana-coins-repeater" : ".non-iguana-coins-repeater").html(result);
 }
 
 function checkIguanaCoinsSelection() {
@@ -130,15 +142,14 @@ function checkIguanaCoinsSelection() {
 }
 
 function authAllAvailableCoind() {
-  var coindAuthResults = [];
-  var api = new apiProto();
-  var helper = new helperProto();
-  var localStorage = new localStorageProto();
+  var coindAuthResults = [],
+      api = new apiProto(),
+      helper = new helperProto(),
+      localStorage = new localStorageProto();
 
-  var index = 0;
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
-      var coindWalletLogin = api.walletLogin(coinPW.coind[key], defaultSessionLifetime, key);
+      var coindWalletLogin = api.walletLogin($("#iguana-coin-" + key + "-textarea").val(), defaultSessionLifetime, key);
       coindAuthResults.push(coindWalletLogin);
     }
   };

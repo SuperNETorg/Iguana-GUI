@@ -85,6 +85,13 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
           "iguanaCurl": "{\"services\":129,\"auxpow\":1,\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"UNO\",\"name\":\"Unobtanium\",\"netmagic\":\"03d5b503\",\"p2p\":65534,\"rpc\":65535,\"pubval\":130,\"p2shval\":30,\"wifval\":224,\"txfee_satoshis\":\"1000000\",\"minconfirms\":2,\"genesishash\":\"000004c2fc5fffb810dccc197d603690099a68305232e552d96ccbe8e2c52b75\",\"genesis\":{\"version\":1,\"timestamp\":1375548986,\"nBits\":\"1e0fffff\",\"nonce\":1211565,\"merkle_root\":\"36a192e90f70131a884fe541a1e8a5643a28ba4cb24cbb2924bd0ee483f7f484\"},\"alertpubkey\":\"04fd68acb6a895f3462d91b43eef0da845f0d531958a858554feab3ac330562bf76910700b3f7c29ee273ddc4da2bb5b953858f6958a50e8831eb43ee30c32f21d\"}",
           "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary" // universal resource for many coins
         },
+        "nmc": {
+          "portp2p": 8336,
+          "user": "user", // add your rpc pair here`
+          "pass": "pass",
+          "iguanaCurl": "disabled",
+          "currentBlockHeightExtSource": proxy + "chainz.cryptoid.info/explorer/api.dws?q=summary"
+        },
         "gmc": {
           "portp2p": 40001,
           "user": "user", // add your rpc pair here
@@ -266,6 +273,9 @@ apiProto.prototype.testCoinPorts = function() {
             isRT = true;
             coinsInfo[index].RT = true;
           }
+
+          // disable coin in iguna mode
+          if (conf.iguanaCurl === "disabled") coinsInfo[index].iguana = false;
 
           console.log("Connections: " + peers[0].replace("peers.", ""));
           console.log("Blocks: " + currentHeight);

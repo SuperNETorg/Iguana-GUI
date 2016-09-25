@@ -5,7 +5,7 @@
 
  /*
   TODO: 1) force synchronous api calls on initial page loading; async on 15 sec info update e.g. rates, balances, tx list
-        2) refactor rates retrieval
+        2) autocorrect decimal places
  */
 
 var defaultCurrency = "",
@@ -17,7 +17,6 @@ var defaultCurrency = "",
     decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
     decimalPlacesCurrency = 2, //   in case you have too small coin balance value e.g. 0.0001 BTC
     decimalPlacesTxUnit = 5,
-    sidebarSelectedCoin,
     dashboardUpdateTimout = 15; // sec
 
 var availableCoinsToAdd = [
@@ -38,9 +37,9 @@ $(document).ready(function() {
 });
 
 function initDashboard() {
-  var session = new helperProto();
-  var helper = new helperProto();
-  var api = new apiProto();
+  var session = new helperProto(),
+      helper = new helperProto(),
+      api = new apiProto();
 
   defaultAccount = isIguana ? "default" : ""; // note: change to a specific account name if needed; default coind account name is empty string
 
@@ -76,13 +75,14 @@ function initDashboard() {
   });
 
   $(".btn-add-coin").click(function() {
+    api.testCoinPorts();
     if (!$(".add-new-coin-form").hasClass("fade")) $(".add-new-coin-form").addClass("fade");
     helper.toggleModalWindow("add-new-coin-form", 300);
     coinsSelectedByUser = [];
     $(".supported-coins-repeater").html(constructCoinRepeater());
     bindClickInCoinRepeater();
   });
-  $(".btn-close").click(function() {
+  $(".btn-close,.modal-overlay").click(function() {
     helper.toggleModalWindow("add-new-coin-form", 300);
     coinsSelectedByUser = [];
     $(".supported-coins-repeater").html(constructCoinRepeater());
@@ -172,11 +172,13 @@ function constructCoinRepeater() {
   var result = "";
 
   for (var i=0; i < availableCoinsToAdd.length; i++) {
-    if (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection !== true) {
-      result += coinRepeaterTemplate.replace("{{ id }}", availableCoinsToAdd[i].id.toUpperCase()).
-                                     replace("{{ coin_id }}", availableCoinsToAdd[i].id.toLowerCase()).
-                                     replace("{{ name }}", availableCoinsToAdd[i].name).
-                                     replace("{{ color }}", availableCoinsToAdd[i].color);
+    if ((coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection !== true && isIguana) ||
+      (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection === true && $(".account-coins-repeater").html().indexOf("data-coin-id=\"" + availableCoinsToAdd[i].id + "\"") === -1 && !isIguana)) {
+      if ((isIguana && coinsInfo[availableCoinsToAdd[i].id].iguana !== false) || !isIguana)
+        result += coinRepeaterTemplate.replace("{{ id }}", availableCoinsToAdd[i].id.toUpperCase()).
+                                       replace("{{ coin_id }}", availableCoinsToAdd[i].id.toLowerCase()).
+                                       replace("{{ name }}", availableCoinsToAdd[i].name).
+                                       replace("{{ color }}", availableCoinsToAdd[i].color);
     }
   }
 
@@ -196,9 +198,9 @@ var accountCoinRepeaterTemplate = "<div class=\"item{{ active }}\" data-coin-id=
 
 // construct account coins array
 function constructAccountCoinRepeater() {
-  var result = "";
-  var accountCoinRepeaterHTML = ""; //$(".account-coins-repeater").html();
-  var isActiveCoinSet = accountCoinRepeaterHTML.indexOf("item active") > -1 ? true : false;
+  var result = "",
+      accountCoinRepeaterHTML = "", //$(".account-coins-repeater").html();
+      isActiveCoinSet = accountCoinRepeaterHTML.indexOf("item active") > -1 ? true : false;
 
   if (!$(".account-coins-repeater .item").length) {
     coinsSelectedByUser[0] = defaultCoin.toLowerCase();
@@ -212,22 +214,15 @@ function constructAccountCoinRepeater() {
     }
   };
 
-  console.log(coinsSelectedByUser);
-
   for (var i=0; i < coinsSelectedByUser.length; i++) {
-    //console.log(coinsSelectedByUser[i]);
     if (accountCoinRepeaterHTML.indexOf('data-coin-id="' + coinsSelectedByUser[i] + '"') === -1) {
       var coinLocalRate = coinToCurrencyRate;
 
       // call API
       // note(!): if coin is not added yet it will take a while iguana to enable RT relay
-      // addCoin(coinsSelectedByUser[i]);
-      var api = new apiProto();
-      var coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]);
-      console.log("coin balance: " + coinBalance);
+      var api = new apiProto(),
+          coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]);
 
-      // fix for small balance values
-      // temp disabled
       if (coinBalance < 1 && coinBalance > 0) {
         var coinBalanceFloat = coinBalance.toString().split(".");
 
@@ -260,8 +255,6 @@ function constructAccountCoinRepeater() {
       } else {
         decimalPlacesCurrency = 2;
       }
-
-      console.log("rate: " + coinLocalRate + ", coinbal: " +  coinBalance + ", calc: " + currencyCalculatedValue + ", dplaces: " + decimalPlacesCurrency);
 
       var coinData = getCoinData(coinsSelectedByUser[i]);
 
@@ -300,7 +293,6 @@ var transactionUnitRepeater = "<div class=\"item {{ status_class }} {{ timestamp
                               "</div>";
 
 // construct transaction unit array
-// TODO: add edge case "no transactions" for a selected coin
 function constructTransactionUnitRepeater() {
   var result = "",
       helper = new helperProto(),
@@ -312,7 +304,6 @@ function constructTransactionUnitRepeater() {
     var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
     console.log(transactionsList);
     // sort tx in desc order by timestamp
-    // iguana transactionslist method is missing timestamp field in response, straight forward sorting cannot be done
     if (transactionsList) {
       console.log(transactionsList[0]);
       if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time });
@@ -388,9 +379,9 @@ function updateTotalBalance() {
   var totalBalance = 0;
 
   $(".account-coins-repeater .item").each(function(index, item) {
-    var coin = $(this).attr("data-coin-id");
-    var coinValue = $(this).find(".coin-value .val");
-    var currencyValue = $(this).find(".currency-value .val");
+    var coin = $(this).attr("data-coin-id"),
+        coinValue = $(this).find(".coin-value .val"),
+        currencyValue = $(this).find(".currency-value .val");
 
     totalBalance += Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true);
   });
@@ -400,10 +391,10 @@ function updateTotalBalance() {
 }
 
 function updateTransactionUnitBalance(isAuto) {
-  var selectedCoin = $(".account-coins-repeater .item.active");
-  var currentCoinRate = isAuto ? updateRates(selectedCoin.attr("data-coin-id").toUpperCase()) : parseFloat($(".account-coins-repeater .item.active .currency-value .val").html()) / parseFloat($(".account-coins-repeater .item.active .coin-value .val").html(), null, true);
-  var selectedCoinValue = Number($(".account-coins-repeater .item.active .coin-value .val").html()) ? Number($(".account-coins-repeater .item.active .coin-value .val").html()) : 0;
-  var curencyValue = (selectedCoinValue * currentCoinRate).toFixed(decimalPlacesCurrency);
+  var selectedCoin = $(".account-coins-repeater .item.active"),
+      currentCoinRate = isAuto ? updateRates(selectedCoin.attr("data-coin-id").toUpperCase()) : parseFloat($(".account-coins-repeater .item.active .currency-value .val").html()) / parseFloat($(".account-coins-repeater .item.active .coin-value .val").html(), null, true);
+      selectedCoinValue = Number($(".account-coins-repeater .item.active .coin-value .val").html()) ? Number($(".account-coins-repeater .item.active .coin-value .val").html()) : 0;
+      curencyValue = (selectedCoinValue * currentCoinRate).toFixed(decimalPlacesCurrency);
 
   if (selectedCoin.length !== 0) {
     $(".transactions-unit .active-coin-balance .value").html(selectedCoinValue.toFixed(decimalPlacesCoin));
@@ -420,10 +411,10 @@ function updateTransactionUnitBalance(isAuto) {
 
 function updateAccountCoinRepeater() {
   $(".account-coins-repeater .item").each(function(index, item) {
-    var coin = $(this).attr("data-coin-id");
-    var coinValue = $(this).find(".coin-value .val");
-    var currencyValue = $(this).find(".currency-value .val");
-    var currenyValueCalculated = (Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true)).toFixed(decimalPlacesCurrency);
+    var coin = $(this).attr("data-coin-id"),
+        coinValue = $(this).find(".coin-value .val"),
+        currencyValue = $(this).find(".currency-value .val"),
+        currenyValueCalculated = (Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true)).toFixed(decimalPlacesCurrency);
 
     currencyValue.html(Number(currenyValueCalculated) ? currenyValueCalculated : 0);
   });

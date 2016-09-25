@@ -15,6 +15,11 @@
 		width: 130px;
 		display: inline-block;
 	}
+	.coin.block {
+		display: block;
+		width: 100%;
+		padding: 0;
+	}
 	.container-fluid {
 		display: table-cell;
 		vertical-align: middle;

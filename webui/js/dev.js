@@ -13,7 +13,8 @@
       "btc": "teach clutch code nominee ride garage fish neutral help upset correct decorate",
       "btcd": "teach clutch code nominee ride garage fish neutral help upset correct decorate",
       "ltc": "teach clutch code nominee ride garage fish neutral help upset correct decorate",
-      "sys": "teach clutch code nominee ride garage fish neutral help upset correct decorate"
+      "sys": "teach clutch code nominee ride garage fish neutral help upset correct decorate",
+      "doge": "teach clutch code nominee ride garage fish neutral help upset correct decorate"
     },
     "iguana": "lime lime"
   };
