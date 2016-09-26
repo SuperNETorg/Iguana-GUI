@@ -6,8 +6,8 @@
 var passphraseToVerify;
 
 $(document).ready(function() {
-  var localStorage = new localStorageProto();
-  var helper = new helperProto();
+  var localStorage = new localStorageProto(),
+      helper = new helperProto();
 
   // ugly login form check
   if ($(".login-form")) {
@@ -46,13 +46,13 @@ function addAuthorizationButtonAction(buttonClassName) {
   $(".btn-" + buttonClassName).click(function() {
     // validate passphrase
     // condition: 24 words in lower case followed by a single space character
-    var passphraseInput = $("#passphrase").val();
-    var totalSubstr = passphraseInput.match(/\b\w+\b/g);
-    var totalSubstrAlpha = passphraseInput.match(/\b[a-z]+\b/g); // count only words consist of characters
-    var totalSpaces = passphraseInput.match(/\s/g);
-    var api = new apiProto();
-    var helper = new helperProto();
-    var localStorage = new localStorageProto();
+    var passphraseInput = $("#passphrase").val(),
+        totalSubstr = passphraseInput.match(/\b\w+\b/g),
+        totalSubstrAlpha = passphraseInput.match(/\b[a-z]+\b/g), // count only words consist of characters
+        totalSpaces = passphraseInput.match(/\s/g),
+        api = new apiProto(),
+        helper = new helperProto(),
+        localStorage = new localStorageProto();
 
     if (isIguana) {
       if (checkIguanaCoinsSelection()) {
@@ -101,26 +101,31 @@ var nonIguanaCoinsRepeaterTemplate = "<div class=\"coin block\" data-coin-id=\"{
                                   "</div>";
 
 function constructIguanaCoinsRepeater() {
-  var result = isIguana ? "<hr/>" : "";
-  var coinsRepeaterTemplate = isIguana ? iguanaCoinsRepeaterTemplate : nonIguanaCoinsRepeaterTemplate;
+  var result = isIguana ? "<hr/>" : "",
+      coinsRepeaterTemplate = isIguana ? iguanaCoinsRepeaterTemplate : nonIguanaCoinsRepeaterTemplate,
+      index = 0;
 
   for (var key in coinsInfo) {
-    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false))
+    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
+      index++;
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
                                             replace("{{ id }}", key.toUpperCase()).
                                             replace("{{ checked }}", isIguana ? "" : "checked disabled").
                                             replace("{{ name }}", key.toUpperCase()).
                                             replace("{{ value }}", isDev && !isIguana ? coinPW.coind[key] : "");
+    }
   };
 
   if (!isIguana) $("#passphrase").hide();
+  if (index !== 0) $(".coind-iguana-notice").hide();
+
   result = result + (!isIguana ? "<hr/>" : "");
   $(isIguana ? ".iguana-coins-repeater" : ".non-iguana-coins-repeater").html(result);
 }
 
 function checkIguanaCoinsSelection() {
-  var result = false;
-  var api = new apiProto();
+  var result = false,
+      api = new apiProto();
 
   for (var key in coinsInfo) {
     if ($("#iguana-coin-" + key + "-checkbox").prop("checked")) {
