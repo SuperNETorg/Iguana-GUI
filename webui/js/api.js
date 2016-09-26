@@ -8,8 +8,6 @@
 //       3) add general error handler, e.g. coin is not added, wallet is locked etc
 //       4) add localstorage hook on testPort success
 //      (?) refactor conf into a singleton obj
-// add api call getblocktemplate to check sync status
-// {'result':null,'error':{'code':-10,'message':'Franko is downloading blocks...'},'id':null}
 
 // note(!): p2p may vary depending on a coin
 // some coins put rpc at the p2p port+1 others port-1
@@ -232,11 +230,13 @@ apiProto.prototype.testCoinPorts = function() {
 
           // non-iguana
           if (!isIguana) {
-            var networkCurrentHeight = apiProto.prototype.getCoinCurrentHeight(index);
+            var networkCurrentHeight = 0; //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
+            var coindCheckRTResponse = apiProto.prototype.coindCheckRT(index);
+            var syncPercentage = (response.result.blocks * 100 / networkCurrentHeight).toFixed(2);
             console.log('Connections: ' + response.result.connections);
-            console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + '% synced)');
+            console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
 
-            if (response.result.blocks === networkCurrentHeight) {
+            if (response.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
               isRT = true;
               coinsInfo[index].RT = true;
             } else {
@@ -247,7 +247,7 @@ apiProto.prototype.testCoinPorts = function() {
 
             if (isDev && showSyncDebug)
               if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
-                $('#debug-sync-info').append('coin: ' + index + ', con ' + response.result.connections + ', blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (response.result.blocks * 100 / networkCurrentHeight).toFixed(2) + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+                $('#debug-sync-info').append('coin: ' + index + ', con ' + response.result.connections + ', blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
 
             // temp code
             if (isRT)
@@ -368,6 +368,8 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
       if (response.responseText) {
         if (response.responseText.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1)
           result = true;
+        if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1) result = -14;
+        if (response.responseText.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
         console.log(response.responseText);
       } else {
         console.log(response.error);
@@ -627,6 +629,35 @@ apiProto.prototype.walletLock = function(coin) {
         }
       }
     }
+  });
+
+  return result;
+}
+
+apiProto.prototype.coindCheckRT = function(coin) {
+  var result = false;
+
+  var fullUrl = apiProto.prototype.getFullApiRoute('getblocktemplate', null, coin);
+  var postData = apiProto.prototype.getBitcoinRPCPayloadObj('getblocktemplate');
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
+
+  $.ajax({
+    url: fullUrl,
+    cache: false,
+    async: false,
+    dataType: 'json',
+    type: 'POST',
+    data: postData,
+    headers: postAuthHeaders,
+    error: function(response) {
+      if (response.responseText.indexOf(':-10') === -1) result = true;
+      else result = false;
+    }
+  })
+  .done(function(_response) {
+    apiProto.prototype.errorHandler(_response);
+    if (_response.result.bits) result = true;
+    else result = false;
   });
 
   return result;
