@@ -119,13 +119,14 @@ function initDashboard() {
 
   bindCoinRepeaterSearch();
 
-  /*setInterval(function() {
-    console.log("coin length " + $(".account-coins-repeater .coin").length);
-    if (!$(".account-coins-repeater .coin").length) {
-      apiProto.prototype.testConnection();
-      initDashboard();
-    }
-  }, 2000);*/
+  // ugly workaround in iguana env
+  if (isIguana)
+    setInterval(function() {
+      if (!$(".account-coins-repeater .coin").length) {
+        apiProto.prototype.testConnection();
+        initDashboard();
+      }
+    }, 2000);
 }
 
 var coinRepeaterTemplate = "<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">" +
