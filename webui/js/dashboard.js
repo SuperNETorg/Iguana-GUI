@@ -29,7 +29,9 @@ var availableCoinsToAdd = [
   { id: 'mzc', name: 'Mazacoin', color: 'light-blue' },
   { id: 'nmc', name: 'Namecoin', color: 'yellow' },
   { id: 'sys', name: 'SysCoin', color: 'orange' },
-  { id: 'uno', name: 'Unobtaium', color: 'breeze' }
+  { id: 'uno', name: 'Unobtaium', color: 'breeze' },
+  { id: 'dgb', name: 'DigiByte', color: 'light-blue' },
+  { id: 'zet', name: 'Zetacoin', color: 'yellow' }
 ];
 
 $(document).ready(function() {
@@ -235,7 +237,7 @@ function constructAccountCoinRepeater() {
       // call API
       // note(!): if coin is not added yet it will take a while iguana to enable RT relay
       var api = new apiProto(),
-          coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]);
+          coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]) || 0;
 
       if (coinBalance < 1 && coinBalance > 0) {
         var coinBalanceFloat = coinBalance.toString().split('.');
@@ -253,7 +255,7 @@ function constructAccountCoinRepeater() {
       }
 
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) {
-        coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true);
+        coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
       }
 
       var currencyCalculatedValue = coinBalance * coinLocalRate;

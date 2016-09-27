@@ -87,7 +87,7 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
           'portp2p': 8336,
           'user': 'user', // add your rpc pair here`
           'pass': 'pass',
-          'iguanaCurl': 'disabled',
+          'iguanaCurl': 'disabled', // currently disabled in iguana env
           'currentBlockHeightExtSource': proxy + 'chainz.cryptoid.info/explorer/api.dws?q=summary'
         },
         'gmc': {
@@ -250,12 +250,6 @@ apiProto.prototype.testCoinPorts = function() {
             if (isDev && showSyncDebug)
               if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
                 $('#debug-sync-info').append('coin: ' + index + ', con ' + response.result.connections + ', blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
-
-            // temp code
-            if (isRT)
-              $('#temp-out-of-sync').addClass('hidden');
-            else
-              $('#temp-out-of-sync').removeClass('hidden');
           }
         }
         if (response.status && isIguana) {
@@ -286,12 +280,6 @@ apiProto.prototype.testCoinPorts = function() {
           if (isDev && showSyncDebug)
             if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
               $('#debug-sync-info').append('coin: ' + index + ', con ' + peers[0].replace('peers.', '') + ', bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
-
-          // temp code
-          if (isRT)
-            $('#temp-out-of-sync').addClass('hidden');
-          else
-            $('#temp-out-of-sync').removeClass('hidden');
         }
       },
       error: function(response) {
@@ -311,6 +299,21 @@ apiProto.prototype.testCoinPorts = function() {
       _index++;*/
     });
   });
+
+  // out of sync message
+  var outOfSyncCoinsList = '';
+  $.each(apiProto.prototype.getConf().coins, function(index, conf) {
+    if (coinsInfo[index].RT === false) outOfSyncCoinsList += index.toUpperCase() + ', ';
+  });
+  if (outOfSyncCoinsList[outOfSyncCoinsList.length - 1] === ' ') {
+    outOfSyncCoinsList = outOfSyncCoinsList.replace(/, $/, '');;
+  }
+  if (!outOfSyncCoinsList.length) {
+    $('#temp-out-of-sync').addClass('hidden');
+  } else {
+    $('#temp-out-of-sync').html(outOfSyncCoinsList + ' is out of sync. Information about balances, transactions and send/receive functions is limited.');
+    $('#temp-out-of-sync').removeClass('hidden');
+  }
 
   return result;
 }
