@@ -39,7 +39,8 @@ $(document).ready(function() {
 function initDashboard() {
   var session = new helperProto(),
       helper = new helperProto(),
-      api = new apiProto();
+      api = new apiProto(),
+      localStorage = new localStorageProto();
 
   defaultAccount = isIguana ? 'default' : ''; // note: change to a specific account name if needed; default coind account name is empty string
 
@@ -99,8 +100,17 @@ function initDashboard() {
       if (!isIguana) {
         var coindPassphrasePrompt = prompt('Please enter your ' + coinsSelectedByUser[key].toUpperCase() + ' passphrase', '');
 
-        if (coindPassphrasePrompt < 1) alert('Try again');
-        console.log(coindPassphrasePrompt);
+        if (coindPassphrasePrompt < 1) {
+          alert('Try again');
+        } else {
+          var coindWalletLogin = api.walletLogin(coindPassphrasePrompt, defaultSessionLifetime, coinsSelectedByUser[key]);
+
+          if (coindWalletLogin !== -14 && coindWalletLogin !== -15) {
+            localStorage.setVal('iguana-' + coinsSelectedByUser[key] + '-passphrase', { 'logged': 'yes' });
+          } else {
+            alert(coinsSelectedByUser[key].toUpperCase() + ' wrong passphrase');
+          }
+        }
       } else {
         if (api.addCoin(coinsSelectedByUser[key]) && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + coinsSelectedByUser[key] + '\"') === -1) {
           $('#debug-sync-info').append(coinsSelectedByUser[key] + ' coin added<br/>');
@@ -200,6 +210,7 @@ var accountCoinRepeaterTemplate = '<div class=\"item{{ active }}\" data-coin-id=
 // construct account coins array
 function constructAccountCoinRepeater() {
   var result = '',
+      localStorage = new localStorageProto(),
       accountCoinRepeaterHTML = '', //$('.account-coins-repeater').html();
       isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
 
@@ -210,8 +221,10 @@ function constructAccountCoinRepeater() {
   var index = 0;
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
-      coinsSelectedByUser[index] = key;
-      index++;
+      if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
+        coinsSelectedByUser[index] = key;
+        index++;
+      }
     }
   };
 

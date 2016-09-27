@@ -3,11 +3,14 @@
  *
  */
 
+ // TODO: refactor repeater update
+
 var passphraseToVerify;
 
 $(document).ready(function() {
   var localStorage = new localStorageProto(),
-      helper = new helperProto();
+      helper = new helperProto(),
+      selectedCoindToEncrypt;
 
   // ugly login form check
   if ($('.login-form')) {
@@ -21,7 +24,7 @@ $(document).ready(function() {
       $('.login-form').removeClass('hidden');
     }
 
-    constructIguanaCoinsRepeater();
+    constructAuthCoinsRepeater();
 
     addAuthorizationButtonAction('signin');
     watchPassphraseKeyUpEvent('signin');
@@ -35,12 +38,9 @@ $(document).ready(function() {
     addAuthorizationButtonAction('add-account');
     watchPassphraseKeyUpEvent('add-account');
     initCreateAccountForm();
+    constructCoinsRepeaterEncrypt();
   }
 });
-
-function authWallet() {
-  api.walletLogin(passphraseInput, defaultSessionLifetime);
-}
 
 function addAuthorizationButtonAction(buttonClassName) {
   $('.btn-' + buttonClassName).click(function() {
@@ -55,11 +55,11 @@ function addAuthorizationButtonAction(buttonClassName) {
         localStorage = new localStorageProto();
 
     if (isIguana) {
-      if (checkIguanaCoinsSelection()) {
+      if (checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
           // wallet passphrase check is temp disabled to work in coind env
           if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
-            if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : api.walletCreate(passphraseInput) && verifyNewPassphrase()) {
+            if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : verifyNewPassphrase() && api.walletEncrypt(passphraseInput)) {
               toggleLoginErrorStyling(false);
 
               if (buttonClassName === 'add-account') {
@@ -77,71 +77,172 @@ function addAuthorizationButtonAction(buttonClassName) {
         else
           toggleLoginErrorStyling(true);
       } else {
-        alert('Please select at least one coin');
+        $('.iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
       }
     } else {
-      authAllAvailableCoind();
+      if ($('.login-form')) {
+        if (authAllAvailableCoind()) {
+          localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+          helper.openPage('dashboard');
+        }
+      }
+      if ($('.create-account-form')) {
+        if (totalSubstr && totalSubstrAlpha && totalSpaces)
+          // wallet passphrase check is temp disabled to work in coind env
+          if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+            if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet()) {
+              toggleLoginErrorStyling(false);
+
+              if (buttonClassName === 'add-account') {
+                helper.openPage('login');
+              } else {
+                localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+                helper.openPage('dashboard');
+              }
+            } else {
+              toggleLoginErrorStyling(true);
+            }
+          } else {
+            toggleLoginErrorStyling(true);
+          }
+        else
+          toggleLoginErrorStyling(true);
+      }
     }
   });
 }
 
 var iguanaCoinsRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">' +
-                                    '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ checked }} />' +
-                                    '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox-label cursor-pointer\">' +
+                                    '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ onclick_input }} />' +
+                                    '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox-label cursor-pointer\" {{ onclick }}>' +
                                       '<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>' +
                                     '</label>' +
                                   '</div>';
 
 var nonIguanaCoinsRepeaterTemplate = '<div class=\"coin block\" data-coin-id=\"{{ coin_id }}\">' +
-                                    '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ checked }} />' +
-                                    '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox-label cursor-pointer\">' +
-                                      '<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>' +
-                                    '</label>' +
-                                    '<textarea name=\"iguana-coin-{{ coin_id }}-textarea\" id=\"iguana-coin-{{ coin_id }}-textarea\" class=\"iguana-coin-{{ coin_id }}-textarea offset-bottom-sm row center\">{{ value }}</textarea>' +
-                                  '</div>';
+                                       '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" />' +
+                                       '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"iguana-coin-{{ coin_id }}-label checkbox-label cursor-pointer\">' +
+                                         '<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>' +
+                                       '</label>' +
+                                       '<span class=\"iguana-coin-{{ coin_id }}-error\"></span>' +
+                                       '<textarea name=\"iguana-coin-{{ coin_id }}-textarea\" id=\"iguana-coin-{{ coin_id }}-textarea\" class=\"iguana-coin-{{ coin_id }}-textarea offset-bottom-sm row center\">{{ value }}</textarea>' +
+                                     '</div>';
 
-function constructIguanaCoinsRepeater() {
+function constructAuthCoinsRepeater() {
   var result = isIguana ? '<hr/>' : '',
       coinsRepeaterTemplate = isIguana ? iguanaCoinsRepeaterTemplate : nonIguanaCoinsRepeaterTemplate,
+      localStorage = new localStorageProto(),
+      helper = new helperProto(),
       index = 0;
 
   for (var key in coinsInfo) {
-    if ((isIguana && coinsInfo[key].connection !== true) || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
+    if (!isIguana) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+    if ((isIguana && apiProto.prototype.getConf().coins[key].iguanaCurl !== "disabled") || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
       index++;
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                            replace('{{ id }}', key.toUpperCase()).
-                                            replace('{{ checked }}', isIguana ? '' : 'checked disabled').
-                                            replace('{{ name }}', key.toUpperCase()).
-                                            replace('{{ value }}', isDev && !isIguana ? coinPW.coind[key] : '');
+                                      replace('{{ id }}', key.toUpperCase()).
+                                      replace('{{ name }}', key.toUpperCase()).
+                                      replace('{{ value }}', isDev && !isIguana ? coinPW.coind[key] : '').
+                                      replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '').
+                                      replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index' ? 'checked disabled' : '');
     }
   };
 
-  if (!isIguana) $('#passphrase').hide();
+  if (!isIguana) {
+    $('#passphrase').hide();
+    $('.btn-signup').html('Encrypt wallet');
+  }
   if (index !== 0) $('.coind-iguana-notice').hide();
 
   result = result + (!isIguana ? '<hr/>' : '');
   $(isIguana ? '.iguana-coins-repeater' : '.non-iguana-coins-repeater').html(result);
 }
 
-function checkIguanaCoinsSelection() {
+function constructCoinsRepeaterEncrypt() {
+  var result = '<hr/><div class=\"center\"><div>Select a wallet you want to encrypt</div>';
+
+  for (var key in coinsInfo) {
+    if (isIguana && coinsInfo[key].connection === true) {
+      selectedCoindToEncrypt = key;
+    }
+
+    if ((!isIguana && coinsInfo[key].connection === true) || isIguana) {
+      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
+                                            replace('{{ id }}', key.toUpperCase()).
+                                            replace('{{ name }}', key.toUpperCase()).
+                                            replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? '' : 'onmouseup=\"checkSelectedWallet(\'' + key + '\')\"').
+                                            replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '');
+    }
+  };
+
+  result = result + '</div><hr/>';
+  if ((isIguana && !selectedCoindToEncrypt) || !isIguana) $('.non-iguana-coins-repeater').html(result);
+}
+
+function encryptCoindWallet() {
+  var api = new apiProto(),
+      passphraseInput = $('#passphrase').val(),
+      helper = new helperProto(),
+      result = false;
+
+  if (verifyNewPassphrase()) {
+    var walletEncryptResponse = api.walletEncrypt(passphraseInput, selectedCoindToEncrypt);
+
+    if (walletEncryptResponse !== -15) {
+      result = true;
+      $('.non-iguana-walletpassphrase-errors').html('');
+      alert('Wallet is encrypted. Please restart ' + selectedCoindToEncrypt + '.');
+      helper.openPage('login');
+    } else {
+      $('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Wallet is already encrypted with another passphrase!</div>');
+      result = false;
+    }
+  } else {
+    $('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Passphrases are not matching. Please repeat previous step one more time.</div>');
+    result = false;
+  }
+
+  return result;
+}
+
+function checkSelectedWallet(key) {
+  var isCoindChecked = false;
+
+  for (var _key in coinsInfo) {
+    if ($('#iguana-coin-' + _key + '-checkbox').prop('checked')) isCoindChecked = true;
+    $('#iguana-coin-' + _key + '-checkbox').prop('checked', false);
+  }
+
+  if (key) {
+    selectedCoindToEncrypt = key;
+    $('#iguana-coin-' + key + '-checkbox').addClass("checked");
+  } else {
+    return isCoindChecked;
+  }
+}
+
+function checkIguanaCoinsSelection(suppressAddCoin) {
   var result = false,
       api = new apiProto();
 
-  for (var key in coinsInfo) {
-    if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
-      if (api.addCoin(key)) {
-        $('#debug-sync-info').append(key + ' coin added<br/>');
-        coinsInfo[key].connection = true;
+  if (!suppressAddCoin)
+    for (var key in coinsInfo) {
+      if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
+        if (api.addCoin(key)) {
+          $('#debug-sync-info').append(key + ' coin added<br/>');
+          coinsInfo[key].connection = true;
+          result = true;
+        }
+      }
+
+      if (isIguana && coinsInfo[key].connection === true || result === true) {
         result = true;
       }
     }
+  else
+    result = true;
 
-    if (isIguana && coinsInfo[key].connection === true || result === true) {
-      result = true;
-    }
-  }
-
-  constructIguanaCoinsRepeater();
+  constructAuthCoinsRepeater();
 
   return result;
 }
@@ -150,18 +251,43 @@ function authAllAvailableCoind() {
   var coindAuthResults = [],
       api = new apiProto(),
       helper = new helperProto(),
-      localStorage = new localStorageProto();
+      localStorage = new localStorageProto(),
+      result = true;
+
+  $('.coind-login-errors').html('');
 
   for (var key in coinsInfo) {
-    if (coinsInfo[key].connection === true) {
+    if (coinsInfo[key].connection === true && $('#iguana-coin-' + key + '-checkbox').prop('checked')) {
+
+      api.walletLock(key);
       var coindWalletLogin = api.walletLogin($('#iguana-coin-' + key + '-textarea').val(), defaultSessionLifetime, key);
-      coindAuthResults.push(coindWalletLogin);
+      coindAuthResults[key] = coindWalletLogin;
+
+      if (coindWalletLogin !== -14 && coindWalletLogin !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
     }
   };
 
-  console.log(coindAuthResults);
-  localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
-  helper.openPage('dashboard');
+  if (!Object.keys(coindAuthResults).length) {
+    $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
+
+    return false;
+  }
+
+  for (var key in coindAuthResults) {
+    if (coindAuthResults[key] === -14) {
+      $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
+      result = false;
+    }
+    if (coindAuthResults[key] === -15) {
+      $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
+      result = false;
+    }
+    if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) {
+      $('.iguana-coin-' + key + '-error').html('');
+    }
+  }
+
+  return result;
 }
 
 function watchPassphraseKeyUpEvent(buttonClassName) {
@@ -175,9 +301,11 @@ function watchPassphraseKeyUpEvent(buttonClassName) {
 }
 
 function toggleLoginErrorStyling(isError) {
+  var helper = new helperProto();
+
   if (isError) {
     $('#passphrase').addClass('error');
-    $('.login-input-directions-error.col-red').removeClass('hidden');
+    if (isIguana && helper.getCurrentPage() === 'index') $('.login-input-directions-error.col-red').removeClass('hidden');
     $('.login-input-directions').addClass('hidden');
   } else {
     $('#passphrase').removeClass('error');
@@ -187,8 +315,6 @@ function toggleLoginErrorStyling(isError) {
 }
 
 function verifyNewPassphrase() {
-  var localStorage = new localStorageProto();
-
   if (passphraseToVerify === $('#passphrase').val()) {
     return true;
   } else {
@@ -198,6 +324,14 @@ function verifyNewPassphrase() {
 
 function initCreateAccountForm() {
   var newPassphrase = PassPhraseGenerator.generatePassPhrase();
+
+  $('#passphrase').show();
+  $('.non-iguana-walletpassphrase-errors').html('');
+  $('.verify-passphrase-form .login-input-directions-error').addClass('hidden');
+  $('.verify-passphrase-form #passphrase').removeClass('error');
+
+  selectedCoindToEncrypt = null;
+  if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
 
   $('.create-account-form').removeClass('hidden');
   $('.verify-passphrase-form').addClass('hidden');
@@ -215,7 +349,9 @@ function initCreateAccountForm() {
   });
 
   $('.verify-passphrase-form .btn-back').click(function() {
-    initCreateAccountForm();
+    //initCreateAccountForm();
+    helper = new helperProto();
+    helper.openPage('create-account');
   });
 
   $('.create-account-form .btn-back').click(function() {
@@ -224,8 +360,41 @@ function initCreateAccountForm() {
   });
 
   $('.btn-verify-passphrase').click(function() {
-    passphraseToVerify = $('.generated-passhprase').text();
-    $('.create-account-form').addClass('hidden');
-    $('.verify-passphrase-form').removeClass('hidden');
+    if (isIguana) {
+      if (selectedCoindToEncrypt) {
+        var api = new apiProto(),
+            addCoinResult,
+            coinIsRunning = false;
+
+        for (var key in coinsInfo) {
+          if (coinsInfo[key].connection === true) {
+            coinIsRunning = true;
+            addCoinResult = true;
+          }
+        }
+
+        if (!coinIsRunning) addCoinResult = api.addCoin(selectedCoindToEncrypt);
+
+        if (addCoinResult) {
+          passphraseToVerify = $('.generated-passhprase').text();
+          $('.create-account-form').addClass('hidden');
+          $('.verify-passphrase-form').removeClass('hidden');
+          $('.non-iguana-coins-repeater-errors').html('');
+        } else {
+          $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Something went wrong. Coin ' + selectedCoindToEncrypt + ' is not added.</div>');
+        }
+      } else {
+        $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
+      }
+    } else {
+      if (checkSelectedWallet()) {
+        passphraseToVerify = $('.generated-passhprase').text();
+        $('.create-account-form').addClass('hidden');
+        $('.verify-passphrase-form').removeClass('hidden');
+        $('.non-iguana-coins-repeater-errors').html('');
+      } else {
+        $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
+      }
+    }
   });
 }

@@ -151,8 +151,10 @@ apiProto.prototype.errorHandler = function(response, index) {
     return 10;
   }
   if (response.error === 'coin is busy processing') {
-    if ($('#debug-sync-info') && index !== undefined)
+    if ($('#debug-sync-info') && index !== undefined) {
+      coinsInfo[index].connection = true;
       $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
+    }
 
     console.log('server is busy');
 
@@ -380,7 +382,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
   return result;
 }
 
-apiProto.prototype.walletCreate = function(passphrase) {
+apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   var result = false;
 
   var fullUrl = apiProto.prototype.getFullApiRoute('encryptwallet', null, coin);
@@ -394,11 +396,19 @@ apiProto.prototype.walletCreate = function(passphrase) {
     dataType: 'json',
     type: 'POST',
     data: postData,
-    headers: postAuthHeaders
+    headers: postAuthHeaders,
+    error: function(response) {
+      if (response.responseText) {
+        if (response.responseText.indexOf(':-15') > -1) result = -15;
+        console.log(response.responseText);
+      } else {
+        console.log(response);
+      }
+    }
   })
   .done(function(_response) {
-    console.log(_response);
     apiProto.prototype.errorHandler(_response);
+    console.log(_response);
 
     if (_response.result) {
       // non-iguana

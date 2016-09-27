@@ -8,23 +8,22 @@ var helperProto = function() {};
 var defaultSessionLifetime = 7200; // sec
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours() < 10 ? '0' + a.getHours() : a.getHours();
-  var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
-  var sec = a.getSeconds();
+  var a = new Date(UNIX_timestamp * 1000),
+      months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      year = a.getFullYear(),
+      month = months[a.getMonth()],
+      date = a.getDate(),
+      hour = a.getHours() < 10 ? '0' + a.getHours() : a.getHours(),
+      min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(),
+      sec = a.getSeconds();
 
-  if (format === 'DDMMMYYYY')
-    return date + ' ' + month + ' ' + year + ' ';
-  if (format === 'HHMM')
-    return hour + ':' + min;
+  if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year + ' ';
+  if (format === 'HHMM') return hour + ':' + min;
 }
 
 helperProto.prototype.reindexAssocArray = function(array) {
-  var _array = [], index = 0;
+  var _array = [],
+      index = 0;
 
   $.each(array, function(key, value) {
     if (value) {
@@ -41,11 +40,13 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 
   if (modalWindow.hasClass('fade')) {
     modalWindow.removeClass('hidden');
+
     setTimeout(function() {
       modalWindow.removeClass('fade');
     }, 10);
   } else {
     modalWindow.addClass('fade');
+
     setTimeout(function() {
       modalWindow.addClass('hidden');
     }, timeout);
@@ -76,6 +77,7 @@ helperProto.prototype.openPage = function(url) {
 
 helperProto.prototype.checkSession = function(returnVal) {
   var localStorage = new localStorageProto();
+
   if (!localStorage.getVal('iguana-auth')) {
     helperProto.prototype.logout();
   } else {
@@ -96,6 +98,7 @@ helperProto.prototype.checkSession = function(returnVal) {
 
 helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
   var localStorage = new localStorageProto();
+
   if (localStorage.getVal('iguana-rates-' + coin)) {
     var currentEpochTime = new Date(Date.now()) / 1000;
     var secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin).updatedAt / 1000);
@@ -138,11 +141,12 @@ helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
     $('body').append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
     apiProto.prototype.testConnection();
+    $('body').css({ 'height': $(window).height() + $('#debug-sync-info').height() * 3 + 20 });
 
     setInterval(function() {
       //console.clear();
       apiProto.prototype.testConnection();
-      if (helperProto.prototype.getCurrentPage() === 'index') location.reload();
+      if (helperProto.prototype.getCurrentPage() === 'index') constructAuthCoinsRepeater();
     }, isIguana ? 30000 : 60000); // every 30 sec
   });
 }
