@@ -141,7 +141,7 @@ apiProto.prototype.testCoinPorts = function() {
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
-      //timeout: '3000',
+      timeout: '500',
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
         console.log(response);
@@ -257,7 +257,7 @@ apiProto.prototype.testConnection = function() {
     dataType: 'text',
     async: false,
     type: 'GET',
-    timeout: '1000',
+    timeout: '500',
     success: function (response) {
       apiProto.prototype.errorHandler(response);
       // iguana env
