@@ -87,7 +87,7 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
           'portp2p': 8336,
           'user': 'user', // add your rpc pair here`
           'pass': 'pass',
-          'iguanaCurl': 'disabled', // currently disabled in iguana env
+          'iguanaCurl': 'disabled' , // currently disabled in iguana env
           'currentBlockHeightExtSource': proxy + 'chainz.cryptoid.info/explorer/api.dws?q=summary'
         },
         'gmc': {
@@ -117,6 +117,41 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
           'pass': 'pass',
           'iguanaCurl': '{\"startpend\":8,\"endpend\":4,\"services\":129,\"auxpow\":1,\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"DOGE\",\"name\":\"Dogecoin\",\"netmagic\":\"C0C0C0C0\",\"p2p\":22556,\"rpc\":22555,\"pubval\":30,\"p2shval\":5,\"wifval\":128,\"txfee_satoshis\":\"100000000\",\"minconfirms\":2,\"genesishash\":\"1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691\",\"genesis\":{\"hashalgo\": \"scrypt\",\"version\":1,\"timestamp\":1386325540,\"nBits\":\"1e0ffff0\",\"nonce\":99943,\"merkle_root\":\"5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69\"},\"alertpubkey\":\"04d4da7a5dae4db797d9b0644d57a5cd50e05a70f36091cd62e2fc41c98ded06340be5a43a35e185690cd9cde5d72da8f6d065b499b06f51dcfba14aad859f443a\"}',
           'currentBlockHeightExtSource': proxy + 'api.blockcypher.com/v1/doge/main'
+        },
+        'dgb': { // coind is untested
+          'portp2p': 14022,
+          'user': 'user', // add your rpc pair here
+          'pass': 'pass',
+          'iguanaCurl': '{\"startpend\":16,\"endpend\":8,\"services\":129,\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"DGB\",\"name\":\"Digibyte\",\"netmagic\":\"FAC3B6DA\",\"p2p\":12024,\"rpc\":14022,\"pubval\":30,\"p2shval\":5,\"wifval\":128,\"txfee_satoshis\":\"10000\",\"minconfirms\":2,\"genesishash\":\"7497ea1b465eb39f1c8f507bc877078fe016d6fcb6dfad3a64c98dcc6e1e8496\",\"genesis\":{\"version\":1,\"timestamp\":1389388394,\"nBits\":\"1e0ffff0\",\"nonce\":2447652,\"merkle_root\":\"72ddd9496b004221ed0557358846d9248ecd4c440ebd28ed901efc18757d0fad\"},\"alertpubkey\":\"04F04441C4757F356290A37C313C3772C5BC5003E898EB2E0CF365795543A7BF690C8BBBFA32EE3A3325477CE2000B7D0453EFBB203329D0F9DF34D5927D022BC9\"}',
+          'currentBlockHeightExtSource': ''
+        },
+        'zet': { // coind is untested
+          'portp2p': 17335,
+          'user': 'user', // add your rpc pair here
+          'pass': 'pass',
+          'iguanaCurl': '{\"services\":129,\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"ZET\",\"name\":\"Zetacoin\",\"netmagic\":\"fab503df\",\"p2p\":17333,\"rpc\":17335,\"pubval\":80,\"p2shval\":9,\"wifval\":224,\"txfee_satoshis\":\"10000\",\"minconfirms\":2,\"genesishash\":\"000006cab7aa2be2da91015902aa4458dd5fbb8778d175c36d429dc986f2bff4\",\"genesis\":{\"version\":1,\"timestamp\":1375548986,\"nBits\":\"1e0fffff\",\"nonce\":2089928209,\"merkle_root\":\"d0227b8c3e3d07bce9656b3d9e474f050d23458aaead93357dcfdac9ab9b79f9\"},\"alertpubkey\":\"045337216002ca6a71d63edf062895417610a723d453e722bf4728996c58661cdac3d4dec5cecd449b9086e9602b35cc726a9e0163e1a4d40f521fbdaebb674658\"}',
+          'currentBlockHeightExtSource': ''
+        },
+        'btm': { // coind is untested
+          'portp2p': 9266,
+          'user': 'user', // add your rpc pair here
+          'pass': 'pass',
+          'iguanaCurl': '{\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"BTM\",\"name\":\"Bitmark\",\"netmagic\":\"f9beb4d9\",\"p2p\":9265,\"rpc\":9266,\"pubval\":85,\"p2shval\":5,\"wifval\":213,\"txfee_satoshis\":\"0\",\"minconfirms\":2,\"genesishash\":\"c1fb746e87e89ae75bdec2ef0639a1f6786744639ce3d0ece1dcf979b79137cb\",\"genesis\":{\"hashalgo\":\"scrypt\",\"version\":1,\"timestamp\":1405274442,\"nBits\":\"1d00ffff\",\"nonce\":14385103,\"merkle_root\":\"d4715adf41222fae3d4bf41af30c675bc27228233d0f3cfd4ae0ae1d3e760ba8\"},\"alertpubkey\":\"04bf5a75ff0f823840ef512b08add20bb4275ff6e097f2830ad28645e28cb5ea4dc2cfd0972b94019ad46f331b45ef4ba679f2e6c87fd19c864365fadb4f8d2269\"}',
+          'currentBlockHeightExtSource': ''
+        },
+        'carb': { // coind is untested
+          'portp2p': 9351,
+          'user': 'user', // add your rpc pair here
+          'pass': 'pass',
+          'iguanaCurl': '{\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"CARB\",\"name\":\"Carboncoin\",\"netmagic\":\"abccbbdf\",\"p2p\":9350,\"rpc\":9351,\"pubval\":47,\"p2shval\":5,\"wifval\":175,\"txfee_satoshis\":\"0\",\"minconfirms\":2,\"genesishash\":\"a94f1aae8c409a0bd1e53cbca92d7e506b61c51d955cf56f76da501718d48d6c\",\"genesis\":{\"hashalgo\":\"scrypt\",\"version\":1,\"timestamp\":1389199888,\"nBits\":\"1e0ffff0\",\"nonce\":605268,\"merkle_root\":\"074bbb9d355731bfa8f67130e2179db7518d1387ad52e55309d4debe7d4e6383\"},\"alertpubkey\":\"046d6918a7c0c053aa942dbb8861499be4bd915c8bfb6a2b77b3787e207097cc2734b9321226ff107c1a95dae98570a66baec66e350d78ceba091b54411654d33f\"}',
+          'currentBlockHeightExtSource': ''
+        },
+        'anc': { // coind is untested
+          'portp2p': 28332,
+          'user': 'user', // add your rpc pair here
+          'pass': 'pass',
+          'iguanaCurl': '{\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"protover\":70010,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"ANC\",\"name\":\"AnonCoin\",\"netmagic\":\"facabada\",\"p2p\":9377,\"rpc\":28332,\"pubval\":23,\"p2shval\":5,\"wifval\":151,\"txfee_satoshis\":\"2000000\",\"minconfirms\":2,\"genesishash\":\"00000be19c5a519257aa921349037d55548af7cabf112741eb905a26bb73e468\",\"genesis\":{\"version\":1,\"timestamp\":1370190760,\"nBits\":\"1e0ffff0\",\"nonce\":347089008,\"merkle_root\":\"7ce7004d764515f9b43cb9f07547c8e2e00d94c9348b3da33c8681d350f2c736\"},\"alertpubkey\":\"04c6db35c11724e526f6725cc5bd5293b4bc9382397856e1bcef7111fb44ce357fd12442b34c496d937a348c1dca1e36ae0c0e128905eb3d301433887e8f0b4536\"}',
+          'currentBlockHeightExtSource': ''
         }
       }
   };

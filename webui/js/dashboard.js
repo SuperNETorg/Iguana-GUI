@@ -31,7 +31,10 @@ var availableCoinsToAdd = [
   { id: 'sys', name: 'SysCoin', color: 'orange' },
   { id: 'uno', name: 'Unobtaium', color: 'breeze' },
   { id: 'dgb', name: 'DigiByte', color: 'light-blue' },
-  { id: 'zet', name: 'Zetacoin', color: 'yellow' }
+  { id: 'zet', name: 'Zetacoin', color: 'yellow' },
+  { id: 'btm', name: 'Bitmark', color: 'orange' },
+  { id: 'carb', name: 'Carboncoin', color: 'breeze' },
+  { id: 'anc', name: 'Anoncoin', color: 'light-blue' }
 ];
 
 $(document).ready(function() {
