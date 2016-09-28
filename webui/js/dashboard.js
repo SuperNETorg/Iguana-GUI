@@ -138,8 +138,8 @@ function initDashboard() {
   if (isIguana)
     setInterval(function() {
       if (!$('.account-coins-repeater .coin').length) {
-        apiProto.prototype.testConnection();
-        initDashboard();
+        //apiProto.prototype.testConnection();
+        //initDashboard();
       }
     }, 2000);
 }
@@ -332,7 +332,8 @@ function constructTransactionUnitRepeater() {
         if (transactionsList[i].txid) {
           // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
           // timestamp is converted to 24h format
-          var transactionDetails = api.getTransaction(transactionsList[i].txid),
+          var /*transactionDetails = api.getTransaction(transactionsList[i].txid),*/
+              transactionDetails = transactionsList[i],
               txIncomeOrExpenseFlag = '',
               txStatus = 'N/A',
               txCategory = '',
@@ -342,7 +343,7 @@ function constructTransactionUnitRepeater() {
           if (transactionDetails)
             if (transactionDetails.details) {
               txAddress = transactionDetails.details[0].address;
-              txAmount = Math.abs(transactionDetails.details[0].amount);
+              txAmount = transactionDetails.details[0].amount;
               // non-iguana
               if (transactionDetails.details[0].category)
                 txCategory = transactionDetails.details[0].category;
@@ -375,7 +376,7 @@ function constructTransactionUnitRepeater() {
             result += transactionUnitRepeater.replace('{{ status }}', txStatus).
                                               replace('{{ status_class }}', txCategory).
                                               replace('{{ in_out }}', txIncomeOrExpenseFlag).
-                                              replace('{{ amount }}', txAmount.toFixed(decimalPlacesTxUnit)).
+                                              replace('{{ amount }}', Math.abs(txAmount.toFixed(decimalPlacesTxUnit))).
                                               replace('{{ timestamp_format }}', 'timestamp-multi').
                                               replace('{{ coin }}', coinName.toUpperCase()).
                                               replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
@@ -445,7 +446,7 @@ function updateDashboardView(timeout) {
   var dashboardUpdateTimer = setInterval(function() {
     if (!isRT) apiProto.prototype.testCoinPorts();
 
-    console.clear();
+    //console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
     //initDashboard();

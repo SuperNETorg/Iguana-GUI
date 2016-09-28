@@ -187,6 +187,7 @@ apiProto.prototype.errorHandler = function(response, index) {
   }
   if (response.error === 'coin is busy processing') {
     if ($('#debug-sync-info') && index !== undefined) {
+      if (!coinsInfo[index]) coinsInfo[index] = [];
       coinsInfo[index].connection = true;
       $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
@@ -318,7 +319,7 @@ apiProto.prototype.testCoinPorts = function() {
         }
       },
       error: function(response) {
-        apiProto.prototype.errorHandler(response);
+        apiProto.prototype.errorHandler(response, index);
 
         if (response.statusText === 'error' && !isIguana) console.log('is proxy server running?');
         else if (!response.statusCode) console.log('server is busy, check back later');
@@ -445,7 +446,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
     }
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
+    apiProto.prototype.errorHandler(_response, coin);
     console.log(_response);
 
     if (_response.result) {
@@ -496,11 +497,11 @@ apiProto.prototype.listTransactions = function(account, coin) {
     data: postData,
     headers: postAuthHeaders,
     error: function(response) {
-      apiProto.prototype.errorHandler(response);
+      apiProto.prototype.errorHandler(response, coin);
     }
   })
   .done(function(_response) {
-    if (apiProto.prototype.errorHandler(_response) !== 10) {
+    if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
       console.log(_response);
       if (_response.result) {
         // non-iguana
@@ -531,12 +532,12 @@ apiProto.prototype.listTransactions = function(account, coin) {
   return result;
 }
 
-apiProto.prototype.getTransaction = function(txid) {
+apiProto.prototype.getTransaction = function(txid, coin) {
   var result = false;
 
-  var fullUrl = apiProto.prototype.getFullApiRoute('gettransaction');
+  var fullUrl = apiProto.prototype.getFullApiRoute('gettransaction', null, coin);
   var postData = apiProto.prototype.getBitcoinRPCPayloadObj('gettransaction', '\"' + txid + '\"');
-  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
     url: fullUrl,
@@ -547,11 +548,11 @@ apiProto.prototype.getTransaction = function(txid) {
     data: postData,
     headers: postAuthHeaders,
     error: function(response) {
-      apiProto.prototype.errorHandler(response);
+      apiProto.prototype.errorHandler(response, coin);
     }
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
+    apiProto.prototype.errorHandler(_response, coin);
 
     if (_response.result) {
       // non-iguana
@@ -609,7 +610,7 @@ apiProto.prototype.getBalance = function(account, coin) {
     }
   })
   .done(function(_response) {
-    if (apiProto.prototype.errorHandler(_response) !== 10) {
+    if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
       if (_response.result > -1 || Number(_response) === 0) {
         // non-iguana
         result = _response.result || _response;
@@ -654,7 +655,7 @@ apiProto.prototype.walletLock = function(coin) {
     headers: postAuthHeaders
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
+    apiProto.prototype.errorHandler(_response, coin);
 
     if (_response.result) {
       // non-iguana
@@ -703,7 +704,7 @@ apiProto.prototype.coindCheckRT = function(coin) {
     }
   })
   .done(function(_response) {
-    apiProto.prototype.errorHandler(_response);
+    apiProto.prototype.errorHandler(_response, coin);
     if (_response.result.bits) result = true;
     else result = false;
   });
@@ -880,4 +881,4 @@ apiProto.prototype.getExternalRate = function(quote) {
   return result;
 }
 
-apiProto.prototype.testConnection(); // run this everytime a page is (re)loaded
+//apiProto.prototype.testConnection(); // run this everytime a page is (re)loaded
