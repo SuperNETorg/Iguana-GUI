@@ -138,8 +138,8 @@ function initDashboard() {
   if (isIguana)
     setInterval(function() {
       if (!$('.account-coins-repeater .coin').length) {
-        //apiProto.prototype.testConnection();
-        //initDashboard();
+        apiProto.prototype.testConnection();
+        initDashboard();
       }
     }, 2000);
 }

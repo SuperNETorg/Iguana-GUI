@@ -139,8 +139,10 @@ helperProto.prototype.getCurrentPage = function() {
 
 helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
-    $('body').append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
-    $('body').css({ 'height': $(window).height() + $('#debug-sync-info').height() * 3 + 20 });
+    if (isDev && showSyncDebug) {
+      $('body').append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
+      $('body').css({ 'height': $(window).height() + $('#debug-sync-info').height() * 3 + 20 });
+    }
     apiProto.prototype.testConnection();
 
     setInterval(function() {

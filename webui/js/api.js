@@ -189,7 +189,8 @@ apiProto.prototype.errorHandler = function(response, index) {
     if ($('#debug-sync-info') && index !== undefined) {
       if (!coinsInfo[index]) coinsInfo[index] = [];
       coinsInfo[index].connection = true;
-      $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
+      if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1)
+        $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
 
     console.log('server is busy');

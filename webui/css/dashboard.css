@@ -139,6 +139,10 @@
   .account-coins-repeater .item .coin {
     float: left;
   }
+  .account-coins-repeater .item .coin .icon {
+    width: 35px;
+    height: 35px;
+  }
   .account-coins-repeater .item .coin i {
     font-size: 2.5em;
     margin: 25px 4px 0 12px;
