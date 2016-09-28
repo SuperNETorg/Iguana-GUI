@@ -15,7 +15,7 @@ var defaultCurrency = '',
     defaultAccount,
     ratesUpdateTimeout = 15, // sec
     decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
-    decimalPlacesCurrency = 2, //   in case you have too small coin balance value e.g. 0.0001 BTC
+    decimalPlacesCurrency = 2, // in case you have too small coin balance value e.g. 0.0001 BTC
     decimalPlacesTxUnit = 5,
     dashboardUpdateTimout = 15; // sec
 

@@ -67,8 +67,14 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
 
 apiProto.prototype.errorHandler = function(response, index) {
   if (response.error === 'need to unlock wallet') {
-    console.log('unexpected crash or else');
-    helperProto.prototype.logout();
+    if (helperProto.prototype.getCurrentPage() !== 'index')
+      $('#temp-out-of-sync').html('Something went wrong. Please login again.');
+      $('#temp-out-of-sync').removeClass('hidden');
+      setTimeout(function() {
+        helperProto.prototype.logout();
+      }, 1000);
+
+    return 10;
   }
   if (response.error === 'iguana jsonstr expired') {
     console.log('server is busy');
@@ -79,6 +85,7 @@ apiProto.prototype.errorHandler = function(response, index) {
     if ($('#debug-sync-info') && index !== undefined) {
       if (!coinsInfo[index]) coinsInfo[index] = [];
       coinsInfo[index].connection = true;
+
       if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1)
         $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
@@ -91,7 +98,6 @@ apiProto.prototype.errorHandler = function(response, index) {
     console.log('iguana crashed?');
 
     return 10;
-    //location.reload();
   }
 }
 
@@ -226,6 +232,21 @@ apiProto.prototype.testCoinPorts = function() {
       _index++;*/
     });
   });
+
+  // check if iguana or coind quit
+  var totalCoinsRunning = 0;
+
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) totalCoinsRunning++;
+  }
+  if (totalCoinsRunning === 0 && helperProto.prototype.getCurrentPage() !== 'index') {
+    $('#temp-out-of-sync').html('Something went wrong. Please login again.');
+    $('#temp-out-of-sync').removeClass('hidden');
+
+    setTimeout(function() {
+      helperProto.prototype.logout();
+    }, 1000);
+  }
 
   // out of sync message
   var outOfSyncCoinsList = '';
