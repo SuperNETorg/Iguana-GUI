@@ -191,7 +191,10 @@ apiProto.prototype.testCoinPorts = function() {
 
             if (isDev && showSyncDebug)
               if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
-                $('#debug-sync-info').append('coin: ' + index + ', con ' + response.result.connections + ', blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+                $('#debug-sync-info').append('coin: ' + index + ', ' +
+                                             'con ' + response.result.connections + ', ' +
+                                             'blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), ' +
+                                             'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
           }
         }
         if (response.status && isIguana) {
@@ -221,7 +224,10 @@ apiProto.prototype.testCoinPorts = function() {
 
           if (isDev && showSyncDebug)
             if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
-              $('#debug-sync-info').append('coin: ' + index + ', con ' + peers[0].replace('peers.', '') + ', bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+              $('#debug-sync-info').append('coin: ' + index + ', ' +
+                                           'con ' + peers[0].replace('peers.', '') + ', ' +
+                                           'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
+                                           'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
         }
       },
       error: function(response) {
@@ -229,8 +235,8 @@ apiProto.prototype.testCoinPorts = function() {
 
         if (response.statusText === 'error' && !isIguana) console.log('is proxy server running?');
         else if (!response.statusCode) console.log('server is busy, check back later');
-        if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1) console.log(index + ' is verifying blocks...');
 
+        if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1) console.log(index + ' is verifying blocks...');
         if (response.responseText) console.log('coind response: ' + response.responseText);
 
         /*if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log('no coin is detected, at least one daemon must be running!');
@@ -290,15 +296,15 @@ apiProto.prototype.testConnection = function() {
     timeout: '500',
     success: function (response) {
       // iguana env
-      apiProto.prototype.errorHandler(response);
       console.log('iguana is detected');
       isIguana = true;
+      apiProto.prototype.errorHandler(response);
       apiProto.prototype.testCoinPorts();
     },
     error: function (response) {
       // non-iguana env
-      apiProto.prototype.errorHandler(response);
       console.log('running non-iguana env');
+      apiProto.prototype.errorHandler(response);
       apiProto.prototype.testCoinPorts();
     }
   });
