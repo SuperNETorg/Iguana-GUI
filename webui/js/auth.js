@@ -23,15 +23,13 @@ $(document).ready(function() {
     } else {
       $('.login-form').removeClass('hidden');
     }
-
-    constructAuthCoinsRepeater();
-
-    addAuthorizationButtonAction('signin');
-    watchPassphraseKeyUpEvent('signin');
-
     $('.login-form .btn-signup').click(function() {
       helper.openPage('create-account');
     });
+
+    constructAuthCoinsRepeater();
+    addAuthorizationButtonAction('signin');
+    watchPassphraseKeyUpEvent('signin');
   }
 
   if ($('.create-account-form').width()) {
@@ -57,7 +55,6 @@ function addAuthorizationButtonAction(buttonClassName) {
     if (isIguana) {
       if (checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
-          // wallet passphrase check is temp disabled to work in coind env
           if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : verifyNewPassphrase() && api.walletEncrypt(passphraseInput)) {
               toggleLoginErrorStyling(false);
@@ -88,7 +85,6 @@ function addAuthorizationButtonAction(buttonClassName) {
       }
       if ($('.create-account-form')) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
-          // wallet passphrase check is temp disabled to work in coind env
           if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet()) {
               toggleLoginErrorStyling(false);
@@ -235,9 +231,7 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
         }
       }
 
-      if (isIguana && coinsInfo[key].connection === true || result === true) {
-        result = true;
-      }
+      if (isIguana && coinsInfo[key].connection === true || result === true) result = true;
     }
   else
     result = true;
@@ -304,8 +298,8 @@ function toggleLoginErrorStyling(isError) {
   var helper = new helperProto();
 
   if (isError) {
-    $('#passphrase').addClass('error');
     if (isIguana && helper.getCurrentPage() === 'index') $('.login-input-directions-error.col-red').removeClass('hidden');
+    $('#passphrase').addClass('error');
     $('.login-input-directions').addClass('hidden');
   } else {
     $('#passphrase').removeClass('error');
@@ -315,28 +309,23 @@ function toggleLoginErrorStyling(isError) {
 }
 
 function verifyNewPassphrase() {
-  if (passphraseToVerify === $('#passphrase').val()) {
-    return true;
-  } else {
-    return false;
-  }
+  if (passphraseToVerify === $('#passphrase').val()) return true;
+  else return false;
 }
 
 function initCreateAccountForm() {
   var newPassphrase = PassPhraseGenerator.generatePassPhrase();
 
+  selectedCoindToEncrypt = null;
+  if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
+
   $('#passphrase').show();
   $('.non-iguana-walletpassphrase-errors').html('');
   $('.verify-passphrase-form .login-input-directions-error').addClass('hidden');
   $('.verify-passphrase-form #passphrase').removeClass('error');
-
-  selectedCoindToEncrypt = null;
-  if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
-
   $('.create-account-form').removeClass('hidden');
   $('.verify-passphrase-form').addClass('hidden');
   $('#passphrase').val('');
-
   $('#passphrase-saved-checkbox').prop('checked', false);
   $('.generated-passhprase').html(newPassphrase);
   $('.btn-verify-passphrase').addClass('disabled');
@@ -349,6 +338,7 @@ function initCreateAccountForm() {
   });
 
   $('.verify-passphrase-form .btn-back').click(function() {
+    // TODO: refactor
     //initCreateAccountForm();
     helper = new helperProto();
     helper.openPage('create-account');

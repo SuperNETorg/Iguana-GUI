@@ -14,12 +14,12 @@ var defaultCurrency = '',
     coinsSelectedByUser = [],
     defaultAccount,
     ratesUpdateTimeout = 15, // sec
-    decimalPlacesCoin = 1, // note: change decimalPlacesCoin and decimalPlacesCurrency to higher values
-    decimalPlacesCurrency = 2, // in case you have too small coin balance value e.g. 0.0001 BTC
+    decimalPlacesCoin = 1,
+    decimalPlacesCurrency = 2,
     decimalPlacesTxUnit = 5,
     dashboardUpdateTimout = 15; // sec
 
-var availableCoinsToAdd = [
+var availableCoinsToAdd = [ // sort(?)
   { id: 'btc', name: 'Bitcoin', color: 'orange' },
   { id: 'btcd', name: 'Bitcoin D.', color: 'breeze' },
   { id: 'doge', name: 'Dogecoin', color: 'light-blue' },
@@ -48,7 +48,6 @@ function initDashboard() {
       localStorage = new localStorageProto();
 
   defaultAccount = isIguana ? 'default' : ''; // note: change to a specific account name if needed; default coind account name is empty string
-
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : 'USD';
 
   // coin is auto detected based on available portp2p
@@ -95,11 +94,12 @@ function initDashboard() {
     bindClickInCoinRepeater();
   });
   $('.btn-next').click(function() {
+    var result = false;
+
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
     console.log(coinsSelectedByUser);
 
-    var result = false;
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedByUser) {
       if (!isIguana) {
@@ -189,7 +189,8 @@ function constructCoinRepeater() {
 
   for (var i=0; i < availableCoinsToAdd.length; i++) {
     if ((coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection !== true && isIguana) ||
-      (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection === true && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + availableCoinsToAdd[i].id + '\"') === -1 && !isIguana)) {
+      (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection === true &&
+       $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + availableCoinsToAdd[i].id + '\"') === -1 && !isIguana)) {
       if ((isIguana && coinsInfo[availableCoinsToAdd[i].id].iguana !== false) || !isIguana)
         result += coinRepeaterTemplate.replace('{{ id }}', availableCoinsToAdd[i].id.toUpperCase()).
                                        replace('{{ coin_id }}', availableCoinsToAdd[i].id.toLowerCase()).
@@ -216,12 +217,10 @@ var accountCoinRepeaterTemplate = '<div class=\"item{{ active }}\" data-coin-id=
 function constructAccountCoinRepeater() {
   var result = '',
       localStorage = new localStorageProto(),
-      accountCoinRepeaterHTML = '', //$('.account-coins-repeater').html();
+      accountCoinRepeaterHTML = '',
       isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
 
-  if (!$('.account-coins-repeater .item').length) {
-    coinsSelectedByUser[0] = defaultCoin.toLowerCase();
-  }
+  if (!$('.account-coins-repeater .item').length) coinsSelectedByUser[0] = defaultCoin.toLowerCase();
 
   var index = 0;
   for (var key in coinsInfo) {
@@ -257,9 +256,7 @@ function constructAccountCoinRepeater() {
         decimalPlacesCurrency = 2;
       }
 
-      if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) {
-        coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
-      }
+      if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
 
       var currencyCalculatedValue = coinBalance * coinLocalRate;
       if (currencyCalculatedValue < 1 && currencyCalculatedValue > 0) {
@@ -318,13 +315,10 @@ function constructTransactionUnitRepeater() {
       api = new apiProto(),
       coinName = activeCoin || $('.account-coins-repeater .item.active');
 
-  //alert(coinName);
   if (coinName.length) {
     var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
-    console.log(transactionsList);
     // sort tx in desc order by timestamp
     if (transactionsList) {
-      console.log(transactionsList[0]);
       if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time });
       if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime });
 
@@ -372,7 +366,6 @@ function constructTransactionUnitRepeater() {
             }
 
           if (transactionDetails && txStatus !== 'N/A') {
-            //console.log(transactionDetails);
             result += transactionUnitRepeater.replace('{{ status }}', txStatus).
                                               replace('{{ status_class }}', txCategory).
                                               replace('{{ in_out }}', txIncomeOrExpenseFlag).
@@ -380,16 +373,18 @@ function constructTransactionUnitRepeater() {
                                               replace('{{ timestamp_format }}', 'timestamp-multi').
                                               replace('{{ coin }}', coinName.toUpperCase()).
                                               replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
-                                              replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, 'DDMMMYYYY')).
-                                              replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime || transactionDetails.timestamp || transactionDetails.time, 'HHMM'));
+                                              replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                                     transactionDetails.timestamp ||
+                                                                                                     transactionDetails.time, 'DDMMMYYYY')).
+                                              replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                                     transactionDetails.timestamp ||
+                                                                                                     transactionDetails.time, 'HHMM'));
           }
         }
       }
     }
 
-    if (!transactionsList.length) {
-      result = 'No trasaction history is available';
-    }
+    if (!transactionsList.length) result = 'No trasaction history is available';
   }
 
   return result;
@@ -423,10 +418,8 @@ function updateTransactionUnitBalance(isAuto) {
     $('.transactions-unit .active-coin-balance-currency .currency').html(defaultCurrency.toUpperCase());
   }
 
-  if (selectedCoinValue === 0)
-    $('.transactions-unit .action-buttons .btn-send').hide();
-  else
-    $('.transactions-unit .action-buttons .btn-send').show();
+  if (selectedCoinValue === 0) $('.transactions-unit .action-buttons .btn-send').hide();
+  else $('.transactions-unit .action-buttons .btn-send').show();
 }
 
 function updateAccountCoinRepeater() {
@@ -446,6 +439,7 @@ function updateDashboardView(timeout) {
   var dashboardUpdateTimer = setInterval(function() {
     if (!isRT) apiProto.prototype.testCoinPorts();
 
+    // TODO: refactor, not effective
     //console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
@@ -508,10 +502,8 @@ function bindCoinRepeaterSearch() {
     $('.supported-coins-repeater .coin .name').each(function(index, item) {
       var itemText = $(item).text().toString().toLowerCase();
 
-      if (itemText.indexOf(quickSearchVal) > -1)
-        $(this).parent().removeClass('fade');
-      else
-        $(this).parent().addClass('fade');
+      if (itemText.indexOf(quickSearchVal) > -1) $(this).parent().removeClass('fade');
+      else $(this).parent().addClass('fade');
     });
 
     // fade in elements if nothing was found

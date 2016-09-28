@@ -81,8 +81,8 @@ helperProto.prototype.checkSession = function(returnVal) {
   if (!localStorage.getVal('iguana-auth')) {
     helperProto.prototype.logout();
   } else {
-    var currentEpochTime = new Date(Date.now()) / 1000; // calc difference in seconds between current time and session timestamp
-    var secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal('iguana-auth').timestamp / 1000);
+    var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
+        secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal('iguana-auth').timestamp / 1000);
 
     if (secondsElapsedSinceLastAuth > defaultSessionLifetime) {
       if (!returnVal) {
@@ -100,8 +100,8 @@ helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
   var localStorage = new localStorageProto();
 
   if (localStorage.getVal('iguana-rates-' + coin)) {
-    var currentEpochTime = new Date(Date.now()) / 1000;
-    var secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin).updatedAt / 1000);
+    var currentEpochTime = new Date(Date.now()) / 1000,
+        secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin).updatedAt / 1000);
 
     return secondsElapsed;
   } else {
@@ -131,8 +131,8 @@ helperProto.prototype.getCurrency = function() {
 }
 
 helperProto.prototype.getCurrentPage = function() {
-  var currentPageComponents = window.location.href.split('/');
-  var currentPage = currentPageComponents[currentPageComponents.length - 1].split('.html');
+  var currentPageComponents = window.location.href.split('/'),
+      currentPage = currentPageComponents[currentPageComponents.length - 1].split('.html');
 
   return currentPage[0];
 }
