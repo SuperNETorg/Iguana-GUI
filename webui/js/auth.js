@@ -8,6 +8,12 @@
 var passphraseToVerify;
 
 $(document).ready(function() {
+  var api = new apiProto();
+
+  api.testConnection(initAuthCB);
+});
+
+function initAuthCB() {
   var localStorage = new localStorageProto(),
       helper = new helperProto(),
       selectedCoindToEncrypt;
@@ -38,7 +44,7 @@ $(document).ready(function() {
     initCreateAccountForm();
     constructCoinsRepeaterEncrypt();
   }
-});
+}
 
 function addAuthorizationButtonAction(buttonClassName) {
   $('.btn-' + buttonClassName).click(function() {
@@ -148,7 +154,7 @@ function constructAuthCoinsRepeater() {
     $('#passphrase').hide();
     $('.btn-signup').html('Encrypt wallet');
   }
-  if (index !== 0) $('.coind-iguana-notice').hide();
+  if (index !== 0 || isIguana) $('.coind-iguana-notice').hide();
 
   result = result + (!isIguana ? '<hr/>' : '');
   $(isIguana ? '.iguana-coins-repeater' : '.non-iguana-coins-repeater').html(result);

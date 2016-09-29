@@ -141,14 +141,12 @@ helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
     if (isDev && showSyncDebug) {
       $('body').append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
-      $('body').css({ 'height': $(window).height() + $('#debug-sync-info').height() * 3 + 20 });
+      $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
     }
-    apiProto.prototype.testConnection();
 
     setInterval(function() {
       //console.clear();
-      apiProto.prototype.testConnection();
-      if (helperProto.prototype.getCurrentPage() === 'index') constructAuthCoinsRepeater();
+      apiProto.prototype.testConnection(apiProto.prototype.testCoinPorts(helperProto.prototype.getCurrentPage() === 'index' ? constructAuthCoinsRepeater() : null));
     }, isIguana ? 30000 : 60000); // every 30 sec
   });
 }

@@ -64,6 +64,7 @@ apiProto.prototype.errorHandler = function(response, index) {
     if (helperProto.prototype.getCurrentPage() !== 'index')
       $('#temp-out-of-sync').html('Something went wrong. Please login again.');
       $('#temp-out-of-sync').removeClass('hidden');
+
       setTimeout(function() {
         helperProto.prototype.logout();
       }, 1000);
@@ -71,7 +72,7 @@ apiProto.prototype.errorHandler = function(response, index) {
     return 10;
   }
   if (response.error === 'iguana jsonstr expired') {
-    console.log('server is busy');
+    if (showConsoleMessages && isDev) console.log('server is busy');
 
     return 10;
   }
@@ -84,12 +85,12 @@ apiProto.prototype.errorHandler = function(response, index) {
         $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
 
-    console.log('server is busy');
+    if (showConsoleMessages && isDev) console.log('server is busy');
 
     return 10;
   }
   if (response.error === 'null return from iguana_bitcoinRPC') {
-    console.log('iguana crashed?');
+    if (showConsoleMessages && isDev) console.log('iguana crashed?');
 
     return 10;
   }
@@ -134,7 +135,7 @@ apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
 
 // test must be hooked to initial gui start or addcoin method
 // test 1 port for a single coin
-apiProto.prototype.testCoinPorts = function() {
+apiProto.prototype.testCoinPorts = function(cb) {
   var result = false,
       _index = 0;
   $('#debug-sync-info').html('');
@@ -150,15 +151,14 @@ apiProto.prototype.testCoinPorts = function() {
     $.ajax({
       url: fullUrl,
       cache: false,
-      async: false,
+      async: true,
       dataType: 'json',
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
-      timeout: '500',
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
-        console.log(response);
+        if (showConsoleMessages && isDev) console.log(response);
 
         if (response.error === 'coin is busy processing') {
           coinsInfo[index].connection = true;
@@ -166,8 +166,8 @@ apiProto.prototype.testCoinPorts = function() {
         }
 
         if (response.result.walletversion || response.result === 'success') {
-          console.log('portp2p con test passed');
-          console.log(index + ' daemon is detected');
+          if (showConsoleMessages && isDev) console.log('portp2p con test passed');
+          if (showConsoleMessages && isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
 
           // non-iguana
@@ -177,8 +177,8 @@ apiProto.prototype.testCoinPorts = function() {
                 coindCheckRTResponse = apiProto.prototype.coindCheckRT(index),
                 syncPercentage = (response.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
-            console.log('Connections: ' + response.result.connections);
-            console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
+            if (showConsoleMessages && isDev) console.log('Connections: ' + response.result.connections);
+            if (showConsoleMessages && isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
 
             if (response.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
               isRT = true;
@@ -186,15 +186,16 @@ apiProto.prototype.testCoinPorts = function() {
             } else {
               isRT = false;
               coinsInfo[index].RT = false;
-              console.log('RT is not ready yet!');
+              if (showConsoleMessages && isDev) console.log('RT is not ready yet!');
             }
 
-            if (isDev && showSyncDebug)
-              if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
+            if (isDev && showSyncDebug) {
+              if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
                 $('#debug-sync-info').append('coin: ' + index + ', ' +
                                              'con ' + response.result.connections + ', ' +
                                              'blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), ' +
                                              'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+            }
           }
         }
         if (response.status && isIguana) {
@@ -209,7 +210,7 @@ apiProto.prototype.testCoinPorts = function() {
           if (response.status.indexOf('.RT0 ') > -1) {
             isRT = false;
             coinsInfo[index].RT = false;
-            console.log('RT is not ready yet!');
+            if (showConsoleMessages && isDev) console.log('RT is not ready yet!');
           } else {
             isRT = true;
             coinsInfo[index].RT = true;
@@ -218,36 +219,65 @@ apiProto.prototype.testCoinPorts = function() {
           // disable coin in iguna mode
           if (conf.iguanaCurl === 'disabled') coinsInfo[index].iguana = false;
 
-          console.log('Connections: ' + peers[0].replace('peers.', ''));
-          console.log('Blocks: ' + currentHeight);
-          console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
+          if (showConsoleMessages && isDev) console.log('Connections: ' + peers[0].replace('peers.', ''));
+          if (showConsoleMessages && isDev) console.log('Blocks: ' + currentHeight);
+          if (showConsoleMessages && isDev) console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
 
-          if (isDev && showSyncDebug)
-            if ($('#debug-sync-info').html().indexOf('coin: ' + index) < 0)
+          if (isDev && showSyncDebug) {
+            if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
               $('#debug-sync-info').append('coin: ' + index + ', ' +
                                            'con ' + peers[0].replace('peers.', '') + ', ' +
                                            'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
                                            'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+          }
         }
+
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
+          if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+          apiProto.prototype.checkBackEndConnectionStatus();
+          if (isDev && showSyncDebug)
+            $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+            setInterval(function() {
+              if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+              $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+            }, 1000);
+          cb.call();
+        }
+        _index++;
       },
       error: function(response) {
         apiProto.prototype.errorHandler(response, index);
 
-        if (response.statusText === 'error' && !isIguana) console.log('is proxy server running?');
-        else if (!response.statusCode) console.log('server is busy, check back later');
+        if (response.statusText === 'error' && !isIguana)
+          if (showConsoleMessages && isDev) console.log('is proxy server running?');
+        else if (!response.statusCode)
+          if (showConsoleMessages && isDev) console.log('server is busy, check back later');
 
-        if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1) console.log(index + ' is verifying blocks...');
-        if (response.responseText) console.log('coind response: ' + response.responseText);
+        if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1)
+          if (showConsoleMessages && isDev) console.log(index + ' is verifying blocks...');
+        if (response.responseText)
+          if (showConsoleMessages && isDev) console.log('coind response: ' + response.responseText);
 
-        /*if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log('no coin is detected, at least one daemon must be running!');
-        _index++;*/
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
+          if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+          apiProto.prototype.checkBackEndConnectionStatus();
+          if (isDev && showSyncDebug)
+            $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+            setInterval(function() {
+              if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+              $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+            }, 1000);
+          cb.call();
+        }
+        _index++;
       }
-    }).done(function() {
-      /*if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) console.log('no coin is detected, at least one daemon must be running!');
-      _index++;*/
-    });
+    })
   });
 
+  return result;
+}
+
+apiProto.prototype.checkBackEndConnectionStatus = function() {
   // check if iguana or coind quit
   var totalCoinsRunning = 0;
 
@@ -269,7 +299,7 @@ apiProto.prototype.testCoinPorts = function() {
     if (coinsInfo[index].RT === false) outOfSyncCoinsList += index.toUpperCase() + ', ';
   });
   if (outOfSyncCoinsList[outOfSyncCoinsList.length - 1] === ' ') {
-    outOfSyncCoinsList = outOfSyncCoinsList.replace(/, $/, '');;
+    outOfSyncCoinsList = outOfSyncCoinsList.replace(/, $/, '');
   }
   if (!outOfSyncCoinsList.length) {
     $('#temp-out-of-sync').addClass('hidden');
@@ -277,12 +307,10 @@ apiProto.prototype.testCoinPorts = function() {
     $('#temp-out-of-sync').html(outOfSyncCoinsList + ' is out of sync. Information about balances, transactions and send/receive functions is limited.');
     $('#temp-out-of-sync').removeClass('hidden');
   }
-
-  return result;
 }
 
 // check if iguana is running
-apiProto.prototype.testConnection = function() {
+apiProto.prototype.testConnection = function(cb) {
   var result = false;
 
   // test if iguana is running
@@ -291,25 +319,23 @@ apiProto.prototype.testConnection = function() {
     url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
     cache: false,
     dataType: 'text',
-    async: false,
+    async: true,
     type: 'GET',
-    timeout: '500',
     success: function (response) {
       // iguana env
-      console.log('iguana is detected');
+      if (showConsoleMessages && isDev) console.log('iguana is detected');
       isIguana = true;
       apiProto.prototype.errorHandler(response);
-      apiProto.prototype.testCoinPorts();
+      apiProto.prototype.testCoinPorts(cb);
     },
     error: function (response) {
       // non-iguana env
-      console.log('running non-iguana env');
+      isIguana = false;
+      if (showConsoleMessages && isDev) console.log('running non-iguana env');
       apiProto.prototype.errorHandler(response);
-      apiProto.prototype.testCoinPorts();
+      apiProto.prototype.testCoinPorts(cb);
     }
   });
-
-  portsTested = true;
 }
 
 apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
@@ -328,7 +354,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
     data: postData,
     headers: postAuthHeaders,
     success: function(response) {
-      console.log(response);
+      if (showConsoleMessages && isDev) console.log(response);
       result = true;
     },
     error: function(response) {
@@ -336,9 +362,9 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
         if (response.responseText.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) result = true;
         if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1) result = -14;
         if (response.responseText.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
-        console.log(response.responseText);
+        if (showConsoleMessages && isDev) console.log(response.responseText);
       } else {
-        console.log(response.error);
+        if (showConsoleMessages && isDev) console.log(response.error);
       }
     }
   });
@@ -363,15 +389,15 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
     error: function(response) {
       if (response.responseText) {
         if (response.responseText.indexOf(':-15') > -1) result = -15;
-        console.log(response.responseText);
+        if (showConsoleMessages && isDev) console.log(response.responseText);
       } else {
-        console.log(response);
+        if (showConsoleMessages && isDev) console.log(response);
       }
     }
   })
   .done(function(_response) {
     apiProto.prototype.errorHandler(_response, coin);
-    console.log(_response);
+    if (showConsoleMessages && isDev) console.log(_response);
 
     if (_response.result) {
       // non-iguana
@@ -383,7 +409,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
 
       if (response.error) {
         // do something
-        console.log('error: ' + response.error);
+        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response.result === 'success') result = response;
@@ -421,7 +447,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
   })
   .done(function(_response) {
     if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
-      console.log(_response);
+      if (showConsoleMessages && isDev) console.log(_response);
 
       if (_response.result) {
         // non-iguana
@@ -433,7 +459,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
 
         if (response.error) {
           // do something
-          console.log('error: ' + response.error);
+          if (showConsoleMessages && isDev) console.log('error: ' + response.error);
           result = false;
         } else {
           if (response.result.length) result = response.result;
@@ -477,7 +503,7 @@ apiProto.prototype.getTransaction = function(txid, coin) {
 
       if (response.error) {
         // do something
-        console.log('error: ' + response.error);
+        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response.txid) result = response;
@@ -512,7 +538,7 @@ apiProto.prototype.getBalance = function(account, coin) {
     error: function(response) {
       if (response.responseText)
         if (response.responseText.indexOf('Accounting API is deprecated') > -1 || response.responseText.indexOf('If you want to use accounting API'))
-          console.log('add enableaccounts=1 and staking=0 in btcd conf file');
+          if (showConsoleMessages && isDev) console.log('add enableaccounts=1 and staking=0 in btcd conf file');
     }
   })
   .done(function(_response) {
@@ -521,7 +547,7 @@ apiProto.prototype.getBalance = function(account, coin) {
         // non-iguana
         result = _response.result || _response;
       } else {
-        console.log(_response);
+        if (showConsoleMessages && isDev) console.log(_response);
 
         // iguana
         var response = $.parseJSON(_response);
@@ -563,14 +589,14 @@ apiProto.prototype.walletLock = function(coin) {
       // non-iguana
       result = _response.result;
     } else {
-      console.log(_response);
+      if (showConsoleMessages && isDev) console.log(_response);
 
       // iguana
       var response = typeof _response === 'object' ? _response : $.parseJSON(_response);
 
       if (response.error) {
         // do something
-        console.log('error: ' + response.error);
+        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response) result = response;
@@ -623,11 +649,11 @@ apiProto.prototype.addCoin = function(coin) {
     async: false
   })
   .done(function(response) {
-    console.log(response)
+    if (showConsoleMessages && isDev) console.log(response)
 
     if (response.error) {
       // do something
-      console.log('error: ' + response.error);
+      if (showConsoleMessages && isDev) console.log('error: ' + response.error);
       result = false;
     } else {
       if (response.result === 'coin added' || response.result === 'coin already there') result = response;
@@ -660,7 +686,7 @@ apiProto.prototype.getCoinCurrentHeight = function(coin) {
         if (response.data) result = response.data.last_block.nb;
         if (response[coin]) result = response[coin].height;
       } else {
-        console.log('error retrieving current block height from ' + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
+        if (showConsoleMessages && isDev) console.log('error retrieving current block height from ' + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
         result = false;
       }
     });
@@ -685,7 +711,7 @@ apiProto.prototype.getIguanaRate = function(quote) {
 
     if (response.error) {
       // do something
-      console.log('error: ' + response.error);
+      if (showConsoleMessages && isDev) console.log('error: ' + response.error);
       result = false;
     } else {
       if (response.result === 'success') result = response.quote;
@@ -715,7 +741,7 @@ apiProto.prototype.getExternalRate = function(quote) {
 
       if (response && response[quoteComponents[1]]) {
         result = response[quoteComponents[1]];
-        console.log('rates source https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
+        if (showConsoleMessages && isDev) console.log('rates source https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
       } else {
         result = false;
       }
@@ -752,13 +778,13 @@ apiProto.prototype.getExternalRate = function(quote) {
 
               if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
                 result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
-                console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
+                if (showConsoleMessages && isDev) console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
               } else {
                 result = false;
               }
             },
             error: function(response) {
-              console.log('both services are failed to respond');
+              if (showConsoleMessages && isDev) console.log('both services are failed to respond');
             }
           });
         } else {
@@ -766,11 +792,9 @@ apiProto.prototype.getExternalRate = function(quote) {
         }
       },
       error: function(response) {
-        console.log('both services failed to respond');
+        if (showConsoleMessages && isDev) console.log('both services failed to respond');
       }
     });
 
   return result;
 }
-
-//apiProto.prototype.testConnection(); // run this everytime a page is (re)loaded

@@ -38,7 +38,8 @@ var availableCoinsToAdd = [ // sort(?)
 ];
 
 $(document).ready(function() {
-  initDashboard();
+  var api = api = new apiProto();
+  api.testConnection(initDashboard);
 });
 
 function initDashboard() {
@@ -80,12 +81,7 @@ function initDashboard() {
   });
 
   $('.btn-add-coin').click(function() {
-    api.testCoinPorts();
-    if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
-    helper.toggleModalWindow('add-new-coin-form', 300);
-    coinsSelectedByUser = [];
-    $('.supported-coins-repeater').html(constructCoinRepeater());
-    bindClickInCoinRepeater();
+    api.testCoinPorts(addCoinButtonCB());
   });
   $('.btn-close,.modal-overlay').click(function() {
     helper.toggleModalWindow('add-new-coin-form', 300);
@@ -98,7 +94,7 @@ function initDashboard() {
 
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
-    console.log(coinsSelectedByUser);
+    if (showConsoleMessages && isDev) console.log(coinsSelectedByUser);
 
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedByUser) {
@@ -138,10 +134,19 @@ function initDashboard() {
   if (isIguana)
     setInterval(function() {
       if (!$('.account-coins-repeater .coin').length) {
-        apiProto.prototype.testConnection();
-        initDashboard();
+        apiProto.prototype.testConnection(initDashboard());
       }
     }, 2000);
+}
+
+function addCoinButtonCB() {
+  var helper = new helperProto();
+
+  if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
+  helper.toggleModalWindow('add-new-coin-form', 300);
+  coinsSelectedByUser = [];
+  $('.supported-coins-repeater').html(constructCoinRepeater());
+  bindClickInCoinRepeater();
 }
 
 var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">' +
@@ -437,7 +442,7 @@ function updateDashboardView(timeout) {
   var helper = new helperProto();
 
   var dashboardUpdateTimer = setInterval(function() {
-    if (!isRT) apiProto.prototype.testCoinPorts();
+    //if (!isRT) apiProto.prototype.testCoinPorts();
 
     // TODO: refactor, not effective
     //console.clear();
@@ -451,7 +456,7 @@ function updateDashboardView(timeout) {
     //updateAccountCoinRepeater();
     updateTransactionUnitBalance(true);
     $('.transactions-list-repeater').html(constructTransactionUnitRepeater());
-    console.log('dashboard updated');
+    if (showConsoleMessages && isDev) console.log('dashboard updated');
   }, timeout * 1000);
 }
 
