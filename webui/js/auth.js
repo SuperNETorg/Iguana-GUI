@@ -5,7 +5,8 @@
 
  // TODO: refactor repeater update
 
-var passphraseToVerify;
+var passphraseToVerify,
+    coindAuthResults = [];
 
 $(document).ready(function() {
   var api = new apiProto();
@@ -84,10 +85,7 @@ function addAuthorizationButtonAction(buttonClassName) {
       }
     } else {
       if ($('.login-form')) {
-        if (authAllAvailableCoind()) {
-          localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
-          helper.openPage('dashboard');
-        }
+        authAllAvailableCoind();
       }
       if ($('.create-account-form')) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
@@ -148,7 +146,7 @@ function constructAuthCoinsRepeater() {
                                       replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '').
                                       replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index' ? 'checked disabled' : '');
     }
-  };
+  }
 
   if (!isIguana) {
     $('#passphrase').hide();
@@ -248,46 +246,61 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 }
 
 function authAllAvailableCoind() {
-  var coindAuthResults = [],
-      api = new apiProto(),
-      helper = new helperProto(),
-      localStorage = new localStorageProto(),
-      result = true;
+  var api = new apiProto(),
+      result = false;
 
-  $('.coind-login-errors').html('');
+  coindAuthResults = [];
+  $('.non-iguana-coins-repeater-error').html('');
 
+  var checkedCoindCount = 0;
   for (var key in coinsInfo) {
-    if (coinsInfo[key].connection === true && $('#iguana-coin-' + key + '-checkbox').prop('checked')) {
-
-      api.walletLock(key);
-      var coindWalletLogin = api.walletLogin($('#iguana-coin-' + key + '-textarea').val(), defaultSessionLifetime, key);
-      coindAuthResults[key] = coindWalletLogin;
-
-      if (coindWalletLogin !== -14 && coindWalletLogin !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
-    }
-  };
-
-  if (!Object.keys(coindAuthResults).length) {
-    $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
-
-    return false;
+    if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) checkedCoindCount++;
   }
-
-  for (var key in coindAuthResults) {
-    if (coindAuthResults[key] === -14) {
-      $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
-      result = false;
-    }
-    if (coindAuthResults[key] === -15) {
-      $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
-      result = false;
-    }
-    if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) {
-      $('.iguana-coin-' + key + '-error').html('');
-    }
-  }
+  if (checkedCoindCount === 0) $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
+  else
+    for (var key in coinsInfo) {
+      if (coinsInfo[key].connection === true && $('#iguana-coin-' + key + '-checkbox').prop('checked')) {
+        api.walletLock(key, api.walletLogin($('#iguana-coin-' + key + '-textarea').val(), defaultSessionLifetime, key, authAllAvailableCoindCB));
+      }
+    };
 
   return result;
+}
+
+function authAllAvailableCoindCB(result, key, isLast) {
+  var localStorage = new localStorageProto();
+
+  coindAuthResults[key] = result;
+  if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
+  if (coindAuthResults[key] === -14) {
+    $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
+    result = false;
+  }
+  if (coindAuthResults[key] === -15) {
+    $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
+    result = false;
+  }
+  if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) {
+    $('.iguana-coin-' + key + '-error').html('');
+  }
+
+  // check coind login results
+  var seletedLoginCoind = $('.non-iguana-coins-repeater').find('input:checked');
+  // all coind walletpassphrase responses are arived by now
+  if (Object.keys(coindAuthResults).length === seletedLoginCoind.length) {
+    var isAnyCoindLoginError = false;
+
+    for (var key in coindAuthResults) {
+      if (coindAuthResults[key] === -14 || coindAuthResults[key] === -15) isAnyCoindLoginError = true;
+    }
+
+    if (!isAnyCoindLoginError) {
+      var helper = new helperProto();
+
+      localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+      helper.openPage('dashboard');
+    }
+  }
 }
 
 function watchPassphraseKeyUpEvent(buttonClassName) {

@@ -338,7 +338,7 @@ apiProto.prototype.testConnection = function(cb) {
   });
 }
 
-apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
+apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletpassphrase', null, coin),
       defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
@@ -348,7 +348,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
   $.ajax({
     url: isIguana ? defaultIguanaServerUrl : fullUrl,
     cache: false,
-    async: false,
+    async: cb ? true : false,
     dataType: 'json',
     type: 'POST',
     data: postData,
@@ -356,6 +356,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
     success: function(response) {
       if (showConsoleMessages && isDev) console.log(response);
       result = true;
+      if (cb) cb.call(this, result, coin);
     },
     error: function(response) {
       if (response.responseText) {
@@ -366,12 +367,16 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin) {
       } else {
         if (showConsoleMessages && isDev) console.log(response.error);
       }
+      if (cb) cb.call(this, result, coin);
     }
   });
 
   return result;
 }
 
+/*
+  current implementation doesn't require async as only one iguana/coind wallet can be encrypted at any given time
+*/
 apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('encryptwallet', null, coin),
@@ -381,7 +386,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   $.ajax({
     url: fullUrl,
     cache: false,
-    async: false,
+    async: true,
     dataType: 'json',
     type: 'POST',
     data: postData,
@@ -567,7 +572,7 @@ apiProto.prototype.getBalance = function(account, coin) {
   return result;
 }
 
-apiProto.prototype.walletLock = function(coin) {
+apiProto.prototype.walletLock = function(coin, cb) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletlock', null, coin),
       postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletlock'),
@@ -576,7 +581,7 @@ apiProto.prototype.walletLock = function(coin) {
   $.ajax({
     url: fullUrl,
     cache: false,
-    async: false,
+    async: cb ? true : false,
     dataType: 'json',
     type: 'POST',
     data: postData,
@@ -603,6 +608,8 @@ apiProto.prototype.walletLock = function(coin) {
         else result = false;
       }
     }
+
+    if (cb) cb.call();
   });
 
   return result;
