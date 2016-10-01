@@ -1,11 +1,14 @@
-var currencyArr = [ { 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dollar', 'flagid': 'us', 'selected': true },
-                    { 'id': 1, 'shortName': 'EUR', 'fullName': 'Euro', 'flagid': 'eu', 'selected': false }];
+var currencyArr = [{ 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dollar', 'flagid': 'us', 'selected': true },
+                   { 'id': 1, 'shortName': 'EUR', 'fullName': 'Euro', 'flagid': 'eu' }];
 
 
 $(document).ready(function(e) {
-  var outPut = '';
-  var defaultActive = '';
-  var helper = new helperProto();
+  var outPut = '',
+      defaultActive = '',
+      helper = new helperProto(),
+      api = new apiProto();
+
+  api.testConnection();
 
   for (var i in currencyArr)
   {
