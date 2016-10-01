@@ -1,9 +1,0 @@
-ind=0
-one=1
-while true
-do
-./activehandle
-ind=`expr $ind + $one`
-echo $ind
-done
-

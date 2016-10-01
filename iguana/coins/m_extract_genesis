@@ -1,1 +1,0 @@
-gcc -o extract_genesis extract_genesis.c
