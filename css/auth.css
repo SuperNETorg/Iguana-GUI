@@ -196,3 +196,7 @@
   	position: relative;
   	top: -1px;
 	}
+	.paste-from-clipboard-link {
+		padding-top: 2px;
+		border-bottom: dotted 1px #000;
+	}

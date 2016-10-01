@@ -10,17 +10,18 @@
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/responsive/auth.css">
+    <!-- crypto libs -->
+    <script type="text/javascript" src="js/libs/crypto/wordlist.js"></script>
+    <script type="text/javascript" src="js/libs/crypto/passphrasegenerator.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-3.0.0.min.js"></script>
+    <!-- gui logic -->
     <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/dev.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="js/supported-coins-list.js"></script>
     <script type="text/javascript" src="js/api.js"></script>
     <script type="text/javascript" src="js/localstorage.js"></script>
     <script type="text/javascript" src="js/helpers.js"></script>
     <script type="text/javascript" src="js/auth.js"></script>
-    <!-- crypto libs -->
-    <script type="text/javascript" src="js/libs/crypto/wordlist.js"></script>
-    <script type="text/javascript" src="js/libs/crypto/passphrasegenerator.js"></script>
   </head>
   <body>
     <div class="container-fluid">
@@ -34,8 +35,8 @@
           <div class="form-content">
             <div class="login-input-directions center offset-bottom-md unselectable">Write down this 24-word passphrase and keep it safe. You can't access or restore your account, if you lose it! <strong>Don't ever disclose your passphrase!</strong></div>
             <div class="passphrase-container row center offset-bottom-md">
-              <div class="title unselectable">Passphrase (you can copy it):</div>
-              <div class="generated-passhprase"></div>
+              <div class="title unselectable">Passphrase (click on the text below to copy it):</div>
+              <div class="generated-passhprase cursor-pointer"></div>
             </div>
             <input type="checkbox" id="passphrase-saved-checkbox" name="passphraseSaved" class="checkbox" />
             <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer">
@@ -57,7 +58,7 @@
           </header>
           <div class="form-content">
             <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of 24 words. Try one more time.</div>
-            <div class="login-input-directions center offset-bottom-sm unselectable">Type or paste the passphrase to confirm you saved it properly</div>
+            <div class="login-input-directions center offset-bottom-sm unselectable">Type or paste the passphrase to confirm you saved it properly. <span class="paste-from-clipboard-link cursor-pointer">Click here to paste from the clipboard.</span></div>
             <textarea name="verifyPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
             <div class="non-iguana-walletpassphrase-errors"></div>
             <div class="login-or-delim center unselectable"></div>
@@ -67,5 +68,6 @@
         <!-- // verify passphrase form end -->
       </div>
     </div>
+    <script type="text/javascript" src="js/libs/zeroclipboard.min.js"></script>
   </body>
 </html>

@@ -4,6 +4,7 @@
  */
 
  // TODO: refactor repeater update
+ //       fix coind encryptwallet
 
 var passphraseToVerify,
     coindAuthResults = [];
@@ -40,10 +41,18 @@ function initAuthCB() {
   }
 
   if ($('.create-account-form').width()) {
+    $.getScript("js/libs/zeroclipboard.min.js", function() {
+      if (showConsoleMessages && isDev) console.log('script js/libs/zeroclipboard.min.js loaded and executed');
+    });
     addAuthorizationButtonAction('add-account');
     watchPassphraseKeyUpEvent('add-account');
     initCreateAccountForm();
     constructCoinsRepeaterEncrypt();
+    helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
+    $('.paste-from-clipboard-link').click(function() {
+      $('#passphrase').val(pasteTextFromClipboard);
+      if (pasteTextFromClipboard.length > 0) $('.btn-add-account').removeClass('disabled');
+    });
   }
 }
 
@@ -347,6 +356,8 @@ function initCreateAccountForm() {
   $('#passphrase').val('');
   $('#passphrase-saved-checkbox').prop('checked', false);
   $('.generated-passhprase').html(newPassphrase);
+  $('.generated-passhprase').prop('data-clipboard-text', newPassphrase);
+  console.log($('.generated-passhprase').prop('data-clipboard-text'));
   $('.btn-verify-passphrase').addClass('disabled');
 
   $('#passphrase-saved-checkbox').click(function() {

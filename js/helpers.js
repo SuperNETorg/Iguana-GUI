@@ -6,8 +6,9 @@
 
 var helperProto = function() {};
 
-var defaultSessionLifetime = settings.defaultSessionLifetime; // sec
-var portPollUpdateTimeout = settings.portPollUpdateTimeout; //sec
+var defaultSessionLifetime = settings.defaultSessionLifetime,
+    portPollUpdateTimeout = settings.portPollUpdateTimeout,
+    pasteTextFromClipboard = '';
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -200,6 +201,23 @@ helperProto.prototype.getPortPollResponse = function() {
       }, 1000);
     }
   }
+}
+
+/*
+  note: this method leads to "blocked plugin" notification in FF
+        a user must allow further execution for workaround to do copy-paste job
+*/
+helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
+  var client = new ZeroClipboard($(elementId));
+  client.on('ready', function(readyEvent) {
+    if (showConsoleMessages && isDev) console.log('ZeroClipboard SWF is ready');
+
+    client.setText($(elementId).html()); // add text to clipboard
+    client.on('aftercopy', function(event) {
+      pasteTextFromClipboard = event.data["text/plain"];
+      alert(elementDisplayName + ' copied to clipboard: ' + event.data["text/plain"]);
+    });
+  });
 }
 
 helperProto.prototype.syncStatus();
