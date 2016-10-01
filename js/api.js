@@ -5,7 +5,6 @@
 
 // TODO: 1) add response handler
 //       2) generalize get/post functions into one
-//       3) add localstorage hook on testPort success
 //      (?) refactor conf into a singleton obj
 
 var apiProto = function() {};
@@ -14,16 +13,16 @@ var activeCoin,
     portsTested = false,
     isIguana = false,
     isRT = false,
-    coinsInfo = []; // cointains coin related info
+    coinsInfo = new Array; // cointains coin related info
 
 apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
   var conf = {
       'server': {
         'protocol': 'http://',
         'ip': 'localhost',
-        'iguanaPort': '7778'
+        'iguanaPort': settings.iguanaPort
       },
-      'apiRoutes': {
+      'apiRoutes': { // deprecated, remove(?)
         'bitcoinRPC' : {
           'walletPassphrase' : 'bitcoinrpc/walletpassphrase', // params: password String, timeout Int
           'encryptWallet' : 'bitcoinrpc/encryptwallet', // params: passphrase String
@@ -43,6 +42,7 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
   // coin port switch hook
   if (coin && conf.coins[coin].coindPort && !isIguana) {
     conf.server.port = conf.coins[coin].coindPort;
+
     return conf;
   }
 
@@ -122,19 +122,19 @@ apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
   if (conf)
     return isIguana ? (apiProto.prototype.getConf().server.protocol +
                       apiProto.prototype.getConf().server.ip + ':' +
-                      conf.portp2p + '/api/bitcoinrpc/' + method) : (proxy +
+                      conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
                       apiProto.prototype.getConf().server.ip + ':' +
                       (conf.coindPort ? conf.coindPort : conf.portp2p));
   else
     return isIguana ? (apiProto.prototype.getConf().server.protocol +
                       apiProto.prototype.getConf().server.ip + ':' +
-                      apiProto.prototype.getConf(false, coin).server.port + '/api/bitcoinrpc/' + method) : (proxy +
+                      apiProto.prototype.getConf(false, coin).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
                       apiProto.prototype.getConf().server.ip + ':' +
                       apiProto.prototype.getConf(false, coin).server.port);
 }
 
 // test must be hooked to initial gui start or addcoin method
-// test 1 port for a single coin
+// test default p2p
 apiProto.prototype.testCoinPorts = function(cb) {
   var result = false,
       _index = 0;
@@ -158,6 +158,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       headers: postAuthHeaders,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
+        console.log('p2p test ' + index);
         if (showConsoleMessages && isDev) console.log(response);
 
         if (response.error === 'coin is busy processing') {
@@ -165,7 +166,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
           coinsInfo[index].RT = false;
         }
 
-        if (response.result.walletversion || response.result === 'success') {
+        if (response.result.walletversion || response.result.difficulty || response.result === 'success') {
           if (showConsoleMessages && isDev) console.log('portp2p con test passed');
           if (showConsoleMessages && isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
@@ -232,9 +233,15 @@ apiProto.prototype.testCoinPorts = function(cb) {
           }
         }
 
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) {
+          helperProto.prototype.setPortPollResponse();
+        }
+
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
           if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+
           apiProto.prototype.checkBackEndConnectionStatus();
+
           if (isDev && showSyncDebug)
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
@@ -258,9 +265,15 @@ apiProto.prototype.testCoinPorts = function(cb) {
         if (response.responseText)
           if (showConsoleMessages && isDev) console.log('coind response: ' + response.responseText);
 
+        if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) {
+          helperProto.prototype.setPortPollResponse();
+        }
+
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
           if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+
           apiProto.prototype.checkBackEndConnectionStatus();
+
           if (isDev && showSyncDebug)
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
@@ -312,30 +325,37 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
 // check if iguana is running
 apiProto.prototype.testConnection = function(cb) {
   var result = false;
-
-  // test if iguana is running
-  var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
-  $.ajax({
-    url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
-    cache: false,
-    dataType: 'text',
-    async: true,
-    type: 'GET',
-    success: function (response) {
-      // iguana env
-      if (showConsoleMessages && isDev) console.log('iguana is detected');
-      isIguana = true;
-      apiProto.prototype.errorHandler(response);
-      apiProto.prototype.testCoinPorts(cb);
-    },
-    error: function (response) {
-      // non-iguana env
-      isIguana = false;
-      if (showConsoleMessages && isDev) console.log('running non-iguana env');
-      apiProto.prototype.errorHandler(response);
-      apiProto.prototype.testCoinPorts(cb);
-    }
-  });
+      setPortPollResponseDS = localStorageProto.prototype.getVal('iguana-port-poll'),
+      timeDiff = setPortPollResponseDS.updatedAt ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0
+  if (timeDiff >= portPollUpdateTimeout) {
+    // test if iguana is running
+    var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
+    $.ajax({
+      url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
+      cache: false,
+      dataType: 'text',
+      async: true,
+      type: 'GET',
+      success: function (response) {
+        // iguana env
+        if (showConsoleMessages && isDev) console.log('iguana is detected');
+        isIguana = true;
+        apiProto.prototype.errorHandler(response);
+        apiProto.prototype.testCoinPorts(cb);
+      },
+      error: function (response) {
+        // non-iguana env
+        isIguana = false;
+        if (showConsoleMessages && isDev) console.log('running non-iguana env');
+        apiProto.prototype.errorHandler(response);
+        apiProto.prototype.testCoinPorts(cb);
+      }
+    });
+  } else {
+    if (showConsoleMessages && isDev) console.log('port poll done ' + timeDiff + ' s. ago');
+    helperProto.prototype.getPortPollResponse();
+    if (cb) cb.call();
+  }
 }
 
 apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {

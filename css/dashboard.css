@@ -92,7 +92,8 @@
     top: 20px;
   }
   .main-content {
-    margin: 0 40px;
+    margin: 0 auto;
+    max-width: 1500px;
   }
   .balance-block .label {
     color: #95969F;
@@ -111,6 +112,8 @@
   }
   .coins {
     width: 20%;
+    max-width: 250px;
+    min-width: 230px;
   }
   .account-coins-repeater .item {
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
@@ -515,6 +518,15 @@
     color: #fff;
     padding: 11px;
     border-radius: 50%;
+  }
+  /*
+    temp fix, remove after coins font is updated
+  */
+  .supported-coins-repeater .coin .icon.GMC-alt:before,
+  .supported-coins-repeater .coin .icon.MZC-alt:before,
+  .supported-coins-repeater .coin .icon.CARB-alt:before {
+    content: "\e980";
+    color: transparent;
   }
   .supported-coins-repeater .coin .name {
     padding-top: 16px;

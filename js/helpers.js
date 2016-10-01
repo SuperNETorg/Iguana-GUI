@@ -1,11 +1,13 @@
 /*!
  * Iguana helpers
  * info: various reusable functions go here
+ * TODO: add settings obj
  */
 
 var helperProto = function() {};
 
 var defaultSessionLifetime = 7200; // sec
+var portPollUpdateTimeout = 10; //sec
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -109,6 +111,14 @@ helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
   }
 }
 
+// in seconds
+helperProto.prototype.getTimeDiffBetweenNowAndDate = function(from) {
+  var currentEpochTime = new Date(Date.now()) / 1000,
+      secondsElapsed = Number(currentEpochTime) - Number(from / 1000);
+
+  return secondsElapsed;
+}
+
 helperProto.prototype.logout = function(noRedirect) {
   var localStorage = new localStorageProto();
 
@@ -147,8 +157,43 @@ helperProto.prototype.syncStatus = function() {
     setInterval(function() {
       //console.clear();
       apiProto.prototype.testConnection(apiProto.prototype.testCoinPorts(helperProto.prototype.getCurrentPage() === 'index' ? constructAuthCoinsRepeater() : null));
-    }, isIguana ? 30000 : 60000); // every 30 sec
+    }, portPollUpdateTimeout * 1000); // every 60 sec
   });
+}
+
+/* store port poll data */
+helperProto.prototype.setPortPollResponse = function() {
+  var coinsInfoJSON = [],
+      result = false;
+
+  for (var key in coinsInfo) {
+    if (key.length > 0)
+      coinsInfoJSON.push({ coin: key, connection: coinsInfo[key].connection || false, RT: coinsInfo[key].RT || false });
+  }
+
+  localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(), 'info': coinsInfoJSON, 'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
+
+  if (showConsoleMessages && isDev) console.log('port poll update');
+}
+
+/* retrieve port poll data */
+helperProto.prototype.getPortPollResponse = function() {
+  var portPollInfo = localStorageProto.prototype.getVal('iguana-port-poll');
+
+  for (var i=0; i < setPortPollResponseDS.info.length; i++) {
+    coinsInfo[setPortPollResponseDS.info[i].coin] = [];
+    coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
+    coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
+  }
+
+  if (isDev && showSyncDebug) {
+    $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
+    $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+    setInterval(function() {
+      if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+      $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+    }, 1000);
+  }
 }
 
 helperProto.prototype.syncStatus();

@@ -19,9 +19,10 @@ var defaultCurrency = '',
     decimalPlacesTxUnit = 5,
     dashboardUpdateTimout = 15; // sec
 
+// TODO: move to supported-coins-list
 var availableCoinsToAdd = [ // sort(?)
   { id: 'btc', name: 'Bitcoin', color: 'orange' },
-  { id: 'btcd', name: 'Bitcoin D.', color: 'breeze' },
+  { id: 'btcd', name: 'BitcoinDark', color: 'breeze' },
   { id: 'doge', name: 'Dogecoin', color: 'light-blue' },
   { id: 'frk', name: 'Franko', color: 'yellow' },
   { id: 'gmc', name: 'GameCredits', color: 'orange' },
@@ -40,6 +41,11 @@ var availableCoinsToAdd = [ // sort(?)
 $(document).ready(function() {
   var api = api = new apiProto();
   api.testConnection(initDashboard);
+  $('.main-content').css({'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%'}); // 1000px min desktop width
+});
+
+$(window).resize(function() {
+  $('.main-content').css({'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%'});
 });
 
 function initDashboard() {
@@ -81,7 +87,7 @@ function initDashboard() {
   });
 
   $('.btn-add-coin').click(function() {
-    api.testCoinPorts(addCoinButtonCB());
+    addCoinButtonCB();
   });
   $('.btn-close,.modal-overlay').click(function() {
     helper.toggleModalWindow('add-new-coin-form', 300);
@@ -154,6 +160,7 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
                               '<div class=\"name\">{{ name }}</div>' +
                            '</div>';
 
+// TODO: fix a bug with wrong sidebar currency values
 function updateRates(coin, currency, returnValue) {
   var api = new apiProto(),
       apiExternalRate,
