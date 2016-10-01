@@ -456,7 +456,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
       account = coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute('listtransactions', null, coin);
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", 19'); // last 20 tx
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + settings.defaultTransactionsCount - 1); // last 20 tx
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
@@ -564,7 +564,7 @@ apiProto.prototype.getBalance = function(account, coin) {
     error: function(response) {
       if (response.responseText)
         if (response.responseText.indexOf('Accounting API is deprecated') > -1 || response.responseText.indexOf('If you want to use accounting API'))
-          if (showConsoleMessages && isDev) console.log('add enableaccounts=1 and staking=0 in btcd conf file');
+          if (showConsoleMessages && isDev && coin === 'btcd') console.log('add enableaccounts=1 and staking=0 in btcd conf file');
     }
   })
   .done(function(_response) {

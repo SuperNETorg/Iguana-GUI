@@ -8,5 +8,6 @@ var settings = {
   dashboardUpdateTimout: 15, // sec
   defaultCurrency: 'USD',
   portPollUpdateTimeout: 60, // sec
-  defaultSessionLifetime: 7200 // sec
+  defaultSessionLifetime: 7200, // sec
+  defaultTransactionsCount: 20
 };
