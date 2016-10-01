@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2016 The Waves Core Developers.                             	  *	
+ * Copyright © 2016 The Waves Core Developers.                             	  *
  *                                                                            *
  * See the LICENSE files at     											  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -48,9 +48,7 @@ var PassPhraseGenerator = {
 
 		var crypto = window.crypto || window.msCrypto;
 
-		bits = 280;
-
-		var random = new Uint32Array(bits / 32);
+		var random = new Uint32Array(8); // 24 words, 280 / 32
 
 		crypto.getRandomValues(random);
 
