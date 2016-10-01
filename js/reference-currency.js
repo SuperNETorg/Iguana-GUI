@@ -8,13 +8,17 @@ $(document).ready(function(e) {
       helper = new helperProto(),
       api = new apiProto();
 
+  $.getScript("js/libs/bootstrap.min.js", function() {
+    if (showConsoleMessages && isDev) console.log('script js/libs/bootstrap.min.js loaded and executed');
+  });
+
   api.testConnection();
 
   for (var i in currencyArr)
   {
 	  defaultActive = '';
 
-    if ((helper.getCurrency().name || 'USD') === currencyArr[i].shortName) {
+    if ((helper.getCurrency().name || settings.defaultCurrency) === currencyArr[i].shortName) {
       defaultActive = 'selected';
     }
 
