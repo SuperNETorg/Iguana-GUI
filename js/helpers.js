@@ -6,8 +6,8 @@
 
 var helperProto = function() {};
 
-var defaultSessionLifetime = 7200; // sec
-var portPollUpdateTimeout = 10; //sec
+var defaultSessionLifetime = settings.defaultSessionLifetime; // sec
+var portPollUpdateTimeout = settings.portPollUpdateTimeout; //sec
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -178,21 +178,21 @@ helperProto.prototype.setPortPollResponse = function() {
 
 /* retrieve port poll data */
 helperProto.prototype.getPortPollResponse = function() {
-  var portPollInfo = localStorageProto.prototype.getVal('iguana-port-poll');
+  if (setPortPollResponseDS) {
+    for (var i=0; i < setPortPollResponseDS.info.length; i++) {
+      coinsInfo[setPortPollResponseDS.info[i].coin] = [];
+      coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
+      coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
+    }
 
-  for (var i=0; i < setPortPollResponseDS.info.length; i++) {
-    coinsInfo[setPortPollResponseDS.info[i].coin] = [];
-    coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
-    coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
-  }
-
-  if (isDev && showSyncDebug) {
-    $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
-    $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
-    setInterval(function() {
-      if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+    if (isDev && showSyncDebug) {
+      $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
       $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
-    }, 1000);
+      setInterval(function() {
+        if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+        $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+      }, 1000);
+    }
   }
 }
 

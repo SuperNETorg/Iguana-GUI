@@ -326,8 +326,9 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
 apiProto.prototype.testConnection = function(cb) {
   var result = false;
       setPortPollResponseDS = localStorageProto.prototype.getVal('iguana-port-poll'),
-      timeDiff = setPortPollResponseDS.updatedAt ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0
-  if (timeDiff >= portPollUpdateTimeout) {
+      timeDiff = setPortPollResponseDS ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0;
+
+  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0) {
     // test if iguana is running
     var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
     $.ajax({
