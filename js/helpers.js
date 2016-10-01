@@ -171,7 +171,10 @@ helperProto.prototype.setPortPollResponse = function() {
       coinsInfoJSON.push({ coin: key, connection: coinsInfo[key].connection || false, RT: coinsInfo[key].RT || false });
   }
 
-  localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(), 'info': coinsInfoJSON, 'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
+  localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
+                                                           'info': coinsInfoJSON,
+                                                           'isIguana': isIguana,
+                                                           'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
 
   if (showConsoleMessages && isDev) console.log('port poll update');
 }
@@ -183,6 +186,7 @@ helperProto.prototype.getPortPollResponse = function() {
       coinsInfo[setPortPollResponseDS.info[i].coin] = [];
       coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
       coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
+      isIguana = setPortPollResponseDS.isIguana;
     }
 
     if (isDev && showSyncDebug) {
