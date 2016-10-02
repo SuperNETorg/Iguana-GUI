@@ -1,7 +1,7 @@
 /******************************************************************************
  * Copyright © 2016 The Waves Core Developers.                             	  *
  *                                                                            *
- * See the LICENSE files at     											  *
+ * See the LICENSE files at     											  											*
  * the top-level directory of this distribution for the individual copyright  *
  * holder information and the developer policies on copyright and licensing.  *
  *                                                                            *
@@ -13,10 +13,6 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
-
-/**
- * @depends {../3rdparty/jquery-2.1.0.js}
- */
 
 var PassPhraseGenerator = {
 	seeds: 0,

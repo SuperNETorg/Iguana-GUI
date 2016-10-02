@@ -8,7 +8,7 @@ var helperProto = function() {};
 
 var defaultSessionLifetime = settings.defaultSessionLifetime,
     portPollUpdateTimeout = settings.portPollUpdateTimeout,
-    pasteTextFromClipboard = '';
+    pasteTextFromClipboard = false;
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -184,6 +184,12 @@ helperProto.prototype.setPortPollResponse = function() {
 
 /* retrieve port poll data */
 helperProto.prototype.getPortPollResponse = function() {
+  // TODO: add iguana/non-iguana check
+  //       no active coin/p2p coind -> force port poll update
+  /*console.log(setPortPollResponseDS);
+  for (var i=0; i < setPortPollResponseDS.info.length; i++) {
+  }*/
+
   if (setPortPollResponseDS) {
     for (var i=0; i < setPortPollResponseDS.info.length; i++) {
       coinsInfo[setPortPollResponseDS.info[i].coin] = [];
@@ -207,16 +213,18 @@ helperProto.prototype.getPortPollResponse = function() {
   note: this method leads to "blocked plugin" notification in FF
         a user must allow further execution for workaround to do copy-paste job
 */
+// TODO: add browser upgrade message if copy/paste is not supported
 helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
-  var client = new ZeroClipboard($(elementId));
-  client.on('ready', function(readyEvent) {
-    if (showConsoleMessages && isDev) console.log('ZeroClipboard SWF is ready');
-
-    client.setText($(elementId).html()); // add text to clipboard
-    client.on('aftercopy', function(event) {
-      pasteTextFromClipboard = event.data["text/plain"];
-      alert(elementDisplayName + ' copied to clipboard: ' + event.data["text/plain"]);
-    });
+  $(elementId).click(function() {
+    try {
+      $(elementId + '-hidden').select();
+      document.execCommand('copy');
+      alert(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val());
+      pasteTextFromClipboard = $(elementId + '-hidden').val();
+    } catch(e) {
+      alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
+    }
+    // surpress alert
   });
 }
 

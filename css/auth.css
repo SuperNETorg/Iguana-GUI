@@ -61,7 +61,7 @@
 		border-radius: 4px;
 		background: #fff;
 		box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
-		padding: 40px 12px;
+		padding: 40px 12px 15px;
 		font-family: "Proxima Nova", sans-serif;
 		font-weight: 600;
 		font-size: 1.16em;
@@ -195,6 +195,10 @@
   	color: #fff;
   	position: relative;
   	top: -1px;
+	}
+	.generated-passhprase-hidden {
+    height: 1px;
+    opacity: 0;
 	}
 	.paste-from-clipboard-link {
 		padding-top: 2px;
