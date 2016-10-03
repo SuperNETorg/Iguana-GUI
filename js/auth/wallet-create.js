@@ -2,6 +2,7 @@
  * Iguana authorization, create wallet, verify passphrase
  *
  */
+var passphraseToVerify;
 
 function verifyNewPassphrase() {
   if (passphraseToVerify === $('#passphrase').val()) return true;

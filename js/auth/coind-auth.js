@@ -14,7 +14,9 @@ function authAllAvailableCoind() {
   for (var key in coinsInfo) {
     if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) checkedCoindCount++;
   }
-  if (checkedCoindCount === 0) $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
+
+  if (checkedCoindCount === 0)
+    $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
   else
     for (var key in coinsInfo) {
       if (coinsInfo[key].connection === true && $('#iguana-coin-' + key + '-checkbox').prop('checked')) {

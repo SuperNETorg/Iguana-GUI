@@ -37,11 +37,12 @@ function initAuthCB() {
 
     $('.paste-from-clipboard-link').click(function() {
       try {
-        $('#passphrase').val(pasteTextFromClipboard); // not quite appropriate pasting
+        if (pasteTextFromClipboard)
+          $('#passphrase').val(pasteTextFromClipboard); // not quite appropriate pasting
+          if ($('#passphrase').val().length > 0) $('.btn-add-account').removeClass('disabled');
       } catch(e) {
         // do nothing
       }
-      if ($('#passphrase').length > 0) $('.btn-add-account').removeClass('disabled');
     });
   }
 }

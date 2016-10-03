@@ -44,8 +44,8 @@ function addAuthorizationButtonAction(buttonClassName) {
       if ($('.login-form')) {
         authAllAvailableCoind();
       }
-      if ($('.create-account-form')) {
-        if (totalSubstr && totalSubstrAlpha && totalSpaces)
+      if ($('.verify-passphrase-form')) {
+        if (totalSubstr && totalSubstrAlpha && totalSpaces) {
           if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet()) {
               toggleLoginErrorStyling(false);
@@ -62,8 +62,11 @@ function addAuthorizationButtonAction(buttonClassName) {
           } else {
             toggleLoginErrorStyling(true);
           }
-        else
+        } else {
           toggleLoginErrorStyling(true);
+          $('.login-input-directions-error').html('Passphrases do not match!');
+          $('.login-input-directions-error').removeClass('hidden');
+        }
       }
     }
   });
