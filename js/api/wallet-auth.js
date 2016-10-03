@@ -51,7 +51,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   $.ajax({
     url: fullUrl,
     cache: false,
-    async: true,
+    async: false,
     dataType: 'json',
     type: 'POST',
     data: postData,
