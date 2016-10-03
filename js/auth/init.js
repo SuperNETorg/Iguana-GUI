@@ -12,7 +12,7 @@ function initAuthCB() {
   if ($('.login-form')) {
     $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');
 
-    if (isDev) $('.btn-signin').removeClass('disabled');
+    if (dev.isDev) $('.btn-signin').removeClass('disabled');
 
     if (helper.checkSession(true)) {
       helper.openPage('dashboard');
