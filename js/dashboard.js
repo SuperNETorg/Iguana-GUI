@@ -19,25 +19,6 @@ var defaultCurrency = '',
     decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
     dashboardUpdateTimout = settings.dashboardUpdateTimout;
 
-// TODO: move to supported-coins-list
-var availableCoinsToAdd = [ // sort(?)
-  { id: 'btc', name: 'Bitcoin', color: 'orange' },
-  { id: 'btcd', name: 'BitcoinDark', color: 'breeze' },
-  { id: 'doge', name: 'Dogecoin', color: 'light-blue' },
-  { id: 'frk', name: 'Franko', color: 'yellow' },
-  { id: 'gmc', name: 'GameCredits', color: 'orange' },
-  { id: 'ltc', name: 'Litecoin', color: 'breeze' },
-  { id: 'mzc', name: 'Mazacoin', color: 'light-blue' },
-  { id: 'nmc', name: 'Namecoin', color: 'yellow' },
-  { id: 'sys', name: 'SysCoin', color: 'orange' },
-  { id: 'uno', name: 'Unobtaium', color: 'breeze' },
-  { id: 'dgb', name: 'DigiByte', color: 'light-blue' },
-  { id: 'zet', name: 'Zetacoin', color: 'yellow' },
-  { id: 'btm', name: 'Bitmark', color: 'orange' },
-  { id: 'carb', name: 'Carboncoin', color: 'breeze' },
-  { id: 'anc', name: 'Anoncoin', color: 'light-blue' }
-];
-
 document.write('\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/left-sidebar.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/balance.js\">\x3C/script>' +
@@ -77,9 +58,9 @@ function updateDashboardView(timeout) {
 }
 
 function getCoinData(coinId) {
-  for (var i=0; i < availableCoinsToAdd.length; i++) {
-    if (availableCoinsToAdd[i].id.toString() === coinId.toString())
-      return availableCoinsToAdd[i];
+  if (supportedCoinsList[coinId]) {
+    var coinData = { 'name': supportedCoinsList[coinId].name, 'id': coinId };
+    return coinData;
   }
 
   return false;

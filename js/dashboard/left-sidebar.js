@@ -3,25 +3,6 @@
  *
  */
 
-// construct coins to add array
-function constructCoinRepeater() {
-  var result = '';
-
-  for (var i=0; i < availableCoinsToAdd.length; i++) {
-    if ((coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection !== true && isIguana) ||
-      (coinsInfo[availableCoinsToAdd[i].id] && coinsInfo[availableCoinsToAdd[i].id].connection === true &&
-       $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + availableCoinsToAdd[i].id + '\"') === -1 && !isIguana)) {
-      if ((isIguana && coinsInfo[availableCoinsToAdd[i].id].iguana !== false) || !isIguana)
-        result += coinRepeaterTemplate.replace('{{ id }}', availableCoinsToAdd[i].id.toUpperCase()).
-                                       replace('{{ coin_id }}', availableCoinsToAdd[i].id.toLowerCase()).
-                                       replace('{{ name }}', availableCoinsToAdd[i].name).
-                                       replace('{{ color }}', availableCoinsToAdd[i].color);
-    }
-  }
-
-  return result;
-}
-
 var accountCoinRepeaterTemplate = '<div class=\"item{{ active }}\" data-coin-id=\"{{ coin_id }}\">' +
                                       '<div class=\"coin\">' +
                                         '<i class=\"icon cc {{ id }}-alt\"></i>' +
@@ -76,6 +57,7 @@ function constructAccountCoinRepeater() {
         decimalPlacesCurrency = 2;
       }
 
+      // TODO: fix error when add coin modal is visible
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
 
       var currencyCalculatedValue = coinBalance * coinLocalRate;

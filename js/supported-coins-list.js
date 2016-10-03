@@ -1,5 +1,6 @@
 var supportedCoinsList = {
   'btc': {
+    'name': 'Bitcoin',
     'portp2p': 8332,
     'user': 'pbca26', // add your rpc pair here
     'pass': 'pbca26',
@@ -7,6 +8,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': 'https://blockexplorer.com/api/status?q=getBlockCount'
   },
   'btcd': {
+    'name': 'BitcoinDark',
     'portp2p': 14632,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -14,6 +16,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': 'http://explorebtcd.info/api/status?q=getBlockCount'
   },
   'ltc': {
+    'name': 'Dogecoin',
     'portp2p': 9332,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -23,6 +26,7 @@ var supportedCoinsList = {
     // beware if you abuse it you get temp ban
   },
   'sys': {
+    'name': 'Syscoin',
     'portp2p': 8370,
     'coindPort': 8368,
     'user': 'user', // add your rpc pair here
@@ -31,6 +35,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': settings.proxy + 'chainz.cryptoid.info/explorer/api.dws?q=summary' // universal resource for many coins
   },
   'uno': {
+    'name': 'Unobtanium',
     'portp2p': 65535,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -38,6 +43,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': settings.proxy + 'chainz.cryptoid.info/explorer/api.dws?q=summary' // universal resource for many coins
   },
   'nmc': {
+    'name': 'Namecoin',
     'portp2p': 8336,
     'user': 'user', // add your rpc pair here`
     'pass': 'pass',
@@ -45,6 +51,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': settings.proxy + 'chainz.cryptoid.info/explorer/api.dws?q=summary'
   },
   'gmc': {
+    'name': 'GameCredits',
     'portp2p': 40001,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -52,6 +59,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': settings.proxy + '159.203.226.245:3000/api/status?q=getInfo'
   },
   'mzc': {
+    'name': 'MazaCoin',
     'portp2p': 12832,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -59,6 +67,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': settings.proxy + 'explorer.cryptoadhd.com:2750/chain/Mazacoin/q/getblockcount'
   },
   'frk': {
+    'name': 'Franko',
     'portp2p': 7913,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -66,13 +75,15 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': 'disabled' //'https://crossorigin.me/https://prohashing.com/explorerJson/getInfo?coin_name=Franko' // double req, too slow
   },
   'doge': {
+    'name': 'Dogecoin',
     'portp2p': 22555,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'iguanaCurl': '{\"startpend\":8,\"endpend\":4,\"services\":129,\"auxpow\":1,\"RELAY\":1,\"VALIDATE\":1,\"prefetchlag\":-1,\"poll\":10,\"active\":1,\"agent\":\"iguana\",\"method\":\"addcoin\",\"maxpeers\":256,\"newcoin\":\"DOGE\",\"name\":\"Dogecoin\",\"netmagic\":\"C0C0C0C0\",\"p2p\":22556,\"rpc\":22555,\"pubval\":30,\"p2shval\":5,\"wifval\":128,\"txfee_satoshis\":\"100000000\",\"minconfirms\":2,\"genesishash\":\"1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691\",\"genesis\":{\"hashalgo\": \"scrypt\",\"version\":1,\"timestamp\":1386325540,\"nBits\":\"1e0ffff0\",\"nonce\":99943,\"merkle_root\":\"5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69\"},\"alertpubkey\":\"04d4da7a5dae4db797d9b0644d57a5cd50e05a70f36091cd62e2fc41c98ded06340be5a43a35e185690cd9cde5d72da8f6d065b499b06f51dcfba14aad859f443a\"}',
     'currentBlockHeightExtSource': settings.proxy + 'api.blockcypher.com/v1/doge/main'
   },
-  'dgb': { // coind is untested
+  'dgb': {
+    'name': 'Digibyte',
     'portp2p': 14022,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -80,6 +91,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   },
   'zet': { // coind is untested
+    'name': 'Zetacoin',
     'portp2p': 17335,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -87,6 +99,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   },
   'btm': { // coind is untested
+    'name': 'Bitmark',
     'portp2p': 9266,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -94,6 +107,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   },
   'carb': { // coind is untested
+    'name': 'Carboncoin',
     'portp2p': 9351,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
@@ -101,6 +115,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   },
   'anc': { // coind is untested
+    'name': 'AnonCoin',
     'portp2p': 28332,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',

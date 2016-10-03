@@ -108,7 +108,7 @@
 }
 .supported-coins-repeater {
   padding: 20px;
-  height: 400px;
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -142,7 +142,8 @@
 */
 .supported-coins-repeater .coin .icon.GMC-alt:before,
 .supported-coins-repeater .coin .icon.MZC-alt:before,
-.supported-coins-repeater .coin .icon.CARB-alt:before {
+.supported-coins-repeater .coin .icon.CARB-alt:before,
+.supported-coins-repeater .coin .icon.UNO-alt:before {
   content: '\e980';
   color: transparent;
 }
@@ -185,4 +186,7 @@
 .modal .btn:focus {
   color: #fff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+.form-content .btn-next {
+  margin-top: 40px;
 }

@@ -2,6 +2,9 @@
  * Iguana dashboard/add-coin
  *
  */
+ // TODO: add coin tile opacity change on viewport leave
+
+var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
 
 function addCoinButtonCB() {
   var helper = new helperProto();
@@ -17,6 +20,28 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
                               '<i class=\"icon cc {{ id }}-alt col-{{ color }}\"></i>' +
                               '<div class=\"name\">{{ name }}</div>' +
                            '</div>';
+
+// construct coins to add array
+function constructCoinRepeater() {
+  var result = '',
+      index = 0;
+
+  for (var key in supportedCoinsList) {
+    if ((coinsInfo[key] && coinsInfo[key].connection !== true && isIguana) ||
+      (coinsInfo[key] && coinsInfo[key].connection === true &&
+       $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + key + '\"') === -1 && !isIguana)) {
+      if ((isIguana && coinsInfo[key].iguana !== false) || !isIguana)
+        result += coinRepeaterTemplate.replace('{{ id }}', key.toUpperCase()).
+                                       replace('{{ coin_id }}', key.toLowerCase()).
+                                       replace('{{ name }}', supportedCoinsList[key].name).
+                                       replace('{{ color }}', addCoinColors[index]);
+        index++;
+        if (index === addCoinColors.length - 1) index = 0;
+    }
+  }
+
+  return result;
+}
 
 function bindClickInCoinRepeater() {
   $('.supported-coins-repeater .coin').each(function(index, item) {
