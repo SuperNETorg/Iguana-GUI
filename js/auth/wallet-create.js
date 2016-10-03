@@ -35,7 +35,7 @@ function initCreateAccountForm() {
 
   $('.verify-passphrase-form .btn-back').click(function() {
     // TODO: refactor
-    //initCreateAccountForm();
+    // initCreateAccountForm();
     helper = new helperProto();
     helper.openPage('create-account');
   });
