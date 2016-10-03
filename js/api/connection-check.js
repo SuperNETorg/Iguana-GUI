@@ -30,7 +30,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
         console.log('p2p test ' + index);
-        if (showConsoleMessages && isDev) console.log(response);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
         if (response.error === 'coin is busy processing') {
           coinsInfo[index].connection = true;
@@ -38,8 +38,8 @@ apiProto.prototype.testCoinPorts = function(cb) {
         }
 
         if (response.result.walletversion || response.result.difficulty || response.result === 'success') {
-          if (showConsoleMessages && isDev) console.log('portp2p con test passed');
-          if (showConsoleMessages && isDev) console.log(index + ' daemon is detected');
+          if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
+          if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
 
           // non-iguana
@@ -49,8 +49,8 @@ apiProto.prototype.testCoinPorts = function(cb) {
                 coindCheckRTResponse = apiProto.prototype.coindCheckRT(index),
                 syncPercentage = (response.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
-            if (showConsoleMessages && isDev) console.log('Connections: ' + response.result.connections);
-            if (showConsoleMessages && isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
+            if (dev.showConsoleMessages && dev.isDev) console.log('Connections: ' + response.result.connections);
+            if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
 
             if (response.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
               isRT = true;
@@ -58,10 +58,10 @@ apiProto.prototype.testCoinPorts = function(cb) {
             } else {
               isRT = false;
               coinsInfo[index].RT = false;
-              if (showConsoleMessages && isDev) console.log('RT is not ready yet!');
+              if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
             }
 
-            if (isDev && showSyncDebug) {
+            if (dev.isDev && dev.showSyncDebug) {
               if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
                 $('#debug-sync-info').append('coin: ' + index + ', ' +
                                              'con ' + response.result.connections + ', ' +
@@ -82,7 +82,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
           if (response.status.indexOf('.RT0 ') > -1) {
             isRT = false;
             coinsInfo[index].RT = false;
-            if (showConsoleMessages && isDev) console.log('RT is not ready yet!');
+            if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
           } else {
             isRT = true;
             coinsInfo[index].RT = true;
@@ -91,11 +91,11 @@ apiProto.prototype.testCoinPorts = function(cb) {
           // disable coin in iguna mode
           if (conf.iguanaCurl === 'disabled') coinsInfo[index].iguana = false;
 
-          if (showConsoleMessages && isDev) console.log('Connections: ' + peers[0].replace('peers.', ''));
-          if (showConsoleMessages && isDev) console.log('Blocks: ' + currentHeight);
-          if (showConsoleMessages && isDev) console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
+          if (dev.showConsoleMessages && dev.isDev) console.log('Connections: ' + peers[0].replace('peers.', ''));
+          if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + currentHeight);
+          if (dev.showConsoleMessages && dev.isDev) console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
 
-          if (isDev && showSyncDebug) {
+          if (dev.isDev && dev.showSyncDebug) {
             if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
               $('#debug-sync-info').append('coin: ' + index + ', ' +
                                            'con ' + peers[0].replace('peers.', '') + ', ' +
@@ -109,11 +109,11 @@ apiProto.prototype.testCoinPorts = function(cb) {
         }
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
-          if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+          if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
 
           apiProto.prototype.checkBackEndConnectionStatus();
 
-          if (isDev && showSyncDebug)
+          if (dev.isDev && dev.showSyncDebug)
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
@@ -128,25 +128,25 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
         if (response.statusText === 'error' && !isIguana)
           isProxy = false;
-          if (showConsoleMessages && isDev) console.log('is proxy server running?');
+          if (dev.showConsoleMessages && dev.isDev) console.log('is proxy server running?');
         else if (!response.statusCode)
-          if (showConsoleMessages && isDev) console.log('server is busy, check back later');
+          if (dev.showConsoleMessages && dev.isDev) console.log('server is busy, check back later');
 
         if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1)
-          if (showConsoleMessages && isDev) console.log(index + ' is verifying blocks...');
+          if (dev.showConsoleMessages && dev.isDev) console.log(index + ' is verifying blocks...');
         if (response.responseText)
-          if (showConsoleMessages && isDev) console.log('coind response: ' + response.responseText);
+          if (dev.showConsoleMessages && dev.isDev) console.log('coind response: ' + response.responseText);
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) {
           helperProto.prototype.setPortPollResponse();
         }
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
-          if (showConsoleMessages && isDev) console.log('port poll done ' + _index);
+          if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
 
           apiProto.prototype.checkBackEndConnectionStatus();
 
-          if (isDev && showSyncDebug)
+          if (dev.isDev && dev.showSyncDebug)
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
@@ -211,7 +211,7 @@ apiProto.prototype.testConnection = function(cb) {
       type: 'GET',
       success: function (response) {
         // iguana env
-        if (showConsoleMessages && isDev) console.log('iguana is detected');
+        if (dev.showConsoleMessages && dev.isDev) console.log('iguana is detected');
         isIguana = true;
         apiProto.prototype.errorHandler(response);
         apiProto.prototype.testCoinPorts(cb);
@@ -219,13 +219,13 @@ apiProto.prototype.testConnection = function(cb) {
       error: function (response) {
         // non-iguana env
         isIguana = false;
-        if (showConsoleMessages && isDev) console.log('running non-iguana env');
+        if (dev.showConsoleMessages && dev.isDev) console.log('running non-iguana env');
         apiProto.prototype.errorHandler(response);
         apiProto.prototype.testCoinPorts(cb);
       }
     });
   } else {
-    if (showConsoleMessages && isDev) console.log('port poll done ' + timeDiff + ' s. ago');
+    if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
     helperProto.prototype.getPortPollResponse();
     if (cb) cb.call();
   }

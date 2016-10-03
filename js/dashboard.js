@@ -43,8 +43,7 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\"
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/balance.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/transactions-unit.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/bind-event.js\">\x3C/script>');
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>');
 
 $(document).ready(function() {
   var api = api = new apiProto();
@@ -61,8 +60,6 @@ function updateDashboardView(timeout) {
   var helper = new helperProto();
 
   var dashboardUpdateTimer = setInterval(function() {
-    //if (!isRT) apiProto.prototype.testCoinPorts();
-
     // TODO: refactor, not effective
     //console.clear();
     helper.checkSession();
@@ -75,7 +72,7 @@ function updateDashboardView(timeout) {
     //updateAccountCoinRepeater();
     updateTransactionUnitBalance(true);
     $('.transactions-list-repeater').html(constructTransactionUnitRepeater());
-    if (showConsoleMessages && isDev) console.log('dashboard updated');
+    if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
   }, timeout * 1000);
 }
 

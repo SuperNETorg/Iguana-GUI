@@ -33,7 +33,7 @@ function constructAuthCoinsRepeater() {
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
                                       replace('{{ id }}', key.toUpperCase()).
                                       replace('{{ name }}', key.toUpperCase()).
-                                      replace('{{ value }}', isDev && !isIguana ? (coinPW.coind[key] ? coinPW.coind[key] : '') : '').
+                                      replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
                                       replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '').
                                       replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index' ? 'checked disabled' : '');
     }

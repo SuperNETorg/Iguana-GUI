@@ -16,11 +16,11 @@ apiProto.prototype.addCoin = function(coin) {
     async: false
   })
   .done(function(response) {
-    if (showConsoleMessages && isDev) console.log(response)
+    if (dev.showConsoleMessages && dev.isDev) console.log(response)
 
     if (response.error) {
       // do something
-      if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+      if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
       result = false;
     } else {
       if (response.result === 'coin added' || response.result === 'coin already there') result = response;

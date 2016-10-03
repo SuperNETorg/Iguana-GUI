@@ -150,7 +150,7 @@ helperProto.prototype.getCurrentPage = function() {
 
 helperProto.prototype.syncStatus = function() {
   $(document).ready(function() {
-    if (isDev && showSyncDebug) {
+    if (dev.isDev && dev.showSyncDebug) {
       $('body').append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
       $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
     }
@@ -180,7 +180,7 @@ helperProto.prototype.setPortPollResponse = function() {
                                                            'proxy': isProxy,
                                                            'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
 
-  if (showConsoleMessages && isDev) console.log('port poll update');
+  if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
 }
 
 /* retrieve port poll data */
@@ -199,7 +199,7 @@ helperProto.prototype.getPortPollResponse = function() {
       isIguana = setPortPollResponseDS.isIguana;
     }
 
-    if (isDev && showSyncDebug) {
+    if (dev.isDev && dev.showSyncDebug) {
       $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
       $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
       setInterval(function() {
@@ -210,11 +210,7 @@ helperProto.prototype.getPortPollResponse = function() {
   }
 }
 
-/*
-  note: this method leads to "blocked plugin" notification in FF
-        a user must allow further execution for workaround to do copy-paste job
-*/
-// TODO: add browser upgrade message if copy/paste is not supported
+// TODO: add browser update message if copy/paste is not supported
 helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
   $(elementId).click(function() {
     try {
@@ -225,7 +221,7 @@ helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elemen
     } catch(e) {
       alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
     }
-    // surpress alert
+    // suppress alert
   });
 }
 

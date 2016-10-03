@@ -18,7 +18,7 @@ apiProto.prototype.getIguanaRate = function(quote) {
 
     if (response.error) {
       // do something
-      if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+      if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
       result = false;
     } else {
       if (response.result === 'success') result = response.quote;
@@ -48,7 +48,7 @@ apiProto.prototype.getExternalRate = function(quote) {
 
       if (response && response[quoteComponents[1]]) {
         result = response[quoteComponents[1]];
-        if (showConsoleMessages && isDev) console.log('rates source https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
+        if (dev.showConsoleMessages && dev.isDev) console.log('rates source https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
       } else {
         result = false;
       }
@@ -85,13 +85,13 @@ apiProto.prototype.getExternalRate = function(quote) {
 
               if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
                 result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
-                if (showConsoleMessages && isDev) console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
+                if (dev.showConsoleMessages && dev.isDev) console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
               } else {
                 result = false;
               }
             },
             error: function(response) {
-              if (showConsoleMessages && isDev) console.log('both services are failed to respond');
+              if (dev.showConsoleMessages && dev.isDev) console.log('both services are failed to respond');
             }
           });
         } else {
@@ -99,7 +99,7 @@ apiProto.prototype.getExternalRate = function(quote) {
         }
       },
       error: function(response) {
-        if (showConsoleMessages && isDev) console.log('both services failed to respond');
+        if (dev.showConsoleMessages && dev.isDev) console.log('both services failed to respond');
       }
     });
 

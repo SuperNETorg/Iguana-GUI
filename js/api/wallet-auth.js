@@ -19,7 +19,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
     data: postData,
     headers: postAuthHeaders,
     success: function(response) {
-      if (showConsoleMessages && isDev) console.log(response);
+      if (dev.showConsoleMessages && dev.isDev) console.log(response);
       result = true;
       if (cb) cb.call(this, result, coin);
     },
@@ -28,9 +28,9 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
         if (response.responseText.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) result = true;
         if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1) result = -14;
         if (response.responseText.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
-        if (showConsoleMessages && isDev) console.log(response.responseText);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
       } else {
-        if (showConsoleMessages && isDev) console.log(response.error);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response.error);
       }
       if (cb) cb.call(this, result, coin);
     }
@@ -59,15 +59,15 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
     error: function(response) {
       if (response.responseText) {
         if (response.responseText.indexOf(':-15') > -1) result = -15;
-        if (showConsoleMessages && isDev) console.log(response.responseText);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
       } else {
-        if (showConsoleMessages && isDev) console.log(response);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response);
       }
     }
   })
   .done(function(_response) {
     apiProto.prototype.errorHandler(_response, coin);
-    if (showConsoleMessages && isDev) console.log(_response);
+    if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
     if (_response.result) {
       // non-iguana
@@ -79,7 +79,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
 
       if (response.error) {
         // do something
-        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+        if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response.result === 'success') result = response;
@@ -113,14 +113,14 @@ apiProto.prototype.walletLock = function(coin, cb) {
       // non-iguana
       result = _response.result;
     } else {
-      if (showConsoleMessages && isDev) console.log(_response);
+      if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
       // iguana
       var response = typeof _response === 'object' ? _response : $.parseJSON(_response);
 
       if (response.error) {
         // do something
-        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+        if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response) result = response;

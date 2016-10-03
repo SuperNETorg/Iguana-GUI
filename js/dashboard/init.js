@@ -55,7 +55,7 @@ function initDashboard() {
 
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
-    if (showConsoleMessages && isDev) console.log(coinsSelectedByUser);
+    if (dev.showConsoleMessages && dev.isDev) console.log(coinsSelectedByUser);
 
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedByUser) {
@@ -75,7 +75,7 @@ function initDashboard() {
         }
       } else {
         if (api.addCoin(coinsSelectedByUser[key]) && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + coinsSelectedByUser[key] + '\"') === -1) {
-          $('#debug-sync-info').append(coinsSelectedByUser[key] + ' coin added<br/>');
+          if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coinsSelectedByUser[key] + ' coin added<br/>');
           coinsInfo[coinsSelectedByUser[key]].connection = true;
           result = true;
         }

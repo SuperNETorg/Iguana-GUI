@@ -7,9 +7,9 @@ apiProto.prototype.listTransactions = function(account, coin) {
   var result = false;
 
   // dev account lookup override
-  if (coinAccountsDev && !isIguana)
-    if (coinAccountsDev.coind[coin])
-      account = coinAccountsDev.coind[coin];
+  if (dev.coinAccountsDev && !isIguana)
+    if (dev.coinAccountsDev.coind[coin])
+      account = dev.coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute('listtransactions', null, coin);
       postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + settings.defaultTransactionsCount - 1); // last 20 tx
@@ -29,7 +29,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
   })
   .done(function(_response) {
     if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
-      if (showConsoleMessages && isDev) console.log(_response);
+      if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
       if (_response.result) {
         // non-iguana
@@ -41,7 +41,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
 
         if (response.error) {
           // do something
-          if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+          if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
           result = false;
         } else {
           if (response.result.length) result = response.result;
@@ -85,7 +85,7 @@ apiProto.prototype.getTransaction = function(txid, coin) {
 
       if (response.error) {
         // do something
-        if (showConsoleMessages && isDev) console.log('error: ' + response.error);
+        if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
         result = false;
       } else {
         if (response.txid) result = response;

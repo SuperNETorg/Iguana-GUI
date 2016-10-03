@@ -10,7 +10,7 @@ function initAuthCB() {
 
   // ugly login form check
   if ($('.login-form')) {
-    $('#passphrase').val(isDev && isIguana ? coinPW.iguana : '');
+    $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');
 
     if (isDev) $('.btn-signin').removeClass('disabled');
 

@@ -3,13 +3,14 @@
  * info: planned to store non-production vars
  */
 
-  isDev = true; // set to true if you want to disable passphrase verification
-  showSyncDebug = true;
-  showConsoleMessages = true;
+  dev = new Array();
+  dev.isDev = true; // set to true if you want to disable passphrase verification
+  dev.showSyncDebug = true;
+  dev.showConsoleMessages = true;
 
   // add your coind passphrases her one per each coin
   // on a login step they will be used as as source for walletpassphrase sequence
-  coinPW = {
+  dev.coinPW = {
     'coind': {
       'btc': 'teach clutch code nominee ride garage fish neutral help upset correct decorate',
       'btcd': 'teach clutch code nominee ride garage fish neutral help upset correct decorate',
@@ -20,7 +21,7 @@
   };
 
   // add an account per coin if you want to override 'own' account
-  coinAccountsDev = {
+  dev.coinAccountsDev = {
     'coind': {
       'ltc': 'default',
       'btcd': 'pbca'

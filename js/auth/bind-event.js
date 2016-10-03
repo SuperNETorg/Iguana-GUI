@@ -18,7 +18,7 @@ function addAuthorizationButtonAction(buttonClassName) {
     if (isIguana) {
       if (checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces) {
-          if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+          if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : verifyNewPassphrase() && api.walletEncrypt(passphraseInput)) {
               toggleLoginErrorStyling(false);
 
@@ -46,7 +46,7 @@ function addAuthorizationButtonAction(buttonClassName) {
       }
       if ($('.create-account-form')) {
         if (totalSubstr && totalSubstrAlpha && totalSpaces)
-          if ((isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+          if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet()) {
               toggleLoginErrorStyling(false);
 

@@ -16,7 +16,7 @@ apiProto.prototype.errorHandler = function(response, index) {
     return 10;
   }
   if (response.error === 'iguana jsonstr expired') {
-    if (showConsoleMessages && isDev) console.log('server is busy');
+    if (dev.showConsoleMessages && dev.isDev) console.log('server is busy');
 
     return 10;
   }
@@ -25,16 +25,16 @@ apiProto.prototype.errorHandler = function(response, index) {
       if (!coinsInfo[index]) coinsInfo[index] = [];
       coinsInfo[index].connection = true;
 
-      if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1)
+      if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug)
         $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
 
-    if (showConsoleMessages && isDev) console.log('server is busy');
+    if (dev.showConsoleMessages && dev.isDev) console.log('server is busy');
 
     return 10;
   }
   if (response.error === 'null return from iguana_bitcoinRPC') {
-    if (showConsoleMessages && isDev) console.log('iguana crashed?');
+    if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed?');
 
     return 10;
   }

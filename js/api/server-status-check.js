@@ -54,7 +54,7 @@ apiProto.prototype.getCoinCurrentHeight = function(coin) {
         if (response.data) result = response.data.last_block.nb;
         if (response[coin]) result = response[coin].height;
       } else {
-        if (showConsoleMessages && isDev) console.log('error retrieving current block height from ' + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
+        if (dev.showConsoleMessages && dev.isDev) console.log('error retrieving current block height from ' + apiProto.prototype.getConf().coins[coin].currentBlockHeightExtSource);
         result = false;
       }
     });

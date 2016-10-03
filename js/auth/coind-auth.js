@@ -111,7 +111,7 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
     for (var key in coinsInfo) {
       if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
         if (api.addCoin(key)) {
-          $('#debug-sync-info').append(key + ' coin added<br/>');
+          if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(key + ' coin added<br/>');
           coinsInfo[key].connection = true;
           result = true;
         }
