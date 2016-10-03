@@ -8,7 +8,8 @@ var helperProto = function() {};
 
 var defaultSessionLifetime = settings.defaultSessionLifetime,
     portPollUpdateTimeout = settings.portPollUpdateTimeout,
-    pasteTextFromClipboard = false;
+    pasteTextFromClipboard = false,
+    isExecCopyFailed = false;
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -213,15 +214,16 @@ helperProto.prototype.getPortPollResponse = function() {
 // TODO: add browser update message if copy/paste is not supported
 helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
   $(elementId).click(function() {
-    try {
-      $(elementId + '-hidden').select();
-      document.execCommand('copy');
-      alert(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val());
-      pasteTextFromClipboard = $(elementId + '-hidden').val();
-    } catch(e) {
-      alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
-    }
-    // suppress alert
+    if (!isExecCopyFailed)
+      try {
+        $(elementId + '-hidden').select();
+        document.execCommand('copy');
+        alert(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val());
+        pasteTextFromClipboard = $(elementId + '-hidden').val();
+      } catch(e) {
+        isExecCopyFailed = true;
+        alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
+      }
   });
 }
 
