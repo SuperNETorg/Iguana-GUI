@@ -13,6 +13,7 @@ var activeCoin,
     portsTested = false,
     isIguana = false,
     isRT = false,
+    isProxy = true,
     coinsInfo = new Array; // cointains coin related info
 
 document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/connection-conf.js\">\x3C/script>' +

@@ -1,7 +1,13 @@
+/*!
+ * Iguana reference currency
+ *
+ */
+
+@import url('fonts/flag-icon.min.css');
+
 body {
   background-color: #f4f8fb;
 }
-
 body,
 h1,
 h2,
@@ -25,7 +31,7 @@ ul {
   padding: 7px;
 }
 .container {
-  font-family: "Proxima Nova";
+  font-family: 'Proxima Nova';
   margin: 0px auto;
 }
 .currenc y-content {

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'cryptocoins';
-    src: url('../fonts/cryptocoins.ttf?7rcize') format('truetype');
+    src: url('../../fonts/cryptocoins.ttf?7rcize') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

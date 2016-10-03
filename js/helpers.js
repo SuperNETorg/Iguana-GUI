@@ -158,7 +158,7 @@ helperProto.prototype.syncStatus = function() {
     setInterval(function() {
       //console.clear();
       apiProto.prototype.testConnection(apiProto.prototype.testCoinPorts(helperProto.prototype.getCurrentPage() === 'index' ? constructAuthCoinsRepeater() : null));
-    }, portPollUpdateTimeout * 1000); // every 60 sec
+    }, portPollUpdateTimeout * 1000);
   });
 }
 
@@ -177,6 +177,7 @@ helperProto.prototype.setPortPollResponse = function() {
   localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
                                                            'info': coinsInfoJSON,
                                                            'isIguana': isIguana,
+                                                           'proxy': isProxy,
                                                            'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
 
   if (showConsoleMessages && isDev) console.log('port poll update');

@@ -18,7 +18,7 @@ $(document).ready(function(e) {
       defaultActive = 'selected';
     }
 
-    outPut += '<li class=\"country-li cursor-pointer ' + defaultActive + '\"" data-id=\"' + currencyArr[i].id + '\">' +
+    outPut += '<li class=\"country-li cursor-pointer ' + defaultActive + '\" data-id=\"' + currencyArr[i].id + '\">' +
                 '<h1 class=\"flag-head\">' +
                   '<span class=\"label label-default\">' +
                     '<span class=\"flag-icon flag-icon-' + currencyArr[i].flagid + '\"></span>' +

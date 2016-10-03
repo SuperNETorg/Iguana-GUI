@@ -8,6 +8,7 @@
 apiProto.prototype.testCoinPorts = function(cb) {
   var result = false,
       _index = 0;
+
   $('#debug-sync-info').html('');
 
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
@@ -126,6 +127,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
         apiProto.prototype.errorHandler(response, index);
 
         if (response.statusText === 'error' && !isIguana)
+          isProxy = false;
           if (showConsoleMessages && isDev) console.log('is proxy server running?');
         else if (!response.statusCode)
           if (showConsoleMessages && isDev) console.log('server is busy, check back later');
