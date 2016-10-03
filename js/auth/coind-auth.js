@@ -63,8 +63,8 @@ function authAllAvailableCoindCB(result, key, isLast) {
 
 function encryptCoindWallet() {
   var api = new apiProto(),
-      passphraseInput = $('#passphrase').val(),
       helper = new helperProto(),
+      passphraseInput = $('#passphrase').val(),
       result = false;
 
   if (verifyNewPassphrase()) {
@@ -101,4 +101,28 @@ function checkSelectedWallet(key) {
   } else {
     return isCoindChecked;
   }
+}
+
+function checkIguanaCoinsSelection(suppressAddCoin) {
+  var result = false,
+      api = new apiProto();
+
+  if (!suppressAddCoin)
+    for (var key in coinsInfo) {
+      if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
+        if (api.addCoin(key)) {
+          $('#debug-sync-info').append(key + ' coin added<br/>');
+          coinsInfo[key].connection = true;
+          result = true;
+        }
+      }
+
+      if (isIguana && coinsInfo[key].connection === true || result === true) result = true;
+    }
+  else
+    result = true;
+
+  constructAuthCoinsRepeater();
+
+  return result;
 }
