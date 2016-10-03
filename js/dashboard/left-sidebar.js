@@ -4,15 +4,15 @@
  */
 
 var accountCoinRepeaterTemplate = '<div class=\"item{{ active }}\" data-coin-id=\"{{ coin_id }}\">' +
-                                      '<div class=\"coin\">' +
-                                        '<i class=\"icon cc {{ id }}-alt\"></i>' +
-                                        '<span class=\"name\">{{ name }}</span>' +
-                                      '</div>' +
-                                      '<div class=\"balance\">' +
-                                        '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id }}</div>' +
-                                        '<div class=\"currency-value\"><span class=\"val\">{{ currency_value }}</span> {{ currency_name }}</div>' +
-                                      '</div>' +
-                                    '</div>';
+                                    '<div class=\"coin\">' +
+                                      '<i class=\"icon cc {{ id }}-alt\"></i>' +
+                                      '<span class=\"name\">{{ name }}</span>' +
+                                    '</div>' +
+                                    '<div class=\"balance\">' +
+                                      '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id }}</div>' +
+                                      '<div class=\"currency-value\"><span class=\"val\">{{ currency_value }}</span> {{ currency_name }}</div>' +
+                                    '</div>' +
+                                  '</div>';
 
 // construct account coins array
 function constructAccountCoinRepeater() {

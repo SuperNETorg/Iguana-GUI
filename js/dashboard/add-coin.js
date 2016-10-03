@@ -69,7 +69,7 @@ function bindCoinRepeaterSearch() {
     });
 
     // fade in elements if nothing was found
-    if ($('.supported-coins-repeater .coin').filter('.fade').length === availableCoinsToAdd.length)
+    if ($('.supported-coins-repeater .coin').filter('.fade').length === Object.keys(supportedCoinsList).length)
       $('.supported-coins-repeater .coin').filter('.fade').removeClass('fade');
   });
 }
