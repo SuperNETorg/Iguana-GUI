@@ -33,7 +33,7 @@ ul {
   margin: 0px auto;
 }
 .container-left {
-  margin-top: calc(18% - 12.4%);
+  margin-top: calc(18% - 12.4%); /* calc wont work in iOS safari */
   padding-left: 13.1%;
   padding-top: 7px;
 }
