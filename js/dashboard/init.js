@@ -50,6 +50,9 @@ function initDashboard() {
     $('.supported-coins-repeater').html(constructCoinRepeater());
     bindClickInCoinRepeater();
   });
+  $('.btn-receive').click(function(){
+  	 bindReceive();
+  });	 
   $('.btn-next').click(function() {
     var result = false;
 
@@ -98,4 +101,29 @@ function initDashboard() {
         apiProto.prototype.testConnection(initDashboard());
       }
     }, 2000);
+} 
+function bindReceive()
+{ 
+  coinName = activeCoin || $('.account-coins-repeater .item.active');
+  var localrates = JSON.parse(localStorage.getItem("iguana-rates-" + coinName.toUpperCase()));  
+  var storedNames = JSON.parse(localStorage.getItem("names"));
+  var result = '',
+  helper = new helperProto(),
+  api = new apiProto(),
+  coinName = activeCoin || $('.account-coins-repeater .item.active');
+  $(".coin-unit").text(coinName.toUpperCase())
+  var coin = coinName.toUpperCase();
+  $.each(storedNames, function( index, value ) {
+    if(index==coin)
+    $("#address").text(value);
+  })
+  if (coinName.length) {
+    var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
+  }
+  $(".currency-coin").on('keyup',function () {
+    var coinValue = $(this).find('.coin-value .val');
+    var currencyCoin = $(".currency-coin").val();
+    var usd = currencyCoin*localrates.value;
+    $(".currency").val(usd);
+  })
 }

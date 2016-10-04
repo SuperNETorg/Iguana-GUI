@@ -1,138 +1,153 @@
-.receiving-coin-content {
-  border-radius: 6px;
+.receiving-coin-content{
+	border-radius: 6px;
 }
-.receiving-coin-content .close {
-  float: left;
-  opacity: 1;
-  color: #fff;
-  text-shadow: none;
-  font-weight: normal;
-  font-size: 32px;
-  left: 10px;
-  position: relative;
-  z-index: 9999;
+.receiving-coin-content .close{
+	float: left;
+	opacity: 1;
+	color: #fff;
+	text-shadow: none;
+	font-weight: normal;
+ 	font-size: 32px;
+ 	left: 10px;
+    position: relative;
+    z-index: 9999;
 }
-.model-popup {
-  position: fixed;
-  top: 24%;
-  left: 50%;
-  width: 57.5em;
-  min-height: 17em;
-  margin-top: -9em; /*set to a negative number 1/2 of your height*/
-  margin-left: -30em;
-  height: auto;
+.model-popup{
+	position: fixed;
+	top: 31%;
+    left: 51%;
+    width: 57.5em;
+	min-height: 17em;    
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -30em;
+	height: auto;
+} 
+.receiving-coin-content .modal-title{
+	text-align: center; 
+	color: #fff;
+	right: 10px;
+    position: relative;
+    font-size: 20px;
 }
-.receiving-coin-content .modal-title {
-  text-align: center;
-  color: #fff;
-  right: 10px;
-  position: relative;
-  font-size: 20px;
+.text-section{
+	color: #a9a1a1;
 }
-.text-section {
-  color: #a9a1a1;
+.receiving-coin-content .modal-header{
+	background-color: #fe5c0d;
+	border-top-left-radius: 10px;
+    border-top-right-radius: 10px
 }
-.receiving-coin-content .modal-header {
-  background-color: #fe5c0d;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px
+.share-address-section{
+	position: relative;
+    left: 34px;
+    margin-top: 32px;
 }
-.share-address-section {
-  position: relative;
-  left: 34px;
-  margin-top: 32px;
+.share-address-section h4{
+	font-weight: 600;
+	margin-bottom: 4px;
+	color:#525050;
 }
-.share-address-section h4 {
-  font-weight: 600;
-  margin-bottom: 4px;
+.share-address-section .my-lable{
+	color: #a9a1a1;
 }
-.receiving-coin-content .modal-body {
-  background-color: #f5f8fb;
-  min-height: 41em;
-  border-radius: 10px;
+
+.receiving-coin-content .modal-body{
+	background-color: #f5f8fb;
+	min-height: 41em;
+	border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+	border-top-left-radius: 10px;
+    border-top-right-radius: 10px
+	
 }
-.modal-content {
-  border-top-left-radius: 11px;
-  border-top-right-radius: 11px;
+.modal-content{
+	border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
 }
-.buttons {
-  padding: 14px 0;
+.buttons{
+    padding: 14px 0;
 }
 .buttons .copy-btn,
-.buttons .share-btn {
-  width: 95%;
-  background-color: #fbfdfe;
-  color: #fe6542;
-  font-weight: 600;
-  height: 30px;
-  border: 1px solid #fbfdfe;
-  -webkit-box-shadow: -16px 20px 43px -18px rgba(0, 0, 0, 0.48);
-  -moz-box-shadow: -16px 20px 43px -18px rgba(0, 0, 0, 0.48);
-  box-shadow: 1px 6px 29px -10px rgba(0, 0, 0, 0.48);
-  border-radius: 4px;
+.buttons .share-btn{
+    width: 95%;
+    background-color: #fbfdfe;
+    color: #fe6542;
+    font-weight: 600;
+    height: 30px;
+    border: 1px solid #fbfdfe;
+    -webkit-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
+	-moz-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
+	box-shadow: 1px 6px 29px -10px rgba(0,0,0,0.48);
+    border-radius: 4px;
 }
-.buttons .copy-btn:focus,
-.buttons .share-btn:focus {
-  border: 0px solid #fbfdfe !important;
-  outline: none;
+.buttons .copy-btn:focus, 
+.buttons .share-btn:focus{
+	border: 0px solid #fbfdfe!important;
+	outline: none;
 }
-.buttons .copy-btn a {
-  text-decoration: none;
-  color: #fe6542;
+.buttons .copy-btn a{
+	text-decoration: none;
+	color: #fe6542;
 }
 .msgbox-header,
-.msg-content {
-  width: 300px;
-  margin: 0 auto;
-  background-color: #0087ff;
-  border-radius: 4px;
-  border: 1px solid #0087ff;
+.msg-content{
+	width: 390px;
+    margin: 0 auto;
+    background-color: #0087ff;
+    border-radius: 4px;
+    border: 1px solid #0087ff;
 }
-.clipboard-msg {
-  color: #fff;
-  text-align: center;
+.clipboard-msg{
+	color: #fff;
+	text-align: center;
+	font-size:16px 
+    
 }
-.qr-code {
-  clear: both;
-  width: 210px;
-  margin: 0 auto;
-  background-color: #fff;
-  position: relative;
-  top: 16px;
+.qr-code{
+	clear: both;
+	width: 210px;
+    margin: 0 auto;
+    background-color: #fff;
+	position: relative;
+    top: 16px;
 }
-.qr-code canvas {
-  width: 200px;
-  display: block;
-  margin: 0 auto;
-  padding: 15px;
+.qr-code canvas{ 
+	width: 200px;
+    display: block;
+    margin: 0 auto;
+    padding: 15px;   
 }
-.amount-lable {
-  margin-top: 46px;
+.amount-lable{
+	margin-top: 46px;
 }
-.currency-input {
-  margin-top: 4px;
-  position: relative;
-  float: left;
+.amount-lable .amount-lable-span{
+	color:#a9a1a1;; 
+
 }
-.currency-input .crypto-currency {
-  width: 141px;
-  height: 32px;
-  padding: 4px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.currency-input{
+	margin-top: 4px;
+	position: relative;
+	float: left;
 }
-.currency-input .equals-sign {
-  color: #fe5c0d;
-  margin: 5px 4px;
-  display: block;
-  font-size: 18px;
+.currency-input .crypto-currency{
+    width: 141px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
-.currency-input .unit  {
-  position: absolute;
-  display: block;
-  top: 6px;
-  right: -3px;
-  color: #a9a1a1;
-  padding-left: 5px;
-  width: 45px;
+.currency-input .equals-sign{
+	color: #fe5c0d;
+	margin: 5px 4px;
+    display: block;
+	font-size: 18px;
 }
+.currency-input .unit {
+    position: absolute;
+    display: block;
+    top: 6px;
+    right: -3px;
+    color: #a9a1a1;
+    padding-left: 5px;
+    width: 45px;
+} 

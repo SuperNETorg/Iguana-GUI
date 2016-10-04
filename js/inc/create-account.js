@@ -5,7 +5,7 @@
 
 document.write('\x3Cscript type=\"text/javascript\" src=\"js/libs/crypto/wordlist.js\">\x3C/script>' + // crypto lib
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/crypto/passphrasegenerator.js\">\x3C/script>' + // crypto lib
-               '\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-3.0.0.min.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-1.11.3.min.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/settings.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dev.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/supported-coins-list.js\">\x3C/script>' +

@@ -61,8 +61,57 @@
 						</div>
 						<div class="action-buttons">
 							<button class="btn btn-send">Send</button>
-							<button class="btn btn-receive">Receive</button>
+							<button class="btn btn-receive coinaddress btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Receive</button>
 						</div>
+						<!--popup code start -->
+						<div class="modal fade" id="myModal" role="dialog">
+    					  <div class="modal-dialog model-popup">
+      				  <!-- Modal content-->
+      				    <div class="modal-content receiving-coin-content">
+        					   <div class="modal-header">
+         				     <button type="button" class="close" data-dismiss="modal"> &times;</button>
+         					  <h4 class="modal-title">Receiving coins</h4>
+        					   </div>
+          				   <div class="modal-body">
+        					     <div class="row">
+              			       <div class="col-xs-12 col-md-5 col-md-offset-3  share-address-section">
+          	    			      <div class="my-lable">My address:</div>
+          	    		         <h4 id="address">32ro Y89f h8OF hfOO PIFO FJ9w hio1 132y</h4>
+          	                  <div><span class="text-section">Something 2</span></div>
+          	                  <div class="col-md-6 buttons">
+          	    	              <button type="button" class="copy-btn" onclick="copyToClipboard('#address')" ><a data-toggle="modal" href="#clipboard">copy</a></button>
+          	                  </div>
+          	                  <div class="col-md-6 buttons">
+          	    	              <button type="button" class="share-btn">Share</button>
+          	                  </div>
+				                  <div class="qr-code"  id="qr-code"></div>
+                              <div class="amount-lable"><span class="amount-lable-span">Amount:</span></div>
+                              <div ><span class="text-section">Enter in any currency</span></div>
+                              <div class="currency-input">
+                                <input type="number" style="color:#000;" class="crypto-currency currency-coin" placeholder="0">
+                                <span class="unit coin-unit"></span>
+                              </div>
+                              <div class="currency-input"><span class="equals-sign">=</span></div>
+                              <div class="currency-input">
+                                <input type="number" style="color:#000;" class="currency crypto-currency" placeholder="0">
+                                <span class="unit">USD</span>
+                              </div>  
+                            </div>
+            		        </div>
+          			      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="clipboard" role="dialog">
+                    <div class="modal-dialog">
+  	                   <div class="modal-content msg-content">
+                        <div class="modal-header msgbox-header">
+                          <div class="clipboard-msg">Address is copied to clipboard </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+						<!--popup codeend -->
 						<div class="info">
 							<i class="bi_doc-book-a"></i>
 							<span>Information</span>
@@ -77,7 +126,7 @@
 		</section>
 		<section class="form-container add-new-coin-form unselectable hidden fade">
 			<div class="modal-overlay"></div>
-			<div class="modal">
+			<div class="modal model-add-coin">
 				<header class="form-header orange-gradient box-shadow-bottom">
 					<i class="bi_interface-cross cursor-pointer btn-close"></i>
 					<div class="title text-shadow">Adding a new coin</div>

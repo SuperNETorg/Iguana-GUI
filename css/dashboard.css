@@ -11,6 +11,7 @@
   @import url('dashboard/left-sidebar.css');
   @import url('dashboard/transactions-unit.css');
   @import url('dashboard/add-coin-modal.css');
+  @import url('receiving-coins.css');
 
   body,
   html {
