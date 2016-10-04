@@ -91,6 +91,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   return result;
 }
 
+/* sync - iguana, async - coind */
 apiProto.prototype.walletLock = function(coin, cb) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletlock', null, coin),

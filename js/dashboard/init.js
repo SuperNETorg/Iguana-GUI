@@ -52,7 +52,7 @@ function initDashboard() {
   });
   $('.btn-receive').click(function(){
   	 bindReceive();
-  });	 
+  });
   $('.btn-next').click(function() {
     var result = false;
 
@@ -101,11 +101,11 @@ function initDashboard() {
         apiProto.prototype.testConnection(initDashboard());
       }
     }, 2000);
-} 
+}
 function bindReceive()
-{ 
+{
   coinName = activeCoin || $('.account-coins-repeater .item.active');
-  var localrates = JSON.parse(localStorage.getItem("iguana-rates-" + coinName.toUpperCase()));  
+  var localrates = JSON.parse(localStorage.getItem("iguana-rates-" + coinName.toUpperCase()));
   var storedNames = JSON.parse(localStorage.getItem("names"));
   var result = '',
   helper = new helperProto(),

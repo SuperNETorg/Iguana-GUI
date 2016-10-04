@@ -9,7 +9,9 @@ var helperProto = function() {};
 var defaultSessionLifetime = settings.defaultSessionLifetime,
     portPollUpdateTimeout = settings.portPollUpdateTimeout,
     pasteTextFromClipboard = false,
-    isExecCopyFailed = false;
+    isExecCopyFailed = false,
+    coindWalletLockResults = [],
+    coindWalletLockCount = 0;
 
 helperProto.prototype.convertUnixTime = function(UNIX_timestamp, format) {
   var a = new Date(UNIX_timestamp * 1000),
@@ -124,9 +126,50 @@ helperProto.prototype.getTimeDiffBetweenNowAndDate = function(from) {
 helperProto.prototype.logout = function(noRedirect) {
   var localStorage = new localStorageProto();
 
-  apiProto.prototype.walletLock();
-  localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
-  helperProto.prototype.openPage('login');
+  if (isIguana) {
+    apiProto.prototype.walletLock();
+    localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    helperProto.prototype.openPage('login');
+  } else {
+    coindWalletLockCount = 0;
+
+    for (var key in coinsInfo) {
+      if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+        coindWalletLockCount++;
+      }
+    }
+
+    // in case something went bad
+    if (coindWalletLockCount === 0) {
+      localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+      helperProto.prototype.openPage('login');
+    }
+
+    helperProto.prototype.logoutCoind();
+  }
+}
+
+helperProto.prototype.logoutCoind = function() {
+  var localStorage = new localStorageProto(),
+      api = new apiProto();
+
+  for (var key in coinsInfo) {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      api.walletLock(key, helperProto.prototype.logoutCoindCB(key));
+    }
+  }
+}
+
+helperProto.prototype.logoutCoindCB = function(key) {
+  var localStorage = new localStorageProto();
+
+  coindWalletLockResults[key] = true;
+  localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+
+  if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
+    localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    helperProto.prototype.openPage('login');
+  }
 }
 
 helperProto.prototype.setCurrency = function(currencyShortName) {

@@ -27,7 +27,7 @@ function authAllAvailableCoind() {
   return result;
 }
 
-function authAllAvailableCoindCB(result, key, isLast) {
+function authAllAvailableCoindCB(result, key) {
   var localStorage = new localStorageProto();
 
   coindAuthResults[key] = result;
