@@ -45,6 +45,8 @@ function addAuthorizationButtonAction(buttonClassName) {
         authAllAvailableCoind();
       }
       if ($('.verify-passphrase-form')) {
+        $('.login-input-directions-error').removeClass('hidden');
+
         if (totalSubstr && totalSubstrAlpha && totalSpaces) {
           if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
             if (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet()) {

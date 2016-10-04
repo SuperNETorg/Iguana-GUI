@@ -158,7 +158,7 @@ helperProto.prototype.syncStatus = function() {
 
     setInterval(function() {
       //console.clear();
-      apiProto.prototype.testConnection(apiProto.prototype.testCoinPorts(helperProto.prototype.getCurrentPage() === 'index' ? constructAuthCoinsRepeater() : null));
+      apiProto.prototype.testConnection();
     }, portPollUpdateTimeout * 1000);
   });
 }
