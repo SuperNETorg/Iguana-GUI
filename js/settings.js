@@ -1,7 +1,8 @@
 var settings = {
   iguanaPort: '7778',
   proxy: 'http://localhost:1337/', // https://github.com/gr2m/CORS-Proxy
-  ratesUpdateTimeout: 15, // sec
+  ratesUpdateTimeout: 15, // sec, see dashboard/rates.js
+  ratesUpdateMultiply: 5, // sec
   decimalPlacesCoin: 1,
   decimalPlacesCurrency: 2,
   decimalPlacesTxUnit: 5,

@@ -10,7 +10,22 @@ function updateRates(coin, currency, returnValue) {
       localStorage = new localStorageProto(),
       helper = new helperProto();
 
-  //console.log('sec. elapsed since last rates update ' + Math.floor(helper.ratesUpdateElapsedTime()));
+  // defer rates update to prevent ban for abuse
+  // default update rate: 15 sec base + 5 sec pospone for each additional coin
+  //                      5 coins are going to have 15 + 4 * 5 = 35 sec wait period between rate updates
+  var totalCoins = 0;
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) {
+      if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
+        totalCoins++;
+      }
+    }
+  };
+
+  ratesUpdateTimeout = settings.ratesUpdateTimeout + totalCoins * settings.ratesUpdateMultiply;
+
+  if (dev.showConsoleMessages && dev.isDev) console.log('last rate upd ' + Math.floor(helper.ratesUpdateElapsedTime(coin)) + 's. ago, wait period ' + ratesUpdateTimeout + 's.');
+
   if (helper.ratesUpdateElapsedTime(coin) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + coin)) {
     if (!coin) coin = defaultCoin;
     if (!currency) currency = defaultCurrency;
