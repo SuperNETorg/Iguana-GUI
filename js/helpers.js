@@ -134,7 +134,7 @@ helperProto.prototype.logout = function(noRedirect) {
     coindWalletLockCount = 0;
 
     for (var key in coinsInfo) {
-      if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      if (localStorage.getVal('iguana-' + key + '-passphrase') && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
         coindWalletLockCount++;
       }
     }

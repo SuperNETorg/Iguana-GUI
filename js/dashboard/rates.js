@@ -13,7 +13,7 @@ function updateRates(coin, currency, returnValue) {
   // defer rates update to prevent ban for abuse
   // default update rate: 15 sec base + 5 sec pospone for each additional coin
   //                      5 coins are going to have 15 + 4 * 5 = 35 sec wait period between rate updates
-  var totalCoins = 0;
+  var totalCoins = -1;
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
       if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
@@ -38,6 +38,8 @@ function updateRates(coin, currency, returnValue) {
     if (!coinToCurrencyRate || coinToCurrencyRate === 0) {
       coinToCurrencyRate = apiExternalRate;
 
+      if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + apiExternalRate + ' ' + defaultCurrency);
+
       if (returnValue) {
         localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': apiExternalRate, 'updatedAt': Date.now() });
         return apiExternalRate;
@@ -47,6 +49,8 @@ function updateRates(coin, currency, returnValue) {
       return coinToCurrencyRate;
     }
   } else {
+    if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + localStorage.getVal('iguana-rates-' + coin).value + ' ' + defaultCurrency);
+
     if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
     return localStorage.getVal('iguana-rates-' + coin).value;
   }
