@@ -57,29 +57,31 @@ function initDashboard() {
     var result = false;
 
     helper.toggleModalWindow('add-new-coin-form', 300);
-    coinsSelectedByUser = helper.reindexAssocArray(coinsSelectedByUser);
-    if (dev.showConsoleMessages && dev.isDev) console.log(coinsSelectedByUser);
+    coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+    if (dev.showConsoleMessages && dev.isDev) console.log(coinsSelectedToAdd);
 
     // prompt walletpassphrase to add coind
-    for (var key in coinsSelectedByUser) {
+    for (var key in coinsSelectedToAdd) {
       if (!isIguana) {
-        var coindPassphrasePrompt = prompt('Please enter your ' + coinsSelectedByUser[key].toUpperCase() + ' passphrase', '');
+        var coindPassphrasePrompt = prompt('Please enter your ' + coinsSelectedToAdd[key].toUpperCase() + ' passphrase', '');
 
         if (coindPassphrasePrompt < 1) {
           alert('Try again');
         } else {
-          var coindWalletLogin = api.walletLogin(coindPassphrasePrompt, defaultSessionLifetime, coinsSelectedByUser[key]);
+          var coindWalletLogin = api.walletLogin(coindPassphrasePrompt, defaultSessionLifetime, coinsSelectedToAdd[key]);
 
+          console.log(coindWalletLogin);
           if (coindWalletLogin !== -14 && coindWalletLogin !== -15) {
-            localStorage.setVal('iguana-' + coinsSelectedByUser[key] + '-passphrase', { 'logged': 'yes' });
+            localStorage.setVal('iguana-' + coinsSelectedToAdd[key] + '-passphrase', { 'logged': 'yes' });
           } else {
-            alert(coinsSelectedByUser[key].toUpperCase() + ' wrong passphrase');
+            if (coindWalletLogin === -14) alert(coinsSelectedToAdd[key].toUpperCase() + ' wrong passphrase');
+            if (coindWalletLogin === -15) alert('Please encrypt ' + coinsSelectedToAdd[key].toUpperCase() + ' wallet with a passphrase');
           }
         }
       } else {
-        if (api.addCoin(coinsSelectedByUser[key]) && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + coinsSelectedByUser[key] + '\"') === -1) {
-          if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coinsSelectedByUser[key] + ' coin added<br/>');
-          coinsInfo[coinsSelectedByUser[key]].connection = true;
+        if (api.addCoin(coinsSelectedToAdd[key]) && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + coinsSelectedToAdd[key] + '\"') === -1) {
+          if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coinsSelectedToAdd[key] + ' coin added<br/>');
+          coinsInfo[coinsSelectedToAdd[key]].connection = true;
           result = true;
         }
       }
