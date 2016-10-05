@@ -47,7 +47,7 @@ function initDashboard() {
   $('.btn-close,.modal-overlay').click(function() {
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedByUser = [];
-    $('.supported-coins-repeater').html(constructCoinRepeater());
+    $('.supported-coins-repeater-inner').html(constructCoinRepeater());
     bindClickInCoinRepeater();
   });
   $('.btn-receive').click(function(){

@@ -35,6 +35,7 @@ $(document).ready(function() {
 
 $(window).resize(function() {
   $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' });
+  opacityToggleOnAddCoinRepeaterScroll();
 });
 
 function updateDashboardView(timeout) {

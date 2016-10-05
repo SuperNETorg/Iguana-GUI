@@ -12,8 +12,12 @@ function addCoinButtonCB() {
   if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
   helper.toggleModalWindow('add-new-coin-form', 300);
   coinsSelectedByUser = [];
-  $('.supported-coins-repeater').html(constructCoinRepeater());
+  $('.supported-coins-repeater-inner').html(constructCoinRepeater());
   bindClickInCoinRepeater();
+  opacityToggleOnAddCoinRepeaterScroll();
+  $('.supported-coins-repeater').scroll(function(e) {
+    opacityToggleOnAddCoinRepeaterScroll();
+  });
 }
 
 var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">' +
@@ -43,8 +47,24 @@ function constructCoinRepeater() {
   return result;
 }
 
-function bindClickInCoinRepeater() {
+function opacityToggleOnAddCoinRepeaterScroll() {
+  var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
+      lowerThreshold =  supportedCoinsRepeaterScrollPos + $('.supported-coins-repeater-inner').height();
+
   $('.supported-coins-repeater .coin').each(function(index, item) {
+    var itemTop = $(this).position().top - 130 >= 0 ? $(this).position().top - 130 : $(this).position().top;
+    var itemBottom = $(this).position().top - 130 >= 0 ? $(this).position().top : $(this).position().top + 130;
+
+    if (itemTop + 26 > supportedCoinsRepeaterScrollPos && itemBottom + 26 < lowerThreshold || $('.supported-coins-repeater-inner').height() < 400) {
+      $(this).css({ 'opacity': 1 });
+    } else {
+      $(this).css({ 'opacity': 0.2 });
+    }
+  });
+}
+
+function bindClickInCoinRepeater() {
+  $('.supported-coins-repeater-inner .coin').each(function(index, item) {
     $(this).click(function() {
       if ($(this).hasClass('active')) {
         delete coinsSelectedByUser[index];
@@ -61,15 +81,16 @@ function bindCoinRepeaterSearch() {
   $('.quick-search .input').keyup(function() {
     var quickSearchVal = $(this).val().toLowerCase();
 
-    $('.supported-coins-repeater .coin .name').each(function(index, item) {
+    $('.supported-coins-repeater-inner .coin .name').each(function(index, item) {
       var itemText = $(item).text().toString().toLowerCase();
+      console.log(itemText.indexOf(quickSearchVal));
 
       if (itemText.indexOf(quickSearchVal) > -1) $(this).parent().removeClass('fade');
       else $(this).parent().addClass('fade');
     });
 
     // fade in elements if nothing was found
-    if ($('.supported-coins-repeater .coin').filter('.fade').length === Object.keys(supportedCoinsList).length)
-      $('.supported-coins-repeater .coin').filter('.fade').removeClass('fade');
+    if ($('.supported-coins-repeater-inner .coin').filter('.fade').length === Object.keys(supportedCoinsList).length)
+      $('.supported-coins-repeater-inner .coin').filter('.fade').removeClass('fade');
   });
 }
