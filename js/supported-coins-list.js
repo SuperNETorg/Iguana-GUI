@@ -16,7 +16,7 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': 'http://explorebtcd.info/api/status?q=getBlockCount'
   },
   'ltc': {
-    'name': 'Dogecoin',
+    'name': 'Litecoin',
     'portp2p': 9332,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
