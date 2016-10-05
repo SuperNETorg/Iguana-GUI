@@ -10,5 +10,7 @@ var settings = {
   defaultCurrency: 'USD',
   portPollUpdateTimeout: 60, // sec
   defaultSessionLifetime: 7200, // sec
-  defaultTransactionsCount: 20
+  defaultTransactionsCount: 20,
+  defaultAccountNameIguana: 'default', // note: change to a specific account name if needed; default coind account name is empty string
+  defaultAccountNameCoind: ''
 };

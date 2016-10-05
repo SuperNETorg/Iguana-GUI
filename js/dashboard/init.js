@@ -9,7 +9,7 @@ function initDashboard() {
       api = new apiProto(),
       localStorage = new localStorageProto();
 
-  defaultAccount = isIguana ? 'default' : ''; // note: change to a specific account name if needed; default coind account name is empty string
+  defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
   // coin is auto detected based on available portp2p
@@ -70,7 +70,6 @@ function initDashboard() {
         } else {
           var coindWalletLogin = api.walletLogin(coindPassphrasePrompt, defaultSessionLifetime, coinsSelectedToAdd[key]);
 
-          console.log(coindWalletLogin);
           if (coindWalletLogin !== -14 && coindWalletLogin !== -15) {
             localStorage.setVal('iguana-' + coinsSelectedToAdd[key] + '-passphrase', { 'logged': 'yes' });
           } else {
