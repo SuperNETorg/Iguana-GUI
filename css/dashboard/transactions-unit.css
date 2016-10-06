@@ -6,6 +6,7 @@
 .transactions-unit {
   width: 75%;
   margin-left: 5%;
+  margin-bottom: 40px;
   border-radius: 4px;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 }
@@ -52,7 +53,7 @@
 }
 .transactions-list {
   background: #fff;
-  padding: 25px 30px;
+  padding: 25px 2.5%;
   border-radius: 0 0 4px 4px;
 }
 .transactions-list .title {
@@ -67,7 +68,7 @@
   font-size: 1.2em;
   background: #F5F8FB;
   border-radius: 4px;
-  padding: 20px 35px 23px 35px;
+  padding: 20px 3% 23px 3%;
   margin-bottom: 25px;
   transition: all 0.25s;
 }
