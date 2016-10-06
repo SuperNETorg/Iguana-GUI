@@ -177,7 +177,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
         if (response.statusText === 'error' && !isIguana)
           isProxy = false;
-          if (dev.showConsoleMessages && dev.isDev) console.log('is proxy server running?');
+          if (dev.showConsoleMessages && dev.isDev && response.responseText.indexOf('Bad Gateway') === -1) console.log('is proxy server running?');
         else if (!response.statusCode)
           if (dev.showConsoleMessages && dev.isDev) console.log('server is busy, check back later');
 
