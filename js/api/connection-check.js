@@ -3,13 +3,60 @@
  *
  */
 
+// check if iguana is running
+apiProto.prototype.testConnection = function(cb) {
+  var result = false;
+      setPortPollResponseDS = localStorageProto.prototype.getVal('iguana-port-poll'),
+      timeDiff = setPortPollResponseDS ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0;
+
+  // force port poll update if no coin is detected
+  // use case: gui is launched ahead of iguana or coind
+  helperProto.prototype.getPortPollResponse();
+  var index = 0;
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) {
+      index++;
+    }
+  }
+  if (index === 0 && dev.showConsoleMessages && dev.isDev) console.log('force port poll');
+
+  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0) {
+    // test if iguana is running
+    var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
+    $.ajax({
+      url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
+      cache: false,
+      dataType: 'text',
+      async: true,
+      type: 'GET',
+      success: function (response) {
+        // iguana env
+        isIguana = true;
+        if (dev.showConsoleMessages && dev.isDev) console.log('iguana is detected');
+        apiProto.prototype.errorHandler(response);
+        apiProto.prototype.testCoinPorts(cb);
+      },
+      error: function (response) {
+        // non-iguana env
+        isIguana = false;
+        if (dev.showConsoleMessages && dev.isDev) console.log('running non-iguana env');
+        apiProto.prototype.errorHandler(response);
+        apiProto.prototype.testCoinPorts(cb);
+      }
+    });
+  } else {
+    if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
+    if (cb) cb.call();
+  }
+}
+
 // test must be hooked to initial gui start or addcoin method
 // test default p2p
 apiProto.prototype.testCoinPorts = function(cb) {
   var result = false,
       _index = 0;
 
-  $('#debug-sync-info').html('');
+  if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').html('');
 
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
     var fullUrl = apiProto.prototype.getFullApiRoute('getinfo', conf),
@@ -29,7 +76,8 @@ apiProto.prototype.testCoinPorts = function(cb) {
       headers: postAuthHeaders,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
-        console.log('p2p test ' + index);
+
+        if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
         if (response.error === 'coin is busy processing') {
@@ -119,6 +167,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
+
           cb.call();
         }
         _index++;
@@ -152,6 +201,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
+
           cb.call();
         }
         _index++;
@@ -169,6 +219,7 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) totalCoinsRunning++;
   }
+
   if (totalCoinsRunning === 0 && helperProto.prototype.getCurrentPage() !== 'index') {
     $('#temp-out-of-sync').html('Something went wrong. Please login again.');
     $('#temp-out-of-sync').removeClass('hidden');
@@ -191,42 +242,5 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   } else {
     $('#temp-out-of-sync').html(outOfSyncCoinsList + ' is out of sync. Information about balances, transactions and send/receive functions is limited.');
     $('#temp-out-of-sync').removeClass('hidden');
-  }
-}
-
-// check if iguana is running
-apiProto.prototype.testConnection = function(cb) {
-  var result = false;
-      setPortPollResponseDS = localStorageProto.prototype.getVal('iguana-port-poll'),
-      timeDiff = setPortPollResponseDS ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0;
-
-  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0) {
-    // test if iguana is running
-    var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
-    $.ajax({
-      url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
-      cache: false,
-      dataType: 'text',
-      async: true,
-      type: 'GET',
-      success: function (response) {
-        // iguana env
-        if (dev.showConsoleMessages && dev.isDev) console.log('iguana is detected');
-        isIguana = true;
-        apiProto.prototype.errorHandler(response);
-        apiProto.prototype.testCoinPorts(cb);
-      },
-      error: function (response) {
-        // non-iguana env
-        isIguana = false;
-        if (dev.showConsoleMessages && dev.isDev) console.log('running non-iguana env');
-        apiProto.prototype.errorHandler(response);
-        apiProto.prototype.testCoinPorts(cb);
-      }
-    });
-  } else {
-    if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
-    helperProto.prototype.getPortPollResponse();
-    if (cb) cb.call();
   }
 }
