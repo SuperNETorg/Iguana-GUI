@@ -28,10 +28,9 @@ function constructAuthCoinsRepeater() {
 
   for (var key in coinsInfo) {
     if (!isIguana) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
-    if ((isIguana && apiProto.prototype.getConf().coins[key].iguanaCurl !== "disabled") || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
+    if ((isIguana && apiProto.prototype.getConf().coins[key].iguanaCurl !== 'disabled') || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
       index++;
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                      replace('{{ id }}', key.toUpperCase()).
                                       replace('{{ name }}', key.toUpperCase()).
                                       replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
                                       replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '').
@@ -59,13 +58,24 @@ function constructCoinsRepeaterEncrypt() {
 
     if ((!isIguana && coinsInfo[key].connection === true) || isIguana) {
       result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                            replace('{{ id }}', key.toUpperCase()).
                                             replace('{{ name }}', key.toUpperCase()).
-                                            replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? '' : 'onmouseup=\"checkSelectedWallet(\'' + key + '\')\"').
+                                            replace('{{ onclick }}', '').
                                             replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '');
     }
   };
 
   result = result + '</div><hr/>';
   if ((isIguana && !selectedCoindToEncrypt) || !isIguana) $('.non-iguana-coins-repeater').html(result);
+  bindCoinsRepeaterEncrypt();
+}
+
+function bindCoinsRepeaterEncrypt() {
+  $('.non-iguana-coins-repeater .coin').each(function(index, item) {
+    var coindId = $(this).attr('data-coin-id');
+
+    if (!isIguana && coinsInfo[coindId].connection === true)
+      $(this).mouseup(function() { // naming matters, doesn't trigger on click :(
+        checkSelectedWallet(coindId);
+      });
+  });
 }

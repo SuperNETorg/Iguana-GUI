@@ -68,15 +68,6 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
   }
 }
 
-function getCachedRate(coin) {
-  var localStorage = new localStorageProto();
-
-  if (!coin) coin = defaultCoin;
-  if (!currency) currency = defaultCurrency;
-
-  return localStorage.getVal('iguana-rates-' + coin).value;
-}
-
 function updateRateCB(coin, result) {
   var localStorage = new localStorageProto();
 
