@@ -57,7 +57,6 @@ function constructAccountCoinRepeater() {
         decimalPlacesCurrency = 2;
       }
 
-      // TODO: fix error when add coin modal is visible
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
 
       var currencyCalculatedValue = coinBalance * coinLocalRate;

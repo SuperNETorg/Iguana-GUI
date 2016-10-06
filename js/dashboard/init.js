@@ -17,9 +17,9 @@ function initDashboard() {
 
   if (session.checkSession(true)) {
     $('.dashboard').removeClass('hidden');
-    updateRates();
     $('.account-coins-repeater').html(constructAccountCoinRepeater());
     bindClickInAccountCoinRepeater();
+    updateRates(null, null, null, true);
     $('.transactions-list-repeater').html(constructTransactionUnitRepeater());
     updateTotalBalance();
     updateTransactionUnitBalance();
@@ -58,7 +58,6 @@ function initDashboard() {
 
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-    if (dev.showConsoleMessages && dev.isDev) console.log(coinsSelectedToAdd);
 
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedToAdd) {

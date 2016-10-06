@@ -32,7 +32,7 @@ apiProto.prototype.getIguanaRate = function(quote) {
 // get a quote form an external source
 // cryptonator is officially closed it's gates, no more cors
 // keep an eye on, may be they'll change their mind
-apiProto.prototype.getExternalRate = function(quote) {
+apiProto.prototype.getExternalRate = function(quote, cb) {
   var result = false,
       firstSourceFailed = false,
       quoteComponents = quote.split('/');
@@ -42,7 +42,7 @@ apiProto.prototype.getExternalRate = function(quote) {
     url: 'https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
     cache: false,
     dataType: 'text',
-    async: false,
+    async: cb ? true : false,
     success: function(_response) {
       var response = $.parseJSON(_response);
 
@@ -52,12 +52,17 @@ apiProto.prototype.getExternalRate = function(quote) {
       } else {
         result = false;
       }
+
+      if (cb) cb.call(this, quoteComponents[0], result);
     },
     error: function(response) {
       console.log('falling back to ext service #2');
       firstSourceFailed = true;
     }
   });
+
+  // TODO: rewrite fallback
+  //       nested async(?)
 
   // ext. rate fallback
   if (firstSourceFailed)

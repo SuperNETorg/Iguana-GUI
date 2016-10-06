@@ -214,7 +214,8 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
 apiProto.prototype.checkBackEndConnectionStatus = function() {
   // check if iguana or coind quit
-  var totalCoinsRunning = 0;
+  var totalCoinsRunning = 0,
+      localStorage = new localStorageProto();
 
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) totalCoinsRunning++;
@@ -232,7 +233,9 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   // out of sync message
   var outOfSyncCoinsList = '';
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
-    if (coinsInfo[index].RT === false) outOfSyncCoinsList += index.toUpperCase() + ', ';
+    if ((coinsInfo[index].RT === false && isIguana) ||
+        (coinsInfo[index].RT === false && !isIguana && localStorage.getVal('iguana-' + index + '-passphrase') && localStorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
+      outOfSyncCoinsList += index.toUpperCase() + ', ';
   });
   if (outOfSyncCoinsList[outOfSyncCoinsList.length - 1] === ' ') {
     outOfSyncCoinsList = outOfSyncCoinsList.replace(/, $/, '');

@@ -4,7 +4,7 @@
  */
 
 // TODO: fix a bug with wrong sidebar currency values
-function updateRates(coin, currency, returnValue) {
+function updateRates(coin, currency, returnValue, triggerUpdate) {
   var api = new apiProto(),
       apiExternalRate,
       localStorage = new localStorageProto(),
@@ -19,40 +19,72 @@ function updateRates(coin, currency, returnValue) {
       if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
         totalCoins++;
       }
+      // force rates update
+      // ! not efficient !
+      if (triggerUpdate) {
+        if (((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) || isIguana) {
+          console.log('forced update ' + key + '/' + defaultCurrency);
+          api.getExternalRate(key.toUpperCase() + '/' + defaultCurrency, updateRateCB);
+        }
+      }
     }
   };
 
   ratesUpdateTimeout = settings.ratesUpdateTimeout + totalCoins * settings.ratesUpdateMultiply;
 
-  if (dev.showConsoleMessages && dev.isDev) console.log('last rate upd ' + Math.floor(helper.ratesUpdateElapsedTime(coin)) + 's. ago, wait period ' + ratesUpdateTimeout + 's.');
+  if (!triggerUpdate) {
+    if (dev.showConsoleMessages && dev.isDev) console.log('last rate upd ' + Math.floor(helper.ratesUpdateElapsedTime(coin)) + 's. ago, wait period ' + ratesUpdateTimeout + 's.');
 
-  if (helper.ratesUpdateElapsedTime(coin) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + coin)) {
-    if (!coin) coin = defaultCoin;
-    if (!currency) currency = defaultCurrency;
+    if (helper.ratesUpdateElapsedTime(coin) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + coin)) {
+      if (!coin) coin = defaultCoin;
+      if (!currency) currency = defaultCurrency;
 
-    coinToCurrencyRate = !isIguana ? null : api.getIguanaRate(coin + '/' + currency);
-    // graceful fallback
-    // if iguana is not present get a quote form external source
-    apiExternalRate = api.getExternalRate(coin + '/' + currency)
+      // iguana based rates are temp disabled
+      coinToCurrencyRate = null; //!isIguana ? null : api.getIguanaRate(coin + '/' + currency);
+      // graceful fallback
+      // if iguana is not present get a quote form external source
+      apiExternalRate = triggerUpdate ? api.getExternalRate(coin + '/' + currency, updateRateCB /*firstRun ? null : updateRateCB*/) : null;
 
-    if (!coinToCurrencyRate || coinToCurrencyRate === 0) {
-      coinToCurrencyRate = apiExternalRate;
+      if (!coinToCurrencyRate || coinToCurrencyRate === 0) {
+        coinToCurrencyRate = apiExternalRate;
 
-      if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + apiExternalRate + ' ' + defaultCurrency);
+        if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + apiExternalRate + ' ' + defaultCurrency);
 
-      if (returnValue) {
-        localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': apiExternalRate, 'updatedAt': Date.now() });
-        return apiExternalRate;
+        if (returnValue) {
+          localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': apiExternalRate, 'updatedAt': Date.now() });
+          return apiExternalRate;
+        }
+      } else {
+        localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': coinToCurrencyRate, 'updatedAt': Date.now() });
+        return coinToCurrencyRate;
       }
     } else {
-      localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': coinToCurrencyRate, 'updatedAt': Date.now() });
-      return coinToCurrencyRate;
-    }
-  } else {
-    if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + localStorage.getVal('iguana-rates-' + coin).value + ' ' + defaultCurrency);
+      if (dev.showConsoleMessages && dev.isDev) console.log(coin + ' rate ' + localStorage.getVal('iguana-rates-' + coin).value + ' ' + defaultCurrency);
 
-    if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
-    return localStorage.getVal('iguana-rates-' + coin).value;
+      if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
+      return localStorage.getVal('iguana-rates-' + coin).value;
+    }
+    //console.log(localStorage.getVal('iguana-rates-' + coin));
   }
-  //console.log(localStorage.getVal('iguana-rates-' + coin));
+}
+
+function getCachedRate(coin) {
+  var localStorage = new localStorageProto();
+
+  if (!coin) coin = defaultCoin;
+  if (!currency) currency = defaultCurrency;
+
+  return localStorage.getVal('iguana-rates-' + coin).value;
+}
+
+function updateRateCB(coin, result) {
+  var localStorage = new localStorageProto();
+
+  localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': result, 'updatedAt': Date.now() });
+
+  // !not effecient!
+  $('.account-coins-repeater').html(constructAccountCoinRepeater());
+  bindClickInAccountCoinRepeater();
+  updateTotalBalance();
+  updateTransactionUnitBalance(true);
 }
