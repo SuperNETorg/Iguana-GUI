@@ -26,7 +26,7 @@ function constructTransactionUnitRepeater() {
   var api = new apiProto(),
       coinName = activeCoin || $('.account-coins-repeater .item.active');
 
-  api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB)
+  api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB);
 }
 
 function constructTransactionUnitRepeaterCB(response) {

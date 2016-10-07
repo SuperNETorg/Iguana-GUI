@@ -270,4 +270,23 @@ helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elemen
   });
 }
 
+helperProto.prototype.decimalPlacesFormat = function(value) {
+  if (value < 1 && value > 0) {
+    var valueComponents = value.toString().split('.');
+
+    for (var i=0; i < valueComponents[1].length; i++) {
+      if (Number(valueComponents[1][i]) !== 0) {
+        decimalPlacesCoin = i + 1;
+        decimalPlacesCurrency = decimalPlacesCurrency;
+        break;
+      }
+    }
+  } else {
+    decimalPlacesCoin = 1;
+    decimalPlacesCurrency = 2;
+  }
+
+  return { 'coin': decimalPlacesCoin, 'currency': decimalPlacesCurrency };
+}
+
 helperProto.prototype.syncStatus();

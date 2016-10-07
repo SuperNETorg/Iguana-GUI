@@ -18,6 +18,7 @@ var accountCoinRepeaterTemplate = '<div class=\"item{{ active }}\" data-coin-id=
 function constructAccountCoinRepeater() {
   var result = '',
       localStorage = new localStorageProto(),
+      helper = new helperProto(),
       accountCoinRepeaterHTML = '',
       isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
 
@@ -35,45 +36,14 @@ function constructAccountCoinRepeater() {
 
   for (var i=0; i < coinsSelectedByUser.length; i++) {
     if (accountCoinRepeaterHTML.indexOf('data-coin-id=\"' + coinsSelectedByUser[i] + '\"') === -1) {
-      var coinLocalRate = coinToCurrencyRate;
-
-      // call API
-      // note(!): if coin is not added yet it will take a while iguana to enable RT relay
-      var api = new apiProto(),
+      var coinLocalRate = coinToCurrencyRate,
+          api = new apiProto(),
           coinBalance = api.getBalance(defaultAccount, coinsSelectedByUser[i]) || 0;
-
-      if (coinBalance < 1 && coinBalance > 0) {
-        var coinBalanceFloat = coinBalance.toString().split('.');
-
-        for (var a=0; a < coinBalanceFloat[1].length; a++) {
-          if (Number(coinBalanceFloat[1][a]) !== 0) {
-            decimalPlacesCoin = a + 1;
-            decimalPlacesCurrency = a;
-            break;
-          }
-        }
-      } else {
-        decimalPlacesCoin = 1;
-        decimalPlacesCurrency = 2;
-      }
 
       if (coinsSelectedByUser[i].toUpperCase() !== defaultCoin) coinLocalRate = updateRates(coinsSelectedByUser[i].toUpperCase(), null, true) || 0;
 
-      var currencyCalculatedValue = coinBalance * coinLocalRate;
-      if (currencyCalculatedValue < 1 && currencyCalculatedValue > 0) {
-        var currencyCalculatedValueFloat = currencyCalculatedValue.toString().split('.');
-
-        for (var a=0; a < currencyCalculatedValueFloat[1].length; a++) {
-          if (Number(currencyCalculatedValueFloat[1][a]) !== 0) {
-            decimalPlacesCurrency = a + 1;
-            break;
-          }
-        }
-      } else {
-        decimalPlacesCurrency = 2;
-      }
-
-      var coinData = getCoinData(coinsSelectedByUser[i]);
+      var currencyCalculatedValue = coinBalance * coinLocalRate,
+          coinData = getCoinData(coinsSelectedByUser[i]);
 
       if ((i === 0 && !isActiveCoinSet) && !activeCoin) activeCoin = coinData.id;
       if (coinData)
@@ -82,8 +52,8 @@ function constructAccountCoinRepeater() {
                                               replace('{{ coin_id }}', coinData.id.toLowerCase()).
                                               replace('{{ coin_id }}', coinData.id.toUpperCase()).
                                               replace('{{ currency_name }}', defaultCurrency).
-                                              replace('{{ coin_value }}', coinBalance ? coinBalance.toFixed(decimalPlacesCoin) : 0).
-                                              replace('{{ currency_value }}', currencyCalculatedValue.toFixed(decimalPlacesCurrency)).
+                                              replace('{{ coin_value }}', coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0).
+                                              replace('{{ currency_value }}', currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : 0).
                                               replace('{{ active }}', activeCoin === coinData.id ? ' active' : '');
     }
   }

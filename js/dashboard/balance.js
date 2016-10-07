@@ -4,7 +4,8 @@
  */
 
 function updateTotalBalance() {
-  var totalBalance = 0;
+  var totalBalance = 0,
+      helper = new helperProto();
 
   $('.account-coins-repeater .item').each(function(index, item) {
     var coin = $(this).attr('data-coin-id'),
@@ -14,20 +15,21 @@ function updateTotalBalance() {
     totalBalance += Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true);
   });
 
-  $('.balance-block .balance .value').html(totalBalance.toFixed(decimalPlacesCurrency));
+  $('.balance-block .balance .value').html(totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency));
   $('.balance-block .balance .currency').html(defaultCurrency);
 }
 
 function updateTransactionUnitBalance(isAuto) {
   var selectedCoin = $('.account-coins-repeater .item.active'),
+      helper = new helperProto(),
       currentCoinRate = isAuto ? updateRates(selectedCoin.attr('data-coin-id').toUpperCase()) : parseFloat($('.account-coins-repeater .item.active .currency-value .val').html()) / parseFloat($('.account-coins-repeater .item.active .coin-value .val').html(), null, true);
       selectedCoinValue = Number($('.account-coins-repeater .item.active .coin-value .val').html()) ? Number($('.account-coins-repeater .item.active .coin-value .val').html()) : 0;
-      curencyValue = (selectedCoinValue * currentCoinRate).toFixed(decimalPlacesCurrency);
+      curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
 
   if (selectedCoin.length !== 0) {
-    $('.transactions-unit .active-coin-balance .value').html(selectedCoinValue.toFixed(decimalPlacesCoin));
+    $('.transactions-unit .active-coin-balance .value').html(selectedCoinValue.toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
     $('.transactions-unit .active-coin-balance .coin-name').html(selectedCoin.attr('data-coin-id').toUpperCase());
-    $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(decimalPlacesCurrency));
+    $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(curencyValue).currency));
     $('.transactions-unit .active-coin-balance-currency .currency').html(defaultCurrency.toUpperCase());
   }
 
