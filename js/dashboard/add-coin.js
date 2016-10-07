@@ -52,11 +52,15 @@ function opacityToggleOnAddCoinRepeaterScroll() {
       lowerThreshold =  supportedCoinsRepeaterScrollPos + $('.supported-coins-repeater-inner').height();
 
   $('.supported-coins-repeater .coin').each(function(index, item) {
-    var itemTop = $(this).position().top - 130 >= 0 ? $(this).position().top - 130 : $(this).position().top;
-    var itemBottom = $(this).position().top - 130 >= 0 ? $(this).position().top : $(this).position().top + 130;
+    // position().top of the first el is 264
+    // 132 is half of that
+    // opacity change kicks in at around the middle of a tile line
+    // 400 is repeater max-height after which scroll bar appears on the screen
+    var itemTop = $(this).position().top - 132 >= 0 ? $(this).position().top - 132 : $(this).position().top,
+        itemBottom = $(this).position().top - 132 >= 0 ? $(this).position().top : $(this).position().top + 132;
 
     if (itemTop + 26 > supportedCoinsRepeaterScrollPos && itemBottom + 26 < lowerThreshold || $('.supported-coins-repeater-inner').height() < 400) {
-      $(this).css({ 'opacity': 1 });
+      $(this).css({ 'opacity': 1 }); // shortcut, better to use css class
     } else {
       $(this).css({ 'opacity': 0.2 });
     }
