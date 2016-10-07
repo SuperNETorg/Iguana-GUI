@@ -98,7 +98,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
                 syncPercentage = (response.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
             if (dev.showConsoleMessages && dev.isDev) console.log('Connections: ' + response.result.connections);
-            if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced)');
+            if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'nfinity' ? syncPercentage : 'N/A ') + '% synced)');
 
             if (response.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
               isRT = true;
@@ -177,7 +177,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
         if (response.statusText === 'error' && !isIguana)
           isProxy = false;
-          if (dev.showConsoleMessages && dev.isDev && response.responseText.indexOf('Bad Gateway') === -1) console.log('is proxy server running?');
+          if (dev.showConsoleMessages && dev.isDev && response.responseText && response.responseText.indexOf('Bad Gateway') === -1) console.log('is proxy server running?');
         else if (!response.statusCode)
           if (dev.showConsoleMessages && dev.isDev) console.log('server is busy, check back later');
 

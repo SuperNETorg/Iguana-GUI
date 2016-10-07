@@ -18,7 +18,7 @@ apiProto.prototype.coindCheckRT = function(coin, cb) {
     data: postData,
     headers: postAuthHeaders,
     error: function(response) {
-      if (response.responseText.indexOf(':-10') === -1) result = true;
+      if (response.responseText && response.responseText.indexOf(':-10') === -1) result = true;
       else result = false;
 
       if (cb) cb.call(this, result);
