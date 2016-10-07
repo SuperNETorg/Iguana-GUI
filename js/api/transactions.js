@@ -3,7 +3,7 @@
  *
  */
 
-apiProto.prototype.listTransactions = function(account, coin) {
+apiProto.prototype.listTransactions = function(account, coin, cb) {
   var result = false;
 
   // dev account lookup override
@@ -18,13 +18,15 @@ apiProto.prototype.listTransactions = function(account, coin) {
   $.ajax({
     url: fullUrl,
     cache: false,
-    async: false,
+    async: cb ? true : false,
     dataType: 'json',
     type: 'POST',
     data: postData,
     headers: postAuthHeaders,
     error: function(response) {
       apiProto.prototype.errorHandler(response, coin);
+
+      if (cb) cb.call(this, false);
     }
   })
   .done(function(_response) {
@@ -35,6 +37,8 @@ apiProto.prototype.listTransactions = function(account, coin) {
         // non-iguana
         if (_response.result.length) result = _response.result;
         else result = false;
+
+        if (cb) cb.call(this, result);
       } else {
         // iguana
         var response = $.parseJSON(_response);
@@ -43,9 +47,13 @@ apiProto.prototype.listTransactions = function(account, coin) {
           // do something
           if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
           result = false;
+
+          if (cb) cb.call(this, result);
         } else {
           if (response.result.length) result = response.result;
           else result = false;
+
+          if (cb) cb.call(this, result);
         }
       }
     }
@@ -54,6 +62,7 @@ apiProto.prototype.listTransactions = function(account, coin) {
   return result;
 }
 
+/* not needed atm
 apiProto.prototype.getTransaction = function(txid, coin) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('gettransaction', null, coin),
@@ -96,3 +105,4 @@ apiProto.prototype.getTransaction = function(txid, coin) {
 
   return result;
 }
+*/

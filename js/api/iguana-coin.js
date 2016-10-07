@@ -4,7 +4,7 @@
  *
  */
 
-apiProto.prototype.addCoin = function(coin) {
+apiProto.prototype.addCoin = function(coin, cb) {
   var result = false;
 
   $.ajax({
@@ -13,7 +13,7 @@ apiProto.prototype.addCoin = function(coin) {
     dataType: 'json',
     type: 'POST',
     data: apiProto.prototype.getConf().coins[coin].iguanaCurl,
-    async: false
+    async: cb ? true : false
   })
   .done(function(response) {
     if (dev.showConsoleMessages && dev.isDev) console.log(response)
@@ -26,6 +26,8 @@ apiProto.prototype.addCoin = function(coin) {
       if (response.result === 'coin added' || response.result === 'coin already there') result = response;
       else result = false;
     }
+
+    if (cb) cb.call(this, result);
   });
 
   return result;

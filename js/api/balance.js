@@ -3,7 +3,7 @@
  *
  */
 
-apiProto.prototype.getBalance = function(account, coin) {
+apiProto.prototype.getBalance = function(account, coin, cb) {
   var result = false;
 
   // dev account lookup override
@@ -18,7 +18,7 @@ apiProto.prototype.getBalance = function(account, coin) {
   $.ajax({
     url: fullUrl,
     cache: false,
-    async: false,
+    async: cb ? true : false,
     dataType: 'json',
     type: 'POST',
     data: postData,
@@ -27,6 +27,7 @@ apiProto.prototype.getBalance = function(account, coin) {
       if (response.responseText)
         if (response.responseText.indexOf('Accounting API is deprecated') > -1 || response.responseText.indexOf('If you want to use accounting API'))
           if (dev.showConsoleMessages && dev.isDev && coin === 'btcd') console.log('add enableaccounts=1 and staking=0 in btcd conf file');
+      if (cb) cb.call(this, false);
     }
   })
   .done(function(_response) {
@@ -34,6 +35,8 @@ apiProto.prototype.getBalance = function(account, coin) {
       if (_response.result > -1 || Number(_response) === 0) {
         // non-iguana
         result = _response.result || _response;
+
+        if (cb) cb.call(this, result);
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
@@ -44,9 +47,13 @@ apiProto.prototype.getBalance = function(account, coin) {
           // do something
           console.log('error: ' + response.error);
           result = false;
+
+          if (cb) cb.call(this, result);
         } else {
           if (response) result = response;
           else result = false;
+
+          if (cb) cb.call(this, result);
         }
       }
     }
