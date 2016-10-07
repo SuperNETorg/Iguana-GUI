@@ -77,6 +77,9 @@ function bindClickInCoinRepeater() {
         $(this).addClass('active');
         coinsSelectedToAdd[index] = $(this).attr('data-coin-id');
       }
+
+      if (Object.keys(coinsSelectedToAdd).length === 0) $('.btn-next').addClass('disabled');
+      else $('.btn-next').removeClass('disabled');
     });
   });
 }
