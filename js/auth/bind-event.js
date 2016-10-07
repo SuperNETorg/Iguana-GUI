@@ -64,7 +64,7 @@ function addAuthorizationButtonAction(buttonClassName) {
           } else {
             toggleLoginErrorStyling(true);
           }
-        } else {
+        } else 
           toggleLoginErrorStyling(true);
           $('.login-input-directions-error').html('Passphrases do not match!');
           $('.login-input-directions-error').removeClass('hidden');

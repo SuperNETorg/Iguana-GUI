@@ -10,11 +10,9 @@ function bindReceive(){
   if (!currency) currency = defaultCurrency;
   coinName = activeCoin || $('.account-coins-repeater .item.active');
   localrates = JSON.parse(localStorage.getItem("iguana-rates" + coinName.toUpperCase()));  
-  coinName = activeCoin || $('.account-coins-repeater .item.active');
   $(".coin-unit").text(coinName.toUpperCase())
   var coin = coinName.toUpperCase();
   var address = api.getAccountAddress();
-  var coinToCurrencyRate = !isIguana ? null : api.getIguanaRate(coin + '/' + currency);
   coinRate = updateRates(coin,currency,returnValue);
   $('#qr-code').empty();
   $('#qr-code').qrcode(address);
