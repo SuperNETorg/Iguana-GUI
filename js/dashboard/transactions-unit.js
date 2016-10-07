@@ -23,13 +23,19 @@ var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp
 
 // construct transaction unit array
 function constructTransactionUnitRepeater() {
+  var api = new apiProto(),
+      coinName = activeCoin || $('.account-coins-repeater .item.active');
+
+  api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB)
+}
+
+function constructTransactionUnitRepeaterCB(response) {
   var result = '',
       helper = new helperProto(),
-      api = new apiProto(),
       coinName = activeCoin || $('.account-coins-repeater .item.active');
 
   if (coinName.length) {
-    var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
+    var transactionsList = response; /*api.listTransactions(defaultAccount, coinName.toLowerCase());*/
     // sort tx in desc order by timestamp
     if (transactionsList) {
       if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time }); // coind
@@ -100,5 +106,6 @@ function constructTransactionUnitRepeater() {
     if (!transactionsList.length) result = 'No trasaction history is available';
   }
 
-  return result;
+  $('.transactions-list-repeater').html(result);
+  //return result;
 }

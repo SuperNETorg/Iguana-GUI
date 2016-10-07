@@ -20,7 +20,8 @@ function initDashboard() {
     $('.account-coins-repeater').html(constructAccountCoinRepeater());
     bindClickInAccountCoinRepeater();
     updateRates(null, null, null, true);
-    $('.transactions-list-repeater').html(constructTransactionUnitRepeater());
+    constructTransactionUnitRepeater();
+    //$('.transactions-list-repeater').html(constructTransactionUnitRepeater());
     updateTotalBalance();
     updateTransactionUnitBalance();
     updateDashboardView(dashboardUpdateTimout);
@@ -53,7 +54,7 @@ function initDashboard() {
     $('.supported-coins-repeater-inner').html(constructCoinRepeater());
     bindClickInCoinRepeater();
   });
-  	 
+
   $('.btn-next').click(function() {
     var result = false;
 
@@ -102,4 +103,4 @@ function initDashboard() {
         apiProto.prototype.testConnection(initDashboard());
       }
     }, 2000);
-} 
+}
