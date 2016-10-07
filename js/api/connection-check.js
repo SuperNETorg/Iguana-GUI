@@ -98,7 +98,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
                 syncPercentage = (response.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
             if (dev.showConsoleMessages && dev.isDev) console.log('Connections: ' + response.result.connections);
-            if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'nfinity' ? syncPercentage : 'N/A ') + '% synced)');
+            if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced)');
 
             if (response.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
               isRT = true;
@@ -113,7 +113,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
               if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
                 $('#debug-sync-info').append('coin: ' + index + ', ' +
                                              'con ' + response.result.connections + ', ' +
-                                             'blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== "Infinity" ? syncPercentage : 'N/A ') + '% synced), ' +
+                                             'blocks ' + response.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced), ' +
                                              'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
             }
           }

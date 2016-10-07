@@ -154,7 +154,7 @@ helperProto.prototype.logoutCoind = function() {
       api = new apiProto();
 
   for (var key in coinsInfo) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+    if (localStorage.getVal('iguana-' + key + '-passphrase') && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
       api.walletLock(key, helperProto.prototype.logoutCoindCB(key));
     }
   }
