@@ -24,6 +24,7 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\"
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/balance.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/transactions-unit.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receive-coin.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>');
 
 $(document).ready(function() {
