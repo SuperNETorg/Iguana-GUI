@@ -27,7 +27,7 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
       if (response.responseText)
         if (response.responseText.indexOf('Accounting API is deprecated') > -1 || response.responseText.indexOf('If you want to use accounting API'))
           if (dev.showConsoleMessages && dev.isDev && coin === 'btcd') console.log('add enableaccounts=1 and staking=0 in btcd conf file');
-      if (cb) cb.call(this, false);
+      if (cb) cb.call(this, false, coin);
     }
   })
   .done(function(_response) {
@@ -36,7 +36,7 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
         // non-iguana
         result = _response.result || _response;
 
-        if (cb) cb.call(this, result);
+        if (cb) cb.call(this, result, coin);
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
@@ -48,12 +48,12 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
           console.log('error: ' + response.error);
           result = false;
 
-          if (cb) cb.call(this, result);
+          if (cb) cb.call(this, result, coin);
         } else {
           if (response) result = response;
           else result = false;
 
-          if (cb) cb.call(this, result);
+          if (cb) cb.call(this, result, coin);
         }
       }
     }

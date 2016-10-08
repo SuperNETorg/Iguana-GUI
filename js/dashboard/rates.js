@@ -40,6 +40,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
       }
     }
 
+    constructAccountCoinRepeater();
     if (dev.showConsoleMessages && dev.isDev && isUpdateTriggered) console.log('rates update in progress...');
   } else {
     if (!coin) coin = defaultCoin;
@@ -48,8 +49,8 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
     // iguana based rates are temp disabled
     coinToCurrencyRate = null; //!isIguana ? null : api.getIguanaRate(coin + '/' + currency);
     if (!localStorage.getVal('iguana-rates-' + coin)) api.getExternalRate(key.toUpperCase() + '/' + defaultCurrency, updateRateCB);
-    if (!coinToCurrencyRate) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
-    if (returnValue) return localStorage.getVal('iguana-rates-' + coin).value;
+    if (!coinToCurrencyRate && localStorage.getVal('iguana-rates-' + coin)) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
+    if (returnValue && localStorage.getVal('iguana-rates-' + coin)) return localStorage.getVal('iguana-rates-' + coin).value;
   }
 }
 
@@ -59,8 +60,5 @@ function updateRateCB(coin, result) {
   localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': result, 'updatedAt': Date.now() });
 
   // !not effecient!
-  $('.account-coins-repeater').html(constructAccountCoinRepeater());
-  bindClickInAccountCoinRepeater();
-  updateTotalBalance();
-  updateTransactionUnitBalance(true);
+  constructAccountCoinRepeater();
 }

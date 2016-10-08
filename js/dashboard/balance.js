@@ -23,13 +23,13 @@ function updateTransactionUnitBalance(isAuto) {
   var selectedCoin = $('.account-coins-repeater .item.active'),
       helper = new helperProto(),
       currentCoinRate = isAuto ? updateRates(selectedCoin.attr('data-coin-id').toUpperCase()) : parseFloat($('.account-coins-repeater .item.active .currency-value .val').html()) / parseFloat($('.account-coins-repeater .item.active .coin-value .val').html(), null, true);
-      selectedCoinValue = Number($('.account-coins-repeater .item.active .coin-value .val').html()) ? Number($('.account-coins-repeater .item.active .coin-value .val').html()) : 0;
+      selectedCoinValue = Number($('.account-coins-repeater .item.active .coin-value .val').html()) ? Number($('.account-coins-repeater .item.active .coin-value .val').html()) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
       curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
 
   if (selectedCoin.length !== 0) {
     $('.transactions-unit .active-coin-balance .value').html(selectedCoinValue.toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
     $('.transactions-unit .active-coin-balance .coin-name').html(selectedCoin.attr('data-coin-id').toUpperCase());
-    $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(curencyValue).currency));
+    $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
     $('.transactions-unit .active-coin-balance-currency .currency').html(defaultCurrency.toUpperCase());
   }
 

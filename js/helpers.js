@@ -175,6 +175,7 @@ helperProto.prototype.logoutCoindCB = function(key) {
 helperProto.prototype.setCurrency = function(currencyShortName) {
   var localStorage = new localStorageProto();
 
+  // TODO: add rates update override on currency change
   localStorage.setVal('iguana-currency', { 'name' : currencyShortName });
   localStorage.setVal('iguana-rates', { 'shortName' : null, 'value': null, 'updatedAt': 1471620867 }); // force currency update
 }

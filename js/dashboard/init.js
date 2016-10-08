@@ -17,13 +17,9 @@ function initDashboard() {
 
   if (session.checkSession(true)) {
     $('.dashboard').removeClass('hidden');
-    $('.account-coins-repeater').html(constructAccountCoinRepeater());
-    bindClickInAccountCoinRepeater();
     updateRates(null, null, null, true);
-    constructTransactionUnitRepeater();
+    constructAccountCoinRepeater();
     //$('.transactions-list-repeater').html(constructTransactionUnitRepeater());
-    updateTotalBalance();
-    updateTransactionUnitBalance();
     updateDashboardView(dashboardUpdateTimout);
   } else {
     helperProto.prototype.openPage('login');
@@ -88,10 +84,6 @@ function initDashboard() {
     }
 
     if (result) initDashboard();
-
-    $('.account-coins-repeater').html(constructAccountCoinRepeater());
-    bindClickInAccountCoinRepeater();
-    updateTotalBalance();
   });
 
   bindCoinRepeaterSearch();
