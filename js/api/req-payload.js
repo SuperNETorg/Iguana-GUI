@@ -19,7 +19,6 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
 }
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params, coin) {
-  console.log(coin + ' ' + method);
   if (isIguana)
     return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"100\", \"params\": [' + (!params ? '' : params) + '] }';
   else

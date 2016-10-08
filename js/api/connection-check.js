@@ -245,7 +245,7 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   if (!outOfSyncCoinsList.length) {
     $('#temp-out-of-sync').addClass('hidden');
   } else {
-    $('#temp-out-of-sync').html(outOfSyncCoinsList + ' is out of sync. Information about balances, transactions and send/receive functions is limited.');
+    $('#temp-out-of-sync').html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' are ' : ' is ') + 'out of sync. Information about balances, transactions and send/receive functions is limited.');
     $('#temp-out-of-sync').removeClass('hidden');
   }
 }
