@@ -5,8 +5,8 @@
 
 	@import url('bootstrap.min.css');
 	@import url('common.css');
-	@import url('fonts/budicon.css');
-	@import url('fonts/cryptocoins.css');
+	@import url('fonts/budicon.min.css');
+	@import url('fonts/cryptocoins.min.css');
 
 	body,
 	html {

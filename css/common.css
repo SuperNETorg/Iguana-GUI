@@ -6,7 +6,7 @@
  *  2) figure out which icons are not needed in budicon set
  */
 
-  @import url('fonts/common-proxima-font.css'); /* proxima-nova font */
+  @import url('fonts/common-proxima-b-r-font.css'); /* proxima-nova font */
 
   body,
   html {
