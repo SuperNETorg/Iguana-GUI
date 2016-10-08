@@ -230,12 +230,6 @@ helperProto.prototype.setPortPollResponse = function() {
 
 /* retrieve port poll data */
 helperProto.prototype.getPortPollResponse = function() {
-  // TODO: add iguana/non-iguana check
-  //       no active coin/p2p coind -> force port poll update
-  /*console.log(setPortPollResponseDS);
-  for (var i=0; i < setPortPollResponseDS.info.length; i++) {
-  }*/
-
   if (setPortPollResponseDS) {
     for (var i=0; i < setPortPollResponseDS.info.length; i++) {
       coinsInfo[setPortPollResponseDS.info[i].coin] = [];
@@ -283,8 +277,8 @@ helperProto.prototype.decimalPlacesFormat = function(value) {
       }
     }
   } else {
-    decimalPlacesCoin = 1;
-    decimalPlacesCurrency = 2;
+    decimalPlacesCoin = settings.decimalPlacesCoin;
+    decimalPlacesCurrency = settings.decimalPlacesCurrency;
   }
 
   return { 'coin': decimalPlacesCoin, 'currency': decimalPlacesCurrency };

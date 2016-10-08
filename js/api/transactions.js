@@ -12,10 +12,8 @@ apiProto.prototype.listTransactions = function(account, coin, cb) {
       account = dev.coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute('listtransactions', null, coin);
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + (settings.defaultTransactionsCount - 1), coin); // last 20 tx
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + (settings.defaultTransactionsCount - 1), coin); // last N tx
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
-
-      console.log(postData);
 
   $.ajax({
     url: fullUrl,
