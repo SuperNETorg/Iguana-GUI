@@ -87,7 +87,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
           coinsInfo[index].RT = false;
         }
 
-        if (response.result.walletversion || response.result.difficulty || response.result === 'success') {
+        if (response.result && response.result.walletversion || response.result && response.result.difficulty || response.result === 'success') {
           if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;

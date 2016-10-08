@@ -39,7 +39,6 @@ function constructAccountCoinRepeater() {
 
 // construct account coins array
 function constructAccountCoinRepeaterCB(balance, coin) {
-
   var result = '',
       localStorage = new localStorageProto(),
       helper = new helperProto(),
@@ -50,7 +49,8 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
   var i = 0;
   for (var key in coinsInfo) {
-    if (accountCoinRepeaterHTML.indexOf('data-coin-id=\"' + key + '\"') === -1 && coinBalances[key]) {
+    if (accountCoinRepeaterHTML.indexOf('data-coin-id=\"' + key + '\"') === -1 && coinBalances[key] >= 0) {
+
       var coinLocalRate = coinToCurrencyRate,
           api = new apiProto(),
           coinBalance = coinBalances[key] || 0; //api.getBalance(defaultAccount, coinsSelectedByUser[i]) || 0;

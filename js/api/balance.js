@@ -36,7 +36,6 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
         // non-iguana
         result = _response.result || _response;
 
-        if (cb) cb.call(this, result, coin);
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
@@ -48,15 +47,15 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
           console.log('error: ' + response.error);
           result = false;
 
-          if (cb) cb.call(this, result, coin);
         } else {
           if (response) result = response;
           else result = false;
 
-          if (cb) cb.call(this, result, coin);
         }
       }
     }
+
+    if (cb) cb.call(this, result, coin);
   });
 
   return result;

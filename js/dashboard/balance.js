@@ -27,7 +27,7 @@ function updateTransactionUnitBalance(isAuto) {
       curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
 
   if (selectedCoin.length !== 0) {
-    $('.transactions-unit .active-coin-balance .value').html(selectedCoinValue.toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
+    $('.transactions-unit .active-coin-balance .value').html(Number(selectedCoinValue).toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
     $('.transactions-unit .active-coin-balance .coin-name').html(selectedCoin.attr('data-coin-id').toUpperCase());
     $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
     $('.transactions-unit .active-coin-balance-currency .currency').html(defaultCurrency.toUpperCase());
