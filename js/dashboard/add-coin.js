@@ -49,20 +49,21 @@ function constructCoinRepeater() {
 
 function opacityToggleOnAddCoinRepeaterScroll() {
   var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
-      lowerThreshold =  supportedCoinsRepeaterScrollPos + $('.supported-coins-repeater-inner').height();
+      // height + margin top + margin bottom
+      supportedCoinsRepeaterHeight = $('.supported-coins-repeater').height() + Number($('.supported-coins-repeater').css('padding').replace('px', '')) * 2,
+      lowerThreshold = supportedCoinsRepeaterScrollPos + supportedCoinsRepeaterHeight,
+      topAbsoluteValue = 342;
 
   $('.supported-coins-repeater .coin').each(function(index, item) {
-    // position().top of the first el is 264
-    // 132 is half of that
     // opacity change kicks in at around the middle of a tile line
-    // 400 is repeater max-height after which scroll bar appears on the screen
-    var itemTop = $(this).position().top - 132 >= 0 ? $(this).position().top - 132 : $(this).position().top,
-        itemBottom = $(this).position().top - 132 >= 0 ? $(this).position().top : $(this).position().top + 132;
+    var elTop = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - topAbsoluteValue); // first line of tiles should have 0 top pos
+        elHeight = $(this).outerHeight() + Number($(this).css('margin').replace('px', '')) * 2, // height + margin top + margin bottom
+        elBottom = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - topAbsoluteValue + elHeight); // bottom = top + el height
 
-    if (itemTop + 26 > supportedCoinsRepeaterScrollPos && itemBottom + 26 < lowerThreshold || $('.supported-coins-repeater-inner').height() < 400) {
-      $(this).css({ 'opacity': 1 }); // shortcut, better to use css class
+    if (elTop + Math.floor(elHeight / 2) <= supportedCoinsRepeaterScrollPos || elBottom - Math.floor(elHeight / 4) >= lowerThreshold) {
+      $(this).css({ 'opacity': 0.2 }); // shortcut, better to use css class
     } else {
-      $(this).css({ 'opacity': 0.2 });
+      $(this).css({ 'opacity': 1 });
     }
   });
 }
