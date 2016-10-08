@@ -89,10 +89,10 @@ function initDashboard() {
   bindCoinRepeaterSearch();
 
   // ugly workaround in iguana env
-  if (isIguana)
+  /*if (isIguana)
     setInterval(function() {
       if (!$('.account-coins-repeater .coin').length) {
         apiProto.prototype.testConnection(initDashboard());
       }
-    }, 2000);
+    }, 2000);*/
 }

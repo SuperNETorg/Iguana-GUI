@@ -245,7 +245,7 @@ helperProto.prototype.getPortPollResponse = function() {
     }
 
     if (dev.isDev && dev.showSyncDebug) {
-      $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
+      if (setPortPollResponseDS.debugHTML) $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
       $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
       setInterval(function() {
         if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });

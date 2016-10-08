@@ -29,6 +29,7 @@ apiProto.prototype.testConnection = function(cb) {
       dataType: 'text',
       async: true,
       type: 'GET',
+      timeout: 500,
       success: function (response) {
         // iguana env
         isIguana = true;
@@ -74,6 +75,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
+      timeout: 500,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
 
