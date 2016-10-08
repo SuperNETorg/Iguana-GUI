@@ -20,7 +20,7 @@ apiProto.prototype.testConnection = function(cb) {
   }
   if (index === 0 && dev.showConsoleMessages && dev.isDev) console.log('force port poll');
 
-  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0) {
+  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0 || helperProto.prototype.getCurrentPage() === 'index') {
     // test if iguana is running
     var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
     $.ajax({
@@ -61,7 +61,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
     var fullUrl = apiProto.prototype.getFullApiRoute('getinfo', conf),
-        postData = apiProto.prototype.getBitcoinRPCPayloadObj('getinfo'),
+        postData = apiProto.prototype.getBitcoinRPCPayloadObj('getinfo', null, index),
         postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(conf);
 
     if (!coinsInfo[index]) coinsInfo[index] = [];
@@ -235,7 +235,7 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   // out of sync message
   var outOfSyncCoinsList = '';
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
-    if ((coinsInfo[index].RT === false && isIguana) ||
+    if ((coinsInfo[index].RT === false && coinsInfo[index].connection === true && isIguana) ||
         (coinsInfo[index].RT === false && !isIguana && localStorage.getVal('iguana-' + index + '-passphrase') && localStorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
       outOfSyncCoinsList += index.toUpperCase() + ', ';
   });

@@ -12,7 +12,7 @@ apiProto.prototype.listTransactions = function(account, coin, cb) {
       account = dev.coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute('listtransactions', null, coin);
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + settings.defaultTransactionsCount - 1); // last 20 tx
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + settings.defaultTransactionsCount - 1, coin); // last 20 tx
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
@@ -66,7 +66,7 @@ apiProto.prototype.listTransactions = function(account, coin, cb) {
 apiProto.prototype.getTransaction = function(txid, coin) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('gettransaction', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('gettransaction', '\"' + txid + '\"'),
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('gettransaction', '\"' + txid + '\"', coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({

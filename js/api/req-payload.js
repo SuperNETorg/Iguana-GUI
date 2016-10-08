@@ -18,11 +18,15 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
                                                                 apiProto.prototype.getConf().coins[coin ? coin : activeCoin].pass) };
 }
 
-apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params) {
-  return '{ \"agent\": \"bitcoinrpc\",' +
-            '\"method\": \"' + method + '\", ' +
-            (!isIguana ? '\"timeout\": \"30000\"' : '\"immediate\": \"100\"') + ', ' +
-            '\"params\": [' + (!params ? '' : params) + '] }';
+apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params, coin) {
+  console.log(coin + ' ' + method);
+  if (isIguana)
+    return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"100\", \"params\": [' + (!params ? '' : params) + '] }';
+  else
+    return '{ \"agent\": \"bitcoinrpc\",' +
+              '\"method\": \"' + method + '\", ' +
+              (!isIguana ? '\"timeout\": \"30000\"' : '\"immediate\": \"100\"') + ', ' +
+              '\"params\": [' + (!params ? '' : params) + '] }';
 }
 
 apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
@@ -35,7 +39,7 @@ apiProto.prototype.getFullApiRoute = function(method, conf, coin) {
   else
     return isIguana ? (apiProto.prototype.getConf().server.protocol +
                       apiProto.prototype.getConf().server.ip + ':' +
-                      apiProto.prototype.getConf(false, coin).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                      apiProto.prototype.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
                       apiProto.prototype.getConf().server.ip + ':' +
                       apiProto.prototype.getConf(false, coin).server.port);
 }

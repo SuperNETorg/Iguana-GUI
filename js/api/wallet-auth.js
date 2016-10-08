@@ -7,7 +7,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletpassphrase', null, coin),
       defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout),
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
@@ -45,7 +45,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
 apiProto.prototype.walletEncrypt = function(passphrase, coin) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('encryptwallet', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"'),
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
@@ -98,7 +98,7 @@ apiProto.prototype.walletEncrypt = function(passphrase, coin) {
 apiProto.prototype.walletLock = function(coin, cb) {
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletlock', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletlock'),
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletlock', null, coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({

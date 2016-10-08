@@ -12,7 +12,7 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
       account = dev.coinAccountsDev.coind[coin];
 
   var fullUrl = apiProto.prototype.getFullApiRoute('getbalance', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !isIguana ? null : '\"' + account + '\"'), // avoid using account names in bitcoindarkd
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !isIguana ? null : '\"' + account + '\"', coin), // avoid using account names in bitcoindarkd
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
   $.ajax({
