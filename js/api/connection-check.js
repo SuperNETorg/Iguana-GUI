@@ -227,15 +227,15 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
     $('#temp-out-of-sync').html('Something went wrong. Please login again.');
     $('#temp-out-of-sync').removeClass('hidden');
 
-    setTimeout(function() {
+    /*setTimeout(function() {
       helperProto.prototype.logout();
-    }, 1000);
+    }, 1000);*/
   }
 
   // out of sync message
   var outOfSyncCoinsList = '';
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
-    if ((coinsInfo[index].RT === false && coinsInfo[index].connection === true && isIguana) ||
+    if ((coinsInfo[index].RT === false && coinsInfo[index].connection === true && isIguana && localStorage.getVal('iguana-' + index + '-passphrase')) ||
         (coinsInfo[index].RT === false && !isIguana && localStorage.getVal('iguana-' + index + '-passphrase') && localStorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
       outOfSyncCoinsList += index.toUpperCase() + ', ';
   });

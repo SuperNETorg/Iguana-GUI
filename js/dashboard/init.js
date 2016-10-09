@@ -57,6 +57,7 @@ function initDashboard() {
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
+    // TODO: async
     // prompt walletpassphrase to add coind
     for (var key in coinsSelectedToAdd) {
       if (!isIguana) {
@@ -77,22 +78,16 @@ function initDashboard() {
       } else {
         if (api.addCoin(coinsSelectedToAdd[key]) && $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + coinsSelectedToAdd[key] + '\"') === -1) {
           if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coinsSelectedToAdd[key] + ' coin added<br/>');
+          localStorage.setVal('iguana-' + coinsSelectedToAdd[key] + '-passphrase', { 'logged': 'yes' });
           coinsInfo[coinsSelectedToAdd[key]].connection = true;
           result = true;
         }
       }
     }
 
-    if (result) initDashboard();
+    // TODO: dom update
+    if (result) constructAccountCoinRepeater();
   });
 
   bindCoinRepeaterSearch();
-
-  // ugly workaround in iguana env
-  /*if (isIguana)
-    setInterval(function() {
-      if (!$('.account-coins-repeater .coin').length) {
-        apiProto.prototype.testConnection(initDashboard());
-      }
-    }, 2000);*/
 }

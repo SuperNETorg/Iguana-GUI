@@ -28,12 +28,11 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
 // construct coins to add array
 function constructCoinRepeater() {
   var result = '',
-      index = 0;
+      index = 0,
+      localStorage = new localStorageProto();
 
   for (var key in supportedCoinsList) {
-    if ((coinsInfo[key] && coinsInfo[key].connection !== true && isIguana) ||
-      (coinsInfo[key] && coinsInfo[key].connection === true &&
-       $('.account-coins-repeater').html().indexOf('data-coin-id=\"' + key + '\"') === -1 && !isIguana)) {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
       if ((isIguana && coinsInfo[key].iguana !== false) || !isIguana)
         result += coinRepeaterTemplate.replace('{{ id }}', key.toUpperCase()).
                                        replace('{{ coin_id }}', key.toLowerCase()).
