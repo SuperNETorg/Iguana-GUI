@@ -22,11 +22,10 @@ function constructAccountCoinRepeater() {
 
   var index = 0;
   for (var key in coinsInfo) {
-    if (coinsInfo[key].connection === true) {
-      if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
-        coinsSelectedByUser[index] = key;
-        index++;
-      }
+    if ((isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
+        (!isIguana && coinsInfo[key].connection === true && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+      coinsSelectedByUser[index] = key;
+      index++;
     }
   };
 

@@ -143,7 +143,7 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 function addCoinCB(response, coin) {
   var localStorage = new localStorageProto();
 
-  if (response === 'coin added') {
+  if (response === 'coin added' || response === 'coin already there') {
     if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
 
     addCoinResponses.push({ 'coin': coin, 'response': response });
