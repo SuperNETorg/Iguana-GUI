@@ -3,6 +3,10 @@
  *
  */
 
+var addCoinResponses = [],
+    selectedCoins = 0,
+    buttonClassNameCB = '';
+
 function authAllAvailableCoind() {
   var api = new apiProto(),
       result = false;
@@ -107,24 +111,47 @@ function checkSelectedWallet(key) {
 
 function checkIguanaCoinsSelection(suppressAddCoin) {
   var result = false,
-      api = new apiProto();
+      api = new apiProto(),
+      localStorage = new localStorageProto();
 
-  if (!suppressAddCoin)
+  selectedCoins = 0;
+
+  if (!suppressAddCoin) {
+    buttonClassNameCB = 'signin';
+    addCoinResponses = [];
+
     for (var key in coinsInfo) {
+      localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+
       if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
-        if (api.addCoin(key)) {
-          if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(key + ' coin added<br/>');
-          coinsInfo[key].connection = true;
-          result = true;
-        }
+        selectedCoins++;
+        api.addCoin(key, addCoinCB);
       }
 
-      if (isIguana && coinsInfo[key].connection === true || result === true) result = true;
+      if (selectedCoins > 0) result = true;
     }
-  else
+  } else {
+    buttonClassNameCB = 'add-account';
     result = true;
+  }
 
-  constructAuthCoinsRepeater();
+  if (suppressAddCoin) constructAuthCoinsRepeater();
 
   return result;
+}
+
+function addCoinCB(response, coin) {
+  var localStorage = new localStorageProto();
+
+  if (response === 'coin added') {
+    if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
+
+    addCoinResponses.push({ 'coin': coin, 'response': response });
+    localStorage.setVal('iguana-' + coin + '-passphrase', { 'logged': 'yes' });
+    coinsInfo[coin].connection = true;
+  }
+
+  if (Object.keys(addCoinResponses).length === selectedCoins) {
+    addAccountIguanaCoind(buttonClassNameCB);
+  }
 }

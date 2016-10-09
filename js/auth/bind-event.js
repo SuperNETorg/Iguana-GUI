@@ -6,9 +6,7 @@
 function addAuthorizationButtonAction(buttonClassName) {
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
-      if (checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
-        addAccountIguanaCoind(buttonClassName);
-      } else {
+      if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         $('.iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
       }
     } else {

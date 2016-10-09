@@ -27,7 +27,7 @@ apiProto.prototype.addCoin = function(coin, cb) {
       else result = false;
     }
 
-    if (cb) cb.call(this, result);
+    if (cb) cb.call(this, result.result ? result.result : result, coin);
   });
 
   return result;
