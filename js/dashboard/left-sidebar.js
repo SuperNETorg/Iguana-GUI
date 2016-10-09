@@ -29,6 +29,8 @@ function constructAccountCoinRepeater() {
     }
   };
 
+  if (coinsSelectedByUser.length === 0) helperProto.prototype.logout();
+
   coinBalances = [];
 
   for (var i=0; i < coinsSelectedByUser.length; i++) {
