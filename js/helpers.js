@@ -177,7 +177,10 @@ helperProto.prototype.setCurrency = function(currencyShortName) {
 
   // TODO: add rates update override on currency change
   localStorage.setVal('iguana-currency', { 'name' : currencyShortName });
-  localStorage.setVal('iguana-rates', { 'shortName' : null, 'value': null, 'updatedAt': 1471620867 }); // force currency update
+
+  for (var key in coinsInfo) {
+    localStorage.setVal('iguana-rates-' + key, { 'shortName' : null, 'value': null, 'updatedAt': 1471620867, 'forceUpdate': true }); // force currency update
+  }
 }
 
 helperProto.prototype.getCurrency = function() {

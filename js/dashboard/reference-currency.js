@@ -1,7 +1,9 @@
 var currencyArr = [{ 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dollar', 'flagid': 'us', 'selected': true },
                    { 'id': 1, 'shortName': 'EUR', 'fullName': 'Euro', 'flagid': 'eu' }];
 
-
+// TODO: add currency localstorage cache
+// note: current implementation doesn't permit too often updates
+//       due to possibility of ban for abuse
 $(document).ready(function(e) {
   var outPut = '',
       defaultActive = '',
@@ -34,6 +36,8 @@ $(document).ready(function(e) {
       var id = $(this).attr('data-id');
 
       helper.setCurrency(currencyArr[id].shortName);
+      defaultCurrency = currencyArr[id].shortName;
+      updateRates(null, null, null, true);
       $('.country-li').removeClass('selected');
     	$(this).addClass('selected');
 	});
