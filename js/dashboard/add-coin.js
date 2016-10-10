@@ -33,7 +33,7 @@ function constructCoinRepeater() {
 
   for (var key in supportedCoinsList) {
     if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
-      if ((isIguana && coinsInfo[key].iguana !== false) || !isIguana)
+      if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
         result += coinRepeaterTemplate.replace('{{ id }}', key.toUpperCase()).
                                        replace('{{ coin_id }}', key.toLowerCase()).
                                        replace('{{ name }}', supportedCoinsList[key].name).
