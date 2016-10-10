@@ -14,6 +14,9 @@ function initAuthCB() {
 
     if (dev.isDev) $('.btn-signin').removeClass('disabled');
 
+    // load add coin template
+    $('body').append(addCoinModalTemplate);
+
     if (helper.checkSession(true)) {
       helper.openPage('dashboard');
     } else {

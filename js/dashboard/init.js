@@ -12,6 +12,9 @@ function initDashboard() {
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
+  // load add coin template
+  $('body').append(addCoinModalTemplate);
+
   // coin is auto detected based on available portp2p
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
