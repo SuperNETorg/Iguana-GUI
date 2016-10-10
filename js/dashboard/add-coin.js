@@ -88,6 +88,7 @@ function bindCoinRepeaterSearch() {
   $('.quick-search .input').keyup(function() {
     var quickSearchVal = $(this).val().toLowerCase();
 
+    $('.supported-coins-repeater').addClass('override-opacity');
     $('.supported-coins-repeater-inner .coin .name').each(function(index, item) {
       var itemText = $(item).text().toString().toLowerCase();
 
@@ -96,7 +97,11 @@ function bindCoinRepeaterSearch() {
     });
 
     // fade in elements if nothing was found
-    if ($('.supported-coins-repeater-inner .coin').filter('.fade').length === Object.keys(supportedCoinsList).length)
+    if ($('.supported-coins-repeater-inner .coin').filter('.fade').length === $('.supported-coins-repeater-inner .coin').length ||
+        $('.supported-coins-repeater-inner .coin').filter('.fade').length === 0) {
       $('.supported-coins-repeater-inner .coin').filter('.fade').removeClass('fade');
+      $('.supported-coins-repeater').removeClass('override-opacity');
+      opacityToggleOnAddCoinRepeaterScroll();
+    }
   });
 }
