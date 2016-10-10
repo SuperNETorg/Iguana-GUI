@@ -22,6 +22,7 @@
   margin-top: -9em; /*set to a negative number 1/2 of your height*/
   margin-left: -30em;
   height: auto;
+  box-shadow: 0 2px 40px rgba(0,0,0,.3);
 } 
 .receiving-coin-content .modal-title{
   text-align: center; 
@@ -29,6 +30,7 @@
   right: 10px;
   position: relative;
   font-size: 20px;
+  font-weight: 600;
 }
 .text-section{
   color: #8c8484;
@@ -42,7 +44,11 @@
 .receiving-coin-content .modal-header{
   background-color: #fe5c0d;
   border-top-left-radius: 4px;
-  border-top-right-radius: 4px
+  border-top-right-radius: 4px;
+  background: -webkit-radial-gradient(top, rgba(254,92,13,0.7), rgba(252,62,5,1)); /* For Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(to top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* Standard syntax (must be last) */
 }
 .share-address-section{
   position: relative;
@@ -50,7 +56,7 @@
   margin-top: 32px;
 }
 .share-address-section h4{
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
   color: #4a4646;
@@ -61,7 +67,7 @@
 .share-address-section .my-lable{
   color: #2f2e2e;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .receiving-coin-content .modal-body{
   background-color: #f5f8fb;
@@ -74,6 +80,8 @@
 .modal-content{
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
+  border: none;
+  box-shadow: none;
 }
 .buttons{
   padding: 14px 0;
@@ -92,6 +100,12 @@
   box-shadow: 1px 6px 29px -10px rgba(0,0,0,0.48);
   border-radius: 4px;
 }
+.modal-backdrop.in{
+	opacity: 0.7;
+}
+.modal-backdrop{
+	background-color: #fff;
+}	
 .buttons .copy-btn:focus, 
 .buttons .share-btn:focus{
   border: 0px solid #fbfdfe!important;
@@ -105,14 +119,19 @@
 .msg-content{
   width: 390px;
   margin: 0 auto;
-  background-color: #0087ff;
+  top: 34px;
+  background: -webkit-radial-gradient(top, rgba(0,132,255,0.3),rgba(0,133,255,1)); 
+  background: -o-radial-gradient(right, rgba(0,132,255,0.3), rgba(0,133,255,1)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(right, rgba(0,132,255,0.3),rgba(0,133,255,1)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(to top, rgba(0,132,255,0.5), rgba(0,133,255,1)); /* Standard syntax (must be last) */
   border-radius: 4px;
-  border: 1px solid #0087ff;
+  border:none;
 }
 .clipboard-msg{
   color: #fff;
   text-align: center;
-  font-size:16px   
+  font-size:16px; 
+  font-weight: 600; 
 }
 .qr-code{
   clear: both;
@@ -135,7 +154,7 @@
   color:#423f3f;
   font-size: 16px;
   font-family: inherit;
-  font-weight: 500; 
+  font-weight: 600; 
 }
 .currency-input{
   margin-top: 4px;

@@ -13,10 +13,17 @@ function bindReceive(){
   $(".coin-unit").text(coinName.toUpperCase())
   var coin = coinName.toUpperCase();
   var address = api.getAccountAddress();
-  coinRate = updateRates(coin,currency,returnValue);
+  // coinRate = updateRates(coin,currency,true);
+  coinRate = updateRates(coin,currency,true);
   $('#qr-code').empty();
   $('#qr-code').qrcode(address);
-  $("#address").text(address);
+  
+  if(address.length > 3)
+  {
+    // postcode.val(address.slice(0, -3)+' '+address.slice(-3));  
+    var splittedAddress = address.match(/.{1,4}/g).join(' '); 
+    $("#address").text(splittedAddress);
+  }
   
   if (coinName.length) {
     var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
