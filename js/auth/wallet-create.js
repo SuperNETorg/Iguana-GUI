@@ -10,10 +10,10 @@ function verifyNewPassphrase() {
 }
 
 function initCreateAccountForm() {
-  var newPassphrase = PassPhraseGenerator.generatePassPhrase();
+  var newPassphrase = PassPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4);
 
   selectedCoindToEncrypt = null;
-  if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
+  //if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
 
   $('#passphrase').show();
   $('.non-iguana-walletpassphrase-errors').html('');

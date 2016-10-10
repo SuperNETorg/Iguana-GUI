@@ -15,11 +15,13 @@ apiProto.prototype.errorHandler = function(response, index) {
 
     return 10;
   }
+
   if (response.error === 'iguana jsonstr expired') {
     if (dev.showConsoleMessages && dev.isDev) console.log('server is busy');
 
     return 10;
   }
+
   if (response.error === 'coin is busy processing') {
     if ($('#debug-sync-info') && index !== undefined) {
       if (!coinsInfo[index]) coinsInfo[index] = [];
@@ -34,6 +36,7 @@ apiProto.prototype.errorHandler = function(response, index) {
 
     return 10;
   }
+
   if (response.error === 'null return from iguana_bitcoinRPC') {
     if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed?');
     setTimeout(function() {

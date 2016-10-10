@@ -11,8 +11,8 @@ var iguanaCoinsRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id
                                   '</div>';
 
 var nonIguanaCoinsRepeaterTemplate = '<div class=\"coin block\" data-coin-id=\"{{ coin_id }}\">' +
-                                       '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" />' +
-                                       '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"iguana-coin-{{ coin_id }}-label checkbox-label cursor-pointer\">' +
+                                       '<input type=\"checkbox\" id=\"iguana-coin-{{ coin_id }}-checkbox\" name=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"checkbox\" {{ onclick }} />' +
+                                       '<label for=\"iguana-coin-{{ coin_id }}-checkbox\" class=\"iguana-coin-{{ coin_id }}-label checkbox-label cursor-pointer\" {{ onclick }}>' +
                                          '<span class=\"box\"></span><span class=\"label-text unselectable\">{{ name }}</span>' +
                                        '</label>' +
                                        '<span class=\"iguana-coin-{{ coin_id }}-error\"></span>' +
@@ -33,14 +33,14 @@ function constructAuthCoinsRepeater() {
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
                                       replace('{{ name }}', key.toUpperCase()).
                                       replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
-                                      replace('{{ onclick }}', isIguana && coinsInfo[key].connection === true ? 'checked' : '').
-                                      replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index' ? 'checked' : '');
+                                      replace('{{ onclick }}', !isIguana /*isIguana && coinsInfo[key].connection === true*/ ? 'checked' : '').
+                                      replace('{{ onclick_input }}', !isIguana /*isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index'*/ ? 'checked' : '');
     }
   }
 
   if (!isIguana) {
-    $('#passphrase').hide();
-    $('.btn-signup').html('Encrypt wallet');
+    //$('#passphrase').hide();
+    $('.btn-signup').html('Create wallet');
   }
   if (index !== 0 || isIguana) $('.coind-iguana-notice').hide();
 

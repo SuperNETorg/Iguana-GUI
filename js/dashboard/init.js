@@ -41,6 +41,8 @@ function initDashboard() {
     session.logout();
   });
 
+  if (!isIguana && !dev.isDev) $('.lnk-logout').hide();
+
   $('.btn-add-coin').click(function() {
     addCoinButtonCB();
   });

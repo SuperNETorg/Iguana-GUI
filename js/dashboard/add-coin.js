@@ -29,7 +29,8 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
 function constructCoinRepeater() {
   var result = '',
       index = 0,
-      localStorage = new localStorageProto();
+      localStorage = new localStorageProto(),
+      helper = new helperProto();
 
   for (var key in supportedCoinsList) {
     if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
@@ -68,8 +69,13 @@ function opacityToggleOnAddCoinRepeaterScroll() {
 }
 
 function bindClickInCoinRepeater() {
+  var helper = new helperProto();
+
   $('.supported-coins-repeater-inner .coin').each(function(index, item) {
     $(this).click(function() {
+      $('.supported-coins-repeater-inner .coin').removeClass('active');
+      coinsSelectedToAdd = [];
+
       if ($(this).hasClass('active')) {
         delete coinsSelectedToAdd[index];
         $(this).removeClass('active');

@@ -10,28 +10,33 @@
 		<script type="text/javascript" src="js/inc/index.js"></script>
 	</head>
 	<body>
-		<div class="container-fluid">
-	    <div class="row centered">
-				<section class="form-container login-form hidden">
-					<header class="form-header orange-gradient box-shadow-bottom">
-						<i class="bi_interface-cross cursor-pointer hidden"></i>
-						<div class="title text-shadow">Welcome to Iguana!</div>
-					</header>
-					<div class="form-content">
-						<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of 24 words. Try one more time.</div>
-						<div class="login-input-directions center offset-bottom-sm unselectable">Type or paste the passphrase to log in</div>
-						<div class="coind-iguana-notice center"><strong>Is Iguana or *coind running?<br/>Make sure these <a href="https://github.com/SuperNETorg/Iguana-GUI/tree/0.1">requirements</a> are met.</strong></div>
-						<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
-						<div class="non-iguana-coins-repeater"></div>
-						<div class="non-iguana-coins-repeater-error"></div>
-						<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">Log in</button>
-						<div class="login-or-delim center unselectable">or</div>
-						<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup">Create an account</button>
-						<div class="iguana-coins-repeater"></div>
-						<div class="iguana-coins-repeater-error"></div>
-					</div>
-				</section>
-	    </div>
+		<div class="body-wrapper">
+			<div class="container-fluid">
+		    <div class="row centered">
+					<section class="form-container login-form hidden">
+						<header class="form-header orange-gradient box-shadow-bottom">
+							<i class="bi_interface-cross cursor-pointer hidden"></i>
+							<div class="title text-shadow">Welcome to Iguana!</div>
+						</header>
+						<div class="form-content">
+							<div class="login-add-coin-selection">
+								<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">Select a wallet</div>
+							</div>
+							<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of 24 words. Try one more time.</div>
+							<div class="login-input-directions center offset-bottom-sm unselectable">Enter a passphrase to log in</div>
+							<div class="coind-iguana-notice center"><strong>Is Iguana or *coind running?<br/>Make sure these <a href="https://github.com/SuperNETorg/Iguana-GUI/tree/0.1">requirements</a> are met.</strong></div>
+							<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
+							<div class="non-iguana-coins-repeater hidden"></div>
+							<div class="non-iguana-coins-repeater-error"></div>
+							<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">Log in</button>
+							<div class="login-or-delim center unselectable">or</div>
+							<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup">Create an account</button>
+							<div class="iguana-coins-repeater"></div>
+							<div class="iguana-coins-repeater-error"></div>
+						</div>
+					</section>
+		    </div>
+			</div>
 		</div>
 	</body>
 </html>
