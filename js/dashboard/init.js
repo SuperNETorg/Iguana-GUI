@@ -15,6 +15,8 @@ function initDashboard() {
   // load add coin template
   $('body').append(addCoinModalTemplate);
 
+  if (!isIguana) $('.btn-add-coin').html('Add wallet');
+
   // coin is auto detected based on available portp2p
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
