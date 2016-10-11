@@ -12,8 +12,10 @@ function initDashboard() {
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
-  // load add coin template
+  // load templates
   $('body').append(addCoinModalTemplate);
+  $('body').append(addCoinPassphraseTemplate);
+  $('body').append(receiveCoinTemplate);
 
   if (!isIguana) $('.btn-add-coin').html('Add wallet');
 
