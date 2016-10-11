@@ -1,5 +1,5 @@
 
-apiProto.prototype.getAccountAddress = function() {
+apiProto.prototype.getAccountAddress = function(coin) {
   var result=false;
   if (dev.coinAccountsDev && !isIguana)
   if (dev.coinAccountsDev.coind[coin])
@@ -19,10 +19,10 @@ apiProto.prototype.getAccountAddress = function() {
     data: postData,
     headers: postAuthHeaders,
     success: function(response) {
- 	 result = response.address;
+ 	    result = response.result; // non-iguana
     	//console.log(response)
     }
   })
- 
+
   return result;
 }
