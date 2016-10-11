@@ -17,7 +17,6 @@ function addAuthorizationButtonAction(buttonClassName) {
         authAllAvailableCoind();
       }
       if ($('.verify-passphrase-form').width()) {
-        console.log('ver');
         $('.login-input-directions-error').removeClass('hidden');
         addAccountIguanaCoind(buttonClassName, true);
       }

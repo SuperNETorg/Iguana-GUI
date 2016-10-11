@@ -5,6 +5,7 @@
 
 var addCoinResponses = [],
     selectedCoins = 0,
+    coinsSelectedToAdd,
     buttonClassNameCB = '';
 
 function authAllAvailableCoind() {
@@ -48,7 +49,7 @@ function authAllAvailableCoindCB(result, key) {
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
     result = false;
   }
-  if (coindAuthResults[key] === -15) {
+  if (coindAuthResults[key] === -15 && helper.getCurrentPage() !== 'create-account') {
     if (coinsSelectedToAdd.length === 1) alert('Please encrypt your wallet with a passphrase!');
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
     result = false;
@@ -110,9 +111,13 @@ function encryptCoindWallet() {
 
 function checkSelectedWallet(key) {
   var isCoindChecked = false;
-  if (coinsSelectedToAdd[0]) {
+
+  if (coinsSelectedToAdd && coinsSelectedToAdd[0]) {
     selectedCoindToEncrypt = key = coinsSelectedToAdd[0];
     return true;
+  } else {
+    // TODO: add proper ui message
+    alert('Please select a wallet');
   }
 
   for (var _key in coinsInfo) {

@@ -80,7 +80,7 @@ function initCreateAccountForm() {
         $('.verify-passphrase-form').removeClass('hidden');
         $('.non-iguana-coins-repeater-errors').html('');
       } else {
-        $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
+        //$('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
       }
     }
   });
