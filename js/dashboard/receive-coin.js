@@ -12,7 +12,7 @@ function bindReceive(){
   localrates = JSON.parse(localStorage.getItem("iguana-rates" + coinName.toUpperCase()));
   $(".coin-unit").text(coinName.toUpperCase());
   var coin = coinName;
-  var address = api.getAccountAddress(coin);
+  var address = api.getAccountAddress(coin, defaultAccount);
   // coinRate = updateRates(coin,currency,true);
   coinRate = updateRates(coin,currency,true);
   $('#qr-code').empty();
