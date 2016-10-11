@@ -49,22 +49,49 @@ function initDashboard() {
   $('.btn-receive').click(function(){
   	 bindReceive();
   });
-  $('.btn-close,.modal-overlay').click(function() {
+
+  // modals
+  // add coin
+  $('.add-new-coin-form .btn-close,.add-new-coin-form .modal-overlay').click(function() {
     helper.toggleModalWindow('add-new-coin-form', 300);
     coinsSelectedByUser = [];
     $('.supported-coins-repeater-inner').html(constructCoinRepeater());
     bindClickInCoinRepeater();
   });
+  // add coin passphrase
+  $('.login-form-modal .btn-close,.login-form-modal .modal-overlay').click(function() {
+    helper.toggleModalWindow('login-form-modal', 300);
+  });
+  $('#passphrase').keyup(function() {
+    if ($('#passphrase').val().length > 0) {
+      $('.btn-add-wallet').removeClass('disabled');
+    } else {
+      $('.btn-add-wallet').addClass('disabled');
+    }
+  });
+  $('.btn-add-wallet').click(function() {
+    authAllAvailableCoind();
+  });
 
   $('.btn-next').click(function() {
     var result = false;
 
-    helper.toggleModalWindow('add-new-coin-form', 300);
+    // coind
     coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+    helper.toggleModalWindow('login-form-modal', 300);
 
-    // TODO: async
+    if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]]) {
+      $('.login-form-modal #passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+      $('.btn-add-wallet').removeClass('disabled');
+    } else {
+      $('.login-form-modal #passphrase').val('');
+      $('.btn-add-wallet').addClass('disabled');
+    }
+
+    // iguana multi-coin, don't remove
+    // TODO: async, refactor
     // prompt walletpassphrase to add coind
-    for (var key in coinsSelectedToAdd) {
+    /*for (var key in coinsSelectedToAdd) {
       if (!isIguana) {
         var coindPassphrasePrompt = prompt('Please enter your ' + coinsSelectedToAdd[key].toUpperCase() + ' passphrase', '');
 
@@ -88,10 +115,10 @@ function initDashboard() {
           result = true;
         }
       }
-    }
+    }*/
 
     // TODO: dom update
-    if (result) constructAccountCoinRepeater();
+    //if (result) constructAccountCoinRepeater();
   });
 
   bindCoinRepeaterSearch();

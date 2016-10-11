@@ -67,11 +67,14 @@ function authAllAvailableCoindCB(result, key) {
       if (coindAuthResults[key] === -14 || coindAuthResults[key] === -15) isAnyCoindLoginError = true;
     }
 
-    if (!isAnyCoindLoginError) {
+    if (!isAnyCoindLoginError && helper.getCurrentPage() !== 'dashboard') {
       var helper = new helperProto();
 
       localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
       helper.openPage('dashboard');
+    } else {
+      helper.toggleModalWindow('login-form-modal', 300);
+      constructAccountCoinRepeater();
     }
   }
 }
