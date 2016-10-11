@@ -15,7 +15,7 @@ function updateTotalBalance() {
     totalBalance += Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true);
   });
 
-  $('.balance-block .balance .value').html(totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency));
+  $('.balance-block .balance .value').html(totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) !== 'NaN' ? totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) : 0.00);
   $('.balance-block .balance .currency').html(defaultCurrency);
 }
 
