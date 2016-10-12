@@ -46,15 +46,20 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 
   if (modalWindow.hasClass('fade')) {
     modalWindow.removeClass('hidden');
+    $('.main').addClass('blur');
+    $('.form-container').addClass('blur');
+    $('.' + formClassName).removeClass('blur');
 
     setTimeout(function() {
       modalWindow.removeClass('fade');
     }, 10);
   } else {
     modalWindow.addClass('fade');
+    $('.form-container').removeClass('blur');
 
     setTimeout(function() {
       modalWindow.addClass('hidden');
+      if ($('.form-container').length === $('body .form-container').not(":visible").length) $('.main').removeClass('blur');
     }, timeout);
   }
 }

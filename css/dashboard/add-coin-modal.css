@@ -3,9 +3,16 @@
  *
  */
 
+ /* TODO: split(?) */
+
 /* Add coin modal */
+.form-container.blur {
+  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  filter: blur(2px);
+}
 .add-new-coin-form,
-.login-form-modal {
+.login-form-modal,
+.send-coin-form {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -14,18 +21,21 @@
   transition: all 0.25s;
 }
 .add-new-coin-form.fade,
-.login-form-modal.fade {
+.login-form-modal.fade,
+.send-coin-form.fade {
   opacity: 0;
   transition: all 0.25s;
 }
 .add-new-coin-form .modal-overlay,
-.login-form-modal .modal-overlay {
+.login-form-modal .modal-overlay,
+.send-coin-form .modal-overlay {
   width: 100%;
   height: 100%;
   position: fixed;
   opacity: 0.7;
   background: #fff;
-  //background: rgba(0, 0, 0, 0.15);
+  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  filter: blur(2px);
   z-index: 1000;
 }
 .modal-add-coin {
@@ -39,20 +49,35 @@
   border-radius: 4px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+.modal-send-coin {
+  max-width: 900px;
+  min-width: 720px;
+  max-height: 680px;
+  width: 80%;
+  height: 91%;
+  margin: 0 auto;
+  display: block;
+  margin-top: 7%;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
 .add-new-coin-form .form-content,
-.login-form-modal .form-content {
+.login-form-modal .form-content ,
+.send-coin-form .form-content {
   height: 100%;
   background: #F5F8FB;
   padding-top: 60px;
 }
 .add-new-coin-form .form-header,
-.login-form-modal .form-header {
+.login-form-modal .form-header,
+.send-coin-form .form-header {
   height: 60px;
   width: 100%;
   position: absolute;
   box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
 }
-.bi_interface-cross {
+.bi_interface-cross,
+.bi_interface-arrow-left {
   color: #fff;
   font-size: 16px;
   position: absolute;
@@ -60,6 +85,11 @@
   left: 20px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
+}
+.bi_interface-arrow-left {
+  font-size: 26px;
+  margin-top: -6px;
+  margin-left: 3px;
 }
 .form-header .title {
   position: relative;
@@ -157,7 +187,8 @@
 .supported-coins-repeater .coin .icon.CARB-alt:before,
 .supported-coins-repeater .coin .icon.UNO-alt:before,
 .supported-coins-repeater .coin .icon.ZET-alt:before,
-.supported-coins-repeater .coin .icon.BTM-alt:before {
+.supported-coins-repeater .coin .icon.BTM-alt:before,
+.supported-coins-repeater .coin .icon.KMD-alt:before  {
   content: '\e980';
   color: transparent;
 }
@@ -184,7 +215,8 @@
   background: #73C7EF;
 }
 .modal-add-coin .btn,
-.modal-add-coin-login .btn {
+.modal-add-coin-login .btn,
+.modal-send-coin .btn {
   font-family: 'Proxima Nova', sans-serif;
   font-weight: 600;
   color: #fff;
@@ -200,7 +232,9 @@
 .modal-add-coin .btn:hover,
 .modal-add-coin .btn:focus,
 .modal-add-coin-login .btn:hover,
-.modal-add-coin-login .btn:focus  {
+.modal-add-coin-login .btn:focus,
+.modal-send-coin .btn:hover,
+.modal-send-coin .btn:focus {
   color: #fff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
