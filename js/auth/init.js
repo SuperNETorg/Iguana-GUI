@@ -10,6 +10,8 @@ function initAuthCB() {
       helper = new helperProto(),
       selectedCoindToEncrypt;
 
+  localStorage.setVal('iguana-active-coin', {});
+
   // ugly login form check
   if ($('.login-form').hasClass('hidden')) {
     $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');

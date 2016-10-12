@@ -96,6 +96,8 @@ function updateAccountCoinRepeater() {
 }
 
 function bindClickInAccountCoinRepeater() {
+  var localStorage = new localStorageProto();
+
   $('.account-coins-repeater .item').each(function(index, item) {
     $(this).click(function() {
       $('.account-coins-repeater .item').filter(':visible').removeClass('active');
@@ -106,6 +108,7 @@ function bindClickInAccountCoinRepeater() {
 
         $(this).addClass('active');
         activeCoin = $(this).attr('data-coin-id');
+        localStorage.setVal('iguana-active-coin', { id: activeCoin });
 
         if (oldActiveCoinVal !== activeCoin) {
           updateTransactionUnitBalance();

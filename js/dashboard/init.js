@@ -9,6 +9,8 @@ function initDashboard() {
       api = new apiProto(),
       localStorage = new localStorageProto();
 
+  if (localStorage.getVal('iguana-active-coin') && localStorage.getVal('iguana-active-coin').id) activeCoin = localStorage.getVal('iguana-active-coin').id;
+
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
@@ -16,9 +18,7 @@ function initDashboard() {
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
-  // load send coin templates
-  //$('.modal-send-coin').append(sendCoinEntryTemplate);
-  //$('.modal-send-coin').append(sendCoinConfirmationTemplate);
+  $('body').append(addCoinPassphraseTemplate.replace('login-form-modal', 'send-coin-confirm-passphrase'));
 
   if (!isIguana) $('.btn-add-coin').html('Add wallet');
 
@@ -134,79 +134,3 @@ function initDashboard() {
 
   bindCoinRepeaterSearch();
 }
-
-function sendCoinModalInit(isBackTriggered) {
-  var helper = new helperProto();
-
-  var templateToLoad = sendCoinEntryTemplate;
-      activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
-      coinData = getCoinData(activeCoin),
-      activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
-      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html());
-
-  // prep template
-  templateToLoad = templateToLoad.replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
-                                  replace('{{ coin_name }}', coinData.name).
-                                  replace(/{{ currency }}/g, defaultCurrency).
-                                  replace('{{ coin_value }}', activeCoinBalanceCoin).
-                                  replace('{{ currency_value }}', activeCoinBalanceCurrency);
-  //$(templateToLoad).find('.coin') = //templateToLoad.replace();
-
-
-  $('.modal-send-coin').html(templateToLoad);
-  if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
-  // btn close
-  $('.send-coin-form .btn-close,.send-coin-form .modal-overlay').click(function() {
-    helper.toggleModalWindow('send-coin-form', 300);
-  });
-  // btn next
-  $('.send-coin-form .btn-next').click(function() {
-    sendCoinModalConfirm();
-  });
-}
-
-function sendCoinModalConfirm() {
-  if (verifySendCoin())
-    $('.modal-send-coin').html(sendCoinConfirmationTemplate);
-    // btn back
-    $('.send-coin-form .btn-back').click(function() {
-      sendCoinModalInit(true);
-    });
-}
-
-/*
-  TODO: 1) add alphanum addr validation
-        1a) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
-        2) positive num amount & fee validation
-        3) current balance check, users cannot send more than current balance amount
-           including all fees
-*/
-function verifySendCoin () {
-  var isValid = false;
-
-  // address
-  if ($('.tx-address').val().length !== 34) {
-    $('.tx-address').addClass('validation-field-error');
-  } else {
-    $('.tx-address').removeClass('validation-field-error');
-    isValid = true;
-  }
-  // coin amount
-  if ($('.tx-amount').val() <= 0) {
-    $('.tx-amount').addClass('validation-field-error');
-  } else {
-    $('.tx-amount').removeClass('validation-field-error');
-  }
-
-  if ($('.tx-address').val().length !== 34 || $('.tx-amount').val() <= 0) {
-    isValid = false;
-  } else {
-    isValid = true;
-  }
-
-  return isValid;
-}
-
-/*function loadTestSendData() {
-  $('.tx-address').
-}*/
