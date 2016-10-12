@@ -86,11 +86,6 @@
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
 }
-.bi_interface-arrow-left {
-  font-size: 26px;
-  margin-top: -6px;
-  margin-left: 3px;
-}
 .form-header .title {
   position: relative;
   z-index: 10;

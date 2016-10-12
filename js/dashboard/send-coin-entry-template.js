@@ -14,31 +14,31 @@ var sendCoinEntryTemplate =
         '<div class="popup-head">' +
           '<div class="headd">' +
             '<div class="row">' +
-              '<div class="col-sm-6 hd-left col-xs-6">' +
-                '<img src="images/bitcoin.png">' +
-                '<span>Bitcoin</span>' +
+              '<div class="col-sm-6 hd-left col-xs-6 coin">' +
+                '<i class="icon cc {{ coin_id }}-alt"></i>' +
+                '<span class="name">{{ coin_name }}</span>' +
               '</div>' +
-              '<div class="col-sm-6 hd-right col-xs-6">' +
-                '<span class="balance-coin"><span class="value">17.5</span> <span class="name">BTC</span></span>' +
-                '<p class="rs balance-currency"><span class="value">11763.03</span> <span class="name">USD</span></p>' +
+              '<div class="col-sm-6 hd-right col-xs-6 balance">' +
+                '<span class="balance-coin"><span class="value">{{ coin_value }}</span> <span class="name">{{ coin_id }}</span></span>' +
+                '<p class="rs balance-currency"><span class="value">{{ currency_value }}</span> <span class="name">{{ currency }}</span></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
           '<div class="pop-form">' +
             '<div class="pop-detail send">' +
               '<h4>Send to:</h4>' +
-              '<p>Enter a wallet Address or Select a Contact</p>' +
+              '<p>Enter a wallet address<!-- or select a contact --></p>' +
               '<input type="text" class="tx-address" />' +
             '</div>' +
             '<div class="pop-detail crncy">' +
               '<h4>Amount:</h4>' +
-              '<p>Enter in any Currency</p>' +
-              '<input type="text" placeholder="0 BTC" class="tx-amount" /><span>=</span><input type="text" placeholder="0 USD" />' +
+              '<p>Enter in <span clas="currency-name"></span></p>' +
+              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-amount" /><span>=</span><input type="text" placeholder="0 {{ currency }}" />' +
             '</div>' +
             '<div class="pop-detail crncy">' +
               '<h4>Fee:</h4>' +
               '<p>Minimum fee. Increase it to speed up transaction.</p>' +
-              '<input type="text" placeholder="1 BTC" class="tx-fee" /><span>=</span><input type="text" placeholder="580 USD" />' +
+              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-fee" /><span>=</span><input type="text" placeholder="0 {{ currency }}" />' +
             '</div>' +
             '<div class="pop-detail">' +
               '<h4>Note (optional):</h4>' +

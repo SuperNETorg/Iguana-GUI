@@ -26,7 +26,7 @@ var sendCoinConfirmationTemplate =
     '</button>' +
   '</div>' +
   '<header class="form-header orange-gradient box-shadow-bottom">' +
-    '<i class="bi_interface-arrow-left cursor-pointer btn-close"></i>' +
+    '<i class="bi_interface-arrow-left cursor-pointer btn-back"></i>' +
     '<div class="title text-shadow">Confirmation</div>' +
   '</header>' +
   '<div class="form-content rs_modal">' +
