@@ -225,7 +225,8 @@ helperProto.prototype.setPortPollResponse = function() {
     if (key.length > 0)
       coinsInfoJSON.push({ coin: key,
                            connection: coinsInfo[key].connection || false,
-                           RT: coinsInfo[key].RT || false });
+                           RT: coinsInfo[key].RT || false,
+                           relayFee: coinsInfo[key].relayFee || 0 });
   }
 
   localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(),

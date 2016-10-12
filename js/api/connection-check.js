@@ -12,6 +12,7 @@ apiProto.prototype.testConnection = function(cb) {
   // force port poll update if no coin is detected
   // use case: gui is launched ahead of iguana or coind
   helperProto.prototype.getPortPollResponse();
+
   var index = 0;
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
@@ -78,6 +79,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       timeout: 500,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
+        console.log(response);
 
         if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
@@ -91,6 +93,8 @@ apiProto.prototype.testCoinPorts = function(cb) {
           if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
+
+          if (response.result.relayfee) coinsInfo[index].relayFee = response.result.relayfee;
 
           // non-iguana
           // sync info
