@@ -16,6 +16,9 @@ function initDashboard() {
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
+  // load send coin templates
+  //$('.modal-send-coin').append(sendCoinEntryTemplate);
+  //$('.modal-send-coin').append(sendCoinConfirmationTemplate);
 
   if (!isIguana) $('.btn-add-coin').html('Add wallet');
 
@@ -52,6 +55,10 @@ function initDashboard() {
   });
   $('.btn-receive').click(function(){
   	 bindReceive();
+  });
+
+  $('.transactions-unit .btn-send').click(function() {
+    sendCoinModalInit();
   });
 
   // modals
@@ -126,4 +133,19 @@ function initDashboard() {
   });
 
   bindCoinRepeaterSearch();
+}
+
+function sendCoinModalInit() {
+  var helper = new helperProto();
+
+  $('.modal-send-coin').html(sendCoinEntryTemplate);
+  helper.toggleModalWindow('send-coin-form', 300);
+  // close btn
+  $('.send-coin-form .btn-close,.send-coin-form .modal-overlay').click(function() {
+    helper.toggleModalWindow('send-coin-form', 300);
+  });
+  // close next
+  $('.btn-next').click(function() {
+    $('.modal-send-coin').html(sendCoinConfirmationTemplate);
+  });
 }

@@ -8,7 +8,7 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
 
     var result = '';
     var fullUrl = apiProto.prototype.getFullApiRoute('getaccountaddress', account),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getaccountaddress','\"' + account + '\"');
+      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"');
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
 
   $.ajax({
@@ -21,7 +21,6 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
     headers: postAuthHeaders,
     success: function(response) {
  	    result = response.result; // non-iguana
-    	console.log(response)
     }
   })
 

@@ -48,7 +48,7 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
     modalWindow.removeClass('hidden');
     $('.main').addClass('blur');
     $('.form-container').addClass('blur');
-    $('.' + formClassName).removeClass('blur');
+    modalWindow.removeClass('blur');
 
     setTimeout(function() {
       modalWindow.removeClass('fade');
@@ -59,7 +59,8 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 
     setTimeout(function() {
       modalWindow.addClass('hidden');
-      if ($('.form-container').length === $('body .form-container').not(":visible").length) $('.main').removeClass('blur');
+      modalWindow.addClass('fade');
+      if ($('.form-container').length === $('.form-container').not(":visible").length) $('.main').removeClass('blur');
     }, timeout);
   }
 }
