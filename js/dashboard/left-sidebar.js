@@ -20,10 +20,11 @@ function constructAccountCoinRepeater() {
   var api = new apiProto(),
   localStorage = new localStorageProto();
 
+  // TODO: investigate why coinsInfo[key].connection === true is failing on port poll
   var index = 0;
   for (var key in coinsInfo) {
     if ((isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-        (!isIguana && coinsInfo[key].connection === true && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+        (!isIguana /*&& coinsInfo[key].connection === true*/ && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
       coinsSelectedByUser[index] = key;
       index++;
     }
@@ -50,6 +51,8 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   api.checkBackEndConnectionStatus();
 
   coinBalances[coin] = balance;
+
+  console.log(coin);
 
   var i = 0;
   for (var key in coinsInfo) {
