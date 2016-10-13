@@ -3,6 +3,8 @@
  *
  */
 
+ // TODO: add progress status if confs < 10
+
 var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp_format }}\">' +
                                 '<div class=\"status\">{{ status }}</div>' +
                                 '<div class=\"amount\">' +

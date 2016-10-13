@@ -56,14 +56,16 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   for (var key in coinsInfo) {
     if (accountCoinRepeaterHTML.indexOf('data-coin-id=\"' + key + '\"') === -1 && coinBalances[key] >= 0) {
 
-      var coinLocalRate = coinToCurrencyRate,
+      var coinLocalRate = 0,
           api = new apiProto(),
           coinBalance = coinBalances[key] || 0; //api.getBalance(defaultAccount, coinsSelectedByUser[i]) || 0;
 
-      if (key.toUpperCase() !== defaultCoin) coinLocalRate = updateRates(key.toUpperCase(), null, true) || 0;
+      //if (key.toUpperCase() !== defaultCoin)
+      coinLocalRate = updateRates(key.toUpperCase(), defaultCurrency, true) || 0;
 
       var currencyCalculatedValue = coinBalance * coinLocalRate,
           coinData = getCoinData(key);
+
 
       if ((i === 0 && !isActiveCoinSet) && !activeCoin) activeCoin = coinData.id;
       if (coinData)

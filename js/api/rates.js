@@ -37,18 +37,22 @@ apiProto.prototype.getExternalRate = function(quote, cb) {
       firstSourceFailed = false,
       quoteComponents = quote.split('/');
 
+  // 1 on 1 rate, https://min-api.cryptocompare.com/data/price?fsym=
+  //https://min-api.cryptocompare.com/data/pricemulti?fsyms=LTC,BTC,UNO&tsyms=USD
   quote = quote.toLowerCase().replace('/', '-');
   $.ajax({
-    url: 'https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
+    url: 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
     cache: false,
     dataType: 'text',
     async: cb ? true : false,
     success: function(_response) {
       var response = $.parseJSON(_response);
+      console.log(response);
 
-      if (response && response[quoteComponents[1]]) {
-        result = response[quoteComponents[1]];
-        if (dev.showConsoleMessages && dev.isDev) console.log('rates source https://min-api.cryptocompare.com/data/price?fsym=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
+      if (response && Object.keys(response).length) {
+      //if (response && response[quoteComponents[1]]) {
+        result = response; //response[quoteComponents[1]];
+        if (dev.showConsoleMessages && dev.isDev) console.log('rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
       } else {
         result = false;
       }

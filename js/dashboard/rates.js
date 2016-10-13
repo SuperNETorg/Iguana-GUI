@@ -3,26 +3,26 @@
  *
  */
 
-// TODO: fix a bug with wrong sidebar currency values
 function updateRates(coin, currency, returnValue, triggerUpdate) {
   var api = new apiProto(),
       apiExternalRate,
       localStorage = new localStorageProto(),
       helper = new helperProto();
 
-  // defer rates update to prevent ban for abuse
-  // default update rate: 15 sec base + 5 sec postpone for each additional coin
-  //                      5 coins are going to have 15 + 4 * 5 = 35 sec wait period between rate updates
-  var totalCoins = -1;
+  var allDashboardCoins = '',
+      totalCoins = 0;
   for (var key in coinsInfo) {
-    if (coinsInfo[key].connection === true) {
-      if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
-        totalCoins++;
-      }
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      totalCoins++;
+      allDashboardCoins = allDashboardCoins + key.toUpperCase() + ',';
     }
   }
 
-  ratesUpdateTimeout = settings.ratesUpdateTimeout + totalCoins * settings.ratesUpdateMultiply;
+  if (allDashboardCoins[allDashboardCoins.length - 1] === ',') {
+    allDashboardCoins = allDashboardCoins.replace(/,$/, '');
+  }
+
+  ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
 
   // force rates update
   // ! not efficient !
@@ -30,12 +30,10 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
 
   if (triggerUpdate) {
     for (var key in coinsInfo) {
-      if (coinsInfo[key].connection === true) {
-        if (triggerUpdate && (helper.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + key.toUpperCase()))) {
-          if ((!isIguana && localStorage.getVal('iguana-' + key + '-passphrase') && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') || isIguana) {
-            isUpdateTriggered = true;
-            api.getExternalRate(key.toUpperCase() + '/' + defaultCurrency, updateRateCB);
-          }
+      if (triggerUpdate && (helper.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + key))) {
+        if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+          isUpdateTriggered = true;
+          api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
         }
       }
     }
@@ -45,10 +43,11 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
   } else {
     if (!coin) coin = defaultCoin;
     if (!currency) currency = defaultCurrency;
+    coin = coin.toLowerCase();
 
     // iguana based rates are temp disabled
-    coinToCurrencyRate = null; //!isIguana ? null : api.getIguanaRate(coin + '/' + currency);
-    if (!localStorage.getVal('iguana-rates-' + coin)) api.getExternalRate(key.toUpperCase() + '/' + defaultCurrency, updateRateCB);
+    //coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value; //!isIguana ? null : api.getIguanaRate(coin + '/' + currency);
+    if (!localStorage.getVal('iguana-rates-' + coin)) api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
     if (!coinToCurrencyRate && localStorage.getVal('iguana-rates-' + coin)) coinToCurrencyRate = localStorage.getVal('iguana-rates-' + coin).value;
     if (returnValue && localStorage.getVal('iguana-rates-' + coin)) return localStorage.getVal('iguana-rates-' + coin).value;
   }
@@ -57,7 +56,11 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
 function updateRateCB(coin, result) {
   var localStorage = new localStorageProto();
 
-  localStorage.setVal('iguana-rates-' + coin, { 'shortName' : defaultCurrency, 'value': result, 'updatedAt': Date.now() });
+  for (var key in coinsInfo) {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      localStorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
+    }
+  }
 
   // !not effecient!
   if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
