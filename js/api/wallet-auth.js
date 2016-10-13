@@ -4,6 +4,8 @@
  */
 
 apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
+  if (!isIguana) timeout = settings.defaultWalletUnlockPeriod;
+
   var result = false,
       fullUrl = apiProto.prototype.getFullApiRoute('walletpassphrase', null, coin),
       defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
