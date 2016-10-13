@@ -283,7 +283,7 @@ helperProto.prototype.decimalPlacesFormat = function(value) {
     for (var i=0; i < valueComponents[1].length; i++) {
       if (Number(valueComponents[1][i]) !== 0) {
         decimalPlacesCoin = i + 1;
-        decimalPlacesCurrency = decimalPlacesCurrency;
+        decimalPlacesCurrency = decimalPlacesCoin;
         break;
       }
     }
