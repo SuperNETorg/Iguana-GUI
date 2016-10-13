@@ -12,7 +12,7 @@ var sendCoinEntryTemplate =
     '<div class="modal-body">' +
       '<div class="main-popup">' +
         '<div class="popup-head">' +
-          '<div class="headd">' +
+          '<div class="headd orange-gradient">' +
             '<div class="row">' +
               '<div class="col-sm-6 hd-left col-xs-6 coin">' +
                 '<i class="icon cc {{ coin_id }}-alt"></i>' +
@@ -44,7 +44,7 @@ var sendCoinEntryTemplate =
               '<h4>Note (optional):</h4>' +
               '<textarea class="tx-note"></textarea>' +
             '</div>' +
-            '<input type="submit" value="Next" id="nextsend" class="btn-next" />' +
+            '<input type="submit" value="Next" id="nextsend" class="btn-next orange-gradient" />' +
           '</div>' +
         '</div>' +
       '</div>' +

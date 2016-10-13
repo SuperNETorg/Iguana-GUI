@@ -18,6 +18,7 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-3.0.0.m
                // send coin templates
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-coin-entry-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-coin-confirmation-template.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-to-address.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receiving-coins.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/auth/coind-auth.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/dashboard.js\">\x3C/script>');

@@ -7,20 +7,7 @@
   padding: 0;
   margin: -4px;
 }
-.rs_modal .modal-header{
-  background: #fe600d;
-  background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-  background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
-}
 .rs_modal .headd {
-  background: #fe600d;
-  background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-  background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
-
   border-radius: 4px;
   color: #fff;
   padding: 25px 21px 22px;
@@ -115,6 +102,8 @@
   margin-top: 9px;
   resize: none;
   width: 100%;
+  padding: 5px 12px;
+  font-weight: normal;
 }
 .rs_modal .modal {
   padding-left: 0 !important;
@@ -143,12 +132,6 @@
   padding: 0 1.3%;
 }
 .rs_modal .pop-form > input[type="submit"]{
-  background: #fe600d;
-  background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-  background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
-
   border: 0 none;
   border-radius: 4px;
   box-shadow: 0 0 7px 4px #e8cec6;
@@ -177,7 +160,7 @@
 }
 .pop-detail.pay-dtl p {
   color: #37373a;
-  font-size: 13px;
+  font-size: 1.1em;
 }
 .chk-crncy h5 {
   font-size: 16px;
@@ -203,13 +186,7 @@
   position: relative;
   z-index: 10;
 }
-.rs_modal #myModal3 .pop-form > input[type="submit"]{
-  background: #08bb5a;
-  background: -moz-linear-gradient(left, #08bb5a 0%, #13d76c 47%, #08b959 100%);
-  background: -webkit-linear-gradient(left, #08bb5a 0%,#13d76c 47%,#08b959 100%);
-  background: linear-gradient(to right, #08bb5a 0%,#13d76c 47%,#08b959 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', endColorstr='#08b959',GradientType=1 );
-}
+
 .cntnt-cntr > h5 {
   font-family: open sans;
   font-size: 19px;
@@ -241,8 +218,8 @@
 }
 .pop-detail.send.check > p {
   color: #000000;
-  font-size: 14px;
-  letter-spacing: 0.9px;
+  font-size: 1em;
+  letter-spacing: 1px;
   margin-top: 7px;
 }
 .pop-detail.pay-dtl > h4 {

@@ -76,7 +76,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
-      timeout: isIguana ? 500 : 5000,
+      timeout: isIguana ? 500 : 10000,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
         console.log(response);

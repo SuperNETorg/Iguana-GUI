@@ -3,6 +3,8 @@
  *
  */
 
+var sendFormDataCopy = {};
+
 function sendCoinModalInit(isBackTriggered) {
   var helper = new helperProto();
 
@@ -21,6 +23,14 @@ function sendCoinModalInit(isBackTriggered) {
 
   $('.modal-send-coin').html(templateToLoad);
 
+  // load defaults
+  // else load previously entered data
+  if (!isBackTriggered) {
+    $('.modal-send-coin .tx-fee').val(coinsInfo[coinData.id].relayFee || 0);
+  } else {
+
+  }
+
   // dev
   loadTestSendData(coinData.id);
 
@@ -32,6 +42,10 @@ function sendCoinModalInit(isBackTriggered) {
   // btn next
   $('.send-coin-form .btn-next').click(function() {
     sendCoinModalConfirm();
+    sendFormDataCopy = { address: $('.modal-send-coin .tx-address').val(),
+                         amount: $('.modal-send-coin .tx-amount').val(),
+                         fee: $('.modal-send-coin .tx-fee').val(),
+                         note: $('.modal-send-coin .tx-note').val() };
   });
 }
 
@@ -56,7 +70,7 @@ function sendCoinModalConfirm() {
                                     replace('{{ tx_coin_address }}', txAddress).
                                     replace('{{ tx_coin_amount }}', txAmount).
                                     replace('{{ tx_coin_amount_currency }}', 0).
-                                    replace('{{ tx_coin_fee_value }}', txFee || coinsInfo[coinData.id].relayFee || 0).
+                                    replace('{{ tx_coin_fee_value }}', txFee).
                                     replace('{{ tx_coin_fee_currency }}', 0).
                                     replace('{{ tx_note }}', txNote).
                                     replace('{{ tx_total }}', txAmount);
@@ -66,8 +80,55 @@ function sendCoinModalConfirm() {
     $('.send-coin-form .btn-back').click(function() {
       sendCoinModalInit(true);
     });
-    $('.btn-confirm-tx').click(function() {
 
+    $('.btn-confirm-tx').click(function() {
+      var api = new apiProto(),
+          helper = new helperProto(),
+          txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
+
+      // TODO: ugly, rewrite
+      $('.modal-append-container').html(addCoinPassphraseTemplate.replace('login-form-modal', 'send-coin-confirm-passphrase').
+                                                                  replace('>Add<', '>Ok<').
+                                                                  replace('Add a wallet', 'Wallet passphrase').
+                                                                  replace('to add wallet', 'to confirm transaction'));
+      helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+
+      if (dev.isDev && dev.coinPW.coind[coinData.id]) {
+        $('.send-coin-confirm-passphrase #passphrase').val(dev.coinPW.coind[coinData.id]);
+        $('.send-coin-confirm-passphrase .btn-add-wallet').removeClass('disabled');
+      } else {
+        $('.login-form-modal #passphrase').val('');
+        $('.send-coin-confirm-passphrase .btn-add-wallet').addClass('disabled');
+      }
+
+      $('.send-coin-confirm-passphrase .btn-close,.send-coin-confirm-passphrase .modal-overlay').click(function() {
+        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+      });
+
+      $('.send-coin-confirm-passphrase .btn-add-wallet').click(function() {
+        var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id);
+
+        if (coindWalletLogin !== -14) {
+          helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+
+          var sendTxResult = api.sendToAddress(coinData.id, txDataToSend);
+
+          if (sendTxResult.length === 64) {
+            // go to success step
+            $('.send-coin-form .rs_modal').addClass('blur');
+            $('.send-coin-form .send-coin-success-overlay').removeClass('hidden');
+
+            $('.send-coin-form .btn-confirmed').click(function() {
+              helper.toggleModalWindow('send-coin-form', 300);
+            });
+          } else {
+            // go to an error step
+            alert('Error: transaction was not send.');
+          }
+        } else {
+          alert('Incorrect passphrase. Try again.');
+        }
+      });
     });
   }
 }
@@ -105,7 +166,8 @@ function validateSendCoinForm () {
 }
 
 // dev
-var sendDataTest = { 'btcd' : { address: 'R9XTAMpr2Sm4xxUQA1g1brxPZGaTvj9xqp', val: '0.00001', note: 'test send to kashi\'s addr' } };
+var sendDataTest = { 'btcd' : { address: 'R9XTAMpr2Sm4xxUQA1g1brxPZGaTvj9xqp', val: '0.00001', note: 'gui test send to kashi\'s addr' },
+                     'sys': { address: '127a42hPqaUy6zBbgfo5HHh7G9WGBQYQR4', val: '0.00001', note: 'gui test send to ed888 addr' } };
 
 function loadTestSendData(coin) {
   $('.tx-address').val(sendDataTest[coin].address);

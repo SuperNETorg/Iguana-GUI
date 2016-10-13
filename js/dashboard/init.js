@@ -18,7 +18,6 @@ function initDashboard() {
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
-  $('body').append(addCoinPassphraseTemplate.replace('login-form-modal', 'send-coin-confirm-passphrase'));
 
   if (!isIguana) $('.btn-add-coin').html('Add wallet');
 
@@ -75,12 +74,12 @@ function initDashboard() {
   });
   $('#passphrase').keyup(function() {
     if ($('#passphrase').val().length > 0) {
-      $('.btn-add-wallet').removeClass('disabled');
+      $('.login-form-modal .btn-add-wallet').removeClass('disabled');
     } else {
-      $('.btn-add-wallet').addClass('disabled');
+      $('.login-form-modal .btn-add-wallet').addClass('disabled');
     }
   });
-  $('.btn-add-wallet').click(function() {
+  $('.login-form-modal .btn-add-wallet').click(function() {
     authAllAvailableCoind();
   });
 
@@ -93,10 +92,10 @@ function initDashboard() {
 
     if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]]) {
       $('.login-form-modal #passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
-      $('.btn-add-wallet').removeClass('disabled');
+      $('.login-form-modal .btn-add-wallet').removeClass('disabled');
     } else {
       $('.login-form-modal #passphrase').val('');
-      $('.btn-add-wallet').addClass('disabled');
+      $('.login-form-modal .btn-add-wallet').addClass('disabled');
     }
 
     // iguana multi-coin, don't remove

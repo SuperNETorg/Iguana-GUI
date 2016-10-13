@@ -26,4 +26,5 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/connection-conf
                '\x3Cscript type=\"text/javascript\" src=\"js/api/balance.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/req-payload.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/get-address.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/api/send-coin.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/handlers.js\">\x3C/script>');

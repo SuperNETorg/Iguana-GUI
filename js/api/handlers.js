@@ -45,4 +45,8 @@ apiProto.prototype.errorHandler = function(response, index) {
 
     return 10;
   }
+
+  if (response.responseText && response.responseText.indexOf(':-13') > -1) {
+    return -13;
+  }
 }

@@ -33,38 +33,38 @@ var sendCoinConfirmationTemplate =
     '<div class="modal-body">' +
       '<div class="main-popup">' +
         '<div class="popup-head">' +
-          '<div class="headd">' +
+          '<div class="headd orange-gradient">' +
             '<div class="row">' +
-              '<div class="col-sm-6 hd-left col-xs-6">' +
-                '<img src="images/bitcoin.png">' +
-                '<span>Bitcoin</span>' +
+              '<div class="col-sm-6 hd-left col-xs-6 coin">' +
+                '<i class="icon cc {{ coin_id }}-alt"></i>' +
+                '<span class="name">{{ coin_name }}</span>' +
               '</div>' +
-              '<div class="col-sm-6 hd-right col-xs-6">' +
-                '<span>17.5 BTC</span>' +
-                '<p class="rs">11763.03 USD</p>' +
+              '<div class="col-sm-6 hd-right col-xs-6 balance">' +
+                '<span class="balance-coin"><span class="value">{{ coin_value }}</span> <span class="name">{{ coin_id }}</span></span>' +
+                '<p class="rs balance-currency"><span class="value">{{ currency_value }}</span> <span class="name">{{ currency }}</span></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
           '<div class="pop-form">' +
             '<div class="pop-detail send check">' +
               '<h4>Send to:</h4>' +
-              '<p>jfdsflkkljkfkldsjfjldsfjjdsfjkldsjfkljds</p>' +
+              '<p>{{ tx_coin_address }}</p>' +
             '</div>' +
             '<div class="pop-detail crncy chk-crncy crncy_btc_rs">' +
               '<h4>Amount:</h4>' +
-                '<h3>1 BTC</h3>' +
-                '<h5>or 192 USD</h5>' +
+                '<h3>{{ tx_coin_amount }} {{ coin_id }}</h3>' +
+                '<h5>or {{ tx_coin_amount_currency }} {{ currency }}</h5>' +
               '</div>' +
               '<div class="pop-detail crncy chk-crncy crncy_btc_fee">' +
                 '<h4>Fee:</h4>' +
-                '<h3>10 BTC</h3>' +
-                '<h5>or 580 USD</h5>' +
+                '<h3>{{ tx_coin_fee_value }} {{ coin_id }}</h3>' +
+                '<h5>or {{ tx_coin_fee_currency }} {{ currency }}</h5>' +
               '</div>' +
               '<div class="pop-detail pay-dtl">' +
                 '<h4>Note: </h4>' +
-                '<p>This is my Payment. Have a nice day :)</p>' +
+                '<p>{{ tx_note }}</p>' +
               '</div>' +
-              '<input type="submit" value="Send 11 BTC" id="sendingModal" />' +
+              '<input type="submit" value="Send {{ tx_total }} {{ coin_id }}" class="btn-confirm-tx orange-gradient" />' +
             '</div>' +
           '</div>' +
         '</div>' +
