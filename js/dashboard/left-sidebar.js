@@ -44,7 +44,10 @@ function constructAccountCoinRepeaterCB(balance, coin) {
       localStorage = new localStorageProto(),
       helper = new helperProto(),
       accountCoinRepeaterHTML = '',
+      api = new apiProto(),
       isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
+
+  api.checkBackEndConnectionStatus();
 
   coinBalances[coin] = balance;
 
