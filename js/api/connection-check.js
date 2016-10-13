@@ -94,7 +94,9 @@ apiProto.prototype.testCoinPorts = function(cb) {
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
 
-          if (response.result.relayfee) coinsInfo[index].relayFee = response.result.relayfee;
+          if (response.result.relayfee) {
+            coinsInfo[index].relayFee = response.result.relayfee;
+          }
 
           // non-iguana
           // sync info
