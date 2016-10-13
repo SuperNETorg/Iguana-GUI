@@ -34,7 +34,7 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
     if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
       if (_response.result > -1 || Number(_response) === 0) {
         // non-iguana
-        result = _response.result || _response;
+        result = _response.result > -1 ? _response.result : _response;
 
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(_response);
