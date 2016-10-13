@@ -60,6 +60,7 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
     setTimeout(function() {
       modalWindow.addClass('hidden');
       modalWindow.addClass('fade');
+      $('.form-container').removeClass('blur');
       if ($('.form-container').length === $('.form-container').not(":visible").length) $('.main').removeClass('blur');
     }, timeout);
   }
