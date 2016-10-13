@@ -52,8 +52,6 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
   coinBalances[coin] = balance;
 
-  console.log(coin);
-
   var i = 0;
   for (var key in coinsInfo) {
     if (accountCoinRepeaterHTML.indexOf('data-coin-id=\"' + key + '\"') === -1 && coinBalances[key] >= 0) {
@@ -87,6 +85,13 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   if (activeCoin === getCoinData(coin).id) constructTransactionUnitRepeater();
   updateTotalBalance();
   updateTransactionUnitBalance();
+
+  // disable send button if ther're no funds on a wallet
+  if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
+    $('.transactions-unit .action-buttons .btn-send').addClass('disabled');
+  } else {
+    $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
+  }
 }
 
 function updateAccountCoinRepeater() {
@@ -107,6 +112,7 @@ function bindClickInAccountCoinRepeater() {
   $('.account-coins-repeater .item').each(function(index, item) {
     $(this).click(function() {
       $('.account-coins-repeater .item').filter(':visible').removeClass('active');
+
       if ($(this).hasClass('active')) {
         $(this).removeClass('active');
       } else {

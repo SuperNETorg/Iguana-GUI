@@ -26,6 +26,13 @@ function constructTransactionUnitRepeater() {
   var api = new apiProto(),
       coinName = activeCoin || $('.account-coins-repeater .item.active');
 
+  // disable send button if ther're no funds on a wallet
+  if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
+    $('.transactions-unit .action-buttons .btn-send').addClass('disabled');
+  } else {
+    $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
+  }
+
   if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB);
 }
 

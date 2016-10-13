@@ -30,7 +30,7 @@ apiProto.prototype.testConnection = function(cb) {
       dataType: 'text',
       async: true,
       type: 'GET',
-      timeout: isIguana ? 500 : 5000,
+      timeout: 500,
       success: function (response) {
         // iguana env
         isIguana = true;
@@ -76,7 +76,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
-      timeout: 500,
+      timeout: isIguana ? 500 : 5000,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
         console.log(response);
@@ -89,14 +89,14 @@ apiProto.prototype.testCoinPorts = function(cb) {
           coinsInfo[index].RT = false;
         }
 
+        if (response.result && response.result.relayfee) {
+          coinsInfo[index].relayFee = response.result.relayfee;
+        }
+
         if (response.result && response.result.walletversion || response.result && response.result.difficulty || response.result === 'success') {
           if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
-
-          if (response.result.relayfee) {
-            coinsInfo[index].relayFee = response.result.relayfee;
-          }
 
           // non-iguana
           // sync info
