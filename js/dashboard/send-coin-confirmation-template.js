@@ -64,7 +64,7 @@ var sendCoinConfirmationTemplate =
                 '<h4>Note: </h4>' +
                 '<p>{{ tx_note }}</p>' +
               '</div>' +
-              '<h4>Total transaction amount that is about to go out from your wallet is going to include all network fees. The {{ tx_coin_fee_value }} fee may vary depending on number of factors.</h4>' +
+              '<h4>The final amount may be slightly more because of network fees.</h4>' +
               '<input type="submit" value="Send {{ tx_total }} {{ coin_id }}" class="btn-confirm-tx orange-gradient" />' +
             '</div>' +
           '</div>' +
