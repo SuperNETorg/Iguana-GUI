@@ -97,7 +97,7 @@ helperProto.prototype.checkSession = function(returnVal) {
     var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
         secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal('iguana-auth').timestamp / 1000);
 
-    if (secondsElapsedSinceLastAuth > defaultSessionLifetime) {
+    if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
       if (!returnVal) {
         if (!$('.login-form').width()) helperProto.prototype.openPage('login'); // redirect to login when session is expired
       } else {

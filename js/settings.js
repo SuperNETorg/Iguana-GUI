@@ -9,7 +9,8 @@ var settings = {
   dashboardUpdateTimout: 15, // sec
   defaultCurrency: 'USD',
   portPollUpdateTimeout: 60, // sec
-  defaultSessionLifetime: 7200, // sec
+  defaultSessionLifetimeIguana: 7200, // sec
+  defaultSessionLifetimeCoind: 2629743, // sec, ~1 m
   defaultWalletUnlockPeriod: 3, // sec
   defaultTransactionsCount: 20,
   defaultAccountNameIguana: 'default', // note: change to a specific account name if needed; default coind account name is empty string
