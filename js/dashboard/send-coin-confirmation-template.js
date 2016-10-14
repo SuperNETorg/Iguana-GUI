@@ -56,7 +56,7 @@ var sendCoinConfirmationTemplate =
                 '<h5>or {{ tx_coin_amount_currency }} {{ currency }}</h5>' +
               '</div>' +
               '<div class="pop-detail crncy chk-crncy crncy_btc_fee">' +
-                '<h4>Fee:</h4>' +
+                '<h4>Fee (per KB of data):</h4>' +
                 '<h3>{{ tx_coin_fee_value }} {{ coin_id }}</h3>' +
                 '<h5>or {{ tx_coin_fee_currency }} {{ currency }}</h5>' +
               '</div>' +
@@ -64,6 +64,7 @@ var sendCoinConfirmationTemplate =
                 '<h4>Note: </h4>' +
                 '<p>{{ tx_note }}</p>' +
               '</div>' +
+              '<h4>Total transaction amount that is about to go out from your wallet is going to include all network fees. The {{ tx_coin_fee_value }} fee may vary depending on number of factors.</h4>' +
               '<input type="submit" value="Send {{ tx_total }} {{ coin_id }}" class="btn-confirm-tx orange-gradient" />' +
             '</div>' +
           '</div>' +

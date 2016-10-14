@@ -12,27 +12,51 @@ function sendCoinModalInit(isBackTriggered) {
       activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
       coinData = getCoinData(activeCoin),
       activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
-      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html());
+      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html()),
+      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
 
   // prep template
   templateToLoad = templateToLoad.replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
                                   replace('{{ coin_name }}', coinData.name).
                                   replace(/{{ currency }}/g, defaultCurrency).
                                   replace('{{ coin_value }}', activeCoinBalanceCoin).
-                                  replace('{{ currency_value }}', activeCoinBalanceCurrency);
+                                  replace('{{ currency_value }}', activeCoinBalanceCurrency).
+                                  replace('{{ address }}', isBackTriggered ? sendFormDataCopy.address || '' : '').
+                                  replace('{{ amount }}', isBackTriggered ? sendFormDataCopy.amount || 0 : '').
+                                  replace('{{ fee }}', isBackTriggered ? sendFormDataCopy.fee || 0 : coinsInfo[coinData.id].relayFee || 0.00001).
+                                  replace('{{ fee_currency }}', isBackTriggered ? sendFormDataCopy.feeCurrency || 0 : (coinsInfo[coinData.id].relayFee || 0.00001 * currentCoinRate).toFixed(8)).
+                                  replace('{{ note }}', isBackTriggered ? sendFormDataCopy.note || '' : '');
 
   $('.modal-send-coin').html(templateToLoad);
 
-  // load defaults
-  // else load previously entered data
-  if (!isBackTriggered) {
-    $('.modal-send-coin .tx-fee').val(coinsInfo[coinData.id].relayFee || 0);
-  } else {
+  // TODO: rewrite
+  // calc
+  $('.modal-send-coin .tx-amount').keyup(function() {
+    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
 
-  }
+    $('.modal-send-coin .tx-amount-currency').val((Number($('.modal-send-coin .tx-amount').val()) * currentCoinRate).toFixed(8));
+  });
+
+  $('.modal-send-coin .tx-amount-currency').keyup(function() {
+    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+
+    $('.modal-send-coin .tx-amount').val((Number($('.modal-send-coin .tx-amount-currency').val()) / currentCoinRate).toFixed(8));
+  });
+
+  $('.modal-send-coin .tx-fee').keyup(function() {
+    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+
+    $('.modal-send-coin .tx-fee-currency').val((Number($('.modal-send-coin .tx-fee').val()) * currentCoinRate).toFixed(8));
+  });
+
+  $('.modal-send-coin .tx-fee-currency').keyup(function() {
+    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+
+    $('.modal-send-coin .tx-fee').val((Number($('.modal-send-coin .tx-fee-currency').val()) / currentCoinRate).toFixed(8));
+  });
 
   // dev
-  loadTestSendData(coinData.id);
+  //loadTestSendData(coinData.id);
 
   if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
   // btn close
@@ -41,11 +65,15 @@ function sendCoinModalInit(isBackTriggered) {
   });
   // btn next
   $('.send-coin-form .btn-next').click(function() {
-    sendCoinModalConfirm();
+    // copy send coin data entered by a user
     sendFormDataCopy = { address: $('.modal-send-coin .tx-address').val(),
                          amount: $('.modal-send-coin .tx-amount').val(),
+                         amountCurrency: $('.modal-send-coin .tx-amount-currency').val(),
                          fee: $('.modal-send-coin .tx-fee').val(),
+                         feeCurrency: $('.modal-send-coin .tx-fee-currency').val(),
                          note: $('.modal-send-coin .tx-note').val() };
+
+    sendCoinModalConfirm();
   });
 }
 
@@ -58,7 +86,9 @@ function sendCoinModalConfirm() {
         activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html()),
         txAddress = $('.send-coin-form .tx-address').val(),
         txAmount = $('.send-coin-form .tx-amount').val(),
+        txAmountCurrency = $('.send-coin-form .tx-amount-currency').val(),
         txFee = $('.send-coin-form .tx-fee').val(),
+        txFeeCurrency = $('.send-coin-form .tx-fee-currency').val(),
         txNote = $('.send-coin-form .tx-note').val();
 
     // prep template
@@ -69,13 +99,14 @@ function sendCoinModalConfirm() {
                                     replace('{{ currency_value }}', activeCoinBalanceCurrency).
                                     replace('{{ tx_coin_address }}', txAddress).
                                     replace('{{ tx_coin_amount }}', txAmount).
-                                    replace('{{ tx_coin_amount_currency }}', 0).
-                                    replace('{{ tx_coin_fee_value }}', txFee).
-                                    replace('{{ tx_coin_fee_currency }}', 0).
+                                    replace('{{ tx_coin_amount_currency }}', txAmountCurrency).
+                                    replace(/{{ tx_coin_fee_value }}/g, txFee).
+                                    replace('{{ tx_coin_fee_currency }}', txFeeCurrency).
                                     replace('{{ tx_note }}', txNote).
-                                    replace('{{ tx_total }}', txAmount);
+                                    replace('{{ tx_total }}', txAmount /*Number(txAmount) + Number(txFee)*/);
 
     $('.modal-send-coin').html(templateToLoad);
+
     // btn back
     $('.send-coin-form .btn-back').click(function() {
       sendCoinModalInit(true);
@@ -106,10 +137,15 @@ function sendCoinModalConfirm() {
       });
 
       $('.send-coin-confirm-passphrase .btn-add-wallet').click(function() {
-        var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id);
+        var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id),
+            setTxFeeResult = false;
 
         if (coindWalletLogin !== -14) {
           helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+
+          if (Number(sendFormDataCopy.fee) !== Number(coinsInfo[coinData.id].relayFee) && Number(sendFormDataCopy.fee) !== 0.00001 && Number(sendFormDataCopy.fee) !== 0) {
+            setTxFeeResult = api.setTxFee(coinData.id, sendFormDataCopy.fee);
+          }
 
           var sendTxResult = api.sendToAddress(coinData.id, txDataToSend);
 
@@ -125,6 +161,9 @@ function sendCoinModalConfirm() {
             // go to an error step
             alert('Error: transaction was not send.');
           }
+
+          // revert pay fee
+          if (setTxFeeResult) api.setTxFee(coinData.id, 0);
         } else {
           alert('Incorrect passphrase. Try again.');
         }

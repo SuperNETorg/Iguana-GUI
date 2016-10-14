@@ -28,21 +28,21 @@ var sendCoinEntryTemplate =
             '<div class="pop-detail send">' +
               '<h4>Send to:</h4>' +
               '<p>Enter a wallet address<!-- or select a contact --></p>' +
-              '<input type="text" class="tx-address" />' +
+              '<input type="text" class="tx-address" value="{{ address }}" />' +
             '</div>' +
             '<div class="pop-detail crncy">' +
               '<h4>Amount:</h4>' +
               '<p>Enter in <span clas="currency-name"></span></p>' +
-              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-amount" /><span>=</span><input type="text" placeholder="0 {{ currency }}" />' +
+              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-amount" value="{{ amount }}" /><span>=</span><input type="text" class="tx-amount-currency" placeholder="0 {{ currency }}" />' +
             '</div>' +
             '<div class="pop-detail crncy">' +
-              '<h4>Fee:</h4>' +
+              '<h4>Fee (per KB of data):</h4>' +
               '<p>Minimum fee. Increase it to speed up transaction.</p>' +
-              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-fee" /><span>=</span><input type="text" placeholder="0 {{ currency }}" />' +
+              '<input type="text" placeholder="0 {{ coin_id }}" class="tx-fee" value={{ fee }} /><span>=</span><input type="text" class="tx-fee-currency" placeholder="0 {{ currency }}" value="{{ fee_currency }}" />' +
             '</div>' +
             '<div class="pop-detail">' +
               '<h4>Note (optional):</h4>' +
-              '<textarea class="tx-note"></textarea>' +
+              '<textarea class="tx-note">{{ note }}</textarea>' +
             '</div>' +
             '<input type="submit" value="Next" id="nextsend" class="btn-next orange-gradient" />' +
           '</div>' +

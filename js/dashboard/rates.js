@@ -7,10 +7,10 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
   var api = new apiProto(),
       apiExternalRate,
       localStorage = new localStorageProto(),
-      helper = new helperProto();
-
-  var allDashboardCoins = '',
+      helper = new helperProto(),
+      allDashboardCoins = '',
       totalCoins = 0;
+
   for (var key in coinsInfo) {
     if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
       totalCoins++;
