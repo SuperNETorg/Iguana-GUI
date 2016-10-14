@@ -15,7 +15,9 @@ function authAllAvailableCoind() {
 
   coindAuthResults = [];
 
-  api.walletLock(coinsSelectedToAdd[0], api.walletLogin($('#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
+  if (!coinsSelectedToAdd) helper.prepMessageModal('Please select a wallet', 'blue', true);
+  else
+    api.walletLock(coinsSelectedToAdd[0], api.walletLogin($('#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
 
   // multi-wallet login
   // don't remove
@@ -45,12 +47,12 @@ function authAllAvailableCoindCB(result, key) {
   coindAuthResults[key] = result;
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
-    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'index') alert('Wrong passphrase!');
+    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'index' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true); //alert('Wrong passphrase!');
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
     result = false;
   }
   if (coindAuthResults[key] === -15 && helper.getCurrentPage() !== 'create-account') {
-    if (coinsSelectedToAdd.length === 1) alert('Please encrypt your wallet with a passphrase!');
+    if (coinsSelectedToAdd.length === 1) helper.prepMessageModal('Please encrypt your wallet with a passphrase!', 'red', true); //alert('Please encrypt your wallet with a passphrase!');
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
     result = false;
   }
@@ -74,8 +76,10 @@ function authAllAvailableCoindCB(result, key) {
       localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
       helper.openPage('dashboard');
     } else {
-      helper.toggleModalWindow('login-form-modal', 300);
-      constructAccountCoinRepeater();
+      if (!isAnyCoindLoginError) {
+        helper.toggleModalWindow('login-form-modal', 300);
+        if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
+      }
     }
   }
 }
@@ -94,15 +98,18 @@ function encryptCoindWallet() {
     if (walletEncryptResponse !== -15) {
       result = true;
       $('.non-iguana-walletpassphrase-errors').html('');
-      alert('Wallet is encrypted. Please restart ' + selectedCoindToEncrypt + '.');
+      helper.prepMessageModal(selectedCoindToEncrypt + ' wallet is created. Login to access it.', 'green', true);
+      //alert('Wallet is encrypted. Please restart ' + selectedCoindToEncrypt + '.');
       helper.openPage('login');
     } else {
-      $('.login-input-directions-error.center.offset-bottom-sm.col-red.unselectable').html('Wallet is already encrypted with another passphrase!');
+      helper.prepMessageModal('Wallet is already encrypted with another passphrase!', 'red', true);
+      //$('.login-input-directions-error.center.offset-bottom-sm.col-red.unselectable').html('Wallet is already encrypted with another passphrase!');
       //$('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Wallet is already encrypted with another passphrase!</div>');
       result = false;
     }
   } else {
-    $('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Passphrases are not matching. Please repeat previous step one more time.</div>');
+    helper.prepMessageModal('Passphrases are not matching. Please repeat previous step one more time.', 'red', true);
+    //$('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Passphrases are not matching. Please repeat previous step one more time.</div>');
     result = false;
   }
 
@@ -110,14 +117,14 @@ function encryptCoindWallet() {
 }
 
 function checkSelectedWallet(key) {
-  var isCoindChecked = false;
+  var isCoindChecked = false,
+      helper = new helperProto();
 
   if (coinsSelectedToAdd && coinsSelectedToAdd[0]) {
     selectedCoindToEncrypt = key = coinsSelectedToAdd[0];
     return true;
   } else {
-    // TODO: add proper ui message
-    alert('Please select a wallet');
+    helper.prepMessageModal('Please select a wallet!', 'blue', true);
   }
 
   for (var _key in coinsInfo) {

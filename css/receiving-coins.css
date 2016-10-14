@@ -1,7 +1,7 @@
-.receiving-coin-content{
+.receiving-coin-content {
   border-radius: 6px;
 }
-.receiving-coin-content .close{
+.receiving-coin-content .close {
   float: left;
   opacity: 1;
   color: #fff;
@@ -13,7 +13,7 @@
   position: relative;
   z-index: 9999;
 }
-.model-popup{
+.model-popup {
   position: fixed;
   top: 31%;
   left: 50.5%;
@@ -24,7 +24,7 @@
   height: auto;
   box-shadow: 0 2px 40px rgba(0,0,0,.3);
 }
-.receiving-coin-content .modal-title{
+.receiving-coin-content .modal-title {
   text-align: center;
   color: #fff;
   right: 10px;
@@ -32,16 +32,16 @@
   font-size: 20px;
   font-weight: 600;
 }
-.text-section{
+.text-section {
   color: #8c8484;
   font-weight: 500;
   font-size: 14px;
   font-family: inherit;
 }
-.text-something{
+.text-something {
   font-size: 16px;
 }
-.receiving-coin-content .modal-header{
+.receiving-coin-content .modal-header {
   background-color: #fe5c0d;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -50,12 +50,12 @@
   background: -moz-radial-gradient(top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* For Firefox 3.6 to 15 */
   background: radial-gradient(to top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* Standard syntax (must be last) */
 }
-.share-address-section{
+.share-address-section {
   position: relative;
   left: 34px;
   margin-top: 32px;
 }
-.share-address-section h4{
+.share-address-section h4 {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
@@ -64,12 +64,12 @@
   padding-top: -18px;
   margin-top: 2px;
 }
-.share-address-section .my-lable{
+.share-address-section .my-lable {
   color: #2f2e2e;
   font-size: 16px;
   font-weight: 600;
 }
-.receiving-coin-content .modal-body{
+.receiving-coin-content .modal-body {
   background-color: #f5f8fb;
   min-height: 41em;
   border-bottom-left-radius: 10px;
@@ -77,18 +77,18 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px
 }
-.modal-content{
+.modal-content {
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
   border: none;
   box-shadow: none;
 }
-.buttons{
+.buttons {
   padding: 14px 0;
   font-size: 16px;
 }
 .buttons .copy-btn,
-.buttons .share-btn{
+.buttons .share-btn {
   width: 95%;
   background-color: #fbfdfe;
   color: #fe6542;
@@ -100,40 +100,22 @@
   box-shadow: 1px 6px 29px -10px rgba(0,0,0,0.48);
   border-radius: 4px;
 }
-.modal-backdrop.in{
+.modal-backdrop.in {
 	opacity: 0.7;
 }
-.modal-backdrop{
+.modal-backdrop {
 	background-color: #fff;
 }
 .buttons .copy-btn:focus,
-.buttons .share-btn:focus{
+.buttons .share-btn:focus {
   border: 0px solid #fbfdfe!important;
   outline: none;
 }
-.buttons .copy-btn a{
+.buttons .copy-btn a {
   text-decoration: none;
   color: #fe6542;
 }
-.msgbox-header,
-.msg-content{
-  width: 390px;
-  margin: 0 auto;
-  top: 34px;
-  background: -webkit-radial-gradient(top, rgba(0,132,255,0.3),rgba(0,133,255,1));
-  background: -o-radial-gradient(right, rgba(0,132,255,0.3), rgba(0,133,255,1)); /* For Opera 11.1 to 12.0 */
-  background: -moz-radial-gradient(right, rgba(0,132,255,0.3),rgba(0,133,255,1)); /* For Firefox 3.6 to 15 */
-  background: radial-gradient(to top, rgba(0,132,255,0.5), rgba(0,133,255,1)); /* Standard syntax (must be last) */
-  border-radius: 4px;
-  border:none;
-}
-.clipboard-msg{
-  color: #fff;
-  text-align: center;
-  font-size:16px;
-  font-weight: 600;
-}
-.qr-code{
+.qr-code {
   clear: both;
   width: 210px;
   margin: 0 auto;
@@ -141,40 +123,40 @@
   position: relative;
   top: 16px;
 }
-.qr-code canvas{
+.qr-code canvas {
   width: 200px;
   display: block;
   margin: 0 auto;
   padding: 15px;
 }
-.amount-lable{
+.amount-lable {
   margin-top: 46px;
 }
-.amount-lable .amount-lable-span{
+.amount-lable .amount-lable-span {
   color:#423f3f;
   font-size: 16px;
   font-family: inherit;
   font-weight: 600;
 }
-.currency-input{
+.currency-input {
   margin-top: 4px;
   position: relative;
   float: left;
 }
-.currency-input .crypto-currency{
+.currency-input .crypto-currency {
   width: 141px;
   height: 32px;
   padding: 4px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-.currency-input .equals-sign{
+.currency-input .equals-sign {
   color: #fe5c0d;
   margin: 5px 4px;
   display: block;
   font-size: 18px;
 }
-.currency-input .unit {
+.currency-input .unit  {
   position: absolute;
   display: block;
   top: 6px;
@@ -183,11 +165,11 @@
   padding-left: 5px;
   width: 45px;
 }
-.currency-input .unit-currency{
+.currency-input .unit-currency {
   right: -3px;
 }
 .currency-input input[type=number]::-webkit-inner-spin-button,
-.currency-input input[type=number]::-webkit-outer-spin-button {
+.currency-input input[type=number]::-webkit-outer-spin-button  {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

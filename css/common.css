@@ -10,8 +10,9 @@
     padding: 0;
     margin: 0;
     height: 100%;
-    width: 100%;
-    overflow: auto; /* prevent scrolling when modal is visible */
+    width: 100%;  /* override default bootstrap modal css */
+    padding: 0 !important;
+    overflow: auto !important;  /* prevent scrolling when modal is visible */
     left: 0;
     top: 0;
     position: absolute;
@@ -38,4 +39,51 @@
   }
   .col-red {
     color: #FF0000;
+  }
+  #messageModal {
+    font-family: 'Proxima Nova', sans-serif;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 2000;
+  }
+  #messageModal a,
+  #messageModal a:visited,
+  #messageModal a:active {
+    color: #fff;
+    text-decoration: underline;
+  }
+  #messageModal .msg-body {
+    color: #fff;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+  #messageModal .msgbox-header,
+  #messageModal .msg-content {
+    width: 390px;
+    margin: 0 auto;
+    top: 34px;
+    border-radius: 4px;
+    border: none;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  #messageModal.msg-blue .msgbox-header,
+  #messageModal.msg-blue .msgbox-content {
+    background: -webkit-radial-gradient(top, rgba(0,133,255,0.7),rgba(0,132,255,1));
+    background: -o-radial-gradient(right, rgba(0,133,255,0.7), rgba(0,132,255,1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(right, rgba(0,133,255,0.7),rgba(0,132,255,1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(to top, rgba(0,133,255,0.7), rgba(0,132,255,1)); /* Standard syntax (must be last) */
+  }
+  #messageModal.msg-green .msgbox-header,
+  #messageModal.msg-green .msgbox-content {
+    background: -webkit-radial-gradient(top, rgba(8,186,89,0.7),rgba(8,185,89,1));
+    background: -o-radial-gradient(right, rgba(8,186,89,0.7),rgba(8,185,89,1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(right, rgba(8,186,89,0.7),rgba(8,185,89,1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(to top, rgba(8,186,89,0.7),rgba(8,185,89,1)); /* Standard syntax (must be last) */
+  }
+  #messageModal.msg-red .msgbox-header,
+  #messageModal.msg-red .msgbox-content {
+    background: -webkit-radial-gradient(top, rgba(255,1,71,0.7),rgba(255,0,71,1));
+    background: -o-radial-gradient(right, rgba(255,1,71,0.7),rgba(255,0,71,1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(right, rgba(255,1,71,0.7),rgba(255,0,71,1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(to top, rgba(255,1,71,0.7),rgba(255,0,71,1)); /* Standard syntax (must be last) */
   }

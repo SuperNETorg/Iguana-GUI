@@ -176,6 +176,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
 
+          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
           cb.call();
         }
         _index++;
@@ -210,6 +211,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
 
+          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
           cb.call();
         }
         _index++;

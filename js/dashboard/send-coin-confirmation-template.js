@@ -4,7 +4,7 @@
  */
 
 var sendCoinConfirmationTemplate =
-  '<div class="send-coin-progress-overlay hidden">' +
+  /*'<div class="send-coin-progress-overlay hidden">' +
     '<div class="send-coin-status">Sending...</div>' +
     '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next">' +
       '<div class="progress-indicator">' +
@@ -18,7 +18,7 @@ var sendCoinConfirmationTemplate =
         '</svg>' +
       '</div>' +
     '</button>' +
-  '</div>' +
+  '</div>' +*/
   '<div class="send-coin-success-overlay hidden">' +
     '<div class="send-coin-status">Transaction is sent.<br/>Check the status in a few minutes to verify.</div>' +
     '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed">' +

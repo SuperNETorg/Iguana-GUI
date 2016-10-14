@@ -57,7 +57,8 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
     toggleLoginErrorStyling(true);
 
     if (isCoind)
-      $('.login-input-directions-error').html('Passphrases do not match!');
+      helper.prepMessageModal('Passphrases do not match!', 'red', true);
+      //$('.login-input-directions-error').html('Passphrases do not match!');
       $('.login-input-directions-error').removeClass('hidden');
   }
 }

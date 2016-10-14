@@ -12,6 +12,7 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-3.0.0.m
                '\x3Cscript type=\"text/javascript\" src=\"js/api/api.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/localstorage.js\">\x3C/script>' +
                // modal templates
+               '\x3Cscript type=\"text/javascript\" src=\"js/message-modal-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin-passphrase-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receive-coin-template.js\">\x3C/script>' +

@@ -267,11 +267,13 @@ helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elemen
       try {
         $(elementId + '-hidden').select();
         document.execCommand('copy');
-        alert(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val());
+        helperProto.prototype.prepMessageModal(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val(), 'blue', true);
+        //alert(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val());
         pasteTextFromClipboard = $(elementId + '-hidden').val();
       } catch(e) {
         isExecCopyFailed = true;
-        alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
+        helperProto.prototype.prepMessageModal('Copy/paste is not supported in your browser! Please select the passphrase manually.', 'red', true);
+        //alert('Copy/paste is not supported in your browser! Please select the passphrase manually.');
       }
   });
 }
@@ -293,6 +295,60 @@ helperProto.prototype.decimalPlacesFormat = function(value) {
   }
 
   return { 'coin': decimalPlacesCoin, 'currency': decimalPlacesCurrency };
+}
+
+helperProto.prototype.initMessageModal = function() {
+  $('body').append(messageModalTemplate);
+
+  $('#messageModal').click(function() {
+    $('#messageModal').removeClass('in');
+    setTimeout(function() {
+      $('#messageModal').hide();
+    }, 250);
+  });
+}
+
+helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
+  $('#messageModal').removeClass('msg-red').removeClass('msg-blue').removeClass('msg-green');
+  $('#messageModal').addClass('msg-' + color);
+  $('#messageModal .msg-body').html(message);
+
+  if (fireModal) {
+    $('#messageModal').show();
+    setTimeout(function() {
+      $('#messageModal').addClass('in');
+    }, 100);
+  }
+}
+
+helperProto.prototype.prepNoDaemonModal = function() {
+  $('#messageModal').off();
+  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a href=\"#\" onclick="helperProto.prototype.prepRequirementsModal()">requirements are satisfied.</a>', 'red', true);
+}
+
+helperProto.prototype.prepRequirementsModal = function() {
+  helperProto.prototype.prepMessageModal('Minimum daemon configuration to comminicate via http requests and a proxy server.', 'blue', true);
+
+  setTimeout(function() {
+    $('#messageModal').click(function() {
+      $('#messageModal').removeClass('in');
+      setTimeout(function() {
+        $('#messageModal').hide();
+      }, 250);
+    });
+  }, 200);
+}
+
+helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
+  $(document).ready(function() {
+    var numPortsResponding = 0;
+
+    for (var key in coinsInfo) {
+      if (coinsInfo[key].connection === true) numPortsResponding++;
+    }
+
+    if (!isIguana && !numPortsResponding) helperProto.prototype.prepNoDaemonModal();
+  });
 }
 
 helperProto.prototype.syncStatus();

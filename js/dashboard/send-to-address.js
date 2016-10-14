@@ -159,13 +159,13 @@ function sendCoinModalConfirm() {
             });
           } else {
             // go to an error step
-            alert('Error: transaction was not send.');
+            helper.prepMessageModal('transaction was not send!', 'red', true);
           }
 
           // revert pay fee
           if (setTxFeeResult) api.setTxFee(coinData.id, 0);
         } else {
-          alert('Incorrect passphrase. Try again.');
+          helper.prepMessageModal('Incorrect passphrase. Try again.', 'red', true);
         }
       });
     });

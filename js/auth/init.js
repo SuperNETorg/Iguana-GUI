@@ -12,6 +12,9 @@ function initAuthCB() {
 
   localStorage.setVal('iguana-active-coin', {});
 
+  // message modal
+  helper.initMessageModal();
+
   // ugly login form check
   if ($('.login-form').hasClass('hidden')) {
     $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');
@@ -53,6 +56,11 @@ function initAuthCB() {
   }
 
   if ($('.create-account-form').width()) {
+    if (!isIguana) {
+      $('.create-account-form .passphrase-word-count').html($('.create-account-form .passphrase-word-count').html().replace('24', '12'));
+      $('.verify-passphrase-form .passphrase-word-count').html($('.verify-passphrase-form .passphrase-word-count').html().replace('24', '12'));
+    }
+
     // load add coin template
     $('body').append(addCoinModalTemplate);
     $('.add-new-coin-form .form-header .title').html('Create new wallet');

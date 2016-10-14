@@ -81,8 +81,7 @@
   position: absolute;
   box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
 }
-.bi_interface-cross,
-.bi_interface-arrow-left {
+.bi_interface-cross {
   color: #fff;
   font-size: 16px;
   position: absolute;

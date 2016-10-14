@@ -15,14 +15,14 @@ var receiveCoinTemplate =
         '<div class="row">' +
           '<div class="col-xs-12 col-md-5 col-md-offset-3 share-address-section">' +
             '<div class="my-lable">My address:</div>' +
-            '<h4 id="address">32ro Y89f h8OF hfOO PIFO FJ9w hio1 132y</h4>' +
-            '<div>' +
+            '<h4 id="address"></h4>' +
+            /*'<div>' +
               '<span class="text-section text-something">Something 2</span>' +
-            '</div>' +
+            '</div>' +*/
             '<div class="col-md-6 buttons">' +
-              '<button type="button" class="copy-btn" onclick="copyToClipboard(\'#address\')">' +
-                '<a data-toggle="modal" href="#clipboard">Copy</a>' +
-              '</button>' +
+              '<a data-toggle="modal" href="#messageModal">' +
+                '<button type="button" class="copy-btn" onclick="copyToClipboard(\'#address\')">Copy</button>' +
+              '</a>' +
             '</div>' +
             '<div class="col-md-6 buttons">' +
               '<a href="#" class="btn-share-email">' +
@@ -48,15 +48,6 @@ var receiveCoinTemplate =
               '<span class="unit unit-currency">USD</span>' +
             '</div>' +
           '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div>' +
-  '<div class="modal fade" id="clipboard" role="dialog">' +
-    '<div class="modal-dialog">' +
-      '<div class="modal-content msg-content">' +
-        '<div class="modal-header msgbox-header">' +
-          '<div class="clipboard-msg">Address is copied to clipboard</div>' +
         '</div>' +
       '</div>' +
     '</div>' +

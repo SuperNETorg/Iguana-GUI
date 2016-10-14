@@ -20,6 +20,10 @@
     background: #F5F8FB;
     font-family: 'Proxima Nova', sans-serif;
   }
+  /*body.modal-open .dashboard {
+    -webkit-filter: blur(2px);
+    filter: blur(2px);
+  }*/
   .dashboard {
     height: 100%;
   }
