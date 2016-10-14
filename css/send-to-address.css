@@ -86,7 +86,8 @@
   margin-bottom: 5.2px;
   margin-top: 6px;
 }
-.rs_modal .pop-detail input[type="text"] {
+.rs_modal .pop-detail input[type="text"],
+.rs_modal .pop-detail input[type="number"] {
   border: 1px solid #c7ccd0;
   border-radius: 4px;
   color: #333333;
@@ -116,7 +117,8 @@
 .hd-right {
   text-align: right; font-size:12px;
 }
-.rs_modal .pop-detail.crncy input[type="text"] {
+.rs_modal .pop-detail.crncy input[type="text"],
+.rs_modal .pop-detail.crncy input[type="number"] {
   float: left;
   width: 44.7%;
 }
@@ -283,7 +285,8 @@
   margin-left: -2px;
 }
 
-.rs_modal .pop-detail input[type="text"].validation-field-error {
+.rs_modal .pop-detail input[type="text"].validation-field-error,
+.rs_modal .pop-detail input[type="number"].validation-field-error  {
   background: #FFF5F5;
   border-color: #FD2F2F;
 }
