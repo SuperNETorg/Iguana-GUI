@@ -1,3 +1,8 @@
+/*!
+ * Iguana dashboard/recevie-coin logic
+ *
+ */
+
 function bindReceive(){
   var result = '',
       coinValue,
@@ -34,4 +39,17 @@ function bindReceive(){
     var currencyAmount = currencyCoin*coinRate;
     $(".currency").val(currencyAmount);
   })
+}
+
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  try {
+    document.execCommand("copy");
+  }
+  catch(err) {
+    alert(err);
+  }
+    $temp.remove();
 }

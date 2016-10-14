@@ -19,6 +19,13 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-3.0.0.m
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-coin-entry-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-coin-confirmation-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-to-address.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receiving-coins.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/auth/coind-auth.js\">\x3C/script>' +
+               // dashboard logic
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/left-sidebar.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/balance.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/transactions-unit.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receive-coin.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/dashboard.js\">\x3C/script>');

@@ -3,11 +3,6 @@
  *
  */
 
- /*
-  TODO: 1) force synchronous api calls on initial page loading; async on 15 sec info update e.g. rates, balances, tx list
-        2) autocorrect decimal places
- */
-
 var defaultCurrency = '',
     defaultCoin = '',
     coinToCurrencyRate = 0,
@@ -18,14 +13,6 @@ var defaultCurrency = '',
     decimalPlacesCurrency = settings.decimalPlacesCurrency,
     decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
     dashboardUpdateTimout = settings.dashboardUpdateTimout;
-
-document.write('\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/left-sidebar.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/balance.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/transactions-unit.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/receive-coin.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>');
 
 $(document).ready(function() {
   var api = api = new apiProto();

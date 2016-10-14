@@ -25,7 +25,9 @@ var receiveCoinTemplate =
               '</button>' +
             '</div>' +
             '<div class="col-md-6 buttons">' +
-              '<button type="button" class="share-btn">Share</button>' +
+              '<a href="#" class="bt-share-email">' +
+                '<button type="button" class="share-btn">Share</button>' +
+              '</a>' +
             '</div>' +
             '<div class="qr-code" id="qr-code"></div>' +
             '<div class="amount-lable">' +
