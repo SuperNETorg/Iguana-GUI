@@ -179,8 +179,10 @@ function sendCoinModalConfirm() {
         3) current balance check, users cannot send more than current balance amount
            including all fees
 */
-function validateSendCoinForm () {
-  var isValid = false;
+function validateSendCoinForm() {
+  var isValid = false,
+      activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
+      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html());
 
   // address
   if ($('.tx-address').val().length !== 34) {
@@ -189,10 +191,18 @@ function validateSendCoinForm () {
     $('.tx-address').removeClass('validation-field-error');
   }
   // coin amount
-  if ($('.tx-amount').val() <= 0) {
+  if ($('.tx-amount').val() <= 0 || $('.tx-amount').val() >= activeCoinBalanceCoin) {
     $('.tx-amount').addClass('validation-field-error');
   } else {
     $('.tx-amount').removeClass('validation-field-error');
+  }
+
+  if ($('.tx-fee').val() + $('.tx-amount').val() >= activeCoinBalanceCoin) {
+    $('.tx-fee').addClass('validation-field-error');
+    $('.tx-amout').addClass('validation-field-error');
+  } else {
+    $('.tx-fee').removeClass('validation-field-error');
+    $('.tx-amout').removeClass('validation-field-error');
   }
 
   if ($('.tx-address').val().length !== 34 || $('.tx-amount').val() <= 0) {
