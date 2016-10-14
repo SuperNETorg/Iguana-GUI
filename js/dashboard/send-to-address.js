@@ -29,30 +29,54 @@ function sendCoinModalInit(isBackTriggered) {
 
   $('.modal-send-coin').html(templateToLoad);
 
+  if (!currentCoinRate) {
+    $('.modal-send-coin .tx-amount-currency').val(0);
+    $('.modal-send-coin .tx-fee-currency').val(0);
+    $('.modal-send-coin .tx-amount-currency').attr('disabled', true);
+    $('.modal-send-coin .tx-fee-currency').attr('disabled', true);
+  }
+
   // TODO: rewrite
   // calc
-  $('.modal-send-coin .tx-amount').keyup(function() {
-    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+  $('.modal-send-coin .tx-amount').keyup(function(e) {
+    var keyCode = e.keyCode || e.which;
 
-    $('.modal-send-coin .tx-amount-currency').val((Number($('.modal-send-coin .tx-amount').val()) * currentCoinRate).toFixed(8));
+    if (keyCode !== 9) {
+      e.preventDefault();
+
+      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+      $('.modal-send-coin .tx-amount-currency').val(($('.modal-send-coin .tx-amount').val() * currentCoinRate).toFixed(8));
+    }
   });
 
-  $('.modal-send-coin .tx-amount-currency').keyup(function() {
-    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+  $('.modal-send-coin .tx-amount-currency').keyup(function(e) {
+    var keyCode = e.keyCode || e.which;
 
-    $('.modal-send-coin .tx-amount').val((Number($('.modal-send-coin .tx-amount-currency').val()) / currentCoinRate).toFixed(8));
+    if (keyCode !== 9) {
+      e.preventDefault();
+      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+      $('.modal-send-coin .tx-amount').val(($('.modal-send-coin .tx-amount-currency').val() / currentCoinRate).toFixed(8));
+    }
   });
 
-  $('.modal-send-coin .tx-fee').keyup(function() {
-    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+  $('.modal-send-coin .tx-fee').keyup(function(e) {
+    var keyCode = e.keyCode || e.which;
 
-    $('.modal-send-coin .tx-fee-currency').val((Number($('.modal-send-coin .tx-fee').val()) * currentCoinRate).toFixed(8));
+    if (keyCode !== 9) {
+      e.preventDefault();
+      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+      $('.modal-send-coin .tx-fee-currency').val(($('.modal-send-coin .tx-fee').val() * currentCoinRate).toFixed(8));
+    }
   });
 
-  $('.modal-send-coin .tx-fee-currency').keyup(function() {
-    currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+  $('.modal-send-coin .tx-fee-currency').keyup(function(e) {
+    var keyCode = e.keyCode || e.which;
 
-    $('.modal-send-coin .tx-fee').val((Number($('.modal-send-coin .tx-fee-currency').val()) / currentCoinRate).toFixed(8));
+    if (keyCode == 9) {
+      e.preventDefault();
+      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
+      $('.modal-send-coin .tx-fee').val(($('.modal-send-coin .tx-fee-currency').val() / currentCoinRate).toFixed(8));
+    }
   });
 
   // dev
