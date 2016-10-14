@@ -3,6 +3,9 @@
  *
  */
 
+/* TODO: add syscoin:17nqptPus3b5ktctVzNhxf6bqMGmJbqNcE?amount=0.10000000&label=123&message=123
+*/
+
 function bindReceive(){
   var result = '',
       coinValue,
@@ -23,22 +26,22 @@ function bindReceive(){
   $('#qr-code').empty();
   $('#qr-code').qrcode(address);
 
-  if(address.length > 3)
+  console.log(address.length);
+  if(address.length)
   {
     // postcode.val(address.slice(0, -3)+' '+address.slice(-3));
     var splittedAddress = address.match(/.{1,4}/g).join(' ');
     $("#address").text(splittedAddress);
   }
 
-  if (coinName.length) {
-    var transactionsList = api.listTransactions(defaultAccount, coinName.toLowerCase());
-  }
   $(".currency-coin").on('keyup',function () {
     coinValue = $(this).find('.coin-value .val');
     var currencyCoin = $(".currency-coin").val();
     var currencyAmount = currencyCoin*coinRate;
     $(".currency").val(currencyAmount);
-  })
+  });
+
+  $('.btn-share-email').attr('href', 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[coinName].name + '%20address&body=Hello,%20here%20is%20my%20' + supportedCoinsList[coinName].name + '%20address%20' + address)
 }
 
 function copyToClipboard(element) {

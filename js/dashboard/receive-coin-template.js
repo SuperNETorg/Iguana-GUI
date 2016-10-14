@@ -25,7 +25,7 @@ var receiveCoinTemplate =
               '</button>' +
             '</div>' +
             '<div class="col-md-6 buttons">' +
-              '<a href="#" class="bt-share-email">' +
+              '<a href="#" class="btn-share-email">' +
                 '<button type="button" class="share-btn">Share</button>' +
               '</a>' +
             '</div>' +
