@@ -1,15 +1,15 @@
 
 apiProto.prototype.getAccountAddress = function(coin, account) {
-  var result=false;
+  var result = false;
 
   if (dev.coinAccountsDev && !isIguana)
     if (dev.coinAccountsDev.coind[coin])
       account = dev.coinAccountsDev.coind[coin];
 
-    var result = '';
-    var fullUrl = apiProto.prototype.getFullApiRoute('getaccountaddress', account),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"');
-      postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj();
+  var fullUrl = apiProto.prototype.getFullApiRoute('getaccountaddress', null, coin),
+    postData = apiProto.prototype.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin);
+    postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
+
 
   $.ajax({
     url: fullUrl,
