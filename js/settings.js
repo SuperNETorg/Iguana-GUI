@@ -14,5 +14,6 @@ var settings = {
   defaultWalletUnlockPeriod: 3, // sec
   defaultTransactionsCount: 20,
   defaultAccountNameIguana: 'default', // note: change to a specific account name if needed; default coind account name is empty string
-  defaultAccountNameCoind: ''
+  defaultAccountNameCoind: '',
+  txUnitProgressStatusMinConf: 10
 };

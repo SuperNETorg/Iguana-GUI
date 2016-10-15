@@ -94,6 +94,11 @@ function constructTransactionUnitRepeaterCB(response) {
             }
 
           if (transactionDetails && txStatus !== 'N/A') {
+            console.log();
+            if (transactionDetails.confirmations && transactionDetails.confirmations < settings.txUnitProgressStatusMinConf) {
+              txStatus = 'in process';
+              txCategory = 'process';
+            }
             result += transactionUnitRepeater.
                       replace('{{ status }}', txStatus).
                       replace('{{ status_class }}', txCategory).

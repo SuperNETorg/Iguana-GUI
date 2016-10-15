@@ -151,12 +151,13 @@
 .transactions-list-repeater .item.process .progress-status .icon:after {
   content: '';
   display: block;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 11px;
   background: #F5F8FB;
   position: relative;
+  float: right;
   top: -15px;
-  left: 25px;
+  right: 10px;
   z-index: 40;
 }
 .transactions-list-repeater .item.process .amount {
