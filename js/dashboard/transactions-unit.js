@@ -3,8 +3,6 @@
  *
  */
 
- // TODO: add progress status if confs < 10
-
 var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp_format }}\">' +
                                 '<div class=\"status\">{{ status }}</div>' +
                                 '<div class=\"amount\">' +
@@ -94,7 +92,6 @@ function constructTransactionUnitRepeaterCB(response) {
             }
 
           if (transactionDetails && txStatus !== 'N/A') {
-            console.log();
             if (transactionDetails.confirmations && transactionDetails.confirmations < settings.txUnitProgressStatusMinConf) {
               txStatus = 'in process';
               txCategory = 'process';
