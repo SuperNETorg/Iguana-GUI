@@ -69,14 +69,15 @@ function constructAccountCoinRepeaterCB(balance, coin) {
       if ((i === 0 && !isActiveCoinSet) && !activeCoin) activeCoin = coinData.id;
       if (coinData)
         i++;
-        result += accountCoinRepeaterTemplate.replace('{{ id }}', coinData.id.toUpperCase()).
-                                              replace('{{ name }}', coinData.name).
-                                              replace('{{ coin_id }}', coinData.id.toLowerCase()).
-                                              replace('{{ coin_id }}', coinData.id.toUpperCase()).
-                                              replace('{{ currency_name }}', defaultCurrency).
-                                              replace('{{ coin_value }}', coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0).
-                                              replace('{{ currency_value }}', currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency)).
-                                              replace('{{ active }}', activeCoin === coinData.id ? ' active' : '');
+        result += accountCoinRepeaterTemplate.
+                  replace('{{ id }}', coinData.id.toUpperCase()).
+                  replace('{{ name }}', coinData.name).
+                  replace('{{ coin_id }}', coinData.id.toLowerCase()).
+                  replace('{{ coin_id }}', coinData.id.toUpperCase()).
+                  replace('{{ currency_name }}', defaultCurrency).
+                  replace('{{ coin_value }}', coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0).
+                  replace('{{ currency_value }}', currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency)).
+                  replace('{{ active }}', activeCoin === coinData.id ? ' active' : '');
     }
   }
 

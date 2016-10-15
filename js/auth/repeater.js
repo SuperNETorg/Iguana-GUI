@@ -30,11 +30,12 @@ function constructAuthCoinsRepeater() {
     if (!isIguana) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
     if ((isIguana && iguanaAddCoinParams[key] && iguanaAddCoinParams[key] !== 'disabled') || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
       index++;
-      result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                      replace('{{ name }}', key.toUpperCase()).
-                                      replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
-                                      replace('{{ onclick }}', !isIguana /*isIguana && coinsInfo[key].connection === true*/ ? 'checked' : '').
-                                      replace('{{ onclick_input }}', !isIguana /*isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index'*/ ? 'checked' : '');
+      result += coinsRepeaterTemplate.
+                replace(/{{ coin_id }}/g, key).
+                replace('{{ name }}', key.toUpperCase()).
+                replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
+                replace('{{ onclick }}', !isIguana /*isIguana && coinsInfo[key].connection === true*/ ? 'checked' : '').
+                replace('{{ onclick_input }}', !isIguana /*isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index'*/ ? 'checked' : '');
     }
   }
 
@@ -57,10 +58,11 @@ function constructCoinsRepeaterEncrypt() {
     }
 
     if ((!isIguana && coinsInfo[key].connection === true) || isIguana) {
-      result += iguanaCoinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
-                                            replace('{{ name }}', key.toUpperCase()).
-                                            replace('{{ onclick }}', '').
-                                            replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '');
+      result += iguanaCoinsRepeaterTemplate.
+                replace(/{{ coin_id }}/g, key).
+                replace('{{ name }}', key.toUpperCase()).
+                replace('{{ onclick }}', '').
+                replace('{{ onclick_input }}', isIguana && coinsInfo[key].connection === true ? 'checked disabled' : '');
     }
   };
 

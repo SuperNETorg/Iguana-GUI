@@ -94,19 +94,20 @@ function constructTransactionUnitRepeaterCB(response) {
             }
 
           if (transactionDetails && txStatus !== 'N/A') {
-            result += transactionUnitRepeater.replace('{{ status }}', txStatus).
-                                              replace('{{ status_class }}', txCategory).
-                                              replace('{{ in_out }}', txIncomeOrExpenseFlag).
-                                              replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
-                                              replace('{{ timestamp_format }}', 'timestamp-multi').
-                                              replace('{{ coin }}', coinName.toUpperCase()).
-                                              replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
-                                              replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                                                     transactionDetails.timestamp ||
-                                                                                                     transactionDetails.time, 'DDMMMYYYY')).
-                                              replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                                                     transactionDetails.timestamp ||
-                                                                                                     transactionDetails.time, 'HHMM'));
+            result += transactionUnitRepeater.
+                      replace('{{ status }}', txStatus).
+                      replace('{{ status_class }}', txCategory).
+                      replace('{{ in_out }}', txIncomeOrExpenseFlag).
+                      replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
+                      replace('{{ timestamp_format }}', 'timestamp-multi').
+                      replace('{{ coin }}', coinName.toUpperCase()).
+                      replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
+                      replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                             transactionDetails.timestamp ||
+                                                                             transactionDetails.time, 'DDMMMYYYY')).
+                      replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                             transactionDetails.timestamp ||
+                                                                             transactionDetails.time, 'HHMM'));
           }
         }
       }

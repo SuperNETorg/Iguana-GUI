@@ -57,6 +57,7 @@ function initAuthCB() {
 
   if ($('.create-account-form').width()) {
     if (!isIguana) {
+      // 12 word passphrase
       $('.create-account-form .passphrase-word-count').html($('.create-account-form .passphrase-word-count').html().replace('24', '12'));
       $('.verify-passphrase-form .passphrase-word-count').html($('.verify-passphrase-form .passphrase-word-count').html().replace('24', '12'));
     }
@@ -85,8 +86,6 @@ function initAuthCB() {
     initCreateAccountForm();
     constructCoinsRepeaterEncrypt();
     helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
-
-    $('.create-account-form .login-input-directions').html($('.create-account-form .login-input-directions').html().replace('24', '12'));
 
     $('.create-account-form .btn-back').click(function() {
       helper.openPage('login');

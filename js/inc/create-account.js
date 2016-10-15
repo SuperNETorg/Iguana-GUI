@@ -15,4 +15,10 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/libs/crypto/wordlis
                // modal templates
                '\x3Cscript type=\"text/javascript\" src=\"js/message-modal-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/add-coin-template.js\">\x3C/script>' +
+               // auth
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/wallet-create.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/coind-auth.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/repeater.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/bind-event.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/init.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/auth/auth.js\">\x3C/script>');

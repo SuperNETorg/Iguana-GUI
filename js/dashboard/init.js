@@ -18,6 +18,7 @@ function initDashboard() {
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
+
   // message modal
   helper.initMessageModal();
   helper.prepMessageModal('Address is copied to clipboard', 'blue');

@@ -16,16 +16,17 @@ function sendCoinModalInit(isBackTriggered) {
       currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
 
   // prep template
-  templateToLoad = templateToLoad.replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
-                                  replace('{{ coin_name }}', coinData.name).
-                                  replace(/{{ currency }}/g, defaultCurrency).
-                                  replace('{{ coin_value }}', activeCoinBalanceCoin).
-                                  replace('{{ currency_value }}', activeCoinBalanceCurrency).
-                                  replace('{{ address }}', isBackTriggered ? sendFormDataCopy.address || '' : '').
-                                  replace('{{ amount }}', isBackTriggered ? sendFormDataCopy.amount || 0 : '').
-                                  replace('{{ fee }}', isBackTriggered ? sendFormDataCopy.fee || 0 : coinsInfo[coinData.id].relayFee || 0.00001).
-                                  replace('{{ fee_currency }}', isBackTriggered ? sendFormDataCopy.feeCurrency || 0 : (coinsInfo[coinData.id].relayFee || 0.00001 * currentCoinRate).toFixed(8)).
-                                  replace('{{ note }}', isBackTriggered ? sendFormDataCopy.note || '' : '');
+  templateToLoad = templateToLoad.
+                   replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
+                   replace('{{ coin_name }}', coinData.name).
+                   replace(/{{ currency }}/g, defaultCurrency).
+                   replace('{{ coin_value }}', activeCoinBalanceCoin).
+                   replace('{{ currency_value }}', activeCoinBalanceCurrency).
+                   replace('{{ address }}', isBackTriggered ? sendFormDataCopy.address || '' : '').
+                   replace('{{ amount }}', isBackTriggered ? sendFormDataCopy.amount || 0 : '').
+                   replace('{{ fee }}', isBackTriggered ? sendFormDataCopy.fee || 0 : coinsInfo[coinData.id].relayFee || 0.00001).
+                   replace('{{ fee_currency }}', isBackTriggered ? sendFormDataCopy.feeCurrency || 0 : (coinsInfo[coinData.id].relayFee || 0.00001 * currentCoinRate).toFixed(8)).
+                   replace('{{ note }}', isBackTriggered ? sendFormDataCopy.note || '' : '');
 
   $('.modal-send-coin').html(templateToLoad);
 
@@ -116,18 +117,19 @@ function sendCoinModalConfirm() {
         txNote = $('.send-coin-form .tx-note').val();
 
     // prep template
-    templateToLoad = templateToLoad.replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
-                                    replace('{{ coin_name }}', coinData.name).
-                                    replace(/{{ currency }}/g, defaultCurrency).
-                                    replace('{{ coin_value }}', activeCoinBalanceCoin).
-                                    replace('{{ currency_value }}', activeCoinBalanceCurrency).
-                                    replace('{{ tx_coin_address }}', txAddress).
-                                    replace('{{ tx_coin_amount }}', txAmount).
-                                    replace('{{ tx_coin_amount_currency }}', txAmountCurrency).
-                                    replace(/{{ tx_coin_fee_value }}/g, txFee).
-                                    replace('{{ tx_coin_fee_currency }}', txFeeCurrency).
-                                    replace('{{ tx_note }}', txNote).
-                                    replace('{{ tx_total }}', txAmount /*Number(txAmount) + Number(txFee)*/);
+    templateToLoad = templateToLoad.
+                     replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
+                     replace('{{ coin_name }}', coinData.name).
+                     replace(/{{ currency }}/g, defaultCurrency).
+                     replace('{{ coin_value }}', activeCoinBalanceCoin).
+                     replace('{{ currency_value }}', activeCoinBalanceCurrency).
+                     replace('{{ tx_coin_address }}', txAddress).
+                     replace('{{ tx_coin_amount }}', txAmount).
+                     replace('{{ tx_coin_amount_currency }}', txAmountCurrency).
+                     replace(/{{ tx_coin_fee_value }}/g, txFee).
+                     replace('{{ tx_coin_fee_currency }}', txFeeCurrency).
+                     replace('{{ tx_note }}', txNote).
+                     replace('{{ tx_total }}', txAmount /*Number(txAmount) + Number(txFee)*/);
 
     $('.modal-send-coin').html(templateToLoad);
 
@@ -142,10 +144,12 @@ function sendCoinModalConfirm() {
           txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
 
       // TODO: ugly, rewrite
-      $('.modal-append-container').html(addCoinPassphraseTemplate.replace('login-form-modal', 'send-coin-confirm-passphrase').
-                                                                  replace('>Add<', '>Ok<').
-                                                                  replace('Add a wallet', 'Wallet passphrase').
-                                                                  replace('to add wallet', 'to confirm transaction'));
+      $('.modal-append-container').html(addCoinPassphraseTemplate.
+                                        replace('login-form-modal', 'send-coin-confirm-passphrase').
+                                        replace('>Add<', '>Ok<').
+                                        replace('Add a wallet', 'Wallet passphrase').
+                                        replace('to add wallet', 'to confirm transaction'));
+
       helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
 
       if (dev.isDev && dev.coinPW.coind[coinData.id]) {
@@ -197,11 +201,8 @@ function sendCoinModalConfirm() {
 }
 
 /*
-  TODO: 1) add alphanum addr validation
-        1a) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
+  TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
         2) positive num amount & fee validation
-        3) current balance check, users cannot send more than current balance amount
-           including all fees
 */
 function validateSendCoinForm() {
   var isValid = false,
