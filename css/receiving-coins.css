@@ -203,6 +203,6 @@ input[type=number].crypto-currency.currency-coin {
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,
-.modal-content {
+.modal .modal-content.receiving-coin-content {
   border-radius: 4px;
 }

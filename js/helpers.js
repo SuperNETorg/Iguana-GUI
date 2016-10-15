@@ -305,6 +305,15 @@ helperProto.prototype.initMessageModal = function() {
     setTimeout(function() {
       $('#messageModal').hide();
     }, 250);
+
+    // message modal on close blur fix
+    if ($('.modal:visible').length) {
+      setTimeout(function() {
+        $('body').addClass('modal-open');
+      }, 400);
+    } else {
+      $('body').removeClass('modal-open');
+    }
   });
 }
 

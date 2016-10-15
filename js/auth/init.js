@@ -20,8 +20,8 @@ function initAuthCB() {
     $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');
 
     if (dev.isDev) $('.btn-signin').removeClass('disabled');
-
     if (!isIguana) $('.btn-signin').addClass('disabled');
+
     // load add coin template
     $('body').append(addCoinModalTemplate);
     $('.add-new-coin-form .form-header .title').html('Create new wallet');
