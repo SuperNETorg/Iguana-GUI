@@ -182,6 +182,26 @@
 /*
   !! temp fix, remove after coins font is updated !!
 */
+/*.supported-coins-repeater .coin .KMD-alt:before,
+.KMD-alt {
+  content: '';
+  background: url('../../fonts/png/btm.png') !important;
+  background-size: 100%;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.CARB-alt {
+  background: url('../../fonts/png/carb.png');
+  background-size: 100%;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.CARB-alt {
+  background: url('../../fonts/png/carb.png');
+  background-size: 100%;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}*/
 .supported-coins-repeater .coin .icon.GMC-alt:before,
 .supported-coins-repeater .coin .icon.MZC-alt:before,
 .supported-coins-repeater .coin .icon.CARB-alt:before,

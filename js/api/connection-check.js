@@ -145,7 +145,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
           }
 
           // disable coin in iguna mode
-          if (conf.iguanaCurl === 'disabled') coinsInfo[index].iguana = false;
+          if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled') coinsInfo[index].iguana = false;
 
           if (dev.showConsoleMessages && dev.isDev) console.log('Connections: ' + peers[0].replace('peers.', ''));
           if (dev.showConsoleMessages && dev.isDev) console.log('Blocks: ' + currentHeight);

@@ -28,7 +28,7 @@ function constructAuthCoinsRepeater() {
 
   for (var key in coinsInfo) {
     if (!isIguana) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
-    if ((isIguana && apiProto.prototype.getConf().coins[key].iguanaCurl !== 'disabled') || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
+    if ((isIguana && iguanaAddCoinParams[key] && iguanaAddCoinParams[key] !== 'disabled') || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
       index++;
       result += coinsRepeaterTemplate.replace(/{{ coin_id }}/g, key).
                                       replace('{{ name }}', key.toUpperCase()).

@@ -16,7 +16,9 @@ var activeCoin,
     isProxy = true,
     coinsInfo = new Array; // cointains coin related info
 
-document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/connection-conf.js\">\x3C/script>' +
+document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/supported-coins-list.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/api/iguana-add-coin-list.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/api/connection-conf.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/connection-check.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/wallet-auth.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/server-status-check.js\">\x3C/script>' +

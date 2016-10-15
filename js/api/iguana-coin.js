@@ -12,7 +12,7 @@ apiProto.prototype.addCoin = function(coin, cb) {
     cache: false,
     dataType: 'json',
     type: 'POST',
-    data: apiProto.prototype.getConf().coins[coin].iguanaCurl,
+    data: iguanaAddCoinParams[coin],
     async: cb ? true : false
   })
   .done(function(response) {
