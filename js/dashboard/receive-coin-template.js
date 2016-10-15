@@ -5,16 +5,16 @@
 
 var receiveCoinTemplate =
 '<section class="modal fade" id="myModal" role="dialog">' +
-  '<div class="modal-dialog model-popup">' +
+  '<div class="modal-dialog modal-popup">' +
     '<div class="modal-content receiving-coin-content">' +
-      '<div class="modal-header">' +
-        '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-        '<h4 class="modal-title">Receiving coins</h4>' +
-      '</div>' +
+      '<header class="form-header orange-gradient box-shadow-bottom">' +
+        '<i class="bi_interface-cross cursor-pointer btn-close" data-dismiss="modal"></i>' +
+        '<div class="title text-shadow">Receiving coins</div>' +
+      '</header>' +
       '<div class="modal-body">' +
         '<div class="row">' +
           '<div class="col-xs-12 col-md-5 col-md-offset-3 share-address-section">' +
-            '<div class="my-lable">My address:</div>' +
+            '<div class="my-label my-address">My address:</div>' +
             '<h4 id="address"></h4>' +
             /*'<div>' +
               '<span class="text-section text-something">Something 2</span>' +
@@ -30,11 +30,11 @@ var receiveCoinTemplate =
               '</a>' +
             '</div>' +
             '<div class="qr-code" id="qr-code"></div>' +
-            '<div class="amount-lable">' +
-              '<span class="amount-lable-span">Amount:</span>' +
+            '<div class="amount-label">' +
+              '<span class="amount-label-span">Amount:</span>' +
             '</div>' +
             '<div>' +
-              '<span class="text-section">Enter in any currency</span>' +
+              '<span class="text-section enter-in-currency">Enter in {{ currency }}<!-- any currency --></span>' +
             '</div>' +
             '<div class="currency-input">' +
               '<input type="number" class="crypto-currency currency-coin" placeholder="0">' +
@@ -45,7 +45,7 @@ var receiveCoinTemplate =
             '</div>' +
             '<div class="currency-input">' +
               '<input type="number" class="currency crypto-currency" placeholder="0">' +
-              '<span class="unit unit-currency">USD</span>' +
+              '<span class="unit unit-currency"></span>' +
             '</div>' +
           '</div>' +
         '</div>' +

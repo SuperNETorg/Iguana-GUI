@@ -13,7 +13,7 @@
   position: relative;
   z-index: 9999;
 }
-.model-popup {
+.modal-popup {
   position: fixed;
   top: 31%;
   left: 50.5%;
@@ -59,23 +59,19 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
-  color: #4a4646;
+  color: #252528;
   word-break: break-word;
   padding-top: -18px;
   margin-top: 2px;
 }
-.share-address-section .my-lable {
+.share-address-section .my-address {
   color: #2f2e2e;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 1.1em;
+  padding-bottom: 4px;
 }
 .receiving-coin-content .modal-body {
   background-color: #f5f8fb;
   min-height: 41em;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px
 }
 .modal-content {
   border-top-left-radius: 11px;
@@ -93,11 +89,11 @@
   background-color: #fbfdfe;
   color: #fe6542;
   font-weight: 600;
-  height: 30px;
+  height: 34px;
   border: 1px solid #fbfdfe;
-  -webkit-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
-  -moz-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
-  box-shadow: 1px 6px 29px -10px rgba(0,0,0,0.48);
+  -webkit-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+  -moz-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
   border-radius: 4px;
 }
 .modal-backdrop.in {
@@ -108,7 +104,7 @@
 }
 .buttons .copy-btn:focus,
 .buttons .share-btn:focus {
-  border: 0px solid #fbfdfe!important;
+  border: 0 solid #fbfdfe !important;
   outline: none;
 }
 .buttons .copy-btn a {
@@ -129,14 +125,13 @@
   margin: 0 auto;
   padding: 15px;
 }
-.amount-lable {
+.amount-label {
   margin-top: 46px;
 }
-.amount-lable .amount-lable-span {
+.amount-label .amount-label-span {
   color:#423f3f;
   font-size: 16px;
   font-family: inherit;
-  font-weight: 600;
 }
 .currency-input {
   margin-top: 4px;
@@ -144,34 +139,70 @@
   float: left;
 }
 .currency-input .crypto-currency {
-  width: 141px;
-  height: 32px;
+  width: 140px;
+  height: 34px;
   padding: 4px;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid #ccc;
 }
 .currency-input .equals-sign {
   color: #fe5c0d;
   margin: 5px 4px;
   display: block;
-  font-size: 18px;
+  font-size: 1.5em;
+  font-weight: 600;
 }
-.currency-input .unit  {
+.currency-input .unit {
   position: absolute;
   display: block;
-  top: 6px;
+  top: 7px;
   right: 2px;
-  color: #a9a1a1;
+  color: #83848E;
   padding-left: 5px;
   width: 45px;
+  font-size: 1.065em;
 }
 .currency-input .unit-currency {
   right: -3px;
 }
 .currency-input input[type=number]::-webkit-inner-spin-button,
-.currency-input input[type=number]::-webkit-outer-spin-button  {
+.currency-input input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0;
+}
+.currency-input input[type=number] {
+  padding: 6px;
+  padding-right: 42px;
+  color: #2E3746;
+  font-size: 1.065em;
+}
+input[type=number].crypto-currency.currency-coin {
+  padding-right: 52px;
+}
+.unit.coin-unit {
+  width: 47px;
+}
+.currency-input input[type=number]::-webkit-input-placeholder {
+  color: #2E3746;
+}
+.currency-input input[type=number]:-moz-placeholder { /* Firefox 18- */
+  color: #2E3746;
+}
+.currency-input input[type=number]::-moz-placeholder {  /* Firefox 19+ */
+  color: #2E3746;
+}
+.currency-input input[type=number]:-ms-input-placeholder {
+  color: #2E3746;
+}
+.receiving-coin-content .form-header {
+  height: 60px;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+.modal-dialog.modal-popup,
+.modal-dialog .modal-body,
+.modal-content {
+  border-radius: 4px;
 }

@@ -25,6 +25,9 @@ function bindReceive() {
     $('#address').text(splittedAddress);
   }
 
+  $('.unit-currency').html(defaultCurrency);
+  $('.enter-in-currency').html('Enter in ' + coin.toUpperCase() + ' or ' + defaultCurrency);
+
   $('.currency-coin').on('keyup', function () {
     coinValue = $(this).find('.coin-value .val');
     var currencyCoin = $(".currency-coin").val();
