@@ -12,7 +12,7 @@ function updateTotalBalance() {
         coinValue = $(this).find('.coin-value .val'),
         currencyValue = $(this).find('.currency-value .val');
 
-    totalBalance += Number(coinValue.html()) * updateRates(coin.toUpperCase(), null, true);
+    totalBalance += coinBalances[coin] * updateRates(coin.toUpperCase(), null, true);
   });
 
   $('.balance-block .balance .value').html(totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) !== 'NaN' ? totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) : 0.00);

@@ -66,7 +66,6 @@ function constructAccountCoinRepeaterCB(balance, coin) {
       var currencyCalculatedValue = coinBalance * coinLocalRate,
           coinData = getCoinData(key);
 
-
       if ((i === 0 && !isActiveCoinSet) && !activeCoin) activeCoin = coinData.id;
       if (coinData)
         i++;
