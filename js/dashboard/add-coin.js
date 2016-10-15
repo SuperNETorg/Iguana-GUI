@@ -75,6 +75,8 @@ function bindClickInCoinRepeater() {
 
   $('.supported-coins-repeater-inner .coin').each(function(index, item) {
     $(this).click(function() {
+      var selectionStatus = $(this).hasClass('active') ? true : false;
+
       $('.supported-coins-repeater-inner .coin').removeClass('active');
       coinsSelectedToAdd = [];
 
@@ -84,6 +86,13 @@ function bindClickInCoinRepeater() {
       } else {
         $(this).addClass('active');
         coinsSelectedToAdd[index] = $(this).attr('data-coin-id');
+      }
+
+      // TODO: ugly, double check
+      if (selectionStatus) {
+        $(this).removeClass('active');
+      } else {
+        $(this).addClass('active');
       }
 
       if (Object.keys(coinsSelectedToAdd).length === 0) $('.btn-next').addClass('disabled');
