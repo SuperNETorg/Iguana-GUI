@@ -307,6 +307,7 @@ helperProto.prototype.initMessageModal = function() {
     }, 250);
 
     // message modal on close blur fix
+    // ugly
     if ($('.modal:visible').length) {
       setTimeout(function() {
         $('body').addClass('modal-open');

@@ -179,29 +179,54 @@
   padding: 11px;
   border-radius: 50%;
 }
-/*
-  !! temp fix, remove after coins font is updated !!
-*/
-/*.supported-coins-repeater .coin .KMD-alt:before,
-.KMD-alt {
-  content: '';
-  background: url('../../fonts/png/btm.png') !important;
+.icon.KMD-alt {
+  background: url('../../fonts/svg/mono/kmd.svg');
   background-size: 100%;
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
 }
-.CARB-alt {
-  background: url('../../fonts/png/carb.png');
+.item.active .icon.KMD-alt,
+.form-container.send-coin-form .icon.KMD-alt,
+.supported-coins-repeater .coin .icon.KMD-alt {
+  background: url('../../fonts/svg/white/kmd.svg');
   background-size: 100%;
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
 }
-.CARB-alt {
-  background: url('../../fonts/png/carb.png');
+.icon.CARB-alt {
+  background: url('../../fonts/svg/mono/carb.svg');
   background-size: 100%;
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
-}*/
+}
+.item.active .icon.CARB-alt,
+.form-container.send-coin-form .icon.CARB-alt,
+.supported-coins-repeater .coin .icon.CARB-alt {
+  background: url('../../fonts/svg/white/carb.svg');
+  background-size: 100%;
+}
+.icon.GMC-alt {
+  background: url('../../fonts/svg/mono/gmc.svg');
+  background-size: 100%;
+}
+.item.active .icon.GMC-alt,
+.form-container.send-coin-form .icon.GMC-alt,
+.supported-coins-repeater .coin .icon.GMC-alt {
+  background: url('../../fonts/svg/white/gmc.svg');
+  background-size: 100%;
+}
+.icon.BTM-alt {
+  background: url('../../fonts/svg/mono/btm.svg');
+  background-size: 100%;
+}
+.item.active .icon.BTM-alt,
+.form-container.send-coin-form .icon.BTM-alt,
+.supported-coins-repeater .coin .icon.BTM-alt {
+  background: url('../../fonts/svg/white/btm.svg');
+  background-size: 100%;
+}
+.supported-coins-repeater .coin .icon.KMD-alt,
+.supported-coins-repeater .coin .icon.CARB-alt,
+.supported-coins-repeater .coin .icon.GMC-alt,
+.supported-coins-repeater .coin .icon.BTM-alt {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
 .supported-coins-repeater .coin .icon.GMC-alt:before,
 .supported-coins-repeater .coin .icon.MZC-alt:before,
 .supported-coins-repeater .coin .icon.CARB-alt:before,
@@ -221,18 +246,21 @@
   box-shadow: inset 0 2px 10px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Icon colors */
+/*
+  Icon colors
+  !important is required to override svg's white bg
+ */
 .col-orange {
-  background: #FE760D;
+  background-color: #FE760D !important;
 }
 .col-breeze {
-  background: #1ABC9C;
+  background-color: #1ABC9C !important;
 }
 .col-yellow {
-  background: #F7D441;
+  background-color: #F7D441 !important;
 }
 .col-light-blue {
-  background: #73C7EF;
+  background-color: #73C7EF !important;
 }
 .modal-add-coin .btn,
 .modal-add-coin-login .btn,

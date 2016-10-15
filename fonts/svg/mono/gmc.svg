@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>GAME</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GMC-?">
+            <g id="GAME">
+                <rect id="Rectangle" fill="#A4B1B7" x="0" y="0" width="50" height="50" rx="25"></rect>
+                <path d="M39.5612121,21.6666667 C37.9694216,15.370859 32.266002,10.8333333 25.625,10.8333333 C17.6859067,10.8333333 11.25,17.2692401 11.25,25.2083333 C11.25,33.1474266 17.6859067,39.5833333 25.625,39.5833333 C31.7023424,39.5833333 37.0610511,35.777117 39.1227632,30.1664521 L43.8159356,31.8910196 C41.0367891,39.4540831 33.815403,44.5833333 25.625,44.5833333 C14.924483,44.5833333 6.25,35.9088504 6.25,25.2083333 C6.25,14.5078163 14.924483,5.83333333 25.625,5.83333333 C34.9670402,5.83333333 42.929345,12.4917881 44.5833333,21.5641432 L44.605951,21.6666667 L39.5612121,21.6666667 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+                <rect id="Rectangle-2" fill="#FFFFFF" x="28" y="28" width="17" height="5"></rect>
+                <polygon id="Rectangle-2-Copy" fill="#FFFFFF" transform="translate(42.500833, 36.500000) rotate(-90.000000) translate(-42.500833, -36.500000) " points="34.0008334 33.9991666 51.0008334 34.0008328 51.0008334 38.9991666 34.0008334 38.9991666"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
