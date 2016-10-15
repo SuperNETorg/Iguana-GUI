@@ -79,7 +79,6 @@ apiProto.prototype.testCoinPorts = function(cb) {
       timeout: isIguana ? 500 : 10000,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
-        console.log(response);
 
         if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
         if (dev.showConsoleMessages && dev.isDev) console.log(response);

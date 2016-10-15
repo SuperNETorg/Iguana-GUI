@@ -47,7 +47,6 @@ apiProto.prototype.getExternalRate = function(quote, cb) {
     async: cb ? true : false,
     success: function(_response) {
       var response = $.parseJSON(_response);
-      console.log(response);
 
       if (response && Object.keys(response).length) {
       //if (response && response[quoteComponents[1]]) {
