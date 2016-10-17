@@ -8,7 +8,7 @@ var sendCoinEntryTemplate =
     '<i class="bi_interface-cross cursor-pointer btn-close"></i>' +
     '<div class="title text-shadow">Sending</div>' +
   '</header>' +
-  '<div class="form-content rs_modal">' +
+  '<div class="form-content send-modal">' +
     '<div class="modal-body">' +
       '<div class="main-popup">' +
         '<div class="popup-head">' +
@@ -29,10 +29,11 @@ var sendCoinEntryTemplate =
               '<h4>Send to:</h4>' +
               '<p>Enter a wallet address<!-- or select a contact --></p>' +
               '<input type="text" class="tx-address" value="{{ address }}" />' +
+              '<div class="tx-address-icon"></div>' +
             '</div>' +
             '<div class="pop-detail crncy">' +
               '<h4>Amount:</h4>' +
-              '<p>Enter in <span clas="currency-name"></span></p>' +
+              '<p>Enter in {{ coin_id }} or {{ currency }}</p>' +
               '<input type="number" placeholder="0 {{ coin_id }}" class="tx-amount" value="{{ amount }}" /><span>=</span><input type="number" class="tx-amount-currency" placeholder="0 {{ currency }}" />' +
             '</div>' +
             '<div class="pop-detail crncy">' +
@@ -44,7 +45,7 @@ var sendCoinEntryTemplate =
               '<h4>Note (optional):</h4>' +
               '<textarea class="tx-note">{{ note }}</textarea>' +
             '</div>' +
-            '<input type="submit" value="Next" id="nextsend" class="btn-next orange-gradient" />' +
+            '<input type="button" value="Next" id="nextsend" class="btn-next orange-gradient" />' +
           '</div>' +
         '</div>' +
       '</div>' +

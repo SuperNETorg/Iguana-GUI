@@ -29,7 +29,7 @@ var sendCoinConfirmationTemplate =
     '<i class="bi_interface-arrow-left cursor-pointer btn-back"></i>' +
     '<div class="title text-shadow">Confirmation</div>' +
   '</header>' +
-  '<div class="form-content rs_modal">' +
+  '<div class="form-content send-modal">' +
     '<div class="modal-body">' +
       '<div class="main-popup">' +
         '<div class="popup-head">' +
@@ -50,12 +50,12 @@ var sendCoinConfirmationTemplate =
               '<h4>Send to:</h4>' +
               '<p>{{ tx_coin_address }}</p>' +
             '</div>' +
-            '<div class="pop-detail crncy chk-crncy crncy_btc_rs">' +
+            '<div class="pop-detail crncy chk-crncy crncy-rs">' +
               '<h4>Amount:</h4>' +
                 '<h3>{{ tx_coin_amount }} {{ coin_id }}</h3>' +
                 '<h5>or {{ tx_coin_amount_currency }} {{ currency }}</h5>' +
               '</div>' +
-              '<div class="pop-detail crncy chk-crncy crncy_btc_fee">' +
+              '<div class="pop-detail crncy chk-crncy crncy-fee">' +
                 '<h4>Fee (per KB of data):</h4>' +
                 '<h3>{{ tx_coin_fee_value }} {{ coin_id }}</h3>' +
                 '<h5>or {{ tx_coin_fee_currency }} {{ currency }}</h5>' +

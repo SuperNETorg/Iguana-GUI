@@ -30,7 +30,7 @@
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 .box-shadow-bottom {
-  box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .form-container {
   margin: 0 auto;
@@ -143,7 +143,7 @@ textarea.error {
   height: 44px;
 }
 .text-shadow {
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 .btn:hover,
 .btn:focus {

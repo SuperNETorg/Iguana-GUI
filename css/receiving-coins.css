@@ -104,7 +104,7 @@
 }
 .buttons .copy-btn:focus,
 .buttons .share-btn:focus {
-  border: 0 solid #fbfdfe !important;
+  border: 0 solid #fbfdfe;
   outline: none;
 }
 .buttons .copy-btn a {
@@ -165,41 +165,41 @@
 .currency-input .unit-currency {
   right: -3px;
 }
-.currency-input input[type=number]::-webkit-inner-spin-button,
-.currency-input input[type=number]::-webkit-outer-spin-button {
+.currency-input input[type="number"]::-webkit-inner-spin-button,
+.currency-input input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0;
 }
-.currency-input input[type=number] {
+.currency-input input[type="number"] {
   padding: 6px;
   padding-right: 42px;
   color: #2E3746;
   font-size: 1.065em;
 }
-input[type=number].crypto-currency.currency-coin {
+input[type="number"].crypto-currency.currency-coin {
   padding-right: 52px;
 }
 .unit.coin-unit {
   width: 47px;
 }
-.currency-input input[type=number]::-webkit-input-placeholder {
+.currency-input input[type="number"]::-webkit-input-placeholder {
   color: #2E3746;
 }
-.currency-input input[type=number]:-moz-placeholder { /* Firefox 18- */
+.currency-input input[type="number"]:-moz-placeholder { /* Firefox 18- */
   color: #2E3746;
 }
-.currency-input input[type=number]::-moz-placeholder {  /* Firefox 19+ */
+.currency-input input[type="number"]::-moz-placeholder {  /* Firefox 19+ */
   color: #2E3746;
 }
-.currency-input input[type=number]:-ms-input-placeholder {
+.currency-input input[type="number"]:-ms-input-placeholder {
   color: #2E3746;
 }
 .receiving-coin-content .form-header {
   height: 60px;
   border-radius: 4px 4px 0 0;
-  box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,
