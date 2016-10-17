@@ -1,7 +1,6 @@
 /*!
  * Iguana helpers
  * info: various reusable functions go here
- * TODO: add settings obj
  */
 
 var helperProto = function() {};
