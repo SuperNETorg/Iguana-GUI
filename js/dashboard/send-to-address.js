@@ -81,7 +81,7 @@ function sendCoinModalInit(isBackTriggered) {
   });
 
   // dev
-  //loadTestSendData(coinData.id);
+  loadTestSendData(coinData.id);
 
   if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
   // btn close

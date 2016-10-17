@@ -45,7 +45,7 @@ var sendCoinEntryTemplate =
               '<h4>Note (optional):</h4>' +
               '<textarea class="tx-note">{{ note }}</textarea>' +
             '</div>' +
-            '<input type="button" value="Next" id="nextsend" class="btn-next orange-gradient" />' +
+            '<button class="btn-next orange-gradient">Next</button>' +
           '</div>' +
         '</div>' +
       '</div>' +
