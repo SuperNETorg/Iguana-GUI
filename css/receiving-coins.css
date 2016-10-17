@@ -1,144 +1,208 @@
-.receiving-coin-content{
-	border-radius: 6px;
+.receiving-coin-content {
+  border-radius: 6px;
 }
-.receiving-coin-content .close{
-	float: left;
-	opacity: 1;
-	color: #fff;
-	text-shadow: none;
-	font-weight: normal;
- 	font-size: 32px;
- 	left: 10px;
-    position: relative;
-    z-index: 9999;
+.receiving-coin-content .close {
+  float: left;
+  opacity: 1;
+  color: #fff;
+  text-shadow: none;
+  font-weight: normal;
+  font-size: 32px;
+  left: 10px;
+  top: 3px;
+  position: relative;
+  z-index: 9999;
 }
-.model-popup{
-	position: fixed;
-	top: 24%;
-    left: 50%;
-    width: 57.5em;
-	min-height: 17em;    
-    margin-top: -9em; /*set to a negative number 1/2 of your height*/
-    margin-left: -30em;
-	height: auto;
-} 
-.receiving-coin-content .modal-title{
-	text-align: center; 
-	color: #fff;
-	right: 10px;
-    position: relative;
-    font-size: 20px;
+.modal-popup {
+  position: fixed;
+  top: 31%;
+  left: 50.5%;
+  width: 57.5em;
+  min-height: 17em;
+  margin-top: -9em; /*set to a negative number 1/2 of your height*/
+  margin-left: -30em;
+  height: auto;
+  box-shadow: 0 2px 40px rgba(0,0,0,.3);
 }
-.text-section{
-	color: #a9a1a1;
+.receiving-coin-content .modal-title {
+  text-align: center;
+  color: #fff;
+  right: 10px;
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
 }
-.receiving-coin-content .modal-header{
-	background-color: #fe5c0d;
-	border-top-left-radius: 10px;
-    border-top-right-radius: 10px
+.text-section {
+  color: #8c8484;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: inherit;
 }
-.share-address-section{
-	position: relative;
-    left: 34px;
-    margin-top: 32px;
+.text-something {
+  font-size: 16px;
 }
-.share-address-section h4{
-	font-weight: 600;
-	margin-bottom: 4px;
+.receiving-coin-content .modal-header {
+  background-color: #fe5c0d;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: -webkit-radial-gradient(top, rgba(254,92,13,0.7), rgba(252,62,5,1)); /* For Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(to top, rgba(254,92,13,0.7), rgba(254,62,5,1)); /* Standard syntax (must be last) */
 }
-
-.receiving-coin-content .modal-body{
-	background-color: #f5f8fb;
-	min-height: 41em;
-	border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-	border-top-left-radius: 10px;
-    border-top-right-radius: 10px
-	
+.share-address-section {
+  position: relative;
+  left: 34px;
+  margin-top: 32px;
 }
-.modal-content{
-	border-top-left-radius: 11px;
-    border-top-right-radius: 11px;
+.share-address-section h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #252528;
+  word-break: break-word;
+  padding-top: -18px;
+  margin-top: 2px;
 }
-.buttons{
-    padding: 14px 0;
+.share-address-section .my-address {
+  color: #2f2e2e;
+  font-size: 1.1em;
+  padding-bottom: 4px;
+}
+.receiving-coin-content .modal-body {
+  background-color: #f5f8fb;
+  min-height: 41em;
+}
+.modal-content {
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+  border: none;
+  box-shadow: none;
+}
+.buttons {
+  padding: 14px 0;
+  font-size: 16px;
 }
 .buttons .copy-btn,
-.buttons .share-btn{
-    width: 95%;
-    background-color: #fbfdfe;
-    color: #fe6542;
-    font-weight: 600;
-    height: 30px;
-    border: 1px solid #fbfdfe;
-    -webkit-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
-	-moz-box-shadow: -16px 20px 43px -18px rgba(0,0,0,0.48);
-	box-shadow: 1px 6px 29px -10px rgba(0,0,0,0.48);
-    border-radius: 4px;
+.buttons .share-btn {
+  width: 95%;
+  background-color: #fbfdfe;
+  color: #fe6542;
+  font-weight: 600;
+  height: 34px;
+  border: 1px solid #fbfdfe;
+  -webkit-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+  -moz-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+  border-radius: 4px;
 }
-.buttons .copy-btn:focus, 
-.buttons .share-btn:focus{
-	border: 0px solid #fbfdfe!important;
-	outline: none;
+.modal-backdrop.in {
+	opacity: 0.7;
 }
-.buttons .copy-btn a{
-	text-decoration: none;
-	color: #fe6542;
+.modal-backdrop {
+	background-color: #fff;
 }
-.msgbox-header,
-.msg-content{
-	width: 300px;
-    margin: 0 auto;
-    background-color: #0087ff;
-    border-radius: 4px;
-    border: 1px solid #0087ff;
+.buttons .copy-btn:focus,
+.buttons .share-btn:focus {
+  border: 0 solid #fbfdfe !important;
+  outline: none;
 }
-.clipboard-msg{
-	color: #fff;
-	text-align: center;
-    
+.buttons .copy-btn a {
+  text-decoration: none;
+  color: #fe6542;
 }
-.qr-code{
-	clear: both;
-	width: 210px;
-    margin: 0 auto;
-    background-color: #fff;
-	position: relative;
-    top: 16px;
+.qr-code {
+  clear: both;
+  width: 210px;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
+  top: 16px;
 }
-.qr-code canvas{ 
-	width: 200px;
-    display: block;
-    margin: 0 auto;
-    padding: 15px;   
+.qr-code canvas {
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+  padding: 15px;
 }
-.amount-lable{
-	margin-top: 46px;
+.amount-label {
+  margin-top: 46px;
 }
-.currency-input{
-	margin-top: 4px;
-	position: relative;
-	float: left;
+.amount-label .amount-label-span {
+  color:#423f3f;
+  font-size: 16px;
+  font-family: inherit;
 }
-.currency-input .crypto-currency{
-    width: 141px;
-    height: 32px;
-    padding: 4px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.currency-input {
+  margin-top: 4px;
+  position: relative;
+  float: left;
 }
-.currency-input .equals-sign{
-	color: #fe5c0d;
-	margin: 5px 4px;
-    display: block;
-	font-size: 18px;
+.currency-input .crypto-currency {
+  width: 140px;
+  height: 34px;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.currency-input .equals-sign {
+  color: #fe5c0d;
+  margin: 5px 4px;
+  display: block;
+  font-size: 1.5em;
+  font-weight: 600;
 }
 .currency-input .unit {
-    position: absolute;
-    display: block;
-    top: 6px;
-    right: -3px;
-    color: #a9a1a1;
-    padding-left: 5px;
-    width: 45px;
-} 
+  position: absolute;
+  display: block;
+  top: 7px;
+  right: 2px;
+  color: #83848E;
+  padding-left: 5px;
+  width: 45px;
+  font-size: 1.065em;
+}
+.currency-input .unit-currency {
+  right: -3px;
+}
+.currency-input input[type=number]::-webkit-inner-spin-button,
+.currency-input input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+.currency-input input[type=number] {
+  padding: 6px;
+  padding-right: 42px;
+  color: #2E3746;
+  font-size: 1.065em;
+}
+input[type=number].crypto-currency.currency-coin {
+  padding-right: 52px;
+}
+.unit.coin-unit {
+  width: 47px;
+}
+.currency-input input[type=number]::-webkit-input-placeholder {
+  color: #2E3746;
+}
+.currency-input input[type=number]:-moz-placeholder { /* Firefox 18- */
+  color: #2E3746;
+}
+.currency-input input[type=number]::-moz-placeholder {  /* Firefox 19+ */
+  color: #2E3746;
+}
+.currency-input input[type=number]:-ms-input-placeholder {
+  color: #2E3746;
+}
+.receiving-coin-content .form-header {
+  height: 60px;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+.modal-dialog.modal-popup,
+.modal-dialog .modal-body,
+.modal .modal-content.receiving-coin-content {
+  border-radius: 4px;
+}

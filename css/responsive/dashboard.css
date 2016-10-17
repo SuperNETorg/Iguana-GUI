@@ -1,0 +1,22 @@
+/*!
+ * Iguana dashboard responsive
+ *
+ */
+
+@media screen and (min-width: 1280px) {
+  .account-coins-repeater .item.active:after {
+    left: 23%;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .account-coins-repeater .item.active:after {
+    left: 22%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .account-coins-repeater .item.active:after {
+    left: 21.7%;
+  }
+}

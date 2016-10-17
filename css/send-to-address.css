@@ -1,56 +1,41 @@
-/*
-Send Button to send coin another address Js
-*/
+/*!
+ * Iguana dashboard/send-to-address
+ *
+ */
 
 .ui-dialog .ui-dialog-content {
-    padding: 0;
-    margin: -4px;
+  padding: 0;
+  margin: -4px;
 }
-
-.rs_model .modal-header{   
-background: #fe600d;
-background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
+.rs_modal .headd {
+  border-radius: 4px;
+  color: #fff;
+  padding: 25px 21px 22px;
+  position: relative;
+  box-shadow: 0px 0px 7px 4px #e8cec6;
 }
-
-.rs_model  .headd{   
-background: #fe600d;
-background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
-border-radius: 4px;
-    color: #fff;
-    padding: 25px 21px 22px;
-    position: relative;
-    box-shadow: 0px 0px 7px 4px #e8cec6;
-
+.rs_modal .headd::before {
+  background-image: url("../images/arrow.jpg");
+  bottom: -48px;
+  content: "";
+  height: 40px;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  width: 40px;
 }
-.rs_model .headd::before {
-    background-image: url("../images/arrow.jpg");
-    bottom: -48px;
-    content: "";
-    height: 40px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    width: 40px;
-}
-
-.rs_model .modal-content .modal-header {
-    border-bottom: medium none;
-    color: #fff;
-    padding: 16px 40px;
-    position: relative;
-    text-align: center; border-radius: 6px 6px 0 0;
+.rs_modal .modal-content .modal-header {
+  border-bottom: medium none;
+  color: #fff;
+  padding: 16px 40px;
+  position: relative;
+  text-align: center; border-radius: 6px 6px 0 0;
 }
 .modal .modal-content {
   border-radius: 6px 6px 0 0;
 }
-.rs_model .modal-content .modal-header .close {
+.rs_modal .modal-content .modal-header .close {
   color: #fff;
   font-size: 37px;
   font-weight: 100;
@@ -63,48 +48,46 @@ border-radius: 4px;
   font-size: 19px;
   font-weight: 400;
 }
-.rs_model .mian-popup {
-    margin: 0 auto;
-    max-width: 301px;
+.rs_modal .main-popup {
+  margin: 0 auto;
+  max-width: 300px;
+  padding-top: 30px;
 }
-.rs_model .pop-detail {
-    margin-bottom: 22px;
+.rs_modal .pop-detail {
+  margin-bottom: 22px;
 }
-.rs_model .pop-detail.send {
-    margin-bottom: 31px;
+.rs_modal .pop-detail.send {
+  margin-bottom: 31px;
 }
-.rs_model .modal-content .modal-body {
-    padding: 0;
+.rs_modal .modal-content .modal-body {
+  padding: 0;
 }
-
-.rs_model .modal-content .modal-body {
+.rs_modal .modal-content .modal-body {
   background: #f5f8fb none repeat scroll 0 0;
   padding: 50px 0;
 }
-.rs_model .hd-right > span {
+.rs_modal .hd-right > span {
   display: block;
   font-size: 18px;
   font-weight: 600;
 }
-
-.rs_model .pop-form {
-    margin-top: 51px;
+.rs_modal .pop-form {
+  margin-top: 51px;
 }
-
-
-.rs_model .rs_model .pop-detail h4 {
-    color: #282828;
-    font-size: 16px;
-    font-weight: 400;
-    margin: 0;
+.rs_modal .rs_modal .pop-detail h4 {
+  color: #282828;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
 }
-.rs_model .pop-detail p {
+.rs_modal .pop-detail p {
   color: #90929b;
   font-size: 13px;
   margin-bottom: 5.2px;
   margin-top: 6px;
 }
-.rs_model .pop-detail input[type="text"] {
+.rs_modal .pop-detail input[type="text"],
+.rs_modal .pop-detail input[type="number"] {
   border: 1px solid #c7ccd0;
   border-radius: 4px;
   color: #333333;
@@ -113,19 +96,20 @@ border-radius: 4px;
   padding: 1px 6px;
   width: 100%;
 }
-.rs_model .pop-detail > textarea {
+.rs_modal .pop-detail > textarea {
   border: 1px solid #c7ccd0;
   border-radius: 4px;
   height: 34px !important;
   margin-top: 9px;
   resize: none;
   width: 100%;
+  padding: 5px 12px;
+  font-weight: normal;
 }
-.rs_model .modal {
+.rs_modal .modal {
   padding-left: 0 !important;
 }
 .pop-detail h4 {
-  font-family: open sans;
   font-size: 14.6px;
   font-weight: 400;
   margin-bottom: 0;
@@ -133,70 +117,60 @@ border-radius: 4px;
 .hd-right {
   text-align: right; font-size:12px;
 }
-.rs_model .pop-detail.crncy input[type="text"] {
-    float: left;
-    width: 44.7%;
+.rs_modal .pop-detail.crncy input[type="text"],
+.rs_modal .pop-detail.crncy input[type="number"] {
+  float: left;
+  width: 44.7%;
 }
 .pop-detail.crncy {
   display: inline-block;
   width: 100%;
 }
-.rs_model .pop-detail.crncy span {
+.rs_modal .pop-detail.crncy span {
   color: #fc6538;
   float: left;
   font-size: 21px;
   font-weight: 500;
   padding: 0 1.3%;
 }
-
-.rs_model .pop-form > input[type="submit"]{
-background: #fe600d;
-background: -moz-linear-gradient(left, #fe600d 20%, #fe730d 46%, #fe470d 78%);
-background: -webkit-linear-gradient(left, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-background: linear-gradient(to right, #fe600d 20%,#fe730d 46%,#fe470d 78%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', endColorstr='#fe470d',GradientType=1 );
- border: 0 none;
-    border-radius: 4px;
-    box-shadow: 0 0 7px 4px #e8cec6;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 400;
-    margin-top: 26px;
-    padding: 6px 0;
-    width: 100%;
-    position: relative;
-    z-index: 99;
+.rs_modal .pop-form > input[type="submit"]{
+  border: 0 none;
+  border-radius: 4px;
+  box-shadow: 0 0 7px 4px #e8cec6;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 26px;
+  padding: 6px 0;
+  width: 100%;
+  position: relative;
+  z-index: 99;
 }
- 
-.rs_model .pop-detail.send input[type="text"] {
-    background-image: url("../images/contact.jpg");
-    background-position: right center;
-    background-repeat: no-repeat;
+.rs_modal .pop-detail.send input[type="text"] {
+  background-image: url("../images/contact.jpg");
+  background-position: right center;
+  background-repeat: no-repeat;
 }
-
 .chk-crncy h3 {
   font-size: 21px;
   font-weight: 500;
   margin: 0;
 }
-
 .chk-crncy h4 {
   color: #a2a3ac;
   margin-bottom: 5px;
 }
 .pop-detail.pay-dtl p {
   color: #37373a;
-  font-size: 13px;
+  font-size: 1.1em;
 }
 .chk-crncy h5 {
   font-size: 16px;
   margin-top: -1px;
 }
-
 .pop-detail.crncy.chk-crncy {
   margin: 30px 0;
 }
-
 .refrshing {
   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.92);
   bottom: 0;
@@ -206,22 +180,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe600d', end
   top: 0;
   z-index: 9;
 }
-
-.rs_model #myModal2 .pop-form > input[type="submit"], .rs_model #myModal3 .pop-form > input[type="submit"] {
+.rs_modal #myModal2 .pop-form > input[type="submit"],
+.rs_modal #myModal3 .pop-form > input[type="submit"] {
   font-size: 23px;
   line-height: 27px;
   padding: 5px 0;
   position: relative;
   z-index: 10;
 }
-.rs_model #myModal3 .pop-form > input[type="submit"]{
-background: #08bb5a;
-background: -moz-linear-gradient(left, #08bb5a 0%, #13d76c 47%, #08b959 100%);
-background: -webkit-linear-gradient(left, #08bb5a 0%,#13d76c 47%,#08b959 100%);
-background: linear-gradient(to right, #08bb5a 0%,#13d76c 47%,#08b959 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', endColorstr='#08b959',GradientType=1 );
 
-}
 .cntnt-cntr > h5 {
   font-family: open sans;
   font-size: 19px;
@@ -229,8 +196,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', end
   margin: 0 auto;
 }
 .cntnt-cntr {
-    display: table-cell;
-    vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 .refrsh-center {
   display: table;
@@ -239,14 +206,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', end
   vertical-align: middle;
   width: 100%;
 }
-
 .rs {
   margin: 0;
   position: relative;
   top: -3px;
 }
-
-.rs_model .modal-dialog {
+.rs_modal .modal-dialog {
   margin: 20px auto;
   width: 800px;
 }
@@ -255,8 +220,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', end
 }
 .pop-detail.send.check > p {
   color: #000000;
-  font-size: 14px;
-  letter-spacing: 0.9px;
+  font-size: 1em;
+  letter-spacing: 1px;
   margin-top: 7px;
 }
 .pop-detail.pay-dtl > h4 {
@@ -271,6 +236,117 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08bb5a', end
 .pop-detail.crncy.chk-crncy.crncy_btc_fee {
   margin: 0px 0 13px;
 }
-.rs_model #myModal1 .pop-form > input[type="submit"] {
+.rs_modal #myModal1 .pop-form > input[type="submit"] {
   margin-top: 30px;
+}
+
+/*
+  ! not going to work in IE,
+    TODO: gracefull fallback(?) !
+*/
+.rs_modal.blur {
+  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  filter: blur(2px);
+}
+
+.send-coin-progress-overlay,
+.send-coin-success-overlay {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.send-coin-progress-overlay .send-coin-status,
+.send-coin-success-overlay .send-coin-status {
+  padding-top: 40%;
+  font-size: 1.1em;
+  text-align: center;
+}
+.send-coin-progress-overlay .btn-next {
+  margin-top: 25%;
+}
+.send-coin-success-overlay .btn-confirmed,
+.send-coin-success-overlay .btn-confirmed:focus {
+  margin-top: 22.5%;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
+  font-size: 1.3em;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
+  background: -moz-radial-gradient(center, ellipse cover, rgba(25,183,96,0.8) 0%, rgba(25,183,96,1) 100%); /* FF3.6-15 */
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(25,183,96,0.8) 0%, rgba(25,183,96,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center,  rgba(25,183,96,0.8) 0%,rgba(25,183,96,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc19b760', endColorstr='#19b760',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.modal-send-coin .bi_interface-arrow-left {
+  font-size: 26px;
+  margin-top: -5px;
+  margin-left: -2px;
+}
+
+.rs_modal .pop-detail input[type="text"].validation-field-error,
+.rs_modal .pop-detail input[type="number"].validation-field-error  {
+  background: #FFF5F5;
+  border-color: #FD2F2F;
+}
+
+.coin {
+  float: left;
+}
+.modal-send-coin .coin .icon {
+  width: 35px;
+  height: 35px;
+}
+.modal-send-coin .coin i {
+  font-size: 2.5em;
+  display: inline-block;
+  color: #fff;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+.modal-send-coin .coin .name {
+  font-weight: normal;
+  color: #fff;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  position: relative;
+  top: -10px;
+  left: 4px;
+}
+.modal-send-coin .balance {
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.modal-send-coin.entry {
+  max-height: 770px;
+}
+.modal-send-coin {
+  max-height: 80%;
+}
+
+/*
+  TODO: drop svg, switch to css based animation
+  circular progress indicator
+  ref: http://stackoverflow.com/questions/5230148/create-svg-progress-circle
+*/
+.progress-indicator {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  position: relative;
+  top: -2px;
+}
+.over {
+  -webkit-animation: rotator 1.5s ease-in-out infinite;
+  stroke-dasharray: 107,38;
+}
+.bag {
+  position: absolute;
+}
+@-webkit-keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

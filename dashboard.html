@@ -5,22 +5,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<title>Iguana / Dashboard</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/budicon.css">
 		<link rel="stylesheet" href="css/dashboard.css">
-		<link rel="stylesheet" href="css/cryptocoins.css">
-		<script type="text/javascript" src="js/dev.js"></script>
-		<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
-		<script type="text/javascript" src="js/localstorage.js"></script>
-		<script type="text/javascript" src="js/helpers.js"></script>
-		<script type="text/javascript" src="js/supported-coins-list.js"></script>
-		<script type="text/javascript" src="js/api.js"></script>
-		<script type="text/javascript" src="js/dashboard.js"></script>
+		<link rel="stylesheet" href="css/responsive/dashboard.css">
+		<script type="text/javascript" src="js/inc/dashboard.js"></script>
 	</head>
 	<body>
-		<section class="dashboard unselectable hidden">
-			<nav class="top">
+		<section class="dashboard hidden main">
+			<nav class="top unselectable">
 				<div class="left">Iguana</div>
 				<div class="center">
 					<ul class="top-menu">
@@ -28,11 +19,11 @@
 							<div class="text">Dashboard</div>
 							<div class="border"></div>
 						</li>
-						<li class="item cursor-pointer" data-url="payments">
+						<li class="item cursor-pointer hidden" data-url="payments">
 							<div class="text">Payments</div>
 							<div class="border"></div>
 						</li>
-						<li class="item cursor-pointer" data-url="contacts">
+						<li class="item cursor-pointer hidden" data-url="contacts">
 							<div class="text">Contacts</div>
 							<div class="border"></div>
 						</li>
@@ -48,18 +39,18 @@
 				<!-- temp out of sync notice -->
 				<div id="temp-out-of-sync" class="hidden" style="color:red;text-aling:center;font-weight:bold;font-size:1.2em"></div>
 				<div class="balance-block">
-					<div class="label">Total balance:</div>
+					<div class="label unselectable">Total balance:</div>
 					<div class="balance">
 						<span class="value"></span>
 						<span class="currency"></span>
 					</div>
 				</div>
-				<aside class="coins">
+				<aside class="coins unselectable">
 					<div class="account-coins-repeater">Loading...</div>
 					<button class="btn btn-add-coin">Add coin</button>
 				</aside>
 				<div class="transactions-unit">
-					<div class="top-bar">
+					<div class="top-bar unselectable">
 						<div class="active-coin-balance">
 							<span class="value"></span>
 							<span class="coin-name"></span>
@@ -68,14 +59,14 @@
 							<span class="value"></span>
 							<span class="currency"></span>
 						</div>
-						<div class="action-buttons">
+						<div class="action-buttons unselectable">
 							<button class="btn btn-send">Send</button>
-							<button class="btn btn-receive">Receive</button>
+							<button class="btn btn-receive coinaddress btn-lg" data-toggle="modal" data-target="#myModal">Receive</button>
 						</div>
-						<div class="info">
-							<i class="bi_doc-book-a"></i>
-							<span>Information</span>
-						</div>
+            <div class="info">
+              <i class="bi_doc-book-a"></i>
+              <span>Information</span>
+            </div>
 					</div>
 					<div class="transactions-list">
 						<div class="title">History</div>
@@ -84,23 +75,11 @@
 				</div>
 			</div>
 		</section>
-		<section class="form-container add-new-coin-form unselectable hidden fade">
-			<div class="modal-overlay"></div>
-			<div class="modal">
-				<header class="form-header orange-gradient box-shadow-bottom">
-					<i class="bi_interface-cross cursor-pointer btn-close"></i>
-					<div class="title text-shadow">Adding a new coin</div>
-				</header>
-				<div class="form-content">
-					<div class="coins-title">Select coins to add</div>
-					<div class="quick-search">
-						<i class="icon bi_tool-magnifier"></i>
-						<input type="text" class="input text" placeholder='For example, "Bitcoin"' />
-					</div>
-					<div class="supported-coins-repeater"></div>
-					<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next">Next</button>
-				</div>
-			</div>
-		</section>
+    <section class="form-container send-coin-form unselectable hidden fade">
+      <div class="modal-overlay"></div>
+      <div class="modal modal-send-coin"></div>
+    </section>
+    <!-- send coin passphrase conf -->
+    <section class="modal-append-container"></section>
 	</body>
 </html>
