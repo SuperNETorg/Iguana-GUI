@@ -37,51 +37,46 @@ function sendCoinModalInit(isBackTriggered) {
     $('.modal-send-coin .tx-fee-currency').attr('disabled', true);
   }
 
-  // TODO: rewrite
-  // calc
+  // prevent negative values in input fields
+  $('.modal-send-coin .tx-amount,' +
+    '.modal-send-coin .tx-amount-currency,' +
+    '.modal-send-coin .tx-fee,' +
+    '.modal-send-coin .tx-fee-currency').change(function() {
+      if ($(this).val() < 0) $(this).val(0);
+  });
+
+  // calc on keying
   $('.modal-send-coin .tx-amount').keyup(function(e) {
-    var keyCode = e.keyCode || e.which;
-
-    if (keyCode !== 9) {
-      e.preventDefault();
-
-      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
-      $('.modal-send-coin .tx-amount-currency').val(($('.modal-send-coin .tx-amount').val() * currentCoinRate).toFixed(8));
-    }
+    txAmountFeeKeyupEvent(e, 'tx-amount', true);
   });
-
   $('.modal-send-coin .tx-amount-currency').keyup(function(e) {
-    var keyCode = e.keyCode || e.which;
-
-    if (keyCode !== 9) {
-      e.preventDefault();
-      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
-      $('.modal-send-coin .tx-amount').val(($('.modal-send-coin .tx-amount-currency').val() / currentCoinRate).toFixed(8));
-    }
+    txAmountFeeKeyupEvent(e, 'tx-amount', false);
   });
-
   $('.modal-send-coin .tx-fee').keyup(function(e) {
-    var keyCode = e.keyCode || e.which;
+    txAmountFeeKeyupEvent(e, 'tx-fee', true);
+  });
+  $('.modal-send-coin .tx-fee-currency').keyup(function(e) {
+    txAmountFeeKeyupEvent(e, 'tx-fee', false);
+  });
+
+
+  function txAmountFeeKeyupEvent(evt, fieldName, type) {
+    var keyCode = evt.keyCode || evt.which;
 
     if (keyCode !== 9) {
-      e.preventDefault();
+      evt.preventDefault();
       currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
-      $('.modal-send-coin .tx-fee-currency').val(($('.modal-send-coin .tx-fee').val() * currentCoinRate).toFixed(8));
-    }
-  });
 
-  $('.modal-send-coin .tx-fee-currency').keyup(function(e) {
-    var keyCode = e.keyCode || e.which;
-
-    if (keyCode == 9) {
-      e.preventDefault();
-      currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
-      $('.modal-send-coin .tx-fee').val(($('.modal-send-coin .tx-fee-currency').val() / currentCoinRate).toFixed(8));
+      if (type) {
+        $('.modal-send-coin .' + fieldName + '-currency').val(($('.modal-send-coin .' + fieldName).val() * currentCoinRate).toFixed(helper.decimalPlacesFormat($('.modal-send-coin .' + fieldName).val() * currentCoinRate).coin));
+      } else {
+        $('.modal-send-coin .' + fieldName).val(($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).toFixed(helper.decimalPlacesFormat($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).coin));
+      }
     }
-  });
+  }
 
   // dev
-  loadTestSendData(coinData.id);
+  //if (dev.isDev) loadTestSendData(coinData.id);
 
   if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
   // btn close
@@ -187,7 +182,7 @@ function sendCoinModalConfirm() {
             });
           } else {
             // go to an error step
-            helper.prepMessageModal('transaction was not send!', 'red', true);
+            helper.prepMessageModal('Transaction was not send due to an error!', 'red', true);
           }
 
           // revert pay fee
@@ -202,7 +197,7 @@ function sendCoinModalConfirm() {
 
 /*
   TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
-        2) positive num amount & fee validation
+        1a) address byte prefix check
 */
 function validateSendCoinForm() {
   var isValid = false,
@@ -212,39 +207,37 @@ function validateSendCoinForm() {
   // address
   if ($('.tx-address').val().length !== 34) {
     $('.tx-address').addClass('validation-field-error');
+    $('.tx-address-validation').html('Incorrect address');
   } else {
     $('.tx-address').removeClass('validation-field-error');
+    $('.tx-address-validation').html('Enter a wallet address');
   }
   // coin amount
-  if ($('.tx-amount').val() <= 0 || $('.tx-amount').val() >= activeCoinBalanceCoin) {
+  if (Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length || $('.tx-amount').val() > activeCoinBalanceCoin) {
     $('.tx-amount').addClass('validation-field-error');
+    $('.tx-amount-validation').html('Amount cannot be empty/zero or exceed ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
   } else {
     $('.tx-amount').removeClass('validation-field-error');
+    $('.tx-amount-validation').html('Enter in ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' or ' + defaultCurrency.toUpperCase());
   }
-
-  if ($('.tx-fee').val() + $('.tx-amount').val() >= activeCoinBalanceCoin) {
+  // fee
+  if ((Number($('.tx-fee').val()) + Number($('.tx-amount').val())) > activeCoinBalanceCoin) {
     $('.tx-fee').addClass('validation-field-error');
-    $('.tx-amout').addClass('validation-field-error');
+    $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? 'Fee cannot exceed ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : 'Total amount to send exceeds ' + activeCoinBalanceCoin);
   } else {
     $('.tx-fee').removeClass('validation-field-error');
-    $('.tx-amout').removeClass('validation-field-error');
+    $('.tx-fee-validation').html('Minimum fee. Increase it to speed up transaction.');
   }
 
-  if ($('.tx-address').val().length !== 34 || $('.tx-amount').val() <= 0) {
+  if ($('.tx-address').val().length !== 34 ||
+      Number($('.tx-amount').val()) === 0 ||
+      !$('.tx-amount').val().length ||
+      $('.tx-amount').val() > activeCoinBalanceCoin ||
+      Number($('.tx-fee').val() + $('.tx-amount').val()) > activeCoinBalanceCoin) {
     isValid = false;
   } else {
     isValid = true;
   }
 
   return isValid;
-}
-
-// dev
-var sendDataTest = { 'btcd' : { address: 'R9XTAMpr2Sm4xxUQA1g1brxPZGaTvj9xqp', val: '0.00001', note: 'gui test send to kashi\'s addr' },
-                     'sys': { address: '127a42hPqaUy6zBbgfo5HHh7G9WGBQYQR4', val: '0.00001', note: 'gui test send to ed888 addr' } };
-
-function loadTestSendData(coin) {
-  $('.tx-address').val(sendDataTest[coin].address);
-  $('.tx-amount').val(sendDataTest[coin].val);
-  $('.tx-note').val(sendDataTest[coin].note);
 }
