@@ -111,9 +111,9 @@ helperProto.prototype.checkSession = function(returnVal) {
 helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
   var localStorage = new localStorageProto();
 
-  if (localStorage.getVal('iguana-rates-' + coin)) {
+  if (localStorage.getVal('iguana-rates-' + coin.toLowerCase())) {
     var currentEpochTime = new Date(Date.now()) / 1000,
-        secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin).updatedAt / 1000);
+        secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin.toLowerCase()).updatedAt / 1000);
 
     return secondsElapsed;
   } else {
