@@ -39,7 +39,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
 
     if (isUpdateTriggered) api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
 
-    if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
+    if (isUpdateTriggered && helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
     if (dev.showConsoleMessages && dev.isDev && isUpdateTriggered) console.log('rates update in progress...');
   } else {
     if (!coin) coin = defaultCoin;
@@ -62,7 +62,4 @@ function updateRateCB(coin, result) {
       localStorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
     }
   }
-
-  // !not effecient!
-  if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
 }

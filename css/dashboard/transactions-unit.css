@@ -72,6 +72,9 @@
   margin-bottom: 25px;
   transition: all 0.25s;
 }
+.transactions-list-repeater .item:last-child {
+  margin-bottom: 0;
+}
 .transactions-list-repeater .item .status {
   font-weight: normal;
   font-size: 0.9em;
@@ -80,7 +83,7 @@
   width: 100px;
 }
 .transactions-list-repeater .item .amount {
-  width: 150px;
+  width: 152px;
   text-align: right;
 }
 .transactions-list-repeater .item .hash {
