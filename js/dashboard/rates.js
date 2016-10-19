@@ -25,7 +25,6 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
   ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
 
   // force rates update
-  // ! not efficient !
   var isUpdateTriggered = false;
 
   if (triggerUpdate) {

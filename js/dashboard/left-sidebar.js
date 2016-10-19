@@ -102,6 +102,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   $('.account-coins-repeater').html(sortedAccountCoinsRepeater);
   bindClickInAccountCoinRepeater();
 
+  // run balances and tx unit update once left sidebar is updated
   if (index === Object.keys(coinBalances).length) {
     // disable send button if ther're no funds on a wallet
     if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {

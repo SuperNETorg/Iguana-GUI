@@ -22,7 +22,7 @@ $(document).ready(function() {
 });
 
 $(window).resize(function() {
-  $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' });
+  $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' }); // margin fix on low res screens
   opacityToggleOnAddCoinRepeaterScroll();
 });
 
@@ -35,7 +35,7 @@ function updateDashboardView(timeout) {
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
     updateRates(null, null, null, true);
-    constructTransactionUnitRepeater();
+    constructTransactionUnitRepeater(true);
 
     if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
   }, timeout * 1000);
