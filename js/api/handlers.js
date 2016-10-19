@@ -31,7 +31,6 @@ apiProto.prototype.errorHandler = function(response, index) {
         $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
 
-    console.log(coinsInfo);
     if (dev.showConsoleMessages && dev.isDev) console.log('server is busy');
 
     return 10;

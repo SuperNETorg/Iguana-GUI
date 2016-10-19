@@ -3,10 +3,6 @@
  *
  */
 
-// TODO: 1) add response handler
-//       2) generalize get/post functions into one
-//      (?) refactor conf into a singleton obj
-
 var apiProto = function() {};
 
 var activeCoin,

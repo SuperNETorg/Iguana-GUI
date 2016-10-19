@@ -16,7 +16,7 @@ apiProto.prototype.addCoin = function(coin, cb) {
     async: cb ? true : false
   })
   .done(function(response) {
-    if (dev.showConsoleMessages && dev.isDev) console.log(response)
+    if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
     if (response.error) {
       // do something

@@ -30,7 +30,6 @@ function updateDashboardView(timeout) {
   var helper = new helperProto();
 
   var dashboardUpdateTimer = setInterval(function() {
-    // TODO: refactor, not effective
     //console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();

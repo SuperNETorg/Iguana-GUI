@@ -8,7 +8,7 @@ apiProto.prototype.getIguanaRate = function(quote) {
       quoteComponents = quote.split('/');
 
   $.ajax({
-    url: apiProto.prototype.getServerUrl(true) + apiProto.prototype.getConf().apiRoutes.iguana.rate + '?base=' + quoteComponents[0] + '&rel=' + quoteComponents[1],
+    url: apiProto.prototype.getServerUrl(true) + '/iguana/addcoin?base=' + quoteComponents[0] + '&rel=' + quoteComponents[1],
     cache: false,
     dataType: 'text',
     async: false
@@ -30,8 +30,6 @@ apiProto.prototype.getIguanaRate = function(quote) {
 }
 
 // get a quote form an external source
-// cryptonator is officially closed it's gates, no more cors
-// keep an eye on, may be they'll change their mind
 apiProto.prototype.getExternalRate = function(quote, cb) {
   var result = false,
       firstSourceFailed = false,

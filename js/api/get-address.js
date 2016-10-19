@@ -19,6 +19,11 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
     type: 'POST',
     data: postData,
     headers: postAuthHeaders,
+    error: function(response) {
+      apiProto.prototype.errorHandler(response, coin);
+
+      if (dev.showConsoleMessages && dev.isDev) console.log(response);
+    }
     success: function(response) {
  	    result = response.result; // non-iguana
     }

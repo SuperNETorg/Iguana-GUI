@@ -10,20 +10,6 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
         'ip': 'localhost',
         'iguanaPort': settings.iguanaPort
       },
-      'apiRoutes': { // deprecated, remove(?)
-        'bitcoinRPC' : {
-          'walletPassphrase' : 'bitcoinrpc/walletpassphrase', // params: password String, timeout Int
-          'encryptWallet' : 'bitcoinrpc/encryptwallet', // params: passphrase String
-          'listTransactions': 'bitcoinrpc/listtransactions', // params: account String, count: default is 1
-          'getTransaction': 'bitcoinrpc/gettransaction', // params: txid String
-          'getBalance': 'bitcoinrpc/getbalance' // params: account String
-        },
-        'iguana': {
-          'addCoin': 'iguana/addcoin', // params newcoin, portp2p, services
-          'rates': 'iguana/rates', // params: coin/curency or currency/currency or coin/coin, variable length
-          'rate': 'iguana/rate' // params: base, rel e.g. base=BTC&rel=USD, !param values in CAPS!
-        }
-      },
       'coins': supportedCoinsList
   };
 

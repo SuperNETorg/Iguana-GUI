@@ -57,7 +57,6 @@ function copyToClipboard(element) {
     document.execCommand("copy");
   } catch(err) {
     helper.prepMessageModal('Copy/paste is not supported in your browser! Please copy address manually.', 'red', true);
-    //alert(err);
   }
 
   temp.remove();

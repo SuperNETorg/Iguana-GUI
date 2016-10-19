@@ -30,14 +30,12 @@ function initDashboard() {
 
   if (!isIguana) $('.btn-add-coin').html('Add wallet');
 
-  // coin is auto detected based on available portp2p
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
   if (session.checkSession(true)) {
     $('.dashboard').removeClass('hidden');
     updateRates(null, null, null, true);
     constructAccountCoinRepeater();
-    //$('.transactions-list-repeater').html(constructTransactionUnitRepeater());
     updateDashboardView(dashboardUpdateTimout);
   } else {
     helperProto.prototype.openPage('login');

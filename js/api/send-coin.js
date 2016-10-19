@@ -76,8 +76,6 @@ apiProto.prototype.setTxFee = function(coin, fee, cb) {
     error: function(response) {
       apiProto.prototype.errorHandler(response, coin);
 
-      // do something
-
       if (cb) cb.call(this, false);
     }
   })

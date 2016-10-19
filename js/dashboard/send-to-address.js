@@ -59,7 +59,6 @@ function sendCoinModalInit(isBackTriggered) {
     txAmountFeeKeyupEvent(e, 'tx-fee', false);
   });
 
-
   function txAmountFeeKeyupEvent(evt, fieldName, type) {
     var keyCode = evt.keyCode || evt.which;
 
@@ -76,7 +75,7 @@ function sendCoinModalInit(isBackTriggered) {
   }
 
   // dev
-  if (dev.isDev) loadTestSendData(coinData.id);
+  //if (dev.isDev) loadTestSendData(coinData.id);
 
   if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
   // btn close
