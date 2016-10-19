@@ -65,7 +65,7 @@ var sendCoinConfirmationTemplate =
                 '<p>{{ tx_note }}</p>' +
               '</div>' +
               '<h4>The final amount may be slightly more because of network fees.</h4>' +
-              '<input type="submit" value="Send {{ tx_total }} {{ coin_id }}" class="btn-confirm-tx orange-gradient" />' +
+              '<button class="btn-confirm-tx orange-gradient">Send {{ tx_total }} {{ coin_id }}</button>' +
             '</div>' +
           '</div>' +
         '</div>' +

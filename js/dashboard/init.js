@@ -15,6 +15,11 @@ function initDashboard() {
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
   // load templates
+  if (!isIguana) {
+    addCoinModalTemplate = addCoinModalTemplate.replace('Adding a new coin', 'Adding a new wallet');
+    addCoinModalTemplate = addCoinModalTemplate.replace('Select coins to add', 'Select a wallet to add');
+  }
+
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);

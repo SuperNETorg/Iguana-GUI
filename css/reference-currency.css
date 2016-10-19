@@ -8,7 +8,6 @@
 body {
   background-color: #f4f8fb;
 }
-body,
 h1,
 h2,
 h3,
@@ -19,7 +18,7 @@ h6 {
   padding: 0;
   line-height: 20px;
 }
-ul {
+.currency-content ul {
   list-style-type: none;
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
@@ -27,68 +26,84 @@ ul {
   -webkit-margin-end: 0;
   -webkit-padding-start: 0;
 }
-.country-li .flag-head {
+.currency-content .country-li .flag-head {
   padding: 7px;
 }
-.container {
+.currency-content .flag-icon {
+  box-shadow: 0 1px 4px 0 #ccc;
+  width: 43px;
+  height: 32px;
+  background-size: 100%;
+}
+.currency-content .container {
   font-family: 'Proxima Nova';
   margin: 0 auto;
 }
-.currenc y-content {
+.currency-content .currency-content {
   width: 80%;
   margin: 0 auto;
 }
-.container-left {
+.currency-content .container-left {
   margin-top: calc(18% - 12.4%); /* calc wont work in iOS safari */
   padding-left: 13.1%;
   padding-top: 7px;
 }
-.container-left .choose-currency {
+.currency-content .container-left .choose-currency {
   font-weight: 700;
   font-size: 20px;
+  padding-bottom: 5px;
 }
-.container-left .transaction-amount {
+.currency-content .container-left .transaction-amount {
   color: #898a94;
   font-weight: 500;
   font-size: 16px;
 }
-.currency-parent {
+.currency-content .currency-parent {
   margin-top: 30px;
   padding-left: 0;
 }
-.selected {
-  border: 2px solid #F00;
-  color: #F00;
+.currency-content .country-li.country-li.selected {
+  border: 2px solid #FD5624;
+  color: #FD5624;
+  box-shadow: none;
 }
-.currency-loop .selected .full-name {
-  color: #F00;
-  font-weight: bold;
+.currency-content .currency-loop .selected .full-name {
+  color: #FD5624;
+  font-weight: 600;
 }
-.currency-loop {
+.currency-content .currency-loop {
   padding-left: 0;
+  font-size: 0.95em;
 }
-.currency-loop .country-li {
+.currency-content .currency-loop .country-li {
   background-color: #fff;
   border-radius: 6px;
   list-style-type: none;
   text-align: center;
-  width: 177px;
-  padding-top: 8px;
+  width: 182px;
+  padding-top: 20px;
   margin: 10px;
-  height: 128px;
+  height: 132px;
   display: table-cell;
   vertical-align: middle;
   float: left;
-  box-shadow: 0 2px 4px 1px #ccc;
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.12);
+  border: 2px solid transparent;
 }
-.currency-loop .country-li span {
+.currency-content .currency-loop .country-li span {
   color: #d3d4d6;
-  font-weight: bold;
+  font-weight: 600;
 }
-.label  {
+.currency-content .label  {
   background-color: transparent;
 }
-.country-li .short-name {
+.currency-content .country-li .short-name {
   width: 100%;
   display: block;
+  padding-top: 2px;
+  font-weight: 600;
+}
+.currency-content .country-li .full-name {
+  top: -2px;
+  position: relative;
 }

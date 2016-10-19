@@ -34,14 +34,8 @@ function updateDashboardView(timeout) {
     //console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
-    //initDashboard();
     updateRates(null, null, null, true);
-    /*$('.account-coins-repeater').html(constructAccountCoinRepeater());
-    bindClickInAccountCoinRepeater();
-    updateTotalBalance();
-    //updateAccountCoinRepeater();
-    updateTransactionUnitBalance(true);*/
-    //constructTransactionUnitRepeater();
+    constructTransactionUnitRepeater();
 
     if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
   }, timeout * 1000);

@@ -33,13 +33,14 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
       if (triggerUpdate && (helper.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localStorage.getVal('iguana-rates-' + key))) {
         if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
           isUpdateTriggered = true;
-          api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
         }
       }
     }
 
-    if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
-    if (dev.showConsoleMessages && dev.isDev && isUpdateTriggered) console.log('rates update in progress...');
+    if (isUpdateTriggered) {
+      api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
+      if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
+    }
   } else {
     if (!coin) coin = defaultCoin;
     if (!currency) currency = defaultCurrency;
@@ -57,11 +58,10 @@ function updateRateCB(coin, result) {
   var localStorage = new localStorageProto();
 
   for (var key in coinsInfo) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
       localStorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
     }
   }
 
-  // !not effecient!
   if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
 }

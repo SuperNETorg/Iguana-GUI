@@ -35,6 +35,11 @@ function bindReceive() {
     $(".currency").val(currencyAmount);
   });
 
+  // prevent negative values in input fields
+  $('.receiving-coin-content .currency-input input').change(function() {
+    if ($(this).val() < 0) $(this).val(0);
+  });
+
   $('#qr-code').empty();
   $('#qr-code').qrcode(address);
 

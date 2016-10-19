@@ -10,9 +10,9 @@
     padding: 0;
     margin: 0;
     height: 100%;
-    width: 100%;  /* override default bootstrap modal css */
+    width: 100%; /* override default bootstrap modal css */
     padding: 0 !important;
-    overflow: auto !important;  /* prevent scrolling when modal is visible */
+    overflow: auto !important; /* prevent scrolling when modal is visible */
     left: 0;
     top: 0;
     position: absolute;

@@ -85,6 +85,7 @@
     top: 10px;
     color: #8A8B93;
     z-index: 100;
+    text-shadow: 0 0 0 #8A8B93;
   }
   .top-menu .item .text {
     padding: 0 17px;
@@ -105,6 +106,8 @@
   }
   .top-menu .item.active {
     color: #fff;
+    font-weight: 600;
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
   }
   .dashboard .top .right {
     font-size: 1em;
@@ -124,7 +127,7 @@
     padding: 0;
   }
   .balance-block .balance {
-    font-size: 1.4em;
+    font-size: 1.7em;
     font-weight: 600;
   }
   .coins,
