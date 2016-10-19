@@ -11,29 +11,49 @@
   </head>
   <body>
     <section class="dashboard unselectable">
-      <nav class="top">
-        <div class="left">Iguana</div>
-        <div class="center">
-          <ul class="top-menu">
-            <li class="item cursor-pointer" data-url="dashboard">
-              <div class="text">Dashboard</div>
-              <div class="border"></div>
-            </li>
-            <li class="item cursor-pointer hidden" data-url="payments">
-              <div class="text">Payments</div>
-              <div class="border"></div>
-            </li>
-            <li class="item cursor-pointer hidden" data-url="contacts">
-              <div class="text">Contacts</div>
-              <div class="border"></div>
-            </li>
-            <li class="item cursor-pointer active" data-url="settings">
-              <div class="text">Settings</div>
-              <div class="border"></div>
-            </li>
-          </ul>
+      <nav class="navbar top unselectable navbar-inverse">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#top-menu"
+              aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">Iguana</div>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse top" id="top-menu">
+            <ul class="nav navbar-nav top-menu">
+              <li class="item cursor-pointer text-center" data-url="dashboard">
+                <div class="text">Dashboard</div>
+                <div class="border"></div>
+              </li>
+              <li class="item cursor-pointer text-center active" data-url="settings">
+                <div class="text">Settings</div>
+                <div class="border"></div>
+              </li>
+              <li class="item cursor-pointer text-center hidden"
+                data-url="payments">
+                <div class="text">Payments</div>
+                <div class="border"></div>
+              </li>
+              <li class="item cursor-pointer text-center hidden"
+                data-url="contacts">
+                <div class="text">Contacts</div>
+                <div class="border"></div>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="text-center"><div class="cursor-pointer lnk-logout">Log out</div></li>
+            </ul>
+          </div>
         </div>
-        <div class="right cursor-pointer lnk-logout">Log out</div>
       </nav>
       <div class="container-fluid">
         <div class="row">

@@ -32,11 +32,11 @@
     filter: blur(2px);
   }
   .dashboard .top {
-    margin-bottom: 32px;
-    height: 60px;
+    text-align: center;
     background: #0E101C;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
     color: #fff;
+    border-radius: 0;
   }
   .dashboard .top .left {
     font-size: 1.6em;
@@ -50,12 +50,14 @@
     display: block;
     position: absolute;
     text-align: center;
-    width: 100%;
+    width: calc(100% - 10%);
   }
   .top-menu {
     display: inline-block;
     margin: 0 auto;
-    list-style: none;
+    margin-bottom: 8px;
+    float: none;
+    vertical-align: top;
   }
   /* radial like highlight effect */
   .top-menu:before {
@@ -77,24 +79,21 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#222539', GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   }
   .top-menu .item {
-    display: inline-block;
     font-size: 1.05em;
     font-weight: 600;
     margin: 0 5px;
-    position: relative;
-    top: 16px;
+    top: 10px;
     color: #8A8B93;
     z-index: 100;
   }
   .top-menu .item .text {
     padding: 0 17px;
     height: 38px;
-    margin-top: 6px;
+    margin-top: 2px;
+    line-height: 34px;
   }
   .top-menu .item .border {
     width: 100%;
-    position: absolute;
-    top: 41px;
     height: 3px;
     border-radius: 4px;
     padding: 0 22px;
@@ -131,10 +130,8 @@
   .coins,
   .transactions-unit {
     margin-top: 18px;
-    float: left;
   }
   .coins {
-    width: 20%;
     max-width: 250px;
     min-width: 230px;
   }

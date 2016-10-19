@@ -87,3 +87,7 @@
     background: -moz-radial-gradient(right, rgba(255,1,71,0.7),rgba(255,0,71,1)); /* For Firefox 3.6 to 15 */
     background: radial-gradient(to top, rgba(255,1,71,0.7),rgba(255,0,71,1)); /* Standard syntax (must be last) */
   }
+  .lnk-logout {
+    margin-top: 16px;
+    margin-bottom: 10px;
+  }
