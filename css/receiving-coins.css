@@ -14,14 +14,6 @@
   z-index: 9999;
 }
 .modal-popup {
-  position: fixed;
-  top: 31%;
-  left: 50.5%;
-  width: 57.5em;
-  min-height: 17em;
-  margin-top: -9em; /*set to a negative number 1/2 of your height*/
-  margin-left: -30em;
-  height: auto;
   box-shadow: 0 2px 40px rgba(0,0,0,.3);
 }
 .receiving-coin-content .modal-title {
@@ -52,8 +44,7 @@
 }
 .share-address-section {
   position: relative;
-  left: 34px;
-  margin-top: 32px;
+  padding-left: 34px;
 }
 .share-address-section h4 {
   font-size: 18px;
@@ -71,7 +62,6 @@
 }
 .receiving-coin-content .modal-body {
   background-color: #f5f8fb;
-  min-height: 41em;
 }
 .modal-content {
   border-top-left-radius: 11px;
@@ -80,7 +70,7 @@
   box-shadow: none;
 }
 .buttons {
-  padding: 14px 0;
+  padding: 6px 0;
   font-size: 16px;
 }
 .buttons .copy-btn,

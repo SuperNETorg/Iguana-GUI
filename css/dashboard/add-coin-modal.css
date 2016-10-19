@@ -64,6 +64,9 @@
   border-radius: 4px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+.modal-full-width {
+  min-width:100%;
+}
 .add-new-coin-form .form-content,
 .login-form-modal .form-content ,
 .send-coin-form .form-content,

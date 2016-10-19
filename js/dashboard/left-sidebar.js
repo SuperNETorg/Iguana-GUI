@@ -28,7 +28,7 @@ function constructAccountCoinRepeater() {
       coinsSelectedByUser[index] = key;
       index++;
     }
-  };
+  }
 
   if (coinsSelectedByUser.length === 0) helperProto.prototype.logout();
 

@@ -5,7 +5,7 @@
 
 var receiveCoinTemplate =
 '<section class="modal fade" id="myModal" role="dialog">' +
-  '<div class="modal-dialog modal-popup">' +
+  '<div class="modal-dialog modal-popup modal-lg">' +
     '<div class="modal-content receiving-coin-content">' +
       '<header class="form-header orange-gradient box-shadow-bottom">' +
         '<i class="bi_interface-cross cursor-pointer btn-close" data-dismiss="modal"></i>' +
