@@ -5,7 +5,7 @@
 
 apiProto.prototype.errorHandler = function(response, index) {
   if (response.error === 'need to unlock wallet') {
-    if (helperProto.prototype.getCurrentPage() !== 'index')
+    if (helperProto.prototype.getCurrentPage() !== 'login')
       $('#temp-out-of-sync').html('Something went wrong. Please login again.');
       $('#temp-out-of-sync').removeClass('hidden');
 

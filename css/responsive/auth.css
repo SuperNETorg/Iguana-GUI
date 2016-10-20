@@ -4,28 +4,28 @@
  */
 
 @media screen and (min-width: 1000px) {
-  .login-form,
-  .create-account-form,
-  .verify-passphrase-form {
+  .auth-main .login-form,
+  .auth-main .create-account-form,
+  .auth-main .verify-passphrase-form {
     max-width: 600px;
     border-radius: 4px;
     box-shadow: 0 4px 40px 8px rgba(0, 0, 0, 0.1);
   }
-  .form-header {
+  .auth-main .form-header {
     height: 58px;
     border-radius: 4px 4px 0 0;
   }
-  .btn.row {
+  .auth-main .btn.row {
     height: 34px;
     width: 300px;
     margin-left: auto;
     margin-right: auto;
     font-size: 1.05em;
   }
-  .offset-bottom-sm {
+  .auth-main .offset-bottom-sm {
     margin-bottom: 30px;
   }
-  .form-content .login-passphrase-textarea.offset-bottom-sm.row.center {
+  .auth-main .form-content .login-passphrase-textarea.offset-bottom-sm.row.center {
     height: 158px;
     width: 398px;
     padding: 18px 50px;
@@ -33,31 +33,31 @@
     margin-right: auto;
     display: block;
   }
-  .form-content {
+  .auth-main .form-content {
     padding: 50px 16px 30px 16px;
   }
-  .create-account-form .form-content {
+  .auth-main .create-account-form .form-content {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
   }
-  .create-account-form .login-input-directions {
+  .auth-main .create-account-form .login-input-directions {
     padding-left: 13px;
     padding-right: 13px;
   }
-  .create-account-form .generated-passhprase {
+  .auth-main .create-account-form .generated-passhprase {
     padding: 0 35px;
   }
-  .form-header .title {
+  .auth-main .form-header .title {
     padding-top: 18px;
   }
-  .bi_interface-arrow-left {
+  .auth-main .bi_interface-arrow-left {
     margin-top: 13px;
   }
-  .verify-passphrase-form .login-or-delim {
+  .auth-main .verify-passphrase-form .login-or-delim {
     padding: 12px 0;
   }
-  .verify-passphrase-form .login-input-directions {
+  .auth-main .verify-passphrase-form .login-input-directions {
     width: 210px;
   }
 }

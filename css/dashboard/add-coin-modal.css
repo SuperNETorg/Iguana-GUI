@@ -6,6 +6,9 @@
  /* TODO: split(?) */
 
 /* Add coin modal */
+.login-form-modal .modal {
+  overflow: hidden;
+}
 .form-container.blur {
   -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
   filter: blur(2px);

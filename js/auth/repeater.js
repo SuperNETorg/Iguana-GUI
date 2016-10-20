@@ -35,7 +35,7 @@ function constructAuthCoinsRepeater() {
                 replace('{{ name }}', key.toUpperCase()).
                 replace('{{ value }}', dev.isDev && !isIguana ? (dev.coinPW.coind[key] ? dev.coinPW.coind[key] : '') : '').
                 replace('{{ onclick }}', !isIguana /*isIguana && coinsInfo[key].connection === true*/ ? 'checked' : '').
-                replace('{{ onclick_input }}', !isIguana /*isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'index'*/ ? 'checked' : '');
+                replace('{{ onclick_input }}', !isIguana /*isIguana && coinsInfo[key].connection === true && helper.getCurrentPage() === 'login'*/ ? 'checked' : '');
     }
   }
 

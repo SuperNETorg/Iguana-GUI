@@ -21,7 +21,7 @@ apiProto.prototype.testConnection = function(cb) {
   }
   if (index === 0 && dev.showConsoleMessages && dev.isDev) console.log('force port poll');
 
-  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0 || helperProto.prototype.getCurrentPage() === 'index') {
+  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0 || helperProto.prototype.getCurrentPage() === 'login') {
     // test if iguana is running
     var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
     $.ajax({
@@ -230,7 +230,7 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
     if (coinsInfo[key].connection === true) totalCoinsRunning++;
   }
 
-  if (totalCoinsRunning === 0 && helperProto.prototype.getCurrentPage() !== 'index') {
+  if (totalCoinsRunning === 0 && helperProto.prototype.getCurrentPage() !== 'login') {
     $('#temp-out-of-sync').html('Something went wrong. Please login again.');
     $('#temp-out-of-sync').removeClass('hidden');
 

@@ -12,24 +12,50 @@ var defaultCurrency = '',
     decimalPlacesCoin = settings.decimalPlacesCoin,
     decimalPlacesCurrency = settings.decimalPlacesCurrency,
     decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
-    dashboardUpdateTimout = settings.dashboardUpdateTimout;
+    dashboardUpdateTimout = settings.dashboardUpdateTimout,
+    dashboardUpdateTimer;
 
 $(document).ready(function() {
+  //document.title = 'Iguana / Dashboard';
+  //console.log(document.location);
+  //document.location.hash = "dashb";
   var api = api = new apiProto();
-
-  api.testConnection(initDashboard);
-  applyDashboardResizeFix();
+  api.testConnection(initPage);
 });
 
-$(window).resize(function() {
-  applyDashboardResizeFix();
-});
+function initPage() {
+  var session = new helperProto();
+
+  if (session.checkSession(true)) {
+    if (document.location.hash === '#dashboard' || !document.location.hash) {
+      $('body').html(dashboardTemplate);
+      initDashboard();
+      applyDashboardResizeFix();
+
+      $(window).resize(function() {
+        applyDashboardResizeFix();
+      });
+    }
+    if (document.location.hash === '#settings') {
+      $('body').html(referenceCurrencyTemplate);
+      initReferenceCurrency();
+    }
+  } else {
+    // load auth
+    $('body').html(loginTemplate);
+    initAuthCB();
+  }
+}
 
 /* not the best solution but it works */
 function applyDashboardResizeFix() {
   $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' }); // margin fix on low res screens
   // tx unit resize
-  $('.transactions-unit').css({ 'max-width': Math.floor($('.main-content').width() - $('.coins').width() - 110) });
+  var screenWidthThreshold = false;
+  if ($(window).width() > 1368) {
+    screenWidthThreshold = true;
+  }
+  $('.transactions-unit').css({ 'max-width': screenWidthThreshold ? 1000 : Math.floor($('.main-content').width() - $('.coins').width() - 110) });
   $('.transactions-unit').css({ 'width': Math.floor($('.main-content').width() - $('.coins').width() - 110) });
   // hash shading
   $('.transactions-list-repeater .item .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.35 -
@@ -49,7 +75,7 @@ function applyDashboardResizeFix() {
 function updateDashboardView(timeout) {
   var helper = new helperProto();
 
-  var dashboardUpdateTimer = setInterval(function() {
+  dashboardUpdateTimer = setInterval(function() {
     //console.clear();
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();

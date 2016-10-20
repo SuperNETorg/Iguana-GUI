@@ -8,16 +8,21 @@
   @import url('fonts/cryptocoins.min.css');
   @import url('fonts/budicon.min.css');
 
+  @import url('auth-base.css'); /* order matters */
   @import url('dashboard/left-sidebar.css');
   @import url('dashboard/transactions-unit.css');
   @import url('dashboard/add-coin-modal.css');
   @import url('dashboard/passphrase-modal.css');
   @import url('receiving-coins.css');
   @import url('send-to-address.css');
+  @import url('reference-currency.css');
+
+  .form-container.add-new-coin-form {
+    background: none;
+  }
 
   body,
   html {
-    background: #F5F8FB;
     font-family: 'Proxima Nova', sans-serif;
   }
   body.modal-open .dashboard {
@@ -26,6 +31,7 @@
   }
   .dashboard {
     height: 100%;
+    background: #F5F8FB;
   }
   .dashboard.blur {
     -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
@@ -61,7 +67,7 @@
   }
   /* radial like highlight effect */
   .top-menu:before {
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     width: 350px;
@@ -130,6 +136,9 @@
     font-size: 1.7em;
     font-weight: 600;
   }
+  .balance-block .balance .value {
+    padding-right: 5px;
+  }
   .coins,
   .transactions-unit {
     margin-top: 18px;
@@ -145,6 +154,9 @@
     padding-top: 25px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
+  .active-coin-balance .value {
+    padding-right: 5px;
+  }
   .active-coin-balance-currency {
     font-size: 1.1em;
     font-weight: 600;
@@ -152,6 +164,9 @@
     position: relative;
     top: -3px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  .active-coin-balance-currency .value {
+    padding-right: 5px;
   }
   .btn.disabled,
   .btn.disabled:focus {

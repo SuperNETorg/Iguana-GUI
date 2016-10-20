@@ -11,6 +11,6 @@
 	@import url('auth-base.css'); /* order matters */
 	@import url('dashboard/add-coin-modal.css');
 
-	.form-container.add-new-coin-form {
+	.auth-main .form-container.add-new-coin-form {
 		background: none;
 	}

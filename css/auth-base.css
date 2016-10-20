@@ -3,52 +3,52 @@
  *
  */
 
-.body-wrapper {
+.body-wrapper.auth-main {
   display: table;
   width: 100%;
   height: 100%;
   margin: 0 auto;
 }
-.coin input[type='checkbox'] + label {
+.auth-main .coin input[type='checkbox'] + label {
   display: inline-block;
 }
-.coin {
+.auth-main .coin {
   padding: 20px;
   width: 130px;
   display: inline-block;
 }
-.coin.block {
+.auth-main .coin.block {
   display: block;
   width: 100%;
   padding: 0;
 }
-.container-fluid {
+.auth-main .container-fluid {
   display: table-cell;
   vertical-align: middle;
 }
-.box-shadow-all {
+.auth-main .box-shadow-all {
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.15);
 }
-.box-shadow-bottom {
+.auth-main .box-shadow-bottom {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
-.form-container {
+.auth-main .form-container {
   margin: 0 auto;
   background-color: #f4f7fb;
 }
-.login-form,
-.create-account-form,
-.verify-passphrase-form {
+.auth-main .login-form,
+.auth-main .create-account-form,
+.auth-main .verify-passphrase-form {
   padding: 0;
   float: none;
   max-width: 375px;
 }
-.login-or-delim {
+.auth-main .login-or-delim {
   font-family: sans-serif;
   padding: 25px 0;
   letter-spacing: 1px;
 }
-textarea {
+.auth-main textarea {
   width: 100%;
   height: 120px;
   border-radius: 4px;
@@ -58,7 +58,7 @@ textarea {
   font-weight: 600;
   font-size: 1.16em;
 }
-.passphrase-container {
+.auth-main .passphrase-container {
   width: 100%;
   border-radius: 4px;
   background: #fff;
@@ -68,13 +68,13 @@ textarea {
   font-weight: 600;
   font-size: 1.16em;
 }
-.passphrase-container .title {
+.auth-main .passphrase-container .title {
   font-family: sans-serif;
   font-size: 0.91em;
   font-weight: normal;
   margin-bottom: 4px;
 }
-.bi_interface-cross {
+.auth-main .bi_interface-cross {
   color: #fff;
   font-size: 20px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
@@ -82,7 +82,7 @@ textarea {
   top: 12px;
   left: 10px;
 }
-.bi_interface-arrow-left {
+.auth-main .bi_interface-arrow-left {
   color: #fff;
   font-size: 26px;
   margin-top: 8px;
@@ -91,7 +91,7 @@ textarea {
   position: absolute;
   z-index: 100;
 }
-.form-header .title {
+.auth-main .form-header .title {
   font-family: 'Proxima Nova', sans-serif;
   font-weight: 600;
   font-size: 1.30em;
@@ -101,82 +101,83 @@ textarea {
   position: relative;
   z-index: 10;
 }
-textarea.error {
+.auth-main textarea.error {
   border: solid 1px #FF0000;
 }
-.center {
+.auth-main .center {
   text-align: center;
+  font-size: 1.03em;
 }
-.offset-bottom-sm {
+.auth-main .offset-bottom-sm {
   margin: 0 auto;
   margin-bottom: 15px;
   width: 264px;
 }
-.offset-bottom-md {
+.auth-main .offset-bottom-md {
   margin: 0 auto;
   margin-bottom: 30px;
 }
-.header {
+.auth-main .header {
   background-color: #fe700d;
   color: white;
   padding: 15px 10px;
   text-align: center;
 }
-.form-content {
+.auth-main .form-content {
   padding: 115px 16px 158px 16px;
   font-size: 1.05em;
   color: #363639;
 }
-.form-content .row {
+.auth-main .form-content .row {
   width: 99%;
   margin-right: 0;
   margin-left: 0;
 }
-.form-header {
+.auth-main .form-header {
   height: 50px;
 }
-.btn {
+.auth-main .btn {
   color: #fff;
   font-family: 'Proxima Nova', sans-serif;
   font-weight: 600;
   font-size: 1.20em;
   height: 44px;
 }
-.text-shadow {
+.auth-main .text-shadow {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
-.btn:hover,
-.btn:focus {
+.auth-main .btn:hover,
+.auth-main .btn:focus {
   color: #fff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
-.btn.disabled,
-.btn.disabled:focus {
+.auth-main .btn.disabled,
+.auth-main .btn.disabled:focus {
   pointer-events: none;
   background: #B2B4B7;
   text-shadow: none;
 }
-.btn.disabled:hover {
+.auth-main .btn.disabled:hover {
   box-shadow: none;
   text-shadow: none;
 }
-.checkbox {
+.auth-main .checkbox {
   display: inline-block;
 }
-.label-text {
+.auth-main .label-text {
   cursor: hand;
   cursor: pointer;
   font-size: 1.05em;
 }
-input[type='checkbox'] {
+.auth-main input[type='checkbox'] {
   display: none;
 }
-input[type='checkbox'] + label {
+.auth-main input[type='checkbox'] + label {
   font-weight: normal;
   display: block;
   text-align: center;
 }
-input[type='checkbox'] + label .box {
+.auth-main input[type='checkbox'] + label .box {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -186,11 +187,11 @@ input[type='checkbox'] + label .box {
   border: solid 2px #C7CCD0;
   border-radius: 4px;
 }
-input[type='checkbox']:checked + label .box {
+.auth-main input[type='checkbox']:checked + label .box {
   background: #FE450D;
   border-color: #FE450D;
 }
-input[type='checkbox']:checked + label .box:before {
+.auth-main input[type='checkbox']:checked + label .box:before {
   content: '\eb23';
   font-family: 'budicon';
   font-weight: bold;
@@ -198,28 +199,28 @@ input[type='checkbox']:checked + label .box:before {
   position: relative;
   top: -1px;
 }
-.generated-passhprase-hidden {
+.auth-main .generated-passhprase-hidden {
   height: 1px;
   opacity: 0;
 }
-.paste-from-clipboard-link {
+.auth-main .paste-from-clipboard-link {
   padding-top: 2px;
   border-bottom: dotted 1px #000;
 }
-
-.login-add-coin-selection {
+.auth-main .login-add-coin-selection {
   text-align: center;
 }
-.login-add-coin-selection-title {
+.auth-main .login-add-coin-selection-title {
+  font-size: 1.03em;
   width: 306px;
   padding: 7px 0;
   margin: 0 auto;
   background: #fff;
-  font-weight: bold;
+  font-weight: 600;
   color: #FF4912;
   border-radius: 4px;
   box-shadow: 0 3px 10px 3px rgba(0, 0, 0, 0.065);
 }
-.login-add-coin-selection-title .small {
+.auth-main .login-add-coin-selection-title .small {
   font-size: 0.9em;
 }

@@ -4,17 +4,16 @@ var currencyArr = [{ 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dol
 // TODO: add currency localstorage cache
 // note: current implementation doesn't permit too often updates
 //       due to possibility of ban for abuse
-$(document).ready(function(e) {
+
+function initReferenceCurrency() {
   var outPut = '',
       defaultActive = '',
       helper = new helperProto(),
       api = new apiProto();
 
-  api.testConnection();
-
   for (var i in currencyArr)
   {
-	  defaultActive = '';
+    defaultActive = '';
 
     if ((helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency) === currencyArr[i].shortName) {
       defaultActive = 'selected';
@@ -32,15 +31,16 @@ $(document).ready(function(e) {
   }
 
   $('.currency-loop').html(outPut);
-  	$('.country-li').on('click',function(){
-      var id = $(this).attr('data-id');
 
-      helper.setCurrency(currencyArr[id].shortName);
-      defaultCurrency = currencyArr[id].shortName;
-      updateRates(null, null, null, true);
-      $('.country-li').removeClass('selected');
-    	$(this).addClass('selected');
-	});
+  $('.country-li').on('click',function(){
+    var id = $(this).attr('data-id');
+
+    helper.setCurrency(currencyArr[id].shortName);
+    defaultCurrency = currencyArr[id].shortName;
+    updateRates(null, null, null, true);
+    $('.country-li').removeClass('selected');
+    $(this).addClass('selected');
+  });
 
   $('.top-menu .item').click(function() {
     $('.top-menu .item').each(function(index, item) {
@@ -54,4 +54,4 @@ $(document).ready(function(e) {
   $('.lnk-logout').click(function() {
     helper.logout();
   });
-});
+}

@@ -118,7 +118,7 @@ function addCoinButtonNextAction() {
   if (coinsSelectedToAdd[0]) {
     $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
     if (!isIguana) $('.btn-signin').removeClass('disabled');
-    if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'index') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+    if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
     else $('#passphrase').val('');
     helper.toggleModalWindow('add-new-coin-form', 300);
   }

@@ -69,22 +69,37 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 helperProto.prototype.openPage = function(url) {
   var localPageUrl;
 
+  console.log(url);
+  $('body').removeClass('modal-open');
+  clearInterval(dashboardUpdateTimer);
   switch (url) {
     case 'login':
-      localPageUrl = 'index.html';
+      document.location.hash = '#login';
+      $('body').html(loginTemplate);
+      initAuthCB();
+      //localPageUrl = 'index.html';
       break;
     case 'create-account':
-      localPageUrl = 'create-account.html';
+      document.location.hash = '#create-account';
+      $('body').html(signupTemplate);
+      initAuthCB();
+      //localPageUrl = 'create-account.html';
       break;
     case 'dashboard':
-      localPageUrl = 'dashboard.html';
+      document.location.hash = '#dashboard';
+      //localPageUrl = 'dashboard.html';
+      $('body').html(dashboardTemplate);
+      initDashboard();
       break;
     case 'settings':
-      localPageUrl = 'reference-currency.html';
+      document.location.hash = '#settings';
+      //localPageUrl = 'reference-currency.html';
+      $('body').html(referenceCurrencyTemplate);
+      initReferenceCurrency();
       break;
   }
 
-  document.location = localPageUrl;
+  //document.location = localPageUrl;
 }
 
 helperProto.prototype.checkSession = function(returnVal) {
@@ -148,7 +163,8 @@ helperProto.prototype.logout = function(noRedirect) {
     // in case something went bad
     if (coindWalletLockCount === 0) {
       localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
-      helperProto.prototype.openPage('login');
+      //helperProto.prototype.openPage('login');
+      document.location.hash = '#login';
     }
 
     helperProto.prototype.logoutCoind();
@@ -195,10 +211,12 @@ helperProto.prototype.getCurrency = function() {
 }
 
 helperProto.prototype.getCurrentPage = function() {
-  var currentPageComponents = window.location.href.split('/'),
+  /*var currentPageComponents = window.location.href.split('/'),
       currentPage = currentPageComponents[currentPageComponents.length - 1].split('.html');
 
-  return currentPage[0];
+  return currentPage[0];*/
+
+  return document.location.hash.replace('#', '');
 }
 
 helperProto.prototype.syncStatus = function() {

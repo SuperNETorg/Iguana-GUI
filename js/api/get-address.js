@@ -23,7 +23,7 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
       apiProto.prototype.errorHandler(response, coin);
 
       if (dev.showConsoleMessages && dev.isDev) console.log(response);
-    }
+    },
     success: function(response) {
  	    result = response.result; // non-iguana
     }
