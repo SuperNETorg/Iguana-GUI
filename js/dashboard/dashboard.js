@@ -37,7 +37,11 @@ function initPage() {
     }
   } else {
     // load auth
-    helper.openPage('login');
+    if (document.location.hash === '#create-account') {
+      helper.openPage('create-account');
+    } else {
+      helper.openPage('login');
+    }
   }
 }
 

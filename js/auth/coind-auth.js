@@ -47,7 +47,7 @@ function authAllAvailableCoindCB(result, key) {
   coindAuthResults[key] = result;
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
-    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'index' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true); //alert('Wrong passphrase!');
+    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true); //alert('Wrong passphrase!');
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
     result = false;
   }
