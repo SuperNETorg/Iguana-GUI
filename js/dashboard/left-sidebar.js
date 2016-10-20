@@ -6,7 +6,7 @@
 var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\" data-coin-id=\"{{ coin_id }}\" data-coin-balance-value=\"{{ coin_balance_unformatted }}\">' +
                                     '<div class=\"coin\">' +
                                       '<i class=\"icon cc {{ id }}-alt\"></i>' +
-                                      '<span class=\"name\">{{ name }}</span>' +
+                                      '<div class=\"name\">{{ name }}</div>' +
                                     '</div>' +
                                     '<div class=\"balance\">' +
                                       '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id_uc }}</div>' +

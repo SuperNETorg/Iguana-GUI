@@ -20,3 +20,70 @@
     left: 21.7%;
   }
 }
+
+@media screen and (max-width: 1366px) {
+  .coins {
+    min-width: 200px;
+    width: 20%;
+  }
+  .account-coins-repeater .item .coin .name:before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 15px;
+    height: 17px;
+    right: 0;
+
+    background: -moz-linear-gradient(left, rgba(0,0,0,0.65) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(right, rgba(0,0,0,0.65) 0%,rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+  .account-coins-repeater .item.active .coin .name:before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 15px;
+    height: 17px;
+    right: 0;
+
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
+  }
+  .transactions-list-repeater .item .progress-status {
+    max-width: 70px;
+  }
+  .transactions-list-repeater .item .status {
+    width: 76px;
+  }
+  .transactions-unit {
+    max-width: 75%;
+    margin-left: 70px;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .transactions-list-repeater .item .hash {
+    max-width: 338px;
+    overflow: hidden;
+    position: relative;
+    top: 8px;
+  }
+  .transactions-list-repeater .item .hash:before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 10%;
+    height: 25px;
+    margin-top: -2px;
+    right: 0;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+}

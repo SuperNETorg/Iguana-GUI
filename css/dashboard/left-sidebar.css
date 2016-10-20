@@ -45,7 +45,9 @@
   font-weight: normal;
   color: #858690;
   position: relative;
-  top: -10px;
+  top: -4px;
+  overflow: hidden;
+  display: inline-block;
 }
 .account-coins-repeater .item .balance {
   float: right;
