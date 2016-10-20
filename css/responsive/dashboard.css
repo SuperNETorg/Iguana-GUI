@@ -4,29 +4,29 @@
  */
 
 @media screen and (min-width: 1280px) {
-  .account-coins-repeater .item.active:after {
+  .dashboard .account-coins-repeater .item.active:after {
     left: 23%;
   }
 }
 
 @media screen and (min-width: 1440px) {
-  .account-coins-repeater .item.active:after {
+  .dashboard .account-coins-repeater .item.active:after {
     left: 22%;
   }
 }
 
 @media screen and (min-width: 1600px) {
-  .account-coins-repeater .item.active:after {
+  .dashboard .account-coins-repeater .item.active:after {
     left: 21.7%;
   }
 }
 
 @media screen and (max-width: 1366px) {
-  .coins {
+  .dashboard .coins {
     min-width: 200px;
     width: 20%;
   }
-  .account-coins-repeater .item .coin .name:before {
+  .dashboard .account-coins-repeater .item .coin .name:before {
     content: '';
     display: block;
     position: absolute;
@@ -39,7 +39,7 @@
     background: -webkit-linear-gradient(right, rgba(0,0,0,0.65) 0%,rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
   }
-  .account-coins-repeater .item.active .coin .name:before {
+  .dashboard .account-coins-repeater .item.active .coin .name:before {
     content: '';
     display: block;
     position: absolute;
@@ -52,26 +52,26 @@
     background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
   }
-  .transactions-list-repeater .item .progress-status {
+  .dashboard .transactions-list-repeater .item .progress-status {
     max-width: 70px;
   }
-  .transactions-list-repeater .item .status {
+  .dashboard .transactions-list-repeater .item .status {
     width: 76px;
   }
-  .transactions-unit {
+  .dashboard .transactions-unit {
     max-width: 75%;
     margin-left: 70px;
   }
 }
 
 @media screen and (max-width: 1300px) {
-  .transactions-list-repeater .item .hash {
+  .dashboard .transactions-list-repeater .item .hash {
     max-width: 338px;
     overflow: hidden;
     position: relative;
     top: 8px;
   }
-  .transactions-list-repeater .item .hash:before {
+  .dashboard .transactions-list-repeater .item .hash:before {
     content: '';
     display: block;
     position: absolute;

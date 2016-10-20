@@ -75,31 +75,30 @@ helperProto.prototype.openPage = function(url) {
   switch (url) {
     case 'login':
       document.location.hash = '#login';
+      document.title = 'Iguana / Login';
       $('body').html(loginTemplate);
       initAuthCB();
-      //localPageUrl = 'index.html';
       break;
     case 'create-account':
       document.location.hash = '#create-account';
+      document.title = 'Iguana / Create account';
       $('body').html(signupTemplate);
       initAuthCB();
       //localPageUrl = 'create-account.html';
       break;
     case 'dashboard':
       document.location.hash = '#dashboard';
-      //localPageUrl = 'dashboard.html';
+      document.title = 'Iguana / Dashboard';
       $('body').html(dashboardTemplate);
       initDashboard();
       break;
     case 'settings':
       document.location.hash = '#settings';
-      //localPageUrl = 'reference-currency.html';
+      document.title = 'Iguana / Settings';
       $('body').html(referenceCurrencyTemplate);
       initReferenceCurrency();
       break;
   }
-
-  //document.location = localPageUrl;
 }
 
 helperProto.prototype.checkSession = function(returnVal) {

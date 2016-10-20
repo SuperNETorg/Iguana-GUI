@@ -10,7 +10,6 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
       postData = apiProto.prototype.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin);
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
-  // TODO(?): add error
   $.ajax({
     url: fullUrl,
     cache: false,

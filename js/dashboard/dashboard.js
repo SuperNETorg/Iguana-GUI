@@ -16,20 +16,16 @@ var defaultCurrency = '',
     dashboardUpdateTimer;
 
 $(document).ready(function() {
-  //document.title = 'Iguana / Dashboard';
-  //console.log(document.location);
-  //document.location.hash = "dashb";
   var api = api = new apiProto();
   api.testConnection(initPage);
 });
 
 function initPage() {
-  var session = new helperProto();
+  var helper = new helperProto();
 
-  if (session.checkSession(true)) {
+  if (helper.checkSession(true)) {
     if (document.location.hash === '#dashboard' || !document.location.hash) {
-      $('body').html(dashboardTemplate);
-      initDashboard();
+      helper.openPage('dashboard');
       applyDashboardResizeFix();
 
       $(window).resize(function() {
@@ -37,13 +33,11 @@ function initPage() {
       });
     }
     if (document.location.hash === '#settings') {
-      $('body').html(referenceCurrencyTemplate);
-      initReferenceCurrency();
+      helper.openPage('settings');
     }
   } else {
     // load auth
-    $('body').html(loginTemplate);
-    initAuthCB();
+    helper.openPage('login');
   }
 }
 
