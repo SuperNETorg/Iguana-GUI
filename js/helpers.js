@@ -40,8 +40,10 @@ helperProto.prototype.reindexAssocArray = function(array) {
   return _array;
 }
 
+//TODO: This is a temporal solution until the Bootstrap modal is integrated.
 helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
-  var modalWindow = $('.' + formClassName);
+  var modalWindow = $('.' + formClassName),
+      viewportWidth = $(window).width();
 
   if (modalWindow.hasClass('fade')) {
     modalWindow.removeClass('hidden');
@@ -51,6 +53,17 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 
     setTimeout(function() {
       modalWindow.removeClass('fade');
+      if (viewportWidth < 920) {
+        $('.modal', modalWindow).addClass('modal-full-width');
+      }
+      $(window).resize(function () {
+        viewportWidth = $(window).width();
+        if (viewportWidth < 920) {
+          $('.modal', modalWindow).addClass('modal-full-width');
+        } else {
+          $('.modal', modalWindow).removeClass('modal-full-width');
+        }
+      })
     }, 10);
   } else {
     modalWindow.addClass('fade');
@@ -61,6 +74,7 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
       modalWindow.addClass('fade');
       $('.form-container').removeClass('blur');
       if ($('.form-container').length === $('.form-container').not(":visible").length) $('.main').removeClass('blur');
+      $('.modal', modalWindow).removeClass('modal-full-width');
     }, timeout);
   }
 }

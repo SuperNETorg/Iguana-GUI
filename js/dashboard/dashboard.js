@@ -26,11 +26,6 @@ function initPage() {
   if (helper.checkSession(true)) {
     if (document.location.hash === '#dashboard' || !document.location.hash) {
       helper.openPage('dashboard');
-      applyDashboardResizeFix();
-
-      $(window).resize(function() {
-        applyDashboardResizeFix();
-      });
     }
     if (document.location.hash === '#settings') {
       helper.openPage('settings');
@@ -43,31 +38,6 @@ function initPage() {
       helper.openPage('login');
     }
   }
-}
-
-/* not the best solution but it works */
-function applyDashboardResizeFix() {
-  $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' }); // margin fix on low res screens
-  // tx unit resize
-  var screenWidthThreshold = false;
-  if ($(window).width() > 1368) {
-    screenWidthThreshold = true;
-  }
-  $('.transactions-unit').css({ 'max-width': screenWidthThreshold ? 1000 : Math.floor($('.main-content').width() - $('.coins').width() - 120) });
-  $('.transactions-unit').css({ 'width': Math.floor($('.main-content').width() - $('.coins').width() - 120) });
-  // hash shading
-  $('.transactions-list-repeater .item .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.35 -
-                                                                         $('.transactions-list-repeater .item:first-child .status').width() -
-                                                                         $('.transactions-list-repeater .item:first-child .amount').width() -
-                                                                         $('.transactions-list-repeater .item:first-child .progress-status').width()) });
-  // coin tiles on the left
-  $('.account-coins-repeater .item').each(function(index, item) {
-    var coin = $(this).attr('data-coin-id');
-    $('.account-coins-repeater .item.' + coin + ' .coin .name').css({ 'width': Math.floor($('.account-coins-repeater .item.' + coin).width() -
-                                                                                          $('.account-coins-repeater .item.' + coin + ' .coin .icon').width() -
-                                                                                          $('.account-coins-repeater .item.' + coin + ' .balance').width() - 50) });
-  });
-  opacityToggleOnAddCoinRepeaterScroll();
 }
 
 function updateDashboardView(timeout) {

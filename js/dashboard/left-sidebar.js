@@ -86,6 +86,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     if ($('.account-coins-repeater').html().indexOf('Loading') > -1) $('.account-coins-repeater').html('');
     $('.account-coins-repeater').append(result);
     bindClickInAccountCoinRepeater();
+    bindMobileView();
   }
 
   // sort coins
@@ -139,4 +140,26 @@ function bindClickInAccountCoinRepeater() {
       }
     });
   });
+}
+
+// on les then 768px working this function
+function bindMobileView() {
+  var coins = $('aside.coins'), item, transactionsUnit = $('.transactions-unit');
+  item = $('.item.active', coins);
+  mobileView(coins, item, transactionsUnit);
+  $(window).resize(function () {
+    mobileView(coins, item, transactionsUnit);
+  })
+}
+function mobileView(coins, item, transactionsUnit) {
+  item = $('.item.active', coins);
+  if ($(window).width() > 767) {
+    coins.css({'min-width': '230px', 'max-width': '250px'});
+    item.removeClass('hidden-after');
+    transactionsUnit.removeAttr('style');
+  } else {
+    coins.removeAttr('style');
+    item.addClass('hidden-after');
+    transactionsUnit.css('margin-left', '0px');
+  }
 }

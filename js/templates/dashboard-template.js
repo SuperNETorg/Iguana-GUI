@@ -10,15 +10,10 @@ var dashboardTemplate =
       '<nav class="navbar top unselectable navbar-inverse">' +
         '<div class="container-fluid">' +
           '<div class="navbar-header">' +
-            '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-menu" aria-expanded="false">' +
-              '<span class="sr-only">Toggle navigation</span>' +
-              '<span class="icon-bar"></span>' +
-              '<span class="icon-bar"></span>' +
-              '<span class="icon-bar"></span>' +
-            '</button>' +
             '<div class="navbar-brand">Iguana</div>' +
+            '<div class="cursor-pointer lnk-logout">Log out</div>' +
           '</div>' +
-          '<div class="collapse navbar-collapse top unselectable" id="top-menu">' +
+          '<div class="top" id="top-menu">' +
             '<ul class="nav navbar-nav top-menu">' +
               '<li class="item cursor-pointer text-center active" data-url="dashboard">' +
                 '<div class="text">Dashboard</div>' +
@@ -37,9 +32,10 @@ var dashboardTemplate =
                 '<div class="border"></div>' +
               '</li>' +
             '</ul>' +
-            '<ul class="nav navbar-nav navbar-right">' +
-              '<li class="text-center"><div class="cursor-pointer lnk-logout">Log out</div></li>' +
-            '</ul>' +
+            '<div class="nav-buttons">' +
+              '<div class="nav-left"></div>' +
+              '<div class="nav-right"></div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</nav>' +
@@ -54,13 +50,13 @@ var dashboardTemplate =
           '</div>' +
         '</div>' +
         '<div class="clearfix"></div>' +
-        '<aside class="coins unselectable col-md-4 col-sm-4 col-xs-10">' +
+        '<aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">' +
           '<div class="row">' +
             '<div class="account-coins-repeater">Loading...</div>' +
             '<button class="btn btn-add-coin">Add coin</button>' +
           '</div>' +
         '</aside>' +
-        '<div class="transactions-unit col-md-8 col-md-offset-1 col-sm-7 col-sm-offset-1 col-xs-10">' +
+        '<div class="transactions-unit col-md-8 col-sm-7 col-xs-12">' +
           '<div class="row">' +
             '<div class="top-bar unselectable">' +
               '<div class="active-coin-balance">' +
