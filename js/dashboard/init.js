@@ -23,7 +23,6 @@ function initDashboard() {
   $('body').append(addCoinModalTemplate);
   $('body').append(addCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
-  $('body').append(loaderIconTemplate);
 
   // message modal
   helper.initMessageModal();

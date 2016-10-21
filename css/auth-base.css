@@ -85,7 +85,7 @@
 .auth-main .bi_interface-arrow-left {
   color: #fff;
   font-size: 26px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-left: 10px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   position: absolute;
@@ -181,7 +181,7 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin: -2px 17px 0 0;
+  margin: -4px 17px 0 0;
   vertical-align: middle;
   background: transparent;
   border: solid 2px #C7CCD0;

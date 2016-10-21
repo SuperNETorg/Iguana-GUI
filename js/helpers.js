@@ -67,9 +67,6 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 
 // simple page router
 helperProto.prototype.openPage = function(url) {
-  var localPageUrl;
-
-  console.log(url);
   $('body').removeClass('modal-open');
   clearInterval(dashboardUpdateTimer);
   switch (url) {
@@ -84,7 +81,6 @@ helperProto.prototype.openPage = function(url) {
       document.title = 'Iguana / Create account';
       $('body').html(signupTemplate);
       initAuthCB();
-      //localPageUrl = 'create-account.html';
       break;
     case 'dashboard':
       document.location.hash = '#dashboard';

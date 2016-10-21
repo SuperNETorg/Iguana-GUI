@@ -3,39 +3,14 @@
  *
  */
 
-  @import url('bootstrap.min.css');
-  @import url('common.css');
-  @import url('fonts/cryptocoins.min.css');
-  @import url('fonts/budicon.min.css');
-
-  @import url('auth-base.css'); /* order matters */
-  @import url('dashboard/left-sidebar.css');
-  @import url('dashboard/transactions-unit.css');
-  @import url('dashboard/add-coin-modal.css');
-  @import url('dashboard/passphrase-modal.css');
-  @import url('receiving-coins.css');
-  @import url('send-to-address.css');
-  @import url('reference-currency.css');
-
-  .form-container.add-new-coin-form {
-    background: none;
-  }
-
-  body,
-  html {
-    font-family: 'Proxima Nova', sans-serif;
-  }
-  body.modal-open .dashboard {
+  body.modal-open .dashboard,
+  .dashboard.blur {
     -webkit-filter: blur(2px);
     filter: blur(2px);
   }
   .dashboard {
     height: 100%;
     background: #F5F8FB;
-  }
-  .dashboard.blur {
-    -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
-    filter: blur(2px);
   }
   .dashboard .top {
     text-align: center;
@@ -58,7 +33,7 @@
     text-align: center;
     width: calc(100% - 10%);
   }
-  .top-menu {
+  .dashboard .top-menu {
     display: inline-block;
     margin: 0 auto;
     margin-bottom: 8px;
@@ -66,7 +41,7 @@
     vertical-align: top;
   }
   /* radial like highlight effect */
-  .top-menu:before {
+  .dashboard .top-menu:before {
     content: '';
     width: 100%;
     height: 100%;
@@ -84,7 +59,7 @@
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#222539', GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   }
-  .top-menu .item {
+  .dashboard .top-menu .item {
     font-size: 1.05em;
     font-weight: 600;
     margin: 0 5px;
@@ -93,24 +68,24 @@
     z-index: 100;
     text-shadow: 0 0 0 #8A8B93;
   }
-  .top-menu .item .text {
+  .dashboard .top-menu .item .text {
     padding: 0 17px;
     height: 38px;
     margin-top: 2px;
     line-height: 34px;
   }
-  .top-menu .item .border {
+  .dashboard .top-menu .item .border {
     width: 100%;
     height: 3px;
     border-radius: 4px;
     padding: 0 22px;
     background: transparent;
   }
-  .top-menu .item.active .border {
+  .dashboard .top-menu .item.active .border {
     background: #FE450D;
     box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
   }
-  .top-menu .item.active {
+  .dashboard .top-menu .item.active {
     color: #fff;
     font-weight: 600;
     text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
@@ -122,42 +97,42 @@
     right: 30px;
     top: 20px;
   }
-  .main-content {
+  .dashboard .main-content {
     margin: 0 auto;
     max-width: 1500px;
   }
-  .balance-block .label {
+  .dashboard .balance-block .label {
     color: #95969F;
     font-size: 0.92em;
     font-weight: normal;
     padding: 0;
   }
-  .balance-block .balance {
+  .dashboard .balance-block .balance {
     font-size: 1.7em;
     font-weight: 600;
   }
-  .balance-block .balance .value {
+  .dashboard .balance-block .balance .value {
     padding-right: 5px;
   }
-  .coins,
-  .transactions-unit {
+  .dashboard .coins,
+  .dashboard .transactions-unit {
     margin-top: 18px;
   }
-  .coins {
+  .dashboard .coins {
     max-width: 250px;
     min-width: 230px;
   }
-  .active-coin-balance {
+  .dashboard .active-coin-balance {
     font-size: 1.7em;
     font-weight: 700;
     padding-left: 30px;
     padding-top: 25px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
-  .active-coin-balance .value {
+  .dashboard .active-coin-balance .value {
     padding-right: 5px;
   }
-  .active-coin-balance-currency {
+  .dashboard .active-coin-balance-currency {
     font-size: 1.1em;
     font-weight: 600;
     padding-left: 30px;
@@ -165,10 +140,13 @@
     top: -3px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
-  .active-coin-balance-currency .value {
+  .dashboard .active-coin-balance-currency .value {
     padding-right: 5px;
   }
-  .btn.disabled,
-  .btn.disabled:focus {
+  .dashboard .btn.disabled,
+  .dashboard .btn.disabled:focus {
     pointer-events: none;
+  }
+  .dashboard .form-container.add-new-coin-form {
+    background: none;
   }

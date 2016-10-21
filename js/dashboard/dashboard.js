@@ -53,8 +53,8 @@ function applyDashboardResizeFix() {
   if ($(window).width() > 1368) {
     screenWidthThreshold = true;
   }
-  $('.transactions-unit').css({ 'max-width': screenWidthThreshold ? 1000 : Math.floor($('.main-content').width() - $('.coins').width() - 110) });
-  $('.transactions-unit').css({ 'width': Math.floor($('.main-content').width() - $('.coins').width() - 110) });
+  $('.transactions-unit').css({ 'max-width': screenWidthThreshold ? 1000 : Math.floor($('.main-content').width() - $('.coins').width() - 120) });
+  $('.transactions-unit').css({ 'width': Math.floor($('.main-content').width() - $('.coins').width() - 120) });
   // hash shading
   $('.transactions-list-repeater .item .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.35 -
                                                                          $('.transactions-list-repeater .item:first-child .status').width() -

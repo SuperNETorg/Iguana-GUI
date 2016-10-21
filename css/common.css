@@ -16,6 +16,7 @@
     left: 0;
     top: 0;
     position: absolute;
+    font-family: 'Proxima Nova', sans-serif;
   }
   .orange-gradient,
   .btn.orange-gradient:focus {
@@ -98,7 +99,6 @@
     margin: 0px auto;
     width: 100px;
     height: 100px;
-    display: none;
   }
   .circle {
     animation: rotate 2s linear infinite;

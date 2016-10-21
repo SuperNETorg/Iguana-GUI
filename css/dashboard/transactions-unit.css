@@ -49,7 +49,7 @@
   padding-right: 30px;
   position: relative;
   top: -52px;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 .transactions-list {
   background: #fff;
@@ -85,6 +85,7 @@
 .transactions-list-repeater .item .amount {
   width: 152px;
   text-align: right;
+  margin-right: 5%;
 }
 .transactions-list-repeater .item .hash {
   width: 41%;
@@ -125,25 +126,25 @@
 .transactions-list-repeater .item .progress-status .icon:before {
   font-family: 'budicon';
   font-size: 1.2em;
-  width: 70px;
   height: 20px;
   display: block;
   font-style: normal;
   font-weight: normal;
   position: relative;
   top: 2px;
-  padding-left: 70%;
 }
 .transactions-list-repeater .item.receive .progress-status .icon:before {
   content: '\eb47';
   color: #CBCFD3;
   top: 4px;
+  left: 1px;
   font-size: 1.4em;
 }
 .transactions-list-repeater .item.send .progress-status .icon:before {
   content: '\eb4b';
   color: #CBCFD3;
   top: 4px;
+  left: 1px;
   font-size: 1.4em;
 }
 .transactions-list-repeater .item.process .progress-status .icon:before {
