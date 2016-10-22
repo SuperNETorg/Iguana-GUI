@@ -23,10 +23,10 @@ apiProto.prototype.errorHandler = function(response, index) {
   }
 
   if (response.error === 'coin is busy processing') {
-    if ($('#debug-sync-info') && index !== undefined) {
-      if (!coinsInfo[index]) coinsInfo[index] = [];
-      coinsInfo[index].connection = true;
+    if (!coinsInfo[index]) coinsInfo[index] = [];
+    coinsInfo[index].connection = true;
 
+    if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
       if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug)
         $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
     }
