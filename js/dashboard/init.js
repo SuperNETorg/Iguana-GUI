@@ -176,4 +176,10 @@ function initDashboard() {
   });
 
   bindCoinRepeaterSearch();
+
+  applyDashboardResizeFix();
+
+  $(window).resize(function() {
+    applyDashboardResizeFix();
+  });
 }

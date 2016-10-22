@@ -26,7 +26,8 @@
   top: -4px;
 }
 .account-coins-repeater .item .balance .coin-value {
-  font-size: 18px;
+  font-size: 1.35em;
+  text-align: right;
 }
 .account-coins-repeater .item .coin {
   float: left;
@@ -38,7 +39,7 @@
 }
 .account-coins-repeater .item .coin i {
   font-size: 2.5em;
-  margin: 25px 4px 0 12px;
+  margin: 25px 10px 0 12px;
   display: inline-block;
   color: #D3D3D4;
 }

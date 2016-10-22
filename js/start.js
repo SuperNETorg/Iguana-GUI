@@ -15,12 +15,8 @@ function initPage() {
     if (document.location.hash === '#settings') {
       helper.openPage('settings');
     } else {
+      console.log('dash');
       helper.openPage('dashboard');
-      applyDashboardResizeFix();
-
-      $(window).resize(function() {
-        applyDashboardResizeFix();
-      });
     }
   } else {
     // load auth

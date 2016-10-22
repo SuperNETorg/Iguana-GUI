@@ -101,6 +101,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
   $('.account-coins-repeater').html(sortedAccountCoinsRepeater);
   bindClickInAccountCoinRepeater();
+  applyDashboardResizeFix();
 
   // run balances and tx unit update once left sidebar is updated
   if (index === Object.keys(coinBalances).length) {
