@@ -1,9 +1,9 @@
 /*!
- * Iguana dashboard/add-coin-passphrase template
+ * Iguana dashboard/send-coin-passphrase template
  *
  */
 
-var addCoinPassphraseTemplate =
+var sendCoinPassphraseTemplate =
 '<section class="form-container login-form-modal hidden fade">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login">' +

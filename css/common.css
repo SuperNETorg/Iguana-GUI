@@ -216,3 +216,6 @@
       stroke: #FF7D56;
     }
   }
+  .app-loader {
+    margin-top: 20px;
+  }

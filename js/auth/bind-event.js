@@ -4,6 +4,7 @@
  */
 
 function addAuthorizationButtonAction(buttonClassName) {
+  $('.btn-' + buttonClassName).off();
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {

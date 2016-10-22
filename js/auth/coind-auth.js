@@ -8,7 +8,7 @@ var addCoinResponses = [],
     coinsSelectedToAdd,
     buttonClassNameCB = '';
 
-function authAllAvailableCoind() {
+function authAllAvailableCoind(modalClassName) {
   var api = new apiProto(),
       helper = new helperProto(),
       result = false;
@@ -17,7 +17,7 @@ function authAllAvailableCoind() {
 
   if (!coinsSelectedToAdd) helper.prepMessageModal('Please select a wallet', 'blue', true);
   else
-    api.walletLock(coinsSelectedToAdd[0], api.walletLogin($('#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
+    api.walletLock(coinsSelectedToAdd[0], api.walletLogin($((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
 
   // multi-wallet login
   // don't remove
@@ -77,22 +77,23 @@ function authAllAvailableCoindCB(result, key) {
       helper.openPage('dashboard');
     } else {
       if (!isAnyCoindLoginError) {
-        helper.toggleModalWindow('login-form-modal', 300);
+        helper.toggleModalWindow('add-coin-login-form', 300);
+        $('body').removeClass('modal-open');
         if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
       }
     }
   }
 }
 
-function encryptCoindWallet() {
+function encryptCoindWallet(modalClassName) {
   var api = new apiProto(),
       helper = new helperProto(),
-      passphraseInput = $('#passphrase').val(),
+      passphraseInput = $((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(),
       result = false;
 
   if (coinsSelectedToAdd[0]) selectedCoindToEncrypt = coinsSelectedToAdd[0];
 
-  if (verifyNewPassphrase()) {
+  if (verifyNewPassphrase(modalClassName)) {
     var walletEncryptResponse = api.walletEncrypt(passphraseInput, selectedCoindToEncrypt);
 
     if (walletEncryptResponse !== -15) {
@@ -100,9 +101,16 @@ function encryptCoindWallet() {
       $('.non-iguana-walletpassphrase-errors').html('');
       helper.prepMessageModal(selectedCoindToEncrypt + ' wallet is created. Login to access it.', 'green', true);
       //alert('Wallet is encrypted. Please restart ' + selectedCoindToEncrypt + '.');
-      helper.openPage('login');
+      if (helper.getCurrentPage() === 'dashboard') {
+        helper.toggleModalWindow('add-coin-create-wallet-form', 300);
+      } else {
+        helper.openPage('login');
+      }
     } else {
       helper.prepMessageModal('Wallet is already encrypted with another passphrase!', 'red', true);
+      if (helper.getCurrentPage() === 'dashboard') {
+        helper.toggleModalWindow('add-coin-create-wallet-form', 300);
+      }
       //$('.login-input-directions-error.center.offset-bottom-sm.col-red.unselectable').html('Wallet is already encrypted with another passphrase!');
       //$('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Wallet is already encrypted with another passphrase!</div>');
       result = false;

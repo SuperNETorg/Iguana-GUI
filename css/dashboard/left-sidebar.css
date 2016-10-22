@@ -70,7 +70,7 @@
   background: linear-gradient(to bottom, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fe450d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe640d', endColorstr='#fe450d', GradientType=0); /* IE6-9 */
 }
-.account-coins-repeater .item.active:not(.hidden-after):after {
+.account-coins-repeater .item.active:after {
   content: '\eb14';
   color: #C8CCD0;
   font-family: 'budicon';
@@ -78,7 +78,7 @@
   font-weight: normal;
   text-shadow: none;
   position: absolute;
-  right: -40px;
+  right: -50px;
   top: 25px;
 }
 .btn-add-coin {

@@ -16,7 +16,9 @@
 .add-new-coin-form,
 .login-form-modal,
 .send-coin-form,
-.send-coin-confirm-passphrase {
+.send-coin-confirm-passphrase,
+.add-coin-login-form,
+.add-coin-create-wallet-form {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -24,17 +26,26 @@
   opacity: 1;
   transition: all 0.25s;
 }
+.modal,
+.add-coin-create-wallet-form .create-account-form,
+.add-coin-create-wallet-form .verify-passphrase-form {
+  background-color: #f4f7fb;
+}
 .add-new-coin-form.fade,
 .login-form-modal.fade,
 .send-coin-form.fade,
-.send-coin-confirm-passphrase.fade {
+.send-coin-confirm-passphrase.fadem
+.add-coin-login-form.fade,
+.add-coin-create-wallet-form.fade {
   opacity: 0;
   transition: all 0.25s;
 }
 .add-new-coin-form .modal-overlay,
 .login-form-modal .modal-overlay,
 .send-coin-form .modal-overlay,
-.send-coin-confirm-passphrase .modal-overlay {
+.send-coin-confirm-passphrase .modal-overlay,
+.add-coin-login-form .modal-overlay,
+.add-coin-create-wallet-form .modal-overlay {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -67,27 +78,52 @@
   border-radius: 4px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+.modal-add-coin-login-form,
+.modal-add-coin-wallet-create-form {
+  max-height: 640px;
+  width: 80%;
+  max-width: 600px;
+  height: 91%;
+  margin: 0 auto;
+  display: block;
+  margin-top: 13%;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+.add-coin-create-wallet-form .create-account-form,
+.add-coin-create-wallet-form .verify-passphrase-form {
+  height: 100%;
+}
 .modal-full-width {
-  min-width:100%;
+  min-width: 100%;
 }
 .add-new-coin-form .form-content,
 .login-form-modal .form-content ,
 .send-coin-form .form-content,
-.send-coin-confirm-passphrase .form-content {
+.send-coin-confirm-passphrase .form-content,
+.add-coin-login-form .form-content {
   height: 100%;
   background: #F5F8FB;
   padding-top: 60px;
 }
+.auth-main.add-coin-login-form .form-content,
+.add-coin-create-wallet-form .verify-passphrase-form .form-content {
+  padding-top: 110px;
+}
 .add-new-coin-form .form-header,
 .login-form-modal .form-header,
 .send-coin-form .form-header,
-.send-coin-confirm-passphrase .form-header {
+.send-coin-confirm-passphrase .form-header,
+.add-coin-login-form .form-header {
   height: 60px;
   width: 100%;
   position: absolute;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .send-coin-form .bi_interface-arrow-left,
+.add-coin-login-form .bi_interface-cross,
+.add-coin-create-wallet-form .create-account-form .bi_interface-cross,
 .bi_interface-cross {
   color: #fff;
   font-size: 16px;
@@ -96,6 +132,9 @@
   left: 20px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
+}
+#myModal {
+  background: none;
 }
 .form-header .title {
   position: relative;
@@ -297,4 +336,7 @@
 }
 .add-new-coin-form {
   z-index: 500;
+}
+.add-coin-create-wallet-form .login-add-coin-selection {
+  pointer-events: none;
 }

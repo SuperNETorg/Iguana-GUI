@@ -29,7 +29,9 @@ document.write(// crypto libs
                // modal templates
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/message-modal-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/add-coin-template.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/templates/add-coin-passphrase-template.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/templates/add-coin-login-template.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/templates/add-coin-create-wallet-template.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/templates/send-coin-passphrase-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/receive-coin-template.js\">\x3C/script>' +
                // send coin templates
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/send-coin-entry-template.js\">\x3C/script>' +
@@ -46,4 +48,5 @@ document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/dashboard.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-to-address.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/reference-currency.js\">\x3C/script>');
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/reference-currency.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/start.js\">\x3C/script>');

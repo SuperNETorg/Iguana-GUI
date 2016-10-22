@@ -10,7 +10,7 @@ function initAuthCB() {
       helper = new helperProto(),
       selectedCoindToEncrypt;
 
-  localStorage.setVal('iguana-active-coin', {});
+  //localStorage.setVal('iguana-active-coin', {});
 
   // message modal
   helper.initMessageModal();
@@ -27,15 +27,19 @@ function initAuthCB() {
     $('.add-new-coin-form .form-header .title').html('Create new wallet');
     $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
 
+    $('.login-add-coin-selection-title').off();
     $('.login-add-coin-selection-title').click(function() {
       addCoinButtonCB();
     });
 
-    $('.btn-close,.modal-overlay').click(function() {
+    $('.add-new-coin-form .btn-close,.modal-overlay').off();
+    $('.add-new-coin-form .btn-close,.modal-overlay').click(function() {
       helper.toggleModalWindow('add-new-coin-form', 300);
       coinsSelectedByUser = [];
     });
-    $('.btn-next').click(function() {
+
+    $('.add-new-coin-form .btn-next').off();
+    $('.add-new-coin-form .btn-next').click(function() {
       addCoinButtonNextAction();
     });
     opacityToggleOnAddCoinRepeaterScroll();
@@ -46,6 +50,7 @@ function initAuthCB() {
     } else {
       $('.login-form').removeClass('hidden');
     }
+    $('.login-form .btn-signup').off();
     $('.login-form .btn-signup').click(function() {
       helper.openPage('create-account');
     });
@@ -63,19 +68,27 @@ function initAuthCB() {
     }
 
     // load add coin template
-    $('body').append(addCoinModalTemplate);
-    $('.add-new-coin-form .form-header .title').html('Create new wallet');
-    $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+    if (helper.getCurrentPage() === 'create-account') {
+      $('body').append(addCoinModalTemplate);
+      $('.add-new-coin-form .form-header .title').html('Create new wallet');
+      $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+    }
 
+    $('.login-add-coin-selection-title').off();
     $('.login-add-coin-selection-title').click(function() {
       addCoinButtonCB();
     });
 
-    $('.btn-close,.modal-overlay').click(function() {
-      helper.toggleModalWindow('add-new-coin-form', 300);
-      coinsSelectedByUser = [];
-    });
-    $('.btn-next').click(function() {
+    if (helper.getCurrentPage() === 'create-account') {
+      $('.add-new-coin-form .btn-close,.modal-overlay').off();
+      $('.add-new-coin-form .btn-close,.modal-overlay').click(function() {
+        helper.toggleModalWindow('add-new-coin-form', 300);
+        coinsSelectedByUser = [];
+      });
+    }
+
+    $('.add-new-coin-form .btn-next').off();
+    $('.add-new-coin-form .btn-next').click(function() {
       addCoinButtonNextAction();
     });
     opacityToggleOnAddCoinRepeaterScroll();
@@ -87,19 +100,22 @@ function initAuthCB() {
     constructCoinsRepeaterEncrypt();
     helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
 
+    $('.create-account-form .btn-back').off();
     $('.create-account-form .btn-back').click(function() {
       helper.openPage('login');
     });
 
+    $('.verify-passphrase-form .btn-back').off();
     $('.verify-passphrase-form .btn-back').click(function() {
       helper.openPage('create-account');
     });
 
-    $('.paste-from-clipboard-link').click(function() {
+    $('.verify-passphrase-form .paste-from-clipboard-link').off();
+    $('.verify-passphrase-form .paste-from-clipboard-link').click(function() {
       try {
         if (pasteTextFromClipboard)
-          $('#passphrase').val(pasteTextFromClipboard); // not quite appropriate pasting
-          if ($('#passphrase').val().length > 0) $('.btn-add-account').removeClass('disabled');
+          $('.verify-passphrase-form #passphrase').val(pasteTextFromClipboard); // not quite appropriate pasting
+          if ($('.verify-passphrase-form #passphrase').val().length > 0) $('.verify-passphrase-form .btn-add-account').removeClass('disabled');
       } catch(e) {
         // do nothing
       }

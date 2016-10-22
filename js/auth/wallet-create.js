@@ -4,8 +4,8 @@
  */
 var passphraseToVerify;
 
-function verifyNewPassphrase() {
-  if (passphraseToVerify === $('#passphrase').val()) return true;
+function verifyNewPassphrase(modalClassName) {
+  if (passphraseToVerify === $((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val()) return true;
   else return false;
 }
 
@@ -27,6 +27,7 @@ function initCreateAccountForm() {
   $('.generated-passhprase-hidden').val(newPassphrase);
   $('.btn-verify-passphrase').addClass('disabled');
 
+  $('#passphrase-saved-checkbox').off();
   $('#passphrase-saved-checkbox').click(function() {
     if ($('#passphrase-saved-checkbox').prop('checked'))
       $('.btn-verify-passphrase').removeClass('disabled');
@@ -34,6 +35,7 @@ function initCreateAccountForm() {
       $('.btn-verify-passphrase').addClass('disabled');
   });
 
+  $('.verify-passphrase-form .btn-back').off();
   $('.verify-passphrase-form .btn-back').click(function() {
     // TODO: refactor
     // initCreateAccountForm();
@@ -41,11 +43,13 @@ function initCreateAccountForm() {
     helper.openPage('create-account');
   });
 
+  $('.create-account-form .btn-back').off();
   $('.create-account-form .btn-back').click(function() {
     var helper = new helperProto();
     helper.openPage('login');
   });
 
+  $('.btn-verify-passphrase').off();
   $('.btn-verify-passphrase').click(function() {
     if (isIguana) {
       if (selectedCoindToEncrypt) {
