@@ -1,10 +1,10 @@
 /*!
- * Iguana dashboard
+ * Iguana dashboard/base
  *
  */
 
-  body.modal-open .dashboard,
-  .dashboard.blur {
+  .dashboard.blur,
+  body.modal-open .dashboard {
     -webkit-filter: blur(2px);
     filter: blur(2px);
   }
@@ -100,6 +100,18 @@
     position: absolute;
     right: 30px;
     top: 20px;
+  }
+  .lnk-logout {
+    margin-top: 16px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    font-weight: 600;
+    right: 15px;
+    position: absolute;
+  }
+  .navbar-inverse .navbar-brand{
+    color: #fff;
+    font-size: 1.6em;
   }
   .dashboard .main-content {
     margin: 0 auto;

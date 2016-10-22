@@ -1,13 +1,10 @@
 /*!
- * Iguana reference currency
+ * Iguana dashboard/reference-currency
  *
  */
 
 @import url('fonts/flag-icon.min.css');
 
-/*body {
-  background-color: #f4f8fb;
-}*/
 .reference-currency-main h1,
 .reference-currency-main h2,
 .reference-currency-main h3,

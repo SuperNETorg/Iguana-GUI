@@ -8,9 +8,12 @@
 function initAuthCB() {
   var localStorage = new localStorageProto(),
       helper = new helperProto(),
+      api = new apiProto(),
       selectedCoindToEncrypt;
 
-  //localStorage.setVal('iguana-active-coin', {});
+  if (helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
+    localStorage.setVal('iguana-active-coin', {});
+  }
 
   // message modal
   helper.initMessageModal();

@@ -161,6 +161,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) {
           helperProto.prototype.setPortPollResponse();
+          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
         }
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
@@ -168,14 +169,13 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
           apiProto.prototype.checkBackEndConnectionStatus();
 
-          if (dev.isDev && dev.showSyncDebug)
+          if (dev.isDev && dev.showSyncDebug) // debug info
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
 
-          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
           cb.call();
         }
         _index++;
@@ -196,6 +196,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index) {
           helperProto.prototype.setPortPollResponse();
+          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
         }
 
         if (Object.keys(apiProto.prototype.getConf().coins).length - 1 === _index && cb) {
@@ -203,14 +204,13 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
           apiProto.prototype.checkBackEndConnectionStatus();
 
-          if (dev.isDev && dev.showSyncDebug)
+          if (dev.isDev && dev.showSyncDebug) // debug info
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             setInterval(function() {
               if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
               $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }, 1000);
 
-          helperProto.prototype.checkIfIguanaOrCoindIsPresent();
           cb.call();
         }
         _index++;
