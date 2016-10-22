@@ -109,6 +109,7 @@ helperProto.prototype.openPage = function(url) {
       initReferenceCurrency();
       break;
   }
+  helperProto.prototype.checkIfIguanaOrCoindIsPresent();
 }
 
 helperProto.prototype.checkSession = function(returnVal) {
@@ -172,8 +173,7 @@ helperProto.prototype.logout = function(noRedirect) {
     // in case something went bad
     if (coindWalletLockCount === 0) {
       localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
-      //helperProto.prototype.openPage('login');
-      document.location.hash = '#login';
+      helperProto.prototype.openPage('login');
     }
 
     helperProto.prototype.logoutCoind();
@@ -220,11 +220,6 @@ helperProto.prototype.getCurrency = function() {
 }
 
 helperProto.prototype.getCurrentPage = function() {
-  /*var currentPageComponents = window.location.href.split('/'),
-      currentPage = currentPageComponents[currentPageComponents.length - 1].split('.html');
-
-  return currentPage[0];*/
-
   return document.location.hash.replace('#', '');
 }
 
@@ -274,7 +269,7 @@ helperProto.prototype.getPortPollResponse = function() {
       isIguana = setPortPollResponseDS.isIguana;
     }
 
-    if (dev.isDev && dev.showSyncDebug) {
+    if (dev.isDev && dev.showSyncDebug) { // debug info
       if (setPortPollResponseDS.debugHTML) $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
       $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
       setInterval(function() {
@@ -285,8 +280,8 @@ helperProto.prototype.getPortPollResponse = function() {
   }
 }
 
-// TODO: add browser update message if copy/paste is not supported
 helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
+  $(elementId).off();
   $(elementId).click(function() {
     if (!isExecCopyFailed)
       try {
@@ -329,6 +324,7 @@ helperProto.prototype.decimalPlacesFormat = function(value) {
 helperProto.prototype.initMessageModal = function() {
   $('body').append(messageModalTemplate);
 
+  $('#messageModal').off();
   $('#messageModal').click(function() {
     $('#messageModal').removeClass('in');
     setTimeout(function() {
@@ -368,14 +364,18 @@ helperProto.prototype.prepNoDaemonModal = function() {
 helperProto.prototype.prepRequirementsModal = function() {
   helperProto.prototype.prepMessageModal('Minimum daemon configuration to comminicate via http requests and a proxy server.', 'blue', true);
 
-  setTimeout(function() {
+  // "No required daemon is running" message always stays active on top of any ui
+  //  this ensures that users won't interact with any elements until connectivity problems are resolved
+
+  /*setTimeout(function() {
+    $('#messageModal').off();
     $('#messageModal').click(function() {
       $('#messageModal').removeClass('in');
       setTimeout(function() {
         $('#messageModal').hide();
       }, 250);
     });
-  }, 200);
+  }, 200);*/
 }
 
 helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
@@ -386,7 +386,9 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
       if (coinsInfo[key].connection === true) numPortsResponding++;
     }
 
-    if (!isIguana && !numPortsResponding) helperProto.prototype.prepNoDaemonModal();
+    if (!isIguana && !numPortsResponding) {
+      helperProto.prototype.prepNoDaemonModal();
+    }
   });
 }
 
