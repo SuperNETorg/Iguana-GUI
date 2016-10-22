@@ -30,7 +30,7 @@ apiProto.prototype.testConnection = function(cb) {
       dataType: 'text',
       async: true,
       type: 'GET',
-      timeout: 500,
+      timeout: 5000,
       success: function (response) {
         // iguana env
         isIguana = true;

@@ -20,12 +20,10 @@ apiProto.prototype.getBasicAuthHeaderObj = function(conf, coin) {
 
 apiProto.prototype.getBitcoinRPCPayloadObj = function(method, params, coin) {
   if (isIguana)
-    return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"100\", \"params\": [' + (!params ? '' : params) + '] }';
+    return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
   else
     return '{ \"agent\": \"bitcoinrpc\",' +
-              '\"method\": \"' + method + '\", ' +
-              (!isIguana ? '\"timeout\": \"30000\"' : '\"immediate\": \"100\"') + ', ' +
-              '\"params\": [' + (!params ? '' : params) + '] }';
+              '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
 }
 
 apiProto.prototype.getFullApiRoute = function(method, conf, coin) {

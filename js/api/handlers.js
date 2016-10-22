@@ -38,6 +38,7 @@ apiProto.prototype.errorHandler = function(response, index) {
 
   if (response.error === 'null return from iguana_bitcoinRPC') {
     if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed?');
+
     setTimeout(function() {
       helperProto.prototype.logout();
     }, 1000);

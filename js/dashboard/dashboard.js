@@ -20,26 +20,6 @@ $(document).ready(function() {
   api.testConnection(initPage);
 });
 
-function initPage() {
-  var helper = new helperProto();
-
-  if (helper.checkSession(true)) {
-    if (document.location.hash === '#dashboard' || !document.location.hash) {
-      helper.openPage('dashboard');
-    }
-    if (document.location.hash === '#settings') {
-      helper.openPage('settings');
-    }
-  } else {
-    // load auth
-    if (document.location.hash === '#create-account') {
-      helper.openPage('create-account');
-    } else {
-      helper.openPage('login');
-    }
-  }
-}
-
 /* not the best solution but it works */
 function applyDashboardResizeFix() {
   $('.main-content').css({ 'margin': '0 ' + Math.abs((1 - $(window).width() / 1000) * 8) + '%' }); // margin fix on low res screens
