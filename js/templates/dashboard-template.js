@@ -4,7 +4,7 @@
  */
 
 var dashboardTemplate =
-'<div class="container-fluid">' +
+'<div class="container-fluid dashboard-main">' +
   '<div class="row">' +
     '<section class="dashboard hidden main">' +
       '<nav class="navbar top unselectable navbar-inverse">' +
