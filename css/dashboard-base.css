@@ -8,8 +8,15 @@
     -webkit-filter: blur(2px);
     filter: blur(2px);
   }
-  .dashboard-main,
-  .dashboard-main .row {
+  .dashboard .navbar,
+  .dashboard .navbar .container-fluid {
+    padding: 0;
+  }
+  .dashboard .navbar .navbar-brand {
+    margin-left: 0;
+  }
+  .dashboard-main .row,
+  .container-fluid.dashboard-main {
     height: 100%;
   }
   .dashboard {
