@@ -92,13 +92,13 @@ helperProto.prototype.openPage = function(url) {
     case 'login':
       document.location.hash = '#login';
       document.title = 'Iguana / Login';
-      $('body').html(loginTemplate);
+      $('body').html(loginFormPrepTemplate());
       initAuthCB();
       break;
     case 'create-account':
       document.location.hash = '#create-account';
       document.title = 'Iguana / Create account';
-      $('body').html(signupTemplate);
+      $('body').html(signupFormPrepTemplate());
       initAuthCB();
       break;
     case 'dashboard':
@@ -267,7 +267,6 @@ helperProto.prototype.setPortPollResponse = function() {
 
 /* retrieve port poll data */
 helperProto.prototype.getPortPollResponse = function() {
-  console.log(setPortPollResponseDS);
   if (setPortPollResponseDS) {
     for (var i=0; i < setPortPollResponseDS.info.length; i++) {
       coinsInfo[setPortPollResponseDS.info[i].coin] = [];
@@ -401,7 +400,7 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
       // logout
       setTimeout(function() {
         if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') helperProto.prototype.logout();
-      }, 5000);
+      }, 15000);
     } else {
       $('#messageModal').removeClass('in');
       setTimeout(function() {

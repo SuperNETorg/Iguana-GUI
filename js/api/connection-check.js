@@ -21,7 +21,7 @@ apiProto.prototype.testConnection = function(cb) {
   }
   if (index === 0 && dev.showConsoleMessages && dev.isDev) console.log('force port poll');
 
-  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0 || helperProto.prototype.getCurrentPage() === 'login') {
+  if (timeDiff >= portPollUpdateTimeout || timeDiff === 0 || index === 0 || helperProto.prototype.getCurrentPage() === 'login' || helperProto.prototype.getCurrentPage() === 'create-account') {
     // test if iguana is running
     var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort;
     $.ajax({
@@ -77,7 +77,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
       type: 'POST',
       data: postData,
       headers: postAuthHeaders,
-      timeout: isIguana ? 500 : 10000,
+      //timeout: isIguana ? 500 : 10000,
       success: function(response) {
         apiProto.prototype.errorHandler(response, index);
 

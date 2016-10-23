@@ -4,15 +4,18 @@
  */
 
 function addAuthorizationButtonAction(buttonClassName) {
+  var helper = new helperProto();
+
   $('.btn-' + buttonClassName).off();
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
-        $('.iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
+        helper.prepMessageModal('Please select a coin', 'blue', true);
+      } else {
+        addAccountIguanaCoind('add-account');
       }
     } else {
       if (!$('.login-form').hasClass('hidden')) {
-        var helper = new helperProto();
         //coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
         //console.log(coinsSelectedToAdd);
         authAllAvailableCoind();

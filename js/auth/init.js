@@ -5,6 +5,28 @@
 
  // !! TODO: remove or keep multi-wallet login !!
 
+function loginFormPrepTemplate() {
+  var templateToPrep = loginTemplate;
+  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+
+  return templateToPrep;
+}
+
+function signupFormPrepTemplate() {
+  var templateToPrep = signupTemplate;
+  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+
+  for (var key in coinsInfo) {
+    if (coinsInfo[key].connection === true) {
+      templateToPrep = templateToPrep.replace('login-add-coin-selection-title', 'login-add-coin-selection-title hidden');
+      coinsSelectedToAdd = [];
+      coinsSelectedToAdd[0] = key;
+    }
+  }
+
+  return templateToPrep;
+}
+
 function initAuthCB() {
   var localStorage = new localStorageProto(),
       helper = new helperProto(),
@@ -27,8 +49,10 @@ function initAuthCB() {
 
     // load add coin template
     $('body').append(addCoinModalTemplate);
-    $('.add-new-coin-form .form-header .title').html('Create new wallet');
-    $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+    if (!isIguana) {
+      $('.add-new-coin-form .form-header .title').html('Create new wallet');
+      $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+    }
 
     $('.login-add-coin-selection-title').off();
     $('.login-add-coin-selection-title').click(function() {
@@ -135,7 +159,18 @@ function addCoinButtonNextAction() {
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
   if (coinsSelectedToAdd[0]) {
-    $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+    if (!isIguana) {
+      $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+    } else {
+      $('.login-add-coin-selection-title').html('');
+      if (coinsSelectedToAdd.length === 1) {
+        $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+      } else {
+        for (var i=0; i < coinsSelectedToAdd.length; i++) {
+          $('.login-add-coin-selection-title').html($('.login-add-coin-selection-title').html() + supportedCoinsList[coinsSelectedToAdd[i]].name + '<br/>');
+        }
+      }
+    }
     if (!isIguana) $('.btn-signin').removeClass('disabled');
     if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
     else $('#passphrase').val('');

@@ -37,8 +37,6 @@ function initCreateAccountForm() {
 
   $('.verify-passphrase-form .btn-back').off();
   $('.verify-passphrase-form .btn-back').click(function() {
-    // TODO: refactor
-    // initCreateAccountForm();
     helper = new helperProto();
     helper.openPage('create-account');
   });
@@ -52,7 +50,9 @@ function initCreateAccountForm() {
   $('.btn-verify-passphrase').off();
   $('.btn-verify-passphrase').click(function() {
     if (isIguana) {
-      if (selectedCoindToEncrypt) {
+      var helper = new helperProto();
+      coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+      if (coinsSelectedToAdd[0]) {
         var api = new apiProto(),
             addCoinResult,
             coinIsRunning = false;
@@ -64,18 +64,21 @@ function initCreateAccountForm() {
           }
         }
 
-        if (!coinIsRunning) addCoinResult = api.addCoin(selectedCoindToEncrypt);
+        if (!coinIsRunning) addCoinResult = api.addCoin(coinsSelectedToAdd[0]);
 
         if (addCoinResult) {
+          coinsInfo[coinsSelectedToAdd[0]].connection = true;
+          $('.login-add-coin-selection-title').addClass('hidden');
           passphraseToVerify = $('.generated-passhprase').text();
           $('.create-account-form').addClass('hidden');
           $('.verify-passphrase-form').removeClass('hidden');
           $('.non-iguana-coins-repeater-errors').html('');
         } else {
-          $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Something went wrong. Coin ' + selectedCoindToEncrypt + ' is not added.</div>');
+          helper.prepMessageModal('Something went wrong. Coin ' + coinsSelectedToAdd[0] + ' is not added.', 'red', true);
         }
       } else {
-        $('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
+        $('.login-add-coin-selection-title').removeClass('hidden');
+        helper.prepMessageModal('Please select a coin', 'blue', true);
       }
     } else {
       if (checkSelectedWallet()) {

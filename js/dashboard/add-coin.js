@@ -77,8 +77,10 @@ function bindClickInCoinRepeater() {
     $(this).click(function() {
       var selectionStatus = $(this).hasClass('active') ? true : false;
 
-      $('.supported-coins-repeater-inner .coin').removeClass('active');
-      coinsSelectedToAdd = [];
+      if (!isIguana || helper.getCurrentPage() === 'create-account') {
+        $('.supported-coins-repeater-inner .coin').removeClass('active');
+        coinsSelectedToAdd = [];
+      }
 
       if ($(this).hasClass('active')) {
         delete coinsSelectedToAdd[index];
