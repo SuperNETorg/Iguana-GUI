@@ -3,6 +3,9 @@
  *
  */
 
+#myModal {
+  background: none;
+}
 .receiving-coin-content {
   border-radius: 6px;
 }

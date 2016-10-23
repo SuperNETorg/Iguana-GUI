@@ -4,7 +4,7 @@
  */
 
 var addCoinCreateWalletTemplate =
-'<section class="form-container add-coin-create-wallet-form unselectable hidden fade auth-main">' +
+'<section class="form-container mdl add-coin-create-wallet-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-wallet-create-form">' +
     '<section class="create-account-form">' +

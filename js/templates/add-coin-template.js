@@ -4,7 +4,7 @@
  */
 
 var addCoinModalTemplate =
-'<section class=\"form-container add-new-coin-form unselectable hidden fade\">' +
+'<section class=\"form-container mdl add-new-coin-form unselectable hidden fade\">' +
   '<div class=\"modal-overlay\"></div>' +
   '<div class=\"modal modal-add-coin\">' +
     '<header class=\"form-header orange-gradient box-shadow-bottom\">' +

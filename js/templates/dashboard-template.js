@@ -86,7 +86,7 @@ var dashboardTemplate =
         '<div class="clearfix"></div>' +
       '</div>' +
     '</section>' +
-    '<section class="form-container send-coin-form unselectable hidden fade">' +
+    '<section class="form-container mdl send-coin-form unselectable hidden fade">' +
       '<div class="modal-overlay"></div>' +
       '<div class="modal modal-send-coin"></div>' +
     '</section>' +

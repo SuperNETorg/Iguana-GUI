@@ -331,3 +331,16 @@
     transform: rotate(360deg);
   }
 }
+
+.modal-send-coin {
+  max-width: 900px;
+  min-width: 720px;
+  max-height: 680px;
+  width: 80%;
+  height: 91%;
+  margin: 0 auto;
+  display: block;
+  margin-top: 7%;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}

@@ -4,7 +4,7 @@
  */
 
 var sendCoinPassphraseTemplate =
-'<section class="form-container login-form-modal hidden fade">' +
+'<section class="form-container mdl login-form-modal hidden fade">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login">' +
     '<header class="form-header orange-gradient box-shadow-bottom">' +

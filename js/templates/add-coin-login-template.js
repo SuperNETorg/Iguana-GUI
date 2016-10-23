@@ -4,7 +4,7 @@
  */
 
 var addCoinLoginTemplate =
-'<section class="form-container add-coin-login-form unselectable hidden fade auth-main">' +
+'<section class="form-container mdl add-coin-login-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login-form login-form">' +
     '<header class="form-header orange-gradient box-shadow-bottom">' +
