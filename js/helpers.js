@@ -83,6 +83,11 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
 helperProto.prototype.openPage = function(url) {
   $('body').removeClass('modal-open');
   clearInterval(dashboardUpdateTimer);
+
+  if (helperProto.prototype.checkSession(true) && url !== 'dashboard' && url !== 'settings') {
+    url = document.location.hash.replace('#', '');
+  }
+
   switch (url) {
     case 'login':
       document.location.hash = '#login';
@@ -243,11 +248,12 @@ helperProto.prototype.setPortPollResponse = function() {
       result = false;
 
   for (var key in coinsInfo) {
-    if (key.length > 0)
+    if (key.length > 0 && key !== undefined && key !== 'undefined') {
       coinsInfoJSON.push({ coin: key,
                            connection: coinsInfo[key].connection || false,
                            RT: coinsInfo[key].RT || false,
                            relayFee: coinsInfo[key].relayFee || 0 });
+    }
   }
 
   localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
@@ -261,6 +267,7 @@ helperProto.prototype.setPortPollResponse = function() {
 
 /* retrieve port poll data */
 helperProto.prototype.getPortPollResponse = function() {
+  console.log(setPortPollResponseDS);
   if (setPortPollResponseDS) {
     for (var i=0; i < setPortPollResponseDS.info.length; i++) {
       coinsInfo[setPortPollResponseDS.info[i].coin] = [];
@@ -383,11 +390,23 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
     var numPortsResponding = 0;
 
     for (var key in coinsInfo) {
-      if (coinsInfo[key].connection === true) numPortsResponding++;
+      if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
     }
 
-    if (!isIguana && !numPortsResponding) {
+    if ((!isIguana && !numPortsResponding) ||
+        (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === true && !numPortsResponding) ||
+        (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === false)) {
       helperProto.prototype.prepNoDaemonModal();
+
+      // logout
+      setTimeout(function() {
+        if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') helperProto.prototype.logout();
+      }, 5000);
+    } else {
+      $('#messageModal').removeClass('in');
+      setTimeout(function() {
+        $('#messageModal').hide();
+      }, 250);
     }
   });
 }

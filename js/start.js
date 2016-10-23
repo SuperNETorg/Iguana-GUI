@@ -15,7 +15,6 @@ function initPage() {
     if (document.location.hash === '#settings') {
       helper.openPage('settings');
     } else {
-      console.log('dash');
       helper.openPage('dashboard');
     }
   } else {

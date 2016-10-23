@@ -67,6 +67,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
     if (!coinsInfo[index]) coinsInfo[index] = [];
     coinsInfo[index].connection = false;
+    coinsInfo[index].RT = false;
 
     $.ajax({
       url: fullUrl,
