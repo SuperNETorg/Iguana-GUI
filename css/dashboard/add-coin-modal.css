@@ -1,5 +1,5 @@
 /*!
- * Iguana dashboard/add-coin-modal.css
+ * Iguana dashboard/add-coin-modal
  *
  */
 
@@ -10,7 +10,7 @@
   pointer-events: none;
 }
 .auth-main.add-coin-login-form .form-content,
-.add-coin-create-wallet-form .verify-passphrase-form .form-content {
+.form-container.mdl.add-coin-create-wallet-form .form-content {
   padding-top: 110px;
 }
 .modal-add-coin-login-form,
@@ -43,6 +43,9 @@
 }
 .login-form-modal .modal {
   overflow: hidden;
+}
+.form-container.mdl.add-new-coin-form .form-content .btn-next {
+  margin-top: 40px;
 }
 .coins-title {
   font-size: 1.1em;

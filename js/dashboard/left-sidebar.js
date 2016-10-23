@@ -4,13 +4,16 @@
  */
 
 var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\" data-coin-id=\"{{ coin_id }}\" data-coin-balance-value=\"{{ coin_balance_unformatted }}\">' +
-                                    '<div class=\"coin\">' +
-                                      '<i class=\"icon cc {{ id }}-alt\"></i>' +
-                                      '<div class=\"name\">{{ name }}</div>' +
-                                    '</div>' +
-                                    '<div class=\"balance\">' +
-                                      '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id_uc }}</div>' +
-                                      '<div class=\"currency-value\"><span class=\"val\">{{ currency_value }}</span> {{ currency_name }}</div>' +
+                                    '<div class=\"remove-coin cursor-pointer{{ dev }}\"></div>' +
+                                    '<div class=\"clickable-area\">' +
+                                      '<div class=\"coin\">' +
+                                        '<i class=\"icon cc {{ id }}-alt\"></i>' +
+                                        '<div class=\"name\">{{ name }}</div>' +
+                                      '</div>' +
+                                      '<div class=\"balance\">' +
+                                        '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id_uc }}</div>' +
+                                        '<div class=\"currency-value\"><span class=\"val\">{{ currency_value }}</span> {{ currency_name }}</div>' +
+                                      '</div>' +
                                     '</div>' +
                                   '</div>';
 
@@ -60,6 +63,8 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
     $('.account-coins-repeater .' + coin + ' .coin-value .val').html(coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0);
     $('.account-coins-repeater .' + coin + ' .currency-value .val').html(currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
+    if (coinsInfo[coin] && coinsInfo[coin].connection === false) $('.account-coins-repeater .' + coin).addClass('disabled');
+    else $('.account-coins-repeater .' + coin).removeClass('disabled');
   } else { // actual DOM append
     var coinLocalRate = 0,
         api = new apiProto(),
@@ -73,6 +78,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     if (!isActiveCoinSet && !activeCoin) activeCoin = coinData.id;
     if (coinData)
       result = accountCoinRepeaterTemplate.
+                replace('{{ dev }}', dev.isDev ? '' : ' hidden').
                 replace('{{ id }}', coinData.id.toUpperCase()).
                 replace('{{ name }}', coinData.name).
                 replace(/{{ coin_id }}/g, coinData.id.toLowerCase()).
@@ -103,8 +109,12 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   bindClickInAccountCoinRepeater();
   applyDashboardResizeFix();
 
+  if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
+  else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+
   // run balances and tx unit update once left sidebar is updated
   if (index === Object.keys(coinBalances).length) {
+    checkAddCoinButton();
     // disable send button if ther're no funds on a wallet
     if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
       $('.transactions-unit .action-buttons .btn-send').addClass('disabled');
@@ -121,25 +131,54 @@ function bindClickInAccountCoinRepeater() {
   var localStorage = new localStorageProto();
 
   $('.account-coins-repeater .item').each(function(index, item) {
-    $(this).click(function() {
-      $('.account-coins-repeater .item').filter(':visible').removeClass('active');
+    $(this).find('.remove-coin').click(function() {
+      if (confirm('Are you sure you want to remove ' + $(this).parent().attr('data-coin-id').toUpperCase()) === true) {
+        if ($('.account-coins-repeater .item.active').attr('data-coin-id').toString() === $(this).parent().attr('data-coin-id').toString())
+          $('.account-coins-repeater .item:first-child .clickable-area').click();
+        $(this).parent().remove();
+        localStorage.setVal('iguana-' + $(this).parent().attr('data-coin-id') + '-passphrase', { 'logged': 'no' });
+        checkAddCoinButton();
 
-      if ($(this).hasClass('active')) {
-        $(this).removeClass('active');
-      } else {
-        var oldActiveCoinVal = activeCoin;
+        if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
+        else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+      }
+    });
+    $(this).find('.clickable-area').click(function() {
+      if (!$(this).parent().hasClass('disabled')) {
+        $('.account-coins-repeater .item').filter(':visible').removeClass('active');
 
-        $(this).addClass('active');
-        activeCoin = $(this).attr('data-coin-id');
-        localStorage.setVal('iguana-active-coin', { id: activeCoin });
+        if ($(this).parent().hasClass('active')) {
+          $(this).parent().removeClass('active');
+        } else {
+          var oldActiveCoinVal = activeCoin;
 
-        if (oldActiveCoinVal !== activeCoin) {
-          updateTransactionUnitBalance();
-          constructTransactionUnitRepeater();
+          $(this).parent().addClass('active');
+          activeCoin = $(this).parent().attr('data-coin-id');
+          localStorage.setVal('iguana-active-coin', { id: activeCoin });
+
+          if (oldActiveCoinVal !== activeCoin) {
+            updateTransactionUnitBalance();
+            constructTransactionUnitRepeater();
+          }
         }
       }
     });
   });
+}
+
+function checkAddCoinButton() {
+  // disable add wallet/coin button if all coins/wallets are already in the sidebar
+  var coinsLeftToAdd = 0,
+      localStorage = new localStorageProto();
+  for (var key in supportedCoinsList) {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
+      if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
+        coinsLeftToAdd++;
+      }
+    }
+  }
+  if (!coinsLeftToAdd) $('.coins .btn-add-coin').addClass('disabled');
+  else $('.coins .btn-add-coin').removeClass('disabled');
 }
 
 // on les then 768px working this function

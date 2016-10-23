@@ -48,7 +48,6 @@
   position: absolute;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
-.form-container.mdl .bi_interface-arrow-left,
 .form-container.mdl .bi_interface-cross {
   color: #fff;
   font-size: 16px;
@@ -86,7 +85,4 @@
 .form-container.mdl .btn:focus {
   color: #fff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-.form-container.mdl .form-content .btn-next {
-  margin-top: 40px;
 }
