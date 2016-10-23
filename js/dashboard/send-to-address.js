@@ -200,32 +200,46 @@ function sendCoinModalConfirm() {
 */
 function validateSendCoinForm() {
   var isValid = false,
+      activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
+      coinData = getCoinData(activeCoin),
       activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
       activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html());
 
   // address
   if ($('.tx-address').val().length !== 34) {
     $('.tx-address').addClass('validation-field-error');
-    $('.tx-address-validation').html('Incorrect address');
+    $('.tx-address-validation').html('Incorrect address. Please, make sure you enter it right.');
+    $('.tx-address-validation').addClass('col-red');
   } else {
     $('.tx-address').removeClass('validation-field-error');
     $('.tx-address-validation').html('Enter a wallet address');
+    $('.tx-address-validation').removeClass('col-red');
   }
   // coin amount
   if (Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length || $('.tx-amount').val() > activeCoinBalanceCoin) {
     $('.tx-amount').addClass('validation-field-error');
-    $('.tx-amount-validation').html('Amount cannot be empty/zero or exceed ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
+    $('.tx-amount-validation').html(Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length ? 'Please enter an amount.' : 'Not enough money. Max. ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
+    $('.tx-amount-validation').addClass('col-red');
   } else {
     $('.tx-amount').removeClass('validation-field-error');
     $('.tx-amount-validation').html('Enter in ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' or ' + defaultCurrency.toUpperCase());
+    $('.tx-amount-validation').removeClass('col-red');
   }
   // fee
   if ((Number($('.tx-fee').val()) + Number($('.tx-amount').val())) > activeCoinBalanceCoin) {
     $('.tx-fee').addClass('validation-field-error');
     $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? 'Fee cannot exceed ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : 'Total amount to send exceeds ' + activeCoinBalanceCoin);
-  } else {
+    $('.tx-fee-validation').addClass('col-red');
+  }
+  if (Number($('.tx-fee').val()) < (coinsInfo[coinData.id].relayFee || 0.00001)) {
+    $('.tx-fee').addClass('validation-field-error');
+    $('.tx-fee-validation').html((coinsInfo[coinData.id].relayFee || 0.00001) + ' is a min. required fee.');
+    $('.tx-fee-validation').addClass('col-red');
+  }
+  if ((Number($('.tx-fee').val()) >= (coinsInfo[coinData.id].relayFee || 0.00001)) && (Number($('.tx-fee').val()) + Number($('.tx-amount').val())) < activeCoinBalanceCoin)  {
     $('.tx-fee').removeClass('validation-field-error');
     $('.tx-fee-validation').html('Minimum fee. Increase it to speed up transaction.');
+    $('.tx-fee-validation').removeClass('col-red');
   }
 
   if ($('.tx-address').val().length !== 34 ||

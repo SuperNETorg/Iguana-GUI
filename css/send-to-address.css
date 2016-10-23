@@ -212,8 +212,11 @@
 .send-modal .pop-detail.crncy.chk-crncy.crncy-fee {
   margin: 0 0 13px;
 }
-.send-modal .send-modal #myModal1 .pop-form .btn-next {
+.send-modal #myModal1 .pop-form .btn-next {
   margin-top: 30px;
+}
+.send-modal p.col-red {
+  color: #FF0000;
 }
 
 /*
