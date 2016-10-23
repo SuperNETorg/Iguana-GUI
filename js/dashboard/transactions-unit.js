@@ -33,6 +33,8 @@ function constructTransactionUnitRepeater(update) {
     $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
   }
 
+  if (!update) $('.transactions-list-repeater').html('Loading');
+
   if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
 }
 
