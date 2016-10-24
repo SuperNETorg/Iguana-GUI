@@ -92,6 +92,7 @@
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
+  text-align: center;
 }
 .supported-coins-repeater .coin {
   cursor: hand;
@@ -109,7 +110,7 @@
   transition: all 0.25s;
 }
 .supported-coins-repeater.override-opacity .coin {
-  opacity: 1 !important;
+  opacity: 1 !important; /* override opacity set in js */
 }
 .supported-coins-repeater .coin.fade {
   opacity: 0 !important; /* override opacity set in js */
