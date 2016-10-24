@@ -34,14 +34,35 @@ apiProto.prototype.testConnection = function(cb) {
       success: function (response) {
         // iguana env
         isIguana = true;
-        if (dev.showConsoleMessages && dev.isDev) console.log('iguana is detected');
+
+        if (dev.isDev && dev.sessions) { // dev only
+          for (var key in dev.sessions) {
+            if (navigator.userAgent.indexOf(key) > -1) isIguana = dev.sessions[key];
+          }
+        }
+        if (dev.showConsoleMessages && dev.isDev) {
+          if (!isIguana) console.log('running non-iguana env');
+          else console.log('running iguana env');
+        }
         apiProto.prototype.errorHandler(response);
         apiProto.prototype.testCoinPorts(cb);
       },
       error: function (response) {
         // non-iguana env
         isIguana = false;
-        if (dev.showConsoleMessages && dev.isDev) console.log('running non-iguana env');
+
+        if (dev.isDev && dev.sessions) { // dev only
+          for (var key in dev.sessions) {
+            if (navigator.userAgent.indexOf(key) > -1) {
+              isIguana = dev.sessions[key];
+              if (dev.sessions[key]) $(document).ready(function() { setTimeout(function() { helperProto.prototype.prepNoDaemonModal(); }, 300); });
+            }
+          }
+        }
+        if (dev.showConsoleMessages && dev.isDev) {
+          if (!isIguana) console.log('running non-iguana env');
+          else console.log('running iguana env');
+        }
         apiProto.prototype.errorHandler(response);
         apiProto.prototype.testCoinPorts(cb);
       }
