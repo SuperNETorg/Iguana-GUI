@@ -335,7 +335,7 @@
 .modal-send-coin {
   max-width: 900px;
   min-width: 720px;
-  max-height: 680px;
+  //max-height: 680px;
   width: 80%;
   height: 91%;
   margin: 0 auto;
