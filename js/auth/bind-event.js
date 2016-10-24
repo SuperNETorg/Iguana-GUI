@@ -16,8 +16,6 @@ function addAuthorizationButtonAction(buttonClassName) {
       }
     } else {
       if (!$('.login-form').hasClass('hidden')) {
-        //coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-        //console.log(coinsSelectedToAdd);
         authAllAvailableCoind();
       }
       if ($('.verify-passphrase-form').width()) {
@@ -62,7 +60,6 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
 
     if (isCoind)
       helper.prepMessageModal('Passphrases do not match!', 'red', true);
-      //$('.login-input-directions-error').html('Passphrases do not match!');
       $('.login-input-directions-error').removeClass('hidden');
   }
 }

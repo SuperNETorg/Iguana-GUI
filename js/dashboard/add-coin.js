@@ -49,7 +49,6 @@ function constructCoinRepeater() {
   return result;
 }
 
-// TODO: fix opacity bug on lg screens
 function opacityToggleOnAddCoinRepeaterScroll() {
   var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
       // height + margin top + margin bottom

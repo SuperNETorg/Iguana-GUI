@@ -17,7 +17,8 @@ var _settings = {
   defaultAccountNameCoind: '',
   txUnitProgressStatusMinConf: 10,
   iguanaNullReturnCountThreshold: 10,
-  iguanaNullReturnCountLogoutTimeout: 10 // sec
+  iguanaNullReturnCountLogoutTimeout: 10, // sec
+  addCoinInfoModalTimeout: 5 // sec
 };
 
 // create a new object with non-writable values

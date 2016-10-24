@@ -47,12 +47,12 @@ function authAllAvailableCoindCB(result, key) {
   coindAuthResults[key] = result;
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
-    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true); //alert('Wrong passphrase!');
+    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true);
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
     result = false;
   }
   if (coindAuthResults[key] === -15 && helper.getCurrentPage() !== 'create-account') {
-    if (coinsSelectedToAdd.length === 1) helper.prepMessageModal('Please encrypt your wallet with a passphrase!', 'red', true); //alert('Please encrypt your wallet with a passphrase!');
+    if (coinsSelectedToAdd.length === 1) helper.prepMessageModal('Please encrypt your wallet with a passphrase!', 'red', true);
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
     result = false;
   }
@@ -62,7 +62,7 @@ function authAllAvailableCoindCB(result, key) {
 
   // check coind login results
   var seletedLoginCoind = $('.non-iguana-coins-repeater').find('input:checked');
-  // all coind walletpassphrase responses are arived by now
+  // all coind walletpassphrase responses are arrived by now
   if (coinsSelectedToAdd.length === 1 || Object.keys(coindAuthResults).length === seletedLoginCoind.length) {
     var isAnyCoindLoginError = false;
 
@@ -100,7 +100,6 @@ function encryptCoindWallet(modalClassName) {
       result = true;
       $('.non-iguana-walletpassphrase-errors').html('');
       helper.prepMessageModal(selectedCoindToEncrypt + ' wallet is created. Login to access it.', 'green', true);
-      //alert('Wallet is encrypted. Please restart ' + selectedCoindToEncrypt + '.');
       if (helper.getCurrentPage() === 'dashboard') {
         helper.toggleModalWindow('add-coin-create-wallet-form', 300);
       } else {
@@ -117,7 +116,6 @@ function encryptCoindWallet(modalClassName) {
     }
   } else {
     helper.prepMessageModal('Passphrases are not matching. Please repeat previous step one more time.', 'red', true);
-    //$('.non-iguana-walletpassphrase-errors').html('<div class=\"center\">Passphrases are not matching. Please repeat previous step one more time.</div>');
     result = false;
   }
 
@@ -170,12 +168,6 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
       if (coinsSelectedToAdd[i]) {
         var addCoinResult = api.addCoin(coinsSelectedToAdd[i], addCoinCB);
         selectedCoins++;
-
-        /*if (addCoinResult) {
-          // loading spinner here
-        } else {
-          helper.prepMessageModal('Something went wrong. Coin ' + coinsSelectedToAdd[i].toUpperCase() + ' is not added.', 'red', true);
-        }*/
       }
 
       if (selectedCoins > 0) result = true;
@@ -198,7 +190,7 @@ function addCoinCB(response, coin) {
     if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
 
     addCoinResponses.push({ 'coin': coin, 'response': response });
-    coinsInfo[coin].connection = true;
+    coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
   }
 
   if (Object.keys(addCoinResponses).length === selectedCoins) {
@@ -212,11 +204,13 @@ function addCoinCB(response, coin) {
         failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
       }
     }
+
     // since there's no error on nonexistent wallet passphrase in Iguana
     // redirect to dashboard with 5s timeout
+    // TODO(?): point out if a coin is already running
     helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : '') + '<br/>Redirecting to dashboard...', 'green', true);
     setTimeout(function() {
       addAccountIguanaCoind(buttonClassNameCB);
-    }, 5000);
+    }, settings.addCoinInfoModalTimeout);
   }
 }
