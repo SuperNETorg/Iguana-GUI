@@ -12,7 +12,7 @@ function addAuthorizationButtonAction(buttonClassName) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         helper.prepMessageModal('Please select a coin', 'blue', true);
       } else {
-        addAccountIguanaCoind('add-account');
+        //addAccountIguanaCoind('signin');
       }
     } else {
       if (!$('.login-form').hasClass('hidden')) {

@@ -151,7 +151,10 @@ function checkSelectedWallet(key) {
 function checkIguanaCoinsSelection(suppressAddCoin) {
   var result = false,
       api = new apiProto(),
-      localStorage = new localStorageProto();
+      localStorage = new localStorageProto(),
+      helper = new helperProto();
+
+  coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
   selectedCoins = 0;
 
@@ -161,10 +164,18 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 
     for (var key in coinsInfo) {
       localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+    }
 
-      if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) {
+    for (var i=0; i < coinsSelectedToAdd.length; i++) {
+      if (coinsSelectedToAdd[i]) {
+        var addCoinResult = api.addCoin(coinsSelectedToAdd[i], addCoinCB);
         selectedCoins++;
-        api.addCoin(key, addCoinCB);
+
+        /*if (addCoinResult) {
+          // loading spinner here
+        } else {
+          helper.prepMessageModal('Something went wrong. Coin ' + coinsSelectedToAdd[i].toUpperCase() + ' is not added.', 'red', true);
+        }*/
       }
 
       if (selectedCoins > 0) result = true;
@@ -180,17 +191,32 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 }
 
 function addCoinCB(response, coin) {
-  var localStorage = new localStorageProto();
+  var localStorage = new localStorageProto(),
+      helper = new helperProto();
 
   if (response === 'coin added' || response === 'coin already there') {
     if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
 
     addCoinResponses.push({ 'coin': coin, 'response': response });
-    localStorage.setVal('iguana-' + coin + '-passphrase', { 'logged': 'yes' });
     coinsInfo[coin].connection = true;
   }
 
   if (Object.keys(addCoinResponses).length === selectedCoins) {
-    addAccountIguanaCoind(buttonClassNameCB);
+    var addedCoinsOutput = '',
+        failedCoinsOutput = '<br/>';
+    for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
+      if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
+        addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+        localStorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+      } else {
+        failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+      }
+    }
+    // since there's no error on nonexistent wallet passphrase in Iguana
+    // redirect to dashboard with 5s timeout
+    helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : '') + '<br/>Redirecting to dashboard...', 'green', true);
+    setTimeout(function() {
+      addAccountIguanaCoind(buttonClassNameCB);
+    }, 5000);
   }
 }

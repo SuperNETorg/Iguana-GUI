@@ -19,13 +19,13 @@ var loginTemplate =
           '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of 24 words. Try one more time.</div>' +
           '<div class="login-input-directions center offset-bottom-sm unselectable">Enter a passphrase to log in</div>' +
           '<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +
-          '<div class="non-iguana-coins-repeater hidden"></div>' +
-          '<div class="non-iguana-coins-repeater-error"></div>' +
+          /*'<div class="non-iguana-coins-repeater hidden"></div>' +
+          '<div class="non-iguana-coins-repeater-error"></div>' +*/
           '<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">Log in</button>' +
           '<div class="login-or-delim center unselectable">or</div>' +
           '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup">Create an account</button>' +
-          '<div class="iguana-coins-repeater"></div>' +
-          '<div class="iguana-coins-repeater-error"></div>' +
+          /*'<div class="iguana-coins-repeater"></div>' +
+          '<div class="iguana-coins-repeater-error"></div>' +*/
         '</div>' +
       '</section>' +
     '</div>' +
