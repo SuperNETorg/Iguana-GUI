@@ -9,9 +9,13 @@ apiProto.prototype.errorHandler = function(response, index) {
       $('#temp-out-of-sync').html('Something went wrong. Please login again.');
       $('#temp-out-of-sync').removeClass('hidden');
 
-      setTimeout(function() {
-        helperProto.prototype.logout();
-      }, 1000);
+      (function() {
+        helperProto.prototype.prepMessageModal('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting to login...', 'red', true);
+        setTimeout(function() {
+          helperProto.prototype.logout();
+        }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
+        clearInterval(dashboardUpdateTimer);
+      })();
 
     return 10;
   }
@@ -38,10 +42,17 @@ apiProto.prototype.errorHandler = function(response, index) {
 
   if (response.error === 'null return from iguana_bitcoinRPC') {
     if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed?');
+    iguanaNullReturnCount++;
 
-    setTimeout(function() {
-      helperProto.prototype.logout();
-    }, 1000);
+    if (iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
+      (function() {
+        helperProto.prototype.prepMessageModal('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting to login...', 'red', true);
+        setTimeout(function() {
+          helperProto.prototype.logout();
+        }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
+        clearInterval(dashboardUpdateTimer);
+      })();
+    }
 
     return 10;
   }

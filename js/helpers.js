@@ -90,6 +90,7 @@ helperProto.prototype.openPage = function(url) {
 
   switch (url) {
     case 'login':
+      iguanaNullReturnCount = 0;
       document.location.hash = '#login';
       document.title = 'Iguana / Login';
       $('body').html(loginFormPrepTemplate());

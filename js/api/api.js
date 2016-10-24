@@ -10,6 +10,7 @@ var activeCoin,
     isIguana = false,
     isRT = false,
     isProxy = true,
+    iguanaNullReturnCount = 0,
     coinsInfo = new Array; // cointains coin related info
 
 document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/supported-coins-list.js\">\x3C/script>' +

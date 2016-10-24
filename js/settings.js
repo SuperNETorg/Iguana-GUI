@@ -15,7 +15,9 @@ var _settings = {
   defaultTransactionsCount: 20,
   defaultAccountNameIguana: 'default', // note: change to a specific account name if needed; default coind account name is empty string
   defaultAccountNameCoind: '',
-  txUnitProgressStatusMinConf: 10
+  txUnitProgressStatusMinConf: 10,
+  iguanaNullReturnCountThreshold: 10,
+  iguanaNullReturnCountLogoutTimeout: 10 // sec
 };
 
 // create a new object with non-writable values
