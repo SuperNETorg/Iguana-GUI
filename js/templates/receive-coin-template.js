@@ -39,10 +39,8 @@ var receiveCoinTemplate =
                   '<span class="unit coin-unit glyphicon"></span>' +
                 '</div>' +
               '</div>' +
-              '<div class="">' +
-                '<div class="currency-input input-addon">' +
-                  '<span class="equals-sign">=</span>' +
-                '</div>' +
+              '<div class="currency-input input-addon">' +
+                '<span class="equals-sign">=</span>' +
               '</div>' +
               '<div class="input">' +
                 '<div class="currency-input inner-addon right-addon">' +
