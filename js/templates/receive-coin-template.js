@@ -7,9 +7,9 @@ var receiveCoinTemplate =
 '<section class="modal fade" id="myModal" role="dialog">' +
   '<div class="modal-dialog modal-popup modal-lg">' +
     '<div class="modal-content receiving-coin-content">' +
-      '<header class="form-header orange-gradient box-shadow-bottom">' +
-        '<i class="bi_interface-cross cursor-pointer btn-close" data-dismiss="modal"></i>' +
-        '<div class="title text-shadow">Receiving coins</div>' +
+      '<header class="modal-header form-header orange-gradient box-shadow-bottom">' +
+        '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        '<div class="modal-title title text-shadow">Receiving coins</div>' +
       '</header>' +
       '<div class="modal-body">' +
         '<div class="row">' +
@@ -19,33 +19,39 @@ var receiveCoinTemplate =
             /*'<div>' +
               '<span class="text-section text-something">Something 2</span>' +
             '</div>' +*/
-            '<div class="col-md-6 buttons">' +
-              '<a data-toggle="modal" href="#messageModal">' +
-                '<button type="button" class="copy-btn" onclick="copyToClipboard(\'#address\')">Copy</button>' +
-              '</a>' +
-            '</div>' +
-            '<div class="col-md-6 buttons">' +
-              '<a href="#" class="btn-share-email">' +
-                '<button type="button" class="share-btn">Share</button>' +
-              '</a>' +
-            '</div>' +
-            '<div class="qr-code" id="qr-code"></div>' +
-            '<div class="amount-label">' +
-              '<span class="amount-label-span">Amount:</span>' +
-            '</div>' +
-            '<div>' +
-              '<span class="text-section enter-in-currency">Enter in {{ currency }}<!-- any currency --></span>' +
-            '</div>' +
-            '<div class="currency-input">' +
-              '<input type="number" class="crypto-currency currency-coin" placeholder="0">' +
-              '<span class="unit coin-unit"></span>' +
-            '</div>' +
-            '<div class="currency-input">' +
-              '<span class="equals-sign">=</span>' +
-            '</div>' +
-            '<div class="currency-input">' +
-              '<input type="number" class="currency crypto-currency" placeholder="0">' +
-              '<span class="unit unit-currency"></span>' +
+            '<div class="clearfix">' +
+              '<div class="buttons text-center">' +
+                '<a data-toggle="modal" href="#messageModal" class="btn copy-btn button-150 margin-right-15 margin-bottom" ' +
+                    'onclick="copyToClipboard(\'#address\')">Copy</a>' +
+                '<a href="#" class="btn btn-share-email button-150 share-btn margin-right-15 margin-bottom">Share</button>' +
+                '</a>' +
+              '</div>' +
+              '<div class="qr-code" id="qr-code"></div>' +
+              '<div class="col-sm-9 col-xs-10">' +
+                '<div class="amount-label row">' +
+                  '<span class="block amount-label-span">Amount:</span>' +
+                  '<span class="block text-section enter-in-currency">Enter in {{ currency }}<!-- any currency --></span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="">' +
+                '<div class="input">' +
+                  '<div class="currency-input inner-addon right-addon"  >' +
+                    '<input type="number" class="crypto-currency currency-coin" placeholder="0">' +
+                    '<span class="unit coin-unit glyphicon"></span>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="">' +
+                  '<div class="currency-input">' +
+                    '<span class="equals-sign">=</span>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="input">' +
+                  '<div class="currency-input inner-addon right-addon">' +
+                    '<input type="number" class="currency crypto-currency" placeholder="0">' +
+                    '<span class="unit unit-currency glyphicon"></span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
