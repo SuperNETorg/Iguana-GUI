@@ -52,7 +52,8 @@
 }
 .share-address-section {
   position: relative;
-  padding-left: 34px;
+  width: 300px;
+  margin: 0 auto;
 }
 .share-address-section h4 {
   font-size: 18px;
@@ -83,11 +84,9 @@
 }
 .buttons .copy-btn,
 .buttons .share-btn {
-  width: 95%;
   background-color: #fbfdfe;
   color: #fe6542;
   font-weight: 600;
-  height: 34px;
   border: 1px solid #fbfdfe;
   border-radius: 4px;
   -webkit-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
@@ -135,13 +134,17 @@
   margin-top: 4px;
   position: relative;
   float: left;
+  width: 46%;
 }
 .currency-input .crypto-currency {
-  width: 140px;
+  width: 100%;
   height: 34px;
   padding: 4px;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+.currency-input.input-addon {
+  width: 20px;
 }
 .currency-input .equals-sign {
   color: #fe5c0d;
@@ -151,13 +154,7 @@
   font-weight: 600;
 }
 .currency-input .unit {
-  position: absolute;
-  display: block;
-  top: 7px;
-  right: 2px;
   color: #83848E;
-  padding-left: 5px;
-  width: 45px;
   font-size: 1.065em;
 }
 .currency-input .unit-currency {
@@ -196,8 +193,22 @@ input[type="number"].crypto-currency.currency-coin {
 }
 .receiving-coin-content .form-header {
   height: 60px;
+  color: #FFF;
   border-radius: 4px 4px 0 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+.receiving-coin-content .form-header .title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.receiving-coin-content .form-header .btn-close::before {
+  font-weight: 700;
+}
+.receiving-coin-content .modal-body .share-address-section .btn {
+  display: inline-block;
+  width: 48%;
+  height: 40px;
+  line-height: 32px;
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,

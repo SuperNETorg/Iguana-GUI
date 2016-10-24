@@ -190,13 +190,11 @@
     width: 150px !important;
     height: 40px !important;
   }
-  .input .input-150 {
-    display: inline-block;
-    width: 150px !important;
-    height: 40px !important;
-  }
   .margin-right-15 {
     margin-right: 15px;
+  }
+  .margin-top-5 {
+    margin-top: 5px;
   }
   .margin-bottom {
     margin-bottom: 15px;
@@ -205,18 +203,15 @@
   .inner-addon {
     position: relative;
   }
-
   /* style glyph */
   .inner-addon .glyphicon {
     position: absolute;
-    padding: 10px;
+    padding: 7px;
     pointer-events: none;
   }
-
   /* align glyph */
-  .left-addon .glyphicon  { left:  0px;}
-  .right-addon .glyphicon { right: 0px;}
-
+  .left-addon .glyphicon  { left:  0;}
+  .right-addon .glyphicon { right: 0;}
   /* add padding  */
   .left-addon input  { padding-left:  30px; }
   .right-addon input { padding-right: 30px; }

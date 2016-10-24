@@ -83,13 +83,21 @@
   }
 }
 
-/*
- * minimum width of large modals form  768px- screen
-*/
 
+.modal .modal-dialog.modal-lg {
+  width: 780px;
+  margin: 4% auto;
+}
+.modal .modal-dialog .modal-body {
+  padding: 40px 15px 60px;
+}
 @media (max-width: 992px) {
   .modal .modal-dialog.modal-lg {
     width: 90%;
-    margin: 15px auto;
+  }
+}
+@media (max-width: 360px) {
+  .share-address-section {
+    width: 96%;
   }
 }
