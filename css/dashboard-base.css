@@ -2,7 +2,6 @@
  * Iguana dashboard/base
  *
  */
-
   .dashboard.blur,
   body.modal-open .dashboard {
     -webkit-filter: blur(2px);
@@ -29,6 +28,7 @@
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 0;
+    overflow: hidden;
   }
   .dashboard .top .left {
     font-size: 1.6em;
@@ -38,18 +38,13 @@
     left: 30px;
     display: inline-block;
   }
-  .dashboard .center {
-    display: block;
-    position: absolute;
-    text-align: center;
-    width: calc(100% - 10%);
-  }
   .dashboard .top-menu {
     display: inline-block;
     margin: 0 auto;
     margin-bottom: 8px;
     float: none;
     vertical-align: top;
+    white-space: nowrap;
   }
   /* radial like highlight effect */
   .dashboard .top-menu:before {
@@ -78,6 +73,7 @@
     color: #8A8B93;
     z-index: 100;
     text-shadow: 0 0 0 #8A8B93;
+    display: inline-block;
   }
   .dashboard .top-menu .item .text {
     padding: 0 17px;
@@ -141,11 +137,7 @@
   .dashboard .transactions-unit {
     margin-top: 18px;
   }
-  .dashboard .coins {
-    max-width: 250px;
-    min-width: 230px;
-  }
-  .dashboard .active-coin-balance {
+  .active-coin-balance {
     font-size: 1.7em;
     font-weight: 700;
     padding-left: 30px;
@@ -170,6 +162,62 @@
   .dashboard .btn.disabled:focus {
     pointer-events: none;
   }
-  .dashboard .form-container.add-new-coin-form {
-    background: none;
+.dashboard .form-container.add-new-coin-form {
+  background: none;
+}
+  .nav-buttons .nav-left {
+    position: absolute;
+    left: 0;
+    height: 50%;
+    width: 10px;
+    top: 50%;
   }
+  .nav-buttons .nav-right {
+    position: absolute;
+    right: 0;
+    height: 50%;
+    width: 10px;
+    top: 50%;
+  }
+  .block {
+    display: block;
+  }
+  .inline-block {
+    display: inline-block;
+  }
+  .button-150 {
+    display: inline-block;
+    width: 150px !important;
+    height: 40px !important;
+  }
+  .input .input-150 {
+    display: inline-block;
+    width: 150px !important;
+    height: 40px !important;
+  }
+  .margin-right-15 {
+    margin-right: 15px;
+  }
+  .margin-bottom {
+    margin-bottom: 15px;
+  }
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
+  }
+
+  /* style glyph */
+  .inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+  }
+
+  /* align glyph */
+  .left-addon .glyphicon  { left:  0px;}
+  .right-addon .glyphicon { right: 0px;}
+
+  /* add padding  */
+  .left-addon input  { padding-left:  30px; }
+  .right-addon input { padding-right: 30px; }
+

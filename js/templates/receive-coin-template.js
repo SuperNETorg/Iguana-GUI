@@ -33,22 +33,24 @@ var receiveCoinTemplate =
                   '<span class="block text-section enter-in-currency">Enter in {{ currency }}<!-- any currency --></span>' +
                 '</div>' +
               '</div>' +
-              '<div class="">' +
-                '<div class="input">' +
-                  '<div class="currency-input inner-addon right-addon"  >' +
-                    '<input type="number" class="crypto-currency currency-coin" placeholder="0">' +
-                    '<span class="unit coin-unit glyphicon"></span>' +
+              '<div class="col-sm-12 col-xs-10">' +
+                '<div class="row">' +
+                  '<div class="input">' +
+                    '<div class="currency-input inner-addon right-addon"  >' +
+                      '<input type="number" class="input-150 crypto-currency currency-coin" placeholder="0">' +
+                      '<span class="unit coin-unit glyphicon"></span>' +
+                    '</div>' +
                   '</div>' +
-                '</div>' +
-                '<div class="">' +
-                  '<div class="currency-input">' +
-                    '<span class="equals-sign">=</span>' +
+                  '<div class="">' +
+                    '<div class="currency-input">' +
+                      '<span class="equals-sign">=</span>' +
+                    '</div>' +
                   '</div>' +
-                '</div>' +
-                '<div class="input">' +
-                  '<div class="currency-input inner-addon right-addon">' +
-                    '<input type="number" class="currency crypto-currency" placeholder="0">' +
-                    '<span class="unit unit-currency glyphicon"></span>' +
+                  '<div class="input">' +
+                    '<div class="currency-input inner-addon right-addon">' +
+                      '<input type="number" class="input-150 currency crypto-currency" placeholder="0">' +
+                      '<span class="unit unit-currency glyphicon"></span>' +
+                    '</div>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
