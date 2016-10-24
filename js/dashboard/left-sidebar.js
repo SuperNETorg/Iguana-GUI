@@ -78,7 +78,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     if (!isActiveCoinSet && !activeCoin) activeCoin = coinData.id;
     if (coinData)
       result = accountCoinRepeaterTemplate.
-                replace('{{ dev }}', dev.isDev ? '' : ' hidden').
+                replace('{{ dev }}', dev.isDev && !isIguana ? '' : ' hidden').
                 replace('{{ id }}', coinData.id.toUpperCase()).
                 replace('{{ name }}', coinData.name).
                 replace(/{{ coin_id }}/g, coinData.id.toLowerCase()).
@@ -109,8 +109,10 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   bindClickInAccountCoinRepeater();
   applyDashboardResizeFix();
 
-  if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
-  else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+  if (dev.isDev && !isIguana) {
+    if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
+    else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+  }
 
   // run balances and tx unit update once left sidebar is updated
   if (index === Object.keys(coinBalances).length) {

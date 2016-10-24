@@ -7,7 +7,8 @@ var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
 
 function addCoinButtonCB() {
   var helper = new helperProto();
-      coinsSelectedToAdd = [];
+
+  coinsSelectedToAdd = [];
 
   if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
   helper.toggleModalWindow('add-new-coin-form', 300);
@@ -33,7 +34,7 @@ function constructCoinRepeater() {
       helper = new helperProto();
 
   for (var key in supportedCoinsList) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
+    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes' || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
         result += coinRepeaterTemplate.
                   replace('{{ id }}', key.toUpperCase()).

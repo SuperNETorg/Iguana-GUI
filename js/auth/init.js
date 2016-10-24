@@ -3,8 +3,6 @@
  *
  */
 
- // !! TODO: remove or keep multi-wallet login !!
-
 function loginFormPrepTemplate() {
   var templateToPrep = loginTemplate;
   templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
@@ -13,7 +11,10 @@ function loginFormPrepTemplate() {
 }
 
 function signupFormPrepTemplate() {
-  var templateToPrep = signupTemplate;
+  var templateToPrep = signupTemplate,
+      helper = new helperProto(),
+      coinAlreadyAdded = false;
+
   templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
 
   for (var key in coinsInfo) {
@@ -21,7 +22,14 @@ function signupFormPrepTemplate() {
       templateToPrep = templateToPrep.replace('login-add-coin-selection-title', 'login-add-coin-selection-title hidden');
       coinsSelectedToAdd = [];
       coinsSelectedToAdd[0] = key;
+      coinAlreadyAdded = true;
     }
+  }
+
+  if (!coinAlreadyAdded && coinsSelectedToAdd) {
+    coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+    coinsSelectedToAdd = coinsSelectedToAdd[0];
+    templateToPrep = templateToPrep.replace('login-add-coin-selection-title', 'login-add-coin-selection-title hidden');
   }
 
   return templateToPrep;
@@ -172,7 +180,8 @@ function addCoinButtonNextAction() {
       }
     }
     if (!isIguana) $('.btn-signin').removeClass('disabled');
-    if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+    if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+    if (dev.isDev && isIguana && dev.coinPW.iguana && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.iguana);
     else $('#passphrase').val('');
     helper.toggleModalWindow('add-new-coin-form', 300);
   }
