@@ -1,4 +1,4 @@
-var settings = {
+var _settings = {
   iguanaPort: '7778',
   proxy: 'http://localhost:1337/', // https://github.com/gr2m/CORS-Proxy
   ratesUpdateTimeout: 15, // sec, see dashboard/rates.js
@@ -17,3 +17,9 @@ var settings = {
   defaultAccountNameCoind: '',
   txUnitProgressStatusMinConf: 10
 };
+
+// create a new object with non-writable values
+var settings = {};
+for (key in _settings) {
+  Object.defineProperty(settings, key, { value: _settings[key], writetable: false });
+}
