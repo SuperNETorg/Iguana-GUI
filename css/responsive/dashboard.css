@@ -69,3 +69,27 @@
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
 }
+
+@media all and (min-width: 767px) {
+  aside.coins {
+    min-width: 230px;
+    max-width: 250px
+  }
+}
+
+@media all and (max-width: 768px) {
+  .transactions-unit {
+    margin-left: 0px;
+  }
+}
+
+/*
+ * minimum width of large modals form  768px- screen
+*/
+
+@media (max-width: 992px) {
+  .modal .modal-dialog.modal-lg {
+    width: 90%;
+    margin: 15px auto;
+  }
+}

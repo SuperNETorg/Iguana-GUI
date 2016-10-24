@@ -13,7 +13,7 @@ var receiveCoinTemplate =
       '</header>' +
       '<div class="modal-body">' +
         '<div class="row">' +
-          '<div class="col-xs-12 col-md-5 col-md-offset-3 share-address-section">' +
+          '<div class="col-sm-6 col-sm-offset-3 col-md-5 col-md-offset-3 share-address-section">' +
             '<div class="my-label my-address">My address:</div>' +
             '<h4 id="address"></h4>' +
             /*'<div>' +
@@ -33,7 +33,7 @@ var receiveCoinTemplate =
                   '<span class="block text-section enter-in-currency">Enter in {{ currency }}<!-- any currency --></span>' +
                 '</div>' +
               '</div>' +
-              '<div class="col-sm-12 col-xs-10">' +
+              '<div class="col-sm-12 col-xs-12">' +
                 '<div class="row">' +
                   '<div class="input">' +
                     '<div class="currency-input inner-addon right-addon"  >' +
