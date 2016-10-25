@@ -49,11 +49,9 @@
   margin-bottom: 31px;
 }
 .send-modal .modal-content .modal-body {
-  padding: 0;
-}
-.send-modal .modal-content .modal-body {
   background: #f5f8fb none repeat scroll 0 0;
   padding: 50px 0;
+  padding: 0;
 }
 .send-modal .hd-right > span {
   display: block;
@@ -75,8 +73,7 @@
   margin-bottom: 5.2px;
   margin-top: 6px;
 }
-.send-modal .pop-detail input[type="text"],
-.send-modal .pop-detail input[type="number"] {
+.send-modal .pop-detail input[type="text"] {
   border: 1px solid #c7ccd0;
   border-radius: 4px;
   color: #333333;
@@ -255,8 +252,7 @@
   margin-top: -5px;
   margin-left: -2px;
 }
-.send-modal .pop-detail input[type="text"].validation-field-error,
-.send-modal .pop-detail input[type="number"].validation-field-error  {
+.send-modal .pop-detail input[type="text"].validation-field-error {
   background: #FFF5F5;
   border-color: #FD2F2F;
 }
@@ -296,6 +292,15 @@
 }
 .modal-send-coin {
   max-height: 80%;
+  max-width: 900px;
+  min-width: 720px;
+  width: 80%;
+  height: 91%;
+  margin: 0 auto;
+  display: block;
+  margin-top: 7%;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 /*
@@ -324,17 +329,4 @@
   100% {
     transform: rotate(360deg);
   }
-}
-
-.modal-send-coin {
-  max-width: 900px;
-  min-width: 720px;
-  //max-height: 680px;
-  width: 80%;
-  height: 91%;
-  margin: 0 auto;
-  display: block;
-  margin-top: 7%;
-  border-radius: 4px;
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }

@@ -237,26 +237,31 @@ function validateSendCoinForm() {
   // coin amount
   if (Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length || $('.tx-amount').val() > activeCoinBalanceCoin) {
     $('.tx-amount').addClass('validation-field-error');
+    $('.tx-amount-currency').addClass('validation-field-error');
     $('.tx-amount-validation').html(Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length ? 'Please enter an amount.' : 'Not enough money. Max. ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
     $('.tx-amount-validation').addClass('col-red');
   } else {
     $('.tx-amount').removeClass('validation-field-error');
+    $('.tx-amount-currency').removeClass('validation-field-error');
     $('.tx-amount-validation').html('Enter in ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' or ' + defaultCurrency.toUpperCase());
     $('.tx-amount-validation').removeClass('col-red');
   }
   // fee
   if ((Number($('.tx-fee').val()) + Number($('.tx-amount').val())) > activeCoinBalanceCoin) {
     $('.tx-fee').addClass('validation-field-error');
+    $('.tx-fee-currency').addClass('validation-field-error');
     $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? 'Fee cannot exceed ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : 'Total amount to send exceeds ' + activeCoinBalanceCoin);
     $('.tx-fee-validation').addClass('col-red');
   }
   if (Number($('.tx-fee').val()) < (coinsInfo[coinData.id].relayFee || 0.00001)) {
     $('.tx-fee').addClass('validation-field-error');
+    $('.tx-fee-currency').addClass('validation-field-error');
     $('.tx-fee-validation').html((coinsInfo[coinData.id].relayFee || 0.00001) + ' is a min. required fee.');
     $('.tx-fee-validation').addClass('col-red');
   }
   if ((Number($('.tx-fee').val()) >= (coinsInfo[coinData.id].relayFee || 0.00001)) && (Number($('.tx-fee').val()) + Number($('.tx-amount').val())) < activeCoinBalanceCoin)  {
     $('.tx-fee').removeClass('validation-field-error');
+    $('.tx-fee-currency').removeClass('validation-field-error');
     $('.tx-fee-validation').html('Minimum fee. Increase it to speed up transaction.');
     $('.tx-fee-validation').removeClass('col-red');
   }
