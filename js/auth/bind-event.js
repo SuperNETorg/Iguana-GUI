@@ -10,7 +10,7 @@ function addAuthorizationButtonAction(buttonClassName) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
         helper.prepMessageModal('Please select a coin', 'blue', true);
       } else {
-        //addAccountIguanaCoind('signin');
+        if (helper.getCurrentPage() === 'create-account') addAccountIguanaCoind('add-account');
       }
     } else {
       if (!$('.login-form').hasClass('hidden')) {
@@ -40,6 +40,9 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
 
         if (buttonClassName === 'add-account') {
           helper.openPage('login');
+          setTimeout(function() {
+            helper.prepMessageModal('Wallet is created. Login to access it.', 'green', true);
+          }, 300);
         } else {
           localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
           helper.openPage('dashboard');

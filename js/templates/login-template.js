@@ -16,7 +16,6 @@ var loginTemplate =
           '<div class="login-add-coin-selection">' +
             '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">Select a wallet</div>' +
           '</div>' +
-          '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of 24 words. Try one more time.</div>' +
           '<div class="login-input-directions center offset-bottom-sm unselectable">Enter a passphrase to log in</div>' +
           '<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +
           /*'<div class="non-iguana-coins-repeater hidden"></div>' +

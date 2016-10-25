@@ -128,7 +128,6 @@ function initAuthCB() {
     addAuthorizationButtonAction('add-account');
     watchPassphraseKeyUpEvent('add-account');
     initCreateAccountForm();
-    constructCoinsRepeaterEncrypt();
     helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
 
     $('.create-account-form .btn-back').off();
