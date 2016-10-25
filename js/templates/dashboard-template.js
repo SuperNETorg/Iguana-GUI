@@ -8,7 +8,7 @@ var dashboardTemplate =
   '<div class="row">' +
     '<section class="dashboard hidden main">' +
       '<nav class="navbar top unselectable navbar-inverse">' +
-        '<div class="container-fluid">' +
+        '<div class="clearfix">' +
           '<div class="navbar-header">' +
             '<div class="navbar-brand">Iguana</div>' +
             '<div class="cursor-pointer lnk-logout">Log out</div>' +
@@ -39,7 +39,7 @@ var dashboardTemplate =
           '</div>' +
         '</div>' +
       '</nav>' +
-      '<div class="main-content container-fluid">' +
+      '<div class="main-content col-md-12">' +
         '<!-- temp out of sync notice -->' +
         '<div id="temp-out-of-sync" class="hidden" style="color:red;text-aling:center;font-weight:bold;font-size:1.2em"></div>' +
         '<div class="balance-block unselectable">' +
@@ -56,7 +56,7 @@ var dashboardTemplate =
             '<button class="btn btn-add-coin">Add coin</button>' +
           '</div>' +
         '</aside>' +
-        '<div class="transactions-unit col-md-8 col-sm-7 col-xs-12">' +
+        '<div class="transactions-unit col-md-8 col-md-offset-1 col-sm-7 col-sm-offset-1 col-xs-12">' +
           '<div class="row">' +
             '<div class="top-bar unselectable">' +
               '<div class="active-coin-balance">' +

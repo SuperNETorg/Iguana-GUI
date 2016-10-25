@@ -29,6 +29,7 @@
     color: #fff;
     border-radius: 0;
     overflow: hidden;
+    margin-bottom: 0;
   }
   .dashboard .top .left {
     font-size: 1.6em;
@@ -83,7 +84,7 @@
   }
   .dashboard .top-menu .item .border {
     width: 100%;
-    height: 3px;
+    height: 5px;
     border-radius: 4px;
     padding: 0 22px;
     background: transparent;
@@ -117,7 +118,7 @@
     font-size: 1.6em;
   }
   .dashboard .main-content {
-    margin: 0 auto;
+    margin: 0.4em auto;
     max-width: 1500px;
   }
   .dashboard .balance-block .label {
@@ -135,7 +136,7 @@
   }
   .dashboard .coins,
   .dashboard .transactions-unit {
-    margin-top: 18px;
+    margin-top: 10px;
   }
   .active-coin-balance {
     font-size: 1.7em;

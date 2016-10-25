@@ -6,7 +6,6 @@
 @media screen and (max-width: 1366px) {
   .dashboard .coins {
     min-width: 200px;
-    width: 20%;
   }
   .dashboard .account-coins-repeater .item .coin .name:before {
     content: '';
@@ -40,10 +39,6 @@
   .dashboard .transactions-list-repeater .item .status {
     width: 76px;
   }
-  .dashboard .transactions-unit {
-    max-width: 75%;
-    margin-left: 70px;
-  }
 }
 
 @media screen and (max-width: 1300px) {
@@ -70,23 +65,29 @@
   }
 }
 
-@media all and (min-width: 767px) {
+@media all and (max-width: 768px) {
+  .account-coins-repeater .item.active:after {
+    display: none;
+  }
+  .transactions-unit {
+    margin-left: 0;
+  }
+}
+
+@media all and (min-width: 768px) {
   aside.coins {
     min-width: 230px;
     max-width: 250px
   }
-}
-
-@media all and (max-width: 768px) {
   .transactions-unit {
-    margin-left: 0px;
+    margin-left: 5%;
   }
 }
 
 
 .modal .modal-dialog.modal-lg {
   width: 780px;
-  margin: 4% auto;
+  margin: 2% auto;
 }
 .modal .modal-dialog .modal-body {
   padding: 40px 15px 60px;

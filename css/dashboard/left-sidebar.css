@@ -17,6 +17,7 @@
 .account-coins-repeater .item .clickable-area {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 .account-coins-repeater .item.disabled {
   opacity: 0.65;
@@ -67,7 +68,6 @@
 .account-coins-repeater .item .coin .name {
   font-weight: normal;
   color: #858690;
-  position: relative;
   top: -4px;
   overflow: hidden;
   display: inline-block;
@@ -100,7 +100,7 @@
   font-weight: normal;
   text-shadow: none;
   position: absolute;
-  right: -50px;
+  right: -18%;
   top: 25px;
 }
 .btn-add-coin {
