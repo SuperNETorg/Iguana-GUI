@@ -24,7 +24,10 @@ apiProto.prototype.getAccountAddress = function(coin, account) {
       if (dev.showConsoleMessages && dev.isDev) console.log(response);
     },
     success: function(response) {
- 	    result = response.result; // non-iguana
+      console.log(response);
+      // iguana
+      if (response.address) result = response.address;
+      else result = response.result; // non-iguana
     }
   })
 
