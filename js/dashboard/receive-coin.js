@@ -8,9 +8,7 @@
 */
 
 function bindReceive() {
-  var coinValue,
-      coinRate,
-      returnValue,
+  var coinRate,
       helper = new helperProto(),
   		api = new apiProto(),
       coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
@@ -29,15 +27,42 @@ function bindReceive() {
   $('.enter-in-currency').html('Enter in ' + coin.toUpperCase() + ' or ' + defaultCurrency);
 
   $('.currency-coin').on('keyup', function () {
-    coinValue = $(this).find('.coin-value .val');
-    var currencyCoin = $(".currency-coin").val();
-    var currencyAmount = currencyCoin * coinRate;
-    $(".currency").val(currencyAmount);
+    var calcAmount = $(this).val() * coinRate;
+    $(".currency").val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
   });
 
-  // prevent negative values in input fields
-  $('.receiving-coin-content .currency-input input').change(function() {
-    if ($(this).val() < 0) $(this).val(0);
+  $('.currency').on('keyup', function () {
+    var calcAmount = $(this).val() / coinRate;
+    $(".currency-coin").val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+  });
+
+  // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
+  // allow numeric only entry
+  $('.receiving-coin-content .currency-input input').keypress(function(event) {
+    var inputCode = event.which,
+        currentValue = $(this).val();
+    if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
+      if (inputCode == 46) {
+        if (helperProto.prototype.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+        if (currentValue.match(/[.]/)) return false;
+      }
+      else if (inputCode == 45) {
+        if (currentValue.charAt(0) == '-') return false;
+        if (helperProto.prototype.getCursorPositionInputElement($(this)) != 0) return false;
+      }
+      else if (inputCode == 8) return true;
+      else return false;
+    }
+    else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
+      if (currentValue.charAt(0) == '-' && helperProto.prototype.getCursorPositionInputElement($(this)) == 0) return false;
+    }
+  });
+  $('.receiving-coin-content .currency-input input').keydown(function(event) {
+    var keyCode = event.keyCode || event.which;
+
+    if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
+      event.preventDefault();
+    }
   });
 
   $('#qr-code').empty();

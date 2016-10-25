@@ -160,35 +160,28 @@
 .currency-input .unit-currency {
   right: -3px;
 }
-.currency-input input[type="number"]::-webkit-inner-spin-button,
-.currency-input input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin: 0;
-}
-.currency-input input[type="number"] {
+.currency-input input[type="text"] {
   padding: 6px;
   padding-right: 42px;
   color: #2E3746;
   font-size: 1.065em;
 }
-input[type="number"].crypto-currency.currency-coin {
+input[type="text"].crypto-currency.currency-coin {
   padding-right: 52px;
 }
 .unit.coin-unit {
   width: 47px;
 }
-.currency-input input[type="number"]::-webkit-input-placeholder {
+.currency-input input[type="text"]::-webkit-input-placeholder {
   color: #2E3746;
 }
-.currency-input input[type="number"]:-moz-placeholder { /* Firefox 18- */
+.currency-input input[type="text"]:-moz-placeholder { /* Firefox 18- */
   color: #2E3746;
 }
-.currency-input input[type="number"]::-moz-placeholder {  /* Firefox 19+ */
+.currency-input input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
   color: #2E3746;
 }
-.currency-input input[type="number"]:-ms-input-placeholder {
+.currency-input input[type="text"]:-ms-input-placeholder {
   color: #2E3746;
 }
 .receiving-coin-content .form-header {

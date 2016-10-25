@@ -35,7 +35,7 @@ var receiveCoinTemplate =
             '<div class="row">' +
               '<div class="input">' +
                 '<div class="currency-input inner-addon right-addon"  >' +
-                  '<input type="number" class="crypto-currency currency-coin" placeholder="0">' +
+                  '<input type="text" min="0" class="crypto-currency currency-coin" placeholder="0">' +
                   '<span class="unit coin-unit glyphicon"></span>' +
                 '</div>' +
               '</div>' +
@@ -44,7 +44,7 @@ var receiveCoinTemplate =
               '</div>' +
               '<div class="input">' +
                 '<div class="currency-input inner-addon right-addon">' +
-                  '<input type="number" class="currency crypto-currency" placeholder="0">' +
+                  '<input type="text" min="0" class="crypto-currency currency" placeholder="0">' +
                   '<span class="unit unit-currency glyphicon"></span>' +
                 '</div>' +
               '</div>' +

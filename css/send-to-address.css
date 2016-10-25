@@ -107,15 +107,9 @@
   text-align: right;
   font-size: 12px;
 }
-.send-modal .pop-detail.crncy input[type="number"] {
+.send-modal .pop-detail.crncy input[type="text"] {
   float: left;
   width: 44.7%;
-}
-.send-modal .pop-detail.crncy input[type="number"]::-webkit-inner-spin-button,
-.send-modal .pop-detail.crncy input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 }
 .send-modal .pop-detail.crncy {
   display: inline-block;

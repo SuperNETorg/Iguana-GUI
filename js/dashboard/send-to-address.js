@@ -37,33 +37,46 @@ function sendCoinModalInit(isBackTriggered) {
     $('.modal-send-coin .tx-fee-currency').attr('disabled', true);
   }
 
-  // prevent negative values in input fields
-  $('.modal-send-coin .tx-amount,' +
-    '.modal-send-coin .tx-amount-currency,' +
-    '.modal-send-coin .tx-fee,' +
-    '.modal-send-coin .tx-fee-currency').change(function() {
-      if ($(this).val() < 0) $(this).val(0);
+  // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
+  // allow numeric only entry
+  $('.modal-send-coin .tx-amount,.modal-send-coin .tx-amount-currency,.modal-send-coin .tx-fee,.modal-send-coin .tx-fee-currency').keypress(function (event) {
+    var inputCode = event.which,
+        currentValue = $(this).val();
+    if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
+      if (inputCode == 46) {
+        if (helperProto.prototype.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+        if (currentValue.match(/[.]/)) return false;
+      }
+      else if (inputCode == 45) {
+        if (currentValue.charAt(0) == '-') return false;
+        if (helperProto.prototype.getCursorPositionInputElement($(this)) != 0) return false;
+      }
+      else if (inputCode == 8) return true;
+      else return false;
+    }
+    else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
+      if (currentValue.charAt(0) == '-' && helperProto.prototype.getCursorPositionInputElement($(this)) == 0) return false;
+    }
   });
 
   // calc on keying
-  $('.modal-send-coin .tx-amount').keyup(function(e) {
-    txAmountFeeKeyupEvent(e, 'tx-amount', true);
+  $('.modal-send-coin .tx-amount').keydown(function(e) {
+    txAmountFeeKeyupEvent(e, 'tx-amount', true, $(this).val());
   });
-  $('.modal-send-coin .tx-amount-currency').keyup(function(e) {
+  $('.modal-send-coin .tx-amount-currency').keydown(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-amount', false);
   });
-  $('.modal-send-coin .tx-fee').keyup(function(e) {
+  $('.modal-send-coin .tx-fee').keydown(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', true);
   });
-  $('.modal-send-coin .tx-fee-currency').keyup(function(e) {
+  $('.modal-send-coin .tx-fee-currency').keydown(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', false);
   });
 
-  function txAmountFeeKeyupEvent(evt, fieldName, type) {
+  function txAmountFeeKeyupEvent(evt, fieldName, type, val) {
     var keyCode = evt.keyCode || evt.which;
 
     if (keyCode !== 9) {
-      evt.preventDefault();
       currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
 
       if (type) {
@@ -71,6 +84,12 @@ function sendCoinModalInit(isBackTriggered) {
       } else {
         $('.modal-send-coin .' + fieldName).val(($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).toFixed(helper.decimalPlacesFormat($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).coin));
       }
+    } else {
+      evt.preventDefault();
+    }
+
+    if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
+      evt.preventDefault();
     }
   }
 
