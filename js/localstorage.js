@@ -18,3 +18,5 @@ localStorageProto.prototype.deleteVal = function(name) {
 localStorageProto.prototype.setVal = function(name, propArray) {
   localStorage.setItem(name, JSON.stringify(propArray));
 }
+
+var localstorage = new localStorageProto();

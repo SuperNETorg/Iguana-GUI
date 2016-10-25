@@ -30,11 +30,10 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
 function constructCoinRepeater() {
   var result = '',
       index = 0,
-      localStorage = new localStorageProto(),
       helper = new helperProto();
 
   for (var key in supportedCoinsList) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes' || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
+    if (localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes' || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
         result += coinRepeaterTemplate.
                   replace('{{ id }}', key.toUpperCase()).

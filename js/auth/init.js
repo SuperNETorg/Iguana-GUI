@@ -36,13 +36,12 @@ function signupFormPrepTemplate() {
 }
 
 function initAuthCB() {
-  var localStorage = new localStorageProto(),
-      helper = new helperProto(),
+  var helper = new helperProto(),
       api = new apiProto(),
       selectedCoindToEncrypt;
 
   if (helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
-    localStorage.setVal('iguana-active-coin', {});
+    localstorage.setVal('iguana-active-coin', {});
   }
 
   // message modal
@@ -169,6 +168,7 @@ function addCoinButtonNextAction() {
   if (coinsSelectedToAdd[0]) {
     if (!isIguana) {
       $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+      $('.btn-signin').removeClass('disabled');
     } else {
       $('.login-add-coin-selection-title').html('');
       if (coinsSelectedToAdd.length === 1) {
@@ -179,10 +179,10 @@ function addCoinButtonNextAction() {
         }
       }
     }
-    if (!isIguana) $('.btn-signin').removeClass('disabled');
-    if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
-    if (dev.isDev && isIguana && dev.coinPW.iguana && helper.getCurrentPage() === 'login') $('#passphrase').val(dev.coinPW.iguana);
-    else $('#passphrase').val('');
+    $('.login-form #passphrase').val('');
+    // dev only
+    if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('.login-form #passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+    if (dev.isDev && isIguana && dev.coinPW.iguana && helper.getCurrentPage() === 'login') $('.login-form #passphrase').val(dev.coinPW.iguana);
     helper.toggleModalWindow('add-new-coin-form', 300);
   }
 }

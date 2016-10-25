@@ -34,8 +34,7 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
       totalSubstrAlpha = passphraseInput.match(/\b[a-z]+\b/g), // count only words consist of characters
       totalSpaces = passphraseInput.match(/\s/g),
       api = new apiProto(),
-      helper = new helperProto(),
-      localStorage = new localStorageProto();
+      helper = new helperProto();
 
   if (totalSubstr && totalSubstrAlpha && totalSpaces) {
     if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
@@ -46,7 +45,7 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
         if (buttonClassName === 'add-account') {
           helper.openPage('login');
         } else {
-          localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+          localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
           helper.openPage('dashboard');
         }
       } else {

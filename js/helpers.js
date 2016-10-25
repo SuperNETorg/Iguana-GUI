@@ -107,13 +107,11 @@ helperProto.prototype.openPage = function(url) {
 }
 
 helperProto.prototype.checkSession = function(returnVal) {
-  var localStorage = new localStorageProto();
-
-  if (!localStorage.getVal('iguana-auth')) {
+  if (!localstorage.getVal('iguana-auth')) {
     helperProto.prototype.logout();
   } else {
     var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
-        secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localStorage.getVal('iguana-auth').timestamp / 1000);
+        secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localstorage.getVal('iguana-auth').timestamp / 1000);
 
     if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
       if (!returnVal) {
@@ -128,11 +126,9 @@ helperProto.prototype.checkSession = function(returnVal) {
 }
 
 helperProto.prototype.ratesUpdateElapsedTime = function(coin) {
-  var localStorage = new localStorageProto();
-
-  if (localStorage.getVal('iguana-rates-' + coin.toLowerCase())) {
+  if (localstorage.getVal('iguana-rates-' + coin.toLowerCase())) {
     var currentEpochTime = new Date(Date.now()) / 1000,
-        secondsElapsed = Number(currentEpochTime) - Number(localStorage.getVal('iguana-rates-' + coin.toLowerCase()).updatedAt / 1000);
+        secondsElapsed = Number(currentEpochTime) - Number(localstorage.getVal('iguana-rates-' + coin.toLowerCase()).updatedAt / 1000);
 
     return secondsElapsed;
   } else {
@@ -149,24 +145,22 @@ helperProto.prototype.getTimeDiffBetweenNowAndDate = function(from) {
 }
 
 helperProto.prototype.logout = function(noRedirect) {
-  var localStorage = new localStorageProto();
-
   if (isIguana) {
     apiProto.prototype.walletLock();
-    localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
     helperProto.prototype.openPage('login');
   } else {
     coindWalletLockCount = 0;
 
     for (var key in coinsInfo) {
-      if (localStorage.getVal('iguana-' + key + '-passphrase') && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
         coindWalletLockCount++;
       }
     }
 
     // in case something went bad
     if (coindWalletLockCount === 0) {
-      localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+      localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
       helperProto.prototype.openPage('login');
     }
 
@@ -175,42 +169,35 @@ helperProto.prototype.logout = function(noRedirect) {
 }
 
 helperProto.prototype.logoutCoind = function() {
-  var localStorage = new localStorageProto(),
-      api = new apiProto();
+  var api = new apiProto();
 
   for (var key in coinsInfo) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase') && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+    if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
       api.walletLock(key, helperProto.prototype.logoutCoindCB(key));
     }
   }
 }
 
 helperProto.prototype.logoutCoindCB = function(key) {
-  var localStorage = new localStorageProto();
-
   coindWalletLockResults[key] = true;
-  localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+  localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
 
   if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
-    localStorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
     helperProto.prototype.openPage('login');
   }
 }
 
 helperProto.prototype.setCurrency = function(currencyShortName) {
-  var localStorage = new localStorageProto();
-
-  localStorage.setVal('iguana-currency', { 'name' : currencyShortName });
+  localstorage.setVal('iguana-currency', { 'name' : currencyShortName });
 
   for (var key in coinsInfo) {
-    localStorage.setVal('iguana-rates-' + key, { 'shortName' : null, 'value': null, 'updatedAt': 1471620867, 'forceUpdate': true }); // force currency update
+    localstorage.setVal('iguana-rates-' + key, { 'shortName' : null, 'value': null, 'updatedAt': 1471620867, 'forceUpdate': true }); // force currency update
   }
 }
 
 helperProto.prototype.getCurrency = function() {
-  var localStorage = new localStorageProto();
-
-  return localStorage.getVal('iguana-currency');
+  return localstorage.getVal('iguana-currency');
 }
 
 helperProto.prototype.getCurrentPage = function() {
@@ -245,7 +232,7 @@ helperProto.prototype.setPortPollResponse = function() {
     }
   }
 
-  localStorageProto.prototype.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
+  localstorage.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
                                                            'info': coinsInfoJSON,
                                                            'isIguana': isIguana,
                                                            'proxy': isProxy,

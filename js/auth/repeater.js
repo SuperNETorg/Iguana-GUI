@@ -22,12 +22,11 @@ var nonIguanaCoinsRepeaterTemplate = '<div class=\"coin block\" data-coin-id=\"{
 function constructAuthCoinsRepeater() {
   var result = isIguana ? '<hr/>' : '',
       coinsRepeaterTemplate = isIguana ? iguanaCoinsRepeaterTemplate : nonIguanaCoinsRepeaterTemplate,
-      localStorage = new localStorageProto(),
       helper = new helperProto(),
       index = 0;
 
   for (var key in coinsInfo) {
-    if (!isIguana) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+    if (!isIguana) localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
     if ((isIguana && iguanaAddCoinParams[key] && iguanaAddCoinParams[key] !== 'disabled') || (!isIguana && coinsInfo[key].connection === true && coinsInfo[key].iguana !== false)) {
       index++;
       result += coinsRepeaterTemplate.

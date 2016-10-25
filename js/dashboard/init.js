@@ -6,10 +6,9 @@
 function initDashboard() {
   var session = new helperProto(),
       helper = new helperProto(),
-      api = new apiProto(),
-      localStorage = new localStorageProto();
+      api = new apiProto();
 
-  if (localStorage.getVal('iguana-active-coin') && localStorage.getVal('iguana-active-coin').id) activeCoin = localStorage.getVal('iguana-active-coin').id;
+  if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
 
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
   defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;

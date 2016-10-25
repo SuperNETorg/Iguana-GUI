@@ -6,7 +6,7 @@
 // check if iguana is running
 apiProto.prototype.testConnection = function(cb) {
   var result = false;
-      setPortPollResponseDS = localStorageProto.prototype.getVal('iguana-port-poll'),
+      setPortPollResponseDS = localstorage.getVal('iguana-port-poll'),
       timeDiff = setPortPollResponseDS ? Math.floor(helperProto.prototype.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0;
 
   // force port poll update if no coin is detected
@@ -245,8 +245,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
 apiProto.prototype.checkBackEndConnectionStatus = function() {
   // check if iguana or coind quit
-  var totalCoinsRunning = 0,
-      localStorage = new localStorageProto();
+  var totalCoinsRunning = 0;
 
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) totalCoinsRunning++;
@@ -264,8 +263,8 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
   // out of sync message
   var outOfSyncCoinsList = '';
   $.each(apiProto.prototype.getConf().coins, function(index, conf) {
-    if ((coinsInfo[index].RT === false && coinsInfo[index].connection === true && isIguana && localStorage.getVal('iguana-' + index + '-passphrase')) ||
-        (coinsInfo[index].RT === false && !isIguana && localStorage.getVal('iguana-' + index + '-passphrase') && localStorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
+    if ((coinsInfo[index].RT === false && coinsInfo[index].connection === true && isIguana && localstorage.getVal('iguana-' + index + '-passphrase')) ||
+        (coinsInfo[index].RT === false && !isIguana && localstorage.getVal('iguana-' + index + '-passphrase') && localstorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
       outOfSyncCoinsList += index.toUpperCase() + ', ';
   });
   if (outOfSyncCoinsList[outOfSyncCoinsList.length - 1] === ' ') {

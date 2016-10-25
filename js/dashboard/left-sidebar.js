@@ -20,14 +20,13 @@ var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\"
 var coinBalances = [];
 
 function constructAccountCoinRepeater() {
-  var api = new apiProto(),
-  localStorage = new localStorageProto();
+  var api = new apiProto();
 
   // TODO: investigate why coinsInfo[key].connection === true is failing on port poll
   var index = 0;
   for (var key in coinsInfo) {
-    if ((isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-        (!isIguana /*&& coinsInfo[key].connection === true*/ && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+    if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
+        (!isIguana /*&& coinsInfo[key].connection === true*/ && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
       coinsSelectedByUser[index] = key;
       index++;
     }
@@ -45,7 +44,6 @@ function constructAccountCoinRepeater() {
 // construct account coins array
 function constructAccountCoinRepeaterCB(balance, coin) {
   var result = '',
-      localStorage = new localStorageProto(),
       helper = new helperProto(),
       accountCoinRepeaterHTML = '',
       api = new apiProto(),
@@ -98,8 +96,8 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   var index = 0,
       sortedAccountCoinsRepeater = '';
   for (var key in coinsInfo) {
-    if ((isIguana && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-        (!isIguana /*&& coinsInfo[key].connection === true*/ && localStorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+    if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
+        (!isIguana /*&& coinsInfo[key].connection === true*/ && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
       index++;
       if ($('.account-coins-repeater .' + key).html() && $('.account-coins-repeater .' + key)[0].outerHTML) sortedAccountCoinsRepeater = sortedAccountCoinsRepeater + $('.account-coins-repeater .' + key)[0].outerHTML;
     }
@@ -130,15 +128,13 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 }
 
 function bindClickInAccountCoinRepeater() {
-  var localStorage = new localStorageProto();
-
   $('.account-coins-repeater .item').each(function(index, item) {
     $(this).find('.remove-coin').click(function() {
       if (confirm('Are you sure you want to remove ' + $(this).parent().attr('data-coin-id').toUpperCase()) === true) {
         if ($('.account-coins-repeater .item.active').attr('data-coin-id').toString() === $(this).parent().attr('data-coin-id').toString())
           $('.account-coins-repeater .item:first-child .clickable-area').click();
         $(this).parent().remove();
-        localStorage.setVal('iguana-' + $(this).parent().attr('data-coin-id') + '-passphrase', { 'logged': 'no' });
+        localstorage.setVal('iguana-' + $(this).parent().attr('data-coin-id') + '-passphrase', { 'logged': 'no' });
         checkAddCoinButton();
 
         if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
@@ -156,7 +152,7 @@ function bindClickInAccountCoinRepeater() {
 
           $(this).parent().addClass('active');
           activeCoin = $(this).parent().attr('data-coin-id');
-          localStorage.setVal('iguana-active-coin', { id: activeCoin });
+          localstorage.setVal('iguana-active-coin', { id: activeCoin });
 
           if (oldActiveCoinVal !== activeCoin) {
             updateTransactionUnitBalance();
@@ -170,10 +166,9 @@ function bindClickInAccountCoinRepeater() {
 
 function checkAddCoinButton() {
   // disable add wallet/coin button if all coins/wallets are already in the sidebar
-  var coinsLeftToAdd = 0,
-      localStorage = new localStorageProto();
+  var coinsLeftToAdd = 0;
   for (var key in supportedCoinsList) {
-    if (localStorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
+    if (localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
         coinsLeftToAdd++;
       }

@@ -41,11 +41,10 @@ function authAllAvailableCoind(modalClassName) {
 }
 
 function authAllAvailableCoindCB(result, key) {
-  var localStorage = new localStorageProto(),
-      helper = new helperProto();
+  var helper = new helperProto();
 
   coindAuthResults[key] = result;
-  if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
+  if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
     if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true);
     $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
@@ -73,7 +72,7 @@ function authAllAvailableCoindCB(result, key) {
     if (!isAnyCoindLoginError && helper.getCurrentPage() !== 'dashboard') {
       var helper = new helperProto();
 
-      localStorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+      localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
       helper.openPage('dashboard');
     } else {
       if (!isAnyCoindLoginError) {
@@ -149,7 +148,6 @@ function checkSelectedWallet(key) {
 function checkIguanaCoinsSelection(suppressAddCoin) {
   var result = false,
       api = new apiProto(),
-      localStorage = new localStorageProto(),
       helper = new helperProto();
 
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
@@ -161,7 +159,7 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
     addCoinResponses = [];
 
     for (var key in coinsInfo) {
-      localStorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+      localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
     }
 
     for (var i=0; i < coinsSelectedToAdd.length; i++) {
@@ -183,8 +181,7 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 }
 
 function addCoinCB(response, coin) {
-  var localStorage = new localStorageProto(),
-      helper = new helperProto();
+  var helper = new helperProto();
 
   if (response === 'coin added' || response === 'coin already there') {
     if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
@@ -199,7 +196,7 @@ function addCoinCB(response, coin) {
     for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
       if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
         addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-        localStorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+        localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
       } else {
         failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
       }
