@@ -15,7 +15,6 @@ var addCoinLoginTemplate =
       '<div class="login-add-coin-selection">' +
         '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ cta_title }}</div>' +
       '</div>' +
-      '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of {{ word_count }} words. Try one more time.</div>' +
       '<div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">Enter a passphrase to add {{ item }}</div>' +
       '<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +
       '<div class="non-iguana-coins-repeater hidden"></div>' +

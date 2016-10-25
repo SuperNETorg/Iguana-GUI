@@ -4,8 +4,7 @@
  */
 
 function updateTotalBalance() {
-  var totalBalance = 0,
-      helper = new helperProto();
+  var totalBalance = 0;
 
   $('.account-coins-repeater .item').each(function(index, item) {
     var coin = $(this).attr('data-coin-id'),
@@ -21,7 +20,6 @@ function updateTotalBalance() {
 
 function updateTransactionUnitBalance(isAuto) {
   var selectedCoin = $('.account-coins-repeater .item.active'),
-      helper = new helperProto(),
       currentCoinRate = isAuto ? updateRates(selectedCoin.attr('data-coin-id').toUpperCase()) : parseFloat($('.account-coins-repeater .item.active .currency-value .val').html()) / parseFloat($('.account-coins-repeater .item.active .coin-value .val').html(), null, true);
       selectedCoinValue = Number($('.account-coins-repeater .item.active .coin-value .val').html()) ? Number($('.account-coins-repeater .item.active .coin-value .val').html()) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
       curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);

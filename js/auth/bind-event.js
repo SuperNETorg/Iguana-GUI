@@ -4,13 +4,11 @@
  */
 
 function addAuthorizationButtonAction(buttonClassName) {
-  var helper = new helperProto();
-
   $('.btn-' + buttonClassName).off();
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
-        helper.prepMessageModal('Please select a coin', 'blue', true);
+        helpers.prepMessageModal('Please select a coin', 'blue', true);
       } else {
         //addAccountIguanaCoind('signin');
       }
@@ -32,12 +30,10 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
   var passphraseInput = $('#passphrase').val(),
       totalSubstr = passphraseInput.match(/\b\w+\b/g),
       totalSubstrAlpha = passphraseInput.match(/\b[a-z]+\b/g), // count only words consist of characters
-      totalSpaces = passphraseInput.match(/\s/g),
-      api = new apiProto(),
-      helper = new helperProto();
+      totalSpaces = passphraseInput.match(/\s/g);
 
   if (totalSubstr && totalSubstrAlpha && totalSpaces) {
-    if ((dev.isDev || !isIguana) ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
+    if ((buttonClassName === 'signin') ? true : totalSubstr.length === 24 && totalSubstrAlpha.length === 24 && totalSpaces.length === 23) {
       if (!isCoind ? (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : verifyNewPassphrase() && api.walletEncrypt(passphraseInput)) :
                      (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet())) {
         toggleLoginErrorStyling(false);

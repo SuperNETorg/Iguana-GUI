@@ -4,9 +4,7 @@
  */
 
 function updateRates(coin, currency, returnValue, triggerUpdate) {
-  var api = new apiProto(),
-      apiExternalRate,
-      helper = new helperProto(),
+  var apiExternalRate,
       allDashboardCoins = '',
       totalCoins = 0;
 
@@ -59,5 +57,5 @@ function updateRateCB(coin, result) {
     }
   }
 
-  if (helperProto.prototype.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
+  if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
 }

@@ -4,9 +4,7 @@
  */
 
 function initDashboard() {
-  var session = new helperProto(),
-      helper = new helperProto(),
-      api = new apiProto();
+  var api = new apiProto();
 
   if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
 
@@ -29,8 +27,7 @@ function initDashboard() {
                              replace('{{ item }}', isIguana ? 'a coin' : ' a wallet').
                              replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
   $('body').append(addCoinLoginTemplate);
-  addCoinCreateWalletTemplate = addCoinCreateWalletTemplate.
-                                replace('{{ word_count }}', isIguana ? 24 : 12);
+  addCoinCreateWalletTemplate = addCoinCreateWalletTemplate.replace('{{ word_count }}', isIguana ? 24 : 12);
   $('body').append(addCoinCreateWalletTemplate);
 
   // message modal
@@ -38,16 +35,15 @@ function initDashboard() {
   helper.prepMessageModal('Address is copied to clipboard', 'blue');
 
   if (!isIguana) $('.btn-add-coin').html('Add a wallet');
-
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
-  if (session.checkSession(true)) {
+  if (helper.checkSession(true)) {
     $('.dashboard').removeClass('hidden');
     updateRates(null, null, null, true);
     constructAccountCoinRepeater();
     updateDashboardView(dashboardUpdateTimout);
   } else {
-    helperProto.prototype.openPage('login');
+    helper.openPage('login');
   }
 
   $('.top-menu .item').click(function() {
@@ -56,11 +52,11 @@ function initDashboard() {
     });
 
     $(this).addClass('active');
-    helperProto.prototype.openPage($(this).attr('data-url'));
+    helper.openPage($(this).attr('data-url'));
   });
 
   $('.lnk-logout').click(function() {
-    session.logout();
+    helper.logout();
   });
 
   //if (!isIguana && !dev.isDev) $('.lnk-logout').hide();

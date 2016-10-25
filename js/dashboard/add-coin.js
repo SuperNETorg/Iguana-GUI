@@ -6,8 +6,6 @@
 var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
 
 function addCoinButtonCB() {
-  var helper = new helperProto();
-
   coinsSelectedToAdd = [];
 
   if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
@@ -29,8 +27,7 @@ var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">'
 // construct coins to add array
 function constructCoinRepeater() {
   var result = '',
-      index = 0,
-      helper = new helperProto();
+      index = 0;
 
   for (var key in supportedCoinsList) {
     if (localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes' || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
@@ -70,8 +67,6 @@ function opacityToggleOnAddCoinRepeaterScroll() {
 }
 
 function bindClickInCoinRepeater() {
-  var helper = new helperProto();
-
   $('.supported-coins-repeater-inner .coin').each(function(index, item) {
     $(this).click(function() {
       var selectionStatus = $(this).hasClass('active') ? true : false;

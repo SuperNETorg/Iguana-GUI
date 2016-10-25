@@ -20,8 +20,6 @@ var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\"
 var coinBalances = [];
 
 function constructAccountCoinRepeater() {
-  var api = new apiProto();
-
   // TODO: investigate why coinsInfo[key].connection === true is failing on port poll
   var index = 0;
   for (var key in coinsInfo) {
@@ -32,7 +30,7 @@ function constructAccountCoinRepeater() {
     }
   }
 
-  if (coinsSelectedByUser.length === 0) helperProto.prototype.logout();
+  if (coinsSelectedByUser.length === 0) helper.logout();
 
   coinBalances = [];
 
@@ -44,9 +42,7 @@ function constructAccountCoinRepeater() {
 // construct account coins array
 function constructAccountCoinRepeaterCB(balance, coin) {
   var result = '',
-      helper = new helperProto(),
       accountCoinRepeaterHTML = '',
-      api = new apiProto(),
       isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
 
   api.checkBackEndConnectionStatus();
@@ -65,7 +61,6 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     else $('.account-coins-repeater .' + coin).removeClass('disabled');
   } else { // actual DOM append
     var coinLocalRate = 0,
-        api = new apiProto(),
         coinBalance = coinBalances[coin] || 0;
 
     coinLocalRate = updateRates(coin.toUpperCase(), defaultCurrency, true) || 0;
@@ -180,8 +175,10 @@ function checkAddCoinButton() {
 
 // on les then 768px working this function
 function bindMobileView() {
-  var coins = $('aside.coins'), item, transactionsUnit = $('.transactions-unit');
-  item = $('.item.active', coins);
+  var coins = $('aside.coins'),
+      item = $('.item.active', coins),
+      transactionsUnit = $('.transactions-unit');
+
   mobileView(coins, item, transactionsUnit);
   $(window).resize(function () {
     mobileView(coins, item, transactionsUnit);
@@ -190,7 +187,7 @@ function bindMobileView() {
 function mobileView(coins, item, transactionsUnit) {
   item = $('.item.active', coins);
   if ($(window).width() > 767) {
-    coins.css({'min-width': '230px', 'max-width': '250px'});
+    coins.css({ 'min-width': '230px', 'max-width': '250px' });
     item.removeClass('hidden-after');
     transactionsUnit.removeAttr('style');
   } else {

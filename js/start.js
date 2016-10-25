@@ -4,13 +4,10 @@
  */
 
 $(document).ready(function() {
-  var api = api = new apiProto();
   api.testConnection(initPage);
 });
 
 function initPage() {
-  var helper = new helperProto();
-
   if (helper.checkSession(true)) {
     if (document.location.hash === '#settings') {
       helper.openPage('settings');

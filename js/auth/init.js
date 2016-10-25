@@ -5,6 +5,7 @@
 
 function loginFormPrepTemplate() {
   var templateToPrep = loginTemplate;
+
   templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
 
   return templateToPrep;
@@ -12,7 +13,6 @@ function loginFormPrepTemplate() {
 
 function signupFormPrepTemplate() {
   var templateToPrep = signupTemplate,
-      helper = new helperProto(),
       coinAlreadyAdded = false;
 
   templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
@@ -36,8 +36,7 @@ function signupFormPrepTemplate() {
 }
 
 function initAuthCB() {
-  var helper = new helperProto(),
-      api = new apiProto(),
+  var api = new apiProto(),
       selectedCoindToEncrypt;
 
   if (helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
@@ -89,7 +88,6 @@ function initAuthCB() {
       helper.openPage('create-account');
     });
 
-    constructAuthCoinsRepeater();
     addAuthorizationButtonAction('signin');
     watchPassphraseKeyUpEvent('signin');
   }
@@ -162,7 +160,6 @@ $(window).resize(function() {
 });
 
 function addCoinButtonNextAction() {
-  var helper = new helperProto();
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
   if (coinsSelectedToAdd[0]) {

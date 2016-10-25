@@ -27,3 +27,5 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/api/supported-coins
                '\x3Cscript type=\"text/javascript\" src=\"js/api/get-address.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/send-coin.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/handlers.js\">\x3C/script>');
+
+var api = new apiProto();

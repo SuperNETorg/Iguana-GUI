@@ -23,8 +23,7 @@ var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp
 
 // construct transaction unit array
 function constructTransactionUnitRepeater(update) {
-  var api = new apiProto(),
-      coinName = activeCoin || $('.account-coins-repeater .item.active');
+  var coinName = activeCoin || $('.account-coins-repeater .item.active');
 
   // disable send button if ther're no funds on a wallet
   if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
@@ -45,7 +44,6 @@ function constructTransactionUnitRepeater(update) {
 function constructTransactionUnitRepeaterCB(response, update) {
   var result = '',
       prependContent = '',
-      helper = new helperProto(),
       coinName = activeCoin || $('.account-coins-repeater .item.active');
 
   if (coinName.length) {

@@ -37,24 +37,20 @@ function initCreateAccountForm() {
 
   $('.verify-passphrase-form .btn-back').off();
   $('.verify-passphrase-form .btn-back').click(function() {
-    helper = new helperProto();
     helper.openPage('create-account');
   });
 
   $('.create-account-form .btn-back').off();
   $('.create-account-form .btn-back').click(function() {
-    var helper = new helperProto();
     helper.openPage('login');
   });
 
   $('.btn-verify-passphrase').off();
   $('.btn-verify-passphrase').click(function() {
     if (isIguana) {
-      var helper = new helperProto();
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
       if (coinsSelectedToAdd[0]) {
-        var api = new apiProto(),
-            addCoinResult,
+        var addCoinResult,
             coinIsRunning = false;
 
         for (var key in coinsInfo) {

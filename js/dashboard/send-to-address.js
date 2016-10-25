@@ -6,8 +6,6 @@
 var sendFormDataCopy = {};
 
 function sendCoinModalInit(isBackTriggered) {
-  var helper = new helperProto();
-
   var templateToLoad = sendCoinEntryTemplate,
       activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
       coinData = getCoinData(activeCoin),
@@ -44,18 +42,18 @@ function sendCoinModalInit(isBackTriggered) {
         currentValue = $(this).val();
     if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
       if (inputCode == 46) {
-        if (helperProto.prototype.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+        if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
         if (currentValue.match(/[.]/)) return false;
       }
       else if (inputCode == 45) {
         if (currentValue.charAt(0) == '-') return false;
-        if (helperProto.prototype.getCursorPositionInputElement($(this)) != 0) return false;
+        if (helper.getCursorPositionInputElement($(this)) != 0) return false;
       }
       else if (inputCode == 8) return true;
       else return false;
     }
     else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-      if (currentValue.charAt(0) == '-' && helperProto.prototype.getCursorPositionInputElement($(this)) == 0) return false;
+      if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
     }
   });
 
@@ -152,9 +150,7 @@ function sendCoinModalConfirm() {
     });
 
     $('.btn-confirm-tx').click(function() {
-      var api = new apiProto(),
-          helper = new helperProto(),
-          txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
+      var txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
 
       // TODO: ugly, rewrite
       $('.modal-append-container').html(addCoinPassphraseTemplate.

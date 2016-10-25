@@ -9,8 +9,6 @@
 
 function bindReceive() {
   var coinRate,
-      helper = new helperProto(),
-  		api = new apiProto(),
       coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
       address = api.getAccountAddress(coin, defaultAccount);
 
@@ -43,18 +41,18 @@ function bindReceive() {
         currentValue = $(this).val();
     if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
       if (inputCode == 46) {
-        if (helperProto.prototype.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+        if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
         if (currentValue.match(/[.]/)) return false;
       }
       else if (inputCode == 45) {
         if (currentValue.charAt(0) == '-') return false;
-        if (helperProto.prototype.getCursorPositionInputElement($(this)) != 0) return false;
+        if (helper.getCursorPositionInputElement($(this)) != 0) return false;
       }
       else if (inputCode == 8) return true;
       else return false;
     }
     else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-      if (currentValue.charAt(0) == '-' && helperProto.prototype.getCursorPositionInputElement($(this)) == 0) return false;
+      if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
     }
   });
   $('.receiving-coin-content .currency-input input').keydown(function(event) {

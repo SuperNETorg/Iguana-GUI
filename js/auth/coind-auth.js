@@ -10,7 +10,6 @@ var addCoinResponses = [],
 
 function authAllAvailableCoind(modalClassName) {
   var api = new apiProto(),
-      helper = new helperProto(),
       result = false;
 
   coindAuthResults = [];
@@ -41,9 +40,8 @@ function authAllAvailableCoind(modalClassName) {
 }
 
 function authAllAvailableCoindCB(result, key) {
-  var helper = new helperProto();
-
   coindAuthResults[key] = result;
+
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
     if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true);
@@ -70,8 +68,6 @@ function authAllAvailableCoindCB(result, key) {
     }
 
     if (!isAnyCoindLoginError && helper.getCurrentPage() !== 'dashboard') {
-      var helper = new helperProto();
-
       localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
       helper.openPage('dashboard');
     } else {
@@ -86,7 +82,6 @@ function authAllAvailableCoindCB(result, key) {
 
 function encryptCoindWallet(modalClassName) {
   var api = new apiProto(),
-      helper = new helperProto(),
       passphraseInput = $((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(),
       result = false;
 
@@ -122,8 +117,7 @@ function encryptCoindWallet(modalClassName) {
 }
 
 function checkSelectedWallet(key) {
-  var isCoindChecked = false,
-      helper = new helperProto();
+  var isCoindChecked = false;
 
   if (coinsSelectedToAdd && coinsSelectedToAdd[0]) {
     selectedCoindToEncrypt = key = coinsSelectedToAdd[0];
@@ -147,8 +141,7 @@ function checkSelectedWallet(key) {
 
 function checkIguanaCoinsSelection(suppressAddCoin) {
   var result = false,
-      api = new apiProto(),
-      helper = new helperProto();
+      api = new apiProto();
 
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
@@ -175,14 +168,10 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
     result = true;
   }
 
-  if (suppressAddCoin) constructAuthCoinsRepeater();
-
   return result;
 }
 
 function addCoinCB(response, coin) {
-  var helper = new helperProto();
-
   if (response === 'coin added' || response === 'coin already there') {
     if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
 

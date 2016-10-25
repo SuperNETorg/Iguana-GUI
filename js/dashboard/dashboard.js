@@ -52,8 +52,6 @@ function applyDashboardResizeFix() {
 }
 
 function updateDashboardView(timeout) {
-  var helper = new helperProto();
-
   dashboardUpdateTimer = setInterval(function() {
     //console.clear();
     helper.checkSession();

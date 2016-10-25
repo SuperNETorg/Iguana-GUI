@@ -169,11 +169,9 @@ helperProto.prototype.logout = function(noRedirect) {
 }
 
 helperProto.prototype.logoutCoind = function() {
-  var api = new apiProto();
-
   for (var key in coinsInfo) {
     if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
-      api.walletLock(key, helperProto.prototype.logoutCoindCB(key));
+      apiProto.prototype.walletLock(key, helperProto.prototype.logoutCoindCB(key));
     }
   }
 }
@@ -406,3 +404,5 @@ helperProto.prototype.getCursorPositionInputElement = function(element) {
 }
 
 helperProto.prototype.syncStatus();
+
+var helper = new helperProto();
