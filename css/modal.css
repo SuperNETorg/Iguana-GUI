@@ -43,29 +43,28 @@
   padding-top: 60px;
 }
 .form-container.mdl .form-header {
-  height: 60px;
+  height: 45px;
   width: 100%;
   position: absolute;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .form-container.mdl .bi_interface-cross {
   color: #fff;
-  font-size: 16px;
+  font-size: 13px;
   position: absolute;
-  top: 21px;
+  top: 16px;
   left: 20px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
 }
 .form-container.mdl .form-header .title {
   position: relative;
-  z-index: 10;
   text-align: center;
   font-family: 'Proxima Nova', sans-serif;
   font-weight: 600;
   color: #fff;
-  font-size: 1.30em;
-  padding-top: 19px;
+  font-size: 1.23em;
+  padding-top: 10px;
   z-index: 90;
 }
 .form-container.mdl .btn {
@@ -74,7 +73,7 @@
   color: #fff;
   font-size: 1.20em;
   height: 34px;
-  width: 300px;
+  max-width: 300px;
   margin: 0 auto;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }

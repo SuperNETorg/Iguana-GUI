@@ -23,7 +23,7 @@
   height: 91%;
   margin: 0 auto;
   display: block;
-  margin-top: 13%;
+  margin-top: 2%;
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -33,10 +33,7 @@
   height: 100%;
 }
 .modal-add-coin {
-  max-width: 1100px;
-  min-width: 920px;
   width: 80%;
-  height: 80%;
   margin: 0 auto;
   display: block;
   margin-top: 7%;
