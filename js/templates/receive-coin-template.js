@@ -8,8 +8,8 @@ var receiveCoinTemplate =
   '<div class="modal-dialog modal-popup modal-lg">' +
     '<div class="modal-content receiving-coin-content">' +
       '<header class="modal-header form-header orange-gradient box-shadow-bottom">' +
-        '<i class="bi_interface-cross margin-top-5  cursor-pointer btn-close pull-left" data-dismiss="modal"></i>' +
-        '<div class="text-center margin-top-5  title text-shadow">Receiving coins</div>' +
+        '<i class="bi_interface-cross cursor-pointer btn-close pull-left" data-dismiss="modal"></i>' +
+        '<div class="text-center title text-shadow">Receiving coins</div>' +
       '</header>' +
       '<div class="modal-body">' +
         '<div class="share-address-section">' +

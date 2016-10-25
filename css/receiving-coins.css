@@ -144,11 +144,11 @@
   border: 1px solid #ccc;
 }
 .currency-input.input-addon {
-  width: 20px;
+  width: 18px;
 }
 .currency-input .equals-sign {
   color: #fe5c0d;
-  margin: 5px 4px;
+  margin: 5px 3px;
   display: block;
   font-size: 1.5em;
   font-weight: 600;
@@ -185,7 +185,7 @@ input[type="text"].crypto-currency.currency-coin {
   color: #2E3746;
 }
 .receiving-coin-content .form-header {
-  height: 60px;
+  height: 45px;
   color: #FFF;
   border-radius: 4px 4px 0 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -193,6 +193,7 @@ input[type="text"].crypto-currency.currency-coin {
 .receiving-coin-content .form-header .title {
   font-size: 18px;
   font-weight: 700;
+  line-height: 50%;
 }
 .receiving-coin-content .form-header .btn-close::before {
   font-weight: 700;
