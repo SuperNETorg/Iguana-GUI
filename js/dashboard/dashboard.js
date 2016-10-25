@@ -16,7 +16,6 @@ var defaultCurrency = '',
     dashboardUpdateTimer;
 
 $(document).ready(function() {
-  var api = api = new apiProto();
   api.testConnection(initPage);
 });
 

@@ -44,16 +44,11 @@ function authAllAvailableCoindCB(result, key) {
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
     if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true);
-    $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">wrong passphrase!</strong>');
     result = false;
   }
   if (coindAuthResults[key] === -15 && helper.getCurrentPage() !== 'create-account') {
     if (coinsSelectedToAdd.length === 1) helper.prepMessageModal('Please encrypt your wallet with a passphrase!', 'red', true);
-    $('.iguana-coin-' + key + '-error').html('<strong style=\"color:red;float:right\">please encrypt your wallet with a passphrase!</strong>');
     result = false;
-  }
-  if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) {
-    $('.iguana-coin-' + key + '-error').html('');
   }
 
   // check coind login results
@@ -124,14 +119,8 @@ function checkSelectedWallet(key) {
     helper.prepMessageModal('Please select a wallet!', 'blue', true);
   }
 
-  for (var _key in coinsInfo) {
-    if ($('#iguana-coin-' + _key + '-checkbox').prop('checked')) isCoindChecked = true;
-    $('#iguana-coin-' + _key + '-checkbox').prop('checked', false);
-  }
-
   if (key) {
     selectedCoindToEncrypt = key;
-    $('#iguana-coin-' + key + '-checkbox').addClass("checked");
   } else {
     return isCoindChecked;
   }

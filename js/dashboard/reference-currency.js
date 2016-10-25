@@ -7,8 +7,7 @@ var currencyArr = [{ 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dol
 
 function initReferenceCurrency() {
   var outPut = '',
-      defaultActive = '',
-      api = new apiProto();
+      defaultActive = '';
 
   for (var i in currencyArr)
   {
