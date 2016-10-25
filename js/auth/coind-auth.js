@@ -9,8 +9,7 @@ var addCoinResponses = [],
     buttonClassNameCB = '';
 
 function authAllAvailableCoind(modalClassName) {
-  var api = new apiProto(),
-      result = false;
+  var result = false;
 
   coindAuthResults = [];
 
@@ -81,8 +80,7 @@ function authAllAvailableCoindCB(result, key) {
 }
 
 function encryptCoindWallet(modalClassName) {
-  var api = new apiProto(),
-      passphraseInput = $((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(),
+  var passphraseInput = $((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(),
       result = false;
 
   if (coinsSelectedToAdd[0]) selectedCoindToEncrypt = coinsSelectedToAdd[0];
@@ -140,8 +138,7 @@ function checkSelectedWallet(key) {
 }
 
 function checkIguanaCoinsSelection(suppressAddCoin) {
-  var result = false,
-      api = new apiProto();
+  var result = false;
 
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 

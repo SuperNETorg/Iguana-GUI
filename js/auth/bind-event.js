@@ -8,7 +8,7 @@ function addAuthorizationButtonAction(buttonClassName) {
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
-        helpers.prepMessageModal('Please select a coin', 'blue', true);
+        helper.prepMessageModal('Please select a coin', 'blue', true);
       } else {
         //addAccountIguanaCoind('signin');
       }

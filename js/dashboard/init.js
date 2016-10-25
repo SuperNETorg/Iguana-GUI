@@ -4,8 +4,6 @@
  */
 
 function initDashboard() {
-  var api = new apiProto();
-
   if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
 
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;

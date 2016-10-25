@@ -36,8 +36,7 @@ function signupFormPrepTemplate() {
 }
 
 function initAuthCB() {
-  var api = new apiProto(),
-      selectedCoindToEncrypt;
+  var selectedCoindToEncrypt;
 
   if (helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
     localstorage.setVal('iguana-active-coin', {});
