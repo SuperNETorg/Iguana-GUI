@@ -1,3 +1,8 @@
+/*
+* Iguana/Top Nav Bar
+*
+* */
+
 // on les then 768px working this function//
 initTopNavBar = function () {
   var topMenu = $('#top-menu');

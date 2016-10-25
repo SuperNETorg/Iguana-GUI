@@ -28,8 +28,10 @@ var sendCoinEntryTemplate =
             '<div class="pop-detail send">' +
               '<h4>Send to:</h4>' +
               '<p class="tx-address-validation">Enter a wallet address<!-- or select a contact --></p>' +
-              '<input type="text" class="tx-address" value="{{ address }}" />' +
-              '<div class="tx-address-icon"></div>' +
+              '<div class="inner-addon right-addon">' +
+                '<input type="text" class="tx-address" value="{{ address }}" />' +
+              '<div class="tx-address-icon glyphicon"></div>' +
+            '</div>' +
             '</div>' +
             '<div class="pop-detail crncy">' +
               '<h4>Amount:</h4>' +

@@ -9,12 +9,13 @@
   padding: 23px 21px 20px;
   position: relative;
   box-shadow: 0 0 7px 4px #e8cec6;
+  margin-top: 0.5em;
 }
 .send-modal .headd::before {
   font-family: 'budicon';
   font-size: 2.0em;
   color: #C8CCD0;
-  bottom: -48px;
+  top: 96px;
   content: '\eac5';
   height: 40px;
   width: 40px;
@@ -40,18 +41,13 @@
 .send-modal .main-popup {
   margin: 0 auto;
   max-width: 300px;
-  padding-top: 30px;
 }
 .send-modal .pop-detail {
-  margin-bottom: 22px;
-}
-.send-modal .pop-detail.send {
-  margin-bottom: 31px;
+  margin-bottom: 0.5em;
 }
 .send-modal .modal-content .modal-body {
   background: #f5f8fb none repeat scroll 0 0;
   padding: 50px 0;
-  padding: 0;
 }
 .send-modal .hd-right > span {
   display: block;
@@ -59,7 +55,7 @@
   font-weight: 600;
 }
 .send-modal .pop-form {
-  margin-top: 51px;
+  margin-top: 30px;
 }
 .send-modal .send-modal .pop-detail h4 {
   color: #282828;
@@ -70,8 +66,7 @@
 .send-modal .pop-detail p {
   color: #90929b;
   font-size: 13px;
-  margin-bottom: 5.2px;
-  margin-top: 6px;
+  margin: 4px 0;
 }
 .send-modal .pop-detail input[type="text"] {
   border: 1px solid #c7ccd0;
@@ -86,7 +81,7 @@
   border: 1px solid #c7ccd0;
   border-radius: 4px;
   height: 34px;
-  margin-top: 9px;
+  margin-top: 4px;
   resize: none;
   width: 100%;
   padding: 5px 12px;
@@ -106,7 +101,7 @@
 }
 .send-modal .pop-detail.crncy input[type="text"] {
   float: left;
-  width: 44.7%;
+  width: 46%;
 }
 .send-modal .pop-detail.crncy {
   display: inline-block;
@@ -130,7 +125,7 @@
   color: #fff;
   font-size: 1.075em;
   height: 34px;
-  width: 300px;
+  width: 100%;
   padding-top: 3px;
   margin-top: 10px;
 }
@@ -150,8 +145,7 @@
   color: #FE450D;
   display: block;
   position: absolute;
-  top: -30px;
-  left: 274px;
+  right: 6px;
 }
 .send-modal .chk-crncy h3 {
   font-size: 21px;
@@ -291,16 +285,13 @@
   max-height: 770px;
 }
 .modal-send-coin {
-  max-height: 80%;
-  max-width: 900px;
-  min-width: 720px;
-  width: 80%;
-  height: 91%;
+  max-width: 700px;
   margin: 0 auto;
   display: block;
-  margin-top: 7%;
+  margin-top: 2%;
   border-radius: 4px;
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  bottom: auto;
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
 }
 
 /*
