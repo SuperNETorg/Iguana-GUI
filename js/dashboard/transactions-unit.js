@@ -112,8 +112,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
               $('.transactions-list-repeater .' + transactionDetails.txid + ' .in-out').removeClass('bi_interface-minus').removeClass('bi_interface-plus').addClass(txIncomeOrExpenseFlag);
               $('.transactions-list-repeater .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
             } else {
-              //if (isIguana && txAmount > 0 || !isIguana)
-              console.log(txAmount);
+              if (isIguana && txAmount !== undefined || !isIguana)
                 result = transactionUnitRepeater.
                          replace('{{ txid }}', transactionDetails.txid).
                          replace('{{ status }}', txStatus).
