@@ -47,5 +47,6 @@ document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/rates.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/dashboard.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/send-to-address.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/supported-currencies.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/reference-currency.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/start.js\">\x3C/script>');

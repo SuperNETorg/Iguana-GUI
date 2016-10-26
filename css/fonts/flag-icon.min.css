@@ -13,18 +13,99 @@
 .flag-icon:before {
 	content: '\00a0';
 }
-.flag-icon .flag-icon-squared {
-	width: 1em;
+.flag-icon-au {
+	background-image: url(flags/4x3/au.svg);
+}
+.flag-icon-bg {
+	background-image: url(flags/4x3/bg.svg);
+}
+.flag-icon-br {
+	background-image: url(flags/4x3/br.svg);
+}
+.flag-icon-ca {
+	background-image: url(flags/4x3/ca.svg);
+}
+.flag-icon-ch {
+	background-image: url(flags/4x3/ch.svg);
+}
+.flag-icon-cn {
+	background-image: url(flags/4x3/cn.svg);
+}
+.flag-icon-cz {
+	background-image: url(flags/4x3/cz.svg);
+}
+.flag-icon-dk {
+	background-image: url(flags/4x3/dk.svg);
+}
+.flag-icon-gb {
+	background-image: url(flags/4x3/gb.svg);
+}
+.flag-icon-hk {
+	background-image: url(flags/4x3/hk.svg);
+}
+.flag-icon-hr {
+	background-image: url(flags/4x3/hr.svg);
+}
+.flag-icon-hu {
+	background-image: url(flags/4x3/hu.svg);
+}
+.flag-icon-id {
+	background-image: url(flags/4x3/id.svg);
+}
+.flag-icon-il {
+	background-image: url(flags/4x3/il.svg);
+}
+.flag-icon-in {
+	background-image: url(flags/4x3/in.svg);
+}
+.flag-icon-jp {
+	background-image: url(flags/4x3/jp.svg);
+}
+.flag-icon-kr {
+	background-image: url(flags/4x3/kr.svg);
+}
+.flag-icon-mx {
+	background-image: url(flags/4x3/mx.svg);
+}
+.flag-icon-my {
+	background-image: url(flags/4x3/my.svg);
+}
+.flag-icon-no {
+	background-image: url(flags/4x3/no.svg);
+}
+.flag-icon-nz {
+	background-image: url(flags/4x3/nz.svg);
+}
+.flag-icon-ph {
+	background-image: url(flags/4x3/ph.svg);
+}
+.flag-icon-pl {
+	background-image: url(flags/4x3/pl.svg);
+}
+.flag-icon-ro {
+	background-image: url(flags/4x3/ro.svg);
+}
+.flag-icon-ru {
+	background-image: url(flags/4x3/ru.svg);
+}
+.flag-icon-se {
+	background-image: url(flags/4x3/se.svg);
+}
+.flag-icon-sg {
+	background-image: url(flags/4x3/sg.svg);
+}
+.flag-icon-th {
+	background-image: url(flags/4x3/th.svg);
+}
+.flag-icon-tr {
+	background-image: url(flags/4x3/tr.svg);
+}
+.flag-icon-za {
+	background-image: url(flags/4x3/za.svg);
 }
 .flag-icon-eu {
 	background-image: url(flags/4x3/eu.svg);
 }
-.flag-icon-eu .flag-icon-squared {
-	background-image: url(flags/1x1/eu.svg);
-}
 .flag-icon-us {
 	background-image: url(flags/4x3/us.svg);
-}
-.flag-icon-us .flag-icon-squared {
-	background-image: url(flags/1x1/us.svg);
 }

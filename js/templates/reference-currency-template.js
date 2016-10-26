@@ -46,7 +46,7 @@ var referenceCurrencyTemplate =
             '<h4 class="transaction-amount">Choose your currency to see equivalent</h4>' +
             '<h4 class="transaction-amount">amount of transactions</h4>' +
           '</div>' +
-          '<div class="col-xs-12 col-sm-6 col-md-7 currency-parent">' +
+          '<div class="col-xs-12 col-md-7 col-sm-6 currency-parent">' +
             '<ul class="currency-loop"></ul>' +
           '</div>' +
         '</div>' +
