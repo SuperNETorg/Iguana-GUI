@@ -39,7 +39,8 @@ apiProto.prototype.sendToAddress = function(coin, sendInfo, cb) {
 
       } else {
         // iguana
-        var response = $.parseJSON(_response);
+        if (!_response.error) var response = $.parseJSON(_response);
+        else response = _response;
 
         if (response.error) {
           // do something
