@@ -92,7 +92,7 @@ function sendCoinModalInit(isBackTriggered) {
   }
 
   // dev
-  //if (dev.isDev) loadTestSendData(coinData.id);
+  if (dev.isDev) loadTestSendData(coinData.id);
 
   if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
   // btn close
@@ -152,62 +152,71 @@ function sendCoinModalConfirm() {
     $('.btn-confirm-tx').click(function() {
       var txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
 
-      // TODO: ugly, rewrite
-      $('.modal-append-container').html(addCoinPassphraseTemplate.
-                                        replace('login-form-modal', 'send-coin-confirm-passphrase').
-                                        replace('>Add<', '>Ok<').
-                                        replace('Add a wallet', 'Wallet passphrase').
-                                        replace('to add wallet', 'to confirm transaction'));
+      if (!isIguana) {
+        // TODO: ugly, rewrite
+        $('.modal-append-container').html(sendCoinPassphraseTemplate.
+                                          replace('login-form-modal', 'send-coin-confirm-passphrase').
+                                          replace('>Add<', '>Ok<').
+                                          replace('Add a wallet', 'Wallet passphrase').
+                                          replace('to add wallet', 'to confirm transaction'));
 
-      helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
 
-      if (dev.isDev && dev.coinPW.coind[coinData.id]) {
-        $('.send-coin-confirm-passphrase #passphrase').val(dev.coinPW.coind[coinData.id]);
-        $('.send-coin-confirm-passphrase .btn-add-wallet').removeClass('disabled');
+        if (dev.isDev && dev.coinPW.coind[coinData.id]) {
+          $('.send-coin-confirm-passphrase #passphrase').val(dev.coinPW.coind[coinData.id]);
+          $('.send-coin-confirm-passphrase .btn-add-wallet').removeClass('disabled');
+        } else {
+          $('.login-form-modal #passphrase').val('');
+          $('.send-coin-confirm-passphrase .btn-add-wallet').addClass('disabled');
+        }
+
+        $('.send-coin-confirm-passphrase .btn-close,.send-coin-confirm-passphrase .modal-overlay').click(function() {
+          helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+        });
+
+        $('.send-coin-confirm-passphrase .btn-add-wallet').click(function() {
+          var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id);
+
+          if (coindWalletLogin !== -14) {
+            helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+            execSendCoinCall();
+          } else {
+            helper.prepMessageModal('Incorrect passphrase. Try again.', 'red', true);
+          }
+        });
       } else {
-        $('.login-form-modal #passphrase').val('');
-        $('.send-coin-confirm-passphrase .btn-add-wallet').addClass('disabled');
+        execSendCoinCall();
       }
 
-      $('.send-coin-confirm-passphrase .btn-close,.send-coin-confirm-passphrase .modal-overlay').click(function() {
-        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
-      });
+      function execSendCoinCall() {
+        var setTxFeeResult = false;
 
-      $('.send-coin-confirm-passphrase .btn-add-wallet').click(function() {
-        var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id),
-            setTxFeeResult = false;
-
-        if (coindWalletLogin !== -14) {
-          helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
-
-          if (Number(sendFormDataCopy.fee) !== Number(coinsInfo[coinData.id].relayFee) && Number(sendFormDataCopy.fee) !== 0.00001 && Number(sendFormDataCopy.fee) !== 0) {
-            setTxFeeResult = api.setTxFee(coinData.id, sendFormDataCopy.fee);
-          }
-
-          var sendTxResult = api.sendToAddress(coinData.id, txDataToSend);
-
-          if (sendTxResult.length === 64) {
-            // go to success step
-            $('.send-coin-form .rs_modal').addClass('blur');
-            $('.send-coin-form .send-coin-success-overlay').removeClass('hidden');
-
-            $('.send-coin-form .btn-confirmed').click(function() {
-              helper.toggleModalWindow('send-coin-form', 300);
-            });
-          } else {
-            // go to an error step
-            helper.prepMessageModal('Transaction was not send due to an error!', 'red', true);
-          }
-
-          // revert pay fee
-          if (setTxFeeResult) api.setTxFee(coinData.id, 0);
-        } else {
-          helper.prepMessageModal('Incorrect passphrase. Try again.', 'red', true);
+        if (Number(sendFormDataCopy.fee) !== Number(coinsInfo[coinData.id].relayFee) && Number(sendFormDataCopy.fee) !== 0.00001 && Number(sendFormDataCopy.fee) !== 0) {
+          setTxFeeResult = api.setTxFee(coinData.id, sendFormDataCopy.fee);
         }
-      });
+
+        var sendTxResult = api.sendToAddress(coinData.id, txDataToSend);
+
+        if (sendTxResult.length === 64) {
+          // go to success step
+          $('.send-coin-form .rs_modal').addClass('blur');
+          $('.send-coin-form .send-coin-success-overlay').removeClass('hidden');
+
+          $('.send-coin-form .btn-confirmed').click(function() {
+            helper.toggleModalWindow('send-coin-form', 300);
+          });
+        } else {
+          // go to an error step
+          helper.prepMessageModal('Transaction was not send due to an error!', 'red', true);
+        }
+
+        // revert pay fee
+        if (setTxFeeResult) api.setTxFee(coinData.id, 0);
+      }
     });
   }
 }
+
 
 /*
   TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
