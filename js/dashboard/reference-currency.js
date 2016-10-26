@@ -1,6 +1,3 @@
-var currencyArr = [{ 'id': 0, 'shortName': 'USD', 'fullName': 'United States Dollar', 'flagid': 'us', 'selected': true },
-                   { 'id': 1, 'shortName': 'EUR', 'fullName': 'Euro', 'flagid': 'eu' }];
-
 // TODO: add currency localstorage cache
 // note: current implementation doesn't permit too often updates
 //       due to possibility of ban for abuse
@@ -9,6 +6,7 @@ function initReferenceCurrency() {
   var outPut = '',
       defaultActive = '';
 
+  var index = 0;
   for (var i in currencyArr)
   {
     defaultActive = '';
@@ -17,7 +15,7 @@ function initReferenceCurrency() {
       defaultActive = 'selected';
     }
 
-    outPut += '<li class=\"country-li cursor-pointer ' + defaultActive + '\" data-id=\"' + currencyArr[i].id + '\">' +
+    outPut += '<li class=\"country-li cursor-pointer ' + defaultActive + '\" data-id=\"' + index + '\">' +
                 '<h1 class=\"flag-head\">' +
                   '<span class=\"label label-default\">' +
                     '<span class=\"flag-icon flag-icon-' + currencyArr[i].flagid + '\"></span>' +
@@ -26,6 +24,7 @@ function initReferenceCurrency() {
                 '<strong class=\"short-name\">' + currencyArr[i].shortName + '</strong>' +
                 '<span class=\"full-name\">' + currencyArr[i].fullName + '</span>' +
               '</li>';
+    index++;
   }
 
   $('.currency-loop').html(outPut);

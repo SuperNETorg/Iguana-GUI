@@ -162,9 +162,9 @@
   .dashboard .btn.disabled:focus {
     pointer-events: none;
   }
-.dashboard .form-container.add-new-coin-form {
-  background: none;
-}
+  .dashboard .form-container.add-new-coin-form {
+    background: none;
+  }
   .nav-buttons .nav-left {
     position: absolute;
     left: 0;
@@ -206,16 +206,15 @@
   }
   /* align glyph */
   .left-addon .glyphicon  {
-    left:  0;
+    left: 0;
   }
   .right-addon .glyphicon {
     right: 0;
   }
   /* add padding  */
   .left-addon input  {
-    padding-left:  30px;
+    padding-left: 30px;
   }
   .right-addon input {
     padding-right: 30px;
   }
-
