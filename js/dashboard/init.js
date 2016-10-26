@@ -7,7 +7,6 @@ function initDashboard() {
   if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
 
   defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-  defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
 
   // load templates
   if (!isIguana) {
@@ -35,14 +34,12 @@ function initDashboard() {
   if (!isIguana) $('.btn-add-coin').html('Add a wallet');
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
-  if (helper.checkSession(true)) {
-    $('.dashboard').removeClass('hidden');
-    updateRates(null, null, null, true);
-    constructAccountCoinRepeater();
-    updateDashboardView(dashboardUpdateTimout);
-  } else {
-    helper.openPage('login');
-  }
+  $('.dashboard').removeClass('hidden');
+
+  updateRates(null, null, null, true);
+  constructAccountCoinRepeater(true);
+  updateDashboardView(dashboardUpdateTimout);
+
 
   $('.top-menu .item').click(function() {
     $('.top-menu .item').each(function(index, item) {

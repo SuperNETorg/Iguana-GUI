@@ -19,7 +19,7 @@ var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\"
 
 var coinBalances = [];
 
-function constructAccountCoinRepeater() {
+function constructAccountCoinRepeater(isFirstRun) {
   // TODO: investigate why coinsInfo[key].connection === true is failing on port poll
   var index = 0;
   for (var key in coinsInfo) {
@@ -35,6 +35,7 @@ function constructAccountCoinRepeater() {
   coinBalances = [];
 
   for (var i=0; i < coinsSelectedByUser.length; i++) {
+    if (isFirstRun) constructAccountCoinRepeaterCB(0, coinsSelectedByUser[i]);
     api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
   }
 }

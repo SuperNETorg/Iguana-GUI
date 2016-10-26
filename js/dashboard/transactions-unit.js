@@ -32,7 +32,7 @@ function constructTransactionUnitRepeater(update) {
     $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
   }
 
-  if (!update) $('.transactions-list-repeater').html('Loading');
+  if (!update) $('.transactions-list-repeater').html(loaderIconTemplate); // loader spinner
 
   if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
 }
@@ -112,22 +112,24 @@ function constructTransactionUnitRepeaterCB(response, update) {
               $('.transactions-list-repeater .' + transactionDetails.txid + ' .in-out').removeClass('bi_interface-minus').removeClass('bi_interface-plus').addClass(txIncomeOrExpenseFlag);
               $('.transactions-list-repeater .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
             } else {
-              result = transactionUnitRepeater.
-                       replace('{{ txid }}', transactionDetails.txid).
-                       replace('{{ status }}', txStatus).
-                       replace('{{ status_class }}', txCategory).
-                       replace('{{ confs }}', transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a').
-                       replace('{{ in_out }}', txIncomeOrExpenseFlag).
-                       replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
-                       replace('{{ timestamp_format }}', 'timestamp-multi').
-                       replace('{{ coin }}', coinName.toUpperCase()).
-                       replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
-                       replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                              transactionDetails.timestamp ||
-                                                                              transactionDetails.time, 'DDMMMYYYY')).
-                       replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                              transactionDetails.timestamp ||
-                                                                              transactionDetails.time, 'HHMM'));
+              //if (isIguana && txAmount > 0 || !isIguana)
+              console.log(txAmount);
+                result = transactionUnitRepeater.
+                         replace('{{ txid }}', transactionDetails.txid).
+                         replace('{{ status }}', txStatus).
+                         replace('{{ status_class }}', txCategory).
+                         replace('{{ confs }}', transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a').
+                         replace('{{ in_out }}', txIncomeOrExpenseFlag).
+                         replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
+                         replace('{{ timestamp_format }}', 'timestamp-multi').
+                         replace('{{ coin }}', coinName.toUpperCase()).
+                         replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
+                         replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                transactionDetails.timestamp ||
+                                                                                transactionDetails.time, 'DDMMMYYYY')).
+                         replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                transactionDetails.timestamp ||
+                                                                                transactionDetails.time, 'HHMM'));
 
               if (update) {
                 prependContent = prependContent + result;

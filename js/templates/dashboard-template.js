@@ -45,8 +45,8 @@ var dashboardTemplate =
         '<div class="balance-block unselectable">' +
           '<div class="label">Total balance:</div>' +
           '<div class="balance">' +
-            '<span class="value"></span>' +
-            '<span class="currency"></span>' +
+            '<span class="value">0</span>' +
+            '<span class="currency">{{ currency }}</span>' +
           '</div>' +
         '</div>' +
         '<div class="clearfix"></div>' +
@@ -60,12 +60,12 @@ var dashboardTemplate =
           '<div class="row">' +
             '<div class="top-bar unselectable">' +
               '<div class="active-coin-balance">' +
-                '<span class="value"></span>' +
+                '<span class="value">0</span>' +
                 '<span class="coin-name"></span>' +
               '</div>' +
               '<div class="active-coin-balance-currency">' +
-                '<span class="value"></span>' +
-                '<span class="currency"></span>' +
+                '<span class="value">0</span>' +
+                '<span class="currency">{{ currency }}</span>' +
               '</div>' +
               '<div class="action-buttons unselectable">' +
                 '<button class="btn btn-send">Send</button>' +

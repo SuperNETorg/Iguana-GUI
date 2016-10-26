@@ -95,8 +95,10 @@ helperProto.prototype.openPage = function(url) {
     case 'dashboard':
       document.location.hash = '#dashboard';
       document.title = 'Iguana / Dashboard';
+      defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
+      var temp = dashboardTemplate.replace(/{{ currency }}/g, defaultCurrency);
       $('body').addClass('dashboard-page');
-      $('body').html(dashboardTemplate);
+      $('body').html(temp);
       initDashboard();
       break;
     case 'settings':

@@ -15,10 +15,6 @@ var defaultCurrency = '',
     dashboardUpdateTimout = settings.dashboardUpdateTimout,
     dashboardUpdateTimer;
 
-$(document).ready(function() {
-  api.testConnection(initPage);
-});
-
 /* not the best solution but it works */
 function applyDashboardResizeFix() {
   // tx unit resize
