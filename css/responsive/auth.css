@@ -3,12 +3,12 @@
  *
  */
 
-@media screen and (min-width: 1000px) {
+/* for width resolution */
+@media screen and (min-width: 768px) {
   .auth-main .login-form,
   .auth-main .create-account-form,
   .auth-main .verify-passphrase-form {
     max-width: 600px;
-    border-radius: 4px;
     box-shadow: 0 4px 40px 8px rgba(0, 0, 0, 0.1);
   }
   .auth-main .form-header {
@@ -34,7 +34,7 @@
     display: block;
   }
   .auth-main .form-content {
-    padding: 50px 16px 30px 16px;
+    padding: 3.1em 1.6em 2em 1.6em;
   }
   .auth-main .create-account-form .form-content {
     max-width: 400px;

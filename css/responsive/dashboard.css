@@ -40,6 +40,10 @@
     width: 76px;
   }
 }
+.modal .modal-dialog.modal-lg {
+  width: 780px;
+  margin: 2% auto;
+}
 
 @media screen and (max-width: 1300px) {
   .dashboard .transactions-list-repeater .item .hash {
@@ -79,19 +83,8 @@
     min-width: 230px;
     max-width: 250px
   }
-  .transactions-unit {
-    margin-left: 5%;
-  }
 }
 
-
-.modal .modal-dialog.modal-lg {
-  width: 780px;
-  margin: 2% auto;
-}
-.modal .modal-dialog .modal-body {
-  padding: 40px 15px 60px;
-}
 @media (max-width: 992px) {
   .modal .modal-dialog.modal-lg {
     width: 90%;

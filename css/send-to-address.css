@@ -32,7 +32,8 @@
   text-align: center; border-radius: 6px 6px 0 0;
 }
 .modal .modal-content {
-  border-radius: 6px 6px 0 0;
+  border-radius: 6px;
+  overflow: hidden;
 }
 .modal-header .modal-title {
   font-size: 19px;
@@ -285,13 +286,9 @@
   max-height: 770px;
 }
 .modal-send-coin {
-  max-width: 700px;
-  margin: 0 auto;
   display: block;
-  margin-top: 2%;
   border-radius: 4px;
-  bottom: auto;
-  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
+  background: none;
 }
 
 /*

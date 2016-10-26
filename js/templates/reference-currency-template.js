@@ -7,20 +7,13 @@ var referenceCurrencyTemplate =
 '<section class="dashboard unselectable">' +
   '<nav class="navbar top unselectable navbar-inverse">' +
     '<div class="container-fluid">' +
-      '<!-- Brand and toggle get grouped for better mobile display -->' +
       '<div class="navbar-header">' +
-        '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-menu" aria-expanded="false">' +
-          '<span class="sr-only">Toggle navigation</span>' +
-          '<span class="icon-bar"></span>' +
-          '<span class="icon-bar"></span>' +
-          '<span class="icon-bar"></span>' +
-        '</button>' +
         '<div class="navbar-brand">Iguana</div>' +
+        '<div class="cursor-pointer lnk-logout">Log out</div>' +
       '</div>' +
-      '<!-- Collect the nav links, forms, and other content for toggling -->' +
-      '<div class="collapse navbar-collapse top" id="top-menu">' +
+      '<div class="top" id="top-menu">' +
         '<ul class="nav navbar-nav top-menu">' +
-          '<li class="item cursor-pointer text-center" data-url="dashboard">' +
+          '<li class="item cursor-pointer text-center " data-url="dashboard">' +
             '<div class="text">Dashboard</div>' +
             '<div class="border"></div>' +
           '</li>' +
@@ -37,9 +30,10 @@ var referenceCurrencyTemplate =
             '<div class="border"></div>' +
           '</li>' +
         '</ul>' +
-        '<ul class="nav navbar-nav navbar-right">' +
-          '<li class="text-center"><div class="cursor-pointer lnk-logout">Log out</div></li>' +
-        '</ul>' +
+        '<div class="nav-buttons">' +
+          '<div class="nav-left"></div>' +
+          '<div class="nav-right"></div>' +
+        '</div>' +
       '</div>' +
     '</div>' +
   '</nav>' +

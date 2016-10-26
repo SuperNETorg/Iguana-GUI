@@ -40,7 +40,7 @@
 .form-container.mdl .form-content {
   height: 100%;
   background: #F5F8FB;
-  padding-top: 60px;
+  padding-top: 4em;
 }
 .form-container.mdl .form-header {
   height: 45px;
@@ -84,4 +84,27 @@
 .form-container.mdl .btn:focus {
   color: #fff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+  z-index: -1;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  margin: auto;
+}
+.modal .modal-header {
+  color: #FFF;
+  font-weight: 700;
+  font-size: 16px;
 }

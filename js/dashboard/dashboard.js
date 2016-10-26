@@ -22,18 +22,14 @@ $(document).ready(function() {
 /* not the best solution but it works */
 function applyDashboardResizeFix() {
   // tx unit resize
-  var screenWidthThreshold = false, width;
-  if ($(window).width() > 750) {
-    width = screenWidthThreshold ? 1000 : Math.floor($('.main-content').width() - $('.coins').width() - 120);
-    $('.transactions-unit').css({
-      'max-width': width,
-      'width' : width
-    });
+  if ($(window).width() > 767) {
+    var width = Math.floor($('.main-content').width() - $('.coins').width() - 80);
+    $('.main-content').css({'padding': '0 30px'});
+    $('.transactions-unit').css({'max-width': width,'width' : width});
   } else {
     $('.transactions-unit').removeAttr('style');
-  }
-  if ($(window).width() > 1368) {
-    screenWidthThreshold = true;
+    $('.main-content').removeAttr('style');
+
   }
   // hash shading
   $('.transactions-list-repeater .item .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.4 -
