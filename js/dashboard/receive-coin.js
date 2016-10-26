@@ -12,6 +12,8 @@ function bindReceive() {
       coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
       address = api.getAccountAddress(coin, defaultAccount);
 
+  $('.currency-coin').val('');
+  $('.currency').val('');
   localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
   $('.coin-unit').text(coin.toUpperCase());
   coinRate = updateRates(coin, defaultCurrency, true);
