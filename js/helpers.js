@@ -82,23 +82,27 @@ helperProto.prototype.openPage = function(url) {
       document.location.hash = '#login';
       document.title = 'Iguana / Login';
       $('body').html(loginFormPrepTemplate());
+      $('body').removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'create-account':
       document.location.hash = '#create-account';
       document.title = 'Iguana / Create account';
       $('body').html(signupFormPrepTemplate());
+      $('body').removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'dashboard':
       document.location.hash = '#dashboard';
       document.title = 'Iguana / Dashboard';
+      $('body').addClass('dashboard-page');
       $('body').html(dashboardTemplate);
       initDashboard();
       break;
     case 'settings':
       document.location.hash = '#settings';
       document.title = 'Iguana / Settings';
+      $('body').addClass('dashboard-page');
       $('body').html(referenceCurrencyTemplate);
       initReferenceCurrency();
       break;
@@ -366,7 +370,7 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
       if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
     }
 
-    if ((!isIguana && !numPortsResponding) ||
+    if (setPortPollResponseDS && (!isIguana && !numPortsResponding) ||
         (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === true && !numPortsResponding) ||
         (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === false)) {
       helperProto.prototype.prepNoDaemonModal();
