@@ -187,12 +187,12 @@ function bindMobileView() {
 function mobileView(coins, item, transactionsUnit) {
   item = $('.item.active', coins);
   if ($(window).width() > 767) {
-    coins.css({ 'min-width': '230px', 'max-width': '250px' });
+    //coins.css({ 'min-width': '230px', 'max-width': '270px' });
     item.removeClass('hidden-after');
     transactionsUnit.removeAttr('style');
   } else {
     coins.removeAttr('style');
     item.addClass('hidden-after');
-    transactionsUnit.css('margin-left', '0px');
+    transactionsUnit.css('margin-left', '0');
   }
 }

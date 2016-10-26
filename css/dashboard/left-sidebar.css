@@ -31,6 +31,7 @@
   color: #858690;
   width: 20px;
   height: 20px;
+  z-index: 200;
 }
 .account-coins-repeater .item.active .remove-coin:before {
   color: #fff;
@@ -70,6 +71,7 @@
   top: -4px;
   overflow: hidden;
   display: inline-block;
+  position: relative;
 }
 .account-coins-repeater .item .balance {
   float: right;
