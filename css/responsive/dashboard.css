@@ -42,7 +42,6 @@
 }
 .modal .modal-dialog.modal-lg {
   width: 780px;
-  margin: 2% auto;
 }
 
 @media screen and (max-width: 1300px) {
@@ -85,13 +84,32 @@
   }
 }
 
+@media (min-width: 992px) {
+  .modal-add-coin .modal-dialog {
+    width: 81%;
+  }
+}
+
 @media (max-width: 992px) {
   .modal .modal-dialog.modal-lg {
     width: 90%;
   }
 }
+
 @media (max-width: 360px) {
   .share-address-section {
     width: 96%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  body .modal .modal-dialog.modal-lg {
+    width: 100%;
+  }
+  body .auth-main .container-fluid {
+    display: block;
+  }
+  body .modal .modal-dialog {
+    height: 100%;
   }
 }

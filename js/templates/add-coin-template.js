@@ -19,8 +19,10 @@ var addCoinModalTemplate =
             '<i class=\"icon bi_tool-magnifier\"></i>' +
             '<input type=\"text\" class=\"input text\" placeholder=\'For example, \"Bitcoin\"\' />' +
           '</div>' +
-          '<div class=\"supported-coins-repeater\">' +
-            '<div class=\"supported-coins-repeater-inner\"></div>' +
+          '<div class=\"supported-coins-repeater-container\">' +
+            '<div class=\"supported-coins-repeater\">' +
+              '<div class=\"supported-coins-repeater-inner\"></div>' +
+            '</div>' +
           '</div>' +
           '<button class=\"btn btn-block orange-gradient box-shadow-all text-shadow row btn-next disabled\">Next</button>' +
         '</div>' +

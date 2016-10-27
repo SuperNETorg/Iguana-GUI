@@ -39,7 +39,6 @@ function applyDashboardResizeFix() {
                                                                                           $('.account-coins-repeater .item.' + coin + ' .coin .icon').width() -
                                                                                           $('.account-coins-repeater .item.' + coin + ' .balance').width() - 50) });
   });
-  opacityToggleOnAddCoinRepeaterScroll();
 }
 
 function updateDashboardView(timeout) {
