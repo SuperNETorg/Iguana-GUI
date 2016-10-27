@@ -18,7 +18,8 @@ var _settings = {
   txUnitProgressStatusMinConf: 10,
   iguanaNullReturnCountThreshold: 10,
   iguanaNullReturnCountLogoutTimeout: 10, // sec
-  addCoinInfoModalTimeout: 5 // sec
+  addCoinInfoModalTimeout: 5, // sec
+  addCoinTimeout: 2 // sec
 };
 
 // create a new object with non-writable values

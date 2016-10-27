@@ -30,7 +30,7 @@ apiProto.prototype.testConnection = function(cb) {
       dataType: 'text',
       async: true,
       type: 'GET',
-      timeout: 5000,
+      timeout: 500,
       success: function (response) {
         // iguana env
         isIguana = true;
@@ -237,7 +237,7 @@ apiProto.prototype.testCoinPorts = function(cb) {
         }
         _index++;
       }
-    })
+    });
   });
 
   return result;

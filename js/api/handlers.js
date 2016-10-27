@@ -7,7 +7,7 @@ apiProto.prototype.errorHandler = function(response, index) {
   if (response.error === 'need to unlock wallet') {
     if (helperProto.prototype.getCurrentPage() !== 'login')
       (function() {
-        helperProto.prototype.prepMessageModal('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting to login...', 'red', true);
+        helperProto.prototype.prepMessageModal('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...', 'red', true);
         setTimeout(function() {
           helperProto.prototype.logout();
         }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -43,7 +43,7 @@ apiProto.prototype.errorHandler = function(response, index) {
 
     if (iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
       (function() {
-        helperProto.prototype.prepMessageModal('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting to login...', 'red', true);
+        helperProto.prototype.prepMessageModal('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...', 'red', true);
         setTimeout(function() {
           helperProto.prototype.logout();
         }, settings.iguanaNullReturnCountLogoutTimeout * 1000);

@@ -46,24 +46,26 @@ function constructCoinRepeater() {
 }
 
 function opacityToggleOnAddCoinRepeaterScroll() {
-  var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
-      // height + margin top + margin bottom
-      supportedCoinsRepeaterHeight = $('.supported-coins-repeater').height() + Number($('.supported-coins-repeater').css('padding').replace('px', '')) * 2,
-      lowerThreshold = supportedCoinsRepeaterScrollPos + supportedCoinsRepeaterHeight;
+  if ($('.supported-coins-repeater').html()) {
+    var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
+        // height + margin top + margin bottom
+        supportedCoinsRepeaterHeight = $('.supported-coins-repeater').height() + Number($('.supported-coins-repeater').css('padding').replace('px', '')) * 2,
+        lowerThreshold = supportedCoinsRepeaterScrollPos + supportedCoinsRepeaterHeight;
 
-  $('.supported-coins-repeater .coin').each(function(index, item) {
-    // opacity change kicks in at around the middle of a tile line
-    var elHeight = $(this).outerHeight() + Number($(this).css('margin').replace('px', '')) * 2, // height + margin top + margin bottom
-        elAbsoluteTopPos = elHeight * 2 + Number($(this).css('paddingTop').replace('px', '')),
-        elTop = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos), // first line of tiles should have 0 top pos
-        elBottom = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos + elHeight); // bottom = top + el height
+    $('.supported-coins-repeater .coin').each(function(index, item) {
+      // opacity change kicks in at around the middle of a tile line
+      var elHeight = $(this).outerHeight() + Number($(this).css('margin').replace('px', '')) * 2, // height + margin top + margin bottom
+          elAbsoluteTopPos = elHeight * 2 + Number($(this).css('paddingTop').replace('px', '')),
+          elTop = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos), // first line of tiles should have 0 top pos
+          elBottom = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos + elHeight); // bottom = top + el height
 
-    if (elTop + Math.floor(elHeight / 1.5) <= supportedCoinsRepeaterScrollPos || elBottom - Math.floor(elHeight / 3.5) >= lowerThreshold) {
-      $(this).css({ 'opacity': 0.2 }); // shortcut, better to use css class
-    } else {
-      $(this).css({ 'opacity': 1 });
-    }
-  });
+      if (elTop + Math.floor(elHeight / 1.5) <= supportedCoinsRepeaterScrollPos || elBottom - Math.floor(elHeight / 3.5) >= lowerThreshold) {
+        $(this).css({ 'opacity': 0.2 }); // shortcut, better to use css class
+      } else {
+        $(this).css({ 'opacity': 1 });
+      }
+    });
+  }
 }
 
 function bindClickInCoinRepeater() {
