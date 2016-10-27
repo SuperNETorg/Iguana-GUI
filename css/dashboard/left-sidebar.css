@@ -14,6 +14,28 @@
   cursor: pointer;
   cursor: hand;
 }
+.account-coins-repeater .item.loading .loader {
+  display: block;
+}
+.account-coins-repeater .item.loading .balance {
+  opacity: 0;
+}
+.account-coins-repeater .item .loader {
+  position: absolute;
+  right: 38px;
+  top: -3px;
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  display: none;
+  transform: scale(0.8);
+}
+.account-coins-repeater .item .loader circle {
+  stroke-width: 3px;
+}
+.account-coins-repeater .item.active .loader .path4 {
+  stroke: #FFF;
+}
 .account-coins-repeater .item .clickable-area {
   width: 100%;
   height: 100%;

@@ -3,7 +3,8 @@
  *
  */
 
-var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\" data-coin-id=\"{{ coin_id }}\" data-coin-balance-value=\"{{ coin_balance_unformatted }}\">' +
+var accountCoinRepeaterTemplate = '<div class=\"item loading {{ coin_id }}{{ active }}\" data-coin-id=\"{{ coin_id }}\" data-coin-balance-value=\"{{ coin_balance_unformatted }}\">' +
+                                    '{{ injectLoader }}' +
                                     '<div class=\"remove-coin cursor-pointer{{ dev }}\"></div>' +
                                     '<div class=\"clickable-area\">' +
                                       '<div class=\"coin\">' +
@@ -16,6 +17,7 @@ var accountCoinRepeaterTemplate = '<div class=\"item {{ coin_id }}{{ active }}\"
                                       '</div>' +
                                     '</div>' +
                                   '</div>';
+accountCoinRepeaterTemplate = accountCoinRepeaterTemplate.replace('{{ injectLoader }}', loaderIconTemplate); // add loader spinner to each coin element
 
 var coinBalances = [];
 
@@ -60,6 +62,13 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     $('.account-coins-repeater .' + coin + ' .currency-value .val').html(currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
     if (coinsInfo[coin] && coinsInfo[coin].connection === false) $('.account-coins-repeater .' + coin).addClass('disabled');
     else $('.account-coins-repeater .' + coin).removeClass('disabled');
+
+    // enable loader spinner if coin is out of sync/not connected
+    if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
+      $('.account-coins-repeater .' + coin).removeClass('loading');
+    } else {
+      $('.account-coins-repeater .' + coin).addClass('loading');
+    }
   } else { // actual DOM append
     var coinLocalRate = 0,
         coinBalance = coinBalances[coin] || 0;

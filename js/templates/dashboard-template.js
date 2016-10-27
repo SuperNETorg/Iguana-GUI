@@ -52,13 +52,14 @@ var dashboardTemplate =
         '<div class="clearfix"></div>' +
         '<aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">' +
           '<div class="row">' +
-            '<div class="account-coins-repeater">Loading...</div>' +
+            '<div class="account-coins-repeater"></div>' +
             '<button class="btn btn-add-coin">Add coin</button>' +
           '</div>' +
         '</aside>' +
-        '<div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right">' +
+        '<div class="transactions-unit loading col-md-8 col-sm-7 col-xs-12 pull-right">' +
           '<div class="row">' +
             '<div class="top-bar unselectable">' +
+              '{{ injectLoader }}' +
               '<div class="active-coin-balance">' +
                 '<span class="value">0</span>' +
                 '<span class="coin-name"></span>' +
