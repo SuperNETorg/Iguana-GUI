@@ -57,20 +57,39 @@ function initDashboard() {
   //if (!isIguana && !dev.isDev) $('.lnk-logout').hide();
 
   $('.btn-add-coin').click(function() {
-    //addCoinButtonCB();
-    initAuthCB();
-    coinsSelectedToAdd = [];
-    $('.add-coin-login-form .login-add-coin-selection-title').html('Select a wallet to add');
-    $('.add-coin-login-form #passphrase').val('');
-    $('.add-coin-login-form .btn-signin').addClass('disabled');
-    $('.add-coin-login-form #passphrase').keyup(function() {
-      if ($('.add-coin-login-form #passphrase').val().length > 0 && helper.reindexAssocArray(coinsSelectedToAdd)[0]) {
-        $('.add-coin-login-form .btn-signin').removeClass('disabled');
-      } else {
-        $('.add-coin-login-form .btn-signin').addClass('disabled');
-      }
-    });
-    helper.toggleModalWindow('add-coin-login-form', 300);
+    if (isIguana) {
+      addCoinButtonCB();
+      $('.add-new-coin-form .btn-next').off();
+      $('.add-new-coin-form .btn-next').click(function() {
+        coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+
+        for (var i=0; i < coinsSelectedToAdd.length; i++) {
+          if (coinsSelectedToAdd[i]) {
+            (function(x) {
+              setTimeout(function() {
+                api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
+              }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
+            })(i);
+          }
+        }
+        console.log(coinsSelectedToAdd);
+      });
+    } else {
+      //addCoinButtonCB();
+      initAuthCB();
+      coinsSelectedToAdd = [];
+      $('.add-coin-login-form .login-add-coin-selection-title').html('Select a wallet to add');
+      $('.add-coin-login-form #passphrase').val('');
+      $('.add-coin-login-form .btn-signin').addClass('disabled');
+      $('.add-coin-login-form #passphrase').keyup(function() {
+        if ($('.add-coin-login-form #passphrase').val().length > 0 && helper.reindexAssocArray(coinsSelectedToAdd)[0]) {
+          $('.add-coin-login-form .btn-signin').removeClass('disabled');
+        } else {
+          $('.add-coin-login-form .btn-signin').addClass('disabled');
+        }
+      });
+      helper.toggleModalWindow('add-coin-login-form', 300);
+    }
   });
   $('.add-coin-login-form .btn-signup').click(function() {
     if (!coinsSelectedToAdd || !coinsSelectedToAdd[0]) {
@@ -172,4 +191,32 @@ function initDashboard() {
   $(window).resize(function() {
     applyDashboardResizeFix();
   });
+}
+
+function addCoinDashboardCB(response, coin) {
+  if (response === 'coin added' || response === 'coin already there') {
+    if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
+
+    addCoinResponses.push({ 'coin': coin, 'response': response });
+    coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
+  }
+
+  var addedCoinsOutput = '',
+      failedCoinsOutput = '<br/>';
+  for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
+    if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
+      addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+      localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+    } else {
+      failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+    }
+  }
+  if (addedCoinsOutput[addedCoinsOutput.length - 1] === ' ') {
+    addedCoinsOutput = addedCoinsOutput.replace(/, $/, '');
+  }
+  if (failedCoinsOutput[failedCoinsOutput.length - 1] === ' ') {
+    failedCoinsOutput = failedCoinsOutput.replace(/, $/, '');
+  }
+
+  helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : ''), 'green', true);
 }
