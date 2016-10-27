@@ -38,7 +38,7 @@ apiProto.prototype.errorHandler = function(response, index) {
   }
 
   if (response.error === 'null return from iguana_bitcoinRPC') {
-    if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed?');
+    if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + iguanaNullReturnCount + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
     iguanaNullReturnCount++;
 
     if (iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {

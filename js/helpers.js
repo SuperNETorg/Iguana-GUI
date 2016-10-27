@@ -384,6 +384,7 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
         if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') helperProto.prototype.logout();
       }, 15000);
     } else {
+      iguanaNullReturnCount = 0;
       $('#messageModal').removeClass('in');
       setTimeout(function() {
         $('#messageModal').hide();
