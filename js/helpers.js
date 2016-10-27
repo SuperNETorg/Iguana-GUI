@@ -346,7 +346,7 @@ helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
 
 helperProto.prototype.prepNoDaemonModal = function() {
   $('#messageModal').off();
-  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a href=\"#\" onclick="helperProto.prototype.prepRequirementsModal()">requirements are satisfied.</a>', 'red', true);
+  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a href=\"#\" onclick="helperProto.prototype.prepRequirementsModal()">requirements are satisfied.</a><br/><br/><a href=\"#\" onclick=\"helperProto.prototype.logout()\">Logout</a>', 'red', true);
 }
 
 helperProto.prototype.prepRequirementsModal = function() {
@@ -381,7 +381,9 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
 
       // logout
       setTimeout(function() {
-        if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') helperProto.prototype.logout();
+        if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') {
+          helperProto.prototype.logout();
+        }
       }, 15000);
     } else {
       iguanaNullReturnCount = 0;
