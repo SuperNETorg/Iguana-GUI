@@ -96,6 +96,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
     if ($('.account-coins-repeater').html().indexOf('Loading') > -1) $('.account-coins-repeater').html('');
     $('.account-coins-repeater').append(result);
+    $('.account-coins-repeater .' + coin).addClass('disabled');
     bindClickInAccountCoinRepeater();
   }
 

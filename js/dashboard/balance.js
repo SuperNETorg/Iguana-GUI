@@ -35,7 +35,7 @@ function updateTransactionUnitBalance(isAuto) {
   else $('.transactions-unit .action-buttons .btn-send').show();
 
   // enable loader spinner if coin is out of sync/not connected
-  if (coinsInfo[selectedCoin.attr('data-coin-id')].connection === true && coinsInfo[selectedCoin.attr('data-coin-id')].RT === true) {
+  if (selectedCoin.attr('data-coin-id') && coinsInfo[selectedCoin.attr('data-coin-id')].connection === true && coinsInfo[selectedCoin.attr('data-coin-id')].RT === true) {
     $('.transactions-unit').removeClass('loading');
   } else {
     $('.transactions-unit').addClass('loading');
