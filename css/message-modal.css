@@ -8,6 +8,9 @@
     background: rgba(255, 255, 255, 0.7);
     z-index: 2000;
   }
+  #messageModal.modal:before {
+    vertical-align: top;
+  }
   #messageModal a,
   #messageModal a:visited,
   #messageModal a:active {
@@ -28,6 +31,7 @@
     border-radius: 4px;
     border: none;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 20px 0 rgb(222, 165, 171);
   }
   #messageModal.msg-blue .msgbox-header,
   #messageModal.msg-blue .msgbox-content {
