@@ -60,14 +60,16 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
     $('.account-coins-repeater .' + coin + ' .coin-value .val').html(coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0);
     $('.account-coins-repeater .' + coin + ' .currency-value .val').html(currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
-    if (coinsInfo[coin] && coinsInfo[coin].connection === false) $('.account-coins-repeater .' + coin).addClass('disabled');
-    else $('.account-coins-repeater .' + coin).removeClass('disabled');
+    /*if (coinsInfo[coin] && coinsInfo[coin].connection === false) $('.account-coins-repeater .' + coin).addClass('disabled');
+    else $('.account-coins-repeater .' + coin).removeClass('disabled');*/
 
     // enable loader spinner if coin is out of sync/not connected
     if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
       $('.account-coins-repeater .' + coin).removeClass('loading');
+      $('.account-coins-repeater .' + coin).removeClass('disabled');
     } else {
       $('.account-coins-repeater .' + coin).addClass('loading');
+      $('.account-coins-repeater .' + coin).addClass('disabled');
     }
   } else { // actual DOM append
     var coinLocalRate = 0,
