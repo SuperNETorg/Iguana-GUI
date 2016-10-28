@@ -41,7 +41,7 @@
   }
 }
 .modal .modal-dialog.modal-lg {
-  width: 780px;
+  width: 800px;
 }
 
 @media screen and (max-width: 1300px) {
@@ -75,6 +75,7 @@
   .transactions-unit {
     margin-left: 0;
   }
+
 }
 
 @media all and (min-width: 768px) {
@@ -111,5 +112,18 @@
   }
   body .modal .modal-dialog {
     height: 100%;
+  }
+  body .modal .modal-dialog .modal-header {
+    height: 50px;
+  }
+  body .modal .modal-dialog .modal-header .btn-close{
+    margin: 0;
+  }
+  body .modal .modal-dialog .modal-header .title{
+    font-size: 17px;
+    margin-top: 0;
+  }
+  body .modal .modal-dialog .modal-body {
+    padding: 0 0.8em 3.2em 0.8em;
   }
 }

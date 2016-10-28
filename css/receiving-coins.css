@@ -22,7 +22,7 @@
   z-index: 9999;
 }
 .modal-popup {
-  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 40px rgba(125, 125, 125, 0.3)
 }
 .receiving-coin-content .modal-title {
   text-align: center;
@@ -67,7 +67,7 @@
 .share-address-section .my-address {
   color: #2f2e2e;
   font-size: 1.1em;
-  padding-bottom: 4px;
+  padding: 34px 0 4px 0;
 }
 .receiving-coin-content .modal-body {
   background-color: #f5f8fb;
@@ -85,7 +85,7 @@
 .buttons .copy-btn,
 .buttons .share-btn {
   background-color: #fbfdfe;
-  color: #fe6542;
+  color: #fd5630;
   font-weight: 600;
   border: 1px solid #fbfdfe;
   border-radius: 4px;
@@ -94,10 +94,10 @@
   box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
 }
 .modal-backdrop.in {
-	opacity: 0.7;
+  opacity: 0.8;
 }
 .modal-backdrop {
-	background-color: #fff;
+  background-color: #fff;
 }
 .buttons .copy-btn:focus,
 .buttons .share-btn:focus {
@@ -148,7 +148,7 @@
 }
 .currency-input .equals-sign {
   color: #fe5c0d;
-  margin: 5px 3px;
+  margin: 5px 4px;
   display: block;
   font-size: 1.5em;
   font-weight: 600;
@@ -185,24 +185,34 @@ input[type="text"].crypto-currency.currency-coin {
   color: #2E3746;
 }
 .receiving-coin-content .form-header {
-  height: 45px;
+  height: 60px;
   color: #FFF;
   border-radius: 4px 4px 0 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
+.receiving-coin-content .form-header .title,
+.receiving-coin-content .form-header .btn-close {
+  margin-top: 5px;
+}
+.receiving-coin-content .form-header .btn-close {
+  margin-top: 5px;
+  margin-left: 12px;
+}
 .receiving-coin-content .form-header .title {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 50%;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 100%;
+  margin-right: 28px;
+  margin-top: 6px;
 }
 .receiving-coin-content .form-header .btn-close::before {
   font-weight: 700;
 }
 .receiving-coin-content .modal-body .share-address-section .btn {
   display: inline-block;
-  width: 48%;
-  height: 40px;
-  line-height: 32px;
+  width: 47%;
+  height: 36px;
+  line-height: 22px;
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,

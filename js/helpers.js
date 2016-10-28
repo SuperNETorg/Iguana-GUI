@@ -314,20 +314,7 @@ helperProto.prototype.initMessageModal = function() {
 
   $('#messageModal').off();
   $('#messageModal').click(function() {
-    $('#messageModal').removeClass('in');
-    setTimeout(function() {
-      $('#messageModal').hide();
-    }, 250);
-
-    // message modal on close blur fix
-    // ugly
-    if ($('.modal:visible').length) {
-      setTimeout(function() {
-        $('body').addClass('modal-open');
-      }, 400);
-    } else {
-      $('body').removeClass('modal-open');
-    }
+    $('#messageModal').modal('hide');
   });
 }
 
@@ -337,10 +324,7 @@ helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
   $('#messageModal .msg-body').html(message);
 
   if (fireModal) {
-    $('#messageModal').show();
-    setTimeout(function() {
-      $('#messageModal').addClass('in');
-    }, 100);
+    $('#messageModal').modal('show');
   }
 }
 
