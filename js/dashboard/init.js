@@ -18,11 +18,11 @@ function initDashboard() {
   $('body').append(sendCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
   addCoinLoginTemplate = addCoinLoginTemplate.
-                             replace('{{ modal_title }}', isIguana ? 'Add coin' : 'Add wallet').
-                             replace('{{ cta_title }}', isIguana ? 'Select a coin to add' : 'Select a wallet to add').
-                             replace('{{ word_count }}', isIguana ? 24 : 12).
-                             replace('{{ item }}', isIguana ? 'a coin' : ' a wallet').
-                             replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
+                         replace('{{ modal_title }}', isIguana ? 'Add coin' : 'Add wallet').
+                         replace('{{ cta_title }}', isIguana ? 'Select a coin to add' : 'Select a wallet to add').
+                         replace('{{ word_count }}', isIguana ? 24 : 12).
+                         replace('{{ item }}', isIguana ? 'a coin' : ' a wallet').
+                         replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
   $('body').append(addCoinLoginTemplate);
   addCoinCreateWalletTemplate = addCoinCreateWalletTemplate.replace('{{ word_count }}', isIguana ? 24 : 12);
   $('body').append(addCoinCreateWalletTemplate);
@@ -72,7 +72,6 @@ function initDashboard() {
             })(i);
           }
         }
-        console.log(coinsSelectedToAdd);
       });
     } else {
       //addCoinButtonCB();

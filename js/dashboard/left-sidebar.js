@@ -182,7 +182,6 @@ function checkAddCoinButton() {
       }
     }
   }
-  console.log(coinsLeftToAdd);
   if (!coinsLeftToAdd) $('.coins .btn-add-coin').addClass('disabled');
   else $('.coins .btn-add-coin').removeClass('disabled');
 }

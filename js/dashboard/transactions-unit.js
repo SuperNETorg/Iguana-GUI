@@ -155,5 +155,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
     if (coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
       if (!transactionsList.length) $('.transactions-list-repeater').html('No trasaction history is available');
     }
+
+    $('.transactions-unit').removeClass('loading');
   }
 }
