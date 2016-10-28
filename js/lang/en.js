@@ -1,6 +1,6 @@
 /*!
  * Iguana lang/en
- * format: key: value
+ * format 'key': 'value'
  *
  */
 
