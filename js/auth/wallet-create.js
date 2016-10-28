@@ -70,11 +70,11 @@ function initCreateAccountForm() {
           $('.verify-passphrase-form').removeClass('hidden');
           $('.non-iguana-coins-repeater-errors').html('');
         } else {
-          helper.prepMessageModal('Something went wrong. Coin ' + coinsSelectedToAdd[0] + ' is not added.', 'red', true);
+          helper.prepMessageModal(helper.lang('MESSAGE.COIN_ADD_ERROR_P1') + ' ' + coinsSelectedToAdd[0] + ' ' + helper.lang('MESSAGE.COIN_ADD_ERROR_P2'), 'red', true);
         }
       } else {
         $('.login-add-coin-selection-title').removeClass('hidden');
-        helper.prepMessageModal('Please select a coin', 'blue', true);
+        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_COIN'), 'blue', true);
       }
     } else {
       if (checkSelectedWallet()) {

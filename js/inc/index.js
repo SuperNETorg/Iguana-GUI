@@ -9,6 +9,8 @@ document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery-3.0.0.min.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/bootstrap.min.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/jquery.qrcode.min.js\">\x3C/script>'+
+               // lang
+               '\x3Cscript type=\"text/javascript\" src=\"js/lang/en.js\">\x3C/script>' +
                //
                '\x3Cscript type=\"text/javascript\" src=\"js/settings.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dev.js\">\x3C/script>' +

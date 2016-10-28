@@ -181,7 +181,7 @@ function sendCoinModalConfirm() {
             helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
             execSendCoinCall();
           } else {
-            helper.prepMessageModal('Incorrect passphrase. Try again.', 'red', true);
+            helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
           }
         });
       } else {
@@ -207,7 +207,7 @@ function sendCoinModalConfirm() {
           });
         } else {
           // go to an error step
-          helper.prepMessageModal('Transaction was not send due to an error!', 'red', true);
+          helper.prepMessageModal(helper.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
         }
 
         // revert pay fee
@@ -232,42 +232,42 @@ function validateSendCoinForm() {
   // address
   if ($('.tx-address').val().length !== 34) {
     $('.tx-address').addClass('validation-field-error');
-    $('.tx-address-validation').html('Incorrect address. Please, make sure you enter it right.');
+    $('.tx-address-validation').html(helper.lang('SEND.INCORRECT_ADDRESS'));
     $('.tx-address-validation').addClass('col-red');
   } else {
     $('.tx-address').removeClass('validation-field-error');
-    $('.tx-address-validation').html('Enter a wallet address');
+    $('.tx-address-validation').html(helper.lang('SEND.ENTER_A_WALLET_ADDRESS'));
     $('.tx-address-validation').removeClass('col-red');
   }
   // coin amount
   if (Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length || $('.tx-amount').val() > activeCoinBalanceCoin) {
     $('.tx-amount').addClass('validation-field-error');
     $('.tx-amount-currency').addClass('validation-field-error');
-    $('.tx-amount-validation').html(Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length ? 'Please enter an amount.' : 'Not enough money. Max. ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
+    $('.tx-amount-validation').html(Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length ? helper.lang('SEND.PLEASE_ENTER_AN_AMOUNT') : helper.lang('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
     $('.tx-amount-validation').addClass('col-red');
   } else {
     $('.tx-amount').removeClass('validation-field-error');
     $('.tx-amount-currency').removeClass('validation-field-error');
-    $('.tx-amount-validation').html('Enter in ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' or ' + defaultCurrency.toUpperCase());
+    $('.tx-amount-validation').html(helper.lang('SEND.ENTER_IN') + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase());
     $('.tx-amount-validation').removeClass('col-red');
   }
   // fee
   if ((Number($('.tx-fee').val()) + Number($('.tx-amount').val())) > activeCoinBalanceCoin) {
     $('.tx-fee').addClass('validation-field-error');
     $('.tx-fee-currency').addClass('validation-field-error');
-    $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? 'Fee cannot exceed ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : 'Total amount to send exceeds ' + activeCoinBalanceCoin);
+    $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? helper.lang('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : helper.lang('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin);
     $('.tx-fee-validation').addClass('col-red');
   }
   if (Number($('.tx-fee').val()) < (coinsInfo[coinData.id].relayFee || 0.00001)) {
     $('.tx-fee').addClass('validation-field-error');
     $('.tx-fee-currency').addClass('validation-field-error');
-    $('.tx-fee-validation').html((coinsInfo[coinData.id].relayFee || 0.00001) + ' is a min. required fee.');
+    $('.tx-fee-validation').html((coinsInfo[coinData.id].relayFee || 0.00001) + ' ' + helper.lang('SEND.IS_A_MIN_REQUIRED_FEE'));
     $('.tx-fee-validation').addClass('col-red');
   }
   if ((Number($('.tx-fee').val()) >= (coinsInfo[coinData.id].relayFee || 0.00001)) && (Number($('.tx-fee').val()) + Number($('.tx-amount').val())) < activeCoinBalanceCoin)  {
     $('.tx-fee').removeClass('validation-field-error');
     $('.tx-fee-currency').removeClass('validation-field-error');
-    $('.tx-fee-validation').html('Minimum fee. Increase it to speed up transaction.');
+    $('.tx-fee-validation').html(helper.lang('SEND.MINIMUM_FEE'));
     $('.tx-fee-validation').removeClass('col-red');
   }
 

@@ -10,18 +10,18 @@ function initDashboard() {
 
   // load templates
   if (!isIguana) {
-    addCoinModalTemplate = addCoinModalTemplate.replace('Adding a new coin', 'Adding a new wallet');
-    addCoinModalTemplate = addCoinModalTemplate.replace('Select coins to add', 'Select a wallet to add');
+    addCoinModalTemplate = addCoinModalTemplate.replace(helper.lang('ADD_COIN.ADDING_A_NEW_COIN'), helper.lang('DASHBOARD.ADDING_A_NEW_WALLET'));
+    addCoinModalTemplate = addCoinModalTemplate.replace(helper.lang('ADD_COIN.SELECT_COINS_TO_ADD'), helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
   }
 
   $('body').append(addCoinModalTemplate);
   $('body').append(sendCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
   addCoinLoginTemplate = addCoinLoginTemplate.
-                         replace('{{ modal_title }}', isIguana ? 'Add coin' : 'Add wallet').
-                         replace('{{ cta_title }}', isIguana ? 'Select a coin to add' : 'Select a wallet to add').
+                         replace('{{ modal_title }}', isIguana ? helper.lang('LOGIN.ADD_COIN') : helper.lang('LOGIN.ADD_WALLET')).
+                         replace('{{ cta_title }}', isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD')).
                          replace('{{ word_count }}', isIguana ? 24 : 12).
-                         replace('{{ item }}', isIguana ? 'a coin' : ' a wallet').
+                         replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_COIN')).
                          replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
   $('body').append(addCoinLoginTemplate);
   addCoinCreateWalletTemplate = addCoinCreateWalletTemplate.replace('{{ word_count }}', isIguana ? 24 : 12);
@@ -29,9 +29,9 @@ function initDashboard() {
 
   // message modal
   helper.initMessageModal();
-  helper.prepMessageModal('Address is copied to clipboard', 'blue');
+  helper.prepMessageModal(helper.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue');
 
-  if (!isIguana) $('.btn-add-coin').html('Add a wallet');
+  if (!isIguana) $('.btn-add-coin').html(helper.lang('PASSPHRASE_MODAL.ADD_A_WALLET'));
   if (activeCoin) defaultCoin = activeCoin.toUpperCase();
 
   $('.dashboard').removeClass('hidden');
@@ -77,7 +77,7 @@ function initDashboard() {
       //addCoinButtonCB();
       initAuthCB();
       coinsSelectedToAdd = [];
-      $('.add-coin-login-form .login-add-coin-selection-title').html('Select a wallet to add');
+      $('.add-coin-login-form .login-add-coin-selection-title').html(helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
       $('.add-coin-login-form #passphrase').val('');
       $('.add-coin-login-form .btn-signin').addClass('disabled');
       $('.add-coin-login-form #passphrase').keyup(function() {
@@ -92,7 +92,7 @@ function initDashboard() {
   });
   $('.add-coin-login-form .btn-signup').click(function() {
     if (!coinsSelectedToAdd || !coinsSelectedToAdd[0]) {
-      helper.prepMessageModal('Please select a wallet!', 'blue', true);
+      helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_WALLET'), 'blue', true);
     } else {
       $('.add-coin-create-wallet-form .verify-passphrase-form #passphrase').val('');
       $('.add-coin-create-wallet-form .verify-passphrase-form').addClass('hidden');
@@ -217,5 +217,5 @@ function addCoinDashboardCB(response, coin) {
     failedCoinsOutput = failedCoinsOutput.replace(/, $/, '');
   }
 
-  helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : ''), 'green', true);
+  helper.prepMessageModal(addedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
 }

@@ -6,7 +6,7 @@
 function loginFormPrepTemplate() {
   var templateToPrep = loginTemplate;
 
-  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+  templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
 
   return templateToPrep;
 }
@@ -15,7 +15,7 @@ function signupFormPrepTemplate() {
   var templateToPrep = signupTemplate,
       coinAlreadyAdded = false;
 
-  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+  templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
 
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
@@ -55,8 +55,8 @@ function initAuthCB() {
     // load add coin template
     $('body').append(addCoinModalTemplate);
     if (!isIguana) {
-      $('.add-new-coin-form .form-header .title').html('Create new wallet');
-      $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+      $('.add-new-coin-form .form-header .title').html(helper.lang('LOGIN.CREATE_NEW_WALLET'));
+      $('.add-new-coin-form .form-content .coins-title').html(helper.lang('LOGIN.SELECT_A_WALLET_TO_CREATE'));
     }
 
     $('.login-add-coin-selection-title').off();
@@ -128,7 +128,7 @@ function initAuthCB() {
     addAuthorizationButtonAction('add-account');
     watchPassphraseKeyUpEvent('add-account');
     initCreateAccountForm();
-    helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
+    helper.addCopyToClipboardFromElement('.generated-passhprase', helper.lang('LOGIN.PASSPHRASE'));
 
     $('.create-account-form .btn-back').off();
     $('.create-account-form .btn-back').click(function() {

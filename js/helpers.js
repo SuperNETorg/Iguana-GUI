@@ -239,10 +239,10 @@ helperProto.prototype.setPortPollResponse = function() {
   }
 
   localstorage.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
-                                                           'info': coinsInfoJSON,
-                                                           'isIguana': isIguana,
-                                                           'proxy': isProxy,
-                                                           'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
+                                            'info': coinsInfoJSON,
+                                            'isIguana': isIguana,
+                                            'proxy': isProxy,
+                                            'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
 
   if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
 }
@@ -275,11 +275,11 @@ helperProto.prototype.addCopyToClipboardFromElement = function(elementId, elemen
       try {
         $(elementId + '-hidden').select();
         document.execCommand('copy');
-        helperProto.prototype.prepMessageModal(elementDisplayName + ' copied to clipboard: ' + $(elementId + '-hidden').val(), 'blue', true);
+        helperProto.prototype.prepMessageModal(elementDisplayName + ' ' + helperProto.prototype.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + $(elementId + '-hidden').val(), 'blue', true);
         pasteTextFromClipboard = $(elementId + '-hidden').val();
       } catch(e) {
         isExecCopyFailed = true;
-        helperProto.prototype.prepMessageModal('Copy/paste is not supported in your browser! Please select the passphrase manually.', 'red', true);
+        helperProto.prototype.prepMessageModal(helperProto.prototype.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
       }
   });
 }
@@ -346,24 +346,14 @@ helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
 
 helperProto.prototype.prepNoDaemonModal = function() {
   $('#messageModal').off();
-  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a onclick="helperProto.prototype.prepRequirementsModal()" class="cursor-pointer">requirements are satisfied.</a>' + (helperProto.prototype.getCurrentPage() !== 'login' && helperProto.prototype.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"helperProto.prototype.logout()\">Logout</a>' : ''), 'red', true);
+  helperProto.prototype.prepMessageModal(helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') + ' <a onclick="helperProto.prototype.prepRequirementsModal()" class="cursor-pointer">' + helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') + '</a>' + (helperProto.prototype.getCurrentPage() !== 'login' && helperProto.prototype.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"helperProto.prototype.logout()\">' + helperProto.prototype.lang('DASHBOARD.LOGOUT') + '</a>' : ''), 'red', true);
 }
 
 helperProto.prototype.prepRequirementsModal = function() {
-  helperProto.prototype.prepMessageModal('Minimum daemon configuration to comminicate via http requests and a proxy server.', 'blue', true);
+  helperProto.prototype.prepMessageModal(helperProto.prototype.lang('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
 
   // "No required daemon is running" message always stays active on top of any ui
   //  this ensures that users won't interact with any elements until connectivity problems are resolved
-
-  /*setTimeout(function() {
-    $('#messageModal').off();
-    $('#messageModal').click(function() {
-      $('#messageModal').removeClass('in');
-      setTimeout(function() {
-        $('#messageModal').hide();
-      }, 250);
-    });
-  }, 200);*/
 }
 
 helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
@@ -412,6 +402,16 @@ helperProto.prototype.getCursorPositionInputElement = function(element) {
   }
 
   return 0;
+}
+
+helperProto.prototype.lang = function(langID) {
+  var langIDComponents = langID.split('.');
+
+  if (lang && langIDComponents && lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]])
+    return lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]];
+  else
+    if (dev.showConsoleMessages && dev.isDev) console.log('Missing translation in js/' +  settings.defaultLang.toLowerCase() + '.js ' + langID);
+    return '{{ ' + langID + ' }}';
 }
 
 helperProto.prototype.syncStatus();

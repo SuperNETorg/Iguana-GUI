@@ -8,7 +8,7 @@ function addAuthorizationButtonAction(buttonClassName) {
   $('.btn-' + buttonClassName).click(function() {
     if (isIguana) {
       if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
-        helper.prepMessageModal('Please select a coin', 'blue', true);
+        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_COIN'), 'blue', true);
       } else {
         if (helper.getCurrentPage() === 'create-account') addAccountIguanaCoind('add-account');
       }
@@ -41,7 +41,7 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
         if (buttonClassName === 'add-account') {
           helper.openPage('login');
           setTimeout(function() {
-            helper.prepMessageModal('Wallet is created. Login to access it.', 'green', true);
+            helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_CREATED'), 'green', true);
           }, 300);
         } else {
           localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
@@ -57,7 +57,7 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
     toggleLoginErrorStyling(true);
 
     if (isCoind)
-      helper.prepMessageModal('Passphrases do not match!', 'red', true);
+      helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH'), 'red', true);
       $('.login-input-directions-error').removeClass('hidden');
   }
 }

@@ -14,7 +14,7 @@ function authAllAvailableCoind(modalClassName) {
   coindAuthResults = [];
 
   if (!coinsSelectedToAdd)
-    helper.prepMessageModal('Please select a wallet', 'blue', true);
+    helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_WALLET'), 'blue', true);
   else
     api.walletLock(coinsSelectedToAdd[0], api.walletLogin($((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
 
@@ -26,11 +26,11 @@ function authAllAvailableCoindCB(result, key) {
 
   if (coindAuthResults[key] !== -14 && coindAuthResults[key] !== -15) localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
   if (coindAuthResults[key] === -14) {
-    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal('Wrong passphrase!', 'red', true);
+    if (coinsSelectedToAdd.length === 1 && helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'dashboard') helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
     result = false;
   }
   if (coindAuthResults[key] === -15 && helper.getCurrentPage() !== 'create-account') {
-    if (coinsSelectedToAdd.length === 1) helper.prepMessageModal('Please encrypt your wallet with a passphrase!', 'red', true);
+    if (coinsSelectedToAdd.length === 1) helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'), 'red', true);
     result = false;
   }
 
@@ -69,14 +69,14 @@ function encryptCoindWallet(modalClassName) {
     if (walletEncryptResponse !== -15) {
       result = true;
       $('.non-iguana-walletpassphrase-errors').html('');
-      helper.prepMessageModal(selectedCoindToEncrypt + ' wallet is created. Login to access it.', 'green', true);
+      helper.prepMessageModal(selectedCoindToEncrypt + helper.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
       if (helper.getCurrentPage() === 'dashboard') {
         helper.toggleModalWindow('add-coin-create-wallet-form', 300);
       } else {
         helper.openPage('login');
       }
     } else {
-      helper.prepMessageModal('Wallet is already encrypted with another passphrase!', 'red', true);
+      helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
       if (helper.getCurrentPage() === 'dashboard') {
         helper.toggleModalWindow('add-coin-create-wallet-form', 300);
       }
@@ -85,7 +85,7 @@ function encryptCoindWallet(modalClassName) {
       result = false;
     }
   } else {
-    helper.prepMessageModal('Passphrases are not matching. Please repeat previous step one more time.', 'red', true);
+    helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
     result = false;
   }
 
@@ -99,7 +99,7 @@ function checkSelectedWallet(key) {
     selectedCoindToEncrypt = key = coinsSelectedToAdd[0];
     return true;
   } else {
-    helper.prepMessageModal('Please select a wallet!', 'blue', true);
+    helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_WALLET'), 'blue', true);
   }
 
   if (key) {
@@ -170,7 +170,7 @@ function addCoinCB(response, coin) {
     failedCoinsOutput = failedCoinsOutput.replace(/, $/, '');
   }
 
-  helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : '') + (Object.keys(addCoinResponses).length === selectedCoins ? '<br/>Redirecting to dashboard...' : ''), 'green', true);
+  helper.prepMessageModal(addedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P2') : '') + (Object.keys(addCoinResponses).length === selectedCoins ? '<br/>' + helper.lang('MESSAGE.REDIRECTING_TO_DASHBOARD') + '...' : ''), 'green', true);
 
   if (Object.keys(addCoinResponses).length === selectedCoins) {
     // since there's no error on nonexistent wallet passphrase in Iguana

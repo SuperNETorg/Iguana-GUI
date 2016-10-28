@@ -11,18 +11,18 @@ var addCoinModalTemplate =
       '<div class=\"modal-content\">' +
         '<header class=\"form-header orange-gradient box-shadow-bottom\">' +
           '<i class=\"bi_interface-cross cursor-pointer btn-close\"></i>' +
-          '<div class=\"title text-shadow\">Adding a new coin</div>' +
+          '<div class=\"title text-shadow\">' + helper.lang('ADD_COIN.ADDING_A_NEW_COIN') + '</div>' +
         '</header>' +
         '<div class=\"form-content\">' +
-          '<div class=\"coins-title\">Select coins to add</div>' +
+          '<div class=\"coins-title\">' + helper.lang('ADD_COIN.SELECT_COINS_TO_ADD') + '</div>' +
           '<div class=\"quick-search\">' +
             '<i class=\"icon bi_tool-magnifier\"></i>' +
-            '<input type=\"text\" class=\"input text\" placeholder=\'For example, \"Bitcoin\"\' />' +
+            '<input type=\"text\" class=\"input text\" placeholder=\'' + helper.lang('ADD_COIN.FOR_EXAMPLE') + ', \"Bitcoin\"\' />' +
           '</div>' +
           '<div class=\"supported-coins-repeater\">' +
             '<div class=\"supported-coins-repeater-inner\"></div>' +
           '</div>' +
-          '<button class=\"btn btn-block orange-gradient box-shadow-all text-shadow row btn-next disabled\">Next</button>' +
+          '<button class=\"btn btn-block orange-gradient box-shadow-all text-shadow row btn-next disabled\">' + helper.lang('CREATE_ACCOUNT.NEXT') + '</button>' +
         '</div>' +
       '</div>' +
     '</div>' +

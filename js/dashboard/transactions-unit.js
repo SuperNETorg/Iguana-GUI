@@ -53,8 +53,8 @@ function constructTransactionUnitRepeaterCB(response, update) {
       if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time }); // coind
       if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime }); // iguana
 
-      if ($('.transactions-list-repeater').html().indexOf('No trasaction history is available') > -1 ||
-          $('.transactions-list-repeater').html().indexOf('Loading') > -1 ||
+      if ($('.transactions-list-repeater').html().indexOf(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE')) > -1 ||
+          $('.transactions-list-repeater').html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1 ||
           $('.transactions-list-repeater').html().indexOf(coinName.toUpperCase()) === -1) $('.transactions-list-repeater').html('');
 
       for (var i=0; i < transactionsList.length; i++) {
@@ -80,10 +80,10 @@ function constructTransactionUnitRepeaterCB(response, update) {
 
                 if (transactionDetails.details[0].category === 'send') {
                   txIncomeOrExpenseFlag = 'bi_interface-minus';
-                  txStatus = 'sent';
+                  txStatus = helper.lang('DASHBOARD.SENT');
                 } else {
                   txIncomeOrExpenseFlag = 'bi_interface-plus';
-                  txStatus = 'received';
+                  txStatus = helper.lang('DASHBOARD.RECEIVED');
                 }
             } else {
               // iguana
@@ -94,10 +94,10 @@ function constructTransactionUnitRepeaterCB(response, update) {
 
               if (txStatus === 'send') {
                 txIncomeOrExpenseFlag = 'bi_interface-minus';
-                txStatus = 'sent';
+                txStatus = helper.lang('DASHBOARD.SENT');
               } else {
                 txIncomeOrExpenseFlag = 'bi_interface-plus';
-                txStatus = 'received';
+                txStatus = helper.lang('DASHBOARD.RECEIVED');
               }
             }
 
@@ -153,7 +153,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
     applyDashboardResizeFix();
 
     if (coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
-      if (!transactionsList.length) $('.transactions-list-repeater').html('No trasaction history is available');
+      if (!transactionsList.length) $('.transactions-list-repeater').html(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE'));
     }
 
     if ($('.transactions-list-repeater').html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
