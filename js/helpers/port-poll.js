@@ -37,11 +37,15 @@ helperProto.prototype.getPortPollResponse = function() {
     }
 
     if (dev.isDev && dev.showSyncDebug) { // debug info
-      if (setPortPollResponseDS.debugHTML) $('#debug-sync-info').html(JSON.parse(setPortPollResponseDS.debugHTML));
-      $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+      var debugSyncInfo = $('#debug-sync-info'),
+          transactionUnit = $('.transactions-unit'),
+          body = $('body');
+
+      if (setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(setPortPollResponseDS.debugHTML));
+      body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
       setInterval(function() {
-        if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
-        $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+        if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
+        body.css({ 'padding-bottom':debugSyncInfo.outerHeight() * 1.5 });
       }, 1000);
     }
   }

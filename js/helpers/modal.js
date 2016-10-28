@@ -6,12 +6,14 @@
 // TODO: This is a temporal solution until the Bootstrap modal is integrated.
 helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
   var modalWindow = $('.' + formClassName),
-      viewportWidth = $(window).width();
+      viewportWidth = $(window).width(),
+      formContainer = $('.form-container'),
+      mainContainer = $('.main');
 
   if (modalWindow.hasClass('fade')) {
     modalWindow.removeClass('hidden');
-    $('.main').addClass('blur');
-    $('.form-container').addClass('blur');
+    mainContainer.addClass('blur');
+    formContainer.addClass('blur');
     modalWindow.removeClass('blur');
 
     setTimeout(function() {
@@ -19,13 +21,13 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
     }, 10);
   } else {
     modalWindow.addClass('fade');
-    $('.form-container').removeClass('blur');
+    formContainer.removeClass('blur');
 
     setTimeout(function() {
       modalWindow.addClass('hidden');
       modalWindow.addClass('fade');
-      $('.form-container').removeClass('blur');
-      if ($('.form-container').length === $('.form-container').not(":visible").length) $('.main').removeClass('blur');
+      formContainer.removeClass('blur');
+      if (formContainer.length === formContainer.not(":visible").length) mainContainer.removeClass('blur');
     }, timeout);
   }
 }

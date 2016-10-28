@@ -4,7 +4,9 @@
  */
 
 helperProto.prototype.openPage = function(url) {
-  $('body').removeClass('modal-open');
+  var body = $('body');
+
+  body.removeClass('modal-open');
   clearInterval(dashboardUpdateTimer);
 
   if (helperProto.prototype.checkSession(true) && url !== 'dashboard' && url !== 'settings') {
@@ -16,15 +18,15 @@ helperProto.prototype.openPage = function(url) {
       iguanaNullReturnCount = 0;
       document.location.hash = '#login';
       document.title = 'Iguana / Login';
-      $('body').html(loginFormPrepTemplate());
-      $('body').removeClass('dashboard-page');
+      body.html(loginFormPrepTemplate()).
+           removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'create-account':
       document.location.hash = '#create-account';
       document.title = 'Iguana / Create account';
-      $('body').html(signupFormPrepTemplate());
-      $('body').removeClass('dashboard-page');
+      body.html(signupFormPrepTemplate()).
+           removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'dashboard':
@@ -34,15 +36,15 @@ helperProto.prototype.openPage = function(url) {
       var temp = dashboardTemplate.
                  replace(/{{ currency }}/g, defaultCurrency).
                  replace('{{ injectLoader }}', loaderIconTemplate);
-      $('body').addClass('dashboard-page');
-      $('body').html(temp);
+      body.addClass('dashboard-page').
+           html(temp);
       initDashboard();
       break;
     case 'settings':
       document.location.hash = '#settings';
       document.title = 'Iguana / Settings';
-      $('body').addClass('dashboard-page');
-      $('body').html(referenceCurrencyTemplate);
+      body.addClass('dashboard-page').
+           html(referenceCurrencyTemplate);
       initReferenceCurrency();
       break;
   }
