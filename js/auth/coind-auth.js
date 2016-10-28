@@ -13,27 +13,10 @@ function authAllAvailableCoind(modalClassName) {
 
   coindAuthResults = [];
 
-  if (!coinsSelectedToAdd) helper.prepMessageModal('Please select a wallet', 'blue', true);
+  if (!coinsSelectedToAdd)
+    helper.prepMessageModal('Please select a wallet', 'blue', true);
   else
     api.walletLock(coinsSelectedToAdd[0], api.walletLogin($((modalClassName ? '.' + modalClassName + ' ' : '') + '#passphrase').val(), defaultSessionLifetime, coinsSelectedToAdd[0], authAllAvailableCoindCB));
-
-  // multi-wallet login
-  // don't remove
-  /*$('.non-iguana-coins-repeater-error').html('');
-
-  var checkedCoindCount = 0;
-  for (var key in coinsInfo) {
-    if ($('#iguana-coin-' + key + '-checkbox').prop('checked')) checkedCoindCount++;
-  }
-
-  if (checkedCoindCount === 0)
-    $('.non-iguana-coins-repeater-error').html('<div class=\"center offset-bottom-sm\">Please select at least one coin</div>');
-  else
-    for (var key in coinsInfo) {
-      if (coinsInfo[key].connection === true && $('#iguana-coin-' + key + '-checkbox').prop('checked')) {
-        api.walletLock(key, api.walletLogin($('#iguana-coin-' + key + '-textarea').val(), defaultSessionLifetime, key, authAllAvailableCoindCB));
-      }
-    };*/
 
   return result;
 }
@@ -143,8 +126,13 @@ function checkIguanaCoinsSelection(suppressAddCoin) {
 
     for (var i=0; i < coinsSelectedToAdd.length; i++) {
       if (coinsSelectedToAdd[i]) {
-        var addCoinResult = api.addCoin(coinsSelectedToAdd[i], addCoinCB);
         selectedCoins++;
+
+        (function(x) {
+          setTimeout(function() {
+            api.addCoin(coinsSelectedToAdd[x], addCoinCB);
+          }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
+        })(i);
       }
 
       if (selectedCoins > 0) result = true;
@@ -165,24 +153,31 @@ function addCoinCB(response, coin) {
     coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
   }
 
-  if (Object.keys(addCoinResponses).length === selectedCoins) {
-    var addedCoinsOutput = '',
-        failedCoinsOutput = '<br/>';
-    for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
-      if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
-        addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-        localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
-      } else {
-        failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-      }
+  var addedCoinsOutput = '',
+      failedCoinsOutput = '<br/>';
+  for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
+    if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
+      addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+      localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+    } else {
+      failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
     }
+  }
+  if (addedCoinsOutput[addedCoinsOutput.length - 1] === ' ') {
+    addedCoinsOutput = addedCoinsOutput.replace(/, $/, '');
+  }
+  if (failedCoinsOutput[failedCoinsOutput.length - 1] === ' ') {
+    failedCoinsOutput = failedCoinsOutput.replace(/, $/, '');
+  }
 
+  helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : '') + (Object.keys(addCoinResponses).length === selectedCoins ? '<br/>Redirecting to dashboard...' : ''), 'green', true);
+
+  if (Object.keys(addCoinResponses).length === selectedCoins) {
     // since there's no error on nonexistent wallet passphrase in Iguana
     // redirect to dashboard with 5s timeout
     // TODO(?): point out if a coin is already running
-    helper.prepMessageModal(addedCoinsOutput + ' added.' + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' failed to add.' : '') + '<br/>Redirecting to dashboard...', 'green', true);
     setTimeout(function() {
       addAccountIguanaCoind(buttonClassNameCB);
-    }, settings.addCoinInfoModalTimeout);
+    }, settings.addCoinInfoModalTimeout * 1000);
   }
 }
