@@ -176,12 +176,13 @@ function checkAddCoinButton() {
   // disable add wallet/coin button if all coins/wallets are already in the sidebar
   var coinsLeftToAdd = 0;
   for (var key in supportedCoinsList) {
-    if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') {
+    if (!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
         coinsLeftToAdd++;
       }
     }
   }
+  console.log(coinsLeftToAdd);
   if (!coinsLeftToAdd) $('.coins .btn-add-coin').addClass('disabled');
   else $('.coins .btn-add-coin').removeClass('disabled');
 }
