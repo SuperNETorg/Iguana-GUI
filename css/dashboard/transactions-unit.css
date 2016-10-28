@@ -80,6 +80,9 @@
   color: #C7CCD0;
   padding-bottom: 20px;
 }
+.transactions-list-repeater .loader {
+  margin: 0;
+}
 .transactions-list-repeater .item {
   cursor: hand;
   cursor: pointer;

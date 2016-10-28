@@ -156,6 +156,6 @@ function constructTransactionUnitRepeaterCB(response, update) {
       if (!transactionsList.length) $('.transactions-list-repeater').html('No trasaction history is available');
     }
 
-    $('.transactions-unit').removeClass('loading');
+    if ($('.transactions-list-repeater').html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
   }
 }
