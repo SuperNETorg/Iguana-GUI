@@ -18,7 +18,7 @@ function initDashboard() {
   $('body').append(sendCoinPassphraseTemplate);
   $('body').append(receiveCoinTemplate);
   addCoinLoginTemplate = addCoinLoginTemplate.
-                             replace('{{ modal_title }}', isIguana ? 'Add coin' : 'Add wallet').
+                             replace('{{ modal_title }}', isIguana ? 'Add coin' : 'Create new wallet').
                              replace('{{ cta_title }}', isIguana ? 'Select a coin to add' : 'Select a wallet to add').
                              replace('{{ word_count }}', isIguana ? 24 : 12).
                              replace('{{ item }}', isIguana ? 'a coin' : ' a wallet').

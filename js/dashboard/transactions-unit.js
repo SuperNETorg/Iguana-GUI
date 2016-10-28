@@ -150,8 +150,6 @@ function constructTransactionUnitRepeaterCB(response, update) {
       }
     }
 
-    applyDashboardResizeFix();
-
     if (!transactionsList.length) result = 'No trasaction history is available';
   }
 }

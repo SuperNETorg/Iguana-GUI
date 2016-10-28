@@ -63,11 +63,18 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
 }
 
 function watchPassphraseKeyUpEvent(buttonClassName) {
-  $('#passphrase').keyup(function() {
-    if ($('#passphrase').val().length > 0) {
-      $('.btn-' + buttonClassName).removeClass('disabled');
-    } else {
-      $('.btn-' + buttonClassName).addClass('disabled');
-    }
+  $('.auth-main').on('DOMSubtreeModified', function () {
+    watchPassphraseKey(buttonClassName)
   });
+  $('#passphrase').keyup(function() {
+    watchPassphraseKey(buttonClassName)
+  });
+}
+
+function watchPassphraseKey(buttonClassName) {
+  if ($('#passphrase').val().length > 0) {
+    $('.btn-' + buttonClassName).removeClass('disabled');
+  } else {
+    $('.btn-' + buttonClassName).addClass('disabled');
+  }
 }

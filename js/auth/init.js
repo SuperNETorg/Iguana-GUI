@@ -159,7 +159,7 @@ function addCoinButtonNextAction() {
   if (coinsSelectedToAdd[0]) {
     if (!isIguana) {
       $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
-      $('.btn-signin').removeClass('disabled');
+      if ($('.login-form #passphrase').val() !== '') $('.btn-signin').removeClass('disabled');
     } else {
       $('.login-add-coin-selection-title').html('');
       if (coinsSelectedToAdd.length === 1) {
