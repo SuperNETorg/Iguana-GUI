@@ -149,7 +149,8 @@
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 .auth-main .btn.disabled,
-.auth-main .btn.disabled:focus {
+.auth-main .btn.disabled:focus,
+.modal .btn.disabled {
   pointer-events: none;
   background: #B2B4B7;
   text-shadow: none;

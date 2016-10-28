@@ -87,14 +87,17 @@ function bindClickInCoinRepeater() {
       }
 
       // TODO: ugly, double check
+
       if (selectionStatus) {
         $(this).removeClass('active');
+        $('.btn-next').addClass('disabled');
       } else {
         $(this).addClass('active');
+        $('.btn-next').removeClass('disabled');
       }
 
-      if (Object.keys(coinsSelectedToAdd).length === 0) $('.btn-next').addClass('disabled');
-      else $('.btn-next').removeClass('disabled');
+      /*if (Object.keys(coinsSelectedToAdd).length === 0) $('.btn-next').addClass('disabled');
+      else $('.btn-next').removeClass('disabled');*/
     });
   });
 }
