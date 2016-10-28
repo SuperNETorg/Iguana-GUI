@@ -3,61 +3,22 @@
  * temp solution until font file is compiled
  */
 
-.icon.KMD-alt {
-  background: url('../../fonts/svg/mono/kmd.svg');
-  background-size: 100%;
-}
-.item.active .icon.KMD-alt,
-.form-container.send-coin-form .icon.KMD-alt,
-.supported-coins-repeater .coin .icon.KMD-alt {
-  background: url('../../fonts/svg/white/kmd.svg');
-  background-size: 100%;
+.icon.BLK-alt {
+  background: url('../../fonts/svg/coins/blk.svg');
 }
 .icon.CARB-alt {
-  background: url('../../fonts/svg/mono/carb.svg');
-  background-size: 100%;
+  background: url('../../fonts/svg/coins/carb.svg');
 }
-.item.active .icon.CARB-alt,
-.form-container.send-coin-form .icon.CARB-alt,
-.supported-coins-repeater .coin .icon.CARB-alt {
-  background: url('../../fonts/svg/white/carb.svg');
-  background-size: 100%;
+.icon.DEM-alt {
+  background: url('../../fonts/svg/coins/dem.svg');
 }
 .icon.GMC-alt {
-  background: url('../../fonts/svg/mono/gmc.svg');
-  background-size: 100%;
-}
-.item.active .icon.GMC-alt,
-.form-container.send-coin-form .icon.GMC-alt,
-.supported-coins-repeater .coin .icon.GMC-alt {
-  background: url('../../fonts/svg/white/gmc.svg');
-  background-size: 100%;
-}
-.icon.BTM-alt {
-  background: url('../../fonts/svg/mono/btm.svg');
-  background-size: 100%;
-}
-.item.active .icon.BTM-alt,
-.form-container.send-coin-form .icon.BTM-alt,
-.supported-coins-repeater .coin .icon.BTM-alt {
-  background: url('../../fonts/svg/white/btm.svg');
-  background-size: 100%;
-}
-.supported-coins-repeater .coin .icon.KMD-alt,
-.supported-coins-repeater .coin .icon.CARB-alt,
-.supported-coins-repeater .coin .icon.GMC-alt,
-.supported-coins-repeater .coin .icon.BTM-alt {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 70%;
+  background: url('../../fonts/svg/coins/game.svg');
 }
 .supported-coins-repeater .coin .icon.GMC-alt:before,
-.supported-coins-repeater .coin .icon.MZC-alt:before,
+.supported-coins-repeater .coin .icon.BLK-alt:before,
 .supported-coins-repeater .coin .icon.CARB-alt:before,
-.supported-coins-repeater .coin .icon.UNO-alt:before,
-.supported-coins-repeater .coin .icon.ZET-alt:before,
-.supported-coins-repeater .coin .icon.BTM-alt:before,
-.supported-coins-repeater .coin .icon.KMD-alt:before  {
+.supported-coins-repeater .coin .icon.DEM-alt:before  {
   content: '\e980';
   color: transparent;
 }

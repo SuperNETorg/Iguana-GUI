@@ -96,7 +96,9 @@ helperProto.prototype.openPage = function(url) {
       document.location.hash = '#dashboard';
       document.title = 'Iguana / Dashboard';
       defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
-      var temp = dashboardTemplate.replace(/{{ currency }}/g, defaultCurrency);
+      var temp = dashboardTemplate.
+                 replace(/{{ currency }}/g, defaultCurrency).
+                 replace('{{ injectLoader }}', loaderIconTemplate);
       $('body').addClass('dashboard-page');
       $('body').html(temp);
       initDashboard();
@@ -344,7 +346,7 @@ helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
 
 helperProto.prototype.prepNoDaemonModal = function() {
   $('#messageModal').off();
-  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a href=\"#\" onclick="helperProto.prototype.prepRequirementsModal()">requirements are satisfied.</a>', 'red', true);
+  helperProto.prototype.prepMessageModal('No required daemon is running. Make sure it\'s on and these <a onclick="helperProto.prototype.prepRequirementsModal()" class="cursor-pointer">requirements are satisfied.</a>' + (helperProto.prototype.getCurrentPage() !== 'login' && helperProto.prototype.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"helperProto.prototype.logout()\">Logout</a>' : ''), 'red', true);
 }
 
 helperProto.prototype.prepRequirementsModal = function() {
@@ -379,9 +381,12 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
 
       // logout
       setTimeout(function() {
-        if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') helperProto.prototype.logout();
+        if (helperProto.prototype.getCurrentPage() === 'dashboard' || helperProto.prototype.getCurrentPage() === 'settings') {
+          helperProto.prototype.logout();
+        }
       }, 15000);
     } else {
+      iguanaNullReturnCount = 0;
       $('#messageModal').removeClass('in');
       setTimeout(function() {
         $('#messageModal').hide();

@@ -16,7 +16,7 @@ var _settings = {
   defaultAccountNameIguana: 'default', // note: change to a specific account name if needed; default coind account name is empty string
   defaultAccountNameCoind: '',
   txUnitProgressStatusMinConf: 10,
-  iguanaNullReturnCountThreshold: 10,
+  iguanaNullReturnCountThreshold: 30,
   iguanaNullReturnCountLogoutTimeout: 10, // sec
   addCoinInfoModalTimeout: 5, // sec
   addCoinTimeout: 2 // sec

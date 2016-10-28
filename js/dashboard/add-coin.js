@@ -26,7 +26,7 @@ function constructCoinRepeater() {
       index = 0;
 
   for (var key in supportedCoinsList) {
-    if ((localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes') || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
+    if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
         result += coinRepeaterTemplate.
                   replace('{{ id }}', key.toUpperCase()).

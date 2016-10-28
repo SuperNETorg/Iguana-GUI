@@ -150,6 +150,12 @@ function constructTransactionUnitRepeaterCB(response, update) {
       }
     }
 
-    if (!transactionsList.length) result = 'No trasaction history is available';
+    applyDashboardResizeFix();
+
+    if (coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
+      if (!transactionsList.length) $('.transactions-list-repeater').html('No trasaction history is available');
+    }
+
+    if ($('.transactions-list-repeater').html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
   }
 }

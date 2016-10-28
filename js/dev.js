@@ -23,3 +23,7 @@
       'btcd': ''
     }
   };
+  // dev.sessions = {
+  //   'Chrome': false, // true - iguana, false - coind
+  //   'Firefox': false
+  // };

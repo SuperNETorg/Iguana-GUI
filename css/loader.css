@@ -7,7 +7,12 @@
   .dashboard.main.blur .loader .path,
   .dashboard.main.blur .loader .path2,
   .dashboard.main.blur .loader .path3,
-  .dashboard.main.blur .loader .path4 {
+  .dashboard.main.blur .loader .path4,
+  .dashboard-page.modal-open .loader .circle,
+  .dashboard-page.modal-open .loader .path,
+  .dashboard-page.modal-open .loader .path2,
+  .dashboard-page.modal-open .loader .path3,
+  .dashboard-page.modal-open .loader .path4 {
     animation: none;
   }
   .app-loader {
