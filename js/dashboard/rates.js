@@ -9,7 +9,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
       totalCoins = 0;
 
   for (var key in coinsInfo) {
-    if (localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+    if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
       totalCoins++;
       allDashboardCoins = allDashboardCoins + key.toUpperCase() + ',';
     }
@@ -27,7 +27,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
   if (triggerUpdate) {
     for (var key in coinsInfo) {
       if (triggerUpdate && (helper.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localstorage.getVal('iguana-rates-' + key))) {
-        if (localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+        if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
           isUpdateTriggered = true;
         }
       }
@@ -52,7 +52,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
 
 function updateRateCB(coin, result) {
   for (var key in coinsInfo) {
-    if (localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
+    if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
       localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
     }
   }
