@@ -4,6 +4,8 @@
  */
 
 helperProto.prototype.checkSession = function(returnVal) {
+  var loginForm = $('.login-form');
+
   if (!localstorage.getVal('iguana-auth')) {
     helperProto.prototype.logout();
   } else {
@@ -12,7 +14,7 @@ helperProto.prototype.checkSession = function(returnVal) {
 
     if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
       if (!returnVal) {
-        if (!$('.login-form').width()) helperProto.prototype.openPage('login'); // redirect to login when session is expired
+        if (!loginForm.width()) helperProto.prototype.openPage('login'); // redirect to login when session is expired
       } else {
         return false;
       }
@@ -25,7 +27,7 @@ helperProto.prototype.checkSession = function(returnVal) {
 helperProto.prototype.logout = function(noRedirect) {
   if (isIguana) {
     apiProto.prototype.walletLock();
-    localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
     helperProto.prototype.openPage('login');
   } else {
     coindWalletLockCount = 0;
@@ -38,7 +40,7 @@ helperProto.prototype.logout = function(noRedirect) {
 
     // in case something went bad
     if (coindWalletLockCount === 0) {
-      localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+      localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
       helperProto.prototype.openPage('login');
     }
 
@@ -59,7 +61,7 @@ helperProto.prototype.logoutCoindCB = function(key) {
   localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
 
   if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
-    localstorage.setVal('iguana-auth', { 'timestamp' : 1471620867 }); // Jan 01 1970
+    localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp }); // Jan 01 1970
     helperProto.prototype.openPage('login');
   }
 }

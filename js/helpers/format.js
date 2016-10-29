@@ -60,3 +60,11 @@ helperProto.prototype.reindexAssocArray = function(array) {
 
   return _array;
 }
+
+helperProto.prototype.trimComma = function(str) {
+  if (str[str.length - 1] === ' ') {
+    str = str.replace(/, $/, '');
+  }
+
+  return str;
+}

@@ -63,7 +63,8 @@ var lang = {
       'NO_TRANSACTION_HISTORY_IS_AVAILABLE': 'No trasaction history is available',
       'SENT': 'sent',
       'RECEIVED': 'received',
-      'IN_PROCESS': 'in process'
+      'IN_PROCESS': 'in process',
+      'ARE_YOU_SURE_YOU_WANT' : 'Are you sure you want to remove'
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',

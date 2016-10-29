@@ -10,7 +10,8 @@ var defaultSessionLifetime = settings.defaultSessionLifetime,
     pasteTextFromClipboard = false,
     isExecCopyFailed = false,
     coindWalletLockResults = [],
-    coindWalletLockCount = 0;
+    coindWalletLockCount = 0,
+    minEpochTimestamp = 1471620867; // Jan 01 1970
 
 document.write('\x3Cscript type=\"text/javascript\" src=\"js/helpers/auth.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/helpers/clipboard.js\">\x3C/script>' +

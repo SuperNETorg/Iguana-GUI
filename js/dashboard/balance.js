@@ -4,7 +4,8 @@
  */
 
 function updateTotalBalance() {
-  var totalBalance = 0;
+  var totalBalance = 0,
+      balanceBlockClassName = '.balance-block .balance';
 
   $('.account-coins-repeater .item').each(function(index, item) {
     var coin = $(this).attr('data-coin-id'),
@@ -14,30 +15,39 @@ function updateTotalBalance() {
     totalBalance += coinBalances[coin] * updateRates(coin.toUpperCase(), null, true);
   });
 
-  $('.balance-block .balance .value').html(totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) !== 'NaN' ? totalBalance.toFixed(helper.decimalPlacesFormat(totalBalance).currency) : 0.00);
-  $('.balance-block .balance .currency').html(defaultCurrency);
+  var totalBalanceDecimals = helper.decimalPlacesFormat(totalBalance).currency;
+  $(balanceBlockClassName + ' .value').html(totalBalance.toFixed(totalBalanceDecimals) !== 'NaN' ? totalBalance.toFixed(totalBalanceDecimals) : 0.00);
+  $(balanceBlockClassName + ' .currency').html(defaultCurrency);
 }
 
 function updateTransactionUnitBalance(isAuto) {
-  var selectedCoin = $('.account-coins-repeater .item.active'),
-      currentCoinRate = isAuto ? updateRates(selectedCoin.attr('data-coin-id').toUpperCase()) : parseFloat($('.account-coins-repeater .item.active .currency-value .val').html()) / parseFloat($('.account-coins-repeater .item.active .coin-value .val').html(), null, true);
-      selectedCoinValue = Number($('.account-coins-repeater .item.active .coin-value .val').html()) ? Number($('.account-coins-repeater .item.active .coin-value .val').html()) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
+  var accountCoinsRepeaterActiveClassName = '.account-coins-repeater .item.active';
+      selectedCoin = $(accountCoinsRepeaterActiveClassName),
+      coinName = selectedCoin.attr('data-coin-id'),
+      _currencyValue = $(accountCoinsRepeaterActiveClassName + ' .currency-value .val').html(),
+      currentCoinRate = isAuto ? updateRates(coinName.toUpperCase()) : parseFloat(_currencyValue) / parseFloat(_currencyValue, null, true);
+      _coinValue = $(accountCoinsRepeaterActiveClassName + ' .coin-value .val').html()
+      selectedCoinValue = Number(_coinValue) ? Number(_coinValue) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
       curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
 
+  var txUnitActiveCoinBalanceElName = '.transactions-unit .active-coin-balance';
   if (selectedCoin.length !== 0) {
-    $('.transactions-unit .active-coin-balance .value').html(Number(selectedCoinValue).toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
-    $('.transactions-unit .active-coin-balance .coin-name').html(selectedCoin.attr('data-coin-id').toUpperCase());
-    $('.transactions-unit .active-coin-balance-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
-    $('.transactions-unit .active-coin-balance-currency .currency').html(defaultCurrency.toUpperCase());
+    $(txUnitActiveCoinBalanceElName + ' .value').html(Number(selectedCoinValue).toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
+    $(txUnitActiveCoinBalanceElName + ' .coin-name').html(coinName.toUpperCase());
+    $(txUnitActiveCoinBalanceElName + '-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
+    $(txUnitActiveCoinBalanceElName + '-currency .currency').html(defaultCurrency.toUpperCase());
   }
 
-  if (selectedCoinValue === 0) $('.transactions-unit .action-buttons .btn-send').hide();
-  else $('.transactions-unit .action-buttons .btn-send').show();
+  var buttonSend = $('.transactions-unit .action-buttons .btn-send');
+  if (selectedCoinValue === 0) buttonSend.hide();
+  else buttonSend.show();
 
   // enable loader spinner if coin is out of sync/not connected
-  if (selectedCoin.attr('data-coin-id') && coinsInfo[selectedCoin.attr('data-coin-id')].connection === true && coinsInfo[selectedCoin.attr('data-coin-id')].RT === true) {
-    $('.transactions-unit').removeClass('loading');
+  var txUnit = $('.transactions-unit'),
+      loadingClassName = 'loading';
+  if (coinName && coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
+    txUnit.removeClass(loadingClassName);
   } else {
-    $('.transactions-unit').addClass('loading');
+    txUnit.addClass(loadingClassName);
   }
 }

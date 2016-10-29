@@ -7,7 +7,10 @@ helperProto.prototype.setCurrency = function(currencyShortName) {
   localstorage.setVal('iguana-currency', { 'name' : currencyShortName });
 
   for (var key in coinsInfo) {
-    localstorage.setVal('iguana-rates-' + key, { 'shortName' : null, 'value': null, 'updatedAt': 1471620867, 'forceUpdate': true }); // force currency update
+    localstorage.setVal('iguana-rates-' + key, { 'shortName' : null,
+                                                 'value': null,
+                                                 'updatedAt': minEpochTimestamp,
+                                                 'forceUpdate': true }); // force currency update
   }
 }
 

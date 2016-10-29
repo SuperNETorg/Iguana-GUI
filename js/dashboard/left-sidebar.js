@@ -46,30 +46,33 @@ function constructAccountCoinRepeater(isFirstRun) {
 function constructAccountCoinRepeaterCB(balance, coin) {
   var result = '',
       accountCoinRepeaterHTML = '',
-      isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false;
+      isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false,
+      acountCoinsRepeaterCoin = '.account-coins-repeater .' + coin,
+      loadingClassName = 'loading',
+      disabledClassName = 'disabled';
 
   api.checkBackEndConnectionStatus();
   coinBalances[coin] = balance;
 
-  if ($('.account-coins-repeater .' + coin).html()) { // only update values
+  if ($(acountCoinsRepeaterCoin).html()) { // only update values
     var coinBalance = coinBalances[coin] || 0;
     coinLocalRate = updateRates(coin.toUpperCase(), defaultCurrency, true) || 0;
 
     var currencyCalculatedValue = coinBalance * coinLocalRate,
-        coinData = getCoinData(coin);
+        coinData = getCoinData(coin),
+        coinBalanceVal = coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0,
+        coinBalanceCurrencyVal = currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency);
 
-    $('.account-coins-repeater .' + coin + ' .coin-value .val').html(coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0);
-    $('.account-coins-repeater .' + coin + ' .currency-value .val').html(currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
-    /*if (coinsInfo[coin] && coinsInfo[coin].connection === false) $('.account-coins-repeater .' + coin).addClass('disabled');
-    else $('.account-coins-repeater .' + coin).removeClass('disabled');*/
+    $(acountCoinsRepeaterCoin + ' .coin-value .val').html(coinBalanceVal);
+    $(acountCoinsRepeaterCoin + ' .currency-value .val').html(coinBalanceCurrencyVal);
 
     // enable loader spinner if coin is out of sync/not connected
     if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
-      $('.account-coins-repeater .' + coin).removeClass('loading');
-      $('.account-coins-repeater .' + coin).removeClass('disabled');
+      $(acountCoinsRepeaterCoin).removeClass(loadingClassName);
+      $(acountCoinsRepeaterCoin).removeClass(disabledClassName);
     } else {
-      $('.account-coins-repeater .' + coin).addClass('loading');
-      $('.account-coins-repeater .' + coin).addClass('disabled');
+      $(acountCoinsRepeaterCoin).addClass(loadingClassName);
+      $(acountCoinsRepeaterCoin).addClass(disabledClassName);
     }
   } else { // actual DOM append
     var coinLocalRate = 0,
@@ -94,9 +97,10 @@ function constructAccountCoinRepeaterCB(balance, coin) {
                 replace('{{ currency_value }}', currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency)).
                 replace('{{ active }}', activeCoin === coinData.id ? ' active' : '');
 
-    if ($('.account-coins-repeater').html().indexOf('Loading') > -1) $('.account-coins-repeater').html('');
-    $('.account-coins-repeater').append(result);
-    $('.account-coins-repeater .' + coin).addClass('disabled');
+    var accountCoinsRepeater = $('.account-coins-repeater');
+    if (accountCoinsRepeater.html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1) accountCoinsRepeater.html('');
+    accountCoinsRepeater.append(result);
+    $('.account-coins-repeater .' + coin).addClass(disabledClassName);
     bindClickInAccountCoinRepeater();
   }
 
@@ -107,7 +111,9 @@ function constructAccountCoinRepeaterCB(balance, coin) {
     if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
         (!isIguana /*&& coinsInfo[key].connection === true*/ && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
       index++;
-      if ($('.account-coins-repeater .' + key).html() && $('.account-coins-repeater .' + key)[0].outerHTML) sortedAccountCoinsRepeater = sortedAccountCoinsRepeater + $('.account-coins-repeater .' + key)[0].outerHTML;
+      var accountCoinsRepeaterCoin = '.account-coins-repeater .' + key;
+      if ($(accountCoinsRepeaterCoin).html() && $(accountCoinsRepeaterCoin)[0].outerHTML)
+        sortedAccountCoinsRepeater = sortedAccountCoinsRepeater + $(accountCoinsRepeaterCoin)[0].outerHTML;
     }
   }
 
@@ -116,50 +122,60 @@ function constructAccountCoinRepeaterCB(balance, coin) {
   applyDashboardResizeFix();
 
   if (dev.isDev && !isIguana) {
-    if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
-    else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+    var accountCoinsRepeaterItem = '.account-coins-repeater .item',
+        hiddenClassName = 'hidden';
+    if ($(accountCoinsRepeaterItem).length === 1) $(accountCoinsRepeaterItem + ' .remove-coin').addClass(hiddenClassName);
+    else $(accountCoinsRepeaterItem + ' .remove-coin').removeClass(hiddenClassName);
   }
 
   // run balances and tx unit update once left sidebar is updated
   if (index === Object.keys(coinBalances).length) {
     checkAddCoinButton();
     // disable send button if ther're no funds on a wallet
+    var buttonSend = $('.transactions-unit .action-buttons .btn-send');
     if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
-      $('.transactions-unit .action-buttons .btn-send').addClass('disabled');
+      buttonSend.addClass('disabled');
     } else {
-      $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
+      buttonSend.removeClass('disabled');
     }
     updateTotalBalance();
     updateTransactionUnitBalance();
-    if ($('.transactions-list-repeater').html().indexOf('Loading') > -1) constructTransactionUnitRepeater();
+    if ($('.transactions-list-repeater').html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1) constructTransactionUnitRepeater();
   }
 }
 
 function bindClickInAccountCoinRepeater() {
-  $('.account-coins-repeater .item').each(function(index, item) {
-    $(this).find('.remove-coin').click(function() {
-      if (confirm('Are you sure you want to remove ' + $(this).parent().attr('data-coin-id').toUpperCase()) === true) {
-        if ($('.account-coins-repeater .item.active').attr('data-coin-id').toString() === $(this).parent().attr('data-coin-id').toString())
-          $('.account-coins-repeater .item:first-child .clickable-area').click();
+  var accountCoinsRepeaterItem = '.account-coins-repeater .item',
+      removeCoinClass = '.remove-coin',
+      hiddenClassName = 'hidden',
+      activeClassName = 'active';
+
+  $(accountCoinsRepeaterItem).each(function(index, item) {
+    $(this).find(removeCoinClass).click(function() {
+      var parentCoinId = $(this).parent().attr('data-coin-id');
+
+      if (confirm(helper.lang('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + parentCoinId.toUpperCase()) === true) {
+        if ($(accountCoinsRepeaterItem + '.active').attr('data-coin-id').toString() === parentCoinId.toString())
+          $(accountCoinsRepeaterItem + ':first-child .clickable-area').click();
         $(this).parent().remove();
         localstorage.setVal('iguana-' + $(this).parent().attr('data-coin-id') + '-passphrase', { 'logged': 'no' });
         checkAddCoinButton();
 
-        if ($('.account-coins-repeater .item').length === 1) $('.account-coins-repeater .item .remove-coin').addClass('hidden');
-        else $('.account-coins-repeater .item .remove-coin').removeClass('hidden');
+        if ($(accountCoinsRepeaterItem).length === 1) $(accountCoinsRepeaterItem + ' ' + removeCoinClass).addClass(hiddenClassName);
+        else $(accountCoinsRepeaterItem + ' ' + removeCoinClass).removeClass(hiddenClassName);
       }
     });
     $(this).find('.clickable-area').click(function() {
       if (!$(this).parent().hasClass('disabled')) {
-        $('.account-coins-repeater .item').filter(':visible').removeClass('active');
+        $('.account-coins-repeater .item').filter(':visible').removeClass(activeClassName);
 
-        if ($(this).parent().hasClass('active')) {
-          $(this).parent().removeClass('active');
+        if ($(this).parent().hasClass(activeClassName)) {
+          $(this).parent().removeClass(activeClassName);
         } else {
           var oldActiveCoinVal = activeCoin;
 
-          $(this).parent().addClass('active');
-          activeCoin = $(this).parent().attr('data-coin-id');
+          $(this).parent().addClass(activeClassName);
+          activeCoin = $(this).parent().attr('data-coin-id'); // TODO: global
           localstorage.setVal('iguana-active-coin', { id: activeCoin });
 
           if (oldActiveCoinVal !== activeCoin) {
@@ -182,8 +198,9 @@ function checkAddCoinButton() {
       }
     }
   }
-  if (!coinsLeftToAdd) $('.coins .btn-add-coin').addClass('disabled');
-  else $('.coins .btn-add-coin').removeClass('disabled');
+  var buttAddCoin = $('.coins .btn-add-coin');
+  if (!coinsLeftToAdd) buttAddCoin.addClass('disabled');
+  else buttAddCoin.removeClass('disabled');
 }
 
 // on les then 768px working this function

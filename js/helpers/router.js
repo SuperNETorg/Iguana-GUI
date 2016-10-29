@@ -16,22 +16,16 @@ helperProto.prototype.openPage = function(url) {
   switch (url) {
     case 'login':
       iguanaNullReturnCount = 0;
-      document.location.hash = '#login';
-      document.title = 'Iguana / Login';
       body.html(loginFormPrepTemplate()).
            removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'create-account':
-      document.location.hash = '#create-account';
-      document.title = 'Iguana / Create account';
       body.html(signupFormPrepTemplate()).
            removeClass('dashboard-page');
       initAuthCB();
       break;
     case 'dashboard':
-      document.location.hash = '#dashboard';
-      document.title = 'Iguana / Dashboard';
       defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
       var temp = dashboardTemplate.
                  replace(/{{ currency }}/g, defaultCurrency).
@@ -41,16 +35,20 @@ helperProto.prototype.openPage = function(url) {
       initDashboard();
       break;
     case 'settings':
-      document.location.hash = '#settings';
-      document.title = 'Iguana / Settings';
       body.addClass('dashboard-page').
            html(referenceCurrencyTemplate);
       initReferenceCurrency();
       break;
   }
+  helperProto.prototype.initPageUrl(url);
   helperProto.prototype.checkIfIguanaOrCoindIsPresent();
 }
 
 helperProto.prototype.getCurrentPage = function() {
   return document.location.hash.replace('#', '');
+}
+
+helperProto.prototype.initPageUrl = function(url) {
+  document.location.hash = '#' + url;
+  document.title = 'Iguana / ' + url.replace(url[0], url[0].toUpperCase()).replace('-', ' ');
 }

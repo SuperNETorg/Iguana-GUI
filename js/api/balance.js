@@ -29,34 +29,34 @@ apiProto.prototype.getBalance = function(account, coin, cb) {
         if (response.responseText.indexOf('Accounting API is deprecated') > -1 || response.responseText.indexOf('If you want to use accounting API'))
           if (dev.showConsoleMessages && dev.isDev && coin === 'btcd') console.log('add enableaccounts=1 and staking=0 in btcd conf file');
       if (cb) cb.call(this, false, coin);
-    }
-  })
-  .done(function(_response) {
-    if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
-      if (_response.result > -1 || Number(_response) === 0) {
-        // non-iguana
-        result = _response.result > -1 ? _response.result : _response;
-
-      } else {
-        if (dev.showConsoleMessages && dev.isDev) console.log(_response);
-
-        // iguana
-        var response = $.parseJSON(_response);
-
-        if (response.error) {
-          // do something
-          console.log('error: ' + response.error);
-          result = false;
+    },
+    success: function(_response) {
+      if (apiProto.prototype.errorHandler(_response, coin) !== 10) {
+        if (_response.result > -1 || Number(_response) === 0) {
+          // non-iguana
+          result = _response.result > -1 ? _response.result : _response;
 
         } else {
-          if (response) result = response;
-          else result = false;
+          if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
+          // iguana
+          var response = $.parseJSON(_response);
+
+          if (response.error) {
+            // do something
+            console.log('error: ' + response.error);
+            result = false;
+
+          } else {
+            if (response) result = response;
+            else result = false;
+
+          }
         }
       }
-    }
 
-    if (cb) cb.call(this, result, coin);
+      if (cb) cb.call(this, result, coin);
+    }
   });
 
   return result;

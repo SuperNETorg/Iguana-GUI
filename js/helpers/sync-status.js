@@ -27,9 +27,9 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
       if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
     }
 
-    if (setPortPollResponseDS && (!isIguana && !numPortsResponding) ||
+    if (setPortPollResponseDS && ((!isIguana && !numPortsResponding) ||
         (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === true && !numPortsResponding) ||
-        (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === false)) {
+        (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === false))) {
       helperProto.prototype.prepNoDaemonModal();
 
       // logout

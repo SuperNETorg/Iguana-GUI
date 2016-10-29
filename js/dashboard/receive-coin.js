@@ -10,10 +10,12 @@
 function bindReceive() {
   var coinRate,
       coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
-      address = api.getAccountAddress(coin, defaultAccount);
+      address = api.getAccountAddress(coin, defaultAccount),
+      currencyCoin = $('.currency-coin'),
+      currencyObj = $('.currency');
 
-  $('.currency-coin').val('');
-  $('.currency').val('');
+  currencyCoin.val('');
+  currencyObj.val('');
   localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
   $('.coin-unit').text(coin.toUpperCase());
   coinRate = updateRates(coin, defaultCurrency, true);
@@ -24,21 +26,22 @@ function bindReceive() {
   }
 
   $('.unit-currency').html(defaultCurrency);
-  $('.enter-in-currency').html('Enter in ' + coin.toUpperCase() + ' or ' + defaultCurrency);
+  $('.enter-in-currency').html(helper.lang('RECEIVE.ENTER_IN') + ' ' + coin.toUpperCase() + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency);
 
-  $('.currency-coin').on('keyup', function () {
+  currencyCoin.on('keyup', function () {
     var calcAmount = $(this).val() * coinRate;
-    $(".currency").val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+    currencyObj.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
   });
 
-  $('.currency').on('keyup', function () {
+  currencyObj.on('keyup', function () {
     var calcAmount = $(this).val() / coinRate;
-    $(".currency-coin").val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+    currencyCoin.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
   });
 
   // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
   // allow numeric only entry
-  $('.receiving-coin-content .currency-input input').keypress(function(event) {
+  var currencyInput = $('.receiving-coin-content .currency-input input');
+  currencyInput.keypress(function(event) {
     var inputCode = event.which,
         currentValue = $(this).val();
     if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
@@ -57,7 +60,7 @@ function bindReceive() {
       if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
     }
   });
-  $('.receiving-coin-content .currency-input input').keydown(function(event) {
+  currencyInput.keydown(function(event) {
     var keyCode = event.keyCode || event.which;
 
     if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
@@ -65,8 +68,8 @@ function bindReceive() {
     }
   });
 
-  $('#qr-code').empty();
-  $('#qr-code').qrcode(address);
+  $('#qr-code').empty().
+                qrcode(address);
 
   $('.btn-share-email').attr('href', 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[coin].name + '%20address' +
                                      '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[coin].name + '%20address%20' + address);

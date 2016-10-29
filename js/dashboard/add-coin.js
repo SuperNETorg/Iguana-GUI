@@ -6,15 +6,19 @@
 var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
 
 function addCoinButtonCB() {
+  var supportedCoinsRepeaterClassName = '.supported-coins-repeater',
+      addNewCoinForm = $('.add-new-coin-form'),
+      fadeClassName = 'fade';
+
   coinsSelectedToAdd = [];
 
-  if (!$('.add-new-coin-form').hasClass('fade')) $('.add-new-coin-form').addClass('fade');
+  if (!addNewCoinForm.hasClass(fadeClassName)) addNewCoinForm.addClass(fadeClassName);
   helper.toggleModalWindow('add-new-coin-form', 300);
 
-  $('.supported-coins-repeater-inner').html(constructCoinRepeater());
+  $(supportedCoinsRepeaterClassName + '-inner').html(constructCoinRepeater());
   bindClickInCoinRepeater();
   opacityToggleOnAddCoinRepeaterScroll();
-  $('.supported-coins-repeater').scroll(function(e) {
+  $(supportedCoinsRepeaterClassName).scroll(function(e) {
     opacityToggleOnAddCoinRepeaterScroll();
   });
 }
@@ -46,10 +50,12 @@ function constructCoinRepeater() {
 }
 
 function opacityToggleOnAddCoinRepeaterScroll() {
-  if ($('.supported-coins-repeater').html()) {
-    var supportedCoinsRepeaterScrollPos = $('.supported-coins-repeater').scrollTop() || 0,
+  var supportedCoinsRepeater = $('.supported-coins-repeater');
+
+  if (supportedCoinsRepeater.html()) {
+    var supportedCoinsRepeaterScrollPos = supportedCoinsRepeater.scrollTop() || 0,
         // height + margin top + margin bottom
-        supportedCoinsRepeaterHeight = $('.supported-coins-repeater').height() + Number($('.supported-coins-repeater').css('padding').replace('px', '')) * 2,
+        supportedCoinsRepeaterHeight = supportedCoinsRepeater.height() + Number(supportedCoinsRepeater.css('padding').replace('px', '')) * 2,
         lowerThreshold = supportedCoinsRepeaterScrollPos + supportedCoinsRepeaterHeight;
 
     $('.supported-coins-repeater .coin').each(function(index, item) {
@@ -69,56 +75,63 @@ function opacityToggleOnAddCoinRepeaterScroll() {
 }
 
 function bindClickInCoinRepeater() {
-  $('.supported-coins-repeater-inner .coin').each(function(index, item) {
+  var activeClassName = 'active',
+      disabledClassName = 'disabled',
+      supportedCoinsRepeaterCoin = $('.supported-coins-repeater-inner .coin'),
+      buttonNext = $('.btn-next');
+
+  supportedCoinsRepeaterCoin.each(function(index, item) {
     $(this).click(function() {
-      var selectionStatus = $(this).hasClass('active') ? true : false;
+      var selectionStatus = $(this).hasClass(activeClassName) ? true : false;
 
       if (!isIguana || helper.getCurrentPage() === 'create-account') {
-        $('.supported-coins-repeater-inner .coin').removeClass('active');
+        supportedCoinsRepeaterCoin.removeClass(activeClassName);
         coinsSelectedToAdd = [];
       }
 
-      if ($(this).hasClass('active')) {
+      if ($(this).hasClass(activeClassName)) {
         delete coinsSelectedToAdd[index];
-        $(this).removeClass('active');
+        $(this).removeClass(activeClassName);
       } else {
-        $(this).addClass('active');
+        $(this).addClass(activeClassName);
         coinsSelectedToAdd[index] = $(this).attr('data-coin-id');
       }
 
-      // TODO: ugly, double check
+      // TODO(?): rewrite
 
       if (selectionStatus) {
-        $(this).removeClass('active');
-        $('.btn-next').addClass('disabled');
+        $(this).removeClass(activeClassName);
+        buttonNext.addClass(disabledClassName);
       } else {
-        $(this).addClass('active');
-        $('.btn-next').removeClass('disabled');
+        $(this).addClass(activeClassName);
+        buttonNext.removeClass(disabledClassName);
       }
-
-      /*if (Object.keys(coinsSelectedToAdd).length === 0) $('.btn-next').addClass('disabled');
-      else $('.btn-next').removeClass('disabled');*/
     });
   });
 }
 
 function bindCoinRepeaterSearch() {
+  var fadeClassName = 'fade',
+      overrideOpacityClassName = 'override-opacity',
+      supportedCoinsRepeater = $('.supported-coins-repeater'),
+      supportedCoinsRepeaterCoin = $('.supported-coins-repeater-inner .coin');
+
   $('.quick-search .input').keyup(function() {
     var quickSearchVal = $(this).val().toLowerCase();
 
-    $('.supported-coins-repeater').addClass('override-opacity');
+    supportedCoinsRepeater.addClass(overrideOpacityClassName);
     $('.supported-coins-repeater-inner .coin .name').each(function(index, item) {
       var itemText = $(item).text().toString().toLowerCase();
 
-      if (itemText.indexOf(quickSearchVal) > -1) $(this).parent().removeClass('fade');
-      else $(this).parent().addClass('fade');
+      if (itemText.indexOf(quickSearchVal) > -1) $(this).parent().removeClass(fadeClassName);
+      else $(this).parent().addClass(fadeClassName);
     });
 
     // fade in elements if nothing was found
-    if ($('.supported-coins-repeater-inner .coin').filter('.fade').length === $('.supported-coins-repeater-inner .coin').length ||
-        $('.supported-coins-repeater-inner .coin').filter('.fade').length === 0) {
-      $('.supported-coins-repeater-inner .coin').filter('.fade').removeClass('fade');
-      $('.supported-coins-repeater').removeClass('override-opacity');
+    if (supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === supportedCoinsRepeaterCoin.length ||
+        supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
+      supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
+      supportedCoinsRepeater.removeClass(overrideOpacityClassName);
       opacityToggleOnAddCoinRepeaterScroll();
     }
   });

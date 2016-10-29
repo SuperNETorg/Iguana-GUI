@@ -7,13 +7,19 @@ var passphraseToVerify,
     coindAuthResults = [];
 
 function toggleLoginErrorStyling(isError) {
+  var passphrase = $('#passphrase'),
+      loginInputDirectionsError = $('.login-input-directions-error.col-red'),
+      loginInputDirections = $('.login-input-directions'),
+      errorClassName = 'error',
+      hiddenClassName = 'hidden';
+
   if (isError) {
-    if (isIguana && helper.getCurrentPage() === 'login') $('.login-input-directions-error.col-red').removeClass('hidden');
-    $('#passphrase').addClass('error');
-    $('.login-input-directions').addClass('hidden');
+    if (isIguana && helper.getCurrentPage() === 'login') loginInputDirectionsError.removeClass(hiddenClassName);
+    passphrase.addClass(errorClassName);
+    loginInputDirections.addClass(hiddenClassName);
   } else {
-    $('#passphrase').removeClass('error');
-    $('.login-input-directions-error.col-red').addClass('hidden');
+    passphrase.removeClass(errorClassName);
+    loginInputDirectionsError.addClass(hiddenClassName);
   }
-  $('#passphrase').val('');
+  passphrase.val('');
 }

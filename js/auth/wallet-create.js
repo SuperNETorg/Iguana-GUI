@@ -10,43 +10,52 @@ function verifyNewPassphrase(modalClassName) {
 }
 
 function initCreateAccountForm() {
-  var newPassphrase = PassPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4);
+  var newPassphrase = PassPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4), // TODO: make configurable
+      hiddenClassName = 'hidden',
+      disabledClassName = 'disabled',
+      verifyAccounFormClassName = '.verify-passphrase-form',
+      createAccountFormClassName = '.create-account-form',
+      buttonVerifyPassphrase = $('.btn-verify-passphrase'),
+      loginAddCoinSelection = $('.login-add-coin-selection-title'),
+      passphrase = $('#passphrase'),
+      generatedPassphrase = $('.generated-passhprase'),
+      passphraseSavedCheckbox = $('#passphrase-saved-checkbox');
 
   selectedCoindToEncrypt = null;
   //if (!isIguana) $('.btn-add-account').html('Encrypt wallet');
 
-  $('#passphrase').show();
-  $('.non-iguana-walletpassphrase-errors').html('');
-  $('.verify-passphrase-form .login-input-directions-error').addClass('hidden');
-  $('.verify-passphrase-form #passphrase').removeClass('error');
-  $('.create-account-form').removeClass('hidden');
-  $('.verify-passphrase-form').addClass('hidden');
-  $('#passphrase').val('');
-  $('#passphrase-saved-checkbox').prop('checked', false);
-  $('.generated-passhprase').html(newPassphrase);
+  passphrase.show();
+  $('.non-iguana-walletpassphrase-errors').html(''); // remove(?)
+  $(verifyAccounFormClassName + ' .login-input-directions-error').addClass(hiddenClassName);
+  $(verifyAccounFormClassName + ' #passphrase').removeClass('error');
+  $(createAccountFormClassName).removeClass(hiddenClassName);
+  $(verifyAccounFormClassName).addClass(hiddenClassName);
+  passphrase.val('');
+  passphraseSavedCheckbox.prop('checked', false);
+  generatedPassphrase.html(newPassphrase);
   $('.generated-passhprase-hidden').val(newPassphrase);
-  $('.btn-verify-passphrase').addClass('disabled');
+  buttonVerifyPassphrase.addClass(disabledClassName);
 
-  $('#passphrase-saved-checkbox').off();
-  $('#passphrase-saved-checkbox').click(function() {
-    if ($('#passphrase-saved-checkbox').prop('checked'))
-      $('.btn-verify-passphrase').removeClass('disabled');
+  passphraseSavedCheckbox.off();
+  passphraseSavedCheckbox.click(function() {
+    if (passphraseSavedCheckbox.prop('checked'))
+      buttonVerifyPassphrase.removeClass(disabledClassName);
     else
-      $('.btn-verify-passphrase').addClass('disabled');
+      buttonVerifyPassphrase.addClass(disabledClassName);
   });
 
-  $('.verify-passphrase-form .btn-back').off();
-  $('.verify-passphrase-form .btn-back').click(function() {
+  $(verifyAccounFormClassName + ' .btn-back').off();
+  $(verifyAccounFormClassName + ' .btn-back').click(function() {
     helper.openPage('create-account');
   });
 
-  $('.create-account-form .btn-back').off();
-  $('.create-account-form .btn-back').click(function() {
+  $(createAccountFormClassName + ' .btn-back').off();
+  $(createAccountFormClassName + ' .btn-back').click(function() {
     helper.openPage('login');
   });
 
-  $('.btn-verify-passphrase').off();
-  $('.btn-verify-passphrase').click(function() {
+  buttonVerifyPassphrase.off();
+  buttonVerifyPassphrase.click(function() {
     if (isIguana) {
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
       if (coinsSelectedToAdd[0]) {
@@ -64,24 +73,24 @@ function initCreateAccountForm() {
 
         if (addCoinResult) {
           coinsInfo[coinsSelectedToAdd[0]].connection = true;
-          $('.login-add-coin-selection-title').addClass('hidden');
-          passphraseToVerify = $('.generated-passhprase').text();
-          $('.create-account-form').addClass('hidden');
-          $('.verify-passphrase-form').removeClass('hidden');
-          $('.non-iguana-coins-repeater-errors').html('');
+          loginAddCoinSelection.addClass(hiddenClassName);
+          passphraseToVerify = generatedPassphrase.text();
+          $(createAccountFormClassName).addClass('hidden');
+          $(verifyAccounFormClassName).removeClass('hidden');
+          $('.non-iguana-coins-repeater-errors').html(''); // remove(?)
         } else {
           helper.prepMessageModal(helper.lang('MESSAGE.COIN_ADD_ERROR_P1') + ' ' + coinsSelectedToAdd[0] + ' ' + helper.lang('MESSAGE.COIN_ADD_ERROR_P2'), 'red', true);
         }
       } else {
-        $('.login-add-coin-selection-title').removeClass('hidden');
+        loginAddCoinSelection.removeClass(hiddenClassName);
         helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_COIN'), 'blue', true);
       }
     } else {
       if (checkSelectedWallet()) {
-        passphraseToVerify = $('.generated-passhprase').text();
-        $('.create-account-form').addClass('hidden');
-        $('.verify-passphrase-form').removeClass('hidden');
-        $('.non-iguana-coins-repeater-errors').html('');
+        passphraseToVerify = generatedPassphrase.text();
+        $(createAccountFormClassName).addClass(hiddenClassName);
+        $(verifyAccounFormClassName).removeClass(hiddenClassName);
+        $('.non-iguana-coins-repeater-errors').html(''); // remove(?)
       } else {
         //$('.non-iguana-coins-repeater-errors').html('<div class=\"center\">Please select at least one coin</div>');
       }
