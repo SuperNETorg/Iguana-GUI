@@ -59,16 +59,26 @@ function sendCoinModalInit(isBackTriggered) {
   });
 
   // calc on keying
-  $(modalSendCoinClass + ' .tx-amount').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-amount,' +
+    modalSendCoinClass + ' .tx-amount-currency,' +
+    modalSendCoinClass + ' .tx-fee,' +
+    modalSendCoinClass + ' .tx-fee-currency').keydown(function(e) {
+      var keyCode = e.keyCode || e.which;
+
+      if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
+        e.preventDefault();
+      }
+  });
+  $(modalSendCoinClass + ' .tx-amount').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-amount', true, $(this).val());
   });
-  $(modalSendCoinClass + ' .tx-amount-currency').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-amount-currency').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-amount', false);
   });
-  $(modalSendCoinClass + ' .tx-fee').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-fee').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', true);
   });
-  $(modalSendCoinClass + ' .tx-fee-currency').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-fee-currency').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', false);
   });
 
@@ -89,19 +99,16 @@ function sendCoinModalInit(isBackTriggered) {
     } else {
       evt.preventDefault();
     }
-
-    if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
-      evt.preventDefault();
-    }
   }
 
   // dev
   if (dev.isDev) loadTestSendData(coinData.id);
 
-  if (!isBackTriggered) helper.toggleModalWindow(modalSendCoinClass.replace('.', ''), 300);
+  var sendCoinParentClass = '.send-coin-form';
+  if (!isBackTriggered) helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
   // btn close
-  $(modalSendCoinClass + ' .btn-close,' + modalSendCoinClass + ' .modal-overlay').click(function() {
-    helper.toggleModalWindow(modalSendCoinClass.replace('.', ''), 300);
+  $(sendCoinParentClass + ' .btn-close,' + sendCoinParentClass + ' .modal-overlay').click(function() {
+    helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
   });
   // btn next
   $(modalSendCoinClass + ' .btn-next').click(function() {
