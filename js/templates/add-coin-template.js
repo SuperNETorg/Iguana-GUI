@@ -3,7 +3,9 @@
  *
  */
 
-var addCoinModalTemplate =
+'use_strict';
+
+templates.registerTemplate('addCoin',
 '<section class=\"form-container mdl add-new-coin-form unselectable hidden fade\">' +
   '<div class=\"modal-overlay\"></div>' +
   '<div class=\"modal modal-add-coin\">' +
@@ -27,4 +29,4 @@ var addCoinModalTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

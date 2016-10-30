@@ -27,16 +27,16 @@ helperProto.prototype.openPage = function(url) {
       break;
     case 'dashboard':
       defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
-      var temp = dashboardTemplate.
+      var temp = templates.all.dashboard.
                  replace(/{{ currency }}/g, defaultCurrency).
-                 replace('{{ injectLoader }}', loaderIconTemplate);
+                 replace('{{ injectLoader }}', templates.all.loader);
       body.addClass('dashboard-page').
            html(temp);
       initDashboard();
       break;
     case 'settings':
       body.addClass('dashboard-page').
-           html(referenceCurrencyTemplate);
+           html(templates.all.referenceCurrency);
       initReferenceCurrency();
       break;
   }

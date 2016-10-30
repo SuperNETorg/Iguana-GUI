@@ -3,7 +3,9 @@
  *
  */
 
-var loginTemplate =
+'use_strict';
+
+templates.registerTemplate('login',
 '<div class="body-wrapper auth-main">' +
   '<div class="container-fluid">' +
     '<div class="row centered">' +
@@ -29,4 +31,4 @@ var loginTemplate =
       '</section>' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

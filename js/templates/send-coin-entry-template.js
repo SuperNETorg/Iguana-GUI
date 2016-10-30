@@ -3,7 +3,9 @@
  *
  */
 
-var sendCoinEntryTemplate =
+'use_strict';
+
+templates.registerTemplate('sendCoinEntry',
 '<div class="modal-dialog modal-popup">' +
   '<div class="modal-content">' +
     '<header class="form-header orange-gradient box-shadow-bottom">' +
@@ -56,4 +58,4 @@ var sendCoinEntryTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

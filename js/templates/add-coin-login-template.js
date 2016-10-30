@@ -3,7 +3,9 @@
  *
  */
 
-var addCoinLoginTemplate =
+'use_strict';
+
+templates.registerTemplate('addCoinLogin',
 '<section class="form-container mdl add-coin-login-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login-form login-form" role="dialog">' +
@@ -31,4 +33,4 @@ var addCoinLoginTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

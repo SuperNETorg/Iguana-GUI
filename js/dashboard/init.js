@@ -10,23 +10,22 @@ function initDashboard() {
 
   // load templates
   if (!isIguana) {
-    addCoinModalTemplate = addCoinModalTemplate.replace(helper.lang('ADD_COIN.ADDING_A_NEW_COIN'), helper.lang('DASHBOARD.ADDING_A_NEW_WALLET')).
-                                                replace(helper.lang('ADD_COIN.SELECT_COINS_TO_ADD'), helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
+    templates.all.addCoin = templates.all.addCoin.replace(helper.lang('ADD_COIN.ADDING_A_NEW_COIN'), helper.lang('DASHBOARD.ADDING_A_NEW_WALLET')).
+                                          replace(helper.lang('ADD_COIN.SELECT_COINS_TO_ADD'), helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
   }
 
-  addCoinLoginTemplate = addCoinLoginTemplate.
-                         replace('{{ modal_title }}', isIguana ? helper.lang('LOGIN.ADD_COIN') : helper.lang('LOGIN.ADD_WALLET')).
-                         replace('{{ cta_title }}', isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD')).
-                         replace('{{ word_count }}', isIguana ? 24 : 12).
-                         replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_COIN')).
-                         replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
-  addCoinCreateWalletTemplate = addCoinCreateWalletTemplate.replace('{{ word_count }}', isIguana ? 24 : 12); // TODO: global
+  templates.all.addCoinLogin = templates.all.addCoinLogin.replace('{{ modal_title }}', isIguana ? helper.lang('LOGIN.ADD_COIN') : helper.lang('LOGIN.ADD_WALLET')).
+                                                  replace('{{ cta_title }}', isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD')).
+                                                  replace('{{ word_count }}', isIguana ? 24 : 12).
+                                                  replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_COIN')).
+                                                  replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
+  templates.all.addCoinCreateWallet = templates.all.addCoinCreateWallet.replace('{{ word_count }}', isIguana ? 24 : 12); // TODO: global
 
-  $('body').append(addCoinModalTemplate).
-            append(sendCoinPassphraseTemplate).
-            append(receiveCoinTemplate).
-            append(addCoinLoginTemplate).
-            append(addCoinCreateWalletTemplate);
+  $('body').append(templates.all.addCoin).
+            append(templates.all.sendCoinPassphrase).
+            append(templates.all.receiveCoin).
+            append(templates.all.addCoinLogin).
+            append(templates.all.addCoinCreateWallet);
 
   // message modal
   helper.initMessageModal();
@@ -101,8 +100,6 @@ function initDashboard() {
     }
   });
 
-  var coinSelectionShowTemplate = '<br/><span class=\"small\">{{ item }}</span>';
-
   $(addCoinLoginClass + '.btn-signup').click(function() {
     var addCoinCreateVerifyClass = addCoinCreateClass + ' .verify-passphrase-form';
 
@@ -118,7 +115,7 @@ function initDashboard() {
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
       if (coinsSelectedToAdd[0]) {
-        $(addCoinCreateClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + coinSelectionShowTemplate.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
+        $(addCoinCreateClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       }
       initAuthCB();
       $(addCoinCreateClass + ' .login-add-coin-selection-title').click(function() {
@@ -146,7 +143,7 @@ function initDashboard() {
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
       if (coinsSelectedToAdd[0]) {
-        $(addNewCoinFormClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + coinSelectionShowTemplate.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
+        $(addNewCoinFormClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       }
       // coind
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);

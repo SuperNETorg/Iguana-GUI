@@ -3,7 +3,9 @@
  *
  */
 
-var addCoinCreateWalletTemplate =
+'use_strict';
+
+templates.registerTemplate('addCoinCreateWallet',
 '<section class="form-container mdl add-coin-create-wallet-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-wallet-create-form">' +
@@ -50,4 +52,4 @@ var addCoinCreateWalletTemplate =
     '</section>' +
     '<!-- // verify passphrase form end -->' +
   '</div>' +
-'</section>';
+'</section>');

@@ -3,7 +3,9 @@
  *
  */
 
-var referenceCurrencyTemplate =
+'use_strict';
+
+templates.registerTemplate('referenceCurrency',
 '<section class="dashboard unselectable">' +
   '<nav class="navbar top unselectable navbar-inverse">' +
     '<div class="clearfix">' +
@@ -53,4 +55,4 @@ var referenceCurrencyTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

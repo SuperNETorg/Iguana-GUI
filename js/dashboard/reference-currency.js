@@ -1,17 +1,10 @@
-// TODO: add currency localstorage cache
+/*!
+ * Iguana dashboard/reference-currency
+ *
+ */
+
 // note: current implementation doesn't permit too often updates
 //       due to possibility of ban for abuse
-
-var referenceCurrencyItemTemplate =
-  '<li class=\"country-li cursor-pointer {{ defaultActive }}\" data-id=\"{{ index }}\">' +
-    '<h1 class=\"flag-head\">' +
-      '<span class=\"label label-default\">' +
-        '<span class=\"flag-icon flag-icon-{{ flagId }}\"></span>' +
-      '</span>' +
-    '</h1>' +
-    '<strong class=\"short-name\">{{ shortName }}</strong>' +
-    '<span class=\"full-name\">{{ fullName }}</span>' +
-  '</li>';
 
 function initReferenceCurrency() {
   var outPut = '',
@@ -26,7 +19,7 @@ function initReferenceCurrency() {
       defaultActive = 'selected';
     }
 
-    outPut += referenceCurrencyItemTemplate.
+    outPut += templates.all.repeaters.currencyItem.
               replace('{{ defaultActive }}', defaultActive).
               replace('{{ index }}', index).
               replace('{{ flagId }}', currencyArr[i].flagid).

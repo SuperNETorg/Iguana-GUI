@@ -3,7 +3,9 @@
  *
  */
 
-var messageModalTemplate =
+'use_strict';
+
+templates.registerTemplate('messageModal',
 '<div class="modal fade" id="messageModal" role="dialog">' +
   '<div class="modal-dialog">' +
     '<div class="modal-content msg-content unselectable cursor-pointer">' +
@@ -12,4 +14,4 @@ var messageModalTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

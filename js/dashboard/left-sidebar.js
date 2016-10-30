@@ -3,21 +3,7 @@
  *
  */
 
-var accountCoinRepeaterTemplate = '<div class=\"item loading {{ coin_id }}{{ active }}\" data-coin-id=\"{{ coin_id }}\" data-coin-balance-value=\"{{ coin_balance_unformatted }}\">' +
-                                    '{{ injectLoader }}' +
-                                    '<div class=\"remove-coin cursor-pointer{{ dev }}\"></div>' +
-                                    '<div class=\"clickable-area\">' +
-                                      '<div class=\"coin\">' +
-                                        '<i class=\"icon cc {{ id }}-alt\"></i>' +
-                                        '<div class=\"name\">{{ name }}</div>' +
-                                      '</div>' +
-                                      '<div class=\"balance\">' +
-                                        '<div class=\"coin-value\"><span class=\"val\">{{ coin_value }}</span> {{ coin_id_uc }}</div>' +
-                                        '<div class=\"currency-value\"><span class=\"val\">{{ currency_value }}</span> {{ currency_name }}</div>' +
-                                      '</div>' +
-                                    '</div>' +
-                                  '</div>';
-accountCoinRepeaterTemplate = accountCoinRepeaterTemplate.replace('{{ injectLoader }}', loaderIconTemplate); // add loader spinner to each coin element
+templates.all.repeaters.accountCoinItem = templates.all.repeaters.accountCoinItem.replace('{{ injectLoader }}', templates.all.loader); // add loader spinner to each coin element
 
 var coinBalances = [];
 
@@ -85,7 +71,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
 
     if (!isActiveCoinSet && !activeCoin) activeCoin = coinData.id;
     if (coinData)
-      result = accountCoinRepeaterTemplate.
+      result = templates.all.repeaters.accountCoinItem.
                 replace('{{ dev }}', dev.isDev && !isIguana ? '' : ' hidden').
                 replace('{{ id }}', coinData.id.toUpperCase()).
                 replace('{{ name }}', coinData.name).

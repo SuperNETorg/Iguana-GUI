@@ -3,7 +3,9 @@
  *
  */
 
-var signupTemplate =
+'use_strict';
+
+templates.registerTemplate('signup',
 '<div class="body-wrapper auth-main">' +
   '<div class="container-fluid">' +
     '<div class="row centered">' +
@@ -52,4 +54,4 @@ var signupTemplate =
       '<!-- // verify passphrase form end -->' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

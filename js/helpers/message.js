@@ -7,7 +7,7 @@ helperProto.prototype.initMessageModal = function() {
   var body = $('body'),
       messageModal = $('#messageModal');
 
-  body.append(messageModalTemplate);
+  body.append(templates.all.messageModal);
 
   messageModal.off();
   messageModal.click(function() {

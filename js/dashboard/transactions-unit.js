@@ -3,24 +3,6 @@
  *
  */
 
-var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp_format }} {{ txid }}\" title=\"confirmations: {{ confs }}\">' +
-                                '<div class=\"status unselectable\">{{ status }}</div>' +
-                                '<div class=\"amount unselectable\">' +
-                                  '<span class=\"in-out {{ in_out }}\"></span>' +
-                                  '<span class=\"value\">{{ amount }}</span>' +
-                                  '<span class=\"coin-name\">{{ coin }}</span>' +
-                                '</div>' +
-                                '<div class=\"progress-status unselectable\">' +
-                                  '<i class=\"icon\"></i>' +
-                                '</div>' +
-                                '<div class=\"hash\">{{ hash }}</div>' +
-                                '<div class=\"timestamp unselectable\">{{ timestamp_single }}</div>' +
-                                '<div class=\"timestamp two-lines unselectable\">' +
-                                  '<div class=\"timestamp-date\">{{ timestamp_date }}</div>' +
-                                  '<div class=\"timestamp-time\">{{ timestamp_time }}</div>' +
-                                '</div>' +
-                              '</div>';
-
 // construct transaction unit array
 function constructTransactionUnitRepeater(update) {
   var coinName = activeCoin || $('.account-coins-repeater .item.active');
@@ -32,7 +14,7 @@ function constructTransactionUnitRepeater(update) {
     $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
   }
 
-  if (!update) $('.transactions-list-repeater').html(loaderIconTemplate); // loader spinner
+  if (!update) $('.transactions-list-repeater').html(templates.all.loader); // loader spinner
 
   if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
 }
@@ -115,7 +97,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
               $(txUnitRepeaterClass + ' .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
             } else {
               if (isIguana && txAmount !== undefined || !isIguana)
-                result = transactionUnitRepeater.
+                result = templates.all.repeaters.transactionsUnitItem.
                          replace('{{ txid }}', transactionDetails.txid).
                          replace('{{ status }}', txStatus).
                          replace('{{ status_class }}', txCategory).

@@ -6,7 +6,7 @@
 var sendFormDataCopy = {};
 
 function sendCoinModalInit(isBackTriggered) {
-  var templateToLoad = sendCoinEntryTemplate,
+  var templateToLoad = templates.all.sendCoinEntry,
       activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
       coinData = getCoinData(activeCoin),
       activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
@@ -126,7 +126,7 @@ function sendCoinModalInit(isBackTriggered) {
 
 function sendCoinModalConfirm() {
   if (validateSendCoinForm()) {
-    var templateToLoad = sendCoinConfirmationTemplate,
+    var templateToLoad = templates.all.sendCoinConfirmation,
         sendCoinFormClass = '.send-coin-form';
         accountCoinsRepeaterActive = '.account-coins-repeater .item.active';
         activeCoin = $(accountCoinsRepeaterActive).attr('data-coin-id'),
@@ -172,7 +172,7 @@ function sendCoinModalConfirm() {
             passphraseElement = '#passphrase',
             disabledClassName = 'disabled';
         // TODO: ugly, rewrite
-        $('.modal-append-container').html(sendCoinPassphraseTemplate.
+        $('.modal-append-container').html(templates.all.sendCoinPassphrase.
                                           replace('login-form-modal', 'send-coin-confirm-passphrase').
                                           replace('>Add<', '>Ok<').
                                           replace('Add a wallet', 'Wallet passphrase').

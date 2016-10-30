@@ -23,11 +23,6 @@ function addCoinButtonCB() {
   });
 }
 
-var coinRepeaterTemplate = '<div class=\"coin\" data-coin-id=\"{{ coin_id }}\">' +
-                              '<i class=\"icon cc {{ id }}-alt col-{{ color }}\"></i>' +
-                              '<div class=\"name\">{{ name }}</div>' +
-                           '</div>';
-
 // construct coins to add array
 function constructCoinRepeater() {
   var result = '',
@@ -36,7 +31,7 @@ function constructCoinRepeater() {
   for (var key in supportedCoinsList) {
     if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
       if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
-        result += coinRepeaterTemplate.
+        result += templates.all.repeaters.addCoinItem.
                   replace('{{ id }}', key.toUpperCase()).
                   replace('{{ coin_id }}', key.toLowerCase()).
                   replace('{{ name }}', supportedCoinsList[key].name).

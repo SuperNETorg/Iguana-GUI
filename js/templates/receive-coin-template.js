@@ -3,7 +3,9 @@
  *
  */
 
-var receiveCoinTemplate =
+'use_strict';
+
+templates.registerTemplate('receiveCoin',
 '<section class="modal fade" id="myModal" role="dialog">' +
   '<div class="modal-dialog modal-popup modal-lg">' +
     '<div class="modal-content receiving-coin-content">' +
@@ -55,4 +57,4 @@ var receiveCoinTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

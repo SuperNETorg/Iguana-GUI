@@ -3,7 +3,9 @@
  *
  */
 
-var dashboardTemplate =
+'use_strict';
+
+templates.registerTemplate('dashboard',
 '<div class="container-fluid dashboard-main">' +
   '<div class="row">' +
     '<section class="dashboard hidden main">' +
@@ -94,4 +96,4 @@ var dashboardTemplate =
     '<!-- send coin passphrase conf -->' +
     '<section class="modal-append-container"></section>' +
   '</div>' +
-'</div>';
+'</div>');

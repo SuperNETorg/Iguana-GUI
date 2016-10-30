@@ -3,7 +3,9 @@
  *
  */
 
-var sendCoinConfirmationTemplate =
+'use_strict';
+
+templates.registerTemplate('sendCoinConfirmation',
 '<div class="modal-dialog modal-popup">' +
   '<div class="modal-content">' +
     /*'<div class="send-coin-progress-overlay hidden">' +
@@ -75,4 +77,4 @@ var sendCoinConfirmationTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

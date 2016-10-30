@@ -2,6 +2,7 @@
  * Iguana js/inc/index
  *
  */
+
 document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/crypto/wordlist.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/libs/crypto/passphrasegenerator.js\">\x3C/script>' +
@@ -16,13 +17,10 @@ document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/helpers/helpers.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/api/api.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/localstorage.js\">\x3C/script>' +
-               // auth
-               '\x3Cscript type=\"text/javascript\" src=\"js/auth/wallet-create.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/auth/coind-auth.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/auth/bind-event.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/auth/init.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/auth/auth.js\">\x3C/script>' +
                // templates
+               '\x3Cscript type=\"text/javascript\" src=\"js/templates/templates.js\">\x3C/script>' +
+
+               '\x3Cscript type=\"text/javascript\" src=\"js/templates/repeaters.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/loader-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/login-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/signup-template.js\">\x3C/script>' +
@@ -38,6 +36,12 @@ document.write(// crypto libs
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/send-coin-confirmation-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/dashboard-template.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/templates/reference-currency-template.js\">\x3C/script>' +
+               // auth
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/wallet-create.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/coind-auth.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/bind-event.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/init.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/auth/auth.js\">\x3C/script>' +
                // dashboard logic
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/init.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/dashboard/left-sidebar.js\">\x3C/script>' +

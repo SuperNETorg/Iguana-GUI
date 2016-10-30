@@ -3,7 +3,9 @@
  *
  */
 
-var sendCoinPassphraseTemplate =
+'use_strict';
+
+templates.registerTemplate('sendCoinPassphrase',
 '<section class="form-container mdl login-form-modal hidden fade">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login">' +
@@ -17,4 +19,4 @@ var sendCoinPassphraseTemplate =
       '<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow btn-add-wallet">' + helper.lang('LOGIN.ADD') + '</button>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

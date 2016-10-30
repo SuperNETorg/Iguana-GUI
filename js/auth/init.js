@@ -4,7 +4,7 @@
  */
 
 function loginFormPrepTemplate() {
-  var templateToPrep = loginTemplate;
+  var templateToPrep = templates.all.login;
 
   templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
 
@@ -12,7 +12,7 @@ function loginFormPrepTemplate() {
 }
 
 function signupFormPrepTemplate() {
-  var templateToPrep = signupTemplate,
+  var templateToPrep = templates.all.signup,
       coinAlreadyAdded = false;
 
   templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
@@ -65,7 +65,7 @@ function initAuthCB() {
     if (!isIguana) $(btnSigninElementName).addClass(disabledClassName);
 
     // load add coin template
-    $('body').append(addCoinModalTemplate);
+    $('body').append(templates.all.addCoin);
     if (!isIguana) {
       $(addNewCoinFormElementName + ' .form-header .title').html(helper.lang('LOGIN.CREATE_NEW_WALLET'));
       $(addNewCoinFormElementName + ' .form-content .coins-title').html(helper.lang('LOGIN.SELECT_A_WALLET_TO_CREATE'));
@@ -112,7 +112,7 @@ function initAuthCB() {
 
     // load add coin template
     if (helper.getCurrentPage() === 'create-account') {
-      $('body').append(addCoinModalTemplate);
+      $('body').append(templates.all.addCoin);
       $(addNewCoinFormElementName + ' .form-header .title').html(helper.lang('LOGIN.CREATE_NEW_WALLET'));
       $(addNewCoinFormElementName + ' .form-content .coins-title').html(helper.lang('LOGIN.SELECT_A_WALLET_TO_CREATE'));
     }
@@ -169,8 +169,6 @@ $(window).resize(function() {
   opacityToggleOnAddCoinRepeaterScroll();
 });
 
-var coinSelectionShowTemplate = '<br/><span class=\"small\">{{ item }}</span>';
-
 function addCoinButtonNextAction() {
   var loginFormPassphrase = $('.login-form #passphrase'),
       loginAddCoinFormSelection = $('.login-add-coin-selection-title')
@@ -178,12 +176,12 @@ function addCoinButtonNextAction() {
 
   if (coinsSelectedToAdd[0]) {
     if (!isIguana) {
-      loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + coinSelectionShowTemplate.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
+      loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       $('.btn-signin').removeClass('disabled');
     } else {
       loginAddCoinFormSelection.html('');
       if (coinsSelectedToAdd.length === 1) {
-        loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + coinSelectionShowTemplate.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
+        loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       } else {
         for (var i=0; i < coinsSelectedToAdd.length; i++) {
           loginAddCoinFormSelection.html(loginAddCoinFormSelection.html() + supportedCoinsList[coinsSelectedToAdd[i]].name + '<br/>');
