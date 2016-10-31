@@ -102,7 +102,7 @@ function sendCoinModalInit(isBackTriggered) {
   }
 
   // dev
-  if (dev.isDev) loadTestSendData(coinData.id);
+  // if (dev.isDev) loadTestSendData(coinData.id);
 
   var sendCoinParentClass = '.send-coin-form';
   if (!isBackTriggered) helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
