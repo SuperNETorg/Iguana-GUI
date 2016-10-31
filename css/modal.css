@@ -40,12 +40,14 @@
 .form-container.mdl .form-content {
   height: 100%;
   background: #F5F8FB;
-  padding-top: 4em;
+  padding-top: 2em;
 }
 .form-container.mdl .form-header {
-  height: 45px;
+  position: relative;
   width: 100%;
-  position: absolute;
+  height: 60px;
+  color: #FFF;
+  border-radius: 4px 4px 0 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .form-container.mdl .bi_interface-cross {
@@ -54,8 +56,14 @@
   position: absolute;
   top: 16px;
   left: 20px;
+  margin-top: 5px;
+  margin-left: 12px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
+}
+.form-container.mdl .bi_interface-cross:before {
+  font-weight: 900;
+  font-size: 16px;
 }
 .form-container.mdl .form-header .title {
   position: relative;

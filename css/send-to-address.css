@@ -15,7 +15,7 @@
   font-family: 'budicon';
   font-size: 2.0em;
   color: #C8CCD0;
-  top: 96px;
+  top: 100px;
   content: '\eac5';
   height: 40px;
   width: 40px;
@@ -56,7 +56,7 @@
   font-weight: 600;
 }
 .send-modal .pop-form {
-  margin-top: 30px;
+  margin-top: 40px;
 }
 .send-modal .send-modal .pop-detail h4 {
   color: #282828;
@@ -295,7 +295,6 @@
 .modal-send-coin .bi_interface-arrow-left {
   color: #fff;
   font-size: 26px;
-  margin-top: 10px;
   margin-left: 10px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   position: absolute;
@@ -317,6 +316,12 @@
 .modal-send-coin .over {
   -webkit-animation: rotator 1.5s ease-in-out infinite;
   stroke-dasharray: 107,38;
+}
+.modal-send-coin .modal-dialog .modal-content .modal-header [class *="btn-"] {
+  margin-left: 6px;
+}
+.modal-send-coin .modal-dialog .modal-content .modal-header .title {
+  padding-top: 0;
 }
 .modal-send-coin .bag {
   position: absolute;

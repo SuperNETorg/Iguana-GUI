@@ -113,14 +113,13 @@
     height: 100%;
   }
   body .modal .modal-dialog .modal-header {
-    height: 50px;
+    min-height: 50px;
   }
   body .modal .modal-dialog .modal-header .btn-close {
-    margin: 0;
+    margin-left: 5px;
   }
   body .modal .modal-dialog .modal-header .title {
     font-size: 17px;
-    margin-top: 0;
   }
   body .modal .modal-dialog .modal-body {
     padding: 0 0.8em 3.2em 0.8em;
@@ -131,6 +130,11 @@
   }
   body .reference-currency-main .currency-content .currency-loop .country-li {
     min-width: 162px;
+  }
+  /* send coin modal */
+  body .modal-send-coin .modal-dialog .modal-content .send-modal,
+  body .modal-send-coin .modal-dialog .modal-content .send-modal {
+    padding-top: 2em;
   }
 }
 @media only screen and (max-width: 370px) {

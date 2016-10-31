@@ -6,9 +6,9 @@
 'use_strict';
 
 templates.registerTemplate('sendCoinEntry',
-'<div class="modal-dialog modal-popup">' +
+'<div class="modal-dialog modal-popup modal-lg">' +
   '<div class="modal-content">' +
-    '<header class="form-header orange-gradient box-shadow-bottom">' +
+    '<header class="modal-header form-header orange-gradient box-shadow-bottom">' +
       '<i class="bi_interface-cross cursor-pointer btn-close"></i>' +
       '<div class="title text-shadow">' + helper.lang('SEND.SENDING') + '</div>' +
     '</header>' +

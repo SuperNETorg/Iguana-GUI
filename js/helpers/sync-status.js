@@ -39,12 +39,17 @@ helperProto.prototype.checkIfIguanaOrCoindIsPresent = function() {
         }
       }, 15000);
     } else {
+      // This property for delete duplicate Timeout functions for message Modal
+      if (!window.messageModalTime) {
+        window.messageModalTime;
+      } else {
+        clearTimeout(messageModalTime);
+      }
       var messageModal = $('#messageModal');
-
       iguanaNullReturnCount = 0;
       messageModal.removeClass('in');
-      setTimeout(function() {
-        messageModal.hide();
+      messageModalTime = setTimeout(function() {
+        messageModal.modal('hide');
       }, 250);
     }
   });
