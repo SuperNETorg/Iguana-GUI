@@ -30,14 +30,15 @@ function constructCoinRepeater() {
 
   for (var key in supportedCoinsList) {
     if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
-      if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true))
-        result += templates.all.repeaters.addCoinItem.
-                  replace('{{ id }}', key.toUpperCase()).
-                  replace('{{ coin_id }}', key.toLowerCase()).
-                  replace('{{ name }}', supportedCoinsList[key].name).
-                  replace('{{ color }}', addCoinColors[index]);
-        index++;
-        if (index === addCoinColors.length - 1) index = 0;
+      if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
+          result += templates.all.repeaters.addCoinItem.
+                    replace('{{ id }}', key.toUpperCase()).
+                    replace('{{ coin_id }}', key.toLowerCase()).
+                    replace('{{ name }}', supportedCoinsList[key].name).
+                    replace('{{ color }}', addCoinColors[index]);
+          index++;
+          if (index === addCoinColors.length - 1) index = 0;
+        }
     }
   }
 
