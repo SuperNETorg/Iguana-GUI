@@ -11,7 +11,6 @@ initTopNavBar = function () {
     items = $('.item', topMenu), itemsLength = 0, item;
 
   btnLeft.on('click swipeleft', function () {
-    debugger;
     if ($(window).width() < $('.top-menu', topMenu).width()) {
       itemsLength = $('.top-menu', topMenu).width();
       for (var i = items.length - 1; 0 <= i; i--) {
@@ -28,7 +27,6 @@ initTopNavBar = function () {
     }
   });
   btnRight.on('click swiperight', function () {
-    debugger;
     if ($(window).width() < $('.top-menu', topMenu).width())
       for (var i = 0; items.length > i; i++) {
         item = $(items[i]);

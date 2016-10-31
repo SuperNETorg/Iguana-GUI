@@ -31,7 +31,7 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
         if (response.responseText.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) result = true;
         if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1) result = -14;
         if (response.responseText.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
-        if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
+        // if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(response.error);
       }

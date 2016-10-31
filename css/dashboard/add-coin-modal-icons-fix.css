@@ -3,22 +3,11 @@
  * temp solution until font file is compiled
  */
 
-.icon.BLK-alt {
-  background: url('../../fonts/svg/coins/blk.svg');
-}
-.icon.CARB-alt {
-  background: url('../../fonts/svg/coins/carb.svg');
-}
-.icon.DEM-alt {
-  background: url('../../fonts/svg/coins/dem.svg');
-}
 .icon.GMC-alt {
   background: url('../../fonts/svg/coins/game.svg');
+  background-size: 100%;
 }
-.supported-coins-repeater .coin .icon.GMC-alt:before,
-.supported-coins-repeater .coin .icon.BLK-alt:before,
-.supported-coins-repeater .coin .icon.CARB-alt:before,
-.supported-coins-repeater .coin .icon.DEM-alt:before  {
+.supported-coins-repeater .coin .icon.GMC-alt:before {
   content: '\e980';
   color: transparent;
 }

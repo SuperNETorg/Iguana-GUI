@@ -78,7 +78,8 @@ function copyToClipboard(element) {
   var temp = $('<input>');
 
   $('body').append(temp);
-  temp.val($(element).text()).select();
+  //remove spaces from address
+  temp.val($(element).text().replace(/ /g,'')).select();
 
   try {
     document.execCommand("copy");
