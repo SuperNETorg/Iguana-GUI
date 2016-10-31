@@ -68,8 +68,7 @@ function bindReceive() {
     }
   });
 
-  $('#qr-code').empty().
-                qrcode(address);
+  $('#qr-code').empty().qrcode(address);
 
   $('.btn-share-email').attr('href', 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[coin].name + '%20address' +
                                      '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[coin].name + '%20address%20' + address);

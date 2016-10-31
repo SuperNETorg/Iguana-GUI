@@ -8,6 +8,7 @@ app.system.registerScript('libs/crypto/wordlist.js');
 app.system.registerScript('libs/crypto/passphrasegenerator.js');
 // libs
 app.system.registerScript('libs/jquery-3.0.0.min.js');
+app.system.registerScript('libs/jquery.qrcode.min.js');
 app.system.registerScript('libs/bootstrap.min.js');
 // lang
 app.system.registerScript('lang/en.js');
