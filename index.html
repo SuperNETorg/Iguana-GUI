@@ -8,19 +8,32 @@
     <link rel="stylesheet" href="css/imports.css">
     <link rel="stylesheet" href="css/responsive/dashboard.css">
     <link rel="stylesheet" href="css/responsive/auth.css">
-    <script type="text/javascript" src="js/app/app.js"></script>
-    <script type="text/javascript" src="js/inc/index.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/dev.js"></script>
+    <script type="text/javascript" src="js/lang/en.js"></script>
+    <script type="text/javascript" src="js/localstorage.js"></script>
+    <!-- -->
+    <script type="text/javascript" src="js/helpers.js"></script>
+    <script type="text/javascript" src="js/api.js"></script>
+    <script type="text/javascript" src="js/supported-coins-list.js"></script>
+    <script type="text/javascript" src="js/iguana-add-coin-list.js"></script>
+    <!-- -->
+    <script type="text/javascript" src="js/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="js/angular/jquery.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/controllers/loginController.js"></script>
+    <script type="text/javascript" src="js/controllers/dashboardController.js"></script>
   </head>
-  <body>
-    <div class="app-loader">
-      <div class="loader">
-        <svg class="circle">
-          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
-          <circle class="path2" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
-          <circle class="path3" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
-          <circle class="path4" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
-        </svg>
-      </div>
+  <body ng-app="IguanaGUIApp">
+    <div class="app-container">
+      <div class="app-container-inner" ui-view></div>
     </div>
   </body>
 </html>
+
+      <!--div ng-controller="loginController">
+        <input ng-model="name" ng-keyup="NameChange()" ng-error="nameError">
+        <h1>{{greeting}}</h1>
+        <h2>{{name}}</h2>
+      </div-->
