@@ -74,6 +74,7 @@ function initAuthCB() {
     loginAddCoinFormSelection.off();
     loginAddCoinFormSelection.click(function() {
       addCoinButtonCB();
+      $('.btn-next').addClass('disabled');
     });
 
     $(addNewCoinFormElementName + ' .btn-close,.modal-overlay').off();
