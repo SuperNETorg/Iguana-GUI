@@ -17,10 +17,6 @@ function addCoinButtonCB() {
 
   $(supportedCoinsRepeaterClassName + '-inner').html(constructCoinRepeater());
   bindClickInCoinRepeater();
-  opacityToggleOnAddCoinRepeaterScroll();
-  $(supportedCoinsRepeaterClassName).scroll(function(e) {
-    opacityToggleOnAddCoinRepeaterScroll();
-  });
 }
 
 // construct coins to add array
@@ -102,7 +98,6 @@ function bindCoinRepeaterSearch() {
         supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
       supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
       supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-      opacityToggleOnAddCoinRepeaterScroll();
     }
   });
 }

@@ -68,20 +68,13 @@
   }
 }
 
-@media all and (max-width: 768px) {
-  .account-coins-repeater .item.active:after {
-    display: none;
-  }
-  .transactions-unit {
-    margin-left: 0;
-  }
-
-}
-
 @media all and (min-width: 768px) {
   aside.coins {
     min-width: 230px;
     max-width: 270px
+  }
+  body .reference-currency-main .currency-content .currency-loop .country-li {
+    min-width: 168px;
   }
 }
 
@@ -104,6 +97,12 @@
 }
 
 @media only screen and (max-width: 768px) {
+  body .account-coins-repeater .item.active:after {
+    display: none;
+  }
+  body .transactions-unit {
+    margin-left: 0;
+  }
   body .modal .modal-dialog.modal-lg {
     width: 100%;
   }
@@ -116,14 +115,27 @@
   body .modal .modal-dialog .modal-header {
     height: 50px;
   }
-  body .modal .modal-dialog .modal-header .btn-close{
+  body .modal .modal-dialog .modal-header .btn-close {
     margin: 0;
   }
-  body .modal .modal-dialog .modal-header .title{
+  body .modal .modal-dialog .modal-header .title {
     font-size: 17px;
     margin-top: 0;
   }
   body .modal .modal-dialog .modal-body {
     padding: 0 0.8em 3.2em 0.8em;
+  }
+  body .reference-currency-main .currency-content .currency-parent {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  body .reference-currency-main .currency-content .currency-loop .country-li {
+    min-width: 162px;
+  }
+}
+@media only screen and (max-width: 370px) {
+  body .reference-currency-main .currency-content .currency-loop .country-li {
+    display: inline-block;
+    float: none;
   }
 }

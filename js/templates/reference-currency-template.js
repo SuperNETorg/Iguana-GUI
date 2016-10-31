@@ -41,17 +41,16 @@ templates.registerTemplate('referenceCurrency',
   '</nav>' +
   '<div class="container-fluid reference-currency-main">' +
     '<div class="row">' +
-      '<div class="container">' +
-        '<div class="currency-content">' +
-          '<div class="col-xs-12 col-md-5 col-sm-5 container-left">' +
-            '<h3 class="choose-currency">' + helper.lang('SETTINGS.REFERENCE_CURRENCY') + ':</h3>' +
-            '<h4 class="transaction-amount">' + helper.lang('SETTINGS.CHOOSE_YOUR_CURRENCY') + '</h4>' +
-            '<h4 class="transaction-amount">' + helper.lang('SETTINGS.AMOUNT_OF_TRANSACTIONS') + '</h4>' +
-          '</div>' +
-          '<div class="col-xs-12 col-md-7 col-sm-6 currency-parent">' +
-            '<ul class="currency-loop"></ul>' +
-          '</div>' +
+      '<div class="currency-content">' +
+        '<div class="col-md-3 col-md-offset-1 col-sm-5 container-left">' +
+          '<h3 class="choose-currency">' + helper.lang('SETTINGS.REFERENCE_CURRENCY') + ':</h3>' +
+          '<h4 class="transaction-amount">' + helper.lang('SETTINGS.CHOOSE_YOUR_CURRENCY') + '</h4>' +
+          '<h4 class="transaction-amount">' + helper.lang('SETTINGS.AMOUNT_OF_TRANSACTIONS') + '</h4>' +
         '</div>' +
+        '<div class="col-md-7 col-sm-6 currency-parent">' +
+          '<ul class="currency-loop clearfix"></ul>' +
+        '</div>' +
+        '<div class="clearfix"></div>' +
       '</div>' +
     '</div>' +
   '</div>' +
