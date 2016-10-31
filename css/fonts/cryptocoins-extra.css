@@ -1,43 +1,43 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../../fonts/icomoon.eot?e61wuf');
-  src:  url('../../fonts/icomoon.eot?e61wuf#iefix') format('embedded-opentype'),
-    url('../../fonts/icomoon.ttf?e61wuf') format('truetype'),
-    url('../../fonts/icomoon.woff?e61wuf') format('woff'),
-    url('../../fonts/icomoon.svg?e61wuf#icomoon') format('svg');
+  src:  url('../../fonts/icomoon.eot?mfr0e4');
+  src:  url('../../fonts/icomoon.eot?mfr0e4#iefix') format('embedded-opentype'),
+    url('../../fonts/icomoon.ttf?mfr0e4') format('truetype'),
+    url('../../fonts/icomoon.woff?mfr0e4') format('woff'),
+    url('../../fonts/icomoon.svg?mfr0e4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-/*[class^="icon-"], [class*=" icon-"] {
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}*/
-
-.UNO-alt:before {
+.BTM-alt:before {
   font-family: 'icomoon' !important;
   content: "\e900";
 }
-.ZET-alt:before {
+.UNO-alt:before {
   font-family: 'icomoon' !important;
   content: "\e901";
 }
-.MZC-alt:before {
+.ZET-alt:before {
   font-family: 'icomoon' !important;
   content: "\e902";
 }
-.KMD-alt:before {
+.MZC-alt:before {
   font-family: 'icomoon' !important;
   content: "\e903";
 }
-.BTM-alt:before {
+.KMD-alt:before {
   font-family: 'icomoon' !important;
-  content: "\e925";
+  content: "\e904";
+}
+.DEM-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e907";
+}
+.CARB-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e908";
+}
+.BLK-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e909";
 }
