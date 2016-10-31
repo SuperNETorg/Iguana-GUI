@@ -24,7 +24,7 @@ templates.registerTemplate('sendCoinConfirmation',
       '</button>' +
     '</div>' +*/
     '<div class="send-coin-success-overlay hidden">' +
-      '<div class="send-coin-status">' + helper.lang('SEND.TRANSACTION_IS_SENT') + '.<br/>' + helper.lang('SEND.TRANSACTION_IS_SENT') + '.</div>' +
+      '<div class="send-coin-status">' + helper.lang('SEND.TRANSACTION_IS_SENT') + '.<br/>' + helper.lang('SEND.CHECK_THE_STATUS') + '.</div>' +
       '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed">' +
         '<i class="bi_interface-tick cursor-pointer"></i>' +
       '</button>' +
