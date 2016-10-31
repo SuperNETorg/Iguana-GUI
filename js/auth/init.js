@@ -4,18 +4,18 @@
  */
 
 function loginFormPrepTemplate() {
-  var templateToPrep = loginTemplate;
+  var templateToPrep = templates.all.login;
 
-  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+  templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
 
   return templateToPrep;
 }
 
 function signupFormPrepTemplate() {
-  var templateToPrep = signupTemplate,
+  var templateToPrep = templates.all.signup,
       coinAlreadyAdded = false;
 
-  templateToPrep = templateToPrep.replace('Select a wallet', 'Select a coin');
+  templateToPrep = templateToPrep.replace(helper.lang('LOGIN.SELECT_A_WALLET'), helper.lang('LOGIN.SELECT_A_COIN'));
 
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) {
@@ -45,35 +45,45 @@ function initAuthCB() {
   // message modal
   helper.initMessageModal();
 
+  var btnSigninElementName = '.btn-signin';
+      hiddenClassName = 'hidden',
+      disabledClassName = 'disabled',
+      addNewCoinFormElementName = '.add-new-coin-form',
+      loginFormElementName = '.login-form',
+      createAccountFormClassName = '.create-account-form',
+      verifyAccountFormClassName = '.verify-passphrase-form',
+      loginAddCoinFormSelection = $('.login-add-coin-selection-title'),
+      passphraseElementName = '#passphrase',
+      iguanaPassphraseWordCount = 24,
+      coindPassphraseWordCount = 12;
+
   // ugly login form check
-  if ($('.login-form').hasClass('hidden')) {
+  if ($(loginFormElementName).hasClass(hiddenClassName)) {
     $('#passphrase').val(dev.isDev && isIguana ? dev.coinPW.iguana : '');
 
-    if (dev.isDev) $('.btn-signin').removeClass('disabled');
-    if (!isIguana) $('.btn-signin').addClass('disabled');
+    if (dev.isDev) $(btnSigninElementName).removeClass(disabledClassName);
+    if (!isIguana) $(btnSigninElementName).addClass(disabledClassName);
 
     // load add coin template
-    $('body').append(addCoinModalTemplate);
+    $('body').append(templates.all.addCoin);
+    if (!isIguana) {
+      $(addNewCoinFormElementName + ' .form-header .title').html(helper.lang('LOGIN.CREATE_NEW_WALLET'));
+      $(addNewCoinFormElementName + ' .form-content .coins-title').html(helper.lang('LOGIN.SELECT_A_WALLET_TO_CREATE'));
+    }
 
-    $('.login-add-coin-selection-title')
-      .off('click')
-      .on('click', function () {
-        if (!isIguana) {
-          $('.add-new-coin-form .form-header .title').html('Login ');
-          $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to login');
-        }
+    loginAddCoinFormSelection.off();
+    loginAddCoinFormSelection.click(function() {
+      addCoinButtonCB();
+    });
 
-        addCoinButtonCB();
-      });
-
-    $('.add-new-coin-form .btn-close,.modal-overlay').off();
-    $('.add-new-coin-form .btn-close,.modal-overlay').click(function() {
-      helper.toggleModalWindow('add-new-coin-form', 300);
+    $(addNewCoinFormElementName + ' .btn-close,.modal-overlay').off();
+    $(addNewCoinFormElementName + ' .btn-close,.modal-overlay').click(function() {
+      helper.toggleModalWindow(addNewCoinFormElementName.replace('.', ''), 300);
       coinsSelectedByUser = [];
     });
 
-    $('.add-new-coin-form .btn-next').off();
-    $('.add-new-coin-form .btn-next').click(function() {
+    $(addNewCoinFormElementName + ' .btn-next').off();
+    $(addNewCoinFormElementName + ' .btn-next').click(function() {
       addCoinButtonNextAction();
     });
     bindCoinRepeaterSearch();
@@ -83,8 +93,8 @@ function initAuthCB() {
     } else {
       $('.login-form').removeClass('hidden');
     }
-    $('.login-form .btn-signup').off();
-    $('.login-form .btn-signup').click(function() {
+    $(loginFormElementName + ' .btn-signup').off();
+    $(loginFormElementName + ' .btn-signup').click(function() {
       helper.openPage('create-account');
     });
 
@@ -92,35 +102,35 @@ function initAuthCB() {
     watchPassphraseKeyUpEvent('signin');
   }
 
-  if ($('.create-account-form').width()) {
+  if ($(createAccountFormClassName).width()) {
     if (!isIguana) {
       // 12 word passphrase
-      $('.create-account-form .passphrase-word-count').html($('.create-account-form .passphrase-word-count').html().replace('24', '12'));
-      $('.verify-passphrase-form .passphrase-word-count').html($('.verify-passphrase-form .passphrase-word-count').html().replace('24', '12'));
+      $(createAccountFormClassName + ' .passphrase-word-count').html($(createAccountFormClassName + ' .passphrase-word-count').html().replace(iguanaPassphraseWordCount, coindPassphraseWordCount));
+      $(verifyAccountFormClassName + ' .passphrase-word-count').html($(verifyAccountFormClassName + ' .passphrase-word-count').html().replace(iguanaPassphraseWordCount, coindPassphraseWordCount));
     }
 
     // load add coin template
     if (helper.getCurrentPage() === 'create-account') {
-      $('body').append(addCoinModalTemplate);
-      $('.add-new-coin-form .form-header .title').html('Create new wallet');
-      $('.add-new-coin-form .form-content .coins-title').html('Select a wallet to create');
+      $('body').append(templates.all.addCoin);
+      $(addNewCoinFormElementName + ' .form-header .title').html(helper.lang('LOGIN.CREATE_NEW_WALLET'));
+      $(addNewCoinFormElementName + ' .form-content .coins-title').html(helper.lang('LOGIN.SELECT_A_WALLET_TO_CREATE'));
     }
 
-    $('.login-add-coin-selection-title').off();
-    $('.login-add-coin-selection-title').click(function() {
+    loginAddCoinFormSelection.off();
+    loginAddCoinFormSelection.click(function() {
       addCoinButtonCB();
     });
 
     if (helper.getCurrentPage() === 'create-account') {
-      $('.add-new-coin-form .btn-close,.modal-overlay').off();
-      $('.add-new-coin-form .btn-close,.modal-overlay').click(function() {
-        helper.toggleModalWindow('add-new-coin-form', 300);
+      $(addNewCoinFormElementName + ' .btn-close,.modal-overlay').off();
+      $(addNewCoinFormElementName + ' .btn-close,.modal-overlay').click(function() {
+        helper.toggleModalWindow(addNewCoinFormElementName.replace('.', ''), 300);
         coinsSelectedByUser = [];
       });
     }
 
-    $('.add-new-coin-form .btn-next').off();
-    $('.add-new-coin-form .btn-next').click(function() {
+    $(addNewCoinFormElementName + ' .btn-next').off();
+    $(addNewCoinFormElementName + ' .btn-next').click(function() {
       addCoinButtonNextAction();
     });
     bindCoinRepeaterSearch();
@@ -128,24 +138,24 @@ function initAuthCB() {
     addAuthorizationButtonAction('add-account');
     watchPassphraseKeyUpEvent('add-account');
     initCreateAccountForm();
-    helper.addCopyToClipboardFromElement('.generated-passhprase', 'Passphrase');
+    helper.addCopyToClipboardFromElement('.generated-passhprase', helper.lang('LOGIN.PASSPHRASE'));
 
-    $('.create-account-form .btn-back').off();
-    $('.create-account-form .btn-back').click(function() {
+    $(createAccountFormClassName + ' .btn-back').off();
+    $(createAccountFormClassName + ' .btn-back').click(function() {
       helper.openPage('login');
     });
 
-    $('.verify-passphrase-form .btn-back').off();
-    $('.verify-passphrase-form .btn-back').click(function() {
+    $(verifyAccountFormClassName + ' .btn-back').off();
+    $(verifyAccountFormClassName + ' .btn-back').click(function() {
       helper.openPage('create-account');
     });
 
-    $('.verify-passphrase-form .paste-from-clipboard-link').off();
-    $('.verify-passphrase-form .paste-from-clipboard-link').click(function() {
+    $(verifyAccountFormClassName + ' .paste-from-clipboard-link').off();
+    $(verifyAccountFormClassName + ' .paste-from-clipboard-link').click(function() {
       try {
         if (pasteTextFromClipboard)
-          $('.verify-passphrase-form #passphrase').val(pasteTextFromClipboard); // not quite appropriate pasting
-          if ($('.verify-passphrase-form #passphrase').val().length > 0) $('.verify-passphrase-form .btn-add-account').removeClass('disabled');
+          $(verifyAccountFormClassName + ' ' + passphraseElementName).val(pasteTextFromClipboard); // not quite appropriate pasting
+          if ($(verifyAccountFormClassName + ' ' + passphraseElementName).val().length > 0) $(verifyAccountFormClassName + ' .btn-add-account').removeClass('disabled');
       } catch(e) {
         // do nothing
       }
@@ -154,26 +164,28 @@ function initAuthCB() {
 }
 
 function addCoinButtonNextAction() {
+  var loginFormPassphrase = $('.login-form #passphrase'),
+      loginAddCoinFormSelection = $('.login-add-coin-selection-title')
   coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
   if (coinsSelectedToAdd[0]) {
     if (!isIguana) {
-      $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+      loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       if ($('.login-form #passphrase').val() !== '') $('.btn-signin').removeClass('disabled');
     } else {
-      $('.login-add-coin-selection-title').html('');
+      loginAddCoinFormSelection.html('');
       if (coinsSelectedToAdd.length === 1) {
-        $('.login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + '<br/><span class=\"small\">' + coinsSelectedToAdd[0].toUpperCase() + '</span>');
+        loginAddCoinFormSelection.html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       } else {
         for (var i=0; i < coinsSelectedToAdd.length; i++) {
-          $('.login-add-coin-selection-title').html($('.login-add-coin-selection-title').html() + supportedCoinsList[coinsSelectedToAdd[i]].name + '<br/>');
+          loginAddCoinFormSelection.html(loginAddCoinFormSelection.html() + supportedCoinsList[coinsSelectedToAdd[i]].name + '<br/>');
         }
       }
     }
-    $('.login-form #passphrase').val('');
+    loginFormPassphrase.val('');
     // dev only
-    if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') $('.login-form #passphrase').val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
-    if (dev.isDev && isIguana && dev.coinPW.iguana && helper.getCurrentPage() === 'login') $('.login-form #passphrase').val(dev.coinPW.iguana);
+    if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]] && helper.getCurrentPage() === 'login') loginFormPassphrase.val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
+    if (dev.isDev && isIguana && dev.coinPW.iguana && helper.getCurrentPage() === 'login') loginFormPassphrase.val(dev.coinPW.iguana);
     helper.toggleModalWindow('add-new-coin-form', 300);
   }
 }

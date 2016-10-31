@@ -15,9 +15,7 @@ function updateRates(coin, currency, returnValue, triggerUpdate) {
     }
   }
 
-  if (allDashboardCoins[allDashboardCoins.length - 1] === ',') {
-    allDashboardCoins = allDashboardCoins.replace(/,$/, '');
-  }
+  allDashboardCoins = helper.trimComma(allDashboardCoins);
 
   ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
 

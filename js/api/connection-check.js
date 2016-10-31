@@ -245,15 +245,17 @@ apiProto.prototype.testCoinPorts = function(cb) {
 
 apiProto.prototype.checkBackEndConnectionStatus = function() {
   // check if iguana or coind quit
-  var totalCoinsRunning = 0;
+  var totalCoinsRunning = 0,
+      tempOutOfSync = $('#temp-out-of-sync'),
+      hiddenClassName = 'hidden';
 
   for (var key in coinsInfo) {
     if (coinsInfo[key].connection === true) totalCoinsRunning++;
   }
 
   if (totalCoinsRunning === 0 && helperProto.prototype.getCurrentPage() !== 'login') {
-    $('#temp-out-of-sync').html('Something went wrong. Please login again.');
-    $('#temp-out-of-sync').removeClass('hidden');
+    tempOutOfSync.html('Something went wrong. Please login again.');
+    tempOutOfSync.removeClass('hidden');
 
     /*setTimeout(function() {
       helperProto.prototype.logout();
@@ -267,13 +269,11 @@ apiProto.prototype.checkBackEndConnectionStatus = function() {
         (coinsInfo[index].RT === false && !isIguana && localstorage.getVal('iguana-' + index + '-passphrase') && localstorage.getVal('iguana-' + index + '-passphrase').logged === 'yes'))
       outOfSyncCoinsList += index.toUpperCase() + ', ';
   });
-  if (outOfSyncCoinsList[outOfSyncCoinsList.length - 1] === ' ') {
-    outOfSyncCoinsList = outOfSyncCoinsList.replace(/, $/, '');
-  }
+  outOfSyncCoinsList = helperProto.prototype.trimComma(outOfSyncCoinsList);
   if (!outOfSyncCoinsList.length) {
-    $('#temp-out-of-sync').addClass('hidden');
+    tempOutOfSync.addClass(hiddenClassName);
   } else {
-    $('#temp-out-of-sync').html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' are ' : ' is ') + 'out of sync. Information about balances, transactions and send/receive functions is limited.');
-    $('#temp-out-of-sync').removeClass('hidden');
+    tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' are ' : ' is ') + 'out of sync. Information about balances, transactions and send/receive functions is limited.');
+    tempOutOfSync.removeClass(hiddenClassName);
   }
 }

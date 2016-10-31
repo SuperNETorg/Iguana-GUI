@@ -3,7 +3,9 @@
  *
  */
 
-var sendCoinConfirmationTemplate =
+'use_strict';
+
+templates.registerTemplate('sendCoinConfirmation',
 '<div class="modal-dialog modal-popup">' +
   '<div class="modal-content">' +
     /*'<div class="send-coin-progress-overlay hidden">' +
@@ -22,14 +24,14 @@ var sendCoinConfirmationTemplate =
       '</button>' +
     '</div>' +*/
     '<div class="send-coin-success-overlay hidden">' +
-      '<div class="send-coin-status">Transaction is sent.<br/>Check the status in a few minutes to verify.</div>' +
+      '<div class="send-coin-status">' + helper.lang('SEND.TRANSACTION_IS_SENT') + '.<br/>' + helper.lang('SEND.TRANSACTION_IS_SENT') + '.</div>' +
       '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed">' +
         '<i class="bi_interface-tick cursor-pointer"></i>' +
       '</button>' +
     '</div>' +
     '<header class="form-header orange-gradient box-shadow-bottom">' +
       '<i class="bi_interface-arrow-left cursor-pointer btn-back"></i>' +
-      '<div class="title text-shadow">Confirmation</div>' +
+      '<div class="title text-shadow">' + helper.lang('SEND.CONFIRMATION') + '</div>' +
     '</header>' +
     '<div class="form-content send-modal">' +
       '<div class="modal-body">' +
@@ -49,25 +51,25 @@ var sendCoinConfirmationTemplate =
             '</div>' +
             '<div class="pop-form">' +
               '<div class="pop-detail send check">' +
-                '<h4>Send to:</h4>' +
+                '<h4>' + helper.lang('SEND.SEND_TO') + ':</h4>' +
                 '<p>{{ tx_coin_address }}</p>' +
               '</div>' +
               '<div class="pop-detail crncy chk-crncy crncy-rs">' +
-                '<h4>Amount:</h4>' +
+                '<h4>' + helper.lang('RECEIVE.AMOUNT') + ':</h4>' +
                   '<h3>{{ tx_coin_amount }} {{ coin_id }}</h3>' +
                   '<h5>or {{ tx_coin_amount_currency }} {{ currency }}</h5>' +
                 '</div>' +
                 '<div class="pop-detail crncy chk-crncy crncy-fee">' +
-                  '<h4>Fee (per KB of data):</h4>' +
+                  '<h4>' + helper.lang('SEND.FEE_PER_KB') + ':</h4>' +
                   '<h3>{{ tx_coin_fee_value }} {{ coin_id }}</h3>' +
-                  '<h5>or {{ tx_coin_fee_currency }} {{ currency }}</h5>' +
+                  '<h5>' + helper.lang('LOGIN.OR') + ' {{ tx_coin_fee_currency }} {{ currency }}</h5>' +
                 '</div>' +
                 '<div class="pop-detail pay-dtl">' +
-                  '<h4>Note: </h4>' +
+                  '<h4>' + helper.lang('SEND.FEE_PER_KB') + ': </h4>' +
                   '<p>{{ tx_note }}</p>' +
                 '</div>' +
-                '<h4>The final amount may be slightly more because of network fees.</h4>' +
-                '<button class="btn-confirm-tx orange-gradient">Send {{ tx_total }} {{ coin_id }}</button>' +
+                '<h4>' + helper.lang('SEND.THE_FINAL_AMOUNT') + '.</h4>' +
+                '<button class="btn-confirm-tx orange-gradient">' + helper.lang('SEND.SEND') + ' {{ tx_total }} {{ coin_id }}</button>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -75,4 +77,4 @@ var sendCoinConfirmationTemplate =
       '</div>' +
     '</div>' +
   '</div>' +
-'</div>';
+'</div>');

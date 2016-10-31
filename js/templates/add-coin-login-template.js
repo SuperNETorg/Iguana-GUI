@@ -3,7 +3,9 @@
  *
  */
 
-var addCoinLoginTemplate =
+'use_strict';
+
+templates.registerTemplate('addCoinLogin',
 '<section class="form-container mdl add-coin-login-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login-form login-form" role="document">' +
@@ -17,18 +19,18 @@ var addCoinLoginTemplate =
           '<div class="login-add-coin-selection">' +
             '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ cta_title }}</div>' +
           '</div>' +
-          '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">Incorrect input. Passphrase must consist of {{ word_count }} words. Try one more time.</div>' +
-          '<div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">Enter a passphrase to add {{ item }}</div>' +
+          '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">' + helper.lang('LOGIN.INCORRECT_INPUT_P1') + ' {{ word_count }} ' + helper.lang('LOGIN.INCORRECT_INPUT_P2') + '</div>' +
+          '<div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">' + helper.lang('LOGIN.ENTER_A_PASSPHRASE_TO_ADD') + ' {{ item }}</div>' +
           '<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +
           '<div class="non-iguana-coins-repeater hidden"></div>' +
           '<div class="non-iguana-coins-repeater-error"></div>' +
-          '<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">Add</button>' +
-          '<div class="login-or-delim center unselectable{{ visibility }}">or</div>' +
-          '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup{{ visibility }}">Create an account</button>' +
+          '<button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">' + helper.lang('LOGIN.ADD') + '</button>' +
+          '<div class="login-or-delim center unselectable{{ visibility }}">' + helper.lang('LOGIN.OR') + '</div>' +
+          '<button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup{{ visibility }}">' + helper.lang('LOGIN.CREATE_ACCOUNT') + '</button>' +
           '<div class="iguana-coins-repeater"></div>' +
           '<div class="iguana-coins-repeater-error"></div>' +
         '</div>' +
       '</div>' +
     '</div>' +
   '</div>' +
-'</section>';
+'</section>');

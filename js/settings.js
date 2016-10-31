@@ -8,6 +8,7 @@ var _settings = {
   decimalPlacesTxUnit: 5,
   dashboardUpdateTimout: 15, // sec
   defaultCurrency: 'USD',
+  defaultLang: 'EN',
   portPollUpdateTimeout: 60, // sec
   defaultSessionLifetimeIguana: 7200, // sec
   defaultSessionLifetimeCoind: 2629743, // sec, ~1 month

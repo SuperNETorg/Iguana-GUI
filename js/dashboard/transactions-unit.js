@@ -3,24 +3,6 @@
  *
  */
 
-var transactionUnitRepeater = '<div class=\"item {{ status_class }} {{ timestamp_format }} {{ txid }}\" title=\"confirmations: {{ confs }}\">' +
-                                '<div class=\"status unselectable\">{{ status }}</div>' +
-                                '<div class=\"amount unselectable\">' +
-                                  '<span class=\"in-out {{ in_out }}\"></span>' +
-                                  '<span class=\"value\">{{ amount }}</span>' +
-                                  '<span class=\"coin-name\">{{ coin }}</span>' +
-                                '</div>' +
-                                '<div class=\"progress-status unselectable\">' +
-                                  '<i class=\"icon\"></i>' +
-                                '</div>' +
-                                '<div class=\"hash\">{{ hash }}</div>' +
-                                '<div class=\"timestamp unselectable\">{{ timestamp_single }}</div>' +
-                                '<div class=\"timestamp two-lines unselectable\">' +
-                                  '<div class=\"timestamp-date\">{{ timestamp_date }}</div>' +
-                                  '<div class=\"timestamp-time\">{{ timestamp_time }}</div>' +
-                                '</div>' +
-                              '</div>';
-
 // construct transaction unit array
 function constructTransactionUnitRepeater(update) {
   var coinName = activeCoin || $('.account-coins-repeater .item.active');
@@ -32,7 +14,7 @@ function constructTransactionUnitRepeater(update) {
     $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
   }
 
-  if (!update) $('.transactions-list-repeater').html(loaderIconTemplate); // loader spinner
+  if (!update) $('.transactions-list-repeater').html(templates.all.loader); // loader spinner
 
   if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
 }
@@ -44,7 +26,8 @@ function constructTransactionUnitRepeater(update) {
 function constructTransactionUnitRepeaterCB(response, update) {
   var result = '',
       prependContent = '',
-      coinName = activeCoin || $('.account-coins-repeater .item.active');
+      coinName = activeCoin || $('.account-coins-repeater .item.active'),
+      txUnitRepeaterClass = '.transactions-list-repeater';
 
   if (coinName.length) {
     var transactionsList = response; /*api.listTransactions(defaultAccount, coinName.toLowerCase());*/
@@ -53,22 +36,23 @@ function constructTransactionUnitRepeaterCB(response, update) {
       if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time }); // coind
       if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime }); // iguana
 
-      if ($('.transactions-list-repeater').html().indexOf('No trasaction history is available') > -1 ||
-          $('.transactions-list-repeater').html().indexOf('Loading') > -1 ||
-          $('.transactions-list-repeater').html().indexOf(coinName.toUpperCase()) === -1) $('.transactions-list-repeater').html('');
+      if ($(txUnitRepeaterClass).html().indexOf(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE')) > -1 ||
+          $(txUnitRepeaterClass).html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1 ||
+          $(txUnitRepeaterClass).html().indexOf(coinName.toUpperCase()) === -1) $(txUnitRepeaterClass).html('');
 
       for (var i=0; i < transactionsList.length; i++) {
         result = '';
         if (transactionsList[i].txid) {
           // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
           // timestamp is converted to 24h format
-          var /*transactionDetails = api.getTransaction(transactionsList[i].txid),*/
-              transactionDetails = transactionsList[i],
+          var transactionDetails = transactionsList[i],
               txIncomeOrExpenseFlag = '',
               txStatus = 'N/A',
               txCategory = '',
               txAddress = '',
-              txAmount = 'N/A';
+              txAmount = 'N/A',
+              iconSentClass = 'bi_interface-minus',
+              iconReceivedClass = 'bi_interface-plus';
 
           if (transactionDetails)
             if (transactionDetails.details) {
@@ -79,11 +63,11 @@ function constructTransactionUnitRepeaterCB(response, update) {
                 txCategory = transactionDetails.details[0].category;
 
                 if (transactionDetails.details[0].category === 'send') {
-                  txIncomeOrExpenseFlag = 'bi_interface-minus';
-                  txStatus = 'sent';
+                  txIncomeOrExpenseFlag = iconSentClass;
+                  txStatus = helper.lang('DASHBOARD.SENT');
                 } else {
-                  txIncomeOrExpenseFlag = 'bi_interface-plus';
-                  txStatus = 'received';
+                  txIncomeOrExpenseFlag = iconReceivedClass;
+                  txStatus = helper.lang('DASHBOARD.RECEIVED');
                 }
             } else {
               // iguana
@@ -93,27 +77,27 @@ function constructTransactionUnitRepeaterCB(response, update) {
               txCategory = transactionDetails.category || transactionsList[i].category;
 
               if (txStatus === 'send') {
-                txIncomeOrExpenseFlag = 'bi_interface-minus';
-                txStatus = 'sent';
+                txIncomeOrExpenseFlag = iconSentClass;
+                txStatus = helper.lang('DASHBOARD.SENT');
               } else {
-                txIncomeOrExpenseFlag = 'bi_interface-plus';
-                txStatus = 'received';
+                txIncomeOrExpenseFlag = iconReceivedClass;
+                txStatus = helper.lang('DASHBOARD.RECEIVED');
               }
             }
 
           if (transactionDetails /*&& txStatus !== 'N/A'*/) {
             if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
-              txStatus = 'in process';
+              txStatus = helper.lang('DASHBOARD.IN_PROCESS');
               txCategory = 'process';
             }
-            if ($('.transactions-list-repeater').html().indexOf(transactionDetails.txid) > -1) {
-              $('.transactions-list-repeater .' + transactionDetails.txid + ' .status').html(txStatus);
-              $('.transactions-list-repeater .' + transactionDetails.txid).removeClass('receive').removeClass('send').removeClass('process').addClass(txCategory);
-              $('.transactions-list-repeater .' + transactionDetails.txid + ' .in-out').removeClass('bi_interface-minus').removeClass('bi_interface-plus').addClass(txIncomeOrExpenseFlag);
-              $('.transactions-list-repeater .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
+            if ($(txUnitRepeaterClass).html().indexOf(transactionDetails.txid) > -1) {
+              $(txUnitRepeaterClass + ' .' + transactionDetails.txid + ' .status').html(txStatus);
+              $(txUnitRepeaterClass + ' .' + transactionDetails.txid).removeClass('receive').removeClass('send').removeClass('process').addClass(txCategory);
+              $(txUnitRepeaterClass + ' .' + transactionDetails.txid + ' .in-out').removeClass(iconSentClass).removeClass(iconReceivedClass).addClass(txIncomeOrExpenseFlag);
+              $(txUnitRepeaterClass + ' .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
             } else {
               if (isIguana && txAmount !== undefined || !isIguana)
-                result = transactionUnitRepeater.
+                result = templates.all.repeaters.transactionsUnitItem.
                          replace('{{ txid }}', transactionDetails.txid).
                          replace('{{ status }}', txStatus).
                          replace('{{ status_class }}', txCategory).
@@ -133,7 +117,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
               if (update) {
                 prependContent = prependContent + result;
               } else {
-                $('.transactions-list-repeater').append(result);
+                $(txUnitRepeaterClass).append(result);
               }
             }
           }
@@ -145,17 +129,17 @@ function constructTransactionUnitRepeaterCB(response, update) {
        *  remove N old tx form the bottom of the list
        */
       if ($(prependContent).find('.icon').length) {
-        $('.transactions-list-repeater .item:gt(' + ($('.transactions-list-repeater .item').length - $(prependContent).find('.icon').length - 1) + ')').remove();
-        $('.transactions-list-repeater').prepend(prependContent);
+        $(txUnitRepeaterClass + ' .item:gt(' + ($(txUnitRepeaterClass + ' .item').length - $(prependContent).find('.icon').length - 1) + ')').remove();
+        $(txUnitRepeaterClass).prepend(prependContent);
       }
     }
 
     applyDashboardResizeFix();
 
     if (coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
-      if (!transactionsList.length) $('.transactions-list-repeater').html('No trasaction history is available');
+      if (!transactionsList.length) $(txUnitRepeaterClass).html(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE'));
     }
 
-    if ($('.transactions-list-repeater').html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
+    if ($(txUnitRepeaterClass).html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
   }
 }

@@ -6,7 +6,7 @@
 var sendFormDataCopy = {};
 
 function sendCoinModalInit(isBackTriggered) {
-  var templateToLoad = sendCoinEntryTemplate,
+  var templateToLoad = templates.all.sendCoinEntry,
       activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
       coinData = getCoinData(activeCoin),
       activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
@@ -26,18 +26,19 @@ function sendCoinModalInit(isBackTriggered) {
                    replace('{{ fee_currency }}', isBackTriggered ? sendFormDataCopy.feeCurrency || 0 : (coinsInfo[coinData.id].relayFee || 0.00001 * currentCoinRate).toFixed(8)).
                    replace('{{ note }}', isBackTriggered ? sendFormDataCopy.note || '' : '');
 
-  $('.modal-send-coin').html(templateToLoad);
+  var modalSendCoinClass = '.modal-send-coin';
+  $(modalSendCoinClass).html(templateToLoad);
 
   if (!currentCoinRate) {
-    $('.modal-send-coin .tx-amount-currency').val(0);
-    $('.modal-send-coin .tx-fee-currency').val(0);
-    $('.modal-send-coin .tx-amount-currency').attr('disabled', true);
-    $('.modal-send-coin .tx-fee-currency').attr('disabled', true);
+    $(modalSendCoinClass + ' .tx-amount-currency').val(0);
+    $(modalSendCoinClass + ' .tx-fee-currency').val(0);
+    $(modalSendCoinClass + ' .tx-amount-currency').attr('disabled', true);
+    $(modalSendCoinClass + ' .tx-fee-currency').attr('disabled', true);
   }
 
   // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
   // allow numeric only entry
-  $('.modal-send-coin .tx-amount,.modal-send-coin .tx-amount-currency,.modal-send-coin .tx-fee,.modal-send-coin .tx-fee-currency').keypress(function (event) {
+  $(modalSendCoinClass + ' .tx-amount,' + modalSendCoinClass + ' .tx-amount-currency,' + modalSendCoinClass + ' .tx-fee,' + modalSendCoinClass + ' .tx-fee-currency').keypress(function (event) {
     var inputCode = event.which,
         currentValue = $(this).val();
     if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
@@ -58,16 +59,26 @@ function sendCoinModalInit(isBackTriggered) {
   });
 
   // calc on keying
-  $('.modal-send-coin .tx-amount').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-amount,' +
+    modalSendCoinClass + ' .tx-amount-currency,' +
+    modalSendCoinClass + ' .tx-fee,' +
+    modalSendCoinClass + ' .tx-fee-currency').keydown(function(e) {
+      var keyCode = e.keyCode || e.which;
+
+      if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
+        e.preventDefault();
+      }
+  });
+  $(modalSendCoinClass + ' .tx-amount').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-amount', true, $(this).val());
   });
-  $('.modal-send-coin .tx-amount-currency').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-amount-currency').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-amount', false);
   });
-  $('.modal-send-coin .tx-fee').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-fee').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', true);
   });
-  $('.modal-send-coin .tx-fee-currency').keydown(function(e) {
+  $(modalSendCoinClass + ' .tx-fee-currency').keyup(function(e) {
     txAmountFeeKeyupEvent(e, 'tx-fee', false);
   });
 
@@ -77,16 +88,15 @@ function sendCoinModalInit(isBackTriggered) {
     if (keyCode !== 9) {
       currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
 
+      var modalSendCoinField = modalSendCoinClass + ' .' + fieldName;
       if (type) {
-        $('.modal-send-coin .' + fieldName + '-currency').val(($('.modal-send-coin .' + fieldName).val() * currentCoinRate).toFixed(helper.decimalPlacesFormat($('.modal-send-coin .' + fieldName).val() * currentCoinRate).coin));
+        var fielValue = $(modalSendCoinField).val() * currentCoinRate;
+        $(modalSendCoinField + '-currency').val(fielValue.toFixed(helper.decimalPlacesFormat(fielValue).coin));
       } else {
-        $('.modal-send-coin .' + fieldName).val(($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).toFixed(helper.decimalPlacesFormat($('.modal-send-coin .' + fieldName + '-currency').val() / currentCoinRate).coin));
+        var fieldValue = $(modalSendCoinField + '-currency').val() / currentCoinRate;
+        $(modalSendCoinField).val(fieldValue.toFixed(helper.decimalPlacesFormat(fieldValue).coin));
       }
     } else {
-      evt.preventDefault();
-    }
-
-    if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
       evt.preventDefault();
     }
   }
@@ -94,20 +104,21 @@ function sendCoinModalInit(isBackTriggered) {
   // dev
   if (dev.isDev) loadTestSendData(coinData.id);
 
-  if (!isBackTriggered) helper.toggleModalWindow('send-coin-form', 300);
+  var sendCoinParentClass = '.send-coin-form';
+  if (!isBackTriggered) helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
   // btn close
-  $('.send-coin-form .btn-close,.send-coin-form .modal-overlay').click(function() {
-    helper.toggleModalWindow('send-coin-form', 300);
+  $(sendCoinParentClass + ' .btn-close,' + sendCoinParentClass + ' .modal-overlay').click(function() {
+    helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
   });
   // btn next
-  $('.send-coin-form .btn-next').click(function() {
+  $(modalSendCoinClass + ' .btn-next').click(function() {
     // copy send coin data entered by a user
-    sendFormDataCopy = { address: $('.modal-send-coin .tx-address').val(),
-                         amount: $('.modal-send-coin .tx-amount').val(),
-                         amountCurrency: $('.modal-send-coin .tx-amount-currency').val(),
-                         fee: $('.modal-send-coin .tx-fee').val(),
-                         feeCurrency: $('.modal-send-coin .tx-fee-currency').val(),
-                         note: $('.modal-send-coin .tx-note').val() };
+    sendFormDataCopy = { address: $(modalSendCoinClass + ' .tx-address').val(),
+                         amount: $(modalSendCoinClass + ' .tx-amount').val(),
+                         amountCurrency: $(modalSendCoinClass + ' .tx-amount-currency').val(),
+                         fee: $(modalSendCoinClass + ' .tx-fee').val(),
+                         feeCurrency: $(modalSendCoinClass + ' .tx-fee-currency').val(),
+                         note: $(modalSendCoinClass + ' .tx-note').val() };
 
     sendCoinModalConfirm();
   });
@@ -115,17 +126,19 @@ function sendCoinModalInit(isBackTriggered) {
 
 function sendCoinModalConfirm() {
   if (validateSendCoinForm()) {
-    var templateToLoad = sendCoinConfirmationTemplate,
-        activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
+    var templateToLoad = templates.all.sendCoinConfirmation,
+        sendCoinFormClass = '.send-coin-form';
+        accountCoinsRepeaterActive = '.account-coins-repeater .item.active';
+        activeCoin = $(accountCoinsRepeaterActive).attr('data-coin-id'),
         coinData = getCoinData(activeCoin),
-        activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
-        activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html()),
-        txAddress = $('.send-coin-form .tx-address').val(),
-        txAmount = $('.send-coin-form .tx-amount').val(),
-        txAmountCurrency = $('.send-coin-form .tx-amount-currency').val(),
-        txFee = $('.send-coin-form .tx-fee').val(),
-        txFeeCurrency = $('.send-coin-form .tx-fee-currency').val(),
-        txNote = $('.send-coin-form .tx-note').val();
+        activeCoinBalanceCoin = Number($(accountCoinsRepeaterActive + ' .balance .coin-value .val').html()),
+        activeCoinBalanceCurrency = Number($(accountCoinsRepeaterActive + ' .balance .currency-value .val').html()),
+        txAddress = $(sendCoinFormClass + ' .tx-address').val(),
+        txAmount = $(sendCoinFormClass + ' .tx-amount').val(),
+        txAmountCurrency = $(sendCoinFormClass + ' .tx-amount-currency').val(),
+        txFee = $(sendCoinFormClass + ' .tx-fee').val(),
+        txFeeCurrency = $(sendCoinFormClass + ' .tx-fee-currency').val(),
+        txNote = $(sendCoinFormClass + ' .tx-note').val();
 
     // prep template
     templateToLoad = templateToLoad.
@@ -145,16 +158,21 @@ function sendCoinModalConfirm() {
     $('.modal-send-coin').html(templateToLoad);
 
     // btn back
-    $('.send-coin-form .btn-back').click(function() {
+    $(sendCoinFormClass + ' .btn-back').click(function() {
       sendCoinModalInit(true);
     });
 
     $('.btn-confirm-tx').click(function() {
-      var txDataToSend = { address: txAddress, amount: txAmount, note: txNote };
+      var txDataToSend = { address: txAddress,
+                           amount: txAmount,
+                           note: txNote };
 
       if (!isIguana) {
+        var sendConfirmPassphraseClass = '.send-coin-confirm-passphrase'
+            passphraseElement = '#passphrase',
+            disabledClassName = 'disabled';
         // TODO: ugly, rewrite
-        $('.modal-append-container').html(sendCoinPassphraseTemplate.
+        $('.modal-append-container').html(templates.all.sendCoinPassphrase.
                                           replace('login-form-modal', 'send-coin-confirm-passphrase').
                                           replace('>Add<', '>Ok<').
                                           replace('Add a wallet', 'Wallet passphrase').
@@ -163,25 +181,25 @@ function sendCoinModalConfirm() {
         helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
 
         if (dev.isDev && dev.coinPW.coind[coinData.id]) {
-          $('.send-coin-confirm-passphrase #passphrase').val(dev.coinPW.coind[coinData.id]);
-          $('.send-coin-confirm-passphrase .btn-add-wallet').removeClass('disabled');
+          $(sendConfirmPassphraseClass + ' ' + passphraseElement).val(dev.coinPW.coind[coinData.id]);
+          $(sendConfirmPassphraseClass + ' .btn-add-wallet').removeClass(disabledClassName);
         } else {
-          $('.login-form-modal #passphrase').val('');
-          $('.send-coin-confirm-passphrase .btn-add-wallet').addClass('disabled');
+          $('.login-form-modal ' + passphraseElement).val('');
+          $(sendConfirmPassphraseClass + ' .btn-add-wallet').addClass(disabledClassName);
         }
 
-        $('.send-coin-confirm-passphrase .btn-close,.send-coin-confirm-passphrase .modal-overlay').click(function() {
-          helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+        $(sendConfirmPassphraseClass + ' .btn-close,' + sendConfirmPassphraseClass + ' .modal-overlay').click(function() {
+          helper.toggleModalWindow(sendConfirmPassphraseClass.replace('.', ''), 300);
         });
 
-        $('.send-coin-confirm-passphrase .btn-add-wallet').click(function() {
-          var coindWalletLogin = api.walletLogin($('.send-coin-confirm-passphrase #passphrase').val(), settings.defaultWalletUnlockPeriod, coinData.id);
+        $(sendConfirmPassphraseClass + ' .btn-add-wallet').click(function() {
+          var coindWalletLogin = api.walletLogin($(sendConfirmPassphraseClass + ' ' + passphraseElement).val(), settings.defaultWalletUnlockPeriod, coinData.id);
 
           if (coindWalletLogin !== -14) {
-            helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+            helper.toggleModalWindow(sendConfirmPassphraseClass.replace('.', ''), 300);
             execSendCoinCall();
           } else {
-            helper.prepMessageModal('Incorrect passphrase. Try again.', 'red', true);
+            helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
           }
         });
       } else {
@@ -199,15 +217,15 @@ function sendCoinModalConfirm() {
 
         if (sendTxResult.length === 64) {
           // go to success step
-          $('.send-coin-form .rs_modal').addClass('blur');
-          $('.send-coin-form .send-coin-success-overlay').removeClass('hidden');
+          $(sendCoinFormClass + ' .rs_modal').addClass('blur');
+          $(sendCoinFormClass + ' .send-coin-success-overlay').removeClass('hidden');
 
-          $('.send-coin-form .btn-confirmed').click(function() {
-            helper.toggleModalWindow('send-coin-form', 300);
+          $(sendCoinFormClass + ' .btn-confirmed').click(function() {
+            helper.toggleModalWindow(sendCoinFormClass.replace('.', ''), 300);
           });
         } else {
           // go to an error step
-          helper.prepMessageModal('Transaction was not send due to an error!', 'red', true);
+          helper.prepMessageModal(helper.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
         }
 
         // revert pay fee
@@ -216,7 +234,6 @@ function sendCoinModalConfirm() {
     });
   }
 }
-
 
 /*
   TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
@@ -227,55 +244,69 @@ function validateSendCoinForm() {
       activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
       coinData = getCoinData(activeCoin),
       activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
-      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html());
+      activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html()),
+      txAddressVal = $('.tx-address').val(),
+      txAmountVal = $('.tx-amount').val(),
+      txFeeVal = $('.tx-fee').val(),
+      errorClassName = 'validation-field-error', // TODO: rename error class names
+      errorClassName2 = 'col-red';
 
   // address
-  if ($('.tx-address').val().length !== 34) {
-    $('.tx-address').addClass('validation-field-error');
-    $('.tx-address-validation').html('Incorrect address. Please, make sure you enter it right.');
-    $('.tx-address-validation').addClass('col-red');
+  var txAddressObj = $('.tx-address'),
+      txAddressValidation = $('.tx-address-validation');
+  if (txAddressVal.length !== 34) {
+    txAddressObj.addClass(errorClassName);
+    txAddressValidation.html(helper.lang('SEND.INCORRECT_ADDRESS')).
+                        addClass(errorClassName2);
   } else {
-    $('.tx-address').removeClass('validation-field-error');
-    $('.tx-address-validation').html('Enter a wallet address');
-    $('.tx-address-validation').removeClass('col-red');
+    txAddressObj.removeClass(errorClassName);
+    txAddressValidation.html(helper.lang('SEND.ENTER_A_WALLET_ADDRESS')).
+                        removeClass(errorClassName2);
   }
   // coin amount
-  if (Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length || $('.tx-amount').val() > activeCoinBalanceCoin) {
-    $('.tx-amount').addClass('validation-field-error');
-    $('.tx-amount-currency').addClass('validation-field-error');
-    $('.tx-amount-validation').html(Number($('.tx-amount').val()) === 0 || !$('.tx-amount').val().length ? 'Please enter an amount.' : 'Not enough money. Max. ' + activeCoinBalanceCoin + ' ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase());
-    $('.tx-amount-validation').addClass('col-red');
+  var txAmountObj = $('.tx-amount'),
+      txAmountCurrencyObj = $('.tx-amount-currency'),
+      txAmountValidation = $('.tx-amount-validation'),
+      coinName = $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase();
+  if (Number(txAmountVal) === 0 || !txAmountVal.length || txAmountVal > activeCoinBalanceCoin) {
+    txAmountObj.addClass(errorClassName);
+    txAmountCurrencyObj.addClass(errorClassName);
+    txAmountValidation.html(Number(txAmountVal) === 0 || !txAmountVal.length ? helper.lang('SEND.PLEASE_ENTER_AN_AMOUNT') : helper.lang('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + coinName).
+                       addClass(errorClassName2);
   } else {
-    $('.tx-amount').removeClass('validation-field-error');
-    $('.tx-amount-currency').removeClass('validation-field-error');
-    $('.tx-amount-validation').html('Enter in ' + $('.account-coins-repeater .item.active').attr('data-coin-id').toUpperCase() + ' or ' + defaultCurrency.toUpperCase());
-    $('.tx-amount-validation').removeClass('col-red');
+    txAmountObj.removeClass(errorClassName);
+    txAmountCurrencyObj.removeClass(errorClassName);
+    txAmountValidation.html(helper.lang('SEND.ENTER_IN') + ' ' + coinName + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
+                       removeClass(errorClassName2);
   }
   // fee
-  if ((Number($('.tx-fee').val()) + Number($('.tx-amount').val())) > activeCoinBalanceCoin) {
-    $('.tx-fee').addClass('validation-field-error');
-    $('.tx-fee-currency').addClass('validation-field-error');
-    $('.tx-fee-validation').html((activeCoinBalanceCoin - Number($('.tx-amount').val())) > 0 ? 'Fee cannot exceed ' + (activeCoinBalanceCoin - Number($('.tx-amount').val())) : 'Total amount to send exceeds ' + activeCoinBalanceCoin);
-    $('.tx-fee-validation').addClass('col-red');
+  var txFeeObj = $('.tx-fee'),
+      txFeeCurrencyObj = $('.tx-fee-currency'),
+      txFeeValidation = $('.tx-fee-validation');
+  if ((Number(txFeeVal) + Number(txAmountVal)) > activeCoinBalanceCoin) {
+    txFeeObj.addClass(errorClassName);
+    txFeeCurrencyObj.addClass(errorClassName);
+    txFeeValidation.html((activeCoinBalanceCoin - Number(txAmountVal)) > 0 ? helper.lang('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number(txAmountVal)) : helper.lang('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin).
+                    addClass(errorClassName2);
   }
-  if (Number($('.tx-fee').val()) < (coinsInfo[coinData.id].relayFee || 0.00001)) {
-    $('.tx-fee').addClass('validation-field-error');
-    $('.tx-fee-currency').addClass('validation-field-error');
-    $('.tx-fee-validation').html((coinsInfo[coinData.id].relayFee || 0.00001) + ' is a min. required fee.');
-    $('.tx-fee-validation').addClass('col-red');
+  if (Number(txFeeVal) < (coinsInfo[coinData.id].relayFee || 0.00001)) { // TODO: settings
+    txFeeObj.addClass(errorClassName);
+    txFeeCurrencyObj.addClass(errorClassName);
+    txFeeValidation.html((coinsInfo[coinData.id].relayFee || 0.00001) + ' ' + helper.lang('SEND.IS_A_MIN_REQUIRED_FEE')).
+                    addClass(errorClassName2);
   }
-  if ((Number($('.tx-fee').val()) >= (coinsInfo[coinData.id].relayFee || 0.00001)) && (Number($('.tx-fee').val()) + Number($('.tx-amount').val())) < activeCoinBalanceCoin)  {
-    $('.tx-fee').removeClass('validation-field-error');
-    $('.tx-fee-currency').removeClass('validation-field-error');
-    $('.tx-fee-validation').html('Minimum fee. Increase it to speed up transaction.');
-    $('.tx-fee-validation').removeClass('col-red');
+  if ((Number(txFeeVal) >= (coinsInfo[coinData.id].relayFee || 0.00001)) && (Number(txFeeVal) + Number(txAmountVal)) < activeCoinBalanceCoin)  {
+    txFeeObj.removeClass(errorClassName);
+    txFeeCurrencyObj.removeClass(errorClassName);
+    txFeeValidation.html(helper.lang('SEND.MINIMUM_FEE')).
+                    removeClass(errorClassName2);
   }
 
-  if ($('.tx-address').val().length !== 34 ||
-      Number($('.tx-amount').val()) === 0 ||
-      !$('.tx-amount').val().length ||
-      $('.tx-amount').val() > activeCoinBalanceCoin ||
-      Number($('.tx-fee').val() + $('.tx-amount').val()) > activeCoinBalanceCoin) {
+  if (txAddressVal.length !== 34 ||
+      Number(txAmountVal) === 0 ||
+      !txAmountVal.length ||
+      txAmountVal > activeCoinBalanceCoin ||
+      Number(txFeeVal + txAmountVal) > activeCoinBalanceCoin) {
     isValid = false;
   } else {
     isValid = true;

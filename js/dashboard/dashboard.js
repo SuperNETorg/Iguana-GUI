@@ -17,27 +17,31 @@ var defaultCurrency = '',
 
 /* not the best solution but it works */
 function applyDashboardResizeFix() {
+  var mainContent = $('.main-content'),
+      txUnit = $('.transactions-unit');
   // tx unit resize
   if ($(window).width() > 767) {
-    var width = Math.floor($('.main-content').width() - $('.coins').width() - 80);
-    $('.main-content').css({'padding': '0 30px'});
-    $('.transactions-unit').css({'max-width': width,'width' : width});
+    var width = Math.floor(mainContent.width() - $('.coins').width() - 80);
+    mainContent.css({ 'padding': '0 30px' });
+    txUnit.css({ 'max-width': width, 'width': width });
   } else {
-    $('.transactions-unit').removeAttr('style');
-    $('.main-content').removeAttr('style');
+    txUnit.removeAttr('style');
+    mainContent.removeAttr('style');
 
   }
   // hash shading
-  $('.transactions-list-repeater .item .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.4 -
-                                                                         $('.transactions-list-repeater .item:first-child .status').width() -
-                                                                         $('.transactions-list-repeater .item:first-child .amount').width() -
-                                                                         $('.transactions-list-repeater .item:first-child .progress-status').width()) });
+  var txUnitItem = '.transactions-list-repeater .item';
+  $(txUnitItem + ' .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.4 -
+                                                                         $(txUnitItem + ':first-child .status').width() -
+                                                                         $(txUnitItem + ':first-child .amount').width() -
+                                                                         $(txUnitItem + ':first-child .progress-status').width()) });
   // coin tiles on the left
-  $('.account-coins-repeater .item').each(function(index, item) {
+  var accountCoinsRepeaterItem = '.account-coins-repeater .item';
+  $(accountCoinsRepeaterItem).each(function(index, item) {
     var coin = $(this).attr('data-coin-id');
-    $('.account-coins-repeater .item.' + coin + ' .coin .name').css({ 'width': Math.floor($('.account-coins-repeater .item.' + coin).width() -
-                                                                                          $('.account-coins-repeater .item.' + coin + ' .coin .icon').width() -
-                                                                                          $('.account-coins-repeater .item.' + coin + ' .balance').width() - 50) });
+    $(accountCoinsRepeaterItem + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + coin).width() -
+                                                                                  $(accountCoinsRepeaterItem + coin + ' .coin .icon').width() -
+                                                                                  $(accountCoinsRepeaterItem + coin + ' .balance').width() - 50) });
   });
 }
 
