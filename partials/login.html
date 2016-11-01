@@ -8,16 +8,23 @@
         </header>
         <div class="form-content">
           <div class="login-add-coin-selection">
-            <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer" ng-click="openAddCoinModal()">{{ helper.lang('LOGIN.SELECT_A_WALLET') }}</div>
+            <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer" ng-click="toggleAddCoinModal()">
+              <span ng-if="!objLen(coinsSelectedToAdd)">{{ helper.lang('LOGIN.SELECT_A_WALLET') }}</span>
+              <div ng-repeat="item in availableCoins" ng-if="coinsSelectedToAdd[item.coinId]">
+                <div>{{ item.name }}</div>
+                <div class="small">{{ item.id }}</div>
+              </div>
+            </div>
           </div>
           <div class="login-input-directions center offset-bottom-sm unselectable">{{ helper.lang('LOGIN.ENTER_A_PASSPHRASE_TO_LOGIN') }}</div>
-          <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
-          <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin" ng-click="login()">{{ helper.lang('LOGIN.LOGIN') }}</button>
+          <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center" ng-model="passphrase"></textarea>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin" ng-click="login()" ng-class="{ 'disabled': !passphrase.length }">{{ helper.lang('LOGIN.LOGIN') }}</button>
           <div class="login-or-delim center unselectable">{{ helper.lang('LOGIN.OR') }}</div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup" ng-click="$state.go('signup.passphrase')">{{ helper.lang('LOGIN.CREATE_ACCOUNT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup" ng-class="{ 'disabled': !objLen(coinsSelectedToAdd) }" ng-click="$state.go('signup.passphrase')">{{ helper.lang('LOGIN.CREATE_ACCOUNT') }}</button>
         </div>
       </section>
     </div>
   </div>
 </div>
 <div class="auth-add-coin-modal" ng-include="'partials/add-coin.html'"></div>
+<div class="message-modal" ng-include="'partials/message-modal.html'"></div>

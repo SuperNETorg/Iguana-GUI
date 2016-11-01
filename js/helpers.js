@@ -1,3 +1,5 @@
+'use strict';
+
 var createHelpers = function() {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
@@ -158,7 +160,7 @@ var createHelpers = function() {
 
     $.each(array, function(key, value) {
       if (value) {
-        _array[index] = value;
+        _array[index] = key;
         index++;
       }
     });
@@ -199,8 +201,12 @@ var createHelpers = function() {
     $('#messageModal .msg-body').html(message);
 
     if (fireModal) {
-      //messageModal.modal('show');
+      messageModal.show().removeClass('fade');
     }
+  }
+
+  this.closeMessageModal = function() {
+    $('#messageModal').hide();
   }
 
   this.prepNoDaemonModal = function() {
@@ -399,8 +405,37 @@ var createHelpers = function() {
     return secondsElapsed;
   }
 
+  this.toggleModalWindow = function(formClassName, timeout) {
+    var modalWindow = $('.' + formClassName),
+        viewportWidth = $(window).width(),
+        formContainer = $('.form-container'),
+        mainContainer = $('.main');
+
+    if (modalWindow.hasClass('fade')) {
+      modalWindow.removeClass('hidden');
+      mainContainer.addClass('blur');
+      formContainer.addClass('blur');
+      modalWindow.removeClass('blur');
+
+      setTimeout(function() {
+        modalWindow.removeClass('fade');
+      }, 10);
+    } else {
+      modalWindow.addClass('fade');
+      formContainer.removeClass('blur');
+
+      setTimeout(function() {
+        modalWindow.addClass('hidden');
+        modalWindow.addClass('fade');
+        formContainer.removeClass('blur');
+        if (formContainer.length === formContainer.not(":visible").length) mainContainer.removeClass('blur');
+      }, timeout);
+    }
+  }
+
   /* TODO: move to directive or service */
-  var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
+  var addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'],
+      coinsSelectedToAdd = [];
 
   this.addCoinButtonCB = function() {
     var supportedCoinsRepeaterClassName = '.supported-coins-repeater',
@@ -410,36 +445,34 @@ var createHelpers = function() {
     coinsSelectedToAdd = [];
 
     if (!addNewCoinForm.hasClass(fadeClassName)) addNewCoinForm.addClass(fadeClassName);
-    helper.toggleModalWindow('add-new-coin-form', 300);
+    this.toggleModalWindow('add-new-coin-form', 300);
 
-    $(supportedCoinsRepeaterClassName + '-inner').html(constructCoinRepeater());
-    bindClickInCoinRepeater();
-    opacityToggleOnAddCoinRepeaterScroll();
-    $(supportedCoinsRepeaterClassName).scroll(function(e) {
-      opacityToggleOnAddCoinRepeaterScroll();
-    });
+    //$(supportedCoinsRepeaterClassName + '-inner').html(this.constructCoinRepeater());
+
+    return this.constructCoinRepeater();
   }
 
   // construct coins to add array
   this.constructCoinRepeater = function() {
-    var result = '',
-        index = 0;
+    var index = 0,
+        addCoinArray = {};
 
     for (var key in supportedCoinsList) {
       if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
         if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
-            result += templates.all.repeaters.addCoinItem.
-                      replace('{{ id }}', key.toUpperCase()).
-                      replace('{{ coin_id }}', key.toLowerCase()).
-                      replace('{{ name }}', supportedCoinsList[key].name).
-                      replace('{{ color }}', addCoinColors[index]);
+            addCoinArray[key] = {
+              'id': key.toUpperCase(),
+              'coinId': key.toLowerCase(),
+              'name': supportedCoinsList[key].name,
+              'color': addCoinColors[index]
+            };
             index++;
             if (index === addCoinColors.length - 1) index = 0;
           }
       }
     }
 
-    return result;
+    return addCoinArray;
   }
 
   this.opacityToggleOnAddCoinRepeaterScroll = function() {
@@ -525,7 +558,7 @@ var createHelpers = function() {
           supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
         supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
         supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-        opacityToggleOnAddCoinRepeaterScroll();
+        //opacityToggleOnAddCoinRepeaterScroll();
       }
     });
   }
@@ -583,6 +616,6 @@ var createHelpers = function() {
       }
     }
 
-    if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
+    //if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
   }
 }

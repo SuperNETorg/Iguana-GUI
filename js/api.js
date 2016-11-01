@@ -2,6 +2,7 @@
  * Iguana api config
  *
  */
+//'use strict';
 
 var apiProto = function() {};
 

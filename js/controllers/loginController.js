@@ -4,12 +4,8 @@ angular.module('IguanaGUIApp.controllers')
 .controller('loginController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
     $scope.helper = helper;
     $scope.$state = $state;
-
-    setTimeout(function() {
-      console.log(helper.checkSession());
-    }, 1000);
-
-    console.log($state.current);
+    $scope.passphrase = '';
+    $scope.coinsSelectedToAdd = {};
 
     /* legacy code */
     $(document).ready(function() {
@@ -21,6 +17,70 @@ angular.module('IguanaGUIApp.controllers')
         $state.go('dashboard');
       } else {
         initAuthCB();
+      }
+    }
+
+    $scope.toggleAddCoinModal = function() {
+      var availableCoins = helper.addCoinButtonCB();
+      $scope.availableCoins = availableCoins;
+
+      /* legacy, seems to work fine */
+      helper.opacityToggleOnAddCoinRepeaterScroll();
+      $('.supported-coins-repeater').scroll(function(e) {
+        helper.opacityToggleOnAddCoinRepeaterScroll();
+      });
+      helper.bindCoinRepeaterSearch();
+    }
+
+    $scope.objLen = function(obj) {
+      return Object.keys(obj).length;
+    }
+
+    $scope.toggleCoinTile = function(item) {
+
+      if (!isIguana) {
+        $scope.coinsSelectedToAdd = {};
+      }
+
+      if ($scope.coinsSelectedToAdd[item.coinId]) {
+        delete $scope.coinsSelectedToAdd[item.coinId];
+      } else {
+        $scope.coinsSelectedToAdd[item.coinId] = true;
+      }
+    }
+
+    $scope.addCoinNext = function() {
+      helper.toggleModalWindow('add-new-coin-form', 300);
+      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+
+      // dev only
+      if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]]) $scope.passphrase = dev.coinPW.coind[coinsSelectedToAdd[0]];
+      if (dev.isDev && isIguana && dev.coinPW.iguana) $scope.passphrase = dev.coinPW.iguana;
+    }
+
+    $scope.login = function() {
+      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+      api.walletLock(coinsSelectedToAdd[0]);
+      var walletLogin = api.walletLogin($scope.passphrase, settings.defaultSessionLifetime, coinsSelectedToAdd[0]);
+
+      if (walletLogin !== -14 && walletLogin[key] !== -15) {
+        localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
+        localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
+        $state.go('dashboard');
+      }
+      if (walletLogin === -14) {
+        helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
+      }
+      if (walletLogin === -15) {
+        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'), 'red', true);
+      }
+    }
+
+    $scope.watchPassphraseKeyUpEvent = function(buttonClassName) {
+      if ($scope.passphrase.length > 0) {
+        button.removeClass(disabledClassName);
+      } else {
+        button.addClass(disabledClassName);
       }
     }
 
@@ -111,20 +171,6 @@ angular.module('IguanaGUIApp.controllers')
           helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH'), 'red', true);
           loginInputDirectionsError.removeClass(hiddenClassName);
       }
-    }
-
-    function watchPassphraseKeyUpEvent(buttonClassName) {
-      var passphrase = $('#passphrase'),
-          disabledClassName = 'disabled',
-          button = $('.btn-' + buttonClassName);
-
-      passphrase.keyup(function() {
-        if (passphrase.val().length > 0) {
-          button.removeClass(disabledClassName);
-        } else {
-          button.addClass(disabledClassName);
-        }
-      });
     }
 
     function addAuthorizationButtonAction(buttonClassName) {

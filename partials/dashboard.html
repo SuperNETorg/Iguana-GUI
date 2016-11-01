@@ -46,7 +46,23 @@
         <div class="clearfix"></div>
         <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
           <div class="row">
-            <div class="account-coins-repeater"></div>
+            <div class="account-coins-repeater">
+              <!-- TODO: add repeater -->
+              <div class="item loading {{ coin_id }}{{ active }}" data-coin-id="{{ coin_id }}" data-coin-balance-value="{{ coin_balance_unformatted }}">
+                <div ng-include="'partials/loader.html'"></div>
+                <div class="remove-coin cursor-pointer{{ dev }}"></div>
+                <div class="clickable-area">
+                  <div class="coin">
+                    <i class="icon cc {{ id }}-alt"></i>
+                    <div class="name">{{ name }}</div>
+                  </div>
+                  <div class="balance">
+                    <div class="coin-value"><span class="val">{{ coin_value }}</span> {{ coin_id_uc }}</div>
+                    <div class="currency-value"><span class="val">{{ currency_value }}</span> {{ currency_name }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button class="btn btn-add-coin">{{ helper.lang('DASHBOARD.ADD_COIN') }}</button>
           </div>
         </aside>
@@ -73,9 +89,29 @@
               <div class="clearfix"></div>
             </div>
             <div class="transactions-list">
-            <div class="title unselectable">{{ helper.lang('DASHBOARD.HISTORY') }}</div>
-            <div class="transactions-list-repeater">{{ helper.lang('DASHBOARD.LOADING') }}...</div>
-          </div>
+              <div class="title unselectable">{{ helper.lang('DASHBOARD.HISTORY') }}</div>
+              <div class="transactions-list-repeater">
+                <!-- TODO: add repeater -->
+                <div ng-include="'partials/loader.html'"></div>
+                <div class="item {{ status_class }} {{ timestamp_format }} {{ txid }}" title="confirmations: {{ confs }}">
+                  <div class="status unselectable">{{ status }}</div>
+                  <div class="amount unselectable">
+                    <span class="in-out {{ in_out }}"></span>
+                    <span class="value">{{ amount }}</span>
+                    <span class="coin-name">{{ coin }}</span>
+                  </div>
+                  <div class="progress-status unselectable">
+                    <i class="icon"></i>
+                  </div>
+                  <div class="hash">{{ hash }}</div>
+                  <div class="timestamp unselectable">{{ timestamp_single }}</div>
+                  <div class="timestamp two-lines unselectable">
+                    <div class="timestamp-date">{{ timestamp_date }}</div>
+                    <div class="timestamp-time">{{ timestamp_time }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="clearfix"></div>

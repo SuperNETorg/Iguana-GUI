@@ -41,7 +41,18 @@
             <h4 class="transaction-amount">{{ helper.lang('SETTINGS.AMOUNT_OF_TRANSACTIONS') }}</h4>
           </div>
           <div class="col-xs-12 col-md-7 col-sm-6 currency-parent">
-            <ul class="currency-loop"></ul>
+            <ul class="currency-loop">
+              <!-- TODO: add repeater -->
+              <li class="country-li cursor-pointer {{ defaultActive }}" data-id="{{ index }}">
+                <h1 class="flag-head">
+                  <span class="label label-default">
+                    <span class="flag-icon flag-icon-{{ flagId }}"></span>
+                  </span>
+                </h1>
+                <strong class="short-name">{{ shortName }}</strong>
+                <span class="full-name">{{ fullName }}</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
