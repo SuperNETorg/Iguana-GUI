@@ -31,15 +31,15 @@ helperProto.prototype.timeago = function () {
   if (difference / dayTemplate < 1) {
     if (difference / timeTemplate < 1) {
       if (difference / minuteTemplate > 1) {
-        displayText = parseInt(difference / timeTemplate) + ' Minute ago';
+        displayText = parseInt(difference / minuteTemplate) + ' min ago';
       } else {
         displayText = 'Moment ago';
       }
     } else {
-      displayText = parseInt(difference / timeTemplate) + ' Time ago';
+      displayText = parseInt(difference / timeTemplate) + ' hours ago';
     }
   } else {
-    displayText = parseInt(difference / timeTemplate) + ' Dey ago';
+    displayText = parseInt(difference / dayTemplate) + ' day ago';
   }
 
   timeeago.text(displayText);
