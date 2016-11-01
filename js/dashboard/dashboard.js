@@ -29,12 +29,6 @@ function applyDashboardResizeFix() {
     mainContent.removeAttr('style');
 
   }
-  // hash shading
-  var txUnitItem = '.transactions-list-repeater .item';
-  $(txUnitItem + ' .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.4 -
-                                                                         $(txUnitItem + ':first-child .status').width() -
-                                                                         $(txUnitItem + ':first-child .amount').width() -
-                                                                         $(txUnitItem + ':first-child .progress-status').width()) });
   // coin tiles on the left
   var accountCoinsRepeaterItem = '.account-coins-repeater .item';
   $(accountCoinsRepeaterItem).each(function(index, item) {
@@ -47,7 +41,7 @@ function applyDashboardResizeFix() {
 
 function updateDashboardView(timeout) {
   dashboardUpdateTimer = setInterval(function() {
-    //console.clear();
+    //console.clear();`
     helper.checkSession();
     if (activeCoin) defaultCoin = activeCoin.toUpperCase();
     updateRates(null, null, null, true);

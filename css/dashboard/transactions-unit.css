@@ -47,6 +47,7 @@
 .transactions-unit .action-buttons {
   float: left;
   padding-top: 18px;
+  padding-left: 16px;
 }
 .transactions-unit .action-buttons .btn {
   font-weight: 600;
@@ -72,7 +73,7 @@
 }
 .transactions-list {
   background: #fff;
-  padding: 25px 2.5%;
+  padding: 25px 2.5% 60px 2.5%;
   border-radius: 0 0 4px 4px;
 }
 .transactions-list .title {
@@ -125,6 +126,7 @@
 }
 .transactions-list-repeater .item.timestamp-multi .timestamp.two-lines {
   display: inherit;
+  margin-top: 10px;
 }
 .transactions-list-repeater .item .coin-name {
   padding-left: 5px;

@@ -88,6 +88,24 @@
   .modal .modal-dialog.modal-lg {
     width: 90%;
   }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
+    display: block;
+    margin-top: 35px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
+    clear: both;
+    float: left;
+    width: 24%;
+    line-height: 44px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
+    float: right;
+    word-wrap: break-word;
+    width: 56%;
+    font-size: 14px;
+    margin-right: 25px;
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 360px) {
@@ -135,6 +153,48 @@
   body .modal-send-coin .modal-dialog .modal-content .send-modal,
   body .modal-send-coin .modal-dialog .modal-content .send-modal {
     padding-top: 2em;
+  }
+  /*  dashboard transactions bar */
+  body .transactions-unit .top-bar .active-coin-balance,
+  body .transactions-unit .top-bar .active-coin-balance-currency{
+    padding-left: 15px;
+  }
+  body .transactions-unit .top-bar .action-buttons {
+    padding-left: 0;
+    text-align: center;
+  }
+  body .transactions-unit .top-bar .info {
+    right: 15px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .status,
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .in-out,
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .value,
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .coin-name,
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
+    float: left;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
+    clear: both;
+    width: 34%;
+    line-height: 44px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
+    line-height: 44px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
+    float: right;
+    word-wrap: break-word;
+    width: 46%;
+    font-size: 14px;
+    margin: 0;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .timestamp {
+    float: right;
+    margin-top: 1px;
+  }
+  body .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
+    display: block;
+    margin-top: 35px;
   }
 }
 @media only screen and (max-width: 370px) {
