@@ -23,6 +23,7 @@ document.write('\x3Cscript type=\"text/javascript\" src=\"js/helpers/auth.js\">\
                '\x3Cscript type=\"text/javascript\" src=\"js/helpers/port-poll.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/helpers/router.js\">\x3C/script>' +
                '\x3Cscript type=\"text/javascript\" src=\"js/helpers/time.js\">\x3C/script>' +
-               '\x3Cscript type=\"text/javascript\" src=\"js/helpers/sync-status.js\">\x3C/script>');
+               '\x3Cscript type=\"text/javascript\" src=\"js/helpers/sync-status.js\">\x3C/script>' +
+               '\x3Cscript type=\"text/javascript\" src=\"js/helpers/timeago.js\">\x3C/script>');
 
 var helper = new helperProto();

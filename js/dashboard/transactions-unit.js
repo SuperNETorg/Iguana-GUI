@@ -132,6 +132,8 @@ function constructTransactionUnitRepeaterCB(response, update) {
         $(txUnitRepeaterClass + ' .item:gt(' + ($(txUnitRepeaterClass + ' .item').length - $(prependContent).find('.icon').length - 1) + ')').remove();
         $(txUnitRepeaterClass).prepend(prependContent);
       }
+
+      helperProto.prototype.timeago();
     }
 
     applyDashboardResizeFix();

@@ -105,7 +105,7 @@
   width: 100px;
 }
 .transactions-list-repeater .item .amount {
-  width: 152px;
+  width: 16%;
   text-align: right;
   margin-right: 5%;
 }

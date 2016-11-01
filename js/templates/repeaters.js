@@ -41,6 +41,10 @@ templates.registerRepeaterTemplate('currencyItem',
 templates.registerRepeaterTemplate('transactionsUnitItem',
 '<div class=\"item {{ status_class }} {{ timestamp_format }} {{ txid }}\" title=\"confirmations: {{ confs }}\">' +
   '<div class=\"status unselectable\">{{ status }}</div>' +
+  '<div class=\"timestamp two-lines unselectable timeeago\">' +
+    '<div class=\"timestamp-date timeeago-date\">{{ timestamp_date }}</div>' +
+    '<div class=\"timestamp-time timeeago-time\">{{ timestamp_time }}</div>' +
+  '</div>' +
   '<div class=\"amount unselectable\">' +
     '<span class=\"in-out {{ in_out }}\"></span>' +
     '<span class=\"value\">{{ amount }}</span>' +
@@ -51,10 +55,6 @@ templates.registerRepeaterTemplate('transactionsUnitItem',
   '</div>' +
   '<div class=\"hash\">{{ hash }}</div>' +
   '<div class=\"timestamp unselectable\">{{ timestamp_single }}</div>' +
-  '<div class=\"timestamp two-lines unselectable\">' +
-    '<div class=\"timestamp-date\">{{ timestamp_date }}</div>' +
-    '<div class=\"timestamp-time\">{{ timestamp_time }}</div>' +
-  '</div>' +
 '</div>');
 
 templates.registerRepeaterTemplate('coinSelectionShowItem',
