@@ -39,7 +39,6 @@
 }
 .form-container.mdl .form-content {
   height: 100%;
-  background: #F5F8FB;
   padding-top: 2em;
 }
 .form-container.mdl .form-header {
@@ -72,7 +71,6 @@
   font-weight: 600;
   color: #fff;
   font-size: 1.23em;
-  padding-top: 10px;
   z-index: 90;
 }
 .form-container.mdl .btn {
