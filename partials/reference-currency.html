@@ -7,19 +7,19 @@
       </div>
       <div class="top" id="top-menu">
         <ul class="nav navbar-nav top-menu">
-          <li class="item cursor-pointer text-center" data-url="dashboard">
+          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard')">
             <div class="text">{{ helper.lang('DASHBOARD.DASHBOARD') }}</div>
             <div class="border"></div>
           </li>
-          <li class="item cursor-pointer text-center active" data-url="settings">
+          <li class="item cursor-pointer text-center active">
             <div class="text">{{ helper.lang('DASHBOARD.SETTINGS') }}</div>
             <div class="border"></div>
           </li>
-          <li class="item cursor-pointer text-center hidden" data-url="payments">
+          <li class="item cursor-pointer text-center hidden">
             <div class="text">{{ helper.lang('DASHBOARD.PAYMENTS') }}</div>
             <div class="border"></div>
           </li>
-          <li class="item cursor-pointer text-center hidden" data-url="contacts">
+          <li class="item cursor-pointer text-center hidden">
             <div class="text">{{ helper.lang('DASHBOARD.CONTACTS') }}</div>
             <div class="border"></div>
           </li>
@@ -42,15 +42,14 @@
           </div>
           <div class="col-xs-12 col-md-7 col-sm-6 currency-parent">
             <ul class="currency-loop">
-              <!-- TODO: add repeater -->
-              <li class="country-li cursor-pointer {{ defaultActive }}" data-id="{{ index }}">
+              <li class="country-li cursor-pointer" data-id="{{ item.index }}" ng-repeat="item in currencyArr" ng-class="{ 'active': activeCurrency === item.shortName }" ng-click="setCurrency(item)">
                 <h1 class="flag-head">
                   <span class="label label-default">
-                    <span class="flag-icon flag-icon-{{ flagId }}"></span>
+                    <span class="flag-icon flag-icon-{{ item.flagId }}"></span>
                   </span>
                 </h1>
-                <strong class="short-name">{{ shortName }}</strong>
-                <span class="full-name">{{ fullName }}</span>
+                <strong class="short-name">{{ item.shortName }}</strong>
+                <span class="full-name">{{ item.fullName }}</span>
               </li>
             </ul>
           </div>

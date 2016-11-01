@@ -14,11 +14,6 @@ var activeCoin,
     iguanaNullReturnCount = 0,
     coinsInfo = new Array; // cointains coin related info
 
-/*!
- * Iguana api/connection-conf
- *
- */
-
 apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
   var conf = {
       'server': {

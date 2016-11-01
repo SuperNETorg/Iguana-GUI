@@ -3,8 +3,15 @@
 angular.module('IguanaGUIApp.controllers')
 .controller('dashboardController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
     $scope.helper = helper;
+    $scope.$state = $state;
 
-    function updateTotalBalance() {
+    $('body').addClass('dashboard-page');
+
+    $(document).ready(function() {
+      api.testConnection();
+    });
+
+    /*function updateTotalBalance() {
       var totalBalance = 0,
           balanceBlockClassName = '.balance-block .balance';
 
@@ -65,7 +72,7 @@ angular.module('IguanaGUIApp.controllers')
         dashboardUpdateTimout = settings.dashboardUpdateTimout,
         dashboardUpdateTimer;
 
-    /* not the best solution but it works */
+    // not the best solution but it works
     function applyDashboardResizeFix() {
       var mainContent = $('.main-content'),
           txUnit = $('.transactions-unit');
@@ -352,7 +359,7 @@ angular.module('IguanaGUIApp.controllers')
       var index = 0;
       for (var key in coinsInfo) {
         if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-            (!isIguana /*&& coinsInfo[key].connection === true*/ && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
           coinsSelectedByUser[index] = key;
           index++;
         }
@@ -435,7 +442,7 @@ angular.module('IguanaGUIApp.controllers')
           sortedAccountCoinsRepeater = '';
       for (var key in coinsInfo) {
         if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-            (!isIguana /*&& coinsInfo[key].connection === true*/ && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
           index++;
           var accountCoinsRepeaterCoin = '.account-coins-repeater .' + key;
           if ($(accountCoinsRepeaterCoin).html() && $(accountCoinsRepeaterCoin)[0].outerHTML)
@@ -545,10 +552,9 @@ angular.module('IguanaGUIApp.controllers')
       if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
     }
 
-    /*
-     *  new tx will appear at the top of the list
-     *  while old tx are going to be removed from the list
-     */
+
+    // new tx will appear at the top of the list
+    // while old tx are going to be removed from the list
     function constructTransactionUnitRepeaterCB(response, update) {
       var result = '',
           prependContent = '',
@@ -556,7 +562,7 @@ angular.module('IguanaGUIApp.controllers')
           txUnitRepeaterClass = '.transactions-list-repeater';
 
       if (coinName.length) {
-        var transactionsList = response; /*api.listTransactions(defaultAccount, coinName.toLowerCase());*/
+        var transactionsList = response;
         // sort tx in desc order by timestamp
         if (transactionsList) {
           if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time }); // coind
@@ -611,7 +617,7 @@ angular.module('IguanaGUIApp.controllers')
                   }
                 }
 
-              if (transactionDetails /*&& txStatus !== 'N/A'*/) {
+              if (transactionDetails) {
                 if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
                   txStatus = helper.lang('DASHBOARD.IN_PROCESS');
                   txCategory = 'process';
@@ -650,10 +656,8 @@ angular.module('IguanaGUIApp.controllers')
             }
           }
 
-          /*
-           *  add N new tx at the top of the list
-           *  remove N old tx form the bottom of the list
-           */
+          // add N new tx at the top of the list
+          // remove N old tx form the bottom of the list
           if ($(prependContent).find('.icon').length) {
             $(txUnitRepeaterClass + ' .item:gt(' + ($(txUnitRepeaterClass + ' .item').length - $(prependContent).find('.icon').length - 1) + ')').remove();
             $(txUnitRepeaterClass).prepend(prependContent);
@@ -694,10 +698,8 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    /* receive coin */
-    /*
-      TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
-    */
+    // receive coin
+    //  TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
     function bindReceive() {
       var coinRate,
           coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
@@ -782,7 +784,7 @@ angular.module('IguanaGUIApp.controllers')
       temp.remove();
     }
 
-    /* send to address */
+    // send to address
     var sendFormDataCopy = {};
 
     function sendCoinModalInit(isBackTriggered) {
@@ -933,7 +935,7 @@ angular.module('IguanaGUIApp.controllers')
                          replace(/{{ tx_coin_fee_value }}/g, txFee).
                          replace('{{ tx_coin_fee_currency }}', txFeeCurrency).
                          replace('{{ tx_note }}', txNote).
-                         replace('{{ tx_total }}', txAmount /*Number(txAmount) + Number(txFee)*/);
+                         replace('{{ tx_total }}', txAmount);
 
         $('.modal-send-coin').html(templateToLoad);
 
@@ -1015,10 +1017,8 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    /*
-      TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
-            1a) address byte prefix check
-    */
+    // TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
+    //      1a) address byte prefix check
     function validateSendCoinForm() {
       var isValid = false,
           activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
@@ -1136,5 +1136,5 @@ angular.module('IguanaGUIApp.controllers')
     };
     $(document).ready(function () {
       initTopNavBar();
-    });
+    });*/
 }]);

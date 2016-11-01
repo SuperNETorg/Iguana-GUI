@@ -15,8 +15,6 @@ var createHelpers = function() {
   this.checkSession = function(returnVal) {
     var loginForm = $('.login-form');
 
-    //api.testConnection();
-
     if (!localstorage.getVal('iguana-auth')) {
       this.logout();
     } else {
@@ -558,7 +556,7 @@ var createHelpers = function() {
           supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
         supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
         supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-        //opacityToggleOnAddCoinRepeaterScroll();
+        this.opacityToggleOnAddCoinRepeaterScroll();
       }
     });
   }
@@ -567,7 +565,8 @@ var createHelpers = function() {
   this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
     var apiExternalRate,
         allDashboardCoins = '',
-        totalCoins = 0;
+        totalCoins = 0,
+        defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {
       if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
@@ -576,16 +575,16 @@ var createHelpers = function() {
       }
     }
 
-    allDashboardCoins = helper.trimComma(allDashboardCoins);
+    allDashboardCoins = this.trimComma(allDashboardCoins);
 
-    ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
+    var ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
 
     // force rates update
     var isUpdateTriggered = false;
 
     if (triggerUpdate) {
       for (var key in coinsInfo) {
-        if (triggerUpdate && (helper.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localstorage.getVal('iguana-rates-' + key))) {
+        if (triggerUpdate && (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localstorage.getVal('iguana-rates-' + key))) {
           if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
             isUpdateTriggered = true;
           }
@@ -593,7 +592,7 @@ var createHelpers = function() {
       }
 
       if (isUpdateTriggered) {
-        api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, updateRateCB);
+        api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, this.updateRateCB);
         if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
       }
     } else {
@@ -610,6 +609,8 @@ var createHelpers = function() {
   }
 
   this.updateRateCB = function(coin, result) {
+    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+
     for (var key in coinsInfo) {
       if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
         localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });

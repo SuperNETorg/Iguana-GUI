@@ -62,12 +62,12 @@
   margin-top: 30px;
   padding-left: 0;
 }
-.reference-currency-main .currency-content .country-li.country-li.selected {
+.reference-currency-main .currency-content .country-li.country-li.active {
   border: 2px solid #FD5624;
   color: #FD5624;
   box-shadow: none;
 }
-.reference-currency-main .currency-content .currency-loop .selected .full-name {
+.reference-currency-main .currency-content .currency-loop .active .full-name {
   color: #FD5624;
   font-weight: 600;
 }
