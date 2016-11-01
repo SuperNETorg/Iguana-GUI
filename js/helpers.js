@@ -170,6 +170,9 @@ var createHelpers = function() {
     if (str[str.length - 1] === ' ') {
       str = str.replace(/, $/, '');
     }
+    if (str[str.length - 1] === ',') {
+      str = str.replace(/,$/, '');
+    }
 
     return str;
   }

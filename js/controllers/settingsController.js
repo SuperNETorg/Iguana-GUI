@@ -5,6 +5,19 @@ angular.module('IguanaGUIApp.controllers')
     $scope.helper = helper;
     $scope.$state = $state;
 
+    $scope.checkSession = function() {
+      if (!helper.checkSession(true)) {
+        $state.go('login');
+      }
+    }
+
+    $scope.checkSession();
+
+    $scope.logout = function() {
+      helper.logout();
+      $scope.checkSession();
+    }
+
     $(document).ready(function() {
       api.testConnection();
     });
@@ -12,7 +25,7 @@ angular.module('IguanaGUIApp.controllers')
     $('body').addClass('dashboard-page');
 
     var currencyArr = [
-      { 'shortName': 'USD', 'fullName': helper.lang('CURRENCY.USD'), 'flagId': 'us', 'selected': true },
+      { 'shortName': 'USD', 'fullName': helper.lang('CURRENCY.USD'), 'flagId': 'us' },
       { 'shortName': 'EUR', 'fullName': helper.lang('CURRENCY.EUR'), 'flagId': 'eu' },
       { 'shortName': 'AUD', 'fullName': helper.lang('CURRENCY.AUD'), 'flagId': 'au' },
       { 'shortName': 'BGN', 'fullName': helper.lang('CURRENCY.BGN'), 'flagId': 'bg' },

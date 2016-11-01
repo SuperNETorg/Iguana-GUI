@@ -63,8 +63,8 @@ angular.module('IguanaGUIApp.controllers')
       api.walletLock(coinsSelectedToAdd[0]);
       var walletLogin = api.walletLogin($scope.passphrase, settings.defaultSessionLifetime, coinsSelectedToAdd[0]);
 
-      if (walletLogin !== -14 && walletLogin[key] !== -15) {
-        localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'yes' });
+      if (walletLogin !== -14 && walletLogin !== -15) {
+        localstorage.setVal('iguana-' + coinsSelectedToAdd[0] + '-passphrase', { 'logged': 'yes' });
         localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
         $state.go('dashboard');
       }
