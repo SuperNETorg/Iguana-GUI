@@ -2,9 +2,9 @@
   <div class="container-fluid">
     <div class="row centered">
       <!-- // create account form start -->
-      <section class="form-container create-account-form">
+      <section class="form-container create-account-form" ng-class="{ 'hidden': $state.current.name === 'signup.verify' }">
         <header class="form-header orange-gradient box-shadow-bottom">
-          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"></i>
+          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
         </header>
         <div class="form-content">
@@ -13,7 +13,7 @@
           </div>
           <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') }} 24-{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') }} <strong>{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') }}</strong></div>
           <div class="passphrase-container row center offset-bottom-md">
-            <div class="title unselectable">{{ helper.lang('CREATE_ACCOUNT.COPY_PASSPHRASE') }}:</div>
+            <div class="title unselectable">{{ helper.lang('CREATE_ACCOUNT.COPY_PASSPHRASE') }}: {{ generatedPassphrase }}</div>
             <div class="generated-passhprase cursor-pointer"></div>
             <input type="text" class="generated-passhprase-hidden cursor-pointer"></input>
           </div>
@@ -24,12 +24,12 @@
           <div class="non-iguana-coins-repeater hidden"></div>
           <div class="non-iguana-coins-repeater-errors"></div>
           <div class="login-or-delim center"></div>
-          <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-verify-passphrase">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-click="$state.go('signup.verify')">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
         </div>
       </section>
       <!-- // create account form end -->
       <!-- // verify passphrase form start -->
-      <section class="form-container verify-passphrase-form hidden">
+      <section class="form-container verify-passphrase-form" ng-class="{ 'hidden': $state.current.name === 'signup.passphrase' }">
         <header class="form-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
@@ -46,4 +46,4 @@
       <!-- // verify passphrase form end -->
     </div>
   </div>
-</div>'
+</div>

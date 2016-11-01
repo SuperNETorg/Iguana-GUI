@@ -12,14 +12,14 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
       controller: 'loginController'
     })
     .state('signup', {
-      url: '/signup',
       templateUrl: 'partials/signup.html',
-      controller: 'signupController'
+      controller: 'loginController' // TODO: split, move to signupController
+    })
+    .state('signup.passphrase', {
+      url: '/signup',
     })
     .state('signup.verify', {
-      url: '/signup-verify',
-      templateUrl: 'partials/signup.html',
-      controller: 'createAccountController'
+      url: '/verify',
     })
     .state('dashboard', {
       url: '/dashboard',
