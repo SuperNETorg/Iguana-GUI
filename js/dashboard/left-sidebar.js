@@ -188,25 +188,3 @@ function checkAddCoinButton() {
   if (!coinsLeftToAdd) buttAddCoin.addClass('disabled');
   else buttAddCoin.removeClass('disabled');
 }
-
-// on les then 768px working this function
-function bindMobileView() {
-  var coins = $('aside.coins'),
-      item = $('.item.active', coins),
-      transactionsUnit = $('.transactions-unit');
-
-  mobileView(coins, item, transactionsUnit);
-  $(window).resize(function () {
-    mobileView(coins, item, transactionsUnit);
-  })
-}
-function mobileView(coins, item, transactionsUnit) {
-  item = $('.item.active', coins);
-  if ($(window).width() > 767) {
-    item.removeClass('hidden-after');
-    transactionsUnit.removeAttr('style');
-  } else {
-    item.addClass('hidden-after');
-    transactionsUnit.css('margin-left', '0');
-  }
-}

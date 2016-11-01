@@ -7,7 +7,7 @@ var apiProto = function() {};
 
 var activeCoin,
     portsTested = false,
-    isIguana = false,
+    isIguana = true,
     isRT = false,
     isProxy = true,
     iguanaNullReturnCount = 0,
