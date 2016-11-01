@@ -9,11 +9,11 @@ templates.registerTemplate('addCoin',
 '<section class=\"form-container mdl add-new-coin-form unselectable hidden fade\">' +
   '<div class=\"modal-overlay\"></div>' +
   '<div class=\"modal modal-add-coin\">' +
-    '<div class=\"modal-dialog modal-popup\">' +
+    '<div class=\"modal-dialog modal-popup modal-lg\">' +
       '<div class=\"modal-content\">' +
-        '<header class=\"form-header orange-gradient box-shadow-bottom\">' +
+        '<header class=\"modal-header form-header orange-gradient box-shadow-bottom\">' +
           '<i class=\"bi_interface-cross cursor-pointer btn-close\"></i>' +
-          '<div class=\"title text-shadow\">' + helper.lang('ADD_COIN.ADDING_A_NEW_COIN') + '</div>' +
+          '<div class=\"modal-title title text-shadow\">' + helper.lang('ADD_COIN.ADDING_A_NEW_COIN') + '</div>' +
         '</header>' +
         '<div class=\"form-content\">' +
           '<div class=\"coins-title\">' + helper.lang('ADD_COIN.SELECT_COINS_TO_ADD') + '</div>' +

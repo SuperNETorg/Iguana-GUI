@@ -196,6 +196,17 @@
     display: block;
     margin-top: 35px;
   }
+  /* Add Wallet modal */
+  body .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body,
+  body .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body{
+    padding-top: 2em;
+  }
+  body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header .modal-title {
+    padding-top: 5px;
+  }
+  body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header {
+    height: 55px;
+  }
 }
 @media only screen and (max-width: 370px) {
   body .reference-currency-main .currency-content .currency-loop .country-li {

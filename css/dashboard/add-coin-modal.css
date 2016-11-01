@@ -6,7 +6,7 @@
  @import url('add-coin-modal-icons-fix.css');
 
 .add-new-coin-form {
-  z-index: 500;
+  z-index: 5000;
 }
 .add-coin-create-wallet-form .login-add-coin-selection {
   pointer-events: none;
