@@ -11,26 +11,26 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
       templateUrl: 'partials/login.html',
       controller: 'loginController'
     })
-    /*.state('create', {
-      url: '/create-account',
-      templateUrl: 'partials/create-account.html',
+    .state('signup', {
+      url: '/signup',
+      templateUrl: 'partials/signup.html',
+      controller: 'signupController'
+    })
+    .state('signup.verify', {
+      url: '/signup-verify',
+      templateUrl: 'partials/signup.html',
       controller: 'createAccountController'
     })
-    .state('create.verify', {
-      url: '/create-account-verify',
-      templateUrl: 'partials/create-account-verify.html',
-      controller: 'createAccountController'
-    })*/
     .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'partials/dashboard.html',
       controller: 'dashboardController'
     })
-    /*.state('dashboard.settings', {
+    .state('settings', {
       url: '/settings',
-      templateUrl: 'partials/settings.html',
+      templateUrl: 'partials/reference-currency.html',
       controller: 'settingsController'
-    });*/
+    });
 
   $urlRouterProvider.otherwise('/login');
 });
