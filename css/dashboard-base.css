@@ -218,3 +218,17 @@
   .right-addon input {
     padding-right: 30px;
   }
+  .navbar-inverse {
+    z-index: 1000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+  }
+  .balance-block {
+    margin-top:60px;
+  }
+  @media screen and (max-width: 767px) {
+    .balance-block {
+      margin-top:100px;
+    }
+  }
