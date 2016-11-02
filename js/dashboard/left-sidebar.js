@@ -125,7 +125,7 @@ function constructAccountCoinRepeaterCB(balance, coin) {
       buttonSend.removeClass('disabled');
     }
     updateTotalBalance();
-    updateTransactionUnitBalance();
+    updateTransactionUnitBalance(true);
     if ($('.transactions-list-repeater').html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1) constructTransactionUnitRepeater();
   }
 }
