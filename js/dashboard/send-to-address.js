@@ -102,7 +102,7 @@ function sendCoinModalInit(isBackTriggered) {
   }
 
   // dev
-  // if (dev.isDev) loadTestSendData(coinData.id);
+   if (dev.isDev) loadTestSendData(coinData.id);
 
   var sendCoinParentClass = '.send-coin-form';
   if (!isBackTriggered) helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
@@ -276,7 +276,7 @@ function validateSendCoinForm() {
   } else {
     txAmountObj.removeClass(errorClassName);
     txAmountCurrencyObj.removeClass(errorClassName);
-    txAmountValidation.html(helper.lang('SEND.ENTER_IN') + ' ' + coinName + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
+    txAmountValidation.html(helper.lang('RECEIVE.ENTER_IN') + ' ' + coinName + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
                        removeClass(errorClassName2);
   }
   // fee
