@@ -5,6 +5,9 @@ angular.module('IguanaGUIApp.controllers')
     $scope.helper = helper;
     $scope.$state = $state;
 
+    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
+        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+
     $('body').addClass('dashboard-page');
 
     $scope.checkSession = function() {
@@ -24,66 +27,235 @@ angular.module('IguanaGUIApp.controllers')
       api.testConnection();
     });
 
-    /*function updateTotalBalance() {
-      var totalBalance = 0,
-          balanceBlockClassName = '.balance-block .balance';
+    // TODO: merge all dashboard data into a single object for caching
+    $scope.currency = defaultCurrency;
+    $scope.totalBalance = 0;
+    $scope.sideBarCoins;
+    $scope.txUnit = { 'loading': true, activeCoinBalance: 0, activeCoinBalanceCurrency: 0, transactions: [] };
+    $scope.sideBarCoinsUnsorted = {};
+    $scope.activeCoin = localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
+    $scope.addCoinButtonState = true;
+    $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
 
-      $('.account-coins-repeater .item').each(function(index, item) {
-        var coin = $(this).attr('data-coin-id'),
-            coinValue = $(this).find('.coin-value .val'),
-            currencyValue = $(this).find('.currency-value .val');
+    var coinBalances = [],
+        _sideBarCoins = {},
+        coinsSelectedByUser = [];
 
-        totalBalance += coinBalances[coin] * updateRates(coin.toUpperCase(), null, true);
+    constructAccountCoinRepeater(true);
+
+    $scope.setActiveCoin = function(item) {
+      localstorage.setVal('iguana-active-coin', { id: item.id });
+      $scope.activeCoin = item.id;
+      $scope.setTxUnitBalance(item);
+      constructTransactionUnitRepeater();
+    }
+
+    $scope.setTxUnitBalance = function(item) {
+      $scope.txUnit.activeCoinBalance = item ? item.coinValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].coinValue;
+      $scope.txUnit.activeCoinBalanceCurrency = item ? item.currencyValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].currencyValue;
+    }
+
+    $scope.removeCoin = function(coinId) {
+      if (confirm(helper.lang('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
+        localstorage.setVal('iguana-' + coinId + '-passphrase', { 'logged': 'no' });
+
+        delete $scope.sideBarCoinsUnsorted[coinId];
+        $scope.sideBarCoins = Object.keys($scope.sideBarCoinsUnsorted).map(function(key) {
+          return $scope.sideBarCoinsUnsorted[key];
+        });
+
+        if ($scope.activeCoin === coinId) $scope.setActiveCoin($scope.sideBarCoins[0]);
+        checkAddCoinButton();
+      }
+    }
+
+    //api.checkBackEndConnectionStatus();
+    //applyDashboardResizeFix();
+
+    function constructAccountCoinRepeater(isFirstRun) {
+      var index = 0;
+
+      coinsSelectedByUser = [];
+
+      for (var key in coinsInfo) {
+        if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
+            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+          coinsSelectedByUser[index] = key;
+          index++;
+        }
+      }
+
+      coinBalances = [];
+
+      for (var i=0; i < coinsSelectedByUser.length; i++) {
+        if (isFirstRun) {
+          _sideBarCoins[coinsSelectedByUser[i]] = { id: coinsSelectedByUser[i], name: supportedCoinsList[coinsSelectedByUser[i]].name, loading: true };
+
+          $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
+            return _sideBarCoins[key];
+          });
+        }
+        applyDashboardResizeFix();
+        api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
+      }
+    }
+
+    // construct account coins array
+    function constructAccountCoinRepeaterCB(balance, coin) {
+      var coinLocalRate = helper.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
+          currencyCalculatedValue = balance * coinLocalRate,
+          coinBalanceVal = balance ? balance.toFixed(helper.decimalPlacesFormat(balance).coin) : 0,
+          coinBalanceCurrencyVal = currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency);
+
+      coinBalances[coin] = balance;
+      var coinLoading = true;
+      if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
+        coinLoading = false;
+      }
+      _sideBarCoins[coin] = { id: coin,
+                              name: supportedCoinsList[coin].name,
+                              coinBalanceUnformatted: balance,
+                              coinValue: coinBalanceVal,
+                              coinIdUc: coin.toUpperCase(),
+                              currencyValue: coinBalanceCurrencyVal,
+                              currencyName: defaultCurrency,
+                              loading: false };
+
+      $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
+        return _sideBarCoins[key];
       });
+      $scope.sideBarCoinsUnsorted = _sideBarCoins;
 
-      var totalBalanceDecimals = helper.decimalPlacesFormat(totalBalance).currency;
-      $(balanceBlockClassName + ' .value').html(totalBalance.toFixed(totalBalanceDecimals) !== 'NaN' ? totalBalance.toFixed(totalBalanceDecimals) : 0.00);
-      $(balanceBlockClassName + ' .currency').html(defaultCurrency);
-    }
-
-    function updateTransactionUnitBalance(isAuto) {
-      var accountCoinsRepeaterActiveClassName = '.account-coins-repeater .item.active';
-          selectedCoin = $(accountCoinsRepeaterActiveClassName),
-          coinName = selectedCoin.attr('data-coin-id'),
-          _currencyValue = $(accountCoinsRepeaterActiveClassName + ' .currency-value .val').html(),
-          currentCoinRate = isAuto ? updateRates(coinName.toUpperCase()) : parseFloat(_currencyValue) / parseFloat(_currencyValue, null, true);
-          _coinValue = $(accountCoinsRepeaterActiveClassName + ' .coin-value .val').html()
-          selectedCoinValue = Number(_coinValue) ? Number(_coinValue) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
-          curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
-
-      var txUnitActiveCoinBalanceElName = '.transactions-unit .active-coin-balance';
-      if (selectedCoin.length !== 0) {
-        $(txUnitActiveCoinBalanceElName + ' .value').html(Number(selectedCoinValue).toFixed(helper.decimalPlacesFormat(selectedCoinValue).coin));
-        $(txUnitActiveCoinBalanceElName + ' .coin-name').html(coinName.toUpperCase());
-        $(txUnitActiveCoinBalanceElName + '-currency .value').html(curencyValue !== 'NaN' ? curencyValue : (0.00).toFixed(helper.decimalPlacesFormat(0).currency));
-        $(txUnitActiveCoinBalanceElName + '-currency .currency').html(defaultCurrency.toUpperCase());
-      }
-
-      var buttonSend = $('.transactions-unit .action-buttons .btn-send');
-      if (selectedCoinValue === 0) buttonSend.hide();
-      else buttonSend.show();
-
-      // enable loader spinner if coin is out of sync/not connected
-      var txUnit = $('.transactions-unit'),
-          loadingClassName = 'loading';
-      if (coinName && coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
-        txUnit.removeClass(loadingClassName);
-      } else {
-        txUnit.addClass(loadingClassName);
+      // run balances and tx unit update once left sidebar is updated
+      if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
+        checkAddCoinButton();
+        updateTotalBalance();
+        $scope.setTxUnitBalance();
+        constructTransactionUnitRepeater();
+        applyDashboardResizeFix();
       }
     }
 
-    var defaultCurrency = '',
-        defaultCoin = '',
-        coinToCurrencyRate = 0,
-        coinsSelectedByUser = [],
-        defaultAccount,
-        ratesUpdateTimeout = settings.ratesUpdateTimeout,
-        decimalPlacesCoin = settings.decimalPlacesCoin,
-        decimalPlacesCurrency = settings.decimalPlacesCurrency,
-        decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
-        dashboardUpdateTimout = settings.dashboardUpdateTimout,
-        dashboardUpdateTimer;
+    // TODO: watch coinsInfo, checkAddCoinButton and connectivity status
+
+    function checkAddCoinButton() {
+      // disable add wallet/coin button if all coins/wallets are already in the sidebar
+      var _coinsLeftToAdd = 0;
+      for (var key in supportedCoinsList) {
+        if (!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) {
+          if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
+            _coinsLeftToAdd++;
+          }
+        }
+      }
+      $scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false; // TODO: fix, breaks on portpoll
+    }
+
+    function updateTotalBalance() {
+      var sidebarCoins = $scope.sideBarCoinsUnsorted,
+          _totalBalance = 0;
+
+      for (var key in sidebarCoins) {
+        var coinLocalRate = helper.updateRates(key, defaultCurrency, true) || 0;
+        _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
+      }
+
+      var totalBalanceDecimals = helper.decimalPlacesFormat(_totalBalance).currency;
+      $scope.totalBalance = _totalBalance.toFixed(totalBalanceDecimals) !== 'NaN' ? _totalBalance.toFixed(totalBalanceDecimals) : 0.00;
+    }
+
+    // construct transaction unit array
+    function constructTransactionUnitRepeater(update) {
+      if (!update) $scope.txUnit.loading = true;
+
+      $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
+      api.listTransactions(defaultAccount, $scope.activeCoin, constructTransactionUnitRepeaterCB);
+    }
+
+    // new tx will appear at the top of the list
+    // while old tx are going to be removed from the list
+    function constructTransactionUnitRepeaterCB(response) {
+      var transactionsList = response,
+          decimalPlacesTxUnit = settings.decimalPlacesTxUnit;
+      // sort tx in desc order by timestamp
+      if (transactionsList) {
+        if (transactionsList.length) $scope.txUnit.loading = false;
+        for (var i=0; i < transactionsList.length; i++) {
+          $scope.txUnit.transactions[i] = {};
+          if (transactionsList[i].txid) {
+            // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
+            // timestamp is converted to 24h format
+            var transactionDetails = transactionsList[i],
+                txIncomeOrExpenseFlag = '',
+                txStatus = 'N/A',
+                txCategory = '',
+                txAddress = '',
+                txAmount = 'N/A',
+                iconSentClass = 'bi_interface-minus',
+                iconReceivedClass = 'bi_interface-plus';
+
+            if (transactionDetails)
+              if (transactionDetails.details) {
+                txAddress = transactionDetails.details[0].address;
+                txAmount = transactionDetails.details[0].amount;
+                // non-iguana
+                if (transactionDetails.details[0].category)
+                  txCategory = transactionDetails.details[0].category;
+
+                  if (transactionDetails.details[0].category === 'send') {
+                    txIncomeOrExpenseFlag = iconSentClass;
+                    txStatus = helper.lang('DASHBOARD.SENT');
+                  } else {
+                    txIncomeOrExpenseFlag = iconReceivedClass;
+                    txStatus = helper.lang('DASHBOARD.RECEIVED');
+                  }
+              } else {
+                // iguana
+                txAddress = transactionsList[i].address || transactionDetails.address;
+                txAmount = transactionsList[i].amount;
+                txStatus = transactionDetails.category || transactionsList[i].category;
+                txCategory = transactionDetails.category || transactionsList[i].category;
+
+                if (txStatus === 'send') {
+                  txIncomeOrExpenseFlag = iconSentClass;
+                  txStatus = helper.lang('DASHBOARD.SENT');
+                } else {
+                  txIncomeOrExpenseFlag = iconReceivedClass;
+                  txStatus = helper.lang('DASHBOARD.RECEIVED');
+                }
+              }
+
+            if (transactionDetails) {
+              if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
+                txStatus = helper.lang('DASHBOARD.IN_PROCESS');
+                txCategory = 'process';
+              }
+              if (isIguana && txAmount !== undefined || !isIguana)
+                $scope.txUnit.transactions[i].txId = transactionDetails.txid;
+                $scope.txUnit.transactions[i].status = txStatus;
+                $scope.txUnit.transactions[i].statusClass = txCategory;
+                $scope.txUnit.transactions[i].confs = transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a';
+                $scope.txUnit.transactions[i].inOut = txIncomeOrExpenseFlag;
+                $scope.txUnit.transactions[i].amount = txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount);
+                $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
+                $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
+                $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
+                $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
+                                                                   transactionDetails.timestamp ||
+                                                                   transactionDetails.time;
+                $scope.txUnit.transactions[i].timestampDate = helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                transactionDetails.timestamp ||
+                                                                                transactionDetails.time, 'DDMMMYYYY');
+                $scope.txUnit.transactions[i].timestampTime = helper.convertUnixTime(transactionDetails.blocktime ||
+                                                                                transactionDetails.timestamp ||
+                                                                                transactionDetails.time, 'HHMM');
+            }
+          }
+        }
+      }
+
+      $scope.$apply(); // manually trigger digest
+    }
 
     // not the best solution but it works
     function applyDashboardResizeFix() {
@@ -97,7 +269,6 @@ angular.module('IguanaGUIApp.controllers')
       } else {
         txUnit.removeAttr('style');
         mainContent.removeAttr('style');
-
       }
       // hash shading
       var txUnitItem = '.transactions-list-repeater .item';
@@ -113,8 +284,22 @@ angular.module('IguanaGUIApp.controllers')
                                                                                       $(accountCoinsRepeaterItem + coin + ' .coin .icon').width() -
                                                                                       $(accountCoinsRepeaterItem + coin + ' .balance').width() - 50) });
       });
-      opacityToggleOnAddCoinRepeaterScroll();
+      //opacityToggleOnAddCoinRepeaterScroll();
     }
+
+    /*
+
+    var defaultCurrency = '',
+        defaultCoin = '',
+        coinToCurrencyRate = 0,
+        coinsSelectedByUser = [],
+        defaultAccount,
+        ratesUpdateTimeout = settings.ratesUpdateTimeout,
+        decimalPlacesCoin = settings.decimalPlacesCoin,
+        decimalPlacesCurrency = settings.decimalPlacesCurrency,
+        decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
+        dashboardUpdateTimout = settings.dashboardUpdateTimout,
+        dashboardUpdateTimer;
 
     function updateDashboardView(timeout) {
       dashboardUpdateTimer = setInterval(function() {
@@ -363,329 +548,7 @@ angular.module('IguanaGUIApp.controllers')
       helper.prepMessageModal(addedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
     }
 
-    templates.all.repeaters.accountCoinItem = templates.all.repeaters.accountCoinItem.replace('{{ injectLoader }}', templates.all.loader); // add loader spinner to each coin element
 
-    var coinBalances = [];
-
-    function constructAccountCoinRepeater(isFirstRun) {
-      // TODO: investigate why coinsInfo[key].connection === true is failing on port poll
-      var index = 0;
-      for (var key in coinsInfo) {
-        if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
-          coinsSelectedByUser[index] = key;
-          index++;
-        }
-      }
-
-      if (coinsSelectedByUser.length === 0) helper.logout();
-
-      coinBalances = [];
-
-      for (var i=0; i < coinsSelectedByUser.length; i++) {
-        if (isFirstRun) constructAccountCoinRepeaterCB(0, coinsSelectedByUser[i]);
-        api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
-      }
-    }
-
-    // construct account coins array
-    function constructAccountCoinRepeaterCB(balance, coin) {
-      var result = '',
-          accountCoinRepeaterHTML = '',
-          isActiveCoinSet = accountCoinRepeaterHTML.indexOf('item active') > -1 ? true : false,
-          acountCoinsRepeaterCoin = '.account-coins-repeater .' + coin,
-          loadingClassName = 'loading',
-          disabledClassName = 'disabled';
-
-      api.checkBackEndConnectionStatus();
-      coinBalances[coin] = balance;
-
-      if ($(acountCoinsRepeaterCoin).html()) { // only update values
-        var coinBalance = coinBalances[coin] || 0;
-        coinLocalRate = updateRates(coin.toUpperCase(), defaultCurrency, true) || 0;
-
-        var currencyCalculatedValue = coinBalance * coinLocalRate,
-            coinData = getCoinData(coin),
-            coinBalanceVal = coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0,
-            coinBalanceCurrencyVal = currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency);
-
-        $(acountCoinsRepeaterCoin + ' .coin-value .val').html(coinBalanceVal);
-        $(acountCoinsRepeaterCoin + ' .currency-value .val').html(coinBalanceCurrencyVal);
-
-        // enable loader spinner if coin is out of sync/not connected
-        if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
-          $(acountCoinsRepeaterCoin).removeClass(loadingClassName);
-          $(acountCoinsRepeaterCoin).removeClass(disabledClassName);
-        } else {
-          $(acountCoinsRepeaterCoin).addClass(loadingClassName);
-          $(acountCoinsRepeaterCoin).addClass(disabledClassName);
-        }
-      } else { // actual DOM append
-        var coinLocalRate = 0,
-            coinBalance = coinBalances[coin] || 0;
-
-        coinLocalRate = updateRates(coin.toUpperCase(), defaultCurrency, true) || 0;
-
-        var currencyCalculatedValue = coinBalance * coinLocalRate,
-            coinData = getCoinData(coin);
-
-        if (!isActiveCoinSet && !activeCoin) activeCoin = coinData.id;
-        if (coinData)
-          result = templates.all.repeaters.accountCoinItem.
-                    replace('{{ dev }}', dev.isDev && !isIguana ? '' : ' hidden').
-                    replace('{{ id }}', coinData.id.toUpperCase()).
-                    replace('{{ name }}', coinData.name).
-                    replace(/{{ coin_id }}/g, coinData.id.toLowerCase()).
-                    replace('{{ coin_id_uc }}', coinData.id.toUpperCase()).
-                    replace('{{ currency_name }}', defaultCurrency).
-                    replace('{{ coin_balance_unformatted }}', coinBalance).
-                    replace('{{ coin_value }}', coinBalance ? coinBalance.toFixed(helper.decimalPlacesFormat(coinBalance).coin) : 0).
-                    replace('{{ currency_value }}', currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency)).
-                    replace('{{ active }}', activeCoin === coinData.id ? ' active' : '');
-
-        var accountCoinsRepeater = $('.account-coins-repeater');
-        if (accountCoinsRepeater.html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1) accountCoinsRepeater.html('');
-        accountCoinsRepeater.append(result);
-        $('.account-coins-repeater .' + coin).addClass(disabledClassName);
-        bindClickInAccountCoinRepeater();
-      }
-
-      // sort coins
-      var index = 0,
-          sortedAccountCoinsRepeater = '';
-      for (var key in coinsInfo) {
-        if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
-          index++;
-          var accountCoinsRepeaterCoin = '.account-coins-repeater .' + key;
-          if ($(accountCoinsRepeaterCoin).html() && $(accountCoinsRepeaterCoin)[0].outerHTML)
-            sortedAccountCoinsRepeater = sortedAccountCoinsRepeater + $(accountCoinsRepeaterCoin)[0].outerHTML;
-        }
-      }
-
-      $('.account-coins-repeater').html(sortedAccountCoinsRepeater);
-      bindClickInAccountCoinRepeater();
-      applyDashboardResizeFix();
-
-      if (dev.isDev && !isIguana) {
-        var accountCoinsRepeaterItem = '.account-coins-repeater .item',
-            hiddenClassName = 'hidden';
-        if ($(accountCoinsRepeaterItem).length === 1) $(accountCoinsRepeaterItem + ' .remove-coin').addClass(hiddenClassName);
-        else $(accountCoinsRepeaterItem + ' .remove-coin').removeClass(hiddenClassName);
-      }
-
-      // run balances and tx unit update once left sidebar is updated
-      if (index === Object.keys(coinBalances).length) {
-        checkAddCoinButton();
-        // disable send button if ther're no funds on a wallet
-        var buttonSend = $('.transactions-unit .action-buttons .btn-send');
-        if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
-          buttonSend.addClass('disabled');
-        } else {
-          buttonSend.removeClass('disabled');
-        }
-        updateTotalBalance();
-        updateTransactionUnitBalance();
-        if ($('.transactions-list-repeater').html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1) constructTransactionUnitRepeater();
-      }
-    }
-
-    function bindClickInAccountCoinRepeater() {
-      var accountCoinsRepeaterItem = '.account-coins-repeater .item',
-          removeCoinClass = '.remove-coin',
-          hiddenClassName = 'hidden',
-          activeClassName = 'active';
-
-      $(accountCoinsRepeaterItem).each(function(index, item) {
-        $(this).find(removeCoinClass).click(function() {
-          var parentCoinId = $(this).parent().attr('data-coin-id');
-
-          if (confirm(helper.lang('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + parentCoinId.toUpperCase()) === true) {
-            if ($(accountCoinsRepeaterItem + '.active').attr('data-coin-id').toString() === parentCoinId.toString())
-              $(accountCoinsRepeaterItem + ':first-child .clickable-area').click();
-            $(this).parent().remove();
-            localstorage.setVal('iguana-' + $(this).parent().attr('data-coin-id') + '-passphrase', { 'logged': 'no' });
-            checkAddCoinButton();
-
-            if ($(accountCoinsRepeaterItem).length === 1) $(accountCoinsRepeaterItem + ' ' + removeCoinClass).addClass(hiddenClassName);
-            else $(accountCoinsRepeaterItem + ' ' + removeCoinClass).removeClass(hiddenClassName);
-          }
-        });
-        $(this).find('.clickable-area').click(function() {
-          if (!$(this).parent().hasClass('disabled')) {
-            $('.account-coins-repeater .item').filter(':visible').removeClass(activeClassName);
-
-            if ($(this).parent().hasClass(activeClassName)) {
-              $(this).parent().removeClass(activeClassName);
-            } else {
-              var oldActiveCoinVal = activeCoin;
-
-              $(this).parent().addClass(activeClassName);
-              activeCoin = $(this).parent().attr('data-coin-id'); // TODO: global
-              localstorage.setVal('iguana-active-coin', { id: activeCoin });
-
-              if (oldActiveCoinVal !== activeCoin) {
-                updateTransactionUnitBalance();
-                constructTransactionUnitRepeater();
-              }
-            }
-          }
-        });
-      });
-    }
-
-    function checkAddCoinButton() {
-      // disable add wallet/coin button if all coins/wallets are already in the sidebar
-      var coinsLeftToAdd = 0;
-      for (var key in supportedCoinsList) {
-        if (!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) {
-          if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
-            coinsLeftToAdd++;
-          }
-        }
-      }
-      var buttAddCoin = $('.coins .btn-add-coin');
-      if (!coinsLeftToAdd) buttAddCoin.addClass('disabled');
-      else buttAddCoin.removeClass('disabled');
-    }
-
-    // construct transaction unit array
-    function constructTransactionUnitRepeater(update) {
-      var coinName = activeCoin || $('.account-coins-repeater .item.active');
-
-      // disable send button if ther're no funds on a wallet
-      if (Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()) <= 0) {
-        $('.transactions-unit .action-buttons .btn-send').addClass('disabled');
-      } else {
-        $('.transactions-unit .action-buttons .btn-send').removeClass('disabled');
-      }
-
-      if (!update) $('.transactions-list-repeater').html(templates.all.loader); // loader spinner
-
-      if ((coinName.length && coinName.length !== 0) || activeCoin) api.listTransactions(defaultAccount, coinName.toLowerCase(), constructTransactionUnitRepeaterCB, update);
-    }
-
-
-    // new tx will appear at the top of the list
-    // while old tx are going to be removed from the list
-    function constructTransactionUnitRepeaterCB(response, update) {
-      var result = '',
-          prependContent = '',
-          coinName = activeCoin || $('.account-coins-repeater .item.active'),
-          txUnitRepeaterClass = '.transactions-list-repeater';
-
-      if (coinName.length) {
-        var transactionsList = response;
-        // sort tx in desc order by timestamp
-        if (transactionsList) {
-          if (transactionsList[0].time) transactionsList.sort(function(a, b) { return b.time - a.time }); // coind
-          if (transactionsList[0].blocktime) transactionsList.sort(function(a, b) { return b.blocktime - a.blocktime }); // iguana
-
-          if ($(txUnitRepeaterClass).html().indexOf(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE')) > -1 ||
-              $(txUnitRepeaterClass).html().indexOf(helper.lang('DASHBOARD.LOADING')) > -1 ||
-              $(txUnitRepeaterClass).html().indexOf(coinName.toUpperCase()) === -1) $(txUnitRepeaterClass).html('');
-
-          for (var i=0; i < transactionsList.length; i++) {
-            result = '';
-            if (transactionsList[i].txid) {
-              // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
-              // timestamp is converted to 24h format
-              var transactionDetails = transactionsList[i],
-                  txIncomeOrExpenseFlag = '',
-                  txStatus = 'N/A',
-                  txCategory = '',
-                  txAddress = '',
-                  txAmount = 'N/A',
-                  iconSentClass = 'bi_interface-minus',
-                  iconReceivedClass = 'bi_interface-plus';
-
-              if (transactionDetails)
-                if (transactionDetails.details) {
-                  txAddress = transactionDetails.details[0].address;
-                  txAmount = transactionDetails.details[0].amount;
-                  // non-iguana
-                  if (transactionDetails.details[0].category)
-                    txCategory = transactionDetails.details[0].category;
-
-                    if (transactionDetails.details[0].category === 'send') {
-                      txIncomeOrExpenseFlag = iconSentClass;
-                      txStatus = helper.lang('DASHBOARD.SENT');
-                    } else {
-                      txIncomeOrExpenseFlag = iconReceivedClass;
-                      txStatus = helper.lang('DASHBOARD.RECEIVED');
-                    }
-                } else {
-                  // iguana
-                  txAddress = transactionsList[i].address || transactionDetails.address;
-                  txAmount = transactionsList[i].amount;
-                  txStatus = transactionDetails.category || transactionsList[i].category;
-                  txCategory = transactionDetails.category || transactionsList[i].category;
-
-                  if (txStatus === 'send') {
-                    txIncomeOrExpenseFlag = iconSentClass;
-                    txStatus = helper.lang('DASHBOARD.SENT');
-                  } else {
-                    txIncomeOrExpenseFlag = iconReceivedClass;
-                    txStatus = helper.lang('DASHBOARD.RECEIVED');
-                  }
-                }
-
-              if (transactionDetails) {
-                if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
-                  txStatus = helper.lang('DASHBOARD.IN_PROCESS');
-                  txCategory = 'process';
-                }
-                if ($(txUnitRepeaterClass).html().indexOf(transactionDetails.txid) > -1) {
-                  $(txUnitRepeaterClass + ' .' + transactionDetails.txid + ' .status').html(txStatus);
-                  $(txUnitRepeaterClass + ' .' + transactionDetails.txid).removeClass('receive').removeClass('send').removeClass('process').addClass(txCategory);
-                  $(txUnitRepeaterClass + ' .' + transactionDetails.txid + ' .in-out').removeClass(iconSentClass).removeClass(iconReceivedClass).addClass(txIncomeOrExpenseFlag);
-                  $(txUnitRepeaterClass + ' .' + transactionDetails.txid).attr('title', 'confirmations: ' + (transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a'));
-                } else {
-                  if (isIguana && txAmount !== undefined || !isIguana)
-                    result = templates.all.repeaters.transactionsUnitItem.
-                             replace('{{ txid }}', transactionDetails.txid).
-                             replace('{{ status }}', txStatus).
-                             replace('{{ status_class }}', txCategory).
-                             replace('{{ confs }}', transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a').
-                             replace('{{ in_out }}', txIncomeOrExpenseFlag).
-                             replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
-                             replace('{{ timestamp_format }}', 'timestamp-multi').
-                             replace('{{ coin }}', coinName.toUpperCase()).
-                             replace('{{ hash }}', txAddress !== undefined ? txAddress : 'N/A').
-                             replace('{{ timestamp_date }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                                    transactionDetails.timestamp ||
-                                                                                    transactionDetails.time, 'DDMMMYYYY')).
-                             replace('{{ timestamp_time }}', helper.convertUnixTime(transactionDetails.blocktime ||
-                                                                                    transactionDetails.timestamp ||
-                                                                                    transactionDetails.time, 'HHMM'));
-
-                  if (update) {
-                    prependContent = prependContent + result;
-                  } else {
-                    $(txUnitRepeaterClass).append(result);
-                  }
-                }
-              }
-            }
-          }
-
-          // add N new tx at the top of the list
-          // remove N old tx form the bottom of the list
-          if ($(prependContent).find('.icon').length) {
-            $(txUnitRepeaterClass + ' .item:gt(' + ($(txUnitRepeaterClass + ' .item').length - $(prependContent).find('.icon').length - 1) + ')').remove();
-            $(txUnitRepeaterClass).prepend(prependContent);
-          }
-        }
-
-        applyDashboardResizeFix();
-
-        if (coinsInfo[coinName].connection === true && coinsInfo[coinName].RT === true) {
-          if (!transactionsList.length) $(txUnitRepeaterClass).html(helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE'));
-        }
-
-        if ($(txUnitRepeaterClass).html().indexOf('loader') === -1) $('.transactions-unit').removeClass('loading');
-      }
-    }
 
     // on les then 768px working this function
     function bindMobileView() {

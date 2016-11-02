@@ -34,3 +34,5 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
 
   $urlRouterProvider.otherwise('/login');
 });
+
+// TODO: check session on before state change

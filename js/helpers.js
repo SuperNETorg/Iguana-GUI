@@ -33,7 +33,7 @@ var createHelpers = function() {
     }
   };
 
-  this.logout = function(noRedirect) {
+  this.logout = function(noRedirect, cb) {
     if (isIguana) {
       apiProto.prototype.walletLock();
       localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
@@ -53,16 +53,17 @@ var createHelpers = function() {
         this.openPage('login');
       }
 
-      this.logoutCoind();
+      this.logoutCoind(cb);
     }
   }
 
-  this.logoutCoind = function() {
+  this.logoutCoind = function(cb) {
     for (var key in coinsInfo) {
       if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
         apiProto.prototype.walletLock(key, this.logoutCoindCB(key));
       }
     }
+    if (cb) cb.call();
   }
 
   this.logoutCoindCB = function(key) {
@@ -110,7 +111,9 @@ var createHelpers = function() {
 
   // format a number
   this.decimalPlacesFormat = function(value) {
-    var valueComponents = value.toString().split('.');
+    var valueComponents = value.toString().split('.'),
+        decimalPlacesCoin = 0,
+        decimalPlacesCurrency = 0;
 
     if (value < 1 && value > 0) {
 
@@ -569,6 +572,7 @@ var createHelpers = function() {
     var apiExternalRate,
         allDashboardCoins = '',
         totalCoins = 0,
+        coinToCurrencyRate = 0,
         defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {

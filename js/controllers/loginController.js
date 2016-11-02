@@ -76,14 +76,6 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    $scope.watchPassphraseKeyUpEvent = function(buttonClassName) {
-      if ($scope.passphrase.length > 0) {
-        button.removeClass(disabledClassName);
-      } else {
-        button.addClass(disabledClassName);
-      }
-    }
-
     var passphraseToVerify,
         coindAuthResults = [];
 

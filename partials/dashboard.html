@@ -39,7 +39,7 @@
         <div class="balance-block unselectable">
           <div class="label">{{ helper.lang('DASHBOARD.TOTAL_BALANCE') }}</div>
           <div class="balance">
-            <span class="value">0</span>
+            <span class="value">{{ totalBalance || 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
         </div>
@@ -47,39 +47,38 @@
         <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
           <div class="row">
             <div class="account-coins-repeater">
-              <!-- TODO: add repeater -->
-              <div class="item loading {{ coin_id }}{{ active }}" data-coin-id="{{ coin_id }}" data-coin-balance-value="{{ coin_balance_unformatted }}">
+              <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index, 'loading': item.loading }" ng-repeat="item in sideBarCoins | orderBy:'id'">
                 <div ng-include="'partials/loader.html'"></div>
-                <div class="remove-coin cursor-pointer{{ dev }}"></div>
-                <div class="clickable-area">
+                <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
+                <div class="clickable-area" ng-click="setActiveCoin(item)">
                   <div class="coin">
-                    <i class="icon cc {{ id }}-alt"></i>
-                    <div class="name">{{ name }}</div>
+                    <i class="icon cc {{ item.coinIdUc }}-alt"></i>
+                    <div class="name">{{ item.name }}</div>
                   </div>
                   <div class="balance">
-                    <div class="coin-value"><span class="val">{{ coin_value }}</span> {{ coin_id_uc }}</div>
-                    <div class="currency-value"><span class="val">{{ currency_value }}</span> {{ currency_name }}</div>
+                    <div class="coin-value"><span class="val">{{ item.coinValue }}</span> {{ item.coinIdUc }}</div>
+                    <div class="currency-value"><span class="val">{{ item.currencyValue }}</span> {{ item.currencyName }}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <button class="btn btn-add-coin">{{ helper.lang('DASHBOARD.ADD_COIN') }}</button>
+            <button class="btn btn-add-coin" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang('DASHBOARD.ADD_COIN') }}</button>
           </div>
         </aside>
-        <div class="transactions-unit loading col-md-8 col-sm-7 col-xs-12 pull-right">
+        <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading === true }">
           <div class="row">
             <div class="top-bar unselectable">
               <div ng-include="'partials/loader.html'"></div>
               <div class="active-coin-balance">
-                <span class="value">0</span>
-                <span class="coin-name"></span>
+                <span class="value">{{ txUnit.activeCoinBalance || 0 }}</span>
+                <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
               </div>
               <div class="active-coin-balance-currency">
-                <span class="value">0</span>
+                <span class="value">{{ txUnit.activeCoinBalanceCurrency || 0}}</span>
                 <span class="currency">{{ currency }}</span>
               </div>
               <div class="action-buttons unselectable">
-                <button class="btn btn-send">{{ helper.lang('DASHBOARD.SEND') }}</button>
+                <button class="btn btn-send" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ helper.lang('DASHBOARD.SEND') }}</button>
                 <button class="btn btn-receive coinaddress btn-lg" data-toggle="modal" data-target="#myModal">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
               </div>
               <div class="info unselectable">
@@ -91,23 +90,23 @@
             <div class="transactions-list">
               <div class="title unselectable">{{ helper.lang('DASHBOARD.HISTORY') }}</div>
               <div class="transactions-list-repeater">
-                <!-- TODO: add repeater -->
-                <div ng-include="'partials/loader.html'"></div>
-                <div class="item {{ status_class }} {{ timestamp_format }} {{ txid }}" title="confirmations: {{ confs }}">
-                  <div class="status unselectable">{{ status }}</div>
+                <div ng-include="'partials/loader.html'" ng-if="txUnit.loading"></div>
+                <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}</div>
+                <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy:'-timestampUnchanged'">
+                  <div class="status unselectable">{{ item.status }}</div>
                   <div class="amount unselectable">
-                    <span class="in-out {{ in_out }}"></span>
-                    <span class="value">{{ amount }}</span>
-                    <span class="coin-name">{{ coin }}</span>
+                    <span class="in-out {{ item.inOut }}"></span>
+                    <span class="value">{{ item.amount }}</span>
+                    <span class="coin-name">{{ item.coin }}</span>
                   </div>
                   <div class="progress-status unselectable">
                     <i class="icon"></i>
                   </div>
-                  <div class="hash">{{ hash }}</div>
-                  <div class="timestamp unselectable">{{ timestamp_single }}</div>
+                  <div class="hash">{{ item.hash }}</div>
+                  <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
                   <div class="timestamp two-lines unselectable">
-                    <div class="timestamp-date">{{ timestamp_date }}</div>
-                    <div class="timestamp-time">{{ timestamp_time }}</div>
+                    <div class="timestamp-date">{{ item.timestampDate }}</div>
+                    <div class="timestamp-time">{{ item.timestampTime }}</div>
                   </div>
                 </div>
               </div>
@@ -117,11 +116,17 @@
         <div class="clearfix"></div>
       </div>
     </section>
-    <section class="form-container mdl send-coin-form unselectable hidden fade">
-      <div class="modal-overlay"></div>
-      <div class="modal modal-send-coin"></div>
-    </section>
-    <!-- send coin passphrase conf -->
-    <section class="modal-append-container"></section>
   </div>
 </div>
+<section class="form-container mdl send-coin-form unselectable hidden fade">
+  <div class="modal-overlay"></div>
+  <div class="modal modal-send-coin">
+    <div ng-include="'partials/send-coin-entry.html'" ng-hide="sendCoinStep === 2"></div>
+    <div ng-include="'partials/send-coin-confirmation.html'" ng-hide="sendCoinStep === 1"></div>
+  </div>
+</section>
+<div ng-include="'partials/send-coin-passphrase.html'"></div>
+<div ng-include="'partials/receive-coin.html'"></div>
+<div ng-include="'partials/add-coin.html'"></div>
+<div ng-include="'partials/add-coin-login.html'"></div>
+<div ng-include="'partials/add-coin-create-wallet.html'"></div>
