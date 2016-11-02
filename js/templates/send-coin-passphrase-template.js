@@ -12,7 +12,7 @@ templates.registerTemplate('sendCoinPassphrase',
       '<div class="modal-dialog modal-lg" role="document">' +
         '<div class="modal-content">' +
           '<header class="modal-header form-header orange-gradient box-shadow-bottom">' +
-            '<i class="bi_interface-cross cursor-pointer btn-close"></i>' +
+            '<i class="bi_interface-arrow-left cursor-pointer btn-back"></i>' +
             '<div class="title text-shadow">' + helper.lang('PASSPHRASE_MODAL.ADD_A_WALLET') + '</div>' +
           '</header>' +
           '<div class="modal-body form-content">' +

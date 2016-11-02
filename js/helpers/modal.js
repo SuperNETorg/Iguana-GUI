@@ -17,8 +17,8 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
     modalWindow.removeClass('blur');
 
     setTimeout(function() {
-      modalWindow.removeClass('fade');
       $('body').addClass('modal-open');
+      modalWindow.removeClass('fade');
     }, 10);
   } else {
     modalWindow.addClass('fade');
@@ -29,7 +29,8 @@ helperProto.prototype.toggleModalWindow = function(formClassName, timeout) {
       modalWindow.addClass('fade');
       formContainer.removeClass('blur');
       if (formContainer.length === formContainer.not(":visible").length) mainContainer.removeClass('blur');
-      $('body').removeClass('modal-open');
+      if ($('.form-container:not(.hidden)').length == 0)
+        $('body').removeClass('modal-open');
     }, timeout);
   }
 }

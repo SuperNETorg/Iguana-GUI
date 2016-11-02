@@ -165,14 +165,14 @@ function sendCoinModalConfirm() {
                            note: txNote };
 
       if (!isIguana) {
-        var sendConfirmPassphraseClass = '.send-coin-confirm-passphrase'
+        var sendConfirmPassphraseClass = '.send-coin-confirm-passphrase',
             passphraseElement = '#passphrase',
             disabledClassName = 'disabled';
         // TODO: ugly, rewrite
         $('.modal-append-container').html(templates.all.sendCoinPassphrase.
                                           replace('login-form-modal', 'send-coin-confirm-passphrase').
                                           replace('>Add<', '>Ok<').
-                                          replace('Add a wallet', 'Wallet passphrase').
+                                          replace('Add a wallet', 'Provide passphrase').
                                           replace('to add wallet', 'to confirm transaction'));
 
         helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
@@ -185,11 +185,17 @@ function sendCoinModalConfirm() {
           $(sendConfirmPassphraseClass + ' .btn-add-wallet').addClass(disabledClassName);
         }
 
-        $(sendConfirmPassphraseClass + ' .btn-close,' + sendConfirmPassphraseClass + ' .modal-overlay').click(function() {
+        $(sendConfirmPassphraseClass + ' .btn-back,' + sendConfirmPassphraseClass + ' .modal-overlay').click(function() {
           helper.toggleModalWindow(sendConfirmPassphraseClass.replace('.', ''), 300);
         });
 
-        $(sendConfirmPassphraseClass + ' .btn-add-wallet').click(function() {
+        $('#passphrase').on('change input', function (e) {
+          if ($('#passphrase').val() != '') {
+            $(sendConfirmPassphraseClass + ' .btn-add-wallet').removeClass('disabled');
+          }
+        });
+
+          $(sendConfirmPassphraseClass + ' .btn-add-wallet').click(function() {
           var coindWalletLogin = api.walletLogin($(sendConfirmPassphraseClass + ' ' + passphraseElement).val(), settings.defaultWalletUnlockPeriod, coinData.id);
 
           if (coindWalletLogin !== -14) {
