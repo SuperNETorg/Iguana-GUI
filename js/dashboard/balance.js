@@ -25,8 +25,8 @@ function updateTransactionUnitBalance(isAuto) {
       selectedCoin = $(accountCoinsRepeaterActiveClassName),
       coinName = selectedCoin.attr('data-coin-id'),
       _currencyValue = $(accountCoinsRepeaterActiveClassName + ' .currency-value .val').html(),
-      currentCoinRate = isAuto ? updateRates(coinName.toUpperCase()) : parseFloat(_currencyValue) / parseFloat(_currencyValue, null, true);
-      _coinValue = $(accountCoinsRepeaterActiveClassName + ' .coin-value .val').html()
+      currentCoinRate = isAuto ? updateRates(coinName.toUpperCase(), null, true) : parseFloat(_currencyValue) / parseFloat(_currencyValue, null, true);
+      _coinValue = $(accountCoinsRepeaterActiveClassName + ' .coin-value .val').text();
       selectedCoinValue = Number(_coinValue) ? Number(_coinValue) : (0.00).toFixed(helper.decimalPlacesFormat(0).coin);
       curencyValue = (selectedCoinValue * currentCoinRate).toFixed(helper.decimalPlacesFormat((selectedCoinValue * currentCoinRate)).currency);
 
