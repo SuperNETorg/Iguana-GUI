@@ -43,6 +43,8 @@ app.system.registerScript('auth/init.js');
 app.system.registerScript('auth/auth.js');
 // dashboard logic
 app.system.registerScript('dashboard/init.js');
+app.system.registerScript('dashboard/top-navbar.js');
+app.system.registerScript('dashboard/left-sidebar.js');
 app.system.registerScript('dashboard/left-sidebar.js');
 app.system.registerScript('dashboard/balance.js');
 app.system.registerScript('dashboard/transactions-unit.js');

@@ -94,6 +94,7 @@
 .modal {
   text-align: center;
   padding: 0!important;
+  background: rgba(251, 252, 253,0.7);
 }
 .modal:before {
   content: '';

@@ -224,11 +224,7 @@
     width: 100%;
     top: 0;
   }
-  .balance-block {
+  .balance-block,
+  .dashboard .currency-content {
     margin-top:60px;
-  }
-  @media screen and (max-width: 767px) {
-    .balance-block {
-      margin-top:100px;
-    }
   }

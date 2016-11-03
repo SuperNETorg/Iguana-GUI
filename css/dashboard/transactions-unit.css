@@ -91,7 +91,7 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 1.2em;
-  background: #F5F8FB;
+  background: rgb(246, 250, 255);
   border-radius: 4px;
   padding: 20px 3% 23px 3%;
   margin-bottom: 25px;
@@ -108,7 +108,7 @@
   width: 100px;
 }
 .transactions-list-repeater .item .amount {
-  width: 16%;
+  width: 22%;
   text-align: right;
   margin-right: 3%;
 }

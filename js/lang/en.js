@@ -160,6 +160,13 @@ var lang = {
       'THB': 'Thai Baht',
       'TRY': 'Turkish Lira',
       'ZAR': 'South African Rand'
+    },
+    'TIME_AGO': {
+      'MOMENT': 'Moment ago',
+      'MINUTE': 'min ago',
+      'HOURS': 'hours ago',
+      'DAY': 'day ago',
+      'DAYS': 'days ago'
     }
   }
 };

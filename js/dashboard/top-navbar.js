@@ -44,4 +44,12 @@ initTopNavBar = function () {
 };
 $(document).ready(function () {
   initTopNavBar();
+
+  $('body').scroll(function(e){
+    if ($('.main-content, .currency-content').position().top  < -270) {
+      $('#top-menu').addClass('hidden');
+    } else {
+      $('#top-menu').removeClass('hidden');
+    }
+  })
 });

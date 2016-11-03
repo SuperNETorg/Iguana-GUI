@@ -32,6 +32,8 @@
     margin-left: auto;
     margin-right: auto;
     display: block;
+    font-size: 18px;
+    font-weight: 700;
   }
   .auth-main .form-content {
     padding: 3.1em 1.6em 2em 1.6em;
@@ -47,6 +49,8 @@
   }
   .auth-main .create-account-form .generated-passhprase {
     padding: 0 35px;
+    font-size: 18px;
+    font-weight: 700;
   }
   .auth-main .form-header .title {
     padding-top: 18px;

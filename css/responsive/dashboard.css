@@ -5,7 +5,7 @@
 
 @media screen and (max-width: 1366px) {
   .dashboard .coins {
-    min-width: 200px;
+    min-width: 210px;
   }
   .dashboard .account-coins-repeater .item .coin .name:before {
     content: '';
@@ -76,6 +76,9 @@
   body .reference-currency-main .currency-content .currency-loop .country-li {
     min-width: 168px;
   }
+  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-dialog {
+    width: 600px;
+  }
 }
 
 @media (min-width: 992px) {
@@ -95,13 +98,13 @@
   body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
     clear: both;
     float: left;
-    width: 24%;
+    width: 32%;
     line-height: 44px;
   }
   body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
     float: right;
     word-wrap: break-word;
-    width: 56%;
+    width: 50%;
     font-size: 14px;
     margin-right: 25px;
     margin-left: 0;
@@ -115,6 +118,24 @@
 }
 
 @media only screen and (max-width: 768px) {
+  /* Auth */
+  body .auth-main .form-container .form-content {
+    max-width: 400px;
+  }
+  body .auth-main .form-container.create-account-form .form-content .btn:last-child {
+    position: relative;
+    margin-top: 16%;
+    margin-bottom: 0;
+  }
+  body .auth-main .form-container.verify-passphrase-form .form-content .btn:last-child {
+    position: relative;
+    margin-top: 40%;
+    margin-bottom: 0;
+  }
+  body .dashboard-main .dashboard .balance-block,
+  body .dashboard .currency-content {
+    margin-top: 120px;
+  }
   body .account-coins-repeater .item.active:after {
     display: none;
   }
@@ -133,8 +154,16 @@
   body .modal .modal-dialog .modal-header {
     min-height: 50px;
   }
-  body .modal .modal-dialog .modal-header .btn-close {
-    margin-left: 5px;
+  body .form-container .modal .modal-dialog .modal-header .btn-close,
+  body .modal .modal-dialog .modal-content .modal-header .btn-back {
+    margin-left: -8px;
+  }
+  body .modal .modal-dialog .modal-header .btn-back{
+    top: 16px;
+  }
+  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
+    top: 12px;
+    margin-left: 6px;
   }
   body .modal .modal-dialog .modal-header .title {
     font-size: 17px;
@@ -154,6 +183,7 @@
   body .modal-send-coin .modal-dialog .modal-content .send-modal {
     padding-top: 2em;
   }
+  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-dialog {}
   /*  dashboard transactions bar */
   body .transactions-unit .top-bar .active-coin-balance,
   body .transactions-unit .top-bar .active-coin-balance-currency{
@@ -175,7 +205,7 @@
   }
   body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
     clear: both;
-    width: 34%;
+    width: 40%;
     line-height: 44px;
   }
   body .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
@@ -184,7 +214,7 @@
   body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
     float: right;
     word-wrap: break-word;
-    width: 46%;
+    width: 43%;
     font-size: 14px;
     margin: 0;
   }
@@ -197,9 +227,11 @@
     margin-top: 35px;
   }
   /* Add Wallet modal */
-  body .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body,
-  body .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body{
+  body .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body {
     padding-top: 2em;
+  }
+  body .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
+    padding-top: 30%;
   }
   body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header .modal-title {
     padding-top: 5px;
@@ -207,10 +239,18 @@
   body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header {
     height: 55px;
   }
+  body .receiving-coin-content .form-header .btn-close {
+    margin-left: 0;
+  }
 }
-@media only screen and (max-width: 370px) {
+
+@media only screen and (max-width: 380px) {
   body .reference-currency-main .currency-content .currency-loop .country-li {
     display: inline-block;
     float: none;
+  }
+  body .main-content .transactions-unit {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

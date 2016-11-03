@@ -45,7 +45,7 @@ function initAuthCB() {
   // message modal
   helper.initMessageModal();
 
-  var btnSigninElementName = '.btn-signin';
+  var btnSigninElementName = '.btn-signin',
       hiddenClassName = 'hidden',
       disabledClassName = 'disabled',
       addNewCoinFormElementName = '.add-new-coin-form',
