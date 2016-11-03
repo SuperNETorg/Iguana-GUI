@@ -955,6 +955,8 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
       postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
 
+      console.log(postData);
+
   $.ajax({
     url: isIguana ? defaultIguanaServerUrl : fullUrl,
     cache: false,
@@ -969,9 +971,10 @@ apiProto.prototype.walletLogin = function(passphrase, timeout, coin, cb) {
       if (cb) cb.call(this, result, coin);
     },
     error: function(response) {
+      console.log(response);
       if (response.responseText) {
         if (response.responseText.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) result = true;
-        if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1) result = -14;
+        if (response.responseText.indexOf('Error: The wallet passphrase entered was incorrect') > -1 || response.responseText.indexOf('"code":-1') > -1) result = -14;
         if (response.responseText.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
         // if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
       } else {

@@ -18,10 +18,6 @@ angular.module('IguanaGUIApp.controllers')
       $scope.checkSession();
     }
 
-    $(document).ready(function() {
-      api.testConnection();
-    });
-
     $('body').addClass('dashboard-page');
 
     var currencyArr = [
@@ -70,4 +66,8 @@ angular.module('IguanaGUIApp.controllers')
       helper.setCurrency($scope.activeCurrency);
       helper.updateRates(null, null, null, true);
     }
+
+    $(document).ready(function() {
+      api.testConnection();
+    });
 }]);

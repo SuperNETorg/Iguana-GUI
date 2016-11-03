@@ -4,6 +4,7 @@ angular.module('IguanaGUIApp.controllers')
 .controller('loginController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
     $scope.helper = helper;
     $scope.$state = $state;
+    $scope.isIguana = isIguana;
     $scope.passphrase = '';
     $scope.coinsSelectedToAdd = {};
 
@@ -37,7 +38,6 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.toggleCoinTile = function(item) {
-
       if (!isIguana) {
         $scope.coinsSelectedToAdd = {};
       }

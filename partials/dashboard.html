@@ -47,7 +47,7 @@
         <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
           <div class="row">
             <div class="account-coins-repeater">
-              <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index, 'loading': item.loading }" ng-repeat="item in sideBarCoins | orderBy:'id'">
+              <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index, 'loading': item.loading }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
                 <div ng-include="'partials/loader.html'"></div>
                 <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
                 <div class="clickable-area" ng-click="setActiveCoin(item)">
@@ -62,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-add-coin" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang('DASHBOARD.ADD_COIN') }}</button>
+            <button class="btn btn-add-coin" ng-click="toggleLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang('DASHBOARD.ADD_COIN') }}</button>
           </div>
         </aside>
         <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading === true }">
@@ -79,7 +79,7 @@
               </div>
               <div class="action-buttons unselectable">
                 <button class="btn btn-send" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ helper.lang('DASHBOARD.SEND') }}</button>
-                <button class="btn btn-receive coinaddress btn-lg" data-toggle="modal" data-target="#myModal">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
+                <button class="btn btn-receive coinaddress btn-lg" data-toggle="modal" data-target="#myModal" ng-click="getReceiveCoinAddress()">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
               </div>
               <div class="info unselectable">
                 <i class="bi_doc-book-a"></i>
@@ -92,7 +92,7 @@
               <div class="transactions-list-repeater">
                 <div ng-include="'partials/loader.html'" ng-if="txUnit.loading"></div>
                 <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}</div>
-                <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy:'-timestampUnchanged'">
+                <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
                   <div class="status unselectable">{{ item.status }}</div>
                   <div class="amount unselectable">
                     <span class="in-out {{ item.inOut }}"></span>
@@ -125,6 +125,7 @@
     <div ng-include="'partials/send-coin-confirmation.html'" ng-hide="sendCoinStep === 1"></div>
   </div>
 </section>
+<div class="message-modal" ng-include="'partials/message-modal.html'"></div>
 <div ng-include="'partials/send-coin-passphrase.html'"></div>
 <div ng-include="'partials/receive-coin.html'"></div>
 <div ng-include="'partials/add-coin.html'"></div>

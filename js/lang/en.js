@@ -107,7 +107,7 @@ var lang = {
       'NO_REQUIRED_DAEMON_P2': 'requirements are satisfied.',
       'COPY_PASTE_IS_NOT_SUPPORTED': 'Copy/paste is not supported in your browser! Please select the passphrase manually.',
       'COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS': 'Copy/paste is not supported in your browser! Please copy address manually.',
-      'COPIED_TO_CLIPBOARD': 'copied to clipboard:',
+      'ADDRESS_COPIED_TO_CLIPBOARD': 'Address copied to clipboard:',
       'PLEASE_SELECT_A_COIN': 'Please select a coin',
       'WALLET_IS_CREATED': 'Wallet is created. Login to access it.',
       'PASSPHRASES_DONT_MATCH': 'Passphrases do not match!',

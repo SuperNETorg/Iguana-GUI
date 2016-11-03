@@ -4,6 +4,8 @@ angular.module('IguanaGUIApp.controllers')
 .controller('dashboardController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
     $scope.helper = helper;
     $scope.$state = $state;
+    $scope.isIguana = isIguana;
+    $scope.receiveCoin = { address: '', qrCode: '' }
 
     var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
@@ -25,6 +27,7 @@ angular.module('IguanaGUIApp.controllers')
 
     $(document).ready(function() {
       api.testConnection();
+      //updateDashboardView(settings.ratesUpdateTimeout);
     });
 
     // TODO: merge all dashboard data into a single object for caching
@@ -39,7 +42,8 @@ angular.module('IguanaGUIApp.controllers')
 
     var coinBalances = [],
         _sideBarCoins = {},
-        coinsSelectedByUser = [];
+        coinsSelectedByUser = [],
+        dashboardUpdateTimer;
 
     constructAccountCoinRepeater(true);
 
@@ -48,6 +52,7 @@ angular.module('IguanaGUIApp.controllers')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
+      getReceiveCoinAddress();
     }
 
     $scope.setTxUnitBalance = function(item) {
@@ -84,6 +89,8 @@ angular.module('IguanaGUIApp.controllers')
           index++;
         }
       }
+
+      if (coinsSelectedByUser.length && !$scope.activeCoin) $scope.activeCoin = coinsSelectedByUser[0];
 
       coinBalances = [];
 
@@ -148,7 +155,7 @@ angular.module('IguanaGUIApp.controllers')
           }
         }
       }
-      $scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false; // TODO: fix, breaks on portpoll
+      //$scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false; // TODO: fix, breaks on portpoll
     }
 
     function updateTotalBalance() {
@@ -287,42 +294,247 @@ angular.module('IguanaGUIApp.controllers')
       //opacityToggleOnAddCoinRepeaterScroll();
     }
 
-    /*
-
-    var defaultCurrency = '',
-        defaultCoin = '',
-        coinToCurrencyRate = 0,
-        coinsSelectedByUser = [],
-        defaultAccount,
-        ratesUpdateTimeout = settings.ratesUpdateTimeout,
-        decimalPlacesCoin = settings.decimalPlacesCoin,
-        decimalPlacesCurrency = settings.decimalPlacesCurrency,
-        decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
-        dashboardUpdateTimout = settings.dashboardUpdateTimout,
-        dashboardUpdateTimer;
-
     function updateDashboardView(timeout) {
       dashboardUpdateTimer = setInterval(function() {
         //console.clear();
         helper.checkSession();
-        if (activeCoin) defaultCoin = activeCoin.toUpperCase();
-        updateRates(null, null, null, true);
+        helper.updateRates(null, null, null, true);
         constructTransactionUnitRepeater(true);
 
         if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
       }, timeout * 1000);
     }
 
-    function getCoinData(coinId) {
-      if (supportedCoinsList[coinId]) {
-        var coinData = { 'name': supportedCoinsList[coinId].name, 'id': coinId };
-        return coinData;
-      }
+    /*
+     *  add coin modal
+     */
+    // TODO: move to service
+    $scope.passphrase = '';
+    $scope.coinsSelectedToAdd = {};
 
-      return false;
+    $scope.toggleLoginModal = function() {
+      helper.toggleModalWindow('add-coin-login-form', 300);
     }
 
-    function initDashboard() {
+    $scope.toggleAddCoinModal = function() {
+      var availableCoins = helper.addCoinButtonCB();
+      $scope.availableCoins = availableCoins;
+      $scope.wordCount = isIguana ? 24 : 12; // TODO: move to settings
+
+      /* legacy, seems to work fine */
+      helper.opacityToggleOnAddCoinRepeaterScroll();
+      $('.supported-coins-repeater').scroll(function(e) {
+        helper.opacityToggleOnAddCoinRepeaterScroll();
+      });
+      helper.bindCoinRepeaterSearch();
+    }
+
+    $scope.objLen = function(obj) {
+      return Object.keys(obj).length;
+    }
+
+    $scope.toggleCoinTile = function(item) {
+      if (!isIguana) {
+        $scope.coinsSelectedToAdd = {};
+      }
+
+      if ($scope.coinsSelectedToAdd[item.coinId]) {
+        delete $scope.coinsSelectedToAdd[item.coinId];
+      } else {
+        $scope.coinsSelectedToAdd[item.coinId] = true;
+      }
+    }
+
+    $scope.toggleAddCoinWalletCreateModal = function() {
+
+    }
+
+    $scope.loginWallet = function() {
+      // coind
+      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+      api.walletLock(coinsSelectedToAdd[0]);
+      var walletLogin = api.walletLogin($scope.passphrase, settings.defaultSessionLifetime, coinsSelectedToAdd[0]);
+
+      console.log(walletLogin);
+      if (walletLogin !== -14 && walletLogin !== -15) {
+        localstorage.setVal('iguana-' + coinsSelectedToAdd[0] + '-passphrase', { 'logged': 'yes' });
+        helper.updateRates(null, null, null, true);
+        constructAccountCoinRepeater();
+        $scope.toggleLoginModal();
+      }
+      if (walletLogin === -14) {
+        helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
+      }
+      if (walletLogin === -15) {
+        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'), 'red', true);
+      }
+    }
+
+    $scope.addCoinNext = function() {
+      if (!isIguana) {
+        helper.toggleModalWindow('add-new-coin-form', 300);
+        var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+
+        // dev only
+        if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]]) $scope.passphrase = dev.coinPW.coind[coinsSelectedToAdd[0]];
+        if (dev.isDev && isIguana && dev.coinPW.iguana) $scope.passphrase = dev.coinPW.iguana;
+      } else {
+        coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
+
+        for (var i=0; i < coinsSelectedToAdd.length; i++) {
+          if (coinsSelectedToAdd[i]) {
+            (function(x) {
+              setTimeout(function() {
+                api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
+              }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
+            })(i);
+          }
+        }
+      }
+    }
+
+    function addCoinDashboardCB(response, coin) {
+      if (response === 'coin added' || response === 'coin already there') {
+        if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
+
+        addCoinResponses.push({ 'coin': coin, 'response': response });
+        coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
+      }
+
+      var addedCoinsOutput = '',
+          failedCoinsOutput = '<br/>';
+      for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
+        if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
+          addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+          localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+        } else {
+          failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
+        }
+      }
+      addedCoinsOutput = helper.trimComma(addedCoinsOutput);
+      failedCoinsOutput = helper.trimComma(failedCoinsOutput);
+
+      helper.prepMessageModal(addedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
+    }
+
+    /*
+     *  receive coin modal
+     */
+    // TODO: directive
+    // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
+    $scope.sendCoinKeying = function() { // !! ugly !!
+      var coinRate,
+          coin = $scope.activeCoin ? $scope.activeCoin : localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0,
+          currencyCoin = $('.currency-coin'),
+          currencyObj = $('.currency');
+
+      var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
+      coinRate = helper.updateRates(coin, defaultCurrency, true);
+
+      currencyCoin.on('keyup', function () {
+        var calcAmount = $(this).val() * coinRate;
+        currencyObj.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+      });
+
+      currencyObj.on('keyup', function () {
+        var calcAmount = $(this).val() / coinRate;
+        currencyCoin.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+      });
+
+      // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
+      // allow numeric only entry
+      var currencyInput = $('.receiving-coin-content .currency-input input');
+      currencyInput.keypress(function(event) {
+        var inputCode = event.which,
+            currentValue = $(this).val();
+        if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
+          if (inputCode == 46) {
+            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+            if (currentValue.match(/[.]/)) return false;
+          }
+          else if (inputCode == 45) {
+            if (currentValue.charAt(0) == '-') return false;
+            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
+          }
+          else if (inputCode == 8) return true;
+          else return false;
+        }
+        else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
+          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
+        }
+      });
+      currencyInput.keydown(function(event) {
+        var keyCode = event.keyCode || event.which;
+
+        if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
+          event.preventDefault();
+        }
+      });
+    }
+
+    $scope.getReceiveCoinAddress = function() {
+      getReceiveCoinAddress();
+    }
+
+    function getReceiveCoinAddress() {
+      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
+      var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
+      $scope.receiveCoin.coinName = _activeCoin.toUpperCase();
+      $scope.receiveCoin.currencyName = defaultCurrency.toUpperCase();
+      $scope.receiveCoin.address = coinAccountAddress;
+      $scope.receiveCoin.addressFormatted = $scope.receiveCoin.address.match(/.{1,4}/g).join(' ')
+      $scope.receiveCoin.qrCode = $(kjua({ text: coinAccountAddress })).attr('src');
+      $scope.receiveCoin.shareUrl = 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address' +
+                                    '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address%20' + coinAccountAddress;
+    }
+
+    $scope.copyToClipboard = function() {
+      var temp = $('<input>');
+
+      $('body').append(temp);
+      //remove spaces from address
+      temp.val($('#address').text().replace(/ /g, '')).select();
+
+      try {
+        helper.prepMessageModal(helper.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
+        document.execCommand('copy');
+      } catch(err) {
+        helper.prepMessageModal(helper.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
+      }
+
+      temp.remove();
+    }
+    /*function bindReceive() {
+      var coinRate,
+          coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
+          address = api.getAccountAddress(coin, defaultAccount),
+          currencyCoin = $('.currency-coin'),
+          currencyObj = $('.currency');
+
+      currencyCoin.val('');
+      currencyObj.val('');
+      localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
+      $('.coin-unit').text(coin.toUpperCase());
+      coinRate = updateRates(coin, defaultCurrency, true);
+
+      if (address.length === 34) {
+        var splittedAddress = address.match(/.{1,4}/g).join(' ');
+        $('#address').text(splittedAddress);
+      }
+
+      $('.unit-currency').html(defaultCurrency);
+      $('.enter-in-currency').html(helper.lang('RECEIVE.ENTER_IN') + ' ' + coin.toUpperCase() + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency);
+
+
+
+      $('#qr-code').empty().
+                    qrcode(address);
+
+      $('.btn-share-email').attr('href', 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[coin].name + '%20address' +
+                                         '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[coin].name + '%20address%20' + address);
+    }*/
+
+    /*function initDashboard() {
       if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
 
       defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
@@ -524,31 +736,20 @@ angular.module('IguanaGUIApp.controllers')
       });
     }
 
-    function addCoinDashboardCB(response, coin) {
-      if (response === 'coin added' || response === 'coin already there') {
-        if (dev.isDev && dev.showSyncDebug) $('#debug-sync-info').append(coin + ' coin added<br/>');
 
-        addCoinResponses.push({ 'coin': coin, 'response': response });
-        coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
-      }
+    /*
 
-      var addedCoinsOutput = '',
-          failedCoinsOutput = '<br/>';
-      for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
-        if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
-          addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-          localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
-        } else {
-          failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-        }
-      }
-      addedCoinsOutput = helper.trimComma(addedCoinsOutput);
-      failedCoinsOutput = helper.trimComma(failedCoinsOutput);
-
-      helper.prepMessageModal(addedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + helper.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
-    }
-
-
+    var defaultCurrency = '',
+        defaultCoin = '',
+        coinToCurrencyRate = 0,
+        coinsSelectedByUser = [],
+        defaultAccount,
+        ratesUpdateTimeout = settings.ratesUpdateTimeout,
+        decimalPlacesCoin = settings.decimalPlacesCoin,
+        decimalPlacesCurrency = settings.decimalPlacesCurrency,
+        decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
+        dashboardUpdateTimout = settings.dashboardUpdateTimout,
+        dashboardUpdateTimer;
 
     // on les then 768px working this function
     function bindMobileView() {
@@ -574,91 +775,7 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    // receive coin
-    //  TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
-    function bindReceive() {
-      var coinRate,
-          coin = activeCoin || $('.account-coins-repeater .item.active').attr('data-coin-id'),
-          address = api.getAccountAddress(coin, defaultAccount),
-          currencyCoin = $('.currency-coin'),
-          currencyObj = $('.currency');
 
-      currencyCoin.val('');
-      currencyObj.val('');
-      localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      $('.coin-unit').text(coin.toUpperCase());
-      coinRate = updateRates(coin, defaultCurrency, true);
-
-      if (address.length === 34) {
-        var splittedAddress = address.match(/.{1,4}/g).join(' ');
-        $('#address').text(splittedAddress);
-      }
-
-      $('.unit-currency').html(defaultCurrency);
-      $('.enter-in-currency').html(helper.lang('RECEIVE.ENTER_IN') + ' ' + coin.toUpperCase() + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency);
-
-      currencyCoin.on('keyup', function () {
-        var calcAmount = $(this).val() * coinRate;
-        currencyObj.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
-      });
-
-      currencyObj.on('keyup', function () {
-        var calcAmount = $(this).val() / coinRate;
-        currencyCoin.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
-      });
-
-      // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
-      // allow numeric only entry
-      var currencyInput = $('.receiving-coin-content .currency-input input');
-      currencyInput.keypress(function(event) {
-        var inputCode = event.which,
-            currentValue = $(this).val();
-        if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
-          if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
-            if (currentValue.match(/[.]/)) return false;
-          }
-          else if (inputCode == 45) {
-            if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
-          }
-          else if (inputCode == 8) return true;
-          else return false;
-        }
-        else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
-        }
-      });
-      currencyInput.keydown(function(event) {
-        var keyCode = event.keyCode || event.which;
-
-        if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
-          event.preventDefault();
-        }
-      });
-
-      $('#qr-code').empty().
-                    qrcode(address);
-
-      $('.btn-share-email').attr('href', 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[coin].name + '%20address' +
-                                         '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[coin].name + '%20address%20' + address);
-    }
-
-    function copyToClipboard(element) {
-      var temp = $('<input>');
-
-      $('body').append(temp);
-      //remove spaces from address
-      temp.val($(element).text().replace(/ /g,'')).select();
-
-      try {
-        document.execCommand("copy");
-      } catch(err) {
-        helper.prepMessageModal(helper.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
-      }
-
-      temp.remove();
-    }
 
     // send to address
     var sendFormDataCopy = {};

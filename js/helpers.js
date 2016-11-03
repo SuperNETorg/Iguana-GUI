@@ -562,7 +562,7 @@ var createHelpers = function() {
           supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
         supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
         supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-        this.opacityToggleOnAddCoinRepeaterScroll();
+        //this.opacityToggleOnAddCoinRepeaterScroll();
       }
     });
   }

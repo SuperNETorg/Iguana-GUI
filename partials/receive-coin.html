@@ -11,12 +11,14 @@
             <span class="text-section text-something">Something 2</span>
           </div-->
           <div class="my-label my-address">{{ helper.lang('RECEIVE.MY_ADDRESS') }}:</div>
-          <h4 id="address"></h4>
+          <h4 id="address">{{ receiveCoin.addressFormatted }}</h4>
           <div class="buttons text-center">
-            <a data-toggle="modal" href="#messageModal" class="btn copy-btn margin-bottom pull-left" onclick="copyToClipboard('#address')">{{ helper.lang('RECEIVE.COPY') }}</a>
-            <a href="#" class="btn btn-share-email share-btn margin-bottom pull-right">{{ helper.lang('RECEIVE.SHARE') }}</a>
+            <button class="btn copy-btn margin-bottom pull-left" ng-click="copyToClipboard()">{{ helper.lang('RECEIVE.COPY') }}</button>
+            <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ helper.lang('RECEIVE.SHARE') }}</a>
           </div>
-          <div class="qr-code" id="qr-code"></div>
+          <div class="qr-code" id="qrcode">
+            <img src="{{ receiveCoin.qrCode }}" />
+          </div>
           <div class="col-xs-12">
             <div class="amount-label row">
               <span class="block amount-label-span">{{ helper.lang('RECEIVE.AMOUNT') }}:</span>
@@ -27,8 +29,8 @@
             <div class="row">
               <div class="input">
                 <div class="currency-input inner-addon right-addon">
-                  <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0">
-                  <span class="unit coin-unit glyphicon"></span>
+                  <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0" ng-model="receiveCoin.coinAmount" ng-keydown="sendCoinKeying()" />
+                  <span class="unit coin-unit glyphicon">{{ receiveCoin.coinName }}</span>
                 </div>
               </div>
               <div class="currency-input input-addon">
@@ -36,8 +38,8 @@
               </div>
               <div class="input">
                 <div class="currency-input inner-addon right-addon">
-                  <input type="text" min="0" class="crypto-currency currency" placeholder="0">
-                  <span class="unit unit-currency glyphicon"></span>
+                  <input type="text" min="0" class="crypto-currency currency" placeholder="0" ng-model="receiveCoin.currencyAmount" ng-keydown="sendCoinKeying()" />
+                  <span class="unit unit-currency glyphicon">{{ receiveCoin.currencyName }}</span>
                 </div>
               </div>
             </div>
