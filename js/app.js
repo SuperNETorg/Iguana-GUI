@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers', []);
+angular.module('IguanaGUIApp.controllers', ['ngStorage']);
+
 angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
 .service('helper', createHelpers)
 .config(function($stateProvider, $urlRouterProvider) {
@@ -10,6 +11,11 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
       url: '/login',
       templateUrl: 'partials/login.html',
       controller: 'loginController'
+    })
+    .state('create-account', {
+      url: '/create-account',
+      templateUrl: 'partials/signup.html',
+      controller: 'signupController'
     })
     .state('signup', {
       url: '/signup',

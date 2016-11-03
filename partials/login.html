@@ -14,7 +14,7 @@
           <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
           <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-signin">{{ helper.lang('LOGIN.LOGIN') }}</button>
           <div class="login-or-delim center unselectable">{{ helper.lang('LOGIN.OR') }}</div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup">{{ helper.lang('LOGIN.CREATE_ACCOUNT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup" ng-click="createAccount()">{{ helper.lang('LOGIN.CREATE_ACCOUNT') }}</button>
         </div>
       </section>
     </div>

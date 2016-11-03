@@ -2,9 +2,9 @@
   <div class="container-fluid">
     <div class="row centered">
       <!-- // create account form start -->
-      <section class="form-container create-account-form">
+      <section class="form-container create-account-form" ng-show="isShow">
         <header class="form-header orange-gradient box-shadow-bottom">
-          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"></i>
+          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="bakeToLogin()"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
         </header>
         <div class="form-content">
@@ -17,21 +17,21 @@
             <div class="generated-passhprase cursor-pointer"></div>
             <input type="text" class="generated-passhprase-hidden cursor-pointer"></input>
           </div>
-          <input type="checkbox" id="passphrase-saved-checkbox" name="passphraseSaved" class="checkbox" />
+          <input type="checkbox" id="passphrase-saved-checkbox" name="passphraseSaved" ng-model="passphraseCheckbox" class="checkbox" />
           <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer">
             <span class="box"></span><span class="label-text unselectable">{{ helper.lang('CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE') }}</span>
           </label>
           <div class="non-iguana-coins-repeater hidden"></div>
           <div class="non-iguana-coins-repeater-errors"></div>
           <div class="login-or-delim center"></div>
-          <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-verify-passphrase">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-disabled="!passphraseCheckbox" ng-click="isShow = !isShow">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
         </div>
       </section>
       <!-- // create account form end -->
       <!-- // verify passphrase form start -->
-      <section class="form-container verify-passphrase-form hidden">
+      <section class="form-container verify-passphrase-form" ng-hide="isShow">
         <header class="form-header orange-gradient box-shadow-bottom">
-          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"></i>
+          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="isShow= !isShow"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
         </header>
         <div class="form-content">

@@ -1,8 +1,12 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
-.controller('loginController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
+var app = angular.module('IguanaGUIApp.controllers');
+app.controller('loginController', ['$scope', '$http', '$state', 'helper', 'Step', function($scope, $http, $state, helper, Step) {
     $scope.helper = helper;
+
+    $scope.next = next;
+
+    $scope.createAccount = createAccount;
 
     setTimeout(function() {
       console.log(helper.checkSession());
@@ -18,5 +22,14 @@ angular.module('IguanaGUIApp.controllers')
       if (helper.checkSession(true)) {
         $state.go('dashboard');
       }
+    }
+
+    function next(){
+      var next = Step.nextStap();
+      $state.go(next);
+    }
+
+    function createAccount(){
+      $state.go('create-account');
     }
 }]);
