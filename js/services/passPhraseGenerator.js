@@ -1,6 +1,5 @@
 var app = angular.module('IguanaGUIApp.controllers');
-app.service('PassPhraseGenerator', function ($state, $localStorage) {
-
+app.service('PassPhraseGenerator', function () {
   this.seeds = 0;
   this.seedLimit = 512;
   this.passPhrase = "";
