@@ -22,7 +22,7 @@
       </button>
     </div>
     <header class="form-header orange-gradient box-shadow-bottom">
-      <i class="bi_interface-arrow-left cursor-pointer btn-back"></i>
+      <i class="bi_interface-arrow-left cursor-pointer btn-back" ng-click="$parent.sendCoin.initStep = true"></i>
       <div class="title text-shadow">{{ helper.lang('SEND.CONFIRMATION') }}</div>
     </header>
     <div class="form-content send-modal">
@@ -32,36 +32,36 @@
             <div class="headd orange-gradient">
               <div class="row">
                 <div class="col-sm-6 hd-left col-xs-6 coin">
-                  <i class="icon cc {{ coin_id }}-alt"></i>
-                  <span class="name">{{ coin_name }}</span>
+                  <i class="icon cc {{ $parent.sendCoin.coinId }}-alt"></i>
+                  <span class="name">{{ $parent.sendCoin.coinName }}</span>
                 </div>
                 <div class="col-sm-6 hd-right col-xs-6 balance">
-                  <span class="balance-coin"><span class="value">{{ coin_value }}</span> <span class="name">{{ coin_id }}</span></span>
-                  <p class="rs balance-currency"><span class="value">{{ currency_value }}</span> <span class="name">{{ currency }}</span></p>
+                  <span class="balance-coin"><span class="value">{{ $parent.sendCoin.coinValue }}</span> <span class="name">{{ $parent.sendCoin.coinId }}</span></span>
+                  <p class="rs balance-currency"><span class="value">{{ $parent.sendCoin.currencyValue }}</span> <span class="name">{{ $parent.sendCoin.currency }}</span></p>
                 </div>
               </div>
             </div>
             <div class="pop-form">
               <div class="pop-detail send check">
                 <h4>{{ helper.lang('SEND.SEND_TO') }}:</h4>
-                <p>{{ tx_coin_address }}</p>
+                <p>{{ $parent.sendCoin.address }}</p>
               </div>
               <div class="pop-detail crncy chk-crncy crncy-rs">
                 <h4>{{ helper.lang('RECEIVE.AMOUNT') }}:</h4>
-                  <h3>{{ tx_coin_amount }} {{ coin_id }}</h3>
-                  <h5>or {{ tx_coin_amount_currency }} {{ currency }}</h5>
+                  <h3>{{ $parent.sendCoin.amount }} {{ $parent.sendCoin.coinId }}</h3>
+                  <h5>or {{ $parent.sendCoin.amountCurrency }} {{ $parent.sendCoin.currency }}</h5>
                 </div>
                 <div class="pop-detail crncy chk-crncy crncy-fee">
                   <h4>{{ helper.lang('SEND.FEE_PER_KB') }}:</h4>
-                  <h3>{{ tx_coin_fee_value }} {{ coin_id }}</h3>
-                  <h5>{{ helper.lang('LOGIN.OR') }} {{ tx_coin_fee_currency }} {{ currency }}</h5>
+                  <h3>{{ $parent.sendCoin.fee }} {{ $parent.sendCoin.coinId }}</h3>
+                  <h5>{{ helper.lang('LOGIN.OR') }} {{ $parent.sendCoin.feeCurrency }} {{ currency }}</h5>
                 </div>
                 <div class="pop-detail pay-dtl">
                   <h4>{{ helper.lang('SEND.FEE_PER_KB') }}: </h4>
-                  <p>{{ tx_note }}</p>
+                  <p>{{ $parent.sendCoin.note }}</p>
                 </div>
                 <h4>{{ helper.lang('SEND.THE_FINAL_AMOUNT') }}.</h4>
-                <button class="btn-confirm-tx orange-gradient">{{ helper.lang('SEND.SEND') }} {{ tx_total }} {{ coin_id }}</button>
+                <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ helper.lang('SEND.SEND') }} {{ $parent.sendCoin.amount }} {{ $parent.sendCoin.coinId }}</button>
               </div>
             </div>
           </div>

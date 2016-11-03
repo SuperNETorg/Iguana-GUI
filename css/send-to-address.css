@@ -209,6 +209,9 @@
   ! not going to work in IE,
     TODO: gracefull fallback(?) !
 */
+.send-coin-form .modal:before { /* temp fix */
+  position: absolute;
+}
 .send-modal.blur {
   -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
   filter: blur(2px);
