@@ -105,6 +105,9 @@
 .account-coins-repeater .item.active .coin .name {
   color: #fff;
 }
+.account-coins-repeater .item.active .clickable-area {
+  pointer-events: none;
+}
 .account-coins-repeater .item.active {
   cursor: default;
   color: #fff;

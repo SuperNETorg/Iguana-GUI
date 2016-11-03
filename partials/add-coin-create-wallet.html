@@ -9,6 +9,10 @@
       <div class="form-content">
         <div class="login-add-coin-selection">
           <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ helper.lang('LOGIN.SELECT_A_WALLET') }}</div>
+          <!-- TODO: add repeater -->
+          <div>
+            <br/><span class="small">{{ item }}</span>
+          </div>
         </div>
         <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') }} {{ word_count }}-{{}} helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') }} <strong>{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') }}</strong></div>
         <div class="passphrase-container row center offset-bottom-md">
@@ -28,7 +32,7 @@
     </section>
     <!-- // create account form end -->
     <!-- // verify passphrase form start -->
-    <section class="verify-passphrase-form hidden">
+    <section class="verify-passphrase-form">
       <header class="form-header orange-gradient box-shadow-bottom">
         <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"></i>
         <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
@@ -45,3 +49,4 @@
     <!-- // verify passphrase form end -->
   </div>
 </section>
+<div class="message-modal" ng-include="'partials/message-modal.html'"></div>

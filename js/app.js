@@ -18,14 +18,14 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
       controller: 'signupController'
     })
     .state('signup', {
-      url: '/signup',
       templateUrl: 'partials/signup.html',
-      controller: 'signupController'
+      controller: 'loginController' // TODO: split, move to signupController
+    })
+    .state('signup.passphrase', {
+      url: '/signup',
     })
     .state('signup.verify', {
-      url: '/signup-verify',
-      templateUrl: 'partials/signup.html',
-      controller: 'createAccountController'
+      url: '/verify',
     })
     .state('dashboard', {
       url: '/dashboard',
@@ -40,3 +40,5 @@ angular.module('IguanaGUIApp', ['ui.router', 'IguanaGUIApp.controllers'])
 
   $urlRouterProvider.otherwise('/login');
 });
+
+// TODO: check session on before state change
