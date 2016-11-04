@@ -103,6 +103,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
                          replace('{{ status_class }}', txCategory).
                          replace('{{ confs }}', transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a').
                          replace('{{ in_out }}', txIncomeOrExpenseFlag).
+                         replace('{{ style }}', (txAmount.toString().length > 8 ? 'style="font-size: 14px"' : '')).
                          replace('{{ amount }}', txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount)).
                          replace('{{ timestamp_format }}', 'timestamp-multi').
                          replace('{{ coin }}', coinName.toUpperCase()).
@@ -133,7 +134,7 @@ function constructTransactionUnitRepeaterCB(response, update) {
         $(txUnitRepeaterClass).prepend(prependContent);
       }
 
-      helperProto.prototype.timeago();
+      helperProto.prototype.timeAgo();
     }
 
     applyDashboardResizeFix();

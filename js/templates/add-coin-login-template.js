@@ -9,7 +9,7 @@ templates.registerTemplate('addCoinLogin',
 '<section class="form-container mdl add-coin-login-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login-form login-form" role="document">' +
-    '<div class="modal-dialog modal-popup">' +
+    '<div class="modal-dialog modal-lg modal-popup">' +
       '<div class="modal-content">' +
         '<header class="modal-header orange-gradient box-shadow-bottom">' +
           '<i class="bi_interface-cross cursor-pointer btn-close"></i>' +

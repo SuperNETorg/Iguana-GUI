@@ -7,13 +7,9 @@
     z-index: 1000;
   }
   .modal-add-coin-login {
-    width: 375px;
-    height: 320px;
-    margin: 0 auto;
     display: block;
     border-radius: 4px;
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
-    transform: translateY(80%);
   }
   textarea {
     width: 100%;
@@ -24,6 +20,7 @@
     font-family: 'Proxima Nova', sans-serif;
     font-weight: 600;
     font-size: 1.16em;
+    resize: none;
   }
   textarea.error {
     border: solid 1px #FF0000;
@@ -32,9 +29,10 @@
     text-align: center;
   }
   .offset-bottom-sm {
+    display: block;
     margin: 0 auto;
-    margin-bottom: 15px;
-    width: 264px;
+    margin-bottom: 24px;
+    max-width: 420px;
   }
   .offset-bottom-md {
     margin: 0 auto;
@@ -46,6 +44,5 @@
     margin-left: 0;
   }
   .modal-add-coin-login .form-content {
-    margin-top: 60px;
     padding: 25px;
   }

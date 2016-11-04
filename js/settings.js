@@ -21,7 +21,7 @@ var _settings = {
   iguanaNullReturnCountLogoutTimeout: 10, // sec
   addCoinInfoModalTimeout: 5, // sec
   addCoinTimeout: 2, // sec
-  thresholdTimeago: {
+  thresholdTimeAgo: {
     day: 10
   }
 };

@@ -218,3 +218,13 @@
   .right-addon input {
     padding-right: 30px;
   }
+  .navbar-inverse {
+    z-index: 1000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+  }
+  .balance-block,
+  .dashboard .currency-content {
+    margin-top:60px;
+  }
