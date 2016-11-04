@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
-angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', /*'ngStorage',*/ 'IguanaGUIApp.controllers'])
+angular.module('IguanaGUIApp.controllers', []);
+angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'IguanaGUIApp.controllers'])
 .service('helper', createHelpers)
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', function($scope, $http, $state, helper, passPhraseGenerator) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
@@ -28,6 +28,12 @@ angular.module('IguanaGUIApp.controllers')
     $(document).ready(function() {
       api.testConnection();
       //updateDashboardView(settings.ratesUpdateTimeout);
+    });
+
+    applyDashboardResizeFix();
+
+    $(window).resize(function() {
+      applyDashboardResizeFix();
     });
 
     // TODO: merge all dashboard data into a single object for caching
@@ -337,7 +343,6 @@ angular.module('IguanaGUIApp.controllers')
       if (!isIguana) {
         $scope.coinsSelectedToAdd = {};
       }
-
       if ($scope.coinsSelectedToAdd[item.coinId]) {
         delete $scope.coinsSelectedToAdd[item.coinId];
       } else {
@@ -345,8 +350,43 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    $scope.toggleAddCoinWalletCreateModal = function() {
+    $scope.toggleAddCoinWalletCreateModal = function(initOnly) {
+      $scope.addCoinCreateAccount = { passphrase: passPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4),
+                                      wordCount: 12,
+                                      passphraseSavedCheckbox: false,
+                                      passphraseVerify: '',
+                                      initStep: true,
+                                      copyToClipboardNotSupported: false };
 
+      if (!initOnly) helper.toggleModalWindow('add-coin-create-wallet-form', 300);
+    }
+
+    $scope.copyPassphrase = function() {
+      $scope.addCoinCreateAccount.copyToClipboardNotSupported = helper.addCopyToClipboardFromElement('.generated-passhprase', helper.lang('LOGIN.PASSPHRASE'));
+    }
+
+    $scope.encryptCoindWallet = function() {
+      encryptCoindWallet();
+    }
+
+    function encryptCoindWallet(modalClassName) {
+      var addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form';
+
+      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+
+      if ($scope.addCoinCreateAccount.passphrase === $scope.addCoinCreateAccount.passphraseVerify) {
+        var walletEncryptResponse = api.walletEncrypt($scope.addCoinCreateAccount, coinsSelectedToAdd[0]);
+
+        if (walletEncryptResponse !== -15) {
+          helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
+          helper.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + helper.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+        } else {
+          helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
+          helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+        }
+      } else {
+        helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+      }
     }
 
     $scope.loginWallet = function() {
@@ -508,6 +548,7 @@ angular.module('IguanaGUIApp.controllers')
      *  send coin modal
      */
     $scope.sendCoin = { initStep: true,
+                        success: false,
                         address: '',
                         amount: 0,
                         amountCurrency: 0,
@@ -604,12 +645,9 @@ angular.module('IguanaGUIApp.controllers')
 
     $scope.validateSendCoinForm = function() {
       if (validateSendCoinForm()) {
-        console.log('valid');
         $scope.sendCoin.amountCurrency = ($scope.sendCoin.currencyRate * $scope.sendCoin.amount).toFixed(helper.decimalPlacesFormat($scope.sendCoin.currencyRate * $scope.sendCoin.amount).currency);
         $scope.sendCoin.feeCurrency = ($scope.sendCoin.currencyRate * $scope.sendCoin.fee).toFixed(helper.decimalPlacesFormat($scope.sendCoin.currencyRate * $scope.sendCoin.fee).currency);
         $scope.sendCoin.initStep = false;
-      } else {
-        console.log('invalid');
       }
     }
 
@@ -726,10 +764,7 @@ angular.module('IguanaGUIApp.controllers')
       var sendTxResult = api.sendToAddress($scope.activeCoin, txDataToSend);
 
       if (sendTxResult.length === 64) {
-        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
-        $scope.toggleSendCoinModal();
-        // trigger success overlay
-        console.log('success');
+        $scope.sendCoin.success = true;
       } else {
         // go to an error step
         helper.prepMessageModal(helper.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
@@ -739,276 +774,7 @@ angular.module('IguanaGUIApp.controllers')
       if (setTxFeeResult) api.setTxFee($scope.activeCoin, 0);
     }
 
-           /* helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
-
-            if (dev.isDev && dev.coinPW.coind[coinData.id]) {
-              $(sendConfirmPassphraseClass + ' ' + passphraseElement).val(dev.coinPW.coind[coinData.id]);
-              $(sendConfirmPassphraseClass + ' .btn-add-wallet').removeClass(disabledClassName);
-            } else {
-              $('.login-form-modal ' + passphraseElement).val('');
-              $(sendConfirmPassphraseClass + ' .btn-add-wallet').addClass(disabledClassName);
-            }
-
-            $(sendConfirmPassphraseClass + ' .btn-close,' + sendConfirmPassphraseClass + ' .modal-overlay').click(function() {
-              helper.toggleModalWindow(sendConfirmPassphraseClass.replace('.', ''), 300);
-            });
-
-            $(sendConfirmPassphraseClass + ' .btn-add-wallet').click(function() {
-              var coindWalletLogin = api.walletLogin($(sendConfirmPassphraseClass + ' ' + passphraseElement).val(), settings.defaultWalletUnlockPeriod, coinData.id);
-
-              if (coindWalletLogin !== -14) {
-                helper.toggleModalWindow(sendConfirmPassphraseClass.replace('.', ''), 300);
-                execSendCoinCall();
-              } else {
-                helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
-              }
-            });
-          } else {
-            execSendCoinCall();
-          }
-
-          function execSendCoinCall() {
-            var setTxFeeResult = false;
-
-            if (Number(sendFormDataCopy.fee) !== Number(coinsInfo[coinData.id].relayFee) && Number(sendFormDataCopy.fee) !== 0.00001 && Number(sendFormDataCopy.fee) !== 0) {
-              setTxFeeResult = api.setTxFee(coinData.id, sendFormDataCopy.fee);
-            }
-
-            var sendTxResult = api.sendToAddress(coinData.id, txDataToSend);
-
-            if (sendTxResult.length === 64) {
-              // go to success step
-              $(sendCoinFormClass + ' .rs_modal').addClass('blur');
-              $(sendCoinFormClass + ' .send-coin-success-overlay').removeClass('hidden');
-
-              $(sendCoinFormClass + ' .btn-confirmed').click(function() {
-                helper.toggleModalWindow(sendCoinFormClass.replace('.', ''), 300);
-              });
-            } else {
-              // go to an error step
-              helper.prepMessageModal(helper.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
-            }
-
-            // revert pay fee
-            if (setTxFeeResult) api.setTxFee(coinData.id, 0);
-          }*/
-
-    /*function initDashboard() {
-      if (localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id) activeCoin = localstorage.getVal('iguana-active-coin').id;
-
-      defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-
-      // load templates
-      if (!isIguana) {
-        templates.all.addCoin = templates.all.addCoin.replace(helper.lang('ADD_COIN.ADDING_A_NEW_COIN'), helper.lang('DASHBOARD.ADDING_A_NEW_WALLET')).
-                                              replace(helper.lang('ADD_COIN.SELECT_COINS_TO_ADD'), helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
-      }
-
-      templates.all.addCoinLogin = templates.all.addCoinLogin.replace('{{ modal_title }}', isIguana ? helper.lang('LOGIN.ADD_COIN') : helper.lang('LOGIN.ADD_WALLET')).
-                                                      replace('{{ cta_title }}', isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD')).
-                                                      replace('{{ word_count }}', isIguana ? 24 : 12).
-                                                      replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_COIN')).
-                                                      replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
-      templates.all.addCoinCreateWallet = templates.all.addCoinCreateWallet.replace('{{ word_count }}', isIguana ? 24 : 12); // TODO: global
-
-      $('body').append(templates.all.addCoin).
-                append(templates.all.sendCoinPassphrase).
-                append(templates.all.receiveCoin).
-                append(templates.all.addCoinLogin).
-                append(templates.all.addCoinCreateWallet);
-
-      // message modal
-      helper.initMessageModal();
-      helper.prepMessageModal(helper.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue');
-
-      if (!isIguana) $('.btn-add-coin').html(helper.lang('PASSPHRASE_MODAL.ADD_A_WALLET'));
-      if (activeCoin) defaultCoin = activeCoin.toUpperCase();
-
-      $('.dashboard').removeClass('hidden');
-
-      updateRates(null, null, null, true);
-      constructAccountCoinRepeater(true);
-      updateDashboardView(dashboardUpdateTimout);
-
-      var topMenuItem = $('.top-menu .item')
-          activeClassName = 'active';
-      topMenuItem.click(function() {
-        topMenuItem.each(function(index, item) {
-          $(this).removeClass(activeClassName);
-        });
-
-        $(this).addClass(activeClassName);
-        helper.openPage($(this).attr('data-url'));
-      });
-
-      $('.lnk-logout').click(function() {
-        helper.logout();
-      });
-
-      //if (!isIguana && !dev.isDev) $('.lnk-logout').hide();
-      var addCoinLoginClass = '.add-coin-login-form',
-          addNewCoinFormClass = '.add-new-coin-form',
-          loginFormClass = '.login-form-modal',
-          addCoinCreateClass = '.add-coin-create-wallet-form',
-          passphraseElName = '#passphrase',
-          disabledClassName = 'disabled',
-          hiddenClassName = 'hidden';
-
-      $('.btn-add-coin').click(function() {
-        if (isIguana) {
-          addCoinButtonCB();
-          var addNewCoinForm = $('.add-new-coin-form .btn-next');
-          addNewCoinForm.off();
-          addNewCoinForm.click(function() {
-            coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-
-            for (var i=0; i < coinsSelectedToAdd.length; i++) {
-              if (coinsSelectedToAdd[i]) {
-                (function(x) {
-                  setTimeout(function() {
-                    api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
-                  }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
-                })(i);
-              }
-            }
-          });
-        } else {
-          //addCoinButtonCB();
-          initAuthCB();
-          coinsSelectedToAdd = [];
-          $(addCoinLoginClass + ' .login-add-coin-selection-title').html(helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD'));
-          $(addCoinLoginClass + ' ' + passphraseElName).val('');
-          $(addCoinLoginClass + ' .btn-signin').addClass(disabledClassName);
-          $(addCoinLoginClass + ' ' + passphraseElName).keyup(function() {
-            if ($(addCoinLoginClass + ' ' + passphraseElName).val().length > 0 && helper.reindexAssocArray(coinsSelectedToAdd)[0]) {
-              $(addCoinLoginClass + ' .btn-signin').removeClass(disabledClassName);
-            } else {
-              $(addCoinLoginClass + ' .btn-signin').addClass(disabledClassName);
-            }
-          });
-          helper.toggleModalWindow(addCoinLoginClass.replace('.', ''), 300);
-        }
-      });
-
-      $(addCoinLoginClass + '.btn-signup').click(function() {
-        var addCoinCreateVerifyClass = addCoinCreateClass + ' .verify-passphrase-form';
-
-        if (!coinsSelectedToAdd || !coinsSelectedToAdd[0]) {
-          helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_WALLET'), 'blue', true);
-        } else {
-          $(addCoinCreateVerifyClass + ' #passphrase').val('');
-          $(addCoinCreateVerifyClass).addClass(hiddenClassName);
-          $(addCoinCreateClass + ' .create-account-form').removeClass(hiddenClassName);
-
-          helper.toggleModalWindow(addCoinCreateClass.replace('.', ''), 300);
-
-          coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-
-          if (coinsSelectedToAdd[0]) {
-            $(addCoinCreateClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
-          }
-          initAuthCB();
-          $(addCoinCreateClass + ' .login-add-coin-selection-title').click(function() {
-            addCoinButtonCB();
-          });
-          $(addCoinCreateClass + ' .btn-close,' + addCoinCreateClass + ' .modal-overlay').click(function() {
-            helper.toggleModalWindow(addCoinCreateClass.replace('.', ''), 300);
-          });
-          $(addCoinCreateVerifyClass + ' .btn-back').off();
-          $(addCoinCreateVerifyClass + ' .btn-back').click(function() {
-            $(addCoinCreateVerifyClass).addClass(disabledClassName);
-            $(addCoinCreateClass + ' .create-account-form').removeClass(disabledClassName);
-          });
-          $(addCoinCreateVerifyClass + ' .btn-add-account').off();
-          $(addCoinCreateVerifyClass + ' .btn-add-account').click(function() {
-            encryptCoindWallet('add-coin-create-wallet-form .verify-passphrase-form');
-          });
-        }
-      });
-      $(addCoinLoginClass + ' .login-add-coin-selection-title').click(function() {
-        addCoinButtonCB();
-
-        $(addNewCoinFormClass + ' .btn-next').off();
-        $(addNewCoinFormClass + ' .btn-next').click(function() {
-          coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-
-          if (coinsSelectedToAdd[0]) {
-            $(addNewCoinFormClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
-          }
-          // coind
-          coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
-          helper.toggleModalWindow(addNewCoinFormClass.replace('.', ''), 300);
-
-          var verifyPassphraseFormClass = '.verify-passphrase-form';
-
-          if (dev.isDev && dev.coinPW.coind[coinsSelectedToAdd[0]]) {
-            $(addCoinLoginClass + ' ' + passphraseElName).val(dev.coinPW.coind[coinsSelectedToAdd[0]]);
-            $(addCoinLoginClass + ' .btn-signin').removeClass(disabledClassName);
-          } else {
-            $(addCoinLoginClass + ' ' + passphraseElName).val('');
-            $(addCoinLoginClass + ' .btn-signin').addClass(disabledClassName);
-          }
-          $(verifyPassphraseFormClass + ' ' + passphraseElName).keyup(function() {
-            if ($(verifyPassphraseFormClass + ' ' + passphraseElName).val().length > 0) {
-              $('.btn-add-account').removeClass(disabledClassName);
-            } else {
-              $('.btn-btn-add-account').addClass(disabledClassName);
-            }
-          });
-          $(addCoinLoginClass + ' .btn-signin').off();
-          $(addCoinLoginClass + ' .btn-signin').click(function() {
-            authAllAvailableCoind(addCoinLoginClass.replace('.', ''));
-          });
-        });
-      });
-      $('.btn-receive').click(function(){
-         bindReceive();
-      });
-      $('.transactions-unit .btn-send').click(function() {
-        sendCoinModalInit();
-      });
-
-      // modals
-      // add coin
-      $(addCoinLoginClass + ' .btn-close,' + addCoinLoginClass + ' .modal-overlay').click(function() {
-        helper.toggleModalWindow(addCoinLoginClass.replace('.', ''), 300);
-        coinsSelectedToAdd = [];
-        $('body').removeClass('modal-open');
-      });
-      // add coin selector modal
-      $(addNewCoinFormClass + ' .btn-close,' + addNewCoinFormClass + ' .modal-overlay').click(function() {
-        helper.toggleModalWindow(addNewCoinFormClass.replace('.', ''), 300);
-        coinsSelectedToAdd = [];
-        $('.supported-coins-repeater-inner').html(constructCoinRepeater());
-        bindClickInCoinRepeater();
-      });
-      // add coin passphrase
-      $(loginFormClass + ' .btn-close,' + loginFormClass + ' .modal-overlay').click(function() {
-        helper.toggleModalWindow(loginFormClass.replace('.', ''), 300);
-      });
-
-      bindCoinRepeaterSearch();
-      applyDashboardResizeFix();
-
-      $(window).resize(function() {
-        applyDashboardResizeFix();
-      });
-    }
-
-
     /*
-
-    var defaultCurrency = '',
-        defaultCoin = '',
-        coinToCurrencyRate = 0,
-        coinsSelectedByUser = [],
-        defaultAccount,
-        ratesUpdateTimeout = settings.ratesUpdateTimeout,
-        decimalPlacesCoin = settings.decimalPlacesCoin,
-        decimalPlacesCurrency = settings.decimalPlacesCurrency,
-        decimalPlacesTxUnit = settings.decimalPlacesTxUnit,
-        dashboardUpdateTimout = settings.dashboardUpdateTimout,
-        dashboardUpdateTimer;
 
     // on les then 768px working this function
     function bindMobileView() {
@@ -1031,124 +797,6 @@ angular.module('IguanaGUIApp.controllers')
         coins.removeAttr('style');
         item.addClass('hidden-after');
         transactionsUnit.css('margin-left', '0');
-      }
-    }
-
-
-
-    // send to address
-    var sendFormDataCopy = {};
-
-    function sendCoinModalInit(isBackTriggered) {
-      var templateToLoad = templates.all.sendCoinEntry,
-          activeCoin = $('.account-coins-repeater .item.active').attr('data-coin-id'),
-          coinData = getCoinData(activeCoin),
-          activeCoinBalanceCoin = Number($('.account-coins-repeater .item.active .balance .coin-value .val').html()),
-          activeCoinBalanceCurrency = Number($('.account-coins-repeater .item.active .balance .currency-value .val').html()),
-          currentCoinRate = updateRates(coinData.id, defaultCurrency, true);
-
-      // prep template
-      templateToLoad = templateToLoad.
-                       replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
-                       replace('{{ coin_name }}', coinData.name).
-                       replace(/{{ currency }}/g, defaultCurrency).
-                       replace('{{ coin_value }}', activeCoinBalanceCoin).
-                       replace('{{ currency_value }}', activeCoinBalanceCurrency).
-                       replace('{{ address }}', isBackTriggered ? sendFormDataCopy.address || '' : '').
-                       replace('{{ amount }}', isBackTriggered ? sendFormDataCopy.amount || 0 : '').
-                       replace('{{ fee }}', isBackTriggered ? sendFormDataCopy.fee || 0 : coinsInfo[coinData.id].relayFee || 0.00001).
-                       replace('{{ fee_currency }}', isBackTriggered ? sendFormDataCopy.feeCurrency || 0 : (coinsInfo[coinData.id].relayFee || 0.00001 * currentCoinRate).toFixed(8)).
-                       replace('{{ note }}', isBackTriggered ? sendFormDataCopy.note || '' : '');
-
-      var modalSendCoinClass = '.modal-send-coin';
-      $(modalSendCoinClass).html(templateToLoad);
-
-      if (!currentCoinRate) {
-        $(modalSendCoinClass + ' .tx-amount-currency').val(0);
-        $(modalSendCoinClass + ' .tx-fee-currency').val(0);
-        $(modalSendCoinClass + ' .tx-amount-currency').attr('disabled', true);
-        $(modalSendCoinClass + ' .tx-fee-currency').attr('disabled', true);
-      }
-
-      // dev
-       if (dev.isDev) loadTestSendData(coinData.id);
-
-      var sendCoinParentClass = '.send-coin-form';
-      if (!isBackTriggered) helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
-      // btn close
-      $(sendCoinParentClass + ' .btn-close,' + sendCoinParentClass + ' .modal-overlay').click(function() {
-        helper.toggleModalWindow(sendCoinParentClass.replace('.', ''), 300);
-      });
-      // btn next
-      $(modalSendCoinClass + ' .btn-next').click(function() {
-        // copy send coin data entered by a user
-        sendFormDataCopy = { address: $(modalSendCoinClass + ' .tx-address').val(),
-                             amount: $(modalSendCoinClass + ' .tx-amount').val(),
-                             amountCurrency: $(modalSendCoinClass + ' .tx-amount-currency').val(),
-                             fee: $(modalSendCoinClass + ' .tx-fee').val(),
-                             feeCurrency: $(modalSendCoinClass + ' .tx-fee-currency').val(),
-                             note: $(modalSendCoinClass + ' .tx-note').val() };
-
-        sendCoinModalConfirm();
-      });
-    }
-
-    function sendCoinModalConfirm() {
-      if (validateSendCoinForm()) {
-        var templateToLoad = templates.all.sendCoinConfirmation,
-            sendCoinFormClass = '.send-coin-form';
-            accountCoinsRepeaterActive = '.account-coins-repeater .item.active';
-            activeCoin = $(accountCoinsRepeaterActive).attr('data-coin-id'),
-            coinData = getCoinData(activeCoin),
-            activeCoinBalanceCoin = Number($(accountCoinsRepeaterActive + ' .balance .coin-value .val').html()),
-            activeCoinBalanceCurrency = Number($(accountCoinsRepeaterActive + ' .balance .currency-value .val').html()),
-            txAddress = $(sendCoinFormClass + ' .tx-address').val(),
-            txAmount = $(sendCoinFormClass + ' .tx-amount').val(),
-            txAmountCurrency = $(sendCoinFormClass + ' .tx-amount-currency').val(),
-            txFee = $(sendCoinFormClass + ' .tx-fee').val(),
-            txFeeCurrency = $(sendCoinFormClass + ' .tx-fee-currency').val(),
-            txNote = $(sendCoinFormClass + ' .tx-note').val();
-
-        // prep template
-        templateToLoad = templateToLoad.
-                         replace(/{{ coin_id }}/g, coinData.id.toUpperCase()).
-                         replace('{{ coin_name }}', coinData.name).
-                         replace(/{{ currency }}/g, defaultCurrency).
-                         replace('{{ coin_value }}', activeCoinBalanceCoin).
-                         replace('{{ currency_value }}', activeCoinBalanceCurrency).
-                         replace('{{ tx_coin_address }}', txAddress).
-                         replace('{{ tx_coin_amount }}', txAmount).
-                         replace('{{ tx_coin_amount_currency }}', txAmountCurrency).
-                         replace(/{{ tx_coin_fee_value }}/g, txFee).
-                         replace('{{ tx_coin_fee_currency }}', txFeeCurrency).
-                         replace('{{ tx_note }}', txNote).
-                         replace('{{ tx_total }}', txAmount);
-
-        $('.modal-send-coin').html(templateToLoad);
-
-        // btn back
-        $(sendCoinFormClass + ' .btn-back').click(function() {
-          sendCoinModalInit(true);
-        });
-
-        $('.btn-confirm-tx').click(function() {
-          var txDataToSend = { address: txAddress,
-                               amount: txAmount,
-                               note: txNote };
-
-          if (!isIguana) {
-            var sendConfirmPassphraseClass = '.send-coin-confirm-passphrase'
-                passphraseElement = '#passphrase',
-                disabledClassName = 'disabled';
-            // TODO: ugly, rewrite
-            $('.modal-append-container').html(templates.all.sendCoinPassphrase.
-                                              replace('login-form-modal', 'send-coin-confirm-passphrase').
-                                              replace('>Add<', '>Ok<').
-                                              replace('Add a wallet', 'Wallet passphrase').
-                                              replace('to add wallet', 'to confirm transaction'));
-
-
-        });
       }
     }
 

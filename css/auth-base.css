@@ -185,11 +185,11 @@
   border: solid 2px #C7CCD0;
   border-radius: 4px;
 }
-.auth-main input[type='checkbox']:checked + label .box {
+.auth-main input[type='checkbox'].checked + label .box {
   background: #FE450D;
   border-color: #FE450D;
 }
-.auth-main input[type='checkbox']:checked + label .box:before {
+.auth-main input[type='checkbox'].checked + label .box:before {
   content: '\eb23';
   font-family: 'budicon';
   font-weight: bold;

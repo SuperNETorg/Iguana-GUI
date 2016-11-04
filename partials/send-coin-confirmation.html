@@ -15,9 +15,9 @@
         </div>
       </button>
     </div-->
-    <div class="send-coin-success-overlay hidden">
+    <div class="send-coin-success-overlay" ng-class="{ 'hidden': !$parent.sendCoin.success }">
       <div class="send-coin-status">{{ helper.lang('SEND.TRANSACTION_IS_SENT') }}.<br/>{{ helper.lang('SEND.CHECK_THE_STATUS') }}.</div>
-      <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed">
+      <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed" ng-click="toggleSendCoinModal()">
         <i class="bi_interface-tick cursor-pointer"></i>
       </button>
     </div>

@@ -77,21 +77,20 @@ var createHelpers = function() {
   }
 
   this.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
-    var hiddenElementId = 'hidden';
+    var hiddenElementId = 'hidden',
+        isExecCopyFailed = false;
 
-    $(elementId).off();
-    $(elementId).click(function() {
-      if (!isExecCopyFailed)
-        try {
-          $(elementId + '-' + hiddenElementId).select();
-          document.execCommand('copy');
-          this.prepMessageModal(elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + $(elementId + '-' + hiddenElementId).val(), 'blue', true);
-          pasteTextFromClipboard = $(elementId + '-' + hiddenElementId).val();
-        } catch(e) {
-          isExecCopyFailed = true;
-          this.prepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
-        }
-    });
+    try {
+      $(elementId + '-' + hiddenElementId).select();
+      document.execCommand('copy');
+      this.prepMessageModal(elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + $(elementId + '-' + hiddenElementId).val(), 'blue', true);
+      pasteTextFromClipboard = $(elementId + '-' + hiddenElementId).val();
+    } catch(e) {
+      isExecCopyFailed = true;
+      this.prepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
+    }
+
+    return isExecCopyFailed;
   }
 
   this.setCurrency = function(currencyShortName) {

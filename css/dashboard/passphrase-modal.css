@@ -3,49 +3,55 @@
  *
  */
 
-  .login-form-modal {
-    z-index: 1000;
-  }
-  .modal-add-coin-login {
-    width: 375px;
-    height: 320px;
-    margin: 0 auto;
-    display: block;
-    border-radius: 4px;
-    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
-    transform: translateY(80%);
-  }
-  textarea {
-    width: 100%;
-    height: 120px;
-    border-radius: 4px;
-    border: solid 1px #C7CCD0;
-    padding: 10px 12px;
-    font-family: 'Proxima Nova', sans-serif;
-    font-weight: 600;
-    font-size: 1.16em;
-  }
-  textarea.error {
-    border: solid 1px #FF0000;
-  }
-  .center {
-    text-align: center;
-  }
-  .offset-bottom-sm {
-    margin: 0 auto;
-    margin-bottom: 15px;
-    width: 264px;
-  }
-  .offset-bottom-md {
-    margin: 0 auto;
-    margin-bottom: 30px;
-  }
-  .modal-add-coin-login .form-content .row {
-    width: 99%;
-    margin-right: 0;
-    margin-left: 0;
-  }
-  .modal-add-coin-login .form-content {
-    margin-top: 60px;
-    padding: 25px;
-  }
+.login-form-modal {
+  z-index: 2000;
+}
+.login-form-modal .modal:before { /* temp fix */
+  position: absolute;
+}
+.modal-add-coin-login {
+  width: 375px;
+  height: 320px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  transform: translateY(80%);
+}
+.modal-add-coin-login textarea {
+  width: 100%;
+  height: 140px;
+  border-radius: 4px;
+  border: solid 1px #C7CCD0;
+  padding: 10px 12px;
+  font-family: 'Proxima Nova', sans-serif;
+  font-weight: 600;
+  font-size: 1.16em;
+}
+.modal-add-coin-login textarea.error {
+  border: solid 1px #FF0000;
+}
+.modal-add-coin-login .center {
+  text-align: center;
+}
+.modal-add-coin-login .offset-bottom-sm {
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+.modal-add-coin-login .offset-bottom-md {
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+.modal-add-coin-login .form-content .row {
+  width: 99%;
+  margin-right: 0;
+  margin-left: 0;
+}
+.modal-add-coin-login .form-content {
+  margin-top: 10px;
+  padding: 25px;
+}
+.modal-add-coin-login .btn-add-wallet {
+  width: 325px;
+  max-width: 325px;
+}

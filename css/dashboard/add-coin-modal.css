@@ -11,6 +11,9 @@
 .add-coin-create-wallet-form .login-add-coin-selection {
   pointer-events: none;
 }
+.add-coin-create-wallet-form .modal:before { /* temp fix */
+  display: none;
+}
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
   display: block;

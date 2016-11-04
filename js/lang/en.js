@@ -33,8 +33,7 @@ var lang = {
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
       'I_SAVED_A_PASSPHRASE': 'I saved the passphrase in a secure place',
       'NEXT': 'Next',
-      'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase to confirm you saved it properly.',
-      'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'Click here to paste from the clipboard.',
+      'TYPE_OR_PASTE_THE_PASSPHRASE': 'Type or paste the passphrase to confirm you saved it properly.'
     },
     'ADD_COIN': {
       'ADDING_A_NEW_COIN': 'Adding a new coin',
@@ -99,8 +98,9 @@ var lang = {
       'FEE_CANNOT_EXCEED': 'Fee cannot exceed'
     },
     'PASSPHRASE_MODAL': {
-      'ADD_A_WALLET': 'Add a wallet',
-      'ENTER_A_PASSPHRASE': 'Enter a passphrase to add wallet'
+      'PROVIDE_A_PASSPHRASE': 'Provide a passphrase',
+      'TYPE_OR_PASTE_PASSPHRASE': 'Type or paste the passphrase',
+      'OK': 'OK'
     },
     'MESSAGE': {
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
@@ -108,6 +108,7 @@ var lang = {
       'NO_REQUIRED_DAEMON_P2': 'requirements are satisfied.',
       'COPY_PASTE_IS_NOT_SUPPORTED': 'Copy/paste is not supported in your browser! Please select the passphrase manually.',
       'COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS': 'Copy/paste is not supported in your browser! Please copy address manually.',
+      'COPIED_TO_CLIPBOARD': 'copied to clipboard',
       'ADDRESS_COPIED_TO_CLIPBOARD': 'Address copied to clipboard:',
       'PLEASE_SELECT_A_COIN': 'Please select a coin',
       'WALLET_IS_CREATED': 'Wallet is created. Login to access it.',
