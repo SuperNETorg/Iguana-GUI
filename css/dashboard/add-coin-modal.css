@@ -3,8 +3,6 @@
  *
  */
 
- @import url('add-coin-modal-icons-fix.css');
-
 .add-new-coin-form {
   z-index: 5000;
 }
