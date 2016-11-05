@@ -463,15 +463,15 @@ var createHelpers = function() {
     for (var key in supportedCoinsList) {
       if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
         if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
-            addCoinArray[key] = {
-              'id': key.toUpperCase(),
-              'coinId': key.toLowerCase(),
-              'name': supportedCoinsList[key].name,
-              'color': addCoinColors[index]
-            };
-            index++;
-            if (index === addCoinColors.length - 1) index = 0;
-          }
+          addCoinArray[key] = {
+            'id': key.toUpperCase(),
+            'coinId': key.toLowerCase(),
+            'name': supportedCoinsList[key].name,
+            'color': addCoinColors[index]
+          };
+          if (index === addCoinColors.length - 1) index = 0;
+          else index++;
+        }
       }
     }
 
