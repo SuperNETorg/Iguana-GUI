@@ -154,10 +154,10 @@ body .add-coin-login-form .modal-add-coin-login-form,
   pointer-events: none;
   z-index: 100;
 }
-.add-new-coin-form .modal .modal-content .form-content .supported-coins-repeater .supported-coins-repeater-inner {
+.add-new-coin-form .supported-coins-repeater-inner {
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  padding: 10px;
+  padding: 30px;
 }

@@ -134,6 +134,8 @@
   width: 20px;
   height: 20px;
   position: absolute;
+  top: -3px;
+  right: 3px;
 }
 .send-modal .pop-detail.send .tx-address {
   padding-right: 32px;
@@ -335,4 +337,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.send-coin-confirm-passphrase {
+  z-index: 2000;
 }

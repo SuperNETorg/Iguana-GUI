@@ -36,6 +36,8 @@ function sendCoinModalInit(isBackTriggered) {
     $(modalSendCoinClass + ' .tx-fee-currency').attr('disabled', true);
   }
 
+  loadTestSendData(coinData.id);
+
   // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
   // allow numeric only entry
   $(modalSendCoinClass + ' .tx-amount,' + modalSendCoinClass + ' .tx-amount-currency,' + modalSendCoinClass + ' .tx-fee,' + modalSendCoinClass + ' .tx-fee-currency').keypress(function (event) {

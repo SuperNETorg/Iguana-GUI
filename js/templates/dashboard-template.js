@@ -93,7 +93,7 @@ templates.registerTemplate('dashboard',
       '<div class="modal-overlay"></div>' +
       '<div class="modal modal-send-coin"></div>' +
     '</section>' +
-    '<!-- send coin passphrase conf -->' +
-    '<section class="modal-append-container"></section>' +
   '</div>' +
-'</div>');
+'</div>' +
+'<!-- send coin passphrase conf -->' +
+'<div class="modal-append-container"></div>');

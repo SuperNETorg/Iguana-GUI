@@ -30,7 +30,7 @@
     right: 0;
 
     background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
   }
   .dashboard .transactions-list-repeater .item .progress-status {
@@ -39,9 +39,6 @@
   .dashboard .transactions-list-repeater .item .status {
     width: 76px;
   }
-}
-.modal .modal-dialog.modal-lg {
-  width: 800px;
 }
 
 @media screen and (max-width: 1300px) {
@@ -63,7 +60,7 @@
 
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
     background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
 }
@@ -73,11 +70,8 @@
     min-width: 230px;
     max-width: 270px
   }
-  body .reference-currency-main .currency-content .currency-loop .country-li {
+  .reference-currency-main .currency-content .currency-loop .country-li {
     min-width: 168px;
-  }
-  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-dialog {
-    width: 600px;
   }
 }
 
@@ -91,17 +85,17 @@
   .modal .modal-dialog.modal-lg {
     width: 90%;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
     display: block;
     margin-top: 35px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
     clear: both;
     float: left;
     width: 32%;
     line-height: 44px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
     float: right;
     word-wrap: break-word;
     width: 50%;
@@ -111,146 +105,151 @@
   }
 }
 
-@media (max-width: 360px) {
-  .share-address-section {
-    width: 96%;
-  }
-}
-
 @media only screen and (max-width: 768px) {
   /* Auth */
-  body .auth-main .form-container .form-content {
+  .auth-main .form-container .form-content {
     max-width: 400px;
   }
-  body .auth-main .form-container.create-account-form .form-content .btn:last-child {
+  .auth-main .form-container.create-account-form .form-content .btn:last-child {
     position: relative;
-    margin-top: 16%;
+    //margin-top: 16%;
     margin-bottom: 0;
   }
-  body .auth-main .form-container.verify-passphrase-form .form-content .btn:last-child {
+  .auth-main .form-container.verify-passphrase-form .form-content .btn:last-child {
     position: relative;
-    margin-top: 40%;
+    //margin-top: 40%;
     margin-bottom: 0;
   }
-  body .dashboard-main .dashboard .balance-block,
-  body .dashboard .currency-content {
+  .dashboard-main .dashboard .balance-block,
+  .dashboard .currency-content {
     margin-top: 120px;
   }
-  body .account-coins-repeater .item.active:after {
+  .account-coins-repeater .item.active:after {
     display: none;
   }
-  body .transactions-unit {
+  .transactions-unit {
     margin-left: 0;
   }
-  body .modal .modal-dialog.modal-lg {
+  .modal .modal-dialog.modal-lg {
     width: 100%;
   }
-  body .auth-main .container-fluid {
+  .auth-main .container-fluid {
     display: block;
   }
-  body .modal .modal-dialog {
+  .modal .modal-dialog {
     height: 100%;
   }
-  body .modal .modal-dialog .modal-header {
+  .modal .modal-dialog .modal-header {
     min-height: 50px;
   }
-  body .form-container .modal .modal-dialog .modal-header .btn-close,
-  body .modal .modal-dialog .modal-content .modal-header .btn-back {
+  .form-container .modal .modal-dialog .modal-header .btn-close,
+  .modal .modal-dialog .modal-content .modal-header .btn-back {
     margin-left: -8px;
   }
-  body .modal .modal-dialog .modal-header .btn-back{
+  .modal .modal-dialog .modal-header .btn-back{
     top: 16px;
   }
-  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
+  .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
     top: 12px;
     margin-left: 6px;
   }
-  body .modal .modal-dialog .modal-header .title {
+  .modal .modal-dialog .modal-header .title {
     font-size: 17px;
   }
-  body .modal .modal-dialog .modal-body {
+  .modal .modal-dialog .modal-body {
     padding: 0 0.8em 3.2em 0.8em;
   }
-  body .reference-currency-main .currency-content .currency-parent {
+  .reference-currency-main .currency-content .currency-parent {
     padding-left: 5px;
     padding-right: 5px;
   }
-  body .reference-currency-main .currency-content .currency-loop .country-li {
+  .reference-currency-main .currency-content .currency-loop .country-li {
     min-width: 162px;
   }
   /* send coin modal */
-  body .modal-send-coin .modal-dialog .modal-content .send-modal,
-  body .modal-send-coin .modal-dialog .modal-content .send-modal {
+  .modal-send-coin .modal-dialog .modal-content .send-modal,
+  .modal-send-coin .modal-dialog .modal-content .send-modal {
     padding-top: 2em;
   }
-  body .send-coin-confirm-passphrase .modal-add-coin-login .modal-dialog {}
   /*  dashboard transactions bar */
-  body .transactions-unit .top-bar .active-coin-balance,
-  body .transactions-unit .top-bar .active-coin-balance-currency{
+  .transactions-unit .top-bar .active-coin-balance,
+  .transactions-unit .top-bar .active-coin-balance-currency{
     padding-left: 15px;
   }
-  body .transactions-unit .top-bar .action-buttons {
+  .transactions-unit .top-bar .action-buttons {
     padding-left: 0;
     text-align: center;
   }
-  body .transactions-unit .top-bar .info {
+  .transactions-unit .top-bar .info {
     right: 15px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .status,
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .in-out,
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .value,
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount .coin-name,
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .status,
+  .transactions-unit .transactions-list .transactions-list-repeater .item .amount .in-out,
+  .transactions-unit .transactions-list .transactions-list-repeater .item .amount .value,
+  .transactions-unit .transactions-list .transactions-list-repeater .item .amount .coin-name,
+  .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
     float: left;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
     clear: both;
     width: 40%;
     line-height: 44px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
     line-height: 44px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
     float: right;
     word-wrap: break-word;
     width: 43%;
     font-size: 14px;
     margin: 0;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .timestamp {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .timestamp {
     float: right;
     margin-top: 1px;
   }
-  body .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
+  .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
     display: block;
     margin-top: 35px;
   }
   /* Add Wallet modal */
-  body .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body {
+  .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body {
     padding-top: 2em;
   }
-  body .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
+  .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
     padding-top: 30%;
   }
-  body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header .modal-title {
+  /*.add-new-coin-form .modal-add-coin .modal-dialog .modal-header .modal-title {
     padding-top: 5px;
-  }
-  body .add-new-coin-form .modal-add-coin .modal-dialog .modal-header {
+  }*/
+  .add-new-coin-form .modal-add-coin .modal-dialog .modal-header {
     height: 55px;
   }
-  body .receiving-coin-content .form-header .btn-close {
+  .receiving-coin-content .form-header .btn-close {
     margin-left: 0;
+  }
+  .modal-content {
+    height: 100%;
+  }
+  .dashboard .form-container .form-content {
+    padding: 40px 1.6em;
   }
 }
 
 @media only screen and (max-width: 380px) {
-  body .reference-currency-main .currency-content .currency-loop .country-li {
+  .reference-currency-main .currency-content .currency-loop .country-li {
     display: inline-block;
     float: none;
   }
-  body .main-content .transactions-unit {
+  .main-content .transactions-unit {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .share-address-section {
+    width: 96%;
   }
 }

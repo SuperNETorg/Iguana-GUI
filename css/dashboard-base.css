@@ -117,7 +117,7 @@
     font-size: 1.6em;
   }
   .dashboard .main-content {
-    margin: 20px auto;
+    margin: 0 auto 20px auto;
     max-width: 1500px;
   }
   .dashboard .balance-block .label {
@@ -226,5 +226,17 @@
   }
   .balance-block,
   .dashboard .currency-content {
-    margin-top:60px;
+    margin-top: 60px;
+  }
+  .form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
+    max-width: 400px;
+  }
+  .add-coin-create-wallet-form {
+    z-index: 2000;
+  }
+  .add-coin-create-wallet-form  .modal-content .bi_interface-arrow-left {
+    margin-top: 0;
+  }
+  .add-coin-create-wallet-form .modal-content .form-header .title {
+    padding-top: 2px;
   }

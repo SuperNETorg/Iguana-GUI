@@ -111,11 +111,10 @@
   width: 80%;
   word-wrap: break-word;
   margin-bottom: 0;
-  margin-top: 10em;
+  //margin-top: 10em;
 }
 .auth-main .offset-bottom-md {
-  margin: 0 auto;
-  margin-bottom: 30px;
+  margin: 30px auto 30px auto;
 }
 .auth-main .header {
   background-color: #fe700d;
@@ -210,7 +209,7 @@
 }
 .auth-main .login-add-coin-selection {
   text-align: center;
-  margin-top: 6em;
+  //margin-top: 6em;
 }
 .auth-main .login-add-coin-selection-title {
   font-size: 1.03em;

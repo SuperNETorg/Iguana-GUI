@@ -8,8 +8,8 @@
 templates.registerTemplate('sendCoinPassphrase',
   '<section class="form-container mdl login-form-modal hidden fade">' +
     '<div class="modal-overlay"></div>' +
-    '<div class="modal fade in modal-add-coin-login">' +
-      '<div class="modal-dialog modal-lg" role="document">' +
+    '<div class="modal block modal-add-coin-login" role="document">' +
+      '<div class="modal-dialog modal-lg">' +
         '<div class="modal-content">' +
           '<header class="modal-header form-header orange-gradient box-shadow-bottom">' +
             '<i class="bi_interface-arrow-left cursor-pointer btn-back"></i>' +

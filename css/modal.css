@@ -15,6 +15,9 @@
   opacity: 1;
   transition: all 0.25s;
 }
+.modal .modal-content {
+  background: #F5F8FB;
+}
 .modal,
 .add-coin-create-wallet-form .create-account-form,
 .add-coin-create-wallet-form .verify-passphrase-form {

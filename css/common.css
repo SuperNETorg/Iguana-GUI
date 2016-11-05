@@ -41,3 +41,6 @@
   .col-red {
     color: #FF0000;
   }
+  .modal .modal-dialog.modal-lg {
+    width: 800px;
+  }

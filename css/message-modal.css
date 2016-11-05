@@ -6,7 +6,11 @@
   #messageModal {
     font-family: 'Proxima Nova', sans-serif;
     background: rgba(255, 255, 255, 0.7);
-    z-index: 2000;
+    z-index: 5000;
+  }
+  #messageModal .modal-content,
+  #messageModal .modal-dialog {
+    height: inherit;
   }
   #messageModal.modal:before {
     vertical-align: top;

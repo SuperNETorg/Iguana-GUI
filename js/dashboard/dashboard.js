@@ -27,15 +27,14 @@ function applyDashboardResizeFix() {
   } else {
     txUnit.removeAttr('style');
     mainContent.removeAttr('style');
-
   }
   // coin tiles on the left
   var accountCoinsRepeaterItem = '.account-coins-repeater .item';
   $(accountCoinsRepeaterItem).each(function(index, item) {
     var coin = $(this).attr('data-coin-id');
-    $(accountCoinsRepeaterItem + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + coin).width() -
-                                                                                  $(accountCoinsRepeaterItem + coin + ' .coin .icon').width() -
-                                                                                  $(accountCoinsRepeaterItem + coin + ' .balance').width() - 50) });
+    $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
+                                                                                  $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
+                                                                                  $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
   });
 }
 

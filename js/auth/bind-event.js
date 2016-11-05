@@ -19,12 +19,17 @@ function addAuthorizationButtonAction(buttonClassName) {
         if (helper.getCurrentPage() === 'create-account') addAccountIguanaCoind('add-account');
       }
     } else {
-      if (!verifyPassphraseForm.hasClass(hiddenClassName)) {
-        authAllAvailableCoind();
-      }
-      if (loginForm.width()) {
-        loginInputDirectionsError.removeClass(hiddenClassName);
-        addAccountIguanaCoind(buttonClassName, true);
+      if (!checkIguanaCoinsSelection(buttonClassName === 'add-account' ? true : false)) {
+        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_SELECT_A_WALLET'), 'blue', true);
+      } else {
+        if (!verifyPassphraseForm.hasClass(hiddenClassName)) {
+          authAllAvailableCoind();
+        }
+        if (loginForm.width() || helper.getCurrentPage() === 'login') {
+          loginInputDirectionsError.removeClass(hiddenClassName);
+          if (helper.getCurrentPage() === 'create-account') addAccountIguanaCoind(buttonClassName);
+        }
+        if (!loginForm.width() || helper.getCurrentPage() === 'create-account') addAccountIguanaCoind('add-account', true);
       }
     }
   });
@@ -42,7 +47,7 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
       loginInputDirectionsError = $('.login-input-directions-error');
 
   if (totalSubstr && totalSubstrAlpha && totalSpaces) {
-    if ((buttonClassName === 'signin') ? true : totalSubstr.length === passphraseLength && totalSubstrAlpha.length === passphraseLength && totalSpaces.length === passphraseLength - 1) {
+    //if ((buttonClassName === 'signin') ? true : totalSubstr.length === passphraseLength && totalSubstrAlpha.length === passphraseLength && totalSpaces.length === passphraseLength - 1) {
       if (!isCoind ? (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : verifyNewPassphrase() && api.walletEncrypt(passphraseInput)) :
                      (buttonClassName === 'signin' ? api.walletLogin(passphraseInput, defaultSessionLifetime) : encryptCoindWallet())) {
         toggleLoginErrorStyling(false);
@@ -59,15 +64,19 @@ function addAccountIguanaCoind(buttonClassName, isCoind) {
       } else {
         toggleLoginErrorStyling(true);
       }
-    } else {
+    /*} else {
       toggleLoginErrorStyling(true);
-    }
+    }*/
   } else {
     toggleLoginErrorStyling(true);
 
-    if (isCoind)
+    if (isCoind) {
       helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH'), 'red', true);
       loginInputDirectionsError.removeClass(hiddenClassName);
+    } else {
+      helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH'), 'red', true);
+      loginInputDirectionsError.removeClass(hiddenClassName);
+    }
   }
 }
 

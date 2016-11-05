@@ -128,7 +128,7 @@
 }
 .transactions-list-repeater .item.timestamp-multi .timestamp.two-lines {
   display: inherit;
-  margin-top: 10px;
+  //margin-top: 10px;
 }
 .transactions-list-repeater .item .coin-name {
   padding-left: 5px;

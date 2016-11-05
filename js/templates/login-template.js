@@ -16,7 +16,7 @@ templates.registerTemplate('login',
         '</header>' +
         '<div class="form-content">' +
           '<div class="login-add-coin-selection">' +
-            '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">' + helper.lang('LOGIN.SELECT_A_WALLET') + '</div>' +
+            '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ selectItemAction }}</div>' +
           '</div>' +
           '<div class="login-input-directions center offset-bottom-sm unselectable">' + helper.lang('LOGIN.ENTER_A_PASSPHRASE_TO_LOGIN') + '</div>' +
           '<textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +

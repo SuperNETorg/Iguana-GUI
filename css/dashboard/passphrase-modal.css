@@ -5,8 +5,9 @@
 
   .login-form-modal {
     z-index: 1000;
+    width: 400px;
   }
-  .modal-add-coin-login {
+  .login-form-modal .modal-add-coin-login {
     display: block;
     border-radius: 4px;
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -22,19 +23,18 @@
     font-size: 1.16em;
     resize: none;
   }
-  textarea.error {
+  .login-form-modal textarea.error {
     border: solid 1px #FF0000;
   }
-  .center {
+  .login-form-modal.center {
     text-align: center;
   }
-  .offset-bottom-sm {
+  .login-form .offset-bottom-sm {
     display: block;
-    margin: 0 auto;
-    margin-bottom: 24px;
+    margin: 24px auto;
     max-width: 420px;
   }
-  .offset-bottom-md {
+  .login-form-modal .offset-bottom-md {
     margin: 0 auto;
     margin-bottom: 30px;
   }
@@ -46,3 +46,24 @@
   .modal-add-coin-login .form-content {
     padding: 25px;
   }
+  .send-coin-confirm-passphrase .modal .modal-dialog.modal-lg {
+    width: 400px;
+  }
+  .send-coin-confirm-passphrase .modal-add-coin-login textarea {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .send-coin-confirm-passphrase .modal .modal-content {
+    box-shadow: 0 2px 40px rgba(125, 125, 125, 0.3);
+  }
+  .send-coin-confirm-passphrase .title {
+    padding-top: 2px;
+  }
+  .send-coin-confirm-passphrase .login-input-directions {
+    text-align: center;
+    font-size: 1.07em;
+  }
+  /*.send-coin-confirm-passphrase .modal-add-coin-login .modal-dialog {
+    width: 600px;
+  }*/

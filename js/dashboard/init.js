@@ -17,7 +17,7 @@ function initDashboard() {
   templates.all.addCoinLogin = templates.all.addCoinLogin.replace('{{ modal_title }}', isIguana ? helper.lang('LOGIN.ADD_COIN') : helper.lang('LOGIN.ADD_WALLET')).
                                                   replace('{{ cta_title }}', isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD')).
                                                   replace('{{ word_count }}', isIguana ? 24 : 12).
-                                                  replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_COIN')).
+                                                  replace('{{ item }}', isIguana ? ' ' + helper.lang('ADD_COIN.A_COIN') : ' ' + helper.lang('ADD_COIN.A_WALLET')).
                                                   replace(/{{ visibility }}/g, isIguana ? ' hidden' : '');
   templates.all.addCoinCreateWallet = templates.all.addCoinCreateWallet.replace('{{ word_count }}', isIguana ? 24 : 12); // TODO: global
 
@@ -100,7 +100,7 @@ function initDashboard() {
     }
   });
 
-  $(addCoinLoginClass + '.btn-signup').click(function() {
+  $(addCoinLoginClass + ' .btn-signup').click(function() {
     var addCoinCreateVerifyClass = addCoinCreateClass + ' .verify-passphrase-form';
 
     if (!coinsSelectedToAdd || !coinsSelectedToAdd[0]) {
@@ -126,12 +126,21 @@ function initDashboard() {
       });
       $(addCoinCreateVerifyClass + ' .btn-back').off();
       $(addCoinCreateVerifyClass + ' .btn-back').click(function() {
-        $(addCoinCreateVerifyClass).addClass(disabledClassName);
-        $(addCoinCreateClass + ' .create-account-form').removeClass(disabledClassName);
+        $(addCoinCreateVerifyClass).addClass(hiddenClassName);
+        $(addCoinCreateClass + ' .create-account-form').removeClass(hiddenClassName);
       });
-      $(addCoinCreateVerifyClass + ' .btn-add-account').off();
-      $(addCoinCreateVerifyClass + ' .btn-add-account').click(function() {
+      $(addCoinCreateVerifyClass + ' .btn-add-account-modal').off();
+      $(addCoinCreateVerifyClass + ' .btn-add-account-modal').click(function() {
+        console.log('add account action');
         encryptCoindWallet('add-coin-create-wallet-form .verify-passphrase-form');
+      });
+      $(addCoinCreateVerifyClass + ' ' + passphraseElName).off();
+      $(addCoinCreateVerifyClass + ' ' + passphraseElName).keydown(function() {
+        if ($(addCoinCreateVerifyClass + ' ' + passphraseElName).val().length > 0 && helper.reindexAssocArray(coinsSelectedToAdd)[0]) {
+          $(addCoinCreateVerifyClass + ' .btn-add-account-modal').removeClass(disabledClassName);
+        } else {
+          $(addCoinCreateVerifyClass + ' .btn-add-account-modal').addClass(disabledClassName);
+        }
       });
     }
   });
@@ -143,7 +152,7 @@ function initDashboard() {
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
       if (coinsSelectedToAdd[0]) {
-        $(addNewCoinFormClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
+        $(addCoinLoginClass + ' .login-add-coin-selection-title').html(supportedCoinsList[coinsSelectedToAdd[0]].name + templates.all.repeaters.coinSelectionShowItem.replace('{{ item }}', coinsSelectedToAdd[0].toUpperCase()));
       }
       // coind
       coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
@@ -160,9 +169,9 @@ function initDashboard() {
       }
       $(verifyPassphraseFormClass + ' ' + passphraseElName).keyup(function() {
         if ($(verifyPassphraseFormClass + ' ' + passphraseElName).val().length > 0) {
-          $('.btn-add-account').removeClass(disabledClassName);
+          $(verifyPassphraseFormClass + ' .btn-add-account').removeClass(disabledClassName);
         } else {
-          $('.btn-btn-add-account').addClass(disabledClassName);
+          $(verifyPassphraseFormClass + ' .btn-btn-add-account').addClass(disabledClassName);
         }
       });
       $(addCoinLoginClass + ' .btn-signin').off();

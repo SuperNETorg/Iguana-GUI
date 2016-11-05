@@ -8,7 +8,6 @@ helperProto.prototype.initMessageModal = function() {
       messageModal = '#messageModal';
 
   body.append(templates.all.messageModal);
-
 }
 
 helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
@@ -26,7 +25,7 @@ helperProto.prototype.prepMessageModal = function(message, color, fireModal) {
 helperProto.prototype.prepNoDaemonModal = function() {
   $('#messageModal').off();
   helperProto.prototype.prepMessageModal(helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
-    ' <a onclick="helperProto.prototype.prepRequirementsModal()" class="cursor-pointer">' + helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') + '</a>' +
+    ' <a onclick="helperProto.prototype.prepRequirementsModal()" class="cursor-pointer">' + helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P2') + '</a> ' + helperProto.prototype.lang('MESSAGE.NO_REQUIRED_DAEMON_P3') +
     (helperProto.prototype.getCurrentPage() !== 'login' &&
     helperProto.prototype.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"helperProto.prototype.logout()\">' + helperProto.prototype.lang('DASHBOARD.LOGOUT') + '</a>' : ''), 'red', true);
 }

@@ -9,7 +9,7 @@ templates.registerTemplate('addCoinLogin',
 '<section class="form-container mdl add-coin-login-form unselectable hidden fade auth-main">' +
   '<div class="modal-overlay"></div>' +
   '<div class="modal modal-add-coin-login-form login-form" role="document">' +
-    '<div class="modal-dialog modal-lg modal-popup">' +
+    '<div class="modal-dialog modal-md modal-popup">' +
       '<div class="modal-content">' +
         '<header class="modal-header orange-gradient box-shadow-bottom">' +
           '<i class="bi_interface-cross cursor-pointer btn-close"></i>' +
@@ -17,7 +17,7 @@ templates.registerTemplate('addCoinLogin',
         '</header>' +
         '<div class="form-content modal-body">' +
           '<div class="login-add-coin-selection">' +
-            '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ cta_title }}</div>' +
+            '<div class="login-add-coin-selection-title cursor-pointer">{{ cta_title }}</div>' +
           '</div>' +
           '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">' + helper.lang('LOGIN.INCORRECT_INPUT_P1') + ' {{ word_count }} ' + helper.lang('LOGIN.INCORRECT_INPUT_P2') + '</div>' +
           '<div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">' + helper.lang('LOGIN.ENTER_A_PASSPHRASE_TO_ADD') + ' {{ item }}</div>' +

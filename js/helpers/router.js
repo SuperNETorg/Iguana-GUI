@@ -18,11 +18,14 @@ helperProto.prototype.openPage = function(url) {
       iguanaNullReturnCount = 0;
       body.html(loginFormPrepTemplate()).
            removeClass('dashboard-page');
+      coinsSelectedToAdd = [];
+      helperProto.prototype.initPageUrl(url);
       initAuthCB();
       break;
     case 'create-account':
       body.html(signupFormPrepTemplate()).
            removeClass('dashboard-page');
+      helperProto.prototype.initPageUrl(url);
       initAuthCB();
       break;
     case 'dashboard':
@@ -32,15 +35,17 @@ helperProto.prototype.openPage = function(url) {
                  replace('{{ injectLoader }}', templates.all.loader);
       body.addClass('dashboard-page').
            html(temp);
+      helperProto.prototype.initPageUrl(url);
+      coinsSelectedToAdd = [];
       initDashboard();
       break;
     case 'settings':
       body.addClass('dashboard-page').
            html(templates.all.referenceCurrency);
+      helperProto.prototype.initPageUrl(url);
       initReferenceCurrency();
       break;
   }
-  helperProto.prototype.initPageUrl(url);
   helperProto.prototype.checkIfIguanaOrCoindIsPresent();
 }
 

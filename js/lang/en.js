@@ -30,7 +30,7 @@ var lang = {
       'WRITE_DOWN_THIS_P1': 'Write down this',
       'WRITE_DOWN_THIS_P2': 'word passphrase and keep it safe. You can\'t access or restore your account, if you lose it!',
       'WRITE_DOWN_THIS_P3': 'Don\'t ever disclose your passphrase!',
-      'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
+      'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it)',
       'I_SAVED_A_PASSPHRASE': 'I saved the passphrase in a secure place',
       'NEXT': 'Next',
       'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase to confirm you saved it properly.',
@@ -104,7 +104,8 @@ var lang = {
     'MESSAGE': {
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
       'NO_REQUIRED_DAEMON_P1': 'No required daemon is running. Make sure it\'s on and these',
-      'NO_REQUIRED_DAEMON_P2': 'requirements are satisfied.',
+      'NO_REQUIRED_DAEMON_P2': 'requirements',
+      'NO_REQUIRED_DAEMON_P3': 'are satisfied.',
       'COPY_PASTE_IS_NOT_SUPPORTED': 'Copy/paste is not supported in your browser! Please select the passphrase manually.',
       'COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS': 'Copy/paste is not supported in your browser! Please copy address manually.',
       'COPIED_TO_CLIPBOARD': 'copied to clipboard:',

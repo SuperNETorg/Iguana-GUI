@@ -17,9 +17,9 @@ templates.registerTemplate('signup',
         '</header>' +
         '<div class="form-content">' +
           '<div class="login-add-coin-selection">' +
-            '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">' + helper.lang('LOGIN.SELECT_A_WALLET') + '</div>' +
+            '<div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer">{{ selectItemAction }}</div>' +
           '</div>' +
-          '<div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') + '24-' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') + ' <strong>' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') + '</strong></div>' +
+          '<div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') + ' 24-' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') + ' <strong>' + helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') + '</strong></div>' +
           '<div class="passphrase-container row center offset-bottom-md">' +
             '<div class="title unselectable">' + helper.lang('CREATE_ACCOUNT.COPY_PASSPHRASE') + ':</div>' +
             '<div class="generated-passhprase cursor-pointer"></div>' +
@@ -44,7 +44,7 @@ templates.registerTemplate('signup',
         '</header>' +
         '<div class="form-content">' +
           '<div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">' + helper.lang('LOGIN.INCORRECT_INPUT_P1') + ' 24 ' + helper.lang('LOGIN.INCORRECT_INPUT_P2') + '</div>' +
-          '<div class="login-input-directions center offset-bottom-sm unselectable">' + helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1') + ' <span class="paste-from-clipboard-link cursor-pointer">' + helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2') + '</span></div>' +
+          '<div class="login-input-directions center offset-bottom-sm unselectable">' + helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1') + '</div>' +
           '<textarea name="verifyPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>' +
           '<div class="non-iguana-walletpassphrase-errors"></div>' +
           '<div class="login-or-delim center unselectable"></div>' +
