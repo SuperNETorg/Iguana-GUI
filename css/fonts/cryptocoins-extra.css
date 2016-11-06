@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../../fonts/icomoon.eot?mfr0e4');
-  src:  url('../../fonts/icomoon.eot?mfr0e4#iefix') format('embedded-opentype'),
-    url('../../fonts/icomoon.ttf?mfr0e4') format('truetype'),
-    url('../../fonts/icomoon.woff?mfr0e4') format('woff'),
-    url('../../fonts/icomoon.svg?mfr0e4#icomoon') format('svg');
+  src:  url('../../fonts/icomoon.eot?knqa0m');
+  src:  url('../../fonts/icomoon.eot?knqa0m#iefix') format('embedded-opentype'),
+    url('../../fonts/icomoon.ttf?knqa0m') format('truetype'),
+    url('../../fonts/icomoon.woff?knqa0m') format('woff'),
+    url('../../fonts/icomoon.svg?knqa0m#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -28,6 +28,10 @@
 .KMD-alt:before {
   font-family: 'icomoon' !important;
   content: "\e904";
+}
+.GMC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e905";
 }
 .DEM-alt:before {
   font-family: 'icomoon' !important;

@@ -5,7 +5,6 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.boot
 .service('helper', createHelpers)
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    // route to show our basic form (/form)
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',

@@ -15,6 +15,9 @@
   opacity: 1;
   transition: all 0.25s;
 }
+.modal .modal-content {
+  background: #F5F8FB;
+}
 .modal,
 .add-coin-create-wallet-form .create-account-form,
 .add-coin-create-wallet-form .verify-passphrase-form {
@@ -39,13 +42,14 @@
 }
 .form-container.mdl .form-content {
   height: 100%;
-  background: #F5F8FB;
-  padding-top: 4em;
+  padding-top: 2em;
 }
 .form-container.mdl .form-header {
-  height: 45px;
+  position: relative;
   width: 100%;
-  position: absolute;
+  height: 60px;
+  color: #FFF;
+  border-radius: 4px 4px 0 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 .form-container.mdl .bi_interface-cross {
@@ -54,8 +58,14 @@
   position: absolute;
   top: 16px;
   left: 20px;
+  margin-top: 5px;
+  margin-left: 12px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
   z-index: 100;
+}
+.form-container.mdl .bi_interface-cross:before {
+  font-weight: 900;
+  font-size: 16px;
 }
 .form-container.mdl .form-header .title {
   position: relative;
@@ -64,7 +74,6 @@
   font-weight: 600;
   color: #fff;
   font-size: 1.23em;
-  padding-top: 10px;
   z-index: 90;
 }
 .form-container.mdl .btn {
@@ -88,6 +97,7 @@
 .modal {
   text-align: center;
   padding: 0!important;
+  background: rgba(251, 252, 253,0.7);
 }
 .modal:before {
   content: '';
@@ -102,6 +112,9 @@
   text-align: left;
   vertical-align: middle;
   margin: auto;
+}
+.modal-dialog .modal-body{
+  padding: 15px 1em 3.2em 1em;
 }
 .modal .modal-header {
   color: #FFF;

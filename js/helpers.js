@@ -189,12 +189,7 @@ var createHelpers = function() {
       return '{{ ' + langID + ' }}';
   }
 
-  this.initMessageModal = function() {
-    var body = $('body'),
-        messageModal = '#messageModal';
-
-    //body.append(templates.all.messageModal);
-  }
+  this.initMessageModal = function() {} // TODO: remove
 
   this.prepMessageModal = function(message, color, fireModal) {
     var messageModal = $('#messageModal');
@@ -205,6 +200,7 @@ var createHelpers = function() {
 
     if (fireModal) {
       messageModal.show().removeClass('fade');
+      //messageModal.modal('show'); // 0.1.1
     }
   }
 
@@ -215,7 +211,7 @@ var createHelpers = function() {
   this.prepNoDaemonModal = function() {
     $('#messageModal').off();
     this.prepMessageModal(this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
-      ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' + this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') + '</a>' +
+      ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' + this.lang('MESSAGE.NO_REQUIRED_DAEMON_P2') + '</a> ' + this.lang('MESSAGE.NO_REQUIRED_DAEMON_P3') +
       (this.getCurrentPage() !== 'login' &&
       this.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"this.logout()\">' + this.lang('DASHBOARD.LOGOUT') + '</a>' : ''), 'red', true);
   }
@@ -319,11 +315,11 @@ var createHelpers = function() {
     this.checkIfIguanaOrCoindIsPresent();
   }
 
-  this.getCurrentPage = function() {
+  this.getCurrentPage = function() { // obsolete, remove
     return document.location.hash.replace('#', '');
   }
 
-  this.initPageUrl = function(url) {
+  this.initPageUrl = function(url) { // obsolete, remove
     document.location.hash = '#' + url;
     document.title = 'Iguana / ' + url.replace(url[0], url[0].toUpperCase()).replace('-', ' ');
   }
@@ -364,6 +360,20 @@ var createHelpers = function() {
           }
         }, 15000);
       } else {
+        // 0.1.1, TODO: switch the below code
+        // This property for delete duplicate Timeout functions for message Modal
+        /*if (!window.messageModalTime) {
+          window.messageModalTime;
+        } else {
+          clearTimeout(messageModalTime);
+        }
+        var messageModal = $('#messageModal');
+        iguanaNullReturnCount = 0;
+        messageModal.removeClass('in');
+        messageModalTime = setTimeout(function() {
+          messageModal.modal('hide');
+        }, 250);*/
+
         var messageModal = $('#messageModal');
 
         iguanaNullReturnCount = 0;
@@ -400,6 +410,58 @@ var createHelpers = function() {
     }
   }
 
+  this.timeAgo = function() {
+    var timesAgo = $('.time-ago', document),
+        threshold = settings.thresholdTimeAgo,
+        timeAgo,
+        displayText = '';
+
+    for (var i = 0; timesAgo.length > i; i++) {
+      timeAgo = $(timesAgo[i]);
+
+      if (!timeAgo.prop('data-original')) {
+        timeAgo.prop('data-original', timeAgo.clone());
+      }
+
+      var timeAgoOriginal = timeAgo.prop('data-original'),
+          date = $('.time-ago-date', timeAgoOriginal).text(),
+          time = $('.time-ago-time', timeAgoOriginal).text(),
+          dateTime = date + ' ' + time,
+          original = new Date(dateTime),
+          current = new Date(),
+          dayTemplate = 24 * 60 * 60 * 1000,
+          timeTemplate = 60 * 60 * 1000,
+          minuteTemplate = 60 * 1000,
+          difference = current - original;
+
+      if ((threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
+          (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
+          (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)) {
+            return;
+      }
+      if (difference / dayTemplate < 1) {
+        if (difference / timeTemplate < 1) {
+          if (difference / minuteTemplate > 1) {
+            displayText = parseInt(difference / minuteTemplate) + ' ' + helper.lang('TIME_AGO.MINUTE');
+          } else {
+            displayText = helper.lang('TIME_AGO.MOMENT');
+          }
+        } else {
+          displayText = parseInt(difference / timeTemplate) + ' ' + helper.lang('TIME_AGO.HOURS');
+        }
+      } else {
+        var days = parseInt(difference / dayTemplate);
+
+        if (days > 1) {
+          displayText = parseInt(difference / dayTemplate) + ' ' + helper.lang('TIME_AGO.DAYS');
+        } else {
+          displayText = parseInt(difference / dayTemplate) + ' ' + helper.lang('TIME_AGO.DAY');
+        }
+      }
+      timeAgo.text(displayText);
+    }
+  }
+
   // in seconds
   this.getTimeDiffBetweenNowAndDate = function(from) {
     var currentEpochTime = new Date(Date.now()) / 1000,
@@ -409,6 +471,33 @@ var createHelpers = function() {
   }
 
   this.toggleModalWindow = function(formClassName, timeout) {
+    // 0.1.1, doesn't work well
+    /*var modalWindow = $('.' + formClassName),
+        viewportWidth = $(window).width(),
+        formContainer = modalWindow.closest('.form-container'),
+        mainContainer = $('.main');
+
+    if (modalWindow.hasClass('fade')) {
+      modalWindow.removeClass('hidden').removeClass('blur');
+      mainContainer.addClass('blur');
+      formContainer.addClass('blur');
+
+      setTimeout(function() {
+        $('body').addClass('modal-open');
+        modalWindow.removeClass('fade');
+      }, 10);
+    } else {
+      modalWindow.addClass('fade');
+      formContainer.removeClass('blur');
+
+      setTimeout(function() {
+        modalWindow.addClass('hidden').addClass('fade');
+        formContainer.removeClass('blur');
+        if (formContainer.length === formContainer.not(":visible").length) mainContainer.removeClass('blur');
+        if ($('.form-container:not(.hidden)').length == 0) $('body').removeClass('modal-open');
+      }, timeout);
+    }*/
+
     var modalWindow = $('.' + formClassName),
         viewportWidth = $(window).width(),
         formContainer = $('.form-container'),
@@ -622,7 +711,14 @@ var createHelpers = function() {
         localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
       }
     }
+  }
 
-    //if (helper.getCurrentPage() === 'dashboard') constructAccountCoinRepeater();
+  this.isMobile = function() {
+    var widthThreshold = 768; // px
+
+    if ($(window).width <= widthThreshold)
+      return true;
+    else
+      return false;
   }
 }

@@ -41,7 +41,7 @@
   padding: 20px 0;
   letter-spacing: 1px;
 }
-.auth-main textarea {
+.auth-main .login-add-coin-selection textarea {
   width: 100%;
   height: 120px;
   border-radius: 4px;
@@ -57,7 +57,7 @@
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
-  padding: 40px 12px 15px;
+  padding: 36px 12px 15px;
   font-family: 'Proxima Nova', sans-serif;
   font-weight: 600;
   font-size: 1.16em;
@@ -106,14 +106,15 @@
   margin: 15px auto;
   width: 264px;
 }
-.auth-main .login-input-directions {
+.auth-main .create-account-form .login-input-directions,
+.auth-main .verify-passphrase-form .login-input-directions {
   width: 80%;
   word-wrap: break-word;
   margin-bottom: 0;
+  //margin-top: 10em;
 }
 .auth-main .offset-bottom-md {
-  margin: 0 auto;
-  margin-bottom: 30px;
+  margin: 30px auto 30px auto;
 }
 .auth-main .header {
   background-color: #fe700d;
@@ -122,9 +123,10 @@
   text-align: center;
 }
 .auth-main .form-content {
-  padding: 7em 1.6em 8.5em 1.6em;
+  padding: 20px 1.6em;
   font-size: 1.05em;
   color: #363639;
+  margin: 0 auto;
 }
 .auth-main .form-content .row {
   width: 100%;
@@ -185,11 +187,11 @@
   border: solid 2px #C7CCD0;
   border-radius: 4px;
 }
-.auth-main input[type='checkbox'].checked + label .box {
+.auth-main input[type='checkbox']:checked + label .box {
   background: #FE450D;
   border-color: #FE450D;
 }
-.auth-main input[type='checkbox'].checked + label .box:before {
+.auth-main input[type='checkbox']:checked + label .box:before {
   content: '\eb23';
   font-family: 'budicon';
   font-weight: bold;
@@ -207,6 +209,7 @@
 }
 .auth-main .login-add-coin-selection {
   text-align: center;
+  //margin-top: 6em;
 }
 .auth-main .login-add-coin-selection-title {
   font-size: 1.03em;

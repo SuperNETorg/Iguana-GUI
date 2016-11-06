@@ -5,7 +5,6 @@
 
 .transactions-unit {
   position: relative;
-  margin-bottom: 40px;
   border-radius: 4px;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 }
@@ -47,6 +46,7 @@
 .transactions-unit .action-buttons {
   float: left;
   padding-top: 18px;
+  padding-left: 16px;
 }
 .transactions-unit .action-buttons .btn {
   font-weight: 600;
@@ -68,11 +68,11 @@
   position: absolute;
   right: 25px;
   top: 25px;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 .transactions-list {
   background: #fff;
-  padding: 25px 2.5%;
+  padding: 25px 2.5% 60px 2.5%;
   border-radius: 0 0 4px 4px;
 }
 .transactions-list .title {
@@ -83,12 +83,15 @@
 .transactions-list-repeater .loader {
   margin: 0;
 }
+.transactions-list-repeater .item * {
+  cursor: pointer;
+}
 .transactions-list-repeater .item {
   cursor: hand;
   cursor: pointer;
   font-weight: 600;
   font-size: 1.2em;
-  background: #F5F8FB;
+  background: rgb(246, 250, 255);
   border-radius: 4px;
   padding: 20px 3% 23px 3%;
   margin-bottom: 25px;
@@ -105,13 +108,13 @@
   width: 100px;
 }
 .transactions-list-repeater .item .amount {
-  width: 152px;
+  width: 22%;
   text-align: right;
-  margin-right: 5%;
+  margin-right: 3%;
 }
 .transactions-list-repeater .item .hash {
   width: 41%;
-  margin-left: 5%;
+  margin-left: 3%;
 }
 .transactions-list-repeater .item .in-out {
   font-size: 0.8em;
@@ -125,6 +128,7 @@
 }
 .transactions-list-repeater .item.timestamp-multi .timestamp.two-lines {
   display: inherit;
+  //margin-top: 10px;
 }
 .transactions-list-repeater .item .coin-name {
   padding-left: 5px;

@@ -27,7 +27,6 @@
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 0;
-    overflow: hidden;
     margin-bottom: 0;
   }
   .dashboard .top .left {
@@ -69,7 +68,7 @@
     font-size: 1.05em;
     font-weight: 600;
     margin: 0 5px;
-    top: 10px;
+    top: 9px;
     color: #8A8B93;
     z-index: 100;
     text-shadow: 0 0 0 #8A8B93;
@@ -83,7 +82,7 @@
   }
   .dashboard .top-menu .item .border {
     width: 100%;
-    height: 5px;
+    height: 3px;
     border-radius: 4px;
     padding: 0 22px;
     background: transparent;
@@ -112,12 +111,14 @@
     right: 15px;
     position: absolute;
   }
-  .navbar-inverse .navbar-brand{
+  .navbar-inverse .navbar-brand {
     color: #fff;
     font-size: 1.6em;
+    font-weight: 600;
+    padding: 17px 15px;
   }
   .dashboard .main-content {
-    margin: 0.4em auto;
+    margin: 0 auto 20px auto;
     max-width: 1500px;
   }
   .dashboard .balance-block .label {
@@ -217,4 +218,26 @@
   }
   .right-addon input {
     padding-right: 30px;
+  }
+  .navbar-inverse {
+    z-index: 1000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+  }
+  .dashboard .balance-block,
+  .dashboard .currency-content {
+    margin-top: 85px;
+  }
+  .form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
+    max-width: 400px;
+  }
+  .add-coin-create-wallet-form {
+    z-index: 2000;
+  }
+  .add-coin-create-wallet-form  .modal-content .bi_interface-arrow-left {
+    margin-top: 0;
+  }
+  .add-coin-create-wallet-form .modal-content .form-header .title {
+    padding-top: 2px;
   }

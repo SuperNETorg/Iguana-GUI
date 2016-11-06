@@ -94,7 +94,7 @@
                 <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}</div>
                 <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
                   <div class="status unselectable">{{ item.status }}</div>
-                  <div class="amount unselectable">
+                  <div class="amount unselectable" ng-class="{ 'smaller': item.switchStyle }">
                     <span class="in-out {{ item.inOut }}"></span>
                     <span class="value">{{ item.amount }}</span>
                     <span class="coin-name">{{ item.coin }}</span>
@@ -104,9 +104,9 @@
                   </div>
                   <div class="hash">{{ item.hash }}</div>
                   <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-                  <div class="timestamp two-lines unselectable">
-                    <div class="timestamp-date">{{ item.timestampDate }}</div>
-                    <div class="timestamp-time">{{ item.timestampTime }}</div>
+                  <div class="timestamp two-lines unselectable time-ago">
+                    <div class="timestamp-date time-ago-date">{{ item.timestampDate }}</div>
+                    <div class="timestamp-time time-ago-time">{{ item.timestampTime }}</div>
                   </div>
                 </div>
               </div>
@@ -120,10 +120,8 @@
 </div>
 <section class="form-container mdl send-coin-form unselectable hidden fade">
   <div class="modal-overlay"></div>
-  <div class="modal modal-send-coin">
-    <div ng-include="'partials/send-coin-entry.html'" ng-hide="!sendCoin.initStep"></div>
-    <div ng-include="'partials/send-coin-confirmation.html'" ng-hide="sendCoin.initStep"></div>
-  </div>
+  <div class="modal modal-send-coin" ng-include="'partials/send-coin-entry.html'" ng-hide="!sendCoin.initStep"></div>
+  <div class="modal modal-send-coin" ng-include="'partials/send-coin-confirmation.html'" ng-hide="sendCoin.initStep"></div>
 </section>
 <div class="message-modal" ng-include="'partials/message-modal.html'"></div>
 <div ng-include="'partials/send-coin-passphrase.html'"></div>

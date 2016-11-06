@@ -18,10 +18,6 @@
     position: absolute;
     font-family: 'Proxima Nova', sans-serif;
   }
-  .app-container,
-  .app-container-inner {
-    height: 100%;
-  }
   .orange-gradient,
   .btn.orange-gradient:focus {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe640d+8,fe640d+26,fe4b0d+77,fe450d+100 */
@@ -44,4 +40,19 @@
   }
   .col-red {
     color: #FF0000;
+  }
+  .modal .modal-dialog.modal-lg {
+    width: 800px;
+  }
+  /* preload flag svgs */
+  body:after {
+    content: url(fonts/flags/au.svg) url(fonts/flags/bg.svg) url(fonts/flags/br.svg) url(fonts/flags/ca.svg)
+             url(fonts/flags/ch.svg) url(fonts/flags/cn.svg) url(fonts/flags/cz.svg) url(fonts/flags/dk.svg)
+             url(fonts/flags/gb.svg) url(fonts/flags/hk.svg) url(fonts/flags/hr.svg) url(fonts/flags/hu.svg)
+             url(fonts/flags/id.svg) url(fonts/flags/il.svg) url(fonts/flags/in.svg) url(fonts/flags/jp.svg)
+             url(fonts/flags/kr.svg) url(fonts/flags/mx.svg) url(fonts/flags/my.svg) url(fonts/flags/no.svg)
+             url(fonts/flags/nz.svg) url(fonts/flags/ph.svg) url(fonts/flags/pl.svg) url(fonts/flags/ro.svg)
+             url(fonts/flags/ru.svg) url(fonts/flags/se.svg) url(fonts/flags/sg.svg) url(fonts/flags/th.svg)
+             url(fonts/flags/tr.svg) url(fonts/flags/za.svg) url(fonts/flags/eu.svg) url(fonts/flags/us.svg);
+    display: none;
   }

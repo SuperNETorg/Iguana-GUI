@@ -98,9 +98,9 @@ var lang = {
       'FEE_CANNOT_EXCEED': 'Fee cannot exceed'
     },
     'PASSPHRASE_MODAL': {
-      'PROVIDE_A_PASSPHRASE': 'Provide a passphrase',
-      'TYPE_OR_PASTE_PASSPHRASE': 'Type or paste the passphrase',
-      'OK': 'OK'
+      'PROVIDE_PASSPHRASE': 'Provide passphrase',
+      'PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION': 'Provide passphrase to confirm the transaction',
+      'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
@@ -162,6 +162,13 @@ var lang = {
       'THB': 'Thai Baht',
       'TRY': 'Turkish Lira',
       'ZAR': 'South African Rand'
+    },
+    'TIME_AGO': {
+      'MOMENT': 'Moment ago',
+      'MINUTE': 'min ago',
+      'HOURS': 'hours ago',
+      'DAY': 'day ago',
+      'DAYS': 'days ago'
     }
   }
 };

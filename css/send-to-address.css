@@ -15,7 +15,7 @@
   font-family: 'budicon';
   font-size: 2.0em;
   color: #C8CCD0;
-  top: 96px;
+  top: 100px;
   content: '\eac5';
   height: 40px;
   width: 40px;
@@ -41,7 +41,7 @@
 }
 .send-modal .main-popup {
   margin: 0 auto;
-  max-width: 300px;
+  max-width: 360px;
 }
 .send-modal .pop-detail {
   margin-bottom: 0.5em;
@@ -56,7 +56,7 @@
   font-weight: 600;
 }
 .send-modal .pop-form {
-  margin-top: 30px;
+  margin-top: 40px;
 }
 .send-modal .send-modal .pop-detail h4 {
   color: #282828;
@@ -85,7 +85,7 @@
   margin-top: 4px;
   resize: none;
   width: 100%;
-  padding: 5px 12px;
+  padding: 4px 12px;
   font-weight: normal;
 }
 .send-modal .modal {
@@ -134,6 +134,8 @@
   width: 20px;
   height: 20px;
   position: absolute;
+  top: -3px;
+  right: 3px;
 }
 .send-modal .pop-detail.send .tx-address {
   padding-right: 32px;
@@ -209,9 +211,6 @@
   ! not going to work in IE,
     TODO: gracefull fallback(?) !
 */
-.send-coin-form .modal:before { /* temp fix */
-  position: absolute;
-}
 .send-modal.blur {
   -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
   filter: blur(2px);
@@ -236,8 +235,9 @@
 .send-coin-success-overlay .btn-confirmed,
 .send-coin-success-overlay .btn-confirmed:focus {
   position: absolute;
-  bottom: 15px;
+  bottom: 25%;
   left: 25%;
+  right: 25%;
   text-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
   font-size: 1.3em;
 
@@ -295,10 +295,10 @@
   border-radius: 4px;
   background: none;
 }
-.modal-send-coin .bi_interface-arrow-left {
+.modal-send-coin .bi_interface-arrow-left ,
+.modal-add-coin-login .bi_interface-arrow-left {
   color: #fff;
   font-size: 26px;
-  margin-top: 10px;
   margin-left: 10px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   position: absolute;
@@ -321,6 +321,12 @@
   -webkit-animation: rotator 1.5s ease-in-out infinite;
   stroke-dasharray: 107,38;
 }
+.modal-send-coin .modal-dialog .modal-content .modal-header [class *="btn-"] {
+  margin-left: 6px;
+}
+.modal-send-coin .modal-dialog .modal-content .modal-header .title {
+  padding-top: 0;
+}
 .modal-send-coin .bag {
   position: absolute;
 }
@@ -331,4 +337,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.send-coin-confirm-passphrase {
+  z-index: 2000;
 }

@@ -32,6 +32,7 @@
     margin-left: auto;
     margin-right: auto;
     display: block;
+    font-size: 18px;
   }
   .auth-main .form-content {
     padding: 3.1em 1.6em 2em 1.6em;
@@ -47,6 +48,7 @@
   }
   .auth-main .create-account-form .generated-passhprase {
     padding: 0 35px;
+    font-size: 18px;
   }
   .auth-main .form-header .title {
     padding-top: 18px;
@@ -59,5 +61,37 @@
   }
   .auth-main .verify-passphrase-form .login-input-directions {
     width: 210px;
+  }
+  .form-container.mdl .form-header,
+  .modal-content,
+  .modal-dialog.modal-popup,
+  .modal-dialog .modal-body,
+  .modal .modal-content.receiving-coin-content {
+    border-radius: 0;
+  }
+  .form-container .form-content {
+    padding: 40px 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-container.mdl .form-header,
+  .form-container.mdl .modal-content,
+  .modal-dialog.modal-popup,
+  .modal-dialog .modal-body,
+  .modal .modal-content.receiving-coin-content {
+    border-radius: 0;
+  }
+  .add-new-coin-form .supported-coins-repeater-inner {
+    padding: 30px 0;
+  }
+  .form-container .form-content {
+    padding: 40px 10px;
+  }
+  .coins-title {
+    padding-top: 0;
+  }
+  .form-container.mdl .bi_interface-cross {
+    margin-top: 3px;
   }
 }

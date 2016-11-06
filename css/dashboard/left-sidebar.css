@@ -5,7 +5,7 @@
 
 .account-coins-repeater .item {
   position: relative;
-  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.125);
   border-radius: 4px;
   margin-bottom: 20px;
   background: #fff;
@@ -105,9 +105,6 @@
 .account-coins-repeater .item.active .coin .name {
   color: #fff;
 }
-.account-coins-repeater .item.active .clickable-area {
-  pointer-events: none;
-}
 .account-coins-repeater .item.active {
   cursor: default;
   color: #fff;
@@ -137,7 +134,7 @@
   background: #fff;
   color: #FE450D;
   border-radius: 4px;
-  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.125);
   width: 100%;
   padding: 7px 0;
 }

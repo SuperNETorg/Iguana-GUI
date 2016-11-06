@@ -45,7 +45,6 @@
 }
 .reference-currency-main .currency-content .container-left {
   margin-top: calc(18% - 12.4%); /* calc wont work in iOS safari */
-  padding-left: 13.1%;
   padding-top: 7px;
 }
 .reference-currency-main .currency-content .container-left .choose-currency {
@@ -60,27 +59,28 @@
 }
 .reference-currency-main .currency-content .currency-parent {
   margin-top: 30px;
-  padding-left: 0;
 }
-.reference-currency-main .currency-content .country-li.country-li.active {
+.reference-currency-main .currency-content .country-li.country-li.selected {
   border: 2px solid #FD5624;
   color: #FD5624;
   box-shadow: none;
 }
-.reference-currency-main .currency-content .currency-loop .active .full-name {
+.reference-currency-main .currency-content .currency-loop .selected .full-name {
   color: #FD5624;
   font-weight: 600;
 }
 .reference-currency-main .currency-content .currency-loop {
   padding-left: 0;
   font-size: 0.95em;
+  text-align: center;
 }
 .reference-currency-main .currency-content .currency-loop .country-li {
   background-color: #fff;
   border-radius: 6px;
   list-style-type: none;
   text-align: center;
-  width: 182px;
+  max-width: 180px;
+  min-width: 166px;
   padding-top: 20px;
   margin: 10px;
   height: 132px;

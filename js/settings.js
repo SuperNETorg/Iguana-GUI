@@ -20,7 +20,10 @@ var _settings = {
   iguanaNullReturnCountThreshold: 30,
   iguanaNullReturnCountLogoutTimeout: 10, // sec
   addCoinInfoModalTimeout: 5, // sec
-  addCoinTimeout: 2 // sec
+  addCoinTimeout: 2, // sec
+  thresholdTimeAgo: {
+    day: 10
+  }
 };
 
 // create a new object with non-writable values

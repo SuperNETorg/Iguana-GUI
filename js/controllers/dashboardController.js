@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', function($scope, $http, $state, helper, passPhraseGenerator) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator',
+  function($scope, $http, $state, helper, passPhraseGenerator) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
@@ -27,6 +28,17 @@ angular.module('IguanaGUIApp.controllers')
 
     $(document).ready(function() {
       api.testConnection();
+      initTopNavBar();
+
+      $('body').scroll(function(e){
+        if ($(window).width() < 768) {
+          if ($('.main-content, .currency-content').position().top  < -270) {
+            $('#top-menu').addClass('hidden');
+          } else {
+            $('#top-menu').removeClass('hidden');
+          }
+        }
+      })
       //updateDashboardView(settings.ratesUpdateTimeout);
     });
 
@@ -253,6 +265,7 @@ angular.module('IguanaGUIApp.controllers')
                 $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
                 $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
                 $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
+                $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false); // TODO: switch ONLY on mobile
                 $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
                                                                    transactionDetails.timestamp ||
                                                                    transactionDetails.time;
@@ -283,21 +296,14 @@ angular.module('IguanaGUIApp.controllers')
         txUnit.removeAttr('style');
         mainContent.removeAttr('style');
       }
-      // hash shading
-      var txUnitItem = '.transactions-list-repeater .item';
-      $(txUnitItem + ' .hash').css({ 'width': Math.floor($('.transactions-list-repeater').width() / 1.4 -
-                                                                             $(txUnitItem + ':first-child .status').width() -
-                                                                             $(txUnitItem + ':first-child .amount').width() -
-                                                                             $(txUnitItem + ':first-child .progress-status').width()) });
       // coin tiles on the left
       var accountCoinsRepeaterItem = '.account-coins-repeater .item';
       $(accountCoinsRepeaterItem).each(function(index, item) {
         var coin = $(this).attr('data-coin-id');
-        $(accountCoinsRepeaterItem + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + coin).width() -
-                                                                                      $(accountCoinsRepeaterItem + coin + ' .coin .icon').width() -
-                                                                                      $(accountCoinsRepeaterItem + coin + ' .balance').width() - 50) });
+        $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
+                                                                                            $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
+                                                                                            $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
       });
-      //opacityToggleOnAddCoinRepeaterScroll();
     }
 
     function updateDashboardView(timeout) {
@@ -774,72 +780,43 @@ angular.module('IguanaGUIApp.controllers')
       if (setTxFeeResult) api.setTxFee($scope.activeCoin, 0);
     }
 
-    /*
+    function initTopNavBar() {
+      if ($(window).width() < 768) {
+        var topMenu = $('#top-menu');
+        var btnLeft = $('.nav-buttons .nav-left', topMenu),
+          btnRight = $('.nav-buttons .nav-right', topMenu),
+          items = $('.item', topMenu), itemsLength = 0, item;
 
-    // on les then 768px working this function
-    function bindMobileView() {
-      var coins = $('aside.coins'),
-          item = $('.item.active', coins),
-          transactionsUnit = $('.transactions-unit');
-
-      mobileView(coins, item, transactionsUnit);
-      $(window).resize(function () {
-        mobileView(coins, item, transactionsUnit);
-      })
-    }
-    function mobileView(coins, item, transactionsUnit) {
-      item = $('.item.active', coins);
-      if ($(window).width() > 767) {
-        //coins.css({ 'min-width': '230px', 'max-width': '270px' });
-        item.removeClass('hidden-after');
-        transactionsUnit.removeAttr('style');
-      } else {
-        coins.removeAttr('style');
-        item.addClass('hidden-after');
-        transactionsUnit.css('margin-left', '0');
-      }
-    }
-
-    // on les then 768px working this function//
-    initTopNavBar = function () {
-      var topMenu = $('#top-menu');
-      var btnLeft = $('.nav-buttons .nav-left', topMenu),
-        btnRight = $('.nav-buttons .nav-right', topMenu),
-        items = $('.item', topMenu), itemsLength = 0, item;
-
-      btnLeft.on('click swipeleft', function () {
-        if ($(window).width() < $('.top-menu', topMenu).width()) {
-          itemsLength = $('.top-menu', topMenu).width();
-          for (var i = items.length - 1; 0 <= i; i--) {
-            item = $(items[i]);
-            itemsLength -= $(items[i]).width();
-            if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() &&
-              itemsLength > $(items[i]).width()) {
-              item.closest('.navbar-nav').animate({'margin-left':
-              parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
-              itemsLength = 0;
-              break;
-            } else return;
-          }
-        }
-      });
-      btnRight.on('click swiperight', function () {
-        if ($(window).width() < $('.top-menu', topMenu).width())
-          for (var i = 0; items.length > i; i++) {
-            item = $(items[i]);
-            itemsLength += $(items[i]).offset().left;
-            if ($(items[i]).offset().left < topMenu.width() &&
-              itemsLength > topMenu.width()) {
-              item.closest('.navbar-nav').animate({'margin-left':
-                (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
-              itemsLength = 0;
-              break;
+        btnLeft.on('click swipeleft', function() {
+          if ($(window).width() < $('.top-menu', topMenu).width()) {
+            itemsLength = $('.top-menu', topMenu).width();
+            for (var i = items.length - 1; 0 <= i; i--) {
+              item = $(items[i]);
+              itemsLength -= $(items[i]).width();
+              if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() &&
+                itemsLength > $(items[i]).width()) {
+                item.closest('.navbar-nav').animate({'margin-left':
+                parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
+                itemsLength = 0;
+                break;
+              } else return;
             }
           }
-      });
-
-    };
-    $(document).ready(function () {
-      initTopNavBar();
-    });*/
+        });
+        btnRight.on('click swiperight', function() {
+          if ($(window).width() < $('.top-menu', topMenu).width())
+            for (var i = 0; items.length > i; i++) {
+              item = $(items[i]);
+              itemsLength += $(items[i]).offset().left;
+              if ($(items[i]).offset().left < topMenu.width() &&
+                itemsLength > topMenu.width()) {
+                item.closest('.navbar-nav').animate({'margin-left':
+                  (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
+                itemsLength = 0;
+                break;
+              }
+            }
+        });
+      }
+    }
 }]);
