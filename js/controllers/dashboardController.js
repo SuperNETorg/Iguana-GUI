@@ -265,7 +265,7 @@ angular.module('IguanaGUIApp.controllers')
                 $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
                 $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
                 $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
-                $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false); // TODO: switch ONLY on mobile
+                $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false); // mobile only
                 $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
                                                                    transactionDetails.timestamp ||
                                                                    transactionDetails.time;
@@ -287,6 +287,7 @@ angular.module('IguanaGUIApp.controllers')
     function applyDashboardResizeFix() {
       var mainContent = $('.main-content'),
           txUnit = $('.transactions-unit');
+
       // tx unit resize
       if ($(window).width() > 767) {
         var width = Math.floor(mainContent.width() - $('.coins').width() - 80);
@@ -296,14 +297,17 @@ angular.module('IguanaGUIApp.controllers')
         txUnit.removeAttr('style');
         mainContent.removeAttr('style');
       }
+
       // coin tiles on the left
-      var accountCoinsRepeaterItem = '.account-coins-repeater .item';
-      $(accountCoinsRepeaterItem).each(function(index, item) {
-        var coin = $(this).attr('data-coin-id');
-        $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
-                                                                                            $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
-                                                                                            $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
-      });
+      if ($scope.sideBarCoins) {
+        var accountCoinsRepeaterItem = '.account-coins-repeater .item';
+        for (var i=0; i < $scope.sideBarCoins.length; i++) {
+          var coin = $scope.sideBarCoins[i].id;
+          $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
+                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
+                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
+        }
+      }
     }
 
     function updateDashboardView(timeout) {
@@ -793,13 +797,14 @@ angular.module('IguanaGUIApp.controllers')
             for (var i = items.length - 1; 0 <= i; i--) {
               item = $(items[i]);
               itemsLength -= $(items[i]).width();
-              if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() &&
-                itemsLength > $(items[i]).width()) {
+              if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() && itemsLength > $(items[i]).width()) {
                 item.closest('.navbar-nav').animate({'margin-left':
                 parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
                 itemsLength = 0;
                 break;
-              } else return;
+              } else {
+                return;
+              }
             }
           }
         });
@@ -808,8 +813,7 @@ angular.module('IguanaGUIApp.controllers')
             for (var i = 0; items.length > i; i++) {
               item = $(items[i]);
               itemsLength += $(items[i]).offset().left;
-              if ($(items[i]).offset().left < topMenu.width() &&
-                itemsLength > topMenu.width()) {
+              if ($(items[i]).offset().left < topMenu.width() && itemsLength > topMenu.width()) {
                 item.closest('.navbar-nav').animate({'margin-left':
                   (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
                 itemsLength = 0;

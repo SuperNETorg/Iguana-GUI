@@ -60,6 +60,7 @@ angular.module('IguanaGUIApp.controllers')
 
     $scope.currencyArr = currencyArr;
     $scope.activeCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    console.log($scope.activeCurrency);
 
     $scope.setCurrency = function(item) {
       $scope.activeCurrency = item.shortName;
