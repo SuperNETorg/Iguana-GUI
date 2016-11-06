@@ -42,8 +42,6 @@ angular.module('IguanaGUIApp.controllers')
       //updateDashboardView(settings.ratesUpdateTimeout);
     });
 
-    applyDashboardResizeFix();
-
     $(window).resize(function() {
       applyDashboardResizeFix();
     });
@@ -151,13 +149,14 @@ angular.module('IguanaGUIApp.controllers')
       });
       $scope.sideBarCoinsUnsorted = _sideBarCoins;
 
+      applyDashboardResizeFix();
+
       // run balances and tx unit update once left sidebar is updated
       if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
         checkAddCoinButton();
         updateTotalBalance();
         $scope.setTxUnitBalance();
         constructTransactionUnitRepeater();
-        applyDashboardResizeFix();
       }
     }
 
@@ -281,6 +280,7 @@ angular.module('IguanaGUIApp.controllers')
       }
 
       $scope.$apply(); // manually trigger digest
+      applyDashboardResizeFix();
     }
 
     // not the best solution but it works
@@ -338,10 +338,10 @@ angular.module('IguanaGUIApp.controllers')
       $scope.wordCount = isIguana ? 24 : 12; // TODO: move to settings
 
       /* legacy, seems to work fine */
-      helper.opacityToggleOnAddCoinRepeaterScroll();
+      /*helper.opacityToggleOnAddCoinRepeaterScroll();
       $('.supported-coins-repeater').scroll(function(e) {
         helper.opacityToggleOnAddCoinRepeaterScroll();
-      });
+      });*/
       helper.bindCoinRepeaterSearch();
     }
 
@@ -350,13 +350,15 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.toggleCoinTile = function(item) {
-      if (!isIguana) {
-        $scope.coinsSelectedToAdd = {};
-      }
       if ($scope.coinsSelectedToAdd[item.coinId]) {
         delete $scope.coinsSelectedToAdd[item.coinId];
       } else {
         $scope.coinsSelectedToAdd[item.coinId] = true;
+      }
+      if (!isIguana) {
+        var selectedCoind = $scope.coinsSelectedToAdd[item.coinId];
+        $scope.coinsSelectedToAdd = {};
+        if (selectedCoind) $scope.coinsSelectedToAdd[item.coinId] = selectedCoind;
       }
     }
 
