@@ -209,7 +209,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
        animation: true,
        ariaLabelledBy: 'modal-title',
        ariaDescribedBy: 'modal-body',
-       windowClass: 'messageModal msg-' + color,
+       windowClass: 'iguana-modal message-container msg-' + color,
        template: '<div class="modal-header msgbox-header">' +
        '<div class="msg-body" data-dismiss="modal">'+message+'</div></div>',
 
