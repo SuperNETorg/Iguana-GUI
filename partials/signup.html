@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row centered">
       <!-- // create account form start -->
-      <section class="form-container create-account-form" ng-class="{ 'hidden': $state.current.name === 'signup.verify' }">
+      <section class="form-container create-account-form" ng-class="{ 'hidden': !($state.current.name === 'signup') }" >
         <header class="form-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
@@ -14,8 +14,9 @@
           <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') }} 24-{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') }} <strong>{{ helper.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') }}</strong></div>
           <div class="passphrase-container row center offset-bottom-md">
             <div class="title unselectable">{{ helper.lang('CREATE_ACCOUNT.COPY_PASSPHRASE') }}: {{ generatedPassphrase }}</div>
-            <div class="generated-passhprase cursor-pointer"></div>
-            <input type="text" class="generated-passhprase-hidden cursor-pointer"></input>
+            <div class="generated-passhprase cursor-pointer"  ng-click="copyPassphraseWord($event)">
+              {{ passphrase }}
+            </div>
           </div>
           <input type="checkbox" id="passphrase-saved-checkbox" name="passphraseSaved" ng-model="passphraseCheckbox" class="checkbox" />
           <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer">
@@ -24,23 +25,44 @@
           <div class="non-iguana-coins-repeater hidden"></div>
           <div class="non-iguana-coins-repeater-errors"></div>
           <div class="login-or-delim center"></div>
-          <button class="btn btn-block disabled orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-disabled="!passphraseCheckbox" ng-click="$state.go('signup.verify')">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-verify-passphrase"
+                  ng-disabled="!passphraseCheckbox"
+                  ng-click="$state.go('signup.verify')"
+          >
+            {{ helper.lang('CREATE_ACCOUNT.NEXT') }}
+          </button>
         </div>
       </section>
       <!-- // create account form end -->
       <!-- // verify passphrase form start -->
-      <section class="form-container verify-passphrase-form" ng-class="{ 'hidden': $state.current.name === 'signup.passphrase' }">
+      <section class="form-container verify-passphrase-form" ng-controller="signupController" ng-class="{ 'hidden': !($state.current.name === 'signup.verify') }" >
         <header class="form-header orange-gradient box-shadow-bottom">
-          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="isShow= !isShow"></i>
+          <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup')"></i>
           <div class="title text-shadow">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
         </header>
-        <div class="form-content">
+        <div class="form-content" ng-click="pastPassphraseWord()">
           <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ helper.lang('LOGIN.INCORRECT_INPUT_P1') }} 24 {{ helper.lang('LOGIN.INCORRECT_INPUT_P2') }}</div>
-          <div class="login-input-directions center offset-bottom-sm unselectable">{{ helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE') }}</div>
-          <textarea name="verifyPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center"></textarea>
+          <div class="login-input-directions center offset-bottom-sm unselectable">
+            {{ helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1') }}
+            <span class="paste-from-clipboard-link cursor-pointer" ng-click="pastPassphraseWord()">
+              {{ helper.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2') }}
+            </span>
+          </div>
+          <textarea
+            name="verifyPassphrase"
+            id="passphrase"
+            class="login-passphrase-textarea offset-bottom-sm row center"
+            ng-model="passPhraseText" ng-change="verifyPass()"
+          >
+          </textarea>
           <div class="non-iguana-walletpassphrase-errors"></div>
           <div class="login-or-delim center unselectable"></div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account disabled">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</button>
+          <button ng-disabled="!buttonCreateAccount"
+            class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="addAccount()">
+            <!--ng-click="$state.go('signup.passphrase')"-->
+
+            {{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}
+          </button>
         </div>
       </section>
       <!-- // verify passphrase form end -->

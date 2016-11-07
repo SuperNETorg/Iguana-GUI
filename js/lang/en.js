@@ -33,7 +33,9 @@ var lang = {
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
       'I_SAVED_A_PASSPHRASE': 'I saved the passphrase in a secure place',
       'NEXT': 'Next',
-      'TYPE_OR_PASTE_THE_PASSPHRASE': 'Type or paste the passphrase to confirm you saved it properly.'
+      'TYPE_OR_PASTE_THE_PASSPHRASE': 'Type or paste the passphrase to confirm you saved it properly.',
+      'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase to confirm you saved it properly.',
+      'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'Click here to paste from the clipboard.'
     },
     'ADD_COIN': {
       'ADDING_A_NEW_COIN': 'Adding a new coin',

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers', []);
-angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'IguanaGUIApp.controllers'])
-.service('helper', createHelpers)
+angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap']);
+angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', createHelpers])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
@@ -11,14 +11,13 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.boot
       controller: 'loginController'
     })
     .state('signup', {
-      templateUrl: 'partials/signup.html',
-      controller: 'signupController' // TODO: split, move to signupController
-    })
-    .state('signup.passphrase', {
       url: '/signup',
+      templateUrl: 'partials/signup.html',
+      controller: 'signupController'
     })
     .state('signup.verify', {
       url: '/verify',
+      controller: 'signupController'
     })
     .state('dashboard', {
       url: '/dashboard',

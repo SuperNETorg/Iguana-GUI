@@ -1,10 +1,10 @@
 'use strict';
 
-var createHelpers = function() {
+var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
-      pasteTextFromClipboard = false,
-      isExecCopyFailed = false,
+      pasteTextFromClipboard = false,// TODO useless
+      isExecCopyFailed = false,// TODO useless
       coindWalletLockResults = [],
       coindWalletLockCount = 0,
       minEpochTimestamp = 1471620867; // Jan 01 1970
@@ -76,22 +76,22 @@ var createHelpers = function() {
     }
   }
 
-  this.addCopyToClipboardFromElement = function(elementId, elementDisplayName) {
-    var hiddenElementId = 'hidden',
-        isExecCopyFailed = false;
-
-    try {
-      $(elementId + '-' + hiddenElementId).select();
-      document.execCommand('copy');
-      this.prepMessageModal(elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + $(elementId + '-' + hiddenElementId).val(), 'blue', true);
-      pasteTextFromClipboard = $(elementId + '-' + hiddenElementId).val();
-    } catch(e) {
-      isExecCopyFailed = true;
-      this.prepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
+  this.addCopyToClipboardFromElement = function(element, elementDisplayName) {
+    if (!isExecCopyFailed) {
+      try {
+        clipboard.copyText(element.html());
+        this.ngPrepMessageModal( //TODO
+          elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
+          'blue',
+          true
+        );
+        pasteTextFromClipboard = element.html();
+      } catch (e) {
+        isExecCopyFailed = true;
+        this.ngPrepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
+      }
     }
-
-    return isExecCopyFailed;
-  }
+  }.bind(this);
 
   this.setCurrency = function(currencyShortName) {
     localstorage.setVal('iguana-currency', { 'name' : currencyShortName });
@@ -204,6 +204,34 @@ var createHelpers = function() {
     }
   }
 
+  this.ngPrepMessageModal = function (message, color, fireModal) {
+     $uibModal.open({
+       animation: true,
+       ariaLabelledBy: 'modal-title',
+       ariaDescribedBy: 'modal-body',
+       windowClass: 'messageModal msg-' + color,
+       template: '<div class="modal-header msgbox-header">' +
+       '<div class="msg-body" data-dismiss="modal">'+message+'</div></div>',
+
+       // controller: 'signupController',
+       resolve: {
+         items: function () {
+         }
+       }
+     });
+
+
+    // var messageModal = $('#messageModal');
+    //
+    // messageModal.removeClass('msg-red').removeClass('msg-blue').removeClass('msg-green');
+    // messageModal.addClass('msg-' + color);
+    // $('#messageModal .msg-body').html(message);
+    //
+    // if (fireModal) {
+    //   messageModal.show().removeClass('fade');
+    // }
+  };
+
   this.closeMessageModal = function() {
     $('#messageModal').hide();
   }
@@ -213,7 +241,7 @@ var createHelpers = function() {
     this.prepMessageModal(this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
       ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' + this.lang('MESSAGE.NO_REQUIRED_DAEMON_P2') + '</a> ' + this.lang('MESSAGE.NO_REQUIRED_DAEMON_P3') +
       (this.getCurrentPage() !== 'login' &&
-      this.getCurrentPage() !== 'create-account' ? '<br/><br/><a onclick=\"this.logout()\">' + this.lang('DASHBOARD.LOGOUT') + '</a>' : ''), 'red', true);
+      this.getCurrentPage() !== 'signup' ? '<br/><br/><a onclick=\"this.logout()\">' + this.lang('DASHBOARD.LOGOUT') + '</a>' : ''), 'red', true);
   }
 
   this.prepRequirementsModal = function() {
@@ -329,8 +357,8 @@ var createHelpers = function() {
           messageModal.hide();
         }, 250);
       }
-    });
-  }
+    }.bind(this));
+  }.bind(this)
 
   this.convertUnixTime = function(UNIX_timestamp, format) {
     var a = new Date(UNIX_timestamp * 1000),
@@ -495,7 +523,7 @@ var createHelpers = function() {
         addCoinArray = {};
 
     for (var key in supportedCoinsList) {
-      if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || this.getCurrentPage() === 'login' || this.getCurrentPage() === 'create-account') {
+      if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'signup') {
         if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
           addCoinArray[key] = {
             'id': key.toUpperCase(),

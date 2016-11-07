@@ -284,7 +284,8 @@ app.service('passPhraseGenerator', function () {
     'winter', 'wire', 'wisdom', 'wise', 'wish', 'witness', 'wolf', 'woman', 'wonder',
     'wood', 'wool', 'word', 'work', 'world', 'worry', 'worth', 'wrap', 'wreck',
     'wrestle', 'wrist', 'write', 'wrong', 'yard', 'year', 'yellow', 'you', 'young',
-    'youth', 'zebra', 'zero', 'zone', 'zoo'];
+    'youth', 'zebra', 'zero', 'zone', 'zoo'
+  ];
 
   this.push = function (seed) {
     Math.seedrandom(seed, true);

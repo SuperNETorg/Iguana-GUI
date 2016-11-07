@@ -33,7 +33,7 @@
 
   // for simultaneous dev in iguana and non-iguana modes
   dev.sessions = {
-    'Chrome': true, // true - iguana, false - coind
+    'Chrome': false, // true - iguana, false - coind
     'Firefox': false
   };
 
