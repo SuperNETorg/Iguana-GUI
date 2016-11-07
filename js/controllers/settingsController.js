@@ -5,14 +5,6 @@ angular.module('IguanaGUIApp.controllers')
     $scope.helper = helper;
     $scope.$state = $state;
 
-    $scope.checkSession = function() {
-      if (!helper.checkSession(true)) {
-        $state.go('login');
-      }
-    }
-
-    $scope.checkSession();
-
     $scope.logout = function() {
       helper.logout();
       $scope.checkSession();
@@ -60,15 +52,10 @@ angular.module('IguanaGUIApp.controllers')
 
     $scope.currencyArr = currencyArr;
     $scope.activeCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
-    console.log($scope.activeCurrency);
 
     $scope.setCurrency = function(item) {
       $scope.activeCurrency = item.shortName;
       helper.setCurrency($scope.activeCurrency);
       helper.updateRates(null, null, null, true);
     }
-
-    $(document).ready(function() {
-      api.testConnection();
-    });
 }]);

@@ -23,7 +23,7 @@ var createHelpers = function() {
 
       if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         if (!returnVal) {
-          if (!loginForm.width()) this.openPage('login'); // redirect to login when session is expired
+          //if (!loginForm.width()) this.openPage('login'); // redirect to login when session is expired
         } else {
           return false;
         }
@@ -37,7 +37,7 @@ var createHelpers = function() {
     if (isIguana) {
       apiProto.prototype.walletLock();
       localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
-      this.openPage('login');
+      //this.openPage('login');
     } else {
       coindWalletLockCount = 0;
 
@@ -50,7 +50,7 @@ var createHelpers = function() {
       // in case something went bad
       if (coindWalletLockCount === 0) {
         localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
-        this.openPage('login');
+        //this.openPage('login');
       }
 
       this.logoutCoind(cb);
@@ -72,7 +72,7 @@ var createHelpers = function() {
 
     if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
       localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp }); // Jan 01 1970
-      this.openPage('login');
+      //this.openPage('login');
     }
   }
 
@@ -269,59 +269,6 @@ var createHelpers = function() {
         }, 1000);
       }
     }
-  }
-
-  this.openPage = function(url) {
-    /*var body = $('body');
-
-    body.removeClass('modal-open');
-    if (dashboardUpdateTimer) {
-      clearInterval(dashboardUpdateTimer);
-    }
-
-    if (this.checkSession(true) && url !== 'dashboard' && url !== 'settings') {
-      url = document.location.hash.replace('#', '');
-    }
-
-    switch (url) {
-      case 'login':
-        iguanaNullReturnCount = 0;
-        body.html(loginFormPrepTemplate()).
-             removeClass('dashboard-page');
-        initAuthCB();
-        break;
-      case 'create-account':
-        body.html(signupFormPrepTemplate()).
-             removeClass('dashboard-page');
-        initAuthCB();
-        break;
-      case 'dashboard':
-        defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : settings.defaultCurrency;
-        var temp = templates.all.dashboard.
-                   replace(/{{ currency }}/g, defaultCurrency).
-                   replace('{{ injectLoader }}', templates.all.loader);
-        body.addClass('dashboard-page').
-             html(temp);
-        initDashboard();
-        break;
-      case 'settings':
-        body.addClass('dashboard-page').
-             html(templates.all.referenceCurrency);
-        initReferenceCurrency();
-        break;
-    }
-    this.initPageUrl(url);
-    */
-    this.checkIfIguanaOrCoindIsPresent();
-  }
-
-  this.getCurrentPage = function() { // obsolete, remove
-    return document.location.hash.replace('#', '');
-  }
-
-  this.initPageUrl = function(url) { // obsolete, remove
-    document.location.hash = '#' + url;
-    document.title = 'Iguana / ' + url.replace(url[0], url[0].toUpperCase()).replace('-', ' ');
   }
 
   this.syncStatus = function() {
@@ -539,8 +486,6 @@ var createHelpers = function() {
     if (!addNewCoinForm.hasClass(fadeClassName)) addNewCoinForm.addClass(fadeClassName);
     this.toggleModalWindow('add-new-coin-form', 300);
 
-    //$(supportedCoinsRepeaterClassName + '-inner').html(this.constructCoinRepeater());
-
     return this.constructCoinRepeater();
   }
 
@@ -550,7 +495,7 @@ var createHelpers = function() {
         addCoinArray = {};
 
     for (var key in supportedCoinsList) {
-      if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'create-account') {
+      if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || this.getCurrentPage() === 'login' || this.getCurrentPage() === 'create-account') {
         if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
           addCoinArray[key] = {
             'id': key.toUpperCase(),
@@ -565,67 +510,6 @@ var createHelpers = function() {
     }
 
     return addCoinArray;
-  }
-
-  this.opacityToggleOnAddCoinRepeaterScroll = function() {
-    var supportedCoinsRepeater = $('.supported-coins-repeater');
-
-    if (supportedCoinsRepeater.html()) {
-      var supportedCoinsRepeaterScrollPos = supportedCoinsRepeater.scrollTop() || 0,
-          // height + margin top + margin bottom
-          supportedCoinsRepeaterHeight = supportedCoinsRepeater.height() + Number(supportedCoinsRepeater.css('padding').replace('px', '')) * 2,
-          lowerThreshold = supportedCoinsRepeaterScrollPos + supportedCoinsRepeaterHeight;
-
-      $('.supported-coins-repeater .coin').each(function(index, item) {
-        // opacity change kicks in at around the middle of a tile line
-        var elHeight = $(this).outerHeight() + Number($(this).css('margin').replace('px', '')) * 2, // height + margin top + margin bottom
-            elAbsoluteTopPos = elHeight * 2 + Number($(this).css('paddingTop').replace('px', '')),
-            elTop = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos), // first line of tiles should have 0 top pos
-            elBottom = Math.floor($(this).offset().top + supportedCoinsRepeaterScrollPos - elAbsoluteTopPos + elHeight); // bottom = top + el height
-
-        if (elTop + Math.floor(elHeight / 1.5) <= supportedCoinsRepeaterScrollPos || elBottom - Math.floor(elHeight / 3.5) >= lowerThreshold) {
-          $(this).css({ 'opacity': 0.2 }); // shortcut, better to use css class
-        } else {
-          $(this).css({ 'opacity': 1 });
-        }
-      });
-    }
-  }
-
-  this.bindClickInCoinRepeater = function() {
-    var activeClassName = 'active',
-        disabledClassName = 'disabled',
-        supportedCoinsRepeaterCoin = $('.supported-coins-repeater-inner .coin'),
-        buttonNext = $('.btn-next');
-
-    supportedCoinsRepeaterCoin.each(function(index, item) {
-      $(this).click(function() {
-        var selectionStatus = $(this).hasClass(activeClassName) ? true : false;
-
-        if (!isIguana || helper.getCurrentPage() === 'create-account') {
-          supportedCoinsRepeaterCoin.removeClass(activeClassName);
-          coinsSelectedToAdd = [];
-        }
-
-        if ($(this).hasClass(activeClassName)) {
-          delete coinsSelectedToAdd[index];
-          $(this).removeClass(activeClassName);
-        } else {
-          $(this).addClass(activeClassName);
-          coinsSelectedToAdd[index] = $(this).attr('data-coin-id');
-        }
-
-        // TODO(?): rewrite
-
-        if (selectionStatus) {
-          $(this).removeClass(activeClassName);
-          buttonNext.addClass(disabledClassName);
-        } else {
-          $(this).addClass(activeClassName);
-          buttonNext.removeClass(disabledClassName);
-        }
-      });
-    });
   }
 
   this.bindCoinRepeaterSearch = function() {
@@ -650,7 +534,6 @@ var createHelpers = function() {
           supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
         supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
         supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-        //this.opacityToggleOnAddCoinRepeaterScroll();
       }
     });
   }
@@ -711,6 +594,10 @@ var createHelpers = function() {
         localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
       }
     }
+  }
+
+  this.getCurrentPage = function() { // obsolete, remove
+    return document.location.hash.replace('#', '');
   }
 
   this.isMobile = function() {

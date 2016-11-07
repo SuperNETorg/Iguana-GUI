@@ -44,6 +44,11 @@
   .modal .modal-dialog.modal-lg {
     width: 800px;
   }
+  .app-container,
+  .app-container-inner {
+    height: 100%;
+  }
+
   /* preload flag svgs */
   body:after {
     content: url(fonts/flags/au.svg) url(fonts/flags/bg.svg) url(fonts/flags/br.svg) url(fonts/flags/ca.svg)
@@ -55,4 +60,5 @@
              url(fonts/flags/ru.svg) url(fonts/flags/se.svg) url(fonts/flags/sg.svg) url(fonts/flags/th.svg)
              url(fonts/flags/tr.svg) url(fonts/flags/za.svg) url(fonts/flags/eu.svg) url(fonts/flags/us.svg);
     display: none;
+    font-family: cryptocoins, icomoon;
   }

@@ -34,8 +34,6 @@
             <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-click="$parent.addCoinCreateAccount.initStep = false" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseSavedCheckbox }">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
           </div>
         </section>
-        <!-- // create account form end -->
-        <!-- // verify passphrase form start -->
         <section class="verify-passphrase-form" ng-hide="$parent.addCoinCreateAccount.initStep">
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="toggleAddCoinWalletCreateModal(true)"></i>
@@ -50,7 +48,6 @@
             <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="encryptCoindWallet()" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseVerify.length }">{{ helper.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</button>
           </div>
         </section>
-        <!-- // verify passphrase form end -->
       </div>
     </div>
   </div>

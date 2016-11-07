@@ -1,35 +1,25 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('loginController', ['$scope', '$http', '$state', 'helper', function($scope, $http, $state, helper) {
+.controller('loginController', ['$scope', '$http', '$state', 'helper',
+  function($scope, $http, $state, helper) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
     $scope.passphrase = '';
     $scope.coinsSelectedToAdd = {};
 
-    /* legacy code */
-    $(document).ready(function() {
-      api.testConnection(initPage);
-    });
-
-    function initPage() {
-      if (helper.checkSession(true)) {
-        $state.go('dashboard');
-      } else {
-        initAuthCB();
-      }
-    }
+    initAuthCB();
 
     $scope.toggleAddCoinModal = function() {
       var availableCoins = helper.addCoinButtonCB();
       $scope.availableCoins = availableCoins;
 
       /* legacy, seems to work fine */
-      helper.opacityToggleOnAddCoinRepeaterScroll();
+      /*helper.opacityToggleOnAddCoinRepeaterScroll();
       $('.supported-coins-repeater').scroll(function(e) {
         helper.opacityToggleOnAddCoinRepeaterScroll();
-      });
+      });*/
       helper.bindCoinRepeaterSearch();
     }
 
@@ -38,14 +28,15 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.toggleCoinTile = function(item) {
-      if (!isIguana) {
-        $scope.coinsSelectedToAdd = {};
-      }
-
       if ($scope.coinsSelectedToAdd[item.coinId]) {
         delete $scope.coinsSelectedToAdd[item.coinId];
       } else {
         $scope.coinsSelectedToAdd[item.coinId] = true;
+      }
+      if (!isIguana) {
+        var selectedCoind = $scope.coinsSelectedToAdd[item.coinId];
+        $scope.coinsSelectedToAdd = {};
+        if (selectedCoind) $scope.coinsSelectedToAdd[item.coinId] = selectedCoind;
       }
     }
 
@@ -142,13 +133,13 @@ angular.module('IguanaGUIApp.controllers')
             toggleLoginErrorStyling(false);
 
             if (buttonClassName === 'add-account') {
-              helper.openPage('login');
+              $state.go('login');
               setTimeout(function() {
                 helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_CREATED'), 'green', true);
               }, 300);
             } else {
               localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
-              helper.openPage('dashboard');
+              $state.go('dashboard');
             }
           } else {
             toggleLoginErrorStyling(true);
@@ -210,13 +201,13 @@ angular.module('IguanaGUIApp.controllers')
             toggleLoginErrorStyling(false);
 
             if (buttonClassName === 'add-account') {
-              helper.openPage('login');
+              $state.go('login');
               setTimeout(function() {
                 helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_CREATED'), 'green', true);
               }, 300);
             } else {
               localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
-              helper.openPage('dashboard');
+              $state.go('dashboard');
             }
           } else {
             toggleLoginErrorStyling(true);
@@ -291,7 +282,7 @@ angular.module('IguanaGUIApp.controllers')
 
         if (!isAnyCoindLoginError && helper.getCurrentPage() !== 'dashboard') {
           localstorage.setVal('iguana-auth', { 'timestamp': Date.now() });
-          helper.openPage('dashboard');
+          $state.go('dashboard');
         } else {
           if (!isAnyCoindLoginError) {
             helper.toggleModalWindow('add-coin-login-form', 300);
@@ -319,7 +310,7 @@ angular.module('IguanaGUIApp.controllers')
           if (helper.getCurrentPage() === 'dashboard') {
             helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
           } else {
-            helper.openPage('login');
+            $state.go('login');
           }
         } else {
           helper.prepMessageModal(helper.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
@@ -466,12 +457,12 @@ angular.module('IguanaGUIApp.controllers')
 
       $(verifyAccounFormClassName + ' .btn-back').off();
       $(verifyAccounFormClassName + ' .btn-back').click(function() {
-        helper.openPage('create-account');
+        $state.go('signup.passphrase');
       });
 
       $(createAccountFormClassName + ' .btn-back').off();
       $(createAccountFormClassName + ' .btn-back').click(function() {
-        helper.openPage('login');
+        $state.go('login');
       });
 
       buttonVerifyPassphrase.off();
@@ -603,17 +594,17 @@ angular.module('IguanaGUIApp.controllers')
         $(addNewCoinFormElementName + ' .btn-next').click(function() {
           addCoinButtonNextAction();
         });
-        opacityToggleOnAddCoinRepeaterScroll();
-        bindCoinRepeaterSearch();
+        //opacityToggleOnAddCoinRepeaterScroll();
+        helper.bindCoinRepeaterSearch();
 
         if (helper.checkSession(true)) {
-          helper.openPage('dashboard');
+          $state.go('dashboard');
         } else {
           $('.login-form').removeClass('hidden');
         }
         $(loginFormElementName + ' .btn-signup').off();
         $(loginFormElementName + ' .btn-signup').click(function() {
-          helper.openPage('create-account');
+          $state.go('signup');
         });
 
         addAuthorizationButtonAction('signin');
@@ -651,8 +642,8 @@ angular.module('IguanaGUIApp.controllers')
         $(addNewCoinFormElementName + ' .btn-next').click(function() {
           addCoinButtonNextAction();
         });
-        opacityToggleOnAddCoinRepeaterScroll();
-        bindCoinRepeaterSearch();
+        //opacityToggleOnAddCoinRepeaterScroll();
+        helper.bindCoinRepeaterSearch();
 
         addAuthorizationButtonAction('add-account');
         watchPassphraseKeyUpEvent('add-account');
@@ -661,12 +652,12 @@ angular.module('IguanaGUIApp.controllers')
 
         $(createAccountFormClassName + ' .btn-back').off();
         $(createAccountFormClassName + ' .btn-back').click(function() {
-          helper.openPage('login');
+          $state.go('login');
         });
 
         $(verifyAccountFormClassName + ' .btn-back').off();
         $(verifyAccountFormClassName + ' .btn-back').click(function() {
-          helper.openPage('create-account');
+          $state.go('signup');
         });
 
         $(verifyAccountFormClassName + ' .paste-from-clipboard-link').off();
@@ -682,9 +673,9 @@ angular.module('IguanaGUIApp.controllers')
       }
     }
 
-    $(window).resize(function() {
+    /*$(window).resize(function() {
       opacityToggleOnAddCoinRepeaterScroll();
-    });
+    });*/
 
     function addCoinButtonNextAction() {
       var loginFormPassphrase = $('.login-form #passphrase'),

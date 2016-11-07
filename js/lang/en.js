@@ -105,7 +105,8 @@ var lang = {
     'MESSAGE': {
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
       'NO_REQUIRED_DAEMON_P1': 'No required daemon is running. Make sure it\'s on and these',
-      'NO_REQUIRED_DAEMON_P2': 'requirements are satisfied.',
+      'NO_REQUIRED_DAEMON_P2': 'requirements',
+      'NO_REQUIRED_DAEMON_P3': 'are satisfied.',
       'COPY_PASTE_IS_NOT_SUPPORTED': 'Copy/paste is not supported in your browser! Please select the passphrase manually.',
       'COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS': 'Copy/paste is not supported in your browser! Please copy address manually.',
       'COPIED_TO_CLIPBOARD': 'copied to clipboard',

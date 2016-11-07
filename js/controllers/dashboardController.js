@@ -13,21 +13,12 @@ angular.module('IguanaGUIApp.controllers')
 
     $('body').addClass('dashboard-page');
 
-    $scope.checkSession = function() {
-      if (!helper.checkSession(true)) {
-        $state.go('login');
-      }
-    }
-
-    $scope.checkSession();
-
     $scope.logout = function() {
       helper.logout();
       $scope.checkSession();
     }
 
     $(document).ready(function() {
-      api.testConnection();
       initTopNavBar();
 
       $('body').scroll(function(e){
