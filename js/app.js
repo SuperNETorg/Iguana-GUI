@@ -2,7 +2,7 @@
 
 angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap']);
 angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', createHelpers])
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', createHelpers])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
@@ -34,18 +34,18 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, helper) {
+.run(function($rootScope, $location, $state, helper, $timeout) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
     // TODO: find a better way
     if (!helper.checkSession(true) && toState.name !== 'signup.step1') {
-      setTimeout(function() {
+      $timeout(function() {
         $state.go('login');
       }, 0);
     }
     if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.step1')) {
       event.preventDefault();
-      setTimeout(function() {
+      $timeout(function() {
         $state.go('dashboard');
       }, 0);
     }

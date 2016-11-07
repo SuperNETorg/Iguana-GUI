@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator',
-  function($scope, $http, $state, helper, passPhraseGenerator) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', '$timeout', '$interval',
+  function($scope, $http, $state, helper, passPhraseGenerator, $timeout, $interval) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
@@ -16,17 +16,6 @@ angular.module('IguanaGUIApp.controllers')
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $('body').addClass('dashboard-page');
-
-    $scope.checkSession = function() {
-      if (!helper.checkSession(true)) {
-        $state.go('login');
-      }
-    }
-
-    $scope.logout = function() {
-      helper.logout();
-      $scope.checkSession();
-    }
 
     $(document).ready(function() {
       initTopNavBar();
@@ -319,7 +308,7 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     function updateDashboardView(timeout) {
-      dashboardUpdateTimer = setInterval(function() {
+      dashboardUpdateTimer = $interval(function() {
         //console.clear();
         helper.checkSession();
         helper.updateRates(null, null, null, true);
@@ -445,7 +434,7 @@ angular.module('IguanaGUIApp.controllers')
         for (var i=0; i < coinsSelectedToAdd.length; i++) {
           if (coinsSelectedToAdd[i]) {
             (function(x) {
-              setTimeout(function() {
+              $timeout(function() {
                 api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
               }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
             })(i);

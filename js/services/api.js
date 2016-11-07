@@ -1,15 +1,18 @@
-var app = angular.module('IguanaGUIApp.controllers');
-app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($localStorage, helper, $http, $state) {
+'use strict';
+
+angular.module('IguanaGUIApp.controllers')
+.service('api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval',
+  function ($localStorage, helper, $http, $state, $timeout, $interval) {
   this.coinsInfo = new Array;
 
   this.testConnection = function (cb) {
     setPortPollResponseDS = $localStorage['iguana-port-poll'];
     var timeDiff = setPortPollResponseDS ?
-      Math.floor(helper.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
-      0;
+        Math.floor(helper.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
+        0;
     var index = 0;
 
-    helper.getPortPollResponse(); //TODO change this function to angular
+    helper.getPortPollResponse(); // TODO change this function to angular
 
     for (var key in coinsInfo) {
       if (coinsInfo[key].connection === true) {
@@ -34,7 +37,6 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         ':' +
         apiProto.prototype.getConf().server.iguanaPort;
 
-
       $http({
         method: 'GET',
         url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
@@ -42,7 +44,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         dataType: 'text',
         async: true,
         timeout: 500
-      }).then(function successCallback(response) {
+      })
+      .then(function successCallback(response) {
         var isIguana = true;
 
         if (dev.isDev && dev.sessions) { // dev only
@@ -62,7 +65,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         this.errorHandler(response);
         this.testCoinPorts(cb);
 
-      }.bind(this), function errorCallback(response) {
+      })
+      .bind(this), function errorCallback(response) {
         // non-iguana env
         var isIguana = false;
 
@@ -71,8 +75,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
             if (navigator.userAgent.indexOf(key) > -1) {
               isIguana = dev.sessions[key];
               if (dev.sessions[key]){
-                setTimeout(function () {
-                  helper.prepNoDaemonModal();//TODO change this function to angular
+                $timeout(function () {
+                  helper.prepNoDaemonModal(); // TODO change this function to angular
                 }, 300);
               }
             }
@@ -82,14 +86,15 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         if (dev.showConsoleMessages && dev.isDev) {
           if (!isIguana) {
             console.log('running non-iguana env');
-          }else {
+          } else {
             console.log('running iguana env');
           }
         }
 
         this.errorHandler(response);
         this.testCoinPorts(cb);
-      }.bind(this));
+      }
+      .bind(this);
     } else {
       if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
       if (cb) cb.call();
@@ -102,10 +107,10 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
       if ($state.current.name !== 'login')
         (function() {
           helper.prepMessageModal('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...', 'red', true); //TODO Change Bootstrap alert
-          setTimeout(function() {
+          $timeout(function() {
             helper.logout();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-          clearInterval(dashboardUpdateTimer);
+          $interval.cancel(dashboardUpdateTimer);
         })();
 
       return 10;
@@ -125,7 +130,7 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
       }
       coinsInfo[index].connection = true;
 
-      //TODO change this function to angular
+      // TODO change this function to angular
       if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
         if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug){
           $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
@@ -146,10 +151,10 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
       if (iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
         (function() {
           helper.prepMessageModal('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...', 'red', true);//TODO Change Bootstrap alert
-          setTimeout(function() {
+          $timeout(function() {
             helper.logout();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-          clearInterval(dashboardUpdateTimer);
+          $interval.clear(dashboardUpdateTimer);
         })();
       }
 
@@ -173,7 +178,7 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
 
     for (var index in coins) {
       var conf = coins[index];
-        //TODO change this function to angular
+        // TODO change this function to angular
         fullUrl = apiProto.prototype.getFullApiRoute('getinfo', conf),
         postData = apiProto.prototype.getBitcoinRPCPayloadObj('getinfo', null, index),
         postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(conf);
@@ -194,7 +199,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         data: postData,
         headers: postAuthHeaders,
 
-      }).then(function successCallback(response) {
+      })
+      .then(function successCallback(response) {
         this.errorHandler(response, index);
 
         if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
@@ -240,7 +246,7 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
             }
 
             if (dev.isDev && dev.showSyncDebug) {
-              //TODO change this function to angular
+              // TODO change this function to angular
               if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
                 $('#debug-sync-info').append('coin: ' + index + ', ' +
                   'con ' + response.result.connections + ', ' +
@@ -276,7 +282,7 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
           if (dev.showConsoleMessages && dev.isDev) console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' + totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
 
           if (dev.isDev && dev.showSyncDebug) {
-            //TODO change this function to angular
+            // TODO change this function to angular
             if ($('#debug-sync-info').html().indexOf('coin: ' + index + ', ') < 0)
               $('#debug-sync-info').append('coin: ' + index + ', ' +
                 'con ' + peers[0].replace('peers.', '') + ', ' +
@@ -297,7 +303,7 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
 
           if (dev.isDev && dev.showSyncDebug) // debug info
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
-          setInterval(function() {
+          $interval(function() {
             //TODO change this function to angular
             if ($('.transactions-unit')) $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
@@ -307,8 +313,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         }
         _index++;
 
-      }.bind(this), function errorCallback(response) {
-
+      }
+      .bind(this), function errorCallback(response) {
         this.errorHandler(response, index);
 
         if (response.statusText === 'error' && !isIguana)
@@ -347,12 +353,12 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
           this.checkBackEndConnectionStatus();
 
           if (dev.isDev && dev.showSyncDebug) { // debug info
-            //TODO change this function to angular
+            // TODO change this function to angular
             $('body').css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
           }
 
-          setInterval(function() {
-            //TODO change this function to angular
+          $interval(function() {
+            // TODO change this function to angular
             if ($('.transactions-unit')) {
               $('.transactions-unit').css({ 'margin-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
             }
@@ -363,7 +369,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
         }
         _index++;
 
-      }.bind(this));
+      }
+      .bind(this));
     }
 
     return result;
@@ -429,7 +436,8 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
       dataType: 'json',
       data: postData,
       headers: postAuthHeaders
-    }).then(function successCallback(_response) {
+    })
+    .then(function successCallback(_response) {
       apiProto.prototype.errorHandler(_response, coin);
       if (dev.showConsoleMessages && dev.isDev) console.log(_response);
 
@@ -450,14 +458,15 @@ app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($loc
           else result = false;
         }
       }
-    }.bind(this), function errorCallback(response) {
+    }
+    .bind(this), function errorCallback(response) {
       if (response.responseText) {
         if (response.responseText.indexOf(':-15') > -1) result = -15;
         if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
       }
-    }.bind(this));
+    }
+    .bind(this));
   }
-
 }]);

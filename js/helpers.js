@@ -1,6 +1,6 @@
 'use strict';
 
-var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
+var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $document) {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
       pasteTextFromClipboard = false,// TODO useless
@@ -37,7 +37,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
     if (isIguana) {
       apiProto.prototype.walletLock();
       localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
-      //this.openPage('login');
+      $state.go('login');
     } else {
       coindWalletLockCount = 0;
 
@@ -50,7 +50,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
       // in case something went bad
       if (coindWalletLockCount === 0) {
         localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
-        //this.openPage('login');
+        $state.go('login');
       }
 
       this.logoutCoind(cb);
@@ -72,7 +72,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
 
     if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
       localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp }); // Jan 01 1970
-      //this.openPage('login');
+      $state.go('login');
     }
   }
 
@@ -91,7 +91,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
         this.ngPrepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
       }
     }
-  }.bind(this);
+  }
+  .bind(this);
 
   this.setCurrency = function(currencyShortName) {
     localstorage.setVal('iguana-currency', { 'name' : currencyShortName });
@@ -205,20 +206,21 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
   }
 
   this.ngPrepMessageModal = function (message, color, fireModal) {
-     $uibModal.open({
-       animation: true,
-       ariaLabelledBy: 'modal-title',
-       ariaDescribedBy: 'modal-body',
-       windowClass: 'iguana-modal message-container msg-' + color,
-       template: '<div class="modal-header msgbox-header">' +
-       '<div class="msg-body" data-dismiss="modal">'+message+'</div></div>',
+   $uibModal.open({
+     animation: true,
+     ariaLabelledBy: 'modal-title',
+     ariaDescribedBy: 'modal-body',
+     windowClass: 'iguana-modal message-container msg-' + color,
+     template: '<div class="modal-header msgbox-header">' +
+                 '<div class="msg-body" data-dismiss="modal">' + message + '</div>' +
+               '</div>',
 
-       // controller: 'signupController',
-       resolve: {
-         items: function () {
-         }
+     // controller: 'signupController',
+     resolve: {
+       items: function () {
        }
-     });
+     }
+   });
   };
 
   this.closeMessageModal = function() {
@@ -280,7 +282,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
 
         if (setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(setPortPollResponseDS.debugHTML));
         body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-        setInterval(function() {
+        $interval(function() {
           if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
           body.css({ 'padding-bottom':debugSyncInfo.outerHeight() * 1.5 });
         }, 1000);
@@ -297,7 +299,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
         body.css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
       }
 
-      setInterval(function() {
+      $interval(function() {
         //console.clear();
         apiProto.prototype.testConnection();
       }, portPollUpdateTimeout * 1000);
@@ -318,7 +320,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
         this.prepNoDaemonModal();
 
         // logout
-        setTimeout(function() {
+        $timeout(function() {
           if (this.getCurrentPage() === 'dashboard' || this.getCurrentPage() === 'settings') {
             this.logout();
           }
@@ -346,8 +348,10 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
           messageModal.hide();
         }, 250);
       }
-    }.bind(this));
-  }.bind(this)
+    }
+    .bind(this));
+  }
+  .bind(this);
 
   this.convertUnixTime = function(UNIX_timestamp, format) {
     var a = new Date(UNIX_timestamp * 1000),
@@ -473,14 +477,14 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
       formContainer.addClass('blur');
       modalWindow.removeClass('blur');
 
-      setTimeout(function() {
+      $timeout(function() {
         modalWindow.removeClass('fade');
       }, 10);
     } else {
       modalWindow.addClass('fade');
       formContainer.removeClass('blur');
 
-      setTimeout(function() {
+      $timeout(function() {
         modalWindow.addClass('hidden');
         modalWindow.addClass('fade');
         formContainer.removeClass('blur');

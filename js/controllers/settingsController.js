@@ -7,17 +7,6 @@ angular.module('IguanaGUIApp.controllers')
     $scope.$state = $state;
     $scope.enabled = helper.checkSession(true);
 
-    $scope.logout = function() {
-      helper.logout();
-      $scope.checkSession();
-    }
-
-    $scope.checkSession = function() {
-      if (!helper.checkSession(true)) {
-        $state.go('login');
-      }
-    }
-
     $('body').addClass('dashboard-page');
 
     var currencyArr = [
