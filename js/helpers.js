@@ -219,17 +219,6 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $document) {
          }
        }
      });
-
-
-    // var messageModal = $('#messageModal');
-    //
-    // messageModal.removeClass('msg-red').removeClass('msg-blue').removeClass('msg-green');
-    // messageModal.addClass('msg-' + color);
-    // $('#messageModal .msg-body').html(message);
-    //
-    // if (fireModal) {
-    //   messageModal.show().removeClass('fade');
-    // }
   };
 
   this.closeMessageModal = function() {
