@@ -10,14 +10,9 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.boot
       templateUrl: 'partials/login.html',
       controller: 'loginController'
     })
-    .state('create-account', {
-      url: '/create-account',
-      templateUrl: 'partials/signup.html',
-      controller: 'signupController'
-    })
     .state('signup', {
       templateUrl: 'partials/signup.html',
-      controller: 'loginController' // TODO: split, move to signupController
+      controller: 'signupController' // TODO: split, move to signupController
     })
     .state('signup.passphrase', {
       url: '/signup',
@@ -36,7 +31,22 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngAnimate', 'ngSanitize', 'ui.boot
       controller: 'settingsController'
     });
 
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/dashboard');
+})
+.run(function($rootScope, $location, $state, helper) {
+  $(document).ready(function() {
+    api.testConnection();
+  });
+  // check session and route
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    if (!helper.checkSession(true)) {
+      $state.go('login');
+    }
+    // TODO: find a better way
+    if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.passphrase' || toState.name === 'signup.verify')) {
+      setTimeout(function() {
+        $state.go('dashboard');
+      }, 0);
+    }
+  });
 });
-
-// TODO: check session on before state change
