@@ -39,7 +39,9 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
     if (!helper.checkSession(true)) {
-      $state.go('login');
+      setTimeout(function() {
+        $state.go('login');
+      }, 0);
     }
     // TODO: find a better way
     if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.passphrase' || toState.name === 'signup.verify')) {

@@ -6,12 +6,21 @@ angular.module('IguanaGUIApp.controllers')
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
-    $scope.receiveCoin = { address: '', qrCode: '' }
+    $scope.receiveCoin = {
+      address: '',
+      qrCode: ''
+    };
 
     var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $('body').addClass('dashboard-page');
+
+    $scope.checkSession = function() {
+      if (!helper.checkSession(true)) {
+        $state.go('login');
+      }
+    }
 
     $scope.logout = function() {
       helper.logout();
@@ -30,7 +39,7 @@ angular.module('IguanaGUIApp.controllers')
           }
         }
       })
-      //updateDashboardView(settings.ratesUpdateTimeout);
+      updateDashboardView(settings.ratesUpdateTimeout);
     });
 
     $(window).resize(function() {
@@ -41,7 +50,12 @@ angular.module('IguanaGUIApp.controllers')
     $scope.currency = defaultCurrency;
     $scope.totalBalance = 0;
     $scope.sideBarCoins;
-    $scope.txUnit = { 'loading': true, activeCoinBalance: 0, activeCoinBalanceCurrency: 0, transactions: [] };
+    $scope.txUnit = {
+      'loading': true,
+      activeCoinBalance: 0,
+      activeCoinBalanceCurrency: 0,
+      transactions: []
+    };
     $scope.sideBarCoinsUnsorted = {};
     $scope.activeCoin = localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
     $scope.addCoinButtonState = true;
@@ -126,14 +140,16 @@ angular.module('IguanaGUIApp.controllers')
       if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
         coinLoading = false;
       }
-      _sideBarCoins[coin] = { id: coin,
-                              name: supportedCoinsList[coin].name,
-                              coinBalanceUnformatted: balance,
-                              coinValue: coinBalanceVal,
-                              coinIdUc: coin.toUpperCase(),
-                              currencyValue: coinBalanceCurrencyVal,
-                              currencyName: defaultCurrency,
-                              loading: false };
+      _sideBarCoins[coin] = {
+        id: coin,
+        name: supportedCoinsList[coin].name,
+        coinBalanceUnformatted: balance,
+        coinValue: coinBalanceVal,
+        coinIdUc: coin.toUpperCase(),
+        currencyValue: coinBalanceCurrencyVal,
+        currencyName: defaultCurrency,
+        loading: false
+      };
 
       $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
         return _sideBarCoins[key];
@@ -354,12 +370,14 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.toggleAddCoinWalletCreateModal = function(initOnly) {
-      $scope.addCoinCreateAccount = { passphrase: passPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4),
-                                      wordCount: 12,
-                                      passphraseSavedCheckbox: false,
-                                      passphraseVerify: '',
-                                      initStep: true,
-                                      copyToClipboardNotSupported: false };
+      $scope.addCoinCreateAccount = {
+        passphrase: passPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4),
+        wordCount: 12,
+        passphraseSavedCheckbox: false,
+        passphraseVerify: '',
+        initStep: true,
+        copyToClipboardNotSupported: false
+      };
 
       if (!initOnly) helper.toggleModalWindow('add-coin-create-wallet-form', 300);
     }
@@ -550,15 +568,17 @@ angular.module('IguanaGUIApp.controllers')
     /*
      *  send coin modal
      */
-    $scope.sendCoin = { initStep: true,
-                        success: false,
-                        address: '',
-                        amount: 0,
-                        amountCurrency: 0,
-                        fee: 0,
-                        feeCurrency: 0,
-                        note: '',
-                        passphrase: '' };
+    $scope.sendCoin = {
+      initStep: true,
+      success: false,
+      address: '',
+      amount: 0,
+      amountCurrency: 0,
+      fee: 0,
+      feeCurrency: 0,
+      note: '',
+      passphrase: ''
+    };
 
     $scope.toggleSendCoinModal = function() {
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
@@ -756,9 +776,11 @@ angular.module('IguanaGUIApp.controllers')
 
     function execSendCoinCall() {
       var setTxFeeResult = false,
-          txDataToSend = { address: $scope.sendCoin.address,
-                           amount: $scope.sendCoin.amount,
-                           note: $scope.sendCoin.note };
+          txDataToSend = {
+            address: $scope.sendCoin.address,
+            amount: $scope.sendCoin.amount,
+            note: $scope.sendCoin.note
+          };
 
       if (Number($scope.sendCoin.fee) !== Number(coinsInfo[$scope.activeCoin].relayFee) && Number($scope.sendCoin.fee) !== 0.00001 && Number($scope.sendCoin.fee) !== 0) {
         setTxFeeResult = api.setTxFee($scope.activeCoin, sendFormDataCopy.fee);
@@ -779,10 +801,10 @@ angular.module('IguanaGUIApp.controllers')
 
     function initTopNavBar() {
       if ($(window).width() < 768) {
-        var topMenu = $('#top-menu');
-        var btnLeft = $('.nav-buttons .nav-left', topMenu),
-          btnRight = $('.nav-buttons .nav-right', topMenu),
-          items = $('.item', topMenu), itemsLength = 0, item;
+        var topMenu = $('#top-menu'),
+            btnLeft = $('.nav-buttons .nav-left', topMenu),
+            btnRight = $('.nav-buttons .nav-right', topMenu),
+            items = $('.item', topMenu), itemsLength = 0, item;
 
         btnLeft.on('click swipeleft', function() {
           if ($(window).width() < $('.top-menu', topMenu).width()) {
