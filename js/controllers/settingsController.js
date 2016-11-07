@@ -5,6 +5,7 @@ angular.module('IguanaGUIApp.controllers')
   function($scope, $http, $state, helper) {
     $scope.helper = helper;
     $scope.$state = $state;
+    $scope.enabled = helper.checkSession(true);
 
     $scope.logout = function() {
       helper.logout();

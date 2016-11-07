@@ -6,6 +6,7 @@ angular.module('IguanaGUIApp.controllers')
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
+    $scope.enabled = helper.checkSession(true);
     $scope.receiveCoin = {
       address: '',
       qrCode: ''

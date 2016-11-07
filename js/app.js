@@ -37,12 +37,12 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
 .run(function($rootScope, $location, $state, helper) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    // TODO: find a better way
     if (!helper.checkSession(true) && toState.name !== 'signup.step1') {
       setTimeout(function() {
         $state.go('login');
       }, 0);
     }
-    // TODO: find a better way
     if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.step1')) {
       event.preventDefault();
       setTimeout(function() {
