@@ -11,14 +11,13 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
       controller: 'loginController'
     })
     .state('signup', {
-      url: '/signup',
       templateUrl: 'partials/signup.html',
       controller: 'signupController'
     })
-    .state('signup.verify', {
-      url: '/verify',
-      controller: 'signupController'
+    .state('signup.step1', {
+      url: '/signup'
     })
+    .state('signup.step2', {})
     .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'partials/dashboard.html',
@@ -30,24 +29,29 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
       controller: 'settingsController'
     });
 
-  $urlRouterProvider.otherwise('/dashboard');
+  $urlRouterProvider.otherwise(function($injector) {
+    var $state = $injector.get("$state");
+    $state.go("login");
+  });
 })
 .run(function($rootScope, $location, $state, helper) {
-  $(document).ready(function() {
-    api.testConnection();
-  });
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-    if (!helper.checkSession(true)) {
+    if (!helper.checkSession(true) && toState.name !== 'signup.step1') {
       setTimeout(function() {
         $state.go('login');
       }, 0);
     }
     // TODO: find a better way
-    if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.passphrase' || toState.name === 'signup.verify')) {
+    if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.step1')) {
+      event.preventDefault();
       setTimeout(function() {
         $state.go('dashboard');
       }, 0);
     }
+  });
+
+  $(document).ready(function() {
+    api.testConnection();
   });
 });

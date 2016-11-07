@@ -1,5 +1,5 @@
 var app = angular.module('IguanaGUIApp.controllers');
-app.service('Api', ['$localStorage', 'helper', '$http', '$state', function ($localStorage, helper, $http, $state) {
+app.service('api', ['$localStorage', 'helper', '$http', '$state', function ($localStorage, helper, $http, $state) {
   this.coinsInfo = new Array;
 
   this.testConnection = function (cb) {
