@@ -32,28 +32,39 @@ angular.module('IguanaGUIApp.controllers')
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
-          controller: 'ModalController',
+          controller: 'addCoinModalController',
           templateUrl: '/partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
-          resolve: { receivedObject: function () { return $scope.receivedObject; } }
+          resolve: {
+            receivedObject: function () {
+              return $scope.receivedObject;
+            }
+          }
         });
         modalInstance.result.then(onDone);
         modalInstance.result.catch(onCatch);
 
-        function onDone() {
+        function onDone(receivedObject) {
+          var coinId,
+              availableCoin;
+
+          if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
           $scope.coinsSelectedToAdd = [];
           $scope.receivedObject = $localStorage['iguana-login-active-coin'];
-          var coinId, availableCoin;
-          for (var i = 0 ; $scope.receivedObject.length > i; i++) {
+
+          for (var i = 0; $scope.receivedObject.length > i; i++) {
             coinId = $scope.receivedObject[i];
+
             for (var id in $scope.availableCoins) {
               availableCoin = $scope.availableCoins[id];
+
               if (availableCoin.coinId == coinId) {
                 $scope.coinsSelectedToAdd.push(availableCoin);
               }
             }
           }
         }
+
         function onCatch() {
           $scope.receivedObject = $localStorage['iguana-login-active-coin'];
           if (data instanceof Array) {

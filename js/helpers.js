@@ -159,9 +159,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     var _array = [];
 
     for (var i = 0; array.length > i; i++) {
-      if (array[i])
-        _array.push(array[i].coinId);
+      if (array[i]) _array.push(array[i]);
     }
+
     return _array;
   };
 

@@ -1,7 +1,7 @@
 /* Iguana/services/bootstrap */
 var app = angular.module('IguanaGUIApp.controllers');
 
-app.controller('ModalController',
+app.controller('addCoinModalController',
   [
     '$scope',
     '$uibModalInstance',
@@ -21,7 +21,9 @@ app.controller('ModalController',
       $scope.coinsSelectedToAdd = coinsSelectedToAdd || [];
 
       function clickOnCoin(item, $event) {
-        var coinDomElement = angular.element($event.currentTarget), isDisable = false;
+        var coinDomElement = angular.element($event.currentTarget),
+            isDisable = false;
+
         $scope.coinsSelectedToAdd.filter(function (el, id) {
           if (el == item.coinId) {
             $scope.coinsSelectedToAdd.splice(id, 1);
@@ -40,10 +42,12 @@ app.controller('ModalController',
         }
         $localStorage['iguana-login-active-coin'] = $scope.coinsSelectedToAdd;
       }
+
       function close() {
         $localStorage['iguana-login-active-coin'] = [];
         $uibModalInstance.dismiss();
       }
+
       function next() {
         var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
         // dev only
@@ -51,7 +55,7 @@ app.controller('ModalController',
           $scope.passphrase = dev.coinPW.coind[coinsSelectedToAdd[0]];
         if (dev.isDev && isIguana && dev.coinPW.iguana)
           $scope.passphrase = dev.coinPW.iguana;
-        $uibModalInstance.close();
+        $uibModalInstance.close($scope.passphrase);
       }
     }]);
 

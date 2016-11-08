@@ -9,11 +9,10 @@
         </header>
         <div class="form-content">
           <div class="login-add-coin-selection">
-            <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer"
+            <div class="login-add-coin-selection-title cursor-pointer"
                  ng-click="openAddCoinModal()">
               <span ng-if="!coinsSelectedToAdd.length">
-                {{ isIguana ? helper.lang('LOGIN.SELECT_A_COIN') :
-                  helper.lang('LOGIN.SELECT_A_WALLET') }}
+                {{ isIguana ? helper.lang('LOGIN.SELECT_A_COIN') : helper.lang('LOGIN.SELECT_A_WALLET') }}
               </span>
               <div ng-repeat="item in coinsSelectedToAdd"
                    ng-if="coinsSelectedToAdd.length">
@@ -29,7 +28,7 @@
                     class="login-passphrase-textarea offset-bottom-sm row center"
                     ng-model="passphraseModel"></textarea>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
-                  ng-click="login()" ng-class="{ 'disabled': passphraseModel == '' || coinsSelectedToAdd.length == 0 }">
+                  ng-click="login()" ng-class="{ 'disabled': !passphraseModel.length || !coinsSelectedToAdd.length }">
             {{ helper.lang('LOGIN.LOGIN') }}</button>
           <div class="login-or-delim center unselectable">{{ helper.lang('LOGIN.OR') }}</div>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"
