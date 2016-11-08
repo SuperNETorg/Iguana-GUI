@@ -12,7 +12,7 @@
             <div class="login-add-coin-selection-title cursor-pointer"
                  ng-click="openAddCoinModal()">
               <span ng-if="!coinsSelectedToAdd.length">
-                {{ isIguana ? helper.lang('LOGIN.SELECT_A_COIN') : helper.lang('LOGIN.SELECT_A_WALLET') }}
+                {{ helper.lang(isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET') }}
               </span>
               <div ng-repeat="item in coinsSelectedToAdd"
                    ng-if="coinsSelectedToAdd.length">

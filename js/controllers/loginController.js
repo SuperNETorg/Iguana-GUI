@@ -98,10 +98,8 @@ angular.module('IguanaGUIApp.controllers')
               true
             );
           } else {
-            $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = {
-              'logged': 'yes'
-            };
-            $localStorage['iguana-auth'] = {'timestamp': Date.now()};
+            $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
+            $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
             $state.go('dashboard');
           }
         }

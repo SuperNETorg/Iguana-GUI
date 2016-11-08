@@ -5,7 +5,7 @@
       <div class="modal-content">
         <header class="modal-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-cross cursor-pointer btn-close" ng-click="helper.toggleModalWindow('add-coin-login-form', 300)"></i>
-          <div class="title text-shadow text-center">{{ isIguana ? helper.lang('ADD_COIN.ADDING_A_NEW_COIN') : helper.lang('DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
+          <div class="title text-shadow text-center">{{ helper.lang(isIguana ? 'ADD_COIN.ADDING_A_NEW_COIN' : 'DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
         </header>
         <div class="form-content modal-body">
           <div class="login-add-coin-selection">
