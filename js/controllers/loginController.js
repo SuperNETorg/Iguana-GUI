@@ -42,7 +42,7 @@ angular.module('IguanaGUIApp.controllers')
           }
         });
         modalInstance.result.then(onDone);
-        modalInstance.result.catch(onCatch);
+        //modalInstance.result.catch(onCatch);
 
         function onDone(receivedObject) {
           var coinId,
@@ -65,13 +65,15 @@ angular.module('IguanaGUIApp.controllers')
           }
         }
 
-        function onCatch() {
+        function onCatch() { // remove(?)
           $scope.receivedObject = $localStorage['iguana-login-active-coin'];
-          if (data instanceof Array) {
-            $scope.coinsSelectedToAdd = data;
-          } else if (data == 'cancel' || !$scope.receivedObject.length) {
-            $scope.coinsSelectedToAdd = [];
-          }
+
+          if (data)
+            if (data instanceof Array) {
+              $scope.coinsSelectedToAdd = data;
+            } else if (data == 'cancel' || !$scope.receivedObject.length) {
+              $scope.coinsSelectedToAdd = [];
+            }
         }
       };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $document) {
+var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $localStorage, $document) {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
       pasteTextFromClipboard = false,// TODO useless
@@ -15,11 +15,11 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   this.checkSession = function(returnVal) {
     var loginForm = $('.login-form');
 
-    if (!localstorage.getVal('iguana-auth')) {
+    if (!$localStorage['iguana-auth']) {
       this.logout();
     } else {
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
-          secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number(localstorage.getVal('iguana-auth').timestamp / 1000);
+          secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number($localStorage['iguana-auth'].timestamp / 1000);
 
       if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         if (!returnVal) {
@@ -36,20 +36,20 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   this.logout = function(noRedirect, cb) {
     if (isIguana) {
       apiProto.prototype.walletLock();
-      localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
+      $localStorage['iguana-auth'] = { 'timestamp' : minEpochTimestamp };
       $state.go('login');
     } else {
       coindWalletLockCount = 0;
 
       for (var key in coinsInfo) {
-        if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+        if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
           coindWalletLockCount++;
         }
       }
 
       // in case something went bad
       if (coindWalletLockCount === 0) {
-        localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp });
+        $localStorage['iguana-auth'] = { 'timestamp' : minEpochTimestamp };
         $state.go('login');
       }
 
@@ -59,7 +59,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
   this.logoutCoind = function(cb) {
     for (var key in coinsInfo) {
-      if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
         apiProto.prototype.walletLock(key, this.logoutCoindCB(key));
       }
     }
@@ -68,10 +68,10 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
   this.logoutCoindCB = function(key) {
     coindWalletLockResults[key] = true;
-    localstorage.setVal('iguana-' + key + '-passphrase', { 'logged': 'no' });
+    $localStorage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
     if (Object.keys(coindWalletLockResults).length === coindWalletLockCount) {
-      localstorage.setVal('iguana-auth', { 'timestamp' : minEpochTimestamp }); // Jan 01 1970
+      $localStorage['iguana-auth'] = { 'timestamp' : minEpochTimestamp }; // Jan 01 1970
       $state.go('login');
     }
   }
@@ -494,7 +494,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     angular.element(document.querySelector('.supported-coins-repeater-inner')).html(this.constructCoinRepeater());
 
     return this.constructCoinRepeater();
-  }
+  }.bind(this);
 
   // construct coins to add array
   this.constructCoinRepeater = function() {
@@ -561,7 +561,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         allDashboardCoins = '',
         totalCoins = 0,
         coinToCurrencyRate = 0,
-        defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+        defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {
       if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
@@ -601,17 +601,17 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
       if (!coinToCurrencyRate && localstorage.getVal('iguana-rates-' + coin)) coinToCurrencyRate = localstorage.getVal('iguana-rates-' + coin).value;
       if (returnValue && localstorage.getVal('iguana-rates-' + coin)) return localstorage.getVal('iguana-rates-' + coin).value;
     }
-  }
+  }.bind(this);
 
   this.updateRateCB = function(coin, result) {
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    var defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {
       if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
         localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
       }
     }
-  }
+  }.bind(this);
 
   this.getCurrentPage = function() { // obsolete, remove
     return document.location.hash.replace('#', '');

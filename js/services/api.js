@@ -225,20 +225,20 @@ angular.module('IguanaGUIApp.controllers')
         if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
-        if (response.data.error === 'coin is busy processing') {
+        if (response.data && response.data.error === 'coin is busy processing') {
           coinsInfo[index].connection = true;
           coinsInfo[index].RT = false;
         }
 
-        if (response.data.result && response.data.result.relayfee) {
+        if (response.data && response.data.result && response.data.result.relayfee) {
           coinsInfo[index].relayFee = response.data.result.relayfee;
         }
 
-        if (
+        if (response.data && (
           response.data.result && response.data.result.walletversion ||
           response.data.result && response.data.result.difficulty ||
           response.data.result === 'success'
-        ) {
+        )) {
           if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           coinsInfo[index].connection = true;
@@ -494,6 +494,7 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.walletLock = function (coin, cb) {
+      console.log(coin);
     var fullUrl = apiProto.prototype.getFullApiRoute('walletlock', null, coin),
       postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletlock', null, coin),
       postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);

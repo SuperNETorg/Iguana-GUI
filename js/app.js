@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap'])
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', createHelpers]);
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', createHelpers]);
 angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -51,5 +51,5 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     }
   });
 
-  Api.testConnection();
+  api.testConnection(); // switch with Api service once it's finished
 });
