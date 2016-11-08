@@ -156,18 +156,14 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }
 
   this.reindexAssocArray = function(array) {
-    var _array = [],
-        index = 0;
+    var _array = [];
 
-    $.each(array, function(key, value) {
-      if (value) {
-        _array[index] = key;
-        index++;
-      }
-    });
-
+    for (var i = 0; array.length > i; i++) {
+      if (array[i])
+        _array.push(array[i].coinId);
+    }
     return _array;
-  }
+  };
 
   this.trimComma = function(str) {
     if (str[str.length - 1] === ' ') {
@@ -267,20 +263,20 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
   /* retrieve port poll data */
   this.getPortPollResponse = function() {
-    if (setPortPollResponseDS) {
-      for (var i=0; i < setPortPollResponseDS.info.length; i++) {
-        coinsInfo[setPortPollResponseDS.info[i].coin] = [];
-        coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
-        coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
-        isIguana = setPortPollResponseDS.isIguana;
+    if (this.setPortPollResponseDS) {
+      for (var i=0; i < this.setPortPollResponseDS.info.length; i++) {
+        coinsInfo[this.setPortPollResponseDS.info[i].coin] = [];
+        coinsInfo[this.setPortPollResponseDS.info[i].coin].RT = this.setPortPollResponseDS.info[i].RT;
+        coinsInfo[this.setPortPollResponseDS.info[i].coin].connection = this.setPortPollResponseDS.info[i].connection;
+        isIguana = this.setPortPollResponseDS.isIguana;
       }
 
       if (dev.isDev && dev.showSyncDebug) { // debug info
-        var debugSyncInfo = $('#debug-sync-info'),
-            transactionUnit = $('.transactions-unit'),
-            body = $('body');
+        var debugSyncInfo = angular.element(document.getElementById('debug-sync-info')),
+            transactionUnit = angular.element(document.getElementsByClassName('transactions-unit')),
+            body = angular.element(document.body);
 
-        if (setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(setPortPollResponseDS.debugHTML));
+        if (this.setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(this.setPortPollResponseDS.debugHTML));
         body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
         $interval(function() {
           if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
@@ -291,7 +287,6 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }
 
   this.syncStatus = function() {
-    $(document).ready(function() {
       var body = $('body');
 
       if (dev.isDev && dev.showSyncDebug) {
@@ -303,20 +298,18 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         //console.clear();
         apiProto.prototype.testConnection();
       }, portPollUpdateTimeout * 1000);
-    });
   }
 
   this.checkIfIguanaOrCoindIsPresent = function() {
-    $(document).ready(function() {
       var numPortsResponding = 0;
 
       for (var key in coinsInfo) {
         if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
       }
 
-      if (setPortPollResponseDS && ((!isIguana && !numPortsResponding) ||
-          (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === true && !numPortsResponding) ||
-          (setPortPollResponseDS.isIguana === false && setPortPollResponseDS.proxy === false))) {
+      if (this.setPortPollResponseDS && ((!isIguana && !numPortsResponding) ||
+          (this.setPortPollResponseDS.isIguana === false && this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
+          (this.setPortPollResponseDS.isIguana === false && this.setPortPollResponseDS.proxy === false))) {
         this.prepNoDaemonModal();
 
         // logout
@@ -348,10 +341,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
           messageModal.hide();
         }, 250);
       }
-    }
-    .bind(this));
-  }
-  .bind(this);
+  }.bind(this)
 
   this.convertUnixTime = function(UNIX_timestamp, format) {
     var a = new Date(UNIX_timestamp * 1000),
@@ -498,14 +488,10 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
       coinsSelectedToAdd = [];
 
   this.addCoinButtonCB = function() {
-    var supportedCoinsRepeaterClassName = '.supported-coins-repeater',
-        addNewCoinForm = $('.add-new-coin-form'),
-        fadeClassName = 'fade';
 
     coinsSelectedToAdd = [];
 
-    if (!addNewCoinForm.hasClass(fadeClassName)) addNewCoinForm.addClass(fadeClassName);
-    this.toggleModalWindow('add-new-coin-form', 300);
+    angular.element(document.querySelector('.supported-coins-repeater-inner')).html(this.constructCoinRepeater());
 
     return this.constructCoinRepeater();
   }
@@ -513,22 +499,32 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   // construct coins to add array
   this.constructCoinRepeater = function() {
     var index = 0,
-        addCoinArray = {};
+        addCoinArray = new Array;
 
-    for (var key in supportedCoinsList) {
-      if ((!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) || helper.getCurrentPage() === 'login' || helper.getCurrentPage() === 'signup') {
-        if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
-          addCoinArray[key] = {
-            'id': key.toUpperCase(),
-            'coinId': key.toLowerCase(),
-            'name': supportedCoinsList[key].name,
-            'color': addCoinColors[index]
-          };
-          if (index === addCoinColors.length - 1) index = 0;
-          else index++;
-        }
+      for (var key in supportedCoinsList) {
+          if (
+            (!localstorage.getVal('iguana-' + key + '-passphrase') ||
+            (localstorage.getVal('iguana-' + key + '-passphrase') &&
+            localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) ||
+            $state.current.name === 'login' ||
+            $state.current.name === 'create-account'
+          ) {
+            if (
+              (isIguana && coinsInfo[key].iguana !== false) ||
+              (!isIguana && coinsInfo[key].connection === true)
+            ) {
+              addCoinArray.push({
+                'id': key.toUpperCase(),
+                'coinId': key.toLowerCase(),
+                'name': supportedCoinsList[key].name,
+                'color': addCoinColors[index]
+              });
+              index++;
+
+              if (index === addCoinColors.length - 1) index = 0;
+            }
+          }
       }
-    }
 
     return addCoinArray;
   }

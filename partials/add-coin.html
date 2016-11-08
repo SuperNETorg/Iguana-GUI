@@ -1,29 +1,37 @@
-<section class="form-container mdl add-new-coin-form unselectable hidden fade">
-  <div class="modal modal-add-coin">
-    <div class="modal-overlay" ng-click="helper.toggleModalWindow('add-new-coin-form', 300)"></div>
-    <div class="modal-dialog modal-popup modal-lg">
-      <div class="modal-content">
-        <header class="modal-header form-header orange-gradient box-shadow-bottom">
-          <i class="bi_interface-cross cursor-pointer btn-close" ng-click="helper.toggleModalWindow('add-new-coin-form', 300)"></i>
-          <div class="title text-shadow">{{ isIguana ? helper.lang('ADD_COIN.ADDING_A_NEW_COIN') : helper.lang('DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
-        </header>
-        <div class="form-content">
-          <div class="coins-title">{{ isIguana ? helper.lang('ADD_COIN.SELECT_COINS_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD') }}</div>
-          <div class="quick-search">
-            <i class="icon bi_tool-magnifier"></i>
-            <input type="text" class="input text" placeholder="{{ helper.lang('ADD_COIN.FOR_EXAMPLE') }}, 'Bitcoin'" />
+<section class="form-container add-new-coin-form unselectable">
+  <header class="modal-header form-header orange-gradient box-shadow-bottom">
+    <i class="bi_interface-cross cursor-pointer btn-close"
+       ng-click="close()"></i>
+    <div class="title text-shadow">{{ isIguana ?
+      helper.lang('ADD_COIN.ADDING_A_NEW_COIN') :
+      helper.lang('DASHBOARD.ADDING_A_NEW_WALLET') }}
+    </div>
+  </header>
+  <div class="form-content">
+    <div class="coins-title">{{ isIguana ?
+      helper.lang('ADD_COIN.SELECT_COINS_TO_ADD') :
+      helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD') }}
+    </div>
+    <div class="quick-search">
+      <i class="icon bi_tool-magnifier"></i>
+      <input type="text" class="input text"
+             placeholder="{{ helper.lang('ADD_COIN.FOR_EXAMPLE') }}, 'Bitcoin'"
+              ng-model="coinSearchModel"/>
+    </div>
+    <div class="supported-coins-repeater-container">
+      <div class="supported-coins-repeater">
+        <div class="supported-coins-repeater-inner">
+          <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
+                ng-repeat="item in availableCoins | filter:coinSearchModel"
+                ng-click="clickOnCoin(item, $event)"
+                ng-class="{'active': coinsSelectedToAdd.indexOf(item.coinId) != -1}">
+            <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
+            <div class="name">{{ item.name }}</div>
           </div>
-          <div class="supported-coins-repeater-container">
-            <div class="supported-coins-repeater">
-              <div class="supported-coins-repeater-inner">
-                <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}" ng-repeat="item in availableCoins" ng-click="toggleCoinTile(item)" ng-class="{ 'active': coinsSelectedToAdd[item.coinId] }">
-                  <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
-                  <div class="name">{{ item.name }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next" ng-click="addCoinNext()" ng-class="{ 'disabled': !objLen(coinsSelectedToAdd) }">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next"
+                  ng-click="next()" ng-class="{ 'disabled': coinsSelectedToAdd.length == 0 }">
+            {{ helper.lang('CREATE_ACCOUNT.NEXT') }}
+          </button>
         </div>
       </div>
     </div>

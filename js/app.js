@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap']);
+angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap'])
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', createHelpers]);
 angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', createHelpers])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
@@ -34,7 +34,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, helper, $timeout) {
+.run(function($rootScope, $location, $state, helper, $timeout, Api) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
     // TODO: find a better way
@@ -51,7 +51,5 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     }
   });
 
-  $(document).ready(function() {
-    api.testConnection();
-  });
+  Api.testConnection();
 });
