@@ -162,6 +162,11 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
       if (array[i]) _array.push(array[i]);
     }
 
+    if (!_array.length) // legacy support, remove after dashboard is refactored
+      for (var key in array) {
+        if (array[key]) _array.push(key);
+      }
+
     return _array;
   };
 

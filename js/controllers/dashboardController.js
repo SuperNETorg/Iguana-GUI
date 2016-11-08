@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', '$timeout', '$interval',
-  function($scope, $http, $state, helper, passPhraseGenerator, $timeout, $interval) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage',
+  function($scope, $http, $state, helper, passPhraseGenerator, $timeout, $interval, $localStorage) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
@@ -22,7 +22,7 @@ angular.module('IguanaGUIApp.controllers')
 
       $('body').scroll(function(e){
         if ($(window).width() < 768) {
-          if ($('.main-content, .currency-content').position().top  < -270) {
+          if ($('.main-content,.currency-content').position().top  < -270) {
             $('#top-menu').addClass('hidden');
           } else {
             $('#top-menu').removeClass('hidden');
@@ -47,7 +47,7 @@ angular.module('IguanaGUIApp.controllers')
       transactions: []
     };
     $scope.sideBarCoinsUnsorted = {};
-    $scope.activeCoin = localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
+    $scope.activeCoin = $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
 
@@ -73,7 +73,7 @@ angular.module('IguanaGUIApp.controllers')
 
     $scope.removeCoin = function(coinId) {
       if (confirm(helper.lang('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
-        localstorage.setVal('iguana-' + coinId + '-passphrase', { 'logged': 'no' });
+        $localStorage['iguana-' + coinId + '-passphrase'] = { 'logged': 'no' };
 
         delete $scope.sideBarCoinsUnsorted[coinId];
         $scope.sideBarCoins = Object.keys($scope.sideBarCoinsUnsorted).map(function(key) {
@@ -91,11 +91,9 @@ angular.module('IguanaGUIApp.controllers')
     function constructAccountCoinRepeater(isFirstRun) {
       var index = 0;
 
-      coinsSelectedByUser = [];
-
       for (var key in coinsInfo) {
-        if ((isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') ||
-            (!isIguana && localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes')) {
+        if ((isIguana && $localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') ||
+            (!isIguana && $localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes')) {
           coinsSelectedByUser[index] = key;
           index++;
         }
@@ -107,7 +105,11 @@ angular.module('IguanaGUIApp.controllers')
 
       for (var i=0; i < coinsSelectedByUser.length; i++) {
         if (isFirstRun) {
-          _sideBarCoins[coinsSelectedByUser[i]] = { id: coinsSelectedByUser[i], name: supportedCoinsList[coinsSelectedByUser[i]].name, loading: true };
+          _sideBarCoins[coinsSelectedByUser[i]] = {
+            id: coinsSelectedByUser[i],
+            name: supportedCoinsList[coinsSelectedByUser[i]].name,
+            loading: true
+          };
 
           $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
             return _sideBarCoins[key];
@@ -298,8 +300,10 @@ angular.module('IguanaGUIApp.controllers')
       // coin tiles on the left
       if ($scope.sideBarCoins) {
         var accountCoinsRepeaterItem = '.account-coins-repeater .item';
+
         for (var i=0; i < $scope.sideBarCoins.length; i++) {
           var coin = $scope.sideBarCoins[i].id;
+
           $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
                                                                                               $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
                                                                                               $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
@@ -330,15 +334,12 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.toggleAddCoinModal = function() {
-      var availableCoins = helper.addCoinButtonCB();
+      var availableCoins = helper.constructCoinRepeater();
+      helper.toggleModalWindow('add-new-coin-form', 300);
+
       $scope.availableCoins = availableCoins;
       $scope.wordCount = isIguana ? 24 : 12; // TODO: move to settings
 
-      /* legacy, seems to work fine */
-      /*helper.opacityToggleOnAddCoinRepeaterScroll();
-      $('.supported-coins-repeater').scroll(function(e) {
-        helper.opacityToggleOnAddCoinRepeaterScroll();
-      });*/
       helper.bindCoinRepeaterSearch();
     }
 
@@ -354,6 +355,7 @@ angular.module('IguanaGUIApp.controllers')
       }
       if (!isIguana) {
         var selectedCoind = $scope.coinsSelectedToAdd[item.coinId];
+
         $scope.coinsSelectedToAdd = {};
         if (selectedCoind) $scope.coinsSelectedToAdd[item.coinId] = selectedCoind;
       }
@@ -407,7 +409,8 @@ angular.module('IguanaGUIApp.controllers')
       var walletLogin = api.walletLogin($scope.passphrase, settings.defaultSessionLifetime, coinsSelectedToAdd[0]);
 
       if (walletLogin !== -14 && walletLogin !== -15) {
-        localstorage.setVal('iguana-' + coinsSelectedToAdd[0] + '-passphrase', { 'logged': 'yes' });
+        $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
+        console.log($localStorage);
         helper.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
         $scope.toggleLoginModal();

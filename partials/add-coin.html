@@ -1,4 +1,4 @@
-<section class="form-container add-new-coin-form unselectable">
+<section class="form-container add-new-coin-form-login-state unselectable">
   <header class="modal-header form-header orange-gradient box-shadow-bottom">
     <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
     <div class="title text-shadow">
@@ -21,7 +21,7 @@
           <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
                 ng-repeat="item in availableCoins | filter:coinSearchModel"
                 ng-click="clickOnCoin(item, $event)"
-                ng-class="{'active': coinsSelectedToAdd.indexOf(item.coinId) != -1}">
+                ng-class="{ 'active': coinsSelectedToAdd.indexOf(item.coinId) != -1 }">
             <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
             <div class="name">{{ item.name }}</div>
           </div>

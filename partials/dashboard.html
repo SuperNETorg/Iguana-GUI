@@ -50,7 +50,7 @@
               <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index, 'loading': item.loading }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
                 <div ng-include="'partials/loader.html'"></div>
                 <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
-                <div class="clickable-area" ng-click="setActiveCoin(item)">
+                <div class="clickable-area" ng-click="activeCoin !== item.id ? setActiveCoin(item) : null">
                   <div class="coin">
                     <i class="icon cc {{ item.coinIdUc }}-alt"></i>
                     <div class="name">{{ item.name }}</div>
@@ -62,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-add-coin" ng-click="toggleLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'DASHBOARD.ADD_WALLET') }}</button>
+            <button class="btn btn-add-coin" ng-click="toggleLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET') }}</button>
           </div>
         </aside>
         <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading === true }">
@@ -125,6 +125,6 @@
 <div class="message-modal" ng-include="'partials/message-modal.html'"></div>
 <div ng-include="'partials/send-coin-passphrase.html'"></div>
 <div ng-include="'partials/receive-coin.html'"></div>
-<div ng-include="'partials/add-coin.html'"></div>
+<div ng-include="'partials/add-coin-modal-dashboard.html'"></div>
 <div ng-include="'partials/add-coin-login.html'"></div>
 <div ng-include="'partials/add-coin-create-wallet.html'"></div>

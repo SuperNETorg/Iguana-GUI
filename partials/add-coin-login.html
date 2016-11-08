@@ -9,7 +9,7 @@
         </header>
         <div class="form-content modal-body">
           <div class="login-add-coin-selection">
-            <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer" ng-click="toggleAddCoinModal()">
+            <div class="login-add-coin-selection-title cursor-pointer" ng-click="toggleAddCoinModal()">
               <span ng-if="!objLen(coinsSelectedToAdd)">{{ isIguana ? helper.lang('ADD_COIN.SELECT_A_COIN_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD') }}</span>
               <div ng-repeat="item in availableCoins" ng-if="coinsSelectedToAdd[item.coinId]">
                 <div>{{ item.name }}</div>
