@@ -11,12 +11,12 @@
           <div class="login-add-coin-selection">
             <div class="login-add-coin-selection-title offset-bottom-sm cursor-pointer"
                  ng-click="openAddCoinModal()">
-              <span ng-if="coinsSelectedToAdd.length == 0">
+              <span ng-if="!coinsSelectedToAdd.length">
                 {{ isIguana ? helper.lang('LOGIN.SELECT_A_COIN') :
                   helper.lang('LOGIN.SELECT_A_WALLET') }}
               </span>
-              <div ng-repeat="item in availableCoins"
-                   ng-if="coinsSelectedToAdd.length !== 0">
+              <div ng-repeat="item in coinsSelectedToAdd"
+                   ng-if="coinsSelectedToAdd.length">
                 <div>{{ item.name }}</div>
                 <div class="small">{{ item.id }}</div>
               </div>

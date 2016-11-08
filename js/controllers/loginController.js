@@ -37,9 +37,12 @@ angular.module('IguanaGUIApp.controllers')
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
           resolve: { receivedObject: function () { return $scope.receivedObject; } }
         });
+        modalInstance.result.then(onDone);
+        modalInstance.result.catch(onCatch);
 
-        modalInstance.result.then(function(receivedObject) {
-          $scope.receivedObject = receivedObject;
+        function onDone() {
+          $scope.coinsSelectedToAdd = [];
+          $scope.receivedObject = $localStorage['iguana-login-active-coin'];
           var coinId, availableCoin;
           for (var i = 0 ; $scope.receivedObject.length > i; i++) {
             coinId = $scope.receivedObject[i];
@@ -50,15 +53,15 @@ angular.module('IguanaGUIApp.controllers')
               }
             }
           }
-        });
-        modalInstance.result.catch(function (data) {
+        }
+        function onCatch() {
+          $scope.receivedObject = $localStorage['iguana-login-active-coin'];
           if (data instanceof Array) {
             $scope.coinsSelectedToAdd = data;
-          } else if (data == 'cancel') {
+          } else if (data == 'cancel' || !$scope.receivedObject.length) {
             $scope.coinsSelectedToAdd = [];
           }
-        });
-
+        }
       };
 
       $scope.login = function () {
@@ -68,26 +71,28 @@ angular.module('IguanaGUIApp.controllers')
           $scope.passphraseModel,
           settings.defaultSessionLifetime,
           coinsSelectedToAdd[0],
-          function (walletLogin) {
-            if (walletLogin === -14 || walletLogin === false) {
-              helper.ngPrepMessageModal(
-                helper.lang('MESSAGE.WRONG_PASSPHRASE'),
-                'red',
-                true);
-            } else if (walletLogin === -15) {
-              helper.ngPrepMessageModal(
-                helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
-                'red',
-                true
-              );
-            } else {
-              $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = {
-                'logged': 'yes'
-              };
-              $localStorage['iguana-auth'] = {'timestamp': Date.now()};
-              $state.go('dashboard');
-            }
-          }
+          walletLoginThen
         );
+
+        function walletLoginThen(walletLogin) {
+          if (walletLogin === -14 || walletLogin === false) {
+            helper.ngPrepMessageModal(
+              helper.lang('MESSAGE.WRONG_PASSPHRASE'),
+              'red',
+              true);
+          } else if (walletLogin === -15) {
+            helper.ngPrepMessageModal(
+              helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
+              'red',
+              true
+            );
+          } else {
+            $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = {
+              'logged': 'yes'
+            };
+            $localStorage['iguana-auth'] = {'timestamp': Date.now()};
+            $state.go('dashboard');
+          }
+        }
       };
     }]);
