@@ -33,7 +33,6 @@
             {{ helper.lang('LOGIN.LOGIN') }}</button>
           <div class="login-or-delim center unselectable">{{ helper.lang('LOGIN.OR') }}</div>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"
-                  ng-class="{ 'disabled': coinsSelectedToAdd.length == 0 }"
                   ng-click="$state.go('signup.passphrase')">{{ helper.lang('LOGIN.CREATE_ACCOUNT') }}</button>
         </div>
       </section>
