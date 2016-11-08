@@ -77,11 +77,11 @@ angular.module('IguanaGUIApp.controllers')
 
       $scope.login = function () {
         var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
-        Api.walletLock(coinsSelectedToAdd[0]);
+        Api.walletLock(coinsSelectedToAdd[0].coinId);
         Api.walletLogin(
           $scope.passphraseModel,
           settings.defaultSessionLifetime,
-          coinsSelectedToAdd[0],
+          coinsSelectedToAdd[0].coinId,
           walletLoginThen
         );
 
@@ -98,7 +98,7 @@ angular.module('IguanaGUIApp.controllers')
               true
             );
           } else {
-            $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
+            $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
             $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
             $state.go('dashboard');
           }
