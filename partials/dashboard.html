@@ -39,7 +39,7 @@
         <div class="balance-block unselectable">
           <div class="label">{{ helper.lang('DASHBOARD.TOTAL_BALANCE') }}</div>
           <div class="balance">
-            <span class="value">{{ totalBalance || 0 }}</span>
+            <span class="value">{{ (totalBalance || 0) | decimalPlacesFormat:'currency' }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
         </div>
@@ -56,8 +56,8 @@
                     <div class="name">{{ item.name }}</div>
                   </div>
                   <div class="balance">
-                    <div class="coin-value"><span class="val">{{ item.coinValue }}</span> {{ item.coinIdUc }}</div>
-                    <div class="currency-value"><span class="val">{{ item.currencyValue }}</span> {{ item.currencyName }}</div>
+                    <div class="coin-value"><span class="val">{{ item.coinValue | decimalPlacesFormat:'coin' }}</span> {{ item.coinIdUc }}</div>
+                    <div class="currency-value"><span class="val">{{ item.currencyValue | decimalPlacesFormat:'currency' }}</span> {{ item.currencyName }}</div>
                   </div>
                 </div>
               </div>
@@ -65,16 +65,16 @@
             <button class="btn btn-add-coin" ng-click="toggleLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET') }}</button>
           </div>
         </aside>
-        <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading === true }">
+        <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading }">
           <div class="row">
             <div class="top-bar unselectable">
               <div ng-include="'partials/loader.html'"></div>
               <div class="active-coin-balance">
-                <span class="value">{{ txUnit.activeCoinBalance || 0 }}</span>
+                <span class="value">{{ (txUnit.activeCoinBalance || 0) | decimalPlacesFormat:'coin' }}</span>
                 <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
               </div>
               <div class="active-coin-balance-currency">
-                <span class="value">{{ txUnit.activeCoinBalanceCurrency || 0 }}</span>
+                <span class="value">{{ (txUnit.activeCoinBalanceCurrency || 0) | decimalPlacesFormat:'currency' }}</span>
                 <span class="currency">{{ currency }}</span>
               </div>
               <div class="action-buttons unselectable">

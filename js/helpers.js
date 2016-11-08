@@ -109,33 +109,6 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     return localstorage.getVal('iguana-currency');
   }
 
-  // format a number
-  this.decimalPlacesFormat = function(value) {
-    var valueComponents = value.toString().split('.'),
-        decimalPlacesCoin = 0,
-        decimalPlacesCurrency = 0;
-
-    if (value < 1 && value > 0) {
-
-      for (var i=0; i < valueComponents[1].length; i++) {
-        if (Number(valueComponents[1][i]) !== 0) {
-          decimalPlacesCoin = i + 2;
-          decimalPlacesCurrency = decimalPlacesCoin;
-          break;
-        }
-      }
-    } else {
-      decimalPlacesCoin = settings.decimalPlacesCoin;
-      decimalPlacesCurrency = settings.decimalPlacesCurrency;
-    }
-
-    if (!valueComponents[1]) { // show only the whole number if right part eq zero
-      decimalPlacesCoin = decimalPlacesCurrency = 0;
-    }
-
-    return { 'coin': decimalPlacesCoin, 'currency': decimalPlacesCurrency };
-  }
-
   this.getCursorPositionInputElement = function(element) {
     if (element.selectionStart) return element.selectionStart;
 
@@ -155,6 +128,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     return 0;
   }
 
+  /* TODO: 1) filter
+           2) add array to obj and obj to array conversion(?)
+  */
   this.reindexAssocArray = function(array) {
     var _array = [];
 
@@ -292,17 +268,17 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }
 
   this.syncStatus = function() {
-      var body = $('body');
+    var body = $('body');
 
-      if (dev.isDev && dev.showSyncDebug) {
-        body.append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
-        body.css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
-      }
+    if (dev.isDev && dev.showSyncDebug) {
+      body.append('<div id=\"debug-sync-info\" style=\"position:fixed;background:#fff;bottom:0;width:100%;border-top:solid 1px #000;left:0;font-weight:bold;padding:10px 0;text-align:center\">sync info</div>');
+      body.css({ 'padding-bottom': $('#debug-sync-info').outerHeight() * 1.5 });
+    }
 
-      $interval(function() {
-        //console.clear();
-        apiProto.prototype.testConnection();
-      }, portPollUpdateTimeout * 1000);
+    $interval(function() {
+      //console.clear();
+      apiProto.prototype.testConnection();
+    }, portPollUpdateTimeout * 1000);
   }
 
   this.checkIfIguanaOrCoindIsPresent = function() {

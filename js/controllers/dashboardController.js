@@ -124,8 +124,8 @@ angular.module('IguanaGUIApp.controllers')
     function constructAccountCoinRepeaterCB(balance, coin) {
       var coinLocalRate = helper.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
           currencyCalculatedValue = balance * coinLocalRate,
-          coinBalanceVal = balance ? balance.toFixed(helper.decimalPlacesFormat(balance).coin) : 0,
-          coinBalanceCurrencyVal = currencyCalculatedValue ? currencyCalculatedValue.toFixed(helper.decimalPlacesFormat(currencyCalculatedValue).currency) : (0.00).toFixed(helper.decimalPlacesFormat(0).currency);
+          coinBalanceVal = balance || 0,
+          coinBalanceCurrencyVal = currencyCalculatedValue || 0;
 
       coinBalances[coin] = balance;
       var coinLoading = true;
@@ -183,8 +183,7 @@ angular.module('IguanaGUIApp.controllers')
         _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
       }
 
-      var totalBalanceDecimals = helper.decimalPlacesFormat(_totalBalance).currency;
-      $scope.totalBalance = _totalBalance.toFixed(totalBalanceDecimals) !== 'NaN' ? _totalBalance.toFixed(totalBalanceDecimals) : 0.00;
+      $scope.totalBalance = _totalBalance || 0;
     }
 
     // construct transaction unit array
@@ -410,7 +409,6 @@ angular.module('IguanaGUIApp.controllers')
 
       if (walletLogin !== -14 && walletLogin !== -15) {
         $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
-        console.log($localStorage);
         helper.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
         $scope.toggleLoginModal();
@@ -486,12 +484,12 @@ angular.module('IguanaGUIApp.controllers')
 
       currencyCoin.on('keyup', function () {
         var calcAmount = $(this).val() * coinRate;
-        currencyObj.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+        currencyObj.val(calcAmount); // TODO: use decimals filter
       });
 
       currencyObj.on('keyup', function () {
         var calcAmount = $(this).val() / coinRate;
-        currencyCoin.val(calcAmount.toFixed(helper.decimalPlacesFormat(calcAmount).currency));
+        currencyCoin.val(calcAmount); // TODO: use decimals filter
       });
 
       // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
@@ -648,10 +646,10 @@ angular.module('IguanaGUIApp.controllers')
           var modalSendCoinField = modalSendCoinClass + ' .' + fieldName;
           if (type) {
             var fielValue = $(modalSendCoinField).val() * currentCoinRate;
-            $(modalSendCoinField + '-currency').val(fielValue.toFixed(helper.decimalPlacesFormat(fielValue).coin));
+            $(modalSendCoinField + '-currency').val(fieldValue); // TODO: use decimals filter
           } else {
             var fieldValue = $(modalSendCoinField + '-currency').val() / currentCoinRate;
-            $(modalSendCoinField).val(fieldValue.toFixed(helper.decimalPlacesFormat(fieldValue).coin));
+            $(modalSendCoinField).val(fieldValue); // TODO: use decimals filter
           }
         } else {
           evt.preventDefault();
@@ -661,8 +659,8 @@ angular.module('IguanaGUIApp.controllers')
 
     $scope.validateSendCoinForm = function() {
       if (validateSendCoinForm()) {
-        $scope.sendCoin.amountCurrency = ($scope.sendCoin.currencyRate * $scope.sendCoin.amount).toFixed(helper.decimalPlacesFormat($scope.sendCoin.currencyRate * $scope.sendCoin.amount).currency);
-        $scope.sendCoin.feeCurrency = ($scope.sendCoin.currencyRate * $scope.sendCoin.fee).toFixed(helper.decimalPlacesFormat($scope.sendCoin.currencyRate * $scope.sendCoin.fee).currency);
+        $scope.sendCoin.amountCurrency = $scope.sendCoin.currencyRate * $scope.sendCoin.amount;
+        $scope.sendCoin.feeCurrency = $scope.sendCoin.currencyRate * $scope.sendCoin.fee;
         $scope.sendCoin.initStep = false;
       }
     }
