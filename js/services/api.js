@@ -530,7 +530,6 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.walletLogin = function(passphrase, timeout, coin, cb) {
-
     if (!isIguana) {
       timeout = settings.defaultWalletUnlockPeriod;
     }

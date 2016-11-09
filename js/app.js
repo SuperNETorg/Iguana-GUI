@@ -57,12 +57,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
           controller: 'settingsController'
         }
       }
-    })
-    /*.state('settings', {
-      url: '/settings',
-      templateUrl: 'partials/reference-currency.html',
-      controller: 'settingsController'
-    });*/
+    });
 
   $urlRouterProvider.otherwise(function($injector) {
     var $state = $injector.get("$state");

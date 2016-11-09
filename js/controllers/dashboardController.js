@@ -128,10 +128,6 @@ angular.module('IguanaGUIApp.controllers')
           coinBalanceCurrencyVal = currencyCalculatedValue || 0;
 
       coinBalances[coin] = balance;
-      var coinLoading = true;
-      if (coinsInfo[coin].connection === true && coinsInfo[coin].RT === true) {
-        coinLoading = false;
-      }
       _sideBarCoins[coin] = {
         id: coin,
         name: supportedCoinsList[coin].name,
@@ -528,7 +524,7 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     function getReceiveCoinAddress() {
-      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
+      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
       var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
 
       $scope.receiveCoin.coinName = _activeCoin.toUpperCase();

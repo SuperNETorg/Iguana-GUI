@@ -95,18 +95,20 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   .bind(this);
 
   this.setCurrency = function(currencyShortName) {
-    localstorage.setVal('iguana-currency', { 'name' : currencyShortName });
+    $localStorage['iguana-currency'] = { 'name' : currencyShortName };
 
     for (var key in coinsInfo) {
-      localstorage.setVal('iguana-rates-' + key, { 'shortName' : null,
-                                                   'value': null,
-                                                   'updatedAt': minEpochTimestamp,
-                                                   'forceUpdate': true }); // force currency update
+      $localStorage['iguana-rates-' + key] = {
+        'shortName' : null,
+        'value': null,
+        'updatedAt': minEpochTimestamp,
+        'forceUpdate': true
+      }; // force currency update
     }
   }
 
   this.getCurrency = function() {
-    return localstorage.getVal('iguana-currency');
+    return $localStorage['iguana-currency'];
   }
 
   this.getCursorPositionInputElement = function(element) {
@@ -226,18 +228,22 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
     for (var key in coinsInfo) {
       if (key.length > 0 && key !== undefined && key !== 'undefined') {
-        coinsInfoJSON.push({ coin: key,
-                             connection: coinsInfo[key].connection || false,
-                             RT: coinsInfo[key].RT || false,
-                             relayFee: coinsInfo[key].relayFee || 0 });
+        coinsInfoJSON.push({
+          coin: key,
+          connection: coinsInfo[key].connection || false,
+          RT: coinsInfo[key].RT || false,
+          relayFee: coinsInfo[key].relayFee || 0
+        });
       }
     }
 
-    localstorage.setVal('iguana-port-poll', { 'updatedAt': Date.now(),
-                                              'info': coinsInfoJSON,
-                                              'isIguana': isIguana,
-                                              'proxy': isProxy,
-                                              'debugHTML': JSON.stringify($('#debug-sync-info').html()) });
+    localstorage.setVal('iguana-port-poll', {
+      'updatedAt': Date.now(),
+      'info': coinsInfoJSON,
+      'isIguana': isIguana,
+      'proxy': isProxy,
+      'debugHTML': JSON.stringify($('#debug-sync-info').html())
+    });
 
     if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
   }
@@ -484,9 +490,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
       for (var key in supportedCoinsList) {
           if (
-            (!localstorage.getVal('iguana-' + key + '-passphrase') ||
-            (localstorage.getVal('iguana-' + key + '-passphrase') &&
-            localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) ||
+            (!$localStorage['iguana-' + key + '-passphrase'] ||
+            ($localStorage['iguana-' + key + '-passphrase'] &&
+            $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes')) ||
             $state.current.name === 'login' ||
             $state.current.name === 'create-account'
           ) {
@@ -544,7 +550,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {
-      if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+      if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
         totalCoins++;
         allDashboardCoins = allDashboardCoins + key.toUpperCase() + ',';
       }
@@ -559,8 +565,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
     if (triggerUpdate) {
       for (var key in coinsInfo) {
-        if (triggerUpdate && (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !localstorage.getVal('iguana-rates-' + key))) {
-          if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes') {
+        if (triggerUpdate && (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !$localStorage['iguana-rates-' + key])) {
+          if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
             isUpdateTriggered = true;
           }
         }
@@ -577,9 +583,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
       // iguana based rates are temp disabled
       //coinToCurrencyRate = localstorage.getVal('iguana-rates-' + coin).value; //!isIguana ? null : api.getIguanaRate(coin + '/' + currency);
-      if (!localstorage.getVal('iguana-rates-' + coin)) api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, this.updateRateCB);
-      if (!coinToCurrencyRate && localstorage.getVal('iguana-rates-' + coin)) coinToCurrencyRate = localstorage.getVal('iguana-rates-' + coin).value;
-      if (returnValue && localstorage.getVal('iguana-rates-' + coin)) return localstorage.getVal('iguana-rates-' + coin).value;
+      if (!$localStorage['iguana-rates-' + coin]) api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, this.updateRateCB);
+      if (!coinToCurrencyRate && $localStorage['iguana-rates-' + coin]) coinToCurrencyRate = $localStorage['iguana-rates-' + coin].value;
+      if (returnValue && $localStorage['iguana-rates-' + coin]) return $localStorage['iguana-rates-' + coin].value;
     }
   }.bind(this);
 
@@ -587,8 +593,12 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     var defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in coinsInfo) {
-      if (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged === 'yes' && key) {
-        localstorage.setVal('iguana-rates-' + key, { 'shortName' : defaultCurrency, 'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()], 'updatedAt': Date.now() });
+      if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes' && key) {
+        $localStorage['iguana-rates-' + key] = {
+          'shortName' : defaultCurrency,
+          'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()],
+          'updatedAt': Date.now()
+        };
       }
     }
   }.bind(this);
