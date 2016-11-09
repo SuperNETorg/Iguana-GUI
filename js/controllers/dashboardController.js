@@ -82,6 +82,7 @@ angular.module('IguanaGUIApp.controllers')
 
         if ($scope.activeCoin === coinId) $scope.setActiveCoin($scope.sideBarCoins[0]);
         checkAddCoinButton();
+        updateTotalBalance();
       }
     }
 
@@ -103,10 +104,11 @@ angular.module('IguanaGUIApp.controllers')
 
       coinBalances = [];
 
-      for (var i=0; i < coinsSelectedByUser.length; i++) {
+      for (var i=0; i <coinsSelectedByUser.length; i++) {
         if (isFirstRun) {
           _sideBarCoins[coinsSelectedByUser[i]] = {
             id: coinsSelectedByUser[i],
+            coinIdUc: coinsSelectedByUser[i].toUpperCase(),
             name: supportedCoinsList[coinsSelectedByUser[i]].name,
             loading: true
           };
@@ -311,7 +313,7 @@ angular.module('IguanaGUIApp.controllers')
         //console.clear();
         helper.checkSession();
         helper.updateRates(null, null, null, true);
-        constructTransactionUnitRepeater(true);
+        constructAccountCoinRepeater();
 
         if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
       }, timeout * 1000);
@@ -407,6 +409,19 @@ angular.module('IguanaGUIApp.controllers')
         $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
         helper.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
+
+        _sideBarCoins[coinsSelectedToAdd[0]] = {
+          id: coinsSelectedToAdd[0],
+          coinIdUc: coinsSelectedToAdd[0].toUpperCase(),
+          name: supportedCoinsList[coinsSelectedToAdd[0]].name,
+          loading: true
+        };
+
+        $scope.sideBarCoins.push(_sideBarCoins[coinsSelectedToAdd[0]]);
+
+        applyDashboardResizeFix();
+        api.getBalance(defaultAccount, coinsSelectedToAdd[0], constructAccountCoinRepeaterCB);
+
         $scope.toggleLoginModal();
       }
       if (walletLogin === -14) {

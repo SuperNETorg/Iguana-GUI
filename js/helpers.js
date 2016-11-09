@@ -345,9 +345,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }
 
   this.ratesUpdateElapsedTime = function(coin) {
-    if (localstorage.getVal('iguana-rates-' + coin.toLowerCase())) {
+    if ($localStorage['iguana-rates-' + coin.toLowerCase()]) {
       var currentEpochTime = new Date(Date.now()) / 1000,
-          secondsElapsed = Number(currentEpochTime) - Number(localstorage.getVal('iguana-rates-' + coin.toLowerCase()).updatedAt / 1000);
+          secondsElapsed = Number(currentEpochTime) - Number($localStorage['iguana-rates-' + coin.toLowerCase()].updatedAt / 1000);
 
       return secondsElapsed;
     } else {
@@ -488,29 +488,29 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     var index = 0,
         addCoinArray = new Array;
 
-      for (var key in supportedCoinsList) {
-          if (
-            (!$localStorage['iguana-' + key + '-passphrase'] ||
-            ($localStorage['iguana-' + key + '-passphrase'] &&
-            $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes')) ||
-            $state.current.name === 'login' ||
-            $state.current.name === 'create-account'
-          ) {
-            if (
-              (isIguana && coinsInfo[key].iguana !== false) ||
-              (!isIguana && coinsInfo[key].connection === true)
-            ) {
-              addCoinArray.push({
-                'id': key.toUpperCase(),
-                'coinId': key.toLowerCase(),
-                'name': supportedCoinsList[key].name,
-                'color': addCoinColors[index]
-              });
-              if (index === addCoinColors.length - 1) index = 0;
-              else index++;
-            }
-          }
+    for (var key in supportedCoinsList) {
+      if (
+        (!$localStorage['iguana-' + key + '-passphrase'] ||
+        ($localStorage['iguana-' + key + '-passphrase'] &&
+        $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes')) ||
+        $state.current.name === 'login' ||
+        $state.current.name === 'create-account'
+      ) {
+        if (
+          (isIguana && coinsInfo[key].iguana !== false) ||
+          (!isIguana && coinsInfo[key].connection === true)
+        ) {
+          addCoinArray.push({
+            'id': key.toUpperCase(),
+            'coinId': key.toLowerCase(),
+            'name': supportedCoinsList[key].name,
+            'color': addCoinColors[index]
+          });
+          if (index === addCoinColors.length - 1) index = 0;
+          else index++;
+        }
       }
+    }
 
     return addCoinArray;
   }

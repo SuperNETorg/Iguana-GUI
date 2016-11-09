@@ -11,7 +11,6 @@ angular.module('IguanaGUIApp')
           }
 
       if (value < 1 && value > 0) {
-
         for (var i=0; i < valueComponents[1].length; i++) {
           if (Number(valueComponents[1][i]) !== 0) {
             decimalPlaces.coin = i + 2;
