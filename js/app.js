@@ -19,15 +19,50 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     })
     .state('signup.step2', {})
     .state('dashboard', {
-      url: '/dashboard',
-      templateUrl: 'partials/dashboard.html',
-      controller: 'dashboardController'
+      views: {
+        '@': {
+          templateUrl:  'partials/dashboard.html',
+          controller: function($scope, $state) {
+            $scope.$state = $state;
+          }
+        }
+      }
     })
-    .state('settings', {
+    .state('dashboard.main', {
+      url: '/dashboard',
+      views : {
+        'top@dashboard': {
+          templateUrl: 'partials/dashboard-top-menu.html',
+          controller: 'topMenuController'
+        },
+        'content@dashboard': {
+          templateUrl: 'partials/dashboard-main.html',
+          controller: 'dashboardController'
+        },
+        'modals@dashboard': {
+          templateUrl: 'partials/dashboard-modals.html',
+          controller: 'dashboardController'
+        }
+      }
+    })
+    .state('dashboard.settings', {
+      url: '/settings',
+      views : {
+        'top@dashboard': {
+          templateUrl: 'partials/dashboard-top-menu.html',
+          controller: 'topMenuController'
+        },
+        'content@dashboard': {
+          templateUrl: 'partials/reference-currency.html',
+          controller: 'settingsController'
+        }
+      }
+    })
+    /*.state('settings', {
       url: '/settings',
       templateUrl: 'partials/reference-currency.html',
       controller: 'settingsController'
-    });
+    });*/
 
   $urlRouterProvider.otherwise(function($injector) {
     var $state = $injector.get("$state");

@@ -158,7 +158,8 @@
   font-size: 1.065em;
 }
 .currency-input .unit-currency {
-  right: -3px;
+  right: 2px;
+  top: 0;
 }
 .currency-input input[type="text"] {
   padding: 6px;
@@ -171,6 +172,8 @@ input[type="text"].crypto-currency.currency-coin {
 }
 .unit.coin-unit {
   width: 47px;
+  right: 2px;
+  top: 0;
 }
 .currency-input input[type="text"]::-webkit-input-placeholder {
   color: #2E3746;

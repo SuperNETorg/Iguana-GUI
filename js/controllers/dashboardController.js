@@ -59,7 +59,7 @@ angular.module('IguanaGUIApp.controllers')
     constructAccountCoinRepeater(true);
 
     $scope.setActiveCoin = function(item) {
-      localstorage.setVal('iguana-active-coin', { id: item.id });
+      $localStorage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
@@ -165,7 +165,7 @@ angular.module('IguanaGUIApp.controllers')
       // disable add wallet/coin button if all coins/wallets are already in the sidebar
       var _coinsLeftToAdd = 0;
       for (var key in supportedCoinsList) {
-        if (!localstorage.getVal('iguana-' + key + '-passphrase') || (localstorage.getVal('iguana-' + key + '-passphrase') && localstorage.getVal('iguana-' + key + '-passphrase').logged !== 'yes')) {
+        if (!$localStorage['iguana-' + key + '-passphrase'] || $localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes') {
           if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
             _coinsLeftToAdd++;
           }
@@ -457,7 +457,7 @@ angular.module('IguanaGUIApp.controllers')
       for (var i=0; i < Object.keys(addCoinResponses).length; i++) {
         if (addCoinResponses[i].response === 'coin added' || addCoinResponses[i].response === 'coin already there') {
           addedCoinsOutput = addedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
-          localstorage.setVal('iguana-' + addCoinResponses[i].coin + '-passphrase', { 'logged': 'yes' });
+          $localStorage['iguana-' + addCoinResponses[i].coin + '-passphrase'] = { 'logged': 'yes' };
         } else {
           failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
         }
@@ -475,7 +475,7 @@ angular.module('IguanaGUIApp.controllers')
     // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
     $scope.sendCoinKeying = function() { // !! ugly !!
       var coinRate,
-          coin = $scope.activeCoin ? $scope.activeCoin : localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0,
+          coin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0,
           currencyCoin = $('.currency-coin'),
           currencyObj = $('.currency');
 
@@ -530,6 +530,7 @@ angular.module('IguanaGUIApp.controllers')
     function getReceiveCoinAddress() {
       var _activeCoin = $scope.activeCoin ? $scope.activeCoin : localstorage.getVal('iguana-active-coin') && localstorage.getVal('iguana-active-coin').id ? localstorage.getVal('iguana-active-coin').id : 0;
       var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
+
       $scope.receiveCoin.coinName = _activeCoin.toUpperCase();
       $scope.receiveCoin.currencyName = defaultCurrency.toUpperCase();
       $scope.receiveCoin.address = coinAccountAddress;

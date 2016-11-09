@@ -44,8 +44,7 @@
   margin: 0 auto;
 }
 .reference-currency-main .currency-content .container-left {
-  margin-top: calc(18% - 12.4%); /* calc wont work in iOS safari */
-  padding-top: 7px;
+  padding-top: 75px;
 }
 .reference-currency-main .currency-content .container-left .choose-currency {
   font-weight: 700;
