@@ -53,7 +53,7 @@ apiProto.prototype.getConf = function(discardCoinSpecificPort, coin) {
 apiProto.prototype.testConnection = function(cb) {
   helper = new createHelpers();
 
-  var result = false;
+  var result = false,
       setPortPollResponseDS = localstorage.getVal('iguana-port-poll'),
       timeDiff = setPortPollResponseDS ? Math.floor(helper.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) : 0;
 

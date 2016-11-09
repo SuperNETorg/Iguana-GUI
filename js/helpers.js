@@ -500,9 +500,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
                 'name': supportedCoinsList[key].name,
                 'color': addCoinColors[index]
               });
-              index++;
-
               if (index === addCoinColors.length - 1) index = 0;
+              else index++;
             }
           }
       }
