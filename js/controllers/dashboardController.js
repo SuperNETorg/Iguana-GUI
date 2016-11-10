@@ -7,10 +7,6 @@ angular.module('IguanaGUIApp.controllers')
     $scope.$state = $state;
     $scope.isIguana = isIguana;
     $scope.enabled = helper.checkSession(true);
-    $scope.receiveCoin = {
-      address: '',
-      qrCode: ''
-    };
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -41,6 +37,20 @@ angular.module('IguanaGUIApp.controllers')
           constructAccountCoinRepeater(); // TODO: fix, not effecient
         }
       }
+    };
+
+    // receive coin updated logic
+    $scope.$receiveCoinInstance = {};
+
+    $scope.openReceiveCoinModal = function () {
+      var receiveCoinInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            controller: 'receiveCoinModalController',
+            templateUrl: '/partials/receive-coin.html',
+            appendTo: angular.element(document.querySelector('.receive-coin-modal-container')),
+          });
     };
 
     var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
@@ -496,40 +506,6 @@ angular.module('IguanaGUIApp.controllers')
           event.preventDefault();
         }
       });
-    }
-
-    $scope.getReceiveCoinAddress = function() {
-      getReceiveCoinAddress();
-    }
-
-    function getReceiveCoinAddress() {
-      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
-      var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
-
-      $scope.receiveCoin.coinName = _activeCoin.toUpperCase();
-      $scope.receiveCoin.currencyName = defaultCurrency.toUpperCase();
-      $scope.receiveCoin.address = coinAccountAddress;
-      $scope.receiveCoin.addressFormatted = $scope.receiveCoin.address.match(/.{1,4}/g).join(' ')
-      $scope.receiveCoin.qrCode = $(kjua({ text: coinAccountAddress })).attr('src');
-      $scope.receiveCoin.shareUrl = 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address' +
-                                    '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address%20' + coinAccountAddress;
-    }
-
-    $scope.copyToClipboard = function() {
-      var temp = $('<input>');
-
-      $('body').append(temp);
-      //remove spaces from address
-      temp.val($('#address').text().replace(/ /g, '')).select();
-
-      try {
-        helper.prepMessageModal(helper.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
-        document.execCommand('copy');
-      } catch(err) {
-        helper.prepMessageModal(helper.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
-      }
-
-      temp.remove();
     }
 
     /*

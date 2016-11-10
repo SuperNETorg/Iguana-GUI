@@ -33,7 +33,7 @@ app.controller('addCoinLoginModalController', [
             ariaDescribedBy: 'modal-body',
             controller: 'addCoinModalController',
             templateUrl: '/partials/add-coin.html',
-            appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
+            appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
             resolve: {
               receivedObject: function () {
                 return $scope.receivedObject;
@@ -41,7 +41,6 @@ app.controller('addCoinLoginModalController', [
             }
           });
       modalInstance.result.then(onDone);
-      //modalInstance.result.catch(onCatch);
 
       function onDone(receivedObject) {
         var coinId,

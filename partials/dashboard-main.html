@@ -44,7 +44,7 @@
         </div>
         <div class="action-buttons unselectable">
           <button class="btn btn-send" ng-click="toggleSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ helper.lang('DASHBOARD.SEND') }}</button>
-          <button class="btn btn-receive coinaddress btn-lg" data-toggle="modal" data-target="#myModal" ng-click="getReceiveCoinAddress()">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
+          <button class="btn btn-receive coinaddress btn-lg" ng-click="openReceiveCoinModal()">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
         </div>
         <div class="info unselectable">
           <i class="bi_doc-book-a"></i>
