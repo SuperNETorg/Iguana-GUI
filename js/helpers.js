@@ -322,7 +322,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
         var messageModal = $('#messageModal');
 
-        iguanaNullReturnCount = 0;
+        iguanaNullReturnCount = 0; //ToDo fixed in the helper service
         messageModal.removeClass('in');
         setTimeout(function() {
           messageModal.hide();

@@ -10,6 +10,7 @@ angular.module('IguanaGUIApp.controllers')
   '$localStorage',
   'api',
   function($scope, $http, $state, helper, passPhraseGenerator, $localStorage, api) {
+
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;

@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.service('Api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
+.service('api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
   function ($localStorage, helper, $http, $state, $timeout, $interval, $q) {
 
   this.coinsInfo = new Array;
+  this.activeCoin,
+  this.portsTested = false,
+  this.isIguana = false,
+  this.isRT = false,
+  this.isProxy = true,
+  this.iguanaNullReturnCount = 0;
 
   this.testConnection = function (cb) {
     var setPortPollResponseDS = $localStorage['iguana-port-poll'];
@@ -34,139 +40,116 @@ angular.module('IguanaGUIApp.controllers')
       $state.current.name === 'login' ||
       $state.current.name === 'signup'
     ) {
-      //TODO change this function to angular
-      var defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol +
+      var defaultIguanaServerUrl = this.getConf().server.protocol +
         this.getConf().server.ip +
         ':' +
         this.getConf().server.iguanaPort;
 
-      $http({
-        method: 'GET',
-        url: defaultIguanaServerUrl + '/api/iguana/getconnectioncount',
-        cache: false,
-        dataType: 'text',
-        async: true,
-        timeout: 500
-      })
-      .then(
-        function (response) {
-        var isIguana = true;
-
-        if (dev.isDev && dev.sessions) { // dev only
-          for (var key in dev.sessions) {
-            if (navigator.userAgent.indexOf(key) > -1) {
-              isIguana = dev.sessions[key];
-            }
-          }
-        }
-        if (dev.showConsoleMessages && dev.isDev) {
-          if (!isIguana) {
-            console.log('running non-iguana env');
-          } else {
-            console.log('running iguana env');
-          }
-        }
-        this.errorHandler(response);
-        this.testCoinPorts(cb);
-
-      }
-      .bind(this)),
-        function (response) {
-        // non-iguana env
-        var isIguana = false;
-
-        if (dev.isDev && dev.sessions) { // dev only
-          for (var key in dev.sessions) {
-            if (navigator.userAgent.indexOf(key) > -1) {
-              isIguana = dev.sessions[key];
-              if (dev.sessions[key]){
-                $timeout(function () {
-                  helper.prepNoDaemonModal(); // TODO change this function to angular
-                }, 300);
+      $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {cache :false, timeout : 500})
+        .then(function(response) {
+          if (dev.isDev && dev.sessions) { // dev only
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                this.isIguana = dev.sessions[key];
               }
             }
           }
-        }
 
-        if (dev.showConsoleMessages && dev.isDev) {
-          if (!isIguana) {
-            console.log('running non-iguana env');
-          } else {
-            console.log('running iguana env');
+          if (dev.showConsoleMessages && dev.isDev) {
+            if (!this.isIguana) {
+              console.log('running non-iguana env');
+            } else {
+              console.log('running iguana env');
+            }
           }
-        }
 
-        this.errorHandler(response);
-        this.testCoinPorts(cb);
-      }
-      .bind(this);
+          this.errorHandler(response);
+          this.testCoinPorts(cb);
+        }.bind(this), function(response) {
+          // non-iguana env
+          if (dev.isDev && dev.sessions) { // dev only
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                this.isIguana = dev.sessions[key];
+                if (dev.sessions[key]){
+                  $timeout(function () {
+                    helper.prepNoDaemonModal(); // TODO change this function to angular
+                  }, 300);
+                }
+              }
+            }
+          }
+
+          if (dev.showConsoleMessages && dev.isDev) {
+            if (!this.isIguana) {
+              console.log('running non-iguana env');
+            } else {
+              console.log('running iguana env');
+            }
+          }
+
+          this.errorHandler(response);
+          this.testCoinPorts(cb);
+        }.bind(this));
+
     } else {
       if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
       if (cb) cb.call();
     }
   };
 
-
   this.errorHandler = function(response, index) {
-    if (response.error === 'need to unlock wallet') {
-      if ($state.current.name !== 'login')
-        (function() {
+    if(response.data && response.data.error) {
+      if (response.data.error.message === 'need to unlock wallet') {
+        if ($state.current.name !== 'login') {
           helper.prepMessageModal('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...', 'red', true); //TODO Change Bootstrap alert
           $timeout(function() {
             helper.logout();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
           $interval.cancel(dashboardUpdateTimer);
-        })();
-
-      return 10;
-    }
-
-    if (response.error === 'iguana jsonstr expired') {
-      if (dev.showConsoleMessages && dev.isDev){
-        console.log('server is busy');
-      }
-
-      return 10;
-    }
-
-    if (response.error === 'coin is busy processing') {
-      if (!coinsInfo[index]) {
-        coinsInfo[index] = [];
-      }
-      coinsInfo[index].connection = true;
-
-      // TODO change this function to angular
-      if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
-        if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug){
-          $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
         }
-      }
 
-      if (dev.showConsoleMessages && dev.isDev) {
-        console.log('server is busy');
-      }
+        return 10;
+      } else if (response.data.error.message === 'iguana jsonstr expired') {
+        if (dev.showConsoleMessages && dev.isDev){
+          console.log('server is busy');
+        }
 
-      return 10;
-    }
+        return 10;
+      } else if (response.data.error.message === 'coin is busy processing') {
+        if (!coinsInfo[index]) {
+          coinsInfo[index] = [];
+        }
+        coinsInfo[index].connection = true;
 
-    if (response.error === 'null return from iguana_bitcoinRPC') {
-      if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + iguanaNullReturnCount + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
-      iguanaNullReturnCount++;
+        if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
+          if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug){
+            $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
+          }
+        }
 
-      if (iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
-        (function() {
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('server is busy');
+        }
+
+        return 10;
+      } else if (response.data.error.message === 'null return from iguana_bitcoinRPC') {
+        if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + this.iguanaNullReturnCount + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
+        this.iguanaNullReturnCount++;
+
+        if (this.iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
           helper.prepMessageModal('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...', 'red', true);//TODO Change Bootstrap alert
           $timeout(function() {
             helper.logout();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
           $interval.clear(dashboardUpdateTimer);
-        })();
-      }
+        }
 
-      return 10;
+        return 10;
+      }
     }
 
-    if (response.responseText && response.responseText.indexOf(':-13') > -1) {
+    if (response.data && response.data instanceof String && response.data.indexOf(':-13') > -1) {
       return -13;
     }
   }
@@ -174,20 +157,12 @@ angular.module('IguanaGUIApp.controllers')
   this.testCoinPorts = function(cb) {
     function getCoins(index){
       var deferred = $q.defer();
-
-      $http({
-        method: 'POST',
-        url: fullUrl,
-        cache: false,
-        dataType: 'json',
-        data: postData,
-        headers: postAuthHeaders
-      })
-        .then(function (response) {
-        deferred.resolve([index, response, ++_index]);
-      }).catch(function (response) {
-        deferred.resolve([index, response, ++_index]);
-      });
+      $http.post(fullUrl,postData,{cache: false, headers: postAuthHeaders})
+        .then(function(response) {
+          deferred.resolve([index, response, ++_index]);
+        },function(response) {
+          deferred.resolve([index, response, ++_index]);
+        });
 
       return deferred.promise;
     }
@@ -205,9 +180,9 @@ angular.module('IguanaGUIApp.controllers')
     for (var index in coins) {
       var conf = coins[index],
         // TODO change this function to angular
-        fullUrl = apiProto.prototype.getFullApiRoute('getinfo', conf),
-        postData = apiProto.prototype.getBitcoinRPCPayloadObj('getinfo', null, index),
-        postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(conf);
+        fullUrl = this.getFullApiRoute('getinfo', conf),
+        postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
+        postAuthHeaders = this.getBasicAuthHeaderObj(conf);
 
       if (!coinsInfo[index]) {
         coinsInfo[index] = [];
@@ -245,72 +220,84 @@ angular.module('IguanaGUIApp.controllers')
 
           // non-iguana
           // sync info
-          if (!isIguana) {
-            var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
-              coindCheckRTResponse = this.coindCheckRT(index),
-              syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
+          if (!this.isIguana) {
+            this.coindCheckRT(index, function (coindCheckRTResponse) {
+              var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
+                syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
-            if (dev.showConsoleMessages && dev.isDev)
-              console.log('Connections: ' + response.data.result.connections);
-            if (dev.showConsoleMessages && dev.isDev)
-              console.log('Blocks: ' + response.data.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced)');
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('Connections: ' + response.data.result.connections);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('Blocks: ' + response.data.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced)');
 
-            if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
-              isRT = true;
-              coinsInfo[index].RT = true;
-            } else {
-              isRT = false;
+              if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
+                this.isRT = true;
+                coinsInfo[index].RT = true;
+              } else {
+                this.isRT = false;
+                coinsInfo[index].RT = false;
+                if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+              }
+
+              if (dev.isDev && dev.showSyncDebug) {
+                if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
+                  debugSyncInfo.append(
+                    'coin: ' + index + ', ' +
+                    'con ' + response.data.result.connections + ', ' +
+                    'blocks ' + response.data.result.blocks + '/' + networkCurrentHeight +
+                    ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced), ' +
+                    'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>'
+                  );
+              }
+            }.bind(this));
+          }
+        }
+
+        if (response.status && this.isIguana) {
+
+          if (response.status !== (null || -1) &&
+              response.status instanceof  'string') {
+            var iguanaGetInfo = response.status.split(' '),
+              totalBundles = iguanaGetInfo[20].split(':'),
+              currentHeight = iguanaGetInfo[9].replace('h.', ''),
+              peers = iguanaGetInfo[16].split('/');
+
+            coinsInfo[index].connection = true;
+
+            // iguana
+            if (response.status.indexOf('.RT0 ') > -1) {
+              this.isRT = false;
               coinsInfo[index].RT = false;
               if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+            } else {
+              this.isRT = true;
+              coinsInfo[index].RT = true;
+            }
+
+            // disable coin in iguna mode
+            if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled'){
+              coinsInfo[index].iguana = false;
+            }
+
+            if (dev.showConsoleMessages && dev.isDev){
+              console.log('Connections: ' + peers[0].replace('peers.', ''));
+            }
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('Blocks: ' + currentHeight);
+            }
+            if (dev.showConsoleMessages && dev.isDev){
+              console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+                  totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
             }
 
             if (dev.isDev && dev.showSyncDebug) {
               if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
                 debugSyncInfo.append('coin: ' + index + ', ' +
-                  'con ' + response.data.result.connections + ', ' +
-                  'blocks ' + response.data.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced), ' +
-                  'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
+                    'con ' + peers[0].replace('peers.', '') + ', ' +
+                    'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+                    totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
+                    'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>');
             }
-          }
-        }
-
-        if (response.status && isIguana) {
-          var iguanaGetInfo = response.status.split(' '),
-            totalBundles = iguanaGetInfo[20].split(':'),
-            currentHeight = iguanaGetInfo[9].replace('h.', ''),
-            peers = iguanaGetInfo[16].split('/');
-
-          coinsInfo[index].connection = true;
-
-          // iguana
-          if (response.status.indexOf('.RT0 ') > -1) {
-            isRT = false;
-            coinsInfo[index].RT = false;
-            if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
-          } else {
-            isRT = true;
-            coinsInfo[index].RT = true;
-          }
-
-          // disable coin in iguna mode
-          if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled')
-            coinsInfo[index].iguana = false;
-
-          if (dev.showConsoleMessages && dev.isDev)
-            console.log('Connections: ' + peers[0].replace('peers.', ''));
-          if (dev.showConsoleMessages && dev.isDev)
-            console.log('Blocks: ' + currentHeight);
-          if (dev.showConsoleMessages && dev.isDev)
-            console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
-                        totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
-
-          if (dev.isDev && dev.showSyncDebug) {
-            if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
-              debugSyncInfo.append('coin: ' + index + ', ' +
-                'con ' + peers[0].replace('peers.', '') + ', ' +
-                'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
-                 totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
-                'RT: ' + (isRT ? 'yes' : 'no') + '<br/>');
           }
         }
 
@@ -342,8 +329,8 @@ angular.module('IguanaGUIApp.controllers')
 
         this.errorHandler(response, index);
 
-        if (response.statusText === 'error' && !isIguana)
-          isProxy = false;
+        if (response.statusText === 'error' && !this.isIguana)
+          this.isProxy = false;
         if (dev.showConsoleMessages && dev.isDev && response.responseText && response.responseText.indexOf('Bad Gateway') === -1) {
           console.log('is proxy server running?');
         }
@@ -415,18 +402,18 @@ angular.module('IguanaGUIApp.controllers')
 
     // out of sync message
     var outOfSyncCoinsList = '';
-    var coins = apiProto.prototype.getConf().coins;//TODO change this function to angular
+    var coins = this.getConf().coins;//TODO change this function to angular
 
     for (var index in coins) {
       if (
         (
           coinsInfo[index].RT === false &&
           coinsInfo[index].connection === true &&
-          isIguana && $localStorage['iguana-' + index + '-passphrase']
+          this.isIguana && $localStorage['iguana-' + index + '-passphrase']
         ) ||
         (
           coinsInfo[index].RT === false &&
-          !isIguana && $localStorage['iguana-' + index + '-passphrase'] &&
+          !this.isIguana && $localStorage['iguana-' + index + '-passphrase'] &&
           $localStorage['iguana-' + index + '-passphrase'].logged === 'yes'
         )
       ) {
@@ -445,159 +432,161 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.walletEncrypt = function(passphrase, coin) {
-    var result = false,
-      //TODO change this function to angular
-      fullUrl = apiProto.prototype.getFullApiRoute('encryptwallet', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
-      postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
+    var fullUrl = this.getFullApiRoute('encryptwallet', null, coin),
+      postData = this.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+      deferred = $q.defer();
 
-    $http({
-      method: 'POST',
-      url: fullUrl,
-      cache: false,
-      async: false,
-      dataType: 'json',
-      data: postData,
-      headers: postAuthHeaders
-    })
-    .then(function successCallback(_response) {
-      apiProto.prototype.errorHandler(_response, coin);
-      if (dev.showConsoleMessages && dev.isDev) console.log(_response);
+    $http.post(fullUrl, postData, {cache: false, headers: postAuthHeaders})
+      .then(function(response) {
+        this.errorHandler(response, coin);
 
-      if (_response.result) {
-        // non-iguana
-        if (_response.result) result = _response.result;
-        else result = false;
-      } else {
-        // iguana
-        var response = JSON.parse(_response);
-
-        if (response.error) {
-          // do something
-          if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
-          result = false;
-        } else {
-          if (response.result === 'success') result = response;
-          else result = false;
-        }
-      }
-    }
-    .bind(this), function errorCallback(response) {
-      if (response.responseText) {
-        if (response.responseText.indexOf(':-15') > -1) result = -15;
-        if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
-      } else {
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
-      }
-    }
-    .bind(this));
+
+        if (response.result) {
+          // non-iguana
+          if (_response.result) {
+            deferred.resolve(response.result);
+          } else {
+            deferred.resolve(false);
+          }
+        } else {
+          // iguana
+          if (response.data.error) {
+            // do something
+            if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.data.error);
+
+            deferred.resolve(false);
+          } else {
+            if (response.data.result === 'success') {
+              deferred.resolve(response.data);
+            } else {
+              deferred.resolve(false);
+            }
+          }
+        }
+      }.bind(this), function(response) {
+        if (response.status) {
+          if (response.status == -15) {
+            deferred.resolve(-15);
+          }
+
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response.responseText);
+          }
+        } else {
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
+          }
+        }
+      }.bind(this));
+
+    return deferred.promise;
   };
 
   this.walletLock = function (coin, cb) {
       console.log(coin);
-    var fullUrl = apiProto.prototype.getFullApiRoute('walletlock', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletlock', null, coin),
-      postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
+    var fullUrl = this.getFullApiRoute('walletlock', null, coin),
+      postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-    $http({
-      url: fullUrl,
-      cache: false,
-      dataType: 'json',
-      type: 'POST',
-      data: postData,
-      headers: postAuthHeaders
-    })
-      .then(function(_response) {
-        this.errorHandler(_response, coin);
+    $http.post(fullUrl, postData,{ cache: false, headers: postAuthHeaders})
+      .then(function(response) {
+        this.errorHandler(response, coin);
 
-        if (_response.result) {
+        if (response.data.result) {
           // non-iguana
         } else {
-          if (dev.showConsoleMessages && dev.isDev) console.log(_response);
+          if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
-          // iguana
-          var response = typeof _response === 'object' ? _response : JSON.parse(_response);
-
-          if (response.error) {
+          if (response.data.error) {
             // do something
-            if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.error);
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('error: ' + response.data.error);
+            }
           }
-
         }
-
         if (cb) cb.call();
       }.bind(this));
   };
 
   this.walletLogin = function(passphrase, timeout, coin, cb) {
-    if (!isIguana) {
+    if (!this.isIguana) {
       timeout = settings.defaultWalletUnlockPeriod;
     }
 
     if (!timeout) {
-      timeout = isIguana ?
+      timeout = this.isIguana ?
         settings.defaultSessionLifetimeIguana :
         settings.defaultSessionLifetimeCoind;
     }
 
     var result = false,
-      fullUrl = apiProto.prototype.getFullApiRoute('walletpassphrase', null, coin),
-      defaultIguanaServerUrl = apiProto.prototype.getConf().server.protocol + apiProto.prototype.getConf().server.ip + ':' + apiProto.prototype.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
-      postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
-      postAuthHeaders['Content-Type'] = 'application/json;charset=UTF-8';
-    console.log(postData);
-    $http.post(isIguana ? defaultIguanaServerUrl : fullUrl,postData,{headers:postAuthHeaders})
+      fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
+      defaultIguanaServerUrl = this.getConf().server.protocol +
+          this.getConf().server.ip +
+          ':' +
+          this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
+      postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+
+    $http.post(this.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {headers: postAuthHeaders})
       .then(function(response) {
-        if (dev.showConsoleMessages && dev.isDev) console.log(response.data.result);
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log(response.data.result);
+        }
         result = true;
-        if (cb) cb.call(this, response.data.result, coin);
+        if (cb) {
+          cb.call(this, response.data.result, coin);
+        }
       }.bind(this), function(response) {
         console.log(response);
         //todo change response structure
         if (response.data) {
-          if (response.data.error.message.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) result = true;
-          if (response.data.error.message.indexOf('Error: The wallet passphrase entered was incorrect') > -1 || response.data.error.message.indexOf('"code":-1') > -1) result = -14;
-          if (response.data.error.message.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) result = -15;
+          if (response.data.error.message.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) {
+            result = true;
+          } else if (response.data.error.message.indexOf('Error: The wallet passphrase entered was incorrect') > -1 || response.data.error.message.indexOf('"code":-1') > -1) {
+            result = -14;
+          } else if (response.data.error.message.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) {
+            result = -15;
+          }
           // if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
         } else {
-          if (dev.showConsoleMessages && dev.isDev) console.log(response.data.error);
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
+          }
         }
+
         if (cb) cb.call(this, result, coin);
       }.bind(this));
   };
 
   this.coindCheckRT = function(coin, cb) {
     var result = false,
-      fullUrl = apiProto.prototype.getFullApiRoute('getblocktemplate', null, coin),
-      postData = apiProto.prototype.getBitcoinRPCPayloadObj('getblocktemplate'),
-      postAuthHeaders = apiProto.prototype.getBasicAuthHeaderObj(null, coin);
+      fullUrl = this.getFullApiRoute('getblocktemplate', null, coin),
+      postData = this.getBitcoinRPCPayloadObj('getblocktemplate'),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-    $http({
-      url: fullUrl,
-      cache: false,
-      async: cb ? true : false,
-      dataType: 'json',
-      type: 'POST',
-      data: postData,
-      headers: postAuthHeaders,
+    $http.post(fullUrl, postData, {cache: false, headers: postAuthHeaders})
+      .then(function(response) {
+        this.errorHandler(response, coin);
 
-    })
-      .then(function(_response) {
-        apiProto.prototype.errorHandler(_response, coin);
-
-        if (_response.result.bits) result = true;
-        else result = false;
+        if (response.data.result.bits) {
+          result = true;
+        } else {
+          result = false;
+        }
 
         if (cb) cb.call(this, result);
-      }, function(response) {
-      if (response.responseText && response.responseText.indexOf(':-10') === -1) result = true;
-      else result = false;
+      }.bind(this), function(response) {
+        if (response.data && response.data instanceof String && response.responseText.indexOf(':-10') === -1) {
+           result = true;
+        } else {
+          result = false;
+        }
 
-      if (cb) cb.call(this, result);
-    });
-
-    return result;
+        if (cb) cb.call(this, result);
+      });
   };
 
   this.getConf = function(discardCoinSpecificPort, coin) {
@@ -611,16 +600,16 @@ angular.module('IguanaGUIApp.controllers')
     };
 
     // coin port switch hook
-    if (coin && conf.coins[coin].coindPort && !isIguana) {
+    if (coin && conf.coins[coin].coindPort && !this.isIguana) {
       conf.server.port = conf.coins[coin].coindPort;
 
       return conf;
     }
 
-    if (activeCoin && !discardCoinSpecificPort) {
-      conf.server.port = conf.coins[activeCoin].portp2p;
-      if (!isIguana)
-        if (conf.coins[activeCoin].coindPort) conf.server.port = conf.coins[activeCoin].coindPort;
+    if (this.activeCoin && !discardCoinSpecificPort) {
+      conf.server.port = conf.coins[this.activeCoin].portp2p;
+      if (!this.isIguana)
+        if (conf.coins[this.activeCoin].coindPort) conf.server.port = conf.coins[this.activeCoin].coindPort;
     } else {
       conf.server.port = conf.server.iguanaPort;
     }
@@ -628,5 +617,504 @@ angular.module('IguanaGUIApp.controllers')
     if (coin) conf.server.port = conf.coins[coin].portp2p;
 
     return conf;
+  };
+
+  this.getAccountAddress = function(coin, account) {
+    if (dev.coinAccountsDev && !this.isIguana) {
+      if (dev.coinAccountsDev.coind[coin]) {
+        account = dev.coinAccountsDev.coind[coin];
+      }
+    }
+
+    var fullUrl = this.getFullApiRoute('getaccountaddress', null, coin),
+      postData = this.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+      deferred = $q.defer();
+
+    $http.post(fullUrl, postData, {cache: false, headers: postAuthHeaders})
+      .then(function(response) {
+          console.log(response);
+          // iguana
+          if (response.data.address) {
+            deferred.resolve(response.data.address);
+          }else {
+            deferred.resolve(response.data.result); // non-iguana
+          }
+        }, function(response) {
+          this.errorHandler(response, coin);
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
+          }
+        }.bind(this));
+
+    return deferred.promise;
+  };
+
+  this.addCoin = function(coin, cb) {
+    var result = false,
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+      fullUrl = this.getConf().server.protocol +
+        this.getConf().server.ip + ':' +
+        this.getConf(true).server.port;
+
+    $http.post(fullUrl, iguanaAddCoinParams[coin], {headers: postAuthHeaders})
+      .then(function(response) {
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log(response);
+        }
+
+        if (response.data.result === 'coin added' || response.data.result === 'coin already there') {
+          result = response.data;
+        } else {
+          result = false;
+        }
+
+        if (cb) {
+          cb.call(this, result.result ? result.result : result, coin);
+        }
+      }, function(response) {
+        // do something
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('error: ' + response.error);
+        }
+      });
+  };
+// todo commented code
+  this.getIguanaRate = function(quote) {
+    var result = false,
+      quoteComponents = quote.split('/');
+    var fullUrl = apiProto.prototype.getServerUrl(true) + '/iguana/addcoin?base=' + quoteComponents[0] + '&rel=' + quoteComponents[1];
+    $http.get(fullUrl,'',{cache: false, async: false})
+      .then(
+        function(_response) {
+          var response = JSON.parse(_response);
+          if (response.result === 'success') {
+            result = response.quote;
+          } else {
+            result = false;
+          }
+        },
+        function(_response) {
+          // do something
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('error: ' + _response.error);
+          }
+          result = false;
+        });
+
+    return result;
+  }
+
+  this.getExternalRate = function(quote, cb) {
+    var result = false,
+      quoteComponents = quote.split('/'),
+      FullUrl = 'https://min-api.cryptocompare.comggg/data/pricemulti?fsyms=' +
+        quoteComponents[0] + '&tsyms=' + quoteComponents[1];
+
+    $http.get(FullUrl, '', {cache: false})
+      .then(function(response) {
+        response = response.data;
+        if (response && Object.keys(response).length) {
+          result = response; //response[quoteComponents[1]];
+
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
+          }
+        } else {
+          result = false;
+        }
+
+        if (cb) {
+          cb.call(this, quoteComponents[0], result);
+        }
+      }, function() {
+        console.log('falling back to ext service #2');
+
+        $http.get('http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(),'',{cache: false,async: false})
+          .then(function(response) {
+            var response = response.data;
+
+            if (response.price) {
+              var btcToCurrency = response.price;
+
+              // get btc -> altcoin rate
+              $http.get('https://poloniex.com/public?command=returnTicker', '', {cache: false})
+                .then(
+                  function(response){
+                    var response = response.data;
+
+                    if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
+                      result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
+
+                      if (dev.showConsoleMessages && dev.isDev) {
+                        console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
+                      }
+                    } else {
+                      result = false;
+                    }
+
+                    if (cb) {
+                      cb.call(this, quoteComponents[0], result);
+                    }
+                  }, function(response) {
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('both services are failed to respond');
+                    }
+                  });
+
+            } else {
+              result = false;
+            }
+          }, function(response){
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('both services failed to respond');
+            }
+          })
+      });
+  };
+
+  this.getServerUrl = function(discardCoinSpecificPort) {
+    return this.getConf().server.protocol +
+      this.getConf().server.ip + ':' +
+      this.getConf(discardCoinSpecificPort).server.port + '/api/';
+  };
+
+  this.getBasicAuthHeaderObj = function(conf, coin) {
+    if (conf) {
+      return this.isIguana ?
+        {'Content-Type': 'application/x-www-form-urlencoded'} :
+        { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+    } else if (this.activeCoin || coin) {
+      return this.isIguana ?
+        {'Content-Type': 'application/x-www-form-urlencoded'} :
+        {
+          'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : this.activeCoin].user + ':' +
+                            this.getConf().coins[coin ? coin : this.activeCoin].pass)
+        };
+    }
+
+    return {};
+  };
+
+  this.getBitcoinRPCPayloadObj = function(method, params, coin) {
+    if (this.isIguana) {
+      return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
+    } else {
+      return '{ \"agent\": \"bitcoinrpc\",' +
+        '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+    }
+  };
+
+  this.getFullApiRoute = function(method, conf, coin) {
+    if (conf) {
+      return this.isIguana ? (this.getConf().server.protocol +
+        this.getConf().server.ip + ':' +
+        conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
+        this.getConf().server.ip + ':' +
+        (conf.coindPort ? conf.coindPort : conf.portp2p));
+    }
+    else {
+      return this.isIguana ? (this.getConf().server.protocol +
+        this.getConf().server.ip + ':' +
+        this.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
+        this.getConf().server.ip + ':' +
+        this.getConf(false, coin).server.port);
+    }
+
+  };
+
+// TODO: merge wallet unlock/lock into sendtoaddress
+  this.sendToAddress = function(coin, sendInfo, cb) {
+    var result = false,
+      fullUrl = this.getFullApiRoute('sendtoaddress', null, coin),
+      postData = this.getBitcoinRPCPayloadObj('sendtoaddress', '\"' + sendInfo.address + '\", ' + sendInfo.amount + ', \"' + sendInfo.note + '\"', coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+
+    $http.post(fullUrl, postData, {cache: false, headers: postAuthHeaders})
+      .then(function(_response) {
+        debugger;
+          if (this.errorHandler(_response, coin) !== 10) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(_response);
+            }
+
+            if (_response.result) {
+              // non-iguana
+              if (_response.result.length) {
+                result = _response.result;
+              } else {
+                result = false;
+              }
+            } else {
+              // iguana
+              if (!_response.error) {
+                var response = JSON.parse(_response);
+              }
+              else {
+                response = _response;
+              }
+
+              if (response.error) {
+                // do something
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('error: ' + response.error);
+                }
+                result = false;
+              } else {
+                if (response.result.length) {
+                  result = response.result;
+                } else {
+                  result = false;
+                }
+              }
+            }
+          }
+
+          if (cb) {
+            cb.call(this, result);
+          }
+        }.bind(this), function(response) {
+          debugger;
+          this.errorHandler(response, coin);
+
+          if (this.errorHandler(response, coin) === -13) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('unlock the wallet first');
+            }
+          }
+
+          if (cb) {
+            cb.call(this, false);
+          }
+        }.bind(this));
+
+    return result;
+  }
+
+  this.setTxFee = function(coin, fee, cb) {
+    var result = false,
+      fullUrl = this.getFullApiRoute('settxfee', null, coin);
+    var postData = this.getBitcoinRPCPayloadObj('settxfee', '\"' + fee + '\"', coin);
+    var postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+
+    $http.post(fullUrl,postData,{cache: false,async: cb ? true : false,headers: postAuthHeaders,})
+      .then(
+        function(_response) {
+
+          if (this.errorHandler(_response, coin) !== 10) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(_response);
+            }
+            if (_response.result) {
+              // non-iguana
+              if (_response.result.length) {
+                result = _response.result;
+              } else {
+                result = false;
+              }
+            } else {
+              // iguana
+              var response = JSON.parse(_response);
+
+              if (response.error) {
+                // do something
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('error: ' + response.error);
+                }
+                result = false;
+
+              } else {
+                if (response.result.length) {
+                  result = response.result;
+                } else {
+                  result = false;
+                }
+              }
+            }
+          }
+
+          if (cb) {
+            cb.call(this, result);
+          }
+        }.bind(this),
+        function(response) {
+          this.errorHandler(response, coin);
+
+          if (cb) {
+            cb.call(this, false);
+          }
+        }.bind(this));
+    return result;
+  };
+
+  this.getCoinCurrentHeight = function(coin, cb) {
+    var result = false;
+
+    if (this.getConf().coins[coin].currentBlockHeightExtSource !== 'disabled') {
+      $http.get(this.getConf().coins[coin].currentBlockHeightExtSource,'',{cache: false, async: cb ? true : false})
+        .then(
+          function(response) {
+
+            if (response.blockcount || response.info || response.height || response.data || response[coin] || response.blocks) {
+              if (response.blockcount) {
+                result = response.blockcount;
+              }
+              if (response.info) {
+                result = response.info.blocks;
+              }
+              if (response.height) {
+                result = response.height;
+              }
+              if (response.blocks) {
+                result = response.blocks;
+              }
+              if (response.data) {
+                result = response.data.last_block.nb;
+              }
+              if (response[coin]) {
+                result = response[coin].height;
+              }
+
+              if (cb) {
+                cb.call(this, result);
+              }
+            } else {
+              if (dev.showConsoleMessages && dev.isDev) console.log('error retrieving current block height from ' + this.getConf().coins[coin].currentBlockHeightExtSource);
+              result = false;
+
+              if (cb) cb.call(this, result);
+            }
+          })
+    }else {
+      result = 'NA';
+    }
+    if (cb) {
+      cb.call(this, result);
+    }
+
+    return result;
+  }
+
+  this.listTransactions = function(account, coin, cb, update) {
+    var result = false;
+
+    // dev account lookup override
+    if (dev.coinAccountsDev && !this.isIguana) {
+      if (dev.coinAccountsDev.coind[coin]) {
+        account = dev.coinAccountsDev.coind[coin];
+      }
+    }
+
+    var fullUrl = this.getFullApiRoute('listtransactions', null, coin);
+    var postData = this.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", ' + settings.defaultTransactionsCount, coin); // last N tx
+    var postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+
+    $http.post(fullUrl, postData, {cache: false, headers: postAuthHeaders})
+      .then(function(response) {
+        if (this.errorHandler(response, coin) !== 10) {
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
+          }
+
+          if (response.data.result) {
+            // non-iguana
+            if (response.data.result.length) {
+              result = response.data.result;
+            }else {
+              result = false;
+            }
+
+          } else {
+            // iguana
+            if (response.data && response.data.error) {
+              // do something
+              if (dev.showConsoleMessages && dev.isDev) {
+                console.log('error: ' + response.data.error);
+              }
+              result = false;
+
+            } else {
+              if (response.data.result.length) {
+                result = response.data.result;
+              }else {
+                result = false;
+              }
+            }
+          }
+        }
+
+        if (cb) {
+          cb.call(this, result, update);
+        }
+      }.bind(this), function(response) {
+        this.errorHandler(response, coin);
+
+        if (cb) {
+          cb.call(this, false, update);
+        }
+      }.bind(this));
+  };
+
+  this.getBalance = function(account, coin, cb) {
+    var result = false;
+
+    // dev account lookup override
+    if (dev.coinAccountsDev && !this.isIguana) {
+      if (dev.coinAccountsDev.coind[coin]) {
+        account = dev.coinAccountsDev.coind[coin];
+      }
+    }
+
+    var fullUrl = this.getFullApiRoute('getbalance', null, coin),
+      // avoid using account names in bitcoindarkd
+      postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !this.isIguana ? null : '\"' + account + '\"', coin),
+      postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+
+    $http.post(fullUrl, postData, {cache: false, dataType: 'json', headers: postAuthHeaders})
+      .then(function(response) {
+        if (this.errorHandler(response, coin) !== 10) {
+          if (response.data.result > -1 || Number(response) === 0) {
+            // non-iguana
+            result = response.data.result > -1 ? response.data.result : response;
+          } else {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response);
+            }
+
+            // iguana
+            if (response.data && response.data.error) {
+              // do something
+              console.log('error: ' + response.data.error);
+              result = false;
+
+            } else {
+              if (response) {
+                result = response;
+              } else {
+                result = false;
+              }
+            }
+          }
+        }
+
+        if (cb) {
+          cb.call(this, result, coin);
+        }
+      }.bind(this), function(response) {
+        if (response.data) {
+          if (
+            response.data.indexOf('Accounting API is deprecated') > -1 ||
+            response.data.indexOf('If you want to use accounting API')
+          ) {
+            if (dev.showConsoleMessages && dev.isDev && coin === 'btcd') {
+              console.log('add enableaccounts=1 and staking=0 in btcd conf file');
+            }
+          }
+        }
+
+        if (cb) {
+          cb.call(this, false, coin);
+        }
+      }.bind(this));
   };
 }]);
