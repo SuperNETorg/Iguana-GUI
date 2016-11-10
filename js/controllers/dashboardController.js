@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage',
-  function($scope, $http, $state, helper, passPhraseGenerator, $timeout, $interval, $localStorage) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'helper', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage', '$uibModal', 'Api',
+  function($scope, $http, $state, helper, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, Api) {
     $scope.helper = helper;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
@@ -12,13 +12,44 @@ angular.module('IguanaGUIApp.controllers')
       qrCode: ''
     };
 
+    // add coin login modal updated logic
+    $scope.passphrase = '';
+    $scope.dev = dev;
+    $scope.coinsSelectedToAdd = [];
+    $scope.$modalInstance = {};
+    $scope.receivedObject = undefined;
+
+    $scope.openAddCoinLoginModal = function () {
+      var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            controller: 'addCoinLoginModalController',
+            templateUrl: '/partials/add-coin-login.html',
+            appendTo: angular.element(document.querySelector('.add-coin-login-container')),
+            resolve: {
+              receivedObject: function () {
+                return $scope.receivedObject;
+              }
+            }
+          });
+      modalInstance.result.then(onDone);
+
+      function onDone(receivedObject) {
+        if (receivedObject.length > 1) {
+          $localStorage['iguana-' + receivedObject + '-passphrase'] = { 'logged': 'yes' };
+          constructAccountCoinRepeater(); // TODO: fix, not effecient
+        }
+      }
+    };
+
     var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $('body').addClass('dashboard-page');
 
     $(document).ready(function() {
-      initTopNavBar();
+      helper.initTopNavBar();
 
       $('body').scroll(function(e){
         if ($(window).width() < 768) {
@@ -92,9 +123,10 @@ angular.module('IguanaGUIApp.controllers')
     function constructAccountCoinRepeater(isFirstRun) {
       var index = 0;
 
+      coinsSelectedByUser = [];
+
       for (var key in coinsInfo) {
-        if ((isIguana && $localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') ||
-            (!isIguana && $localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes')) {
+        if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
           coinsSelectedByUser[index] = key;
           index++;
         }
@@ -323,41 +355,6 @@ angular.module('IguanaGUIApp.controllers')
      *  add coin modal
      */
     // TODO: move to service
-    $scope.passphrase = '';
-    $scope.coinsSelectedToAdd = {};
-
-    $scope.toggleLoginModal = function() {
-      helper.toggleModalWindow('add-coin-login-form', 300);
-    }
-
-    $scope.toggleAddCoinModal = function() {
-      var availableCoins = helper.constructCoinRepeater();
-      helper.toggleModalWindow('add-new-coin-form', 300);
-
-      $scope.availableCoins = availableCoins;
-      $scope.wordCount = isIguana ? 24 : 12; // TODO: move to settings
-
-      helper.bindCoinRepeaterSearch();
-    }
-
-    $scope.objLen = function(obj) {
-      return Object.keys(obj).length;
-    }
-
-    $scope.toggleCoinTile = function(item) {
-      if ($scope.coinsSelectedToAdd[item.coinId]) {
-        delete $scope.coinsSelectedToAdd[item.coinId];
-      } else {
-        $scope.coinsSelectedToAdd[item.coinId] = true;
-      }
-      if (!isIguana) {
-        var selectedCoind = $scope.coinsSelectedToAdd[item.coinId];
-
-        $scope.coinsSelectedToAdd = {};
-        if (selectedCoind) $scope.coinsSelectedToAdd[item.coinId] = selectedCoind;
-      }
-    }
-
     $scope.toggleAddCoinWalletCreateModal = function(initOnly) {
       $scope.addCoinCreateAccount = {
         passphrase: passPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4),
@@ -396,39 +393,6 @@ angular.module('IguanaGUIApp.controllers')
         }
       } else {
         helper.prepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
-      }
-    }
-
-    $scope.loginWallet = function() {
-      // coind
-      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
-      api.walletLock(coinsSelectedToAdd[0]);
-      var walletLogin = api.walletLogin($scope.passphrase, settings.defaultSessionLifetime, coinsSelectedToAdd[0]);
-
-      if (walletLogin !== -14 && walletLogin !== -15) {
-        $localStorage['iguana-' + coinsSelectedToAdd[0] + '-passphrase'] = { 'logged': 'yes' };
-        helper.updateRates(null, null, null, true);
-        constructAccountCoinRepeater();
-
-        _sideBarCoins[coinsSelectedToAdd[0]] = {
-          id: coinsSelectedToAdd[0],
-          coinIdUc: coinsSelectedToAdd[0].toUpperCase(),
-          name: supportedCoinsList[coinsSelectedToAdd[0]].name,
-          loading: true
-        };
-
-        $scope.sideBarCoins.push(_sideBarCoins[coinsSelectedToAdd[0]]);
-
-        applyDashboardResizeFix();
-        api.getBalance(defaultAccount, coinsSelectedToAdd[0], constructAccountCoinRepeaterCB);
-
-        $scope.toggleLoginModal();
-      }
-      if (walletLogin === -14) {
-        helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
-      }
-      if (walletLogin === -15) {
-        helper.prepMessageModal(helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'), 'red', true);
       }
     }
 
@@ -800,45 +764,5 @@ angular.module('IguanaGUIApp.controllers')
 
       // revert pay fee
       if (setTxFeeResult) api.setTxFee($scope.activeCoin, 0);
-    }
-
-    function initTopNavBar() {
-      if ($(window).width() < 768) {
-        var topMenu = $('#top-menu'),
-            btnLeft = $('.nav-buttons .nav-left', topMenu),
-            btnRight = $('.nav-buttons .nav-right', topMenu),
-            items = $('.item', topMenu), itemsLength = 0, item;
-
-        btnLeft.on('click swipeleft', function() {
-          if ($(window).width() < $('.top-menu', topMenu).width()) {
-            itemsLength = $('.top-menu', topMenu).width();
-            for (var i = items.length - 1; 0 <= i; i--) {
-              item = $(items[i]);
-              itemsLength -= $(items[i]).width();
-              if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() && itemsLength > $(items[i]).width()) {
-                item.closest('.navbar-nav').animate({'margin-left':
-                parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
-                itemsLength = 0;
-                break;
-              } else {
-                return;
-              }
-            }
-          }
-        });
-        btnRight.on('click swiperight', function() {
-          if ($(window).width() < $('.top-menu', topMenu).width())
-            for (var i = 0; items.length > i; i++) {
-              item = $(items[i]);
-              itemsLength += $(items[i]).offset().left;
-              if ($(items[i]).offset().left < topMenu.width() && itemsLength > topMenu.width()) {
-                item.closest('.navbar-nav').animate({'margin-left':
-                  (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
-                itemsLength = 0;
-                break;
-              }
-            }
-        });
-      }
     }
 }]);

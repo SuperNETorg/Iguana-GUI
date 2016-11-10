@@ -12,7 +12,8 @@ angular.module('IguanaGUIApp.controllers')
       '$uibModal',
       'Api',
       '$localStorage',
-    function ($scope, $http, $state, helper, $log, $uibModal, Api, $localStorage) {
+      '$timeout',
+    function ($scope, $http, $state, helper, $log, $uibModal, Api, $localStorage, $timeout) {
       $scope.helper = helper;
       $scope.$state = $state;
       $scope.isIguana = isIguana;
@@ -29,18 +30,18 @@ angular.module('IguanaGUIApp.controllers')
 
       $scope.openAddCoinModal = function () {
         var modalInstance = $uibModal.open({
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          controller: 'addCoinModalController',
-          templateUrl: '/partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
-          resolve: {
-            receivedObject: function () {
-              return $scope.receivedObject;
-            }
-          }
-        });
+              animation: true,
+              ariaLabelledBy: 'modal-title',
+              ariaDescribedBy: 'modal-body',
+              controller: 'addCoinModalController',
+              templateUrl: '/partials/add-coin.html',
+              appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
+              resolve: {
+                receivedObject: function () {
+                  return $scope.receivedObject;
+                }
+              }
+            });
         modalInstance.result.then(onDone);
         //modalInstance.result.catch(onCatch);
 
@@ -102,7 +103,9 @@ angular.module('IguanaGUIApp.controllers')
           } else {
             $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
             $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
-            $state.go('dashboard');
+            $timeout(function() {
+              $state.go('dashboard.main');
+            }, 250);
           }
         }
       };
