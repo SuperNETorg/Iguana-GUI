@@ -24,6 +24,8 @@ app.controller('receiveCoinModalController', [
 
     getReceiveCoinAddress();
 
+    // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
+
     $scope.sendCoinKeying = function() { // !! ugly !!
       var coinRate,
           coin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0,
