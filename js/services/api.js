@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.service('api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
+.service('Api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
   function ($localStorage, helper, $http, $state, $timeout, $interval, $q) {
 
   this.coinsInfo = new Array;
@@ -23,8 +23,8 @@ angular.module('IguanaGUIApp.controllers')
       setPortPollResponseDS: setPortPollResponseDS
     }); // TODO change this function to angular
 
-    for (var key in this.coinsInfo) { // TODO: switch to this
-      if (this.coinsInfo[key].connection === true) {
+    for (var key in coinsInfo) { // TODO: switch to this
+      if (coinsInfo[key].connection === true) {
         index++;
       }
     }
@@ -407,13 +407,13 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
-      tempOutOfSync.html('Something went wrong. Please login again.');
+      tempOutOfSync.html(helper.lang('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
       tempOutOfSync.removeClass('hidden');
     }
 
     // out of sync message
-    var outOfSyncCoinsList = '';
-    var coins = this.getConf().coins;//TODO change this function to angular
+    var outOfSyncCoinsList = '',
+        coins = this.getConf().coins;//TODO change this function to angular
 
     for (var index in coins) {
       if (
@@ -437,7 +437,7 @@ angular.module('IguanaGUIApp.controllers')
     if (!outOfSyncCoinsList.length) {
       tempOutOfSync.addClass(hiddenClassName);
     } else {
-      tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' are ' : ' is ') + 'out of sync. Information about balances, transactions and send/receive functions is limited.');
+      tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' ' + helper.lang('EXPERIMENTAL.ARE') + ' ' : ' ' + helper.lang('EXPERIMENTAL.IS') + ' ') + helper.lang('EXPERIMENTAL.DASHBOARD_OUT_OF_SYNC_P3'));
       tempOutOfSync.removeClass(hiddenClassName);
     }
   };
@@ -599,7 +599,7 @@ angular.module('IguanaGUIApp.controllers')
       if (cb) cb.call(this, result);
     }.bind(this), function(response) {
       if (response.data && response.data instanceof String && response.responseText.indexOf(':-10') === -1) {
-         result = true;
+        result = true;
       } else {
         result = false;
       }

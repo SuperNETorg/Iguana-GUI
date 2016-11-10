@@ -105,6 +105,8 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
+      'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...',
+      'APP_FAILURE_ALT': 'We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...',
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
       'NO_REQUIRED_DAEMON_P1': 'No required daemon is running. Make sure it\'s on and these',
       'NO_REQUIRED_DAEMON_P2': 'requirements',
@@ -172,6 +174,12 @@ var lang = {
       'HOURS': 'hours ago',
       'DAY': 'day ago',
       'DAYS': 'days ago'
+    },
+    'EXPERIMENTAL':{
+      'ARE': 'are',
+      'IS': 'is',
+      'DASHBOARD_OUT_OF_SYNC_P3': 'out of sync. Information about balances, transactions and send/receive functions is limited.',
+      'SOMETHING_WENT_WRONG': 'Something went wrong. Please login again.'
     }
   }
 };
