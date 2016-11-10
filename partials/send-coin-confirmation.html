@@ -37,8 +37,8 @@
               <span class="name">{{ sendCoin.coinName }}</span>
             </div>
             <div class="col-sm-6 hd-right col-xs-6 balance">
-              <span class="balance-coin"><span class="value">{{ sendCoin.coinValue }}</span> <span class="name">{{ sendCoin.coinId }}</span></span>
-              <p class="rs balance-currency"><span class="value">{{ sendCoin.currencyValue }}</span> <span class="name">{{ sendCoin.currency }}</span></p>
+              <span class="balance-coin"><span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span></span>
+              <p class="rs balance-currency"><span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span></p>
             </div>
           </div>
         </div>
@@ -49,20 +49,20 @@
           </div>
           <div class="pop-detail crncy chk-crncy crncy-rs">
             <h4>{{ helper.lang('RECEIVE.AMOUNT') }}:</h4>
-              <h3>{{ sendCoin.amount }} {{ sendCoin.coinId }}</h3>
-              <h5>or {{ sendCoin.amountCurrency }} {{ sendCoin.currency }}</h5>
+              <h3>{{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</h3>
+              <h5>or {{ sendCoin.amountCurrency | decimalPlacesFormat:'currency' }} {{ sendCoin.currency }}</h5>
             </div>
             <div class="pop-detail crncy chk-crncy crncy-fee">
               <h4>{{ helper.lang('SEND.FEE_PER_KB') }}:</h4>
-              <h3>{{ sendCoin.fee }} {{ sendCoin.coinId }}</h3>
-              <h5>{{ helper.lang('LOGIN.OR') }} {{ sendCoin.feeCurrency }} {{ currency }}</h5>
+              <h3>{{ sendCoin.fee | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</h3>
+              <h5>{{ helper.lang('LOGIN.OR') }} {{ sendCoin.feeCurrency | decimalPlacesFormat:'currency' }} {{ currency }}</h5>
             </div>
             <div class="pop-detail pay-dtl">
               <h4>{{ helper.lang('SEND.FEE_PER_KB') }}: </h4>
               <p>{{ sendCoin.note }}</p>
             </div>
             <h4>{{ helper.lang('SEND.THE_FINAL_AMOUNT') }}.</h4>
-            <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ helper.lang('SEND.SEND') }} {{ sendCoin.amount }} {{ sendCoin.coinId }}</button>
+            <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ helper.lang('SEND.SEND') }} {{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</button>
           </div>
         </div>
       </div>

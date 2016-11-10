@@ -118,7 +118,6 @@ angular.module('IguanaGUIApp.controllers')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
-      getReceiveCoinAddress();
     }
 
     $scope.setTxUnitBalance = function(item) {

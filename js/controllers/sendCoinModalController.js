@@ -35,17 +35,19 @@ app.controller('sendCoinModalController', [
       $scope.sendCoin.currencyRate = helper.updateRates(coin, defaultCurrency, true);
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
-      $scope.sendCoin.coinName = supportedCoinsList[$scope.activeCoin].name;
+      $scope.sendCoin.coinName = supportedCoinsList[coin].name;
       $scope.sendCoin.coinId = $scope.activeCoin.toUpperCase();
       $scope.sendCoin.coinValue = balance;
       $scope.sendCoin.currencyValue = balance * $scope.sendCoin.currencyRate;
 
-      if (dev && dev.isDev && sendDataTest && sendDataTest[$scope.activeCoin]) {
-        $scope.sendCoin.address = sendDataTest[$scope.activeCoin].address;
-        $scope.sendCoin.amount = sendDataTest[$scope.activeCoin].amount;
+      if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
+        $scope.sendCoin.address = sendDataTest[coin].address;
+        $scope.sendCoin.amount = sendDataTest[coin].val;
         $scope.sendCoin.fee = 0.00001;
-        $scope.sendCoin.note = sendDataTest[$scope.activeCoin].note;
+        $scope.sendCoin.note = sendDataTest[coin].note;
       }
+
+      console.log($scope.sendCoin);
     }
 
     $scope.toggleSendCoinModal = function() {
