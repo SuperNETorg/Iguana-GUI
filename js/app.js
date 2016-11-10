@@ -38,11 +38,11 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
         'content@dashboard': {
           templateUrl: 'partials/dashboard-main.html',
           controller: 'dashboardController'
-        },
+        }/*,
         'modals@dashboard': {
           templateUrl: 'partials/dashboard-modals.html',
           controller: 'dashboardController'
-        }
+        }*/
       }
     })
     .state('dashboard.settings', {
@@ -76,7 +76,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.step1')) {
       event.preventDefault();
       $timeout(function() {
-        $state.go('dashboard');
+        $state.go('dashboard.main');
       }, 0);
     }
   });
