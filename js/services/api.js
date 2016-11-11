@@ -1,16 +1,13 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.service('Api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
+.service('api', ['$localStorage', 'helper', '$http', '$state', '$timeout', '$interval', '$q',
   function ($localStorage, helper, $http, $state, $timeout, $interval, $q) {
 
   this.coinsInfo = new Array;
-  this.activeCoin,
-  this.portsTested = false,
-  this.isIguana = false,
-  this.isRT = false,
-  this.isProxy = true,
-  this.iguanaNullReturnCount = 0;
+  this.isRT = false;
+  $localStorage['isProxy'] = true;
+  $localStorage['iguanaNullReturnCount'] = 0;
 
   this.testConnection = function (cb) {
     var setPortPollResponseDS = $localStorage['iguana-port-poll'];
@@ -23,7 +20,7 @@ angular.module('IguanaGUIApp.controllers')
       setPortPollResponseDS: setPortPollResponseDS
     }); // TODO change this function to angular
 
-    for (var key in coinsInfo) { // TODO: switch to this
+    for (var key in this.coinsInfo) { // TODO: switch to this
       if (coinsInfo[key].connection === true) {
         index++;
       }
@@ -50,46 +47,56 @@ angular.module('IguanaGUIApp.controllers')
         timeout: 500
       })
       .then(function(response) {
-        if (dev.isDev && dev.sessions) { // dev only
-          for (var key in dev.sessions) {
-            if (navigator.userAgent.indexOf(key) > -1) {
-              this.isIguana = dev.sessions[key];
-            }
-          }
-        }
-
-        if (dev.showConsoleMessages && dev.isDev) {
-          if (!this.isIguana) {
-            console.log('running non-iguana env');
-          } else {
-            console.log('running iguana env');
-          }
-        }
-
-        this.errorHandler(response);
-        this.testCoinPorts(cb);
-      }.bind(this), function(response) {
-        // non-iguana env
-        if (dev.isDev && dev.sessions) { // dev only
-          for (var key in dev.sessions) {
-            if (navigator.userAgent.indexOf(key) > -1) {
-              this.isIguana = dev.sessions[key];
-
-              if (dev.sessions[key]){
-                $timeout(function () {
-                  helper.prepNoDaemonModal(); // TODO change this function to angular
-                }, 300);
+        if (dev.isDev) {
+          if (dev.sessions) { // dev only
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                $localStorage['isIguana'] = dev.sessions[key];
               }
             }
           }
+
+          if (dev.showConsoleMessages) {
+            if (!$localStorage['isIguana']) {
+              console.log('running non-iguana env');
+            } else {
+              console.log('running iguana env');
+            }
+          }
+        } else {
+          $localStorage['isIguana'] = true;
         }
 
-        if (dev.showConsoleMessages && dev.isDev) {
-          if (!this.isIguana) {
-            console.log('running non-iguana env');
-          } else {
-            console.log('running iguana env');
+        this.errorHandler(response);
+        if(!$localStorage['isIguana']) {
+          this.testCoinPorts(cb);
+        }
+      }.bind(this), function(response) {
+        // non-iguana env
+        if (dev.isDev) {
+          if (dev.sessions) { // dev only
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                $localStorage['isIguana'] = dev.sessions[key];
+
+                if (dev.sessions[key]){
+                  $timeout(function () {
+                    helper.prepNoDaemonModal(); // TODO change this function to angular
+                  }, 300);
+                }
+              }
+            }
           }
+
+          if (dev.showConsoleMessages) {
+            if (!$localStorage['isIguana']) {
+              console.log('running non-iguana env');
+            } else {
+              console.log('running iguana env');
+            }
+          }
+        } else {
+          $localStorage['isIguana'] = true;
         }
 
         this.errorHandler(response);
@@ -138,10 +145,10 @@ angular.module('IguanaGUIApp.controllers')
 
         return 10;
       } else if (response.data.error.message === 'null return from iguana_bitcoinRPC') {
-        if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + this.iguanaNullReturnCount + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
-        this.iguanaNullReturnCount++;
+        if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + $localStorage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
+        $localStorage['activeCoin']++;
 
-        if (this.iguanaNullReturnCount > settings.iguanaNullReturnCountThreshold) {
+        if ($localStorage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
           helper.prepMessageModal(helper.lang('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
           $timeout(function() {
             helper.logout();
@@ -156,42 +163,156 @@ angular.module('IguanaGUIApp.controllers')
     if (response.data && response.data instanceof String && response.data.indexOf(':-13') > -1) {
       return -13;
     }
-  }
+  };
 
-  this.testCoinPorts = function(cb) {
-    function getCoins(index){
-      var deferred = $q.defer();
+  this.testCoinIsnotIguanaMode = function(index) {
+    if (!$localStorage['isIguana']) {
+      this.coindCheckRT(index, function (coindCheckRTResponse) {
+        var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
+          syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
-      $http.post(fullUrl, postData, {
-        cache: false,
-        headers: postAuthHeaders
-      })
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('Connections: ' + response.data.result.connections);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('Blocks: ' + response.data.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced)');
+
+        if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
+          this.isRT = true;
+          coinsInfo[index].RT = true;
+        } else {
+          this.isRT = false;
+          coinsInfo[index].RT = false;
+
+          if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+        }
+
+        if (dev.isDev && dev.showSyncDebug) {
+          if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
+            debugSyncInfo.append(
+              'coin: ' + index + ', ' +
+              'con ' + response.data.result.connections + ', ' +
+              'blocks ' + response.data.result.blocks + '/' + networkCurrentHeight +
+              ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced), ' +
+              'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>'
+            );
+        }
+      }.bind(this));
+    }
+  };
+
+  this.testCoinIguanaMode = function (){
+
+    if (response.status && $localStorage['isIguana']) {
+      if (response.status !== (null || -1) &&
+        response.status instanceof  'string') {
+        var iguanaGetInfo = response.status.split(' '),
+          totalBundles = iguanaGetInfo[20].split(':'),
+          currentHeight = iguanaGetInfo[9].replace('h.', ''),
+          peers = iguanaGetInfo[16].split('/');
+
+        coinsInfo[index].connection = true;
+
+        // iguana
+        if (response.status.indexOf('.RT0 ') > -1) {
+          this.isRT = false;
+          coinsInfo[index].RT = false;
+
+          if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+        } else {
+          this.isRT = true;
+          coinsInfo[index].RT = true;
+        }
+
+        // disable coin in iguna mode
+        if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled'){
+          coinsInfo[index].iguana = false;
+        }
+
+        if (dev.showConsoleMessages && dev.isDev){
+          console.log('Connections: ' + peers[0].replace('peers.', ''));
+        }
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('Blocks: ' + currentHeight);
+        }
+        if (dev.showConsoleMessages && dev.isDev){
+          console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+            totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
+        }
+
+        if (dev.isDev && dev.showSyncDebug) {
+          if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
+            debugSyncInfo.append('coin: ' + index + ', ' +
+              'con ' + peers[0].replace('peers.', '') + ', ' +
+              'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+              totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
+              'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>');
+        }
+      }
+    }
+  };
+
+  this.checkLoopEnd = function (_index, cb) {
+    var debugSyncInfo = angular.element(document).find('#debug-sync-info');
+
+    if (Object.keys(this.getConf().coins).length === _index) {
+      var setPortPollResponseDS = $localStorage['iguana-port-poll'];
+
+      helper.setPortPollResponse();
+      helper.checkIfIguanaOrCoindIsPresent.apply({ setPortPollResponseDS: setPortPollResponseDS });
+    }
+
+
+    if (Object.keys(this.getConf().coins).length === _index && cb) {
+      if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
+
+      this.checkBackEndConnectionStatus();
+
+      if (dev.isDev && dev.showSyncDebug && debugSyncInfo.text()) // debug info
+        angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
+      $interval(function() {
+        var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
+
+        if (debugSyncInfo.text()) {
+          if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
+          angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
+        }
+      }, 1000);
+
+      cb();
+    }
+  };
+
+  this.getCoins = function (index, _index, conf){
+    var fullUrl = this.getFullApiRoute('getinfo', conf),
+      postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
+      postAuthHeaders = this.getBasicAuthHeaderObj(conf),
+      deferred = $q.defer();
+
+    $http.post(fullUrl, postData, {
+      cache: false,
+      headers: postAuthHeaders
+    })
       .then(function(response) {
         deferred.resolve([index, response, ++_index]);
       },function(response) {
-        deferred.resolve([index, response, ++_index]);
+        deferred.reject([index, response, ++_index]);
       });
 
-      return deferred.promise;
-    }
+    return deferred.promise;
+  };
 
+  this.testCoinPorts = function(cb) {
     var result = false,
         _index = 0,
-        debugSyncInfo = angular.element(document).find('#debug-sync-info');
+      debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
     if (dev.isDev && dev.showSyncDebug) {
-      debugSyncInfo.html(''); //ToDo change to angular
+      debugSyncInfo.html(''); //ToDo change to angular broadcast
     }
 
     var coins = this.getConf().coins;
 
     for (var index in coins) {
-      var conf = coins[index],
-        // TODO change this function to angular
-        fullUrl = this.getFullApiRoute('getinfo', conf),
-        postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
-        postAuthHeaders = this.getBasicAuthHeaderObj(conf);
-
       if (!coinsInfo[index]) {
         coinsInfo[index] = [];
       }
@@ -199,199 +320,103 @@ angular.module('IguanaGUIApp.controllers')
       coinsInfo[index].connection = false;
       coinsInfo[index].RT = false;
 
-      getCoins(index, _index)
-      .then(function (data) {
-        var index = data[0],
-            response = data[1],
-            _index = data[2];
+      this.getCoins(index, _index, coins[index])
+      .then(
+        onResolve.bind(this),
+        onReject.bind(this)
+      );
+    }
 
-        this.errorHandler(response, index);
+    function onResolve(data) {
+      var index = data[0],
+        response = data[1],
+        _index = data[2];
 
-        if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
-        if (dev.showConsoleMessages && dev.isDev) console.log(response);
+      this.errorHandler(response, index);
 
-        if (response.data && response.data.error === 'coin is busy processing') {
-          coinsInfo[index].connection = true;
-          coinsInfo[index].RT = false;
-        }
+      if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
+      if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
-        if (response.data && response.data.result && response.data.result.relayfee) {
-          coinsInfo[index].relayFee = response.data.result.relayfee;
-        }
+      if (response.data && response.data.error === 'coin is busy processing') {
+        coinsInfo[index].connection = true;
+        coinsInfo[index].RT = false;
+      }
 
-        if (response.data && (
+      if (response.data && response.data.result && response.data.result.relayfee) {
+        coinsInfo[index].relayFee = response.data.result.relayfee;
+      }
+
+      if (response.data && (
           response.data.result && response.data.result.walletversion ||
           response.data.result && response.data.result.difficulty ||
           response.data.result === 'success'
         )) {
-          if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
-          if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
-          coinsInfo[index].connection = true;
+        if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
+        if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
+        coinsInfo[index].connection = true;
 
-          // non-iguana
-          // sync info
-          if (!this.isIguana) {
-            this.coindCheckRT(index, function (coindCheckRTResponse) {
-              var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
-                syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
+        this.testCoinIsnotIguanaMode(index);
+      }
 
-              if (dev.showConsoleMessages && dev.isDev)
-                console.log('Connections: ' + response.data.result.connections);
-              if (dev.showConsoleMessages && dev.isDev)
-                console.log('Blocks: ' + response.data.result.blocks + '/' + networkCurrentHeight + ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced)');
+      this.testCoinIguanaMode(response);
+      this.checkLoopEnd(_index, cb);
+    }
 
-              if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
-                this.isRT = true;
-                coinsInfo[index].RT = true;
-              } else {
-                this.isRT = false;
-                coinsInfo[index].RT = false;
+    function onReject(data) {
+      var index = data[0],
+        response = data[1];
 
-                if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
-              }
+      this.errorHandler(response, index);
 
-              if (dev.isDev && dev.showSyncDebug) {
-                if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
-                  debugSyncInfo.append(
-                    'coin: ' + index + ', ' +
-                    'con ' + response.data.result.connections + ', ' +
-                    'blocks ' + response.data.result.blocks + '/' + networkCurrentHeight +
-                    ' (' + (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') + '% synced), ' +
-                    'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>'
-                  );
-              }
-            }.bind(this));
-          }
+      if (response.statusText === 'error' && !$localStorage['isIguana'])
+        $localStorage['isProxy'] = false;
+      if (dev.showConsoleMessages && dev.isDev && response.responseText && response.responseText.indexOf('Bad Gateway') === -1) {
+        console.log('is proxy server running?');
+      }
+      else if (!response.statusCode){
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('server is busy, check back later');
+        }
+      }
+
+      if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1){
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log(index + ' is verifying blocks...');
+        }
+      }
+
+      if (response.responseText){
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('coind response: ' + response.responseText);
+        }
+      }
+
+      if (Object.keys(this.getConf().coins).length - 1 === data[2]) {
+        helper.setPortPollResponse();
+        helper.checkIfIguanaOrCoindIsPresent();
+      }
+
+      if (Object.keys(this.getConf().coins).length - 1 === data[2] && cb) {
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('port poll done ' + data[2]);
         }
 
-        if (response.status && this.isIguana) {
-          if (response.status !== (null || -1) &&
-              response.status instanceof  'string') {
-            var iguanaGetInfo = response.status.split(' '),
-                totalBundles = iguanaGetInfo[20].split(':'),
-                currentHeight = iguanaGetInfo[9].replace('h.', ''),
-                peers = iguanaGetInfo[16].split('/');
+        this.checkBackEndConnectionStatus();
 
-            coinsInfo[index].connection = true;
-
-            // iguana
-            if (response.status.indexOf('.RT0 ') > -1) {
-              this.isRT = false;
-              coinsInfo[index].RT = false;
-
-              if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
-            } else {
-              this.isRT = true;
-              coinsInfo[index].RT = true;
-            }
-
-            // disable coin in iguna mode
-            if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled'){
-              coinsInfo[index].iguana = false;
-            }
-
-            if (dev.showConsoleMessages && dev.isDev){
-              console.log('Connections: ' + peers[0].replace('peers.', ''));
-            }
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log('Blocks: ' + currentHeight);
-            }
-            if (dev.showConsoleMessages && dev.isDev){
-              console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
-                totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
-            }
-
-            if (dev.isDev && dev.showSyncDebug) {
-              if (debugSyncInfo.html().indexOf('coin: ' + index + ', ') < 0)
-                debugSyncInfo.append('coin: ' + index + ', ' +
-                  'con ' + peers[0].replace('peers.', '') + ', ' +
-                  'bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
-                  totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced), ' +
-                  'RT: ' + (this.isRT ? 'yes' : 'no') + '<br/>');
-            }
-          }
+        if (dev.isDev && dev.showSyncDebug) { // debug info
+          angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
         }
 
-        if (Object.keys(this.getConf().coins).length === _index) {
-          var setPortPollResponseDS = $localStorage['iguana-port-poll'];
+        $interval(function() {
+          //TODO change this function to angular
+          var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
+          transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
+          angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
+        }, 1000);
 
-          helper.setPortPollResponse();
-          helper.checkIfIguanaOrCoindIsPresent.apply({ setPortPollResponseDS: setPortPollResponseDS });
-        }
-
-        if (Object.keys(this.getConf().coins).length === _index && cb) {
-          if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
-
-          this.checkBackEndConnectionStatus();
-
-          if (dev.isDev && dev.showSyncDebug && debugSyncInfo.text()) // debug info
-            angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-          setInterval(function() {
-            var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
-
-            if (debugSyncInfo.text()) {
-              if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
-              angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-            }
-          }, 1000);
-
-          cb();
-        }
-
-      }.bind(this), function (response) {
-        this.errorHandler(response, index);
-
-        if (response.statusText === 'error' && !this.isIguana)
-          this.isProxy = false;
-        if (dev.showConsoleMessages && dev.isDev && response.responseText && response.responseText.indexOf('Bad Gateway') === -1) {
-          console.log('is proxy server running?');
-        }
-        else if (!response.statusCode){
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('server is busy, check back later');
-          }
-        }
-
-        if (response.responseText && response.responseText.indexOf('Verifying blocks...') > -1){
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log(index + ' is verifying blocks...');
-          }
-        }
-
-        if (response.responseText){
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('coind response: ' + response.responseText);
-          }
-        }
-
-        if (Object.keys(this.getConf().coins).length - 1 === _index) {
-          helper.setPortPollResponse();
-          helper.checkIfIguanaOrCoindIsPresent();
-        }
-
-        if (Object.keys(this.getConf().coins).length - 1 === _index && cb) {
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('port poll done ' + _index);
-          }
-
-          this.checkBackEndConnectionStatus();
-
-          if (dev.isDev && dev.showSyncDebug) { // debug info
-            angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-          }
-
-          setInterval(function() {
-            //TODO change this function to angular
-            var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
-              transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
-            angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-          }, 1000);
-
-          cb();
-        }
-        _index++;
-
-      }.bind(this));
+        cb();
+      }
+      _index++;
     }
 
     return result;
@@ -399,7 +424,7 @@ angular.module('IguanaGUIApp.controllers')
 
   this.checkBackEndConnectionStatus = function() {
     var totalCoinsRunning = 0,
-        tempOutOfSync = $('#temp-out-of-sync'), //TODO change to angular
+        tempOutOfSync = $('#temp-out-of-sync'), //TODO change to angular broadcast
         hiddenClassName = 'hidden';
 
     for (var key in coinsInfo) {
@@ -420,11 +445,11 @@ angular.module('IguanaGUIApp.controllers')
         (
           coinsInfo[index].RT === false &&
           coinsInfo[index].connection === true &&
-          this.isIguana && $localStorage['iguana-' + index + '-passphrase']
+          $localStorage['isIguana'] && $localStorage['iguana-' + index + '-passphrase']
         ) ||
         (
           coinsInfo[index].RT === false &&
-          !this.isIguana && $localStorage['iguana-' + index + '-passphrase'] &&
+          !$localStorage['isIguana'] && $localStorage['iguana-' + index + '-passphrase'] &&
           $localStorage['iguana-' + index + '-passphrase'].logged === 'yes'
         )
       ) {
@@ -527,12 +552,12 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.walletLogin = function(passphrase, timeout, coin, cb) {
-    if (!this.isIguana) {
+    if (!$localStorage['isIguana']) {
       timeout = settings.defaultWalletUnlockPeriod;
     }
 
     if (!timeout) {
-      timeout = this.isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind;
+      timeout = $localStorage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind;
     }
 
     var result = false,
@@ -544,7 +569,7 @@ angular.module('IguanaGUIApp.controllers')
         postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
         postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-    $http.post(this.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
+    $http.post($localStorage['isIguana'] ? defaultIguanaServerUrl : fullUrl, postData, {
       headers: postAuthHeaders
     })
     .then(function(response) {
@@ -619,17 +644,17 @@ angular.module('IguanaGUIApp.controllers')
     };
 
     // coin port switch hook
-    if (coin && conf.coins[coin].coindPort && !this.isIguana) {
+    if (coin && conf.coins[coin].coindPort && !$localStorage['isIguana']) {
       conf.server.port = conf.coins[coin].coindPort;
 
       return conf;
     }
 
-    if (this.activeCoin && !discardCoinSpecificPort) {
-      conf.server.port = conf.coins[this.activeCoin].portp2p;
+    if ($localStorage['activeCoin'] && !discardCoinSpecificPort) {
+      conf.server.port = conf.coins[$localStorage['activeCoin']].portp2p;
 
-      if (!this.isIguana)
-        if (conf.coins[this.activeCoin].coindPort) conf.server.port = conf.coins[this.activeCoin].coindPort;
+      if (!$localStorage['isIguana'])
+        if (conf.coins[$localStorage['activeCoin']].coindPort) conf.server.port = conf.coins[$localStorage['activeCoin']].coindPort;
     } else {
       conf.server.port = conf.server.iguanaPort;
     }
@@ -640,7 +665,7 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.getAccountAddress = function(coin, account) {
-    if (dev.coinAccountsDev && !this.isIguana) {
+    if (dev.coinAccountsDev && !$localStorage['isIguana']) {
       if (dev.coinAccountsDev.coind[coin]) {
         account = dev.coinAccountsDev.coind[coin];
       }
@@ -814,13 +839,13 @@ angular.module('IguanaGUIApp.controllers')
 
   this.getBasicAuthHeaderObj = function(conf, coin) {
     if (conf) {
-      return this.isIguana ? { 'Content-Type': 'application/x-www-form-urlencoded' } : { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
-    } else if (this.activeCoin || coin) {
-      return this.isIguana ?
+      return $localStorage['isIguana'] ? { 'Content-Type': 'application/x-www-form-urlencoded' } : { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+    } else if ($localStorage['activeCoin'] || coin) {
+      return $localStorage['isIguana'] ?
         { 'Content-Type': 'application/x-www-form-urlencoded' } :
         {
-          'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : this.activeCoin].user + ':' +
-                            this.getConf().coins[coin ? coin : this.activeCoin].pass)
+          'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $localStorage['activeCoin']].user + ':' +
+                            this.getConf().coins[coin ? coin : $localStorage['activeCoin']].pass)
         };
     }
 
@@ -828,7 +853,7 @@ angular.module('IguanaGUIApp.controllers')
   };
 
   this.getBitcoinRPCPayloadObj = function(method, params, coin) {
-    if (this.isIguana) {
+    if ($localStorage['isIguana']) {
       return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
     } else {
       return '{ \"agent\": \"bitcoinrpc\",' +
@@ -838,14 +863,14 @@ angular.module('IguanaGUIApp.controllers')
 
   this.getFullApiRoute = function(method, conf, coin) {
     if (conf) {
-      return this.isIguana ? (this.getConf().server.protocol +
+      return $localStorage['isIguana'] ? (this.getConf().server.protocol +
         this.getConf().server.ip + ':' +
         conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
         this.getConf().server.ip + ':' +
         (conf.coindPort ? conf.coindPort : conf.portp2p));
     }
     else {
-      return this.isIguana ? (this.getConf().server.protocol +
+      return $localStorage['isIguana'] ? (this.getConf().server.protocol +
         this.getConf().server.ip + ':' +
         this.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
         this.getConf().server.ip + ':' +
@@ -1035,7 +1060,7 @@ angular.module('IguanaGUIApp.controllers')
     var result = false;
 
     // dev account lookup override
-    if (dev.coinAccountsDev && !this.isIguana) {
+    if (dev.coinAccountsDev && !$localStorage['isIguana']) {
       if (dev.coinAccountsDev.coind[coin]) {
         account = dev.coinAccountsDev.coind[coin];
       }
@@ -1096,7 +1121,7 @@ angular.module('IguanaGUIApp.controllers')
     var result = false;
 
     // dev account lookup override
-    if (dev.coinAccountsDev && !this.isIguana) {
+    if (dev.coinAccountsDev && !$localStorage['isIguana']) {
       if (dev.coinAccountsDev.coind[coin]) {
         account = dev.coinAccountsDev.coind[coin];
       }
@@ -1104,7 +1129,7 @@ angular.module('IguanaGUIApp.controllers')
 
     var fullUrl = this.getFullApiRoute('getbalance', null, coin),
         // avoid using account names in bitcoindarkd
-        postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !this.isIguana ? null : '\"' + account + '\"', coin),
+        postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !$localStorage['isIguana'] ? null : '\"' + account + '\"', coin),
         postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
     $http.post(fullUrl, postData, {

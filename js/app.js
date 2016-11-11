@@ -64,7 +64,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, helper, $timeout) {
+.run(function($rootScope, $location, $state, helper, $timeout, api) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
     // TODO: find a better way

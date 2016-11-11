@@ -10,7 +10,7 @@ angular.module('IguanaGUIApp.controllers')
       'helper',
       '$log',
       '$uibModal',
-      'Api',
+      'api',
       '$localStorage',
       '$timeout',
     function ($scope, $http, $state, helper, $log, $uibModal, Api, $localStorage, $timeout) {

@@ -21,7 +21,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
           secondsElapsedSinceLastAuth = Number(currentEpochTime) - Number($localStorage['iguana-auth'].timestamp / 1000);
 
-      if (secondsElapsedSinceLastAuth > (isIguana ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
+      if (secondsElapsedSinceLastAuth > ($localStorage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         if (!returnVal) {
           //if (!loginForm.width()) this.openPage('login'); // redirect to login when session is expired
         } else {
@@ -34,7 +34,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   };
 
   this.logout = function(noRedirect, cb) {
-    if (isIguana) {
+    if ($localStorage['isIguana']) {
       apiProto.prototype.walletLock();
       $localStorage['iguana-auth'] = { 'timestamp' : minEpochTimestamp };
       $state.go('login');
@@ -240,8 +240,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     localstorage.setVal('iguana-port-poll', {
       'updatedAt': Date.now(),
       'info': coinsInfoJSON,
-      'isIguana': isIguana,
-      'proxy': isProxy,
+      'isIguana': $localStorage['isIguana'],
+      'proxy': $localStorage['isProxy'],
       'debugHTML': JSON.stringify($('#debug-sync-info').html())
     });
 
@@ -255,7 +255,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         coinsInfo[this.setPortPollResponseDS.info[i].coin] = [];
         coinsInfo[this.setPortPollResponseDS.info[i].coin].RT = this.setPortPollResponseDS.info[i].RT;
         coinsInfo[this.setPortPollResponseDS.info[i].coin].connection = this.setPortPollResponseDS.info[i].connection;
-        isIguana = this.setPortPollResponseDS.isIguana;
+        $localStorage['isIguana'] = this.setPortPollResponseDS.isIguana;
       }
 
       if (dev.isDev && dev.showSyncDebug) { // debug info
@@ -294,7 +294,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
       }
 
-      if (this.setPortPollResponseDS && ((!isIguana && !numPortsResponding) ||
+      if (this.setPortPollResponseDS && ((!$localStorage['isIguana'] && !numPortsResponding) ||
           (this.setPortPollResponseDS.isIguana === false && this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
           (this.setPortPollResponseDS.isIguana === false && this.setPortPollResponseDS.proxy === false))) {
         this.prepNoDaemonModal();
@@ -322,7 +322,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
         var messageModal = $('#messageModal');
 
-        iguanaNullReturnCount = 0; //ToDo fixed in the helper service
+        $localStorage['activeCoin'] = 0; //ToDo fixed in the helper service
         messageModal.removeClass('in');
         setTimeout(function() {
           messageModal.hide();
@@ -497,8 +497,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
         $state.current.name === 'create-account'
       ) {
         if (
-          (isIguana && coinsInfo[key].iguana !== false) ||
-          (!isIguana && coinsInfo[key].connection === true)
+          ($localStorage['isIguana'] && coinsInfo[key].iguana !== false) ||
+          (!$localStorage['isIguana'] && coinsInfo[key].connection === true)
         ) {
           addCoinArray.push({
             'id': key.toUpperCase(),
