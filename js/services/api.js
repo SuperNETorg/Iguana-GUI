@@ -12,7 +12,9 @@ angular.module('IguanaGUIApp.controllers')
     '$timeout',
     '$interval',
     '$q',
-    function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q) {
+    'app_variable',
+    '$rootScope',
+    function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $rootScope) {
       this.coinsInfo = [];
       this.isRT = false;
       $localStorage['isProxy'] = true;
@@ -279,6 +281,9 @@ angular.module('IguanaGUIApp.controllers')
               }
             }, 1000);
 
+            app_variable.coinsInfo = this.coinsInfo;
+            console.log(app_variable);
+            $rootScope.$broadcast('getCoin');
             cb(this.coinsInfo);
           } else {
             var setPortPollResponseDS = $localStorage['iguana-port-poll'];

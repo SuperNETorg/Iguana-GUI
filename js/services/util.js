@@ -259,9 +259,9 @@ angular
       };
 
       this.timeAgo = function(element) {
-        debugger;
+        //debugger;
         $timeout(function () {
-          debugger;
+          //debugger;
           if($(element).length){
             var timeAgo = $(element),
               threshold = settings.thresholdTimeAgo,

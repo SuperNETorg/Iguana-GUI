@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('settingsController', ['$scope', '$http', '$state', 'helper',
-  function($scope, $http, $state, helper) {
+.controller('settingsController', ['$scope', '$http', '$state', 'helper', 'util',
+  function($scope, $http, $state, helper, util) {
     $scope.helper = helper;
+    $scope.util = util;
     $scope.$state = $state;
     $scope.enabled = helper.checkSession(true);
 
@@ -48,11 +49,11 @@ angular.module('IguanaGUIApp.controllers')
     //       due to possibility of ban for abuse
 
     $scope.currencyArr = currencyArr;
-    $scope.activeCurrency = util.getCurrency() ? util.getCurrency().name : null || settings.defaultCurrency;
+    $scope.activeCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
 
     $scope.setCurrency = function(item) {
       $scope.activeCurrency = item.shortName;
-      util.setCurrency($scope.activeCurrency);
-      util.updateRates(null, null, null, true);
+      helper.setCurrency($scope.activeCurrency);
+      helper.updateRates(null, null, null, true);
     }
 }]);

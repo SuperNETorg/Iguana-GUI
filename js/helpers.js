@@ -1,6 +1,6 @@
 'use strict';
 
-var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $localStorage, app_variable, $document) {
+var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $localStorage, app_variable, api, $document) {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
       pasteTextFromClipboard = false,// TODO useless
@@ -549,6 +549,8 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
 
   /* TODO: move to rates service */
   this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
+    var coinsInfo = app_variable.coinsInfo;
+
     var apiExternalRate,
         allDashboardCoins = '',
         totalCoins = 0,

@@ -1,15 +1,22 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable',
-  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable) {
+.controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator',
+  '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable', 'helper', '$rootScope',
+  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable, helper, $rootScope) {
     var isIguana = $localStorage['isIguana'],
-        coinsInfo = app_variable['coinsInfo'];
+        coinsInfo = [];
+
+    $rootScope.$on('getCoin', function ($ev, coins) {
+      coinsInfo = app_variable.coinsInfo;
+      console.log(coinsInfo);
+      constructAccountCoinRepeater();
+    });
 
     $scope.util = util;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
-    $scope.enabled = true; //util.checkSession(true);
+    $scope.enabled = helper.checkSession(true);
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -74,13 +81,13 @@ angular.module('IguanaGUIApp.controllers')
           });
     };
 
-    var defaultCurrency = util.getCurrency() ? util.getCurrency().name : null || settings.defaultCurrency,
+    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $('body').addClass('dashboard-page');
 
     $(document).ready(function() {
-      //util.initTopNavBar();
+      helper.initTopNavBar();
 
       $('body').scroll(function(e){
         if ($(window).width() < 768) {
@@ -96,6 +103,13 @@ angular.module('IguanaGUIApp.controllers')
 
     $(window).resize(function() {
       applyDashboardResizeFix();
+    });
+
+    $scope.$on('$viewContentLoaded', function(event) {
+      if (Object.keys(app_variable.coinsInfo).length) {
+        coinsInfo = app_variable.coinsInfo;
+        constructAccountCoinRepeater(true);
+      }
     });
 
     // TODO: merge all dashboard data into a single object for caching
@@ -117,8 +131,6 @@ angular.module('IguanaGUIApp.controllers')
         _sideBarCoins = {},
         coinsSelectedByUser = [],
         dashboardUpdateTimer;
-
-    constructAccountCoinRepeater(true);
 
     $scope.setActiveCoin = function(item) {
       $localStorage['iguana-active-coin'] = { id: item.id };
@@ -155,6 +167,8 @@ angular.module('IguanaGUIApp.controllers')
 
       coinsSelectedByUser = [];
 
+      console.log($rootScope.coinsInfo);
+
       for (var key in coinsInfo) {
         if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
           coinsSelectedByUser[index] = key;
@@ -186,7 +200,7 @@ angular.module('IguanaGUIApp.controllers')
 
     // construct account coins array
     function constructAccountCoinRepeaterCB(balance, coin) {
-      var coinLocalRate = util.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
+      var coinLocalRate = helper.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
           currencyCalculatedValue = balance * coinLocalRate,
           coinBalanceVal = balance || 0,
           coinBalanceCurrencyVal = currencyCalculatedValue || 0;
@@ -239,7 +253,7 @@ angular.module('IguanaGUIApp.controllers')
           _totalBalance = 0;
 
       for (var key in sidebarCoins) {
-        var coinLocalRate = util.updateRates(key, defaultCurrency, true) || 0;
+        var coinLocalRate = helper.updateRates(key, defaultCurrency, true) || 0;
         _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
       }
 
@@ -337,7 +351,6 @@ angular.module('IguanaGUIApp.controllers')
         }
       }
 
-      $scope.$apply(); // manually trigger digest
       applyDashboardResizeFix();
     }
 
@@ -373,8 +386,8 @@ angular.module('IguanaGUIApp.controllers')
     function updateDashboardView(timeout) {
       dashboardUpdateTimer = $interval(function() {
         //console.clear();
-        util.checkSession();
-        util.updateRates(null, null, null, true);
+        helper.checkSession();
+        helper.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
 
         if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
@@ -395,11 +408,11 @@ angular.module('IguanaGUIApp.controllers')
         copyToClipboardNotSupported: false
       };
 
-      if (!initOnly) util.toggleModalWindow('add-coin-create-wallet-form', 300);
+      if (!initOnly) helper.toggleModalWindow('add-coin-create-wallet-form', 300);
     }
 
     $scope.copyPassphrase = function() {
-      $scope.addCoinCreateAccount.copyToClipboardNotSupported = util.addCopyToClipboardFromElement('.generated-passhprase', util.lang('LOGIN.PASSPHRASE'));
+      $scope.addCoinCreateAccount.copyToClipboardNotSupported = helper.addCopyToClipboardFromElement('.generated-passhprase', util.lang('LOGIN.PASSPHRASE'));
     }
 
     $scope.encryptCoindWallet = function() {
@@ -409,33 +422,33 @@ angular.module('IguanaGUIApp.controllers')
     function encryptCoindWallet(modalClassName) {
       var addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form';
 
-      var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
+      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
 
       if ($scope.addCoinCreateAccount.passphrase === $scope.addCoinCreateAccount.passphraseVerify) {
         var walletEncryptResponse = api.walletEncrypt($scope.addCoinCreateAccount, coinsSelectedToAdd[0]);
 
         if (walletEncryptResponse !== -15) {
-          util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          util.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + util.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
+          helper.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + util.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
         } else {
-          util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          util.prepMessageModal(util.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
+          helper.prepMessageModal(util.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
         }
       } else {
-        util.prepMessageModal(util.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        helper.prepMessageModal(util.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 
     $scope.addCoinNext = function() {
       if (!isIguana) {
-        util.toggleModalWindow('add-new-coin-form', 300);
-        var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
+        helper.toggleModalWindow('add-new-coin-form', 300);
+        var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
 
         // dev only
         if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]]) $scope.passphrase = dev.coinPW.coind[coinsSelectedToAdd[0]];
         if (dev.isDev && isIguana && dev.coinPW.iguana) $scope.passphrase = dev.coinPW.iguana;
       } else {
-        coinsSelectedToAdd = util.reindexAssocArray(coinsSelectedToAdd);
+        coinsSelectedToAdd = helper.reindexAssocArray(coinsSelectedToAdd);
 
         for (var i=0; i < coinsSelectedToAdd.length; i++) {
           if (coinsSelectedToAdd[i]) {
@@ -467,9 +480,9 @@ angular.module('IguanaGUIApp.controllers')
           failedCoinsOutput = failedCoinsOutput + addCoinResponses[i].coin.toUpperCase() + ', ';
         }
       }
-      addedCoinsOutput = util.trimComma(addedCoinsOutput);
-      failedCoinsOutput = util.trimComma(failedCoinsOutput);
+      addedCoinsOutput = helper.trimComma(addedCoinsOutput);
+      failedCoinsOutput = helper.trimComma(failedCoinsOutput);
 
-      util.prepMessageModal(addedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
+      helper.prepMessageModal(addedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
     }
 }]);
