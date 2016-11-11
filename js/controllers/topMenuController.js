@@ -3,9 +3,8 @@
 angular.module('IguanaGUIApp.controllers')
 .controller('topMenuController', ['$scope', '$http', '$state', 'util',
   function($scope, $http, $state, util) {
-  debugger
+  //debugger
     $scope.$state = $state;
-    $scope.helper = helper;
     $scope.util = util;
-    $scope.enabled = helper.checkSession(true);
+    $scope.enabled = util.checkSession(true);
 }]);

@@ -48,6 +48,9 @@
   .app-container-inner {
     height: 100%;
   }
+  .invisible {
+    opacity: 0;
+  }
 
   /* preload flag svgs */
   body:after {

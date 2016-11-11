@@ -17,12 +17,6 @@
 .account-coins-repeater .item.disabled {
   cursor: default;
 }
-.account-coins-repeater .item.loading .loader {
-  display: block;
-}
-.account-coins-repeater .item.loading .balance {
-  opacity: 0;
-}
 .account-coins-repeater .item .loader {
   position: absolute;
   right: 38px;
@@ -30,7 +24,7 @@
   width: 50px;
   height: 50px;
   z-index: 10;
-  display: none;
+  display: block;
   transform: scale(0.8);
 }
 .account-coins-repeater .item .loader circle {

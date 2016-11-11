@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers')
-.controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage', '$uibModal', 'Api',
-  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, Api) {
-    $scope.util = util;
+.controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator', '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable',
+  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable) {
+    var isIguana = $localStorage['isIguana'],
+        coinsInfo = app_variable['coinsInfo'];
+
     $scope.util = util;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
-    $scope.enabled = util.checkSession(true);
+    $scope.enabled = true; //util.checkSession(true);
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -78,7 +80,7 @@ angular.module('IguanaGUIApp.controllers')
     $('body').addClass('dashboard-page');
 
     $(document).ready(function() {
-      util.initTopNavBar();
+      //util.initTopNavBar();
 
       $('body').scroll(function(e){
         if ($(window).width() < 768) {
@@ -101,7 +103,7 @@ angular.module('IguanaGUIApp.controllers')
     $scope.totalBalance = 0;
     $scope.sideBarCoins;
     $scope.txUnit = {
-      'loading': true,
+      loading: true,
       activeCoinBalance: 0,
       activeCoinBalanceCurrency: 0,
       transactions: []

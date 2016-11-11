@@ -89,7 +89,6 @@ app.controller('receiveCoinModalController', [
       }, function(reason) {
         console.log('request failed: ' + reason);
       });
-      console.log(coinAccountAddress);
 
       $scope.receiveCoin.coinName = _activeCoin.toUpperCase();
       $scope.receiveCoin.currencyName = defaultCurrency.toUpperCase();

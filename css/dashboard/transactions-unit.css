@@ -8,15 +8,8 @@
   border-radius: 4px;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 }
-.transactions-unit.loading .top-bar .loader {
-  display: block;
-}
-.transactions-unit.loading .top-bar .active-coin-balance,
-.transactions-unit.loading .top-bar .active-coin-balance-currency {
-  opacity: 0;
-}
 .transactions-unit .top-bar .loader {
-  display: none;
+  display: block;
   position: absolute;
   left: -10px;
   height: 95px;
@@ -26,7 +19,7 @@
 .transactions-unit .top-bar .loader circle {
   stroke-width: 3px;
 }
-.transactions-unit.loading .top-bar .loader .path4 {
+.transactions-unit .top-bar .loader .path4 {
   stroke: #FFF;
 }
 .transactions-unit .top-bar {

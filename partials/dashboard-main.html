@@ -12,15 +12,15 @@
   <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
     <div class="row">
       <div class="account-coins-repeater">
-        <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index, 'loading': item.loading }" ng-repeat="item in sideBarCoins track by item.id | orderBy: 'id'">
-          <div ng-include="'partials/loader.html'"></div>
+        <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index }" ng-repeat="item in sideBarCoins track by item.id | orderBy: 'id'">
+          <spinner visibility="item.loading"></spinner>
           <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
           <div class="clickable-area" ng-click="activeCoin !== item.id ? setActiveCoin(item) : null">
             <div class="coin">
               <i class="icon cc {{ item.coinIdUc }}-alt"></i>
               <div class="name">{{ item.name }}</div>
             </div>
-            <div class="balance">
+            <div class="balance" ng-class="{ 'invisible': item.loading }">
               <div class="coin-value"><span class="val">{{ item.coinValue | decimalPlacesFormat:'coin' }}</span> {{ item.coinIdUc }}</div>
               <div class="currency-value"><span class="val">{{ item.currencyValue | decimalPlacesFormat:'currency' }}</span> {{ item.currencyName }}</div>
             </div>
@@ -30,16 +30,15 @@
       <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ util.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET') }}</button>
     </div>
   </aside>
-  <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading"
-    ng-class="{ 'loading': txUnit.loading }">
+  <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right">
     <div class="row">
       <div class="top-bar unselectable">
-        <div ng-include="'partials/loader.html'"></div>
-        <div class="active-coin-balance">
+        <spinner visibility="txUnit.loading"></spinner>
+        <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
           <span class="value">{{ (txUnit.activeCoinBalance || 0) | decimalPlacesFormat:'coin' }}</span>
           <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
         </div>
-        <div class="active-coin-balance-currency">
+        <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
           <span class="value">{{ (txUnit.activeCoinBalanceCurrency || 0) | decimalPlacesFormat:'currency' }}</span>
           <span class="currency">{{ currency }}</span>
         </div>
@@ -56,12 +55,9 @@
       <div class="transactions-list">
         <div class="title unselectable">{{ util.lang('DASHBOARD.HISTORY') }}</div>
         <div class="transactions-list-repeater">
-          <div ng-include="'partials/loader.html'" ng-if="txUnit.loading"></div>
-          <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">
-            {{ util.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}
-          </div>
-          <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
-            ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
+          <spinner visibility="txUnit.loading"></spinner>
+          <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ util.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}</div>
+          <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
             <div class="status unselectable">{{ item.status }}</div>
             <div class="amount unselectable" ng-class="{ 'smaller': item.switchStyle }">
               <span class="in-out {{ item.inOut }}"></span>
