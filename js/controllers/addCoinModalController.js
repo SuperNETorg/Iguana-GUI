@@ -48,8 +48,8 @@ app.controller('addCoinModalController',
           }
         });
 
-        if (!isIguana) {
-          $scope.coinsSelectedToAdd.coins = []
+        if (!$localStorage['isIguana']) {
+          $scope.coinsSelectedToAdd = []
         }
         if (!isDisable && $scope.coinsSelectedToAdd.coins.indexOf(item.coinId) == -1) {
           $scope.coinsSelectedToAdd.coins.push(item.coinId);
