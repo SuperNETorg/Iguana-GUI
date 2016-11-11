@@ -1,5 +1,6 @@
-var app = angular.module('IguanaGUIApp.controllers');
+'use strict';
 
+var app = angular.module('IguanaGUIApp.controllers');
 app.controller('sendCoinModalController', [
   '$scope',
   '$uibModalInstance',

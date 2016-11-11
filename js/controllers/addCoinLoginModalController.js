@@ -9,7 +9,6 @@ app.controller('addCoinLoginModalController', [
   'Api',
   '$uibModal',
   'receivedObject',
-
   function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal, receivedObject) {
     $scope.isIguana = $localStorage['isIguana'];
     $scope.open = open;

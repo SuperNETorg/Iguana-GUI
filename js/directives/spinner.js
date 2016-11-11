@@ -1,3 +1,5 @@
+'use strict';
+
 var app = angular.module('IguanaGUIApp')
 app.directive('spinner', function() {
   return {
