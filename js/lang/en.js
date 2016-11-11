@@ -6,6 +6,18 @@
 
 var lang = {
   'EN': {
+    'IGUANA': {
+      'APP_TITLE': 'Iguana'
+    },
+    'PAGE' : {
+      'LOGIN': 'Login',
+      'SIGNUP': 'Create account',
+      'VERIFY': 'Verify passphrase',
+      'DASHBOARD': 'Dashboard',
+      'SETTINGS': 'Settings',
+      'PAYMENTS': 'Payments',
+      'CONTACTS': 'Contacts'
+    },
     'LOGIN': {
       'WELCOME': 'Welcome to Iguana!',
       'SELECT_A_WALLET': 'Select a wallet',
@@ -46,11 +58,6 @@ var lang = {
       'A_WALLET': 'a wallet'
     },
     'DASHBOARD': {
-      'IGUANA': 'Iguana',
-      'DASHBOARD': 'Dashboard',
-      'SETTINGS': 'Settings',
-      'PAYMENTS': 'Payments',
-      'CONTACTS': 'Contacts',
       'TOTAL_BALANCE': 'Total balance:',
       'LOGOUT': 'Log out',
       'ADD_COIN': 'Add coin',

@@ -9,16 +9,26 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
-      controller: 'loginController'
+      controller: 'loginController',
+      data: {
+        pageTitle: 'PAGE.LOGIN'
+      }
     })
     .state('signup', {
       templateUrl: 'partials/signup.html',
       controller: 'signupController'
     })
     .state('signup.step1', {
-      url: '/signup'
+      url: '/signup',
+      data: {
+        pageTitle: 'PAGE.CREATE'
+      }
     })
-    .state('signup.step2', {})
+    .state('signup.step2', {
+      data: {
+        pageTitle: 'PAGE.VERIFY'
+      }
+    })
     .state('dashboard', {
       views: {
         '@': {
@@ -31,6 +41,9 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     })
     .state('dashboard.main', {
       url: '/dashboard',
+      data: {
+        pageTitle: 'PAGE.DASHBOARD'
+      },
       views : {
         'top@dashboard': {
           templateUrl: 'partials/dashboard-top-menu.html',
@@ -48,6 +61,9 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     })
     .state('dashboard.settings', {
       url: '/settings',
+      data: {
+        pageTitle: 'PAGE.SETTINGS'
+      },
       views : {
         'top@dashboard': {
           templateUrl: 'partials/dashboard-top-menu.html',
