@@ -1,6 +1,6 @@
 'use strict';
 
-var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $localStorage, $document) {
+var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interval, $state, $localStorage, app_variable, $document) {
   var defaultSessionLifetime = settings.defaultSessionLifetime,
       portPollUpdateTimeout = settings.portPollUpdateTimeout,
       pasteTextFromClipboard = false,// TODO useless
@@ -41,7 +41,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     } else {
       coindWalletLockCount = 0;
 
-      for (var key in coinsInfo) {
+      for (var key in app_variable['coinsInfo']) {
         if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
           coindWalletLockCount++;
         }
@@ -58,7 +58,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }
 
   this.logoutCoind = function(cb) {
-    for (var key in coinsInfo) {
+    for (var key in app_variable['coinsInfo']) {
       if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
         apiProto.prototype.walletLock(key, this.logoutCoindCB(key));
       }
@@ -484,7 +484,7 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
   }.bind(this);
 
   // construct coins to add array
-  this.constructCoinRepeater = function() {
+  this.constructCoinRepeater = function(coinsInfo) {
     var index = 0,
         addCoinArray = new Array;
 

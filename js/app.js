@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap'])
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', createHelpers])
+.value('app_variable', {})
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', 'app_variable', createHelpers])
 angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -81,5 +82,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     }
   });
 
-  api.testConnection(); // switch with Api service once it's finished
+  api.testConnection(function (coins) {
+    $rootScope.$broadcast('getCoin', coins);
+  }); // switch with Api service once it's finished
 });

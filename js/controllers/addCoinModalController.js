@@ -8,13 +8,15 @@ app.controller('addCoinModalController',
     'helper',
     'receivedObject',
     '$localStorage',
-    function ($scope, $uibModalInstance, helper, coinsSelectedToAdd, $localStorage) {
-      $scope.isIguana = isIguana;
+    '$rootScope',
+    'receivedObject',
+    function ($scope, $uibModalInstance, helper, coinsSelectedToAdd, $localStorage, $rootScope,receivedObject) {
+      $scope.isIguana = $localStorage['isIguana'];
       $scope.open = open;
       $scope.close = close;
       $scope.next = next;
       $scope.alouNext = false;
-      $scope.availableCoins = helper.constructCoinRepeater();
+      $scope.availableCoins = receivedObject.coins;
       $scope.helper = helper;
       $scope.clickOnCoin = clickOnCoin;
       $scope.coinSearchModel = undefined;
@@ -24,7 +26,7 @@ app.controller('addCoinModalController',
         var coinDomElement = angular.element($event.currentTarget),
             isDisable = false;
 
-        $scope.coinsSelectedToAdd.filter(function (el, id) {
+        $scope.coinsSelectedToAdd.coins.filter(function (el, id) {
           if (el == item.coinId) {
             $scope.coinsSelectedToAdd.splice(id, 1);
             coinDomElement.removeClass('active');
