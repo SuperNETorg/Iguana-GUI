@@ -47,7 +47,6 @@ angular.module('IguanaGUIApp.controllers')
                   };
                 },
                 // {}
-
               }
             });
             modalInstance.result.then(function(receivedObject) {

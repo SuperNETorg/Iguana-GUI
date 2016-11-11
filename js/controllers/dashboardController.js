@@ -106,7 +106,7 @@ angular.module('IguanaGUIApp.controllers')
     });
 
     $scope.$on('$viewContentLoaded', function(event) {
-      if (Object.keys(app_variable.coinsInfo).length) {
+      if (app_variable.coinsInfo && Object.keys(app_variable.coinsInfo).length) {
         coinsInfo = app_variable.coinsInfo;
         constructAccountCoinRepeater(true);
       }

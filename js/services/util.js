@@ -13,10 +13,9 @@ angular
     '$q',
     '$document',
     '$state',
-    function ($localStorage, $uibModal, $rootScope, clipboard,
-              $timeout, $interval, $http, $q, $document, $state) {
-
+    function($localStorage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state) {
       var self = this;
+
       this.isIguana = $localStorage['isIguana'];
       this.coinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
       this.defaultSessionLifetime = 0;
@@ -26,7 +25,7 @@ angular
       this.coindWalletLockCount = 0;
       this.minEpochTimestamp = 1471620867; // Jan 01 1970
 
-      this.lang = function (langID) {
+      this.lang = function(langID) {
         var langIDComponents = langID.split('.');
 
         if (lang && langIDComponents && lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]])
@@ -35,9 +34,9 @@ angular
         return '{{ ' + langID + ' }}';
       };
 
-      this.checkSession = function () {
-        var currentEpochTime = new Date(Date.now()) / 1000; // calc difference in seconds between current time and session timestamp
-        var secondsElapsedSinceLastAuth =
+      this.checkSession = function() {
+        var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
+          secondsElapsedSinceLastAuth =
           Number(currentEpochTime) - Number(
             ($localStorage['iguana-auth'] ? $localStorage['iguana-auth'].timestamp : 1000) / 1000);
 
@@ -50,7 +49,7 @@ angular
         }
       };
 
-      //TODO move to api service
+      // TODO move to api service
       this.logout = function(noRedirect, cb) {
         if ($localStorage['isIguana']) {
           apiProto.prototype.walletLock();
@@ -77,7 +76,7 @@ angular
       };
 
       //TODO move to api service
-      this.logoutCoind = function (cb) {
+      this.logoutCoind = function(cb) {
         if (coinsInfo != undefined)
           for (var key in coinsInfo) {
             if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
@@ -88,17 +87,17 @@ angular
       };
 
       //TODO move to api service
-      this.logoutCoindCB = function (key) {
+      this.logoutCoindCB = function(key) {
         this.coindWalletLockResults[key] = true;
-        $localStorage['iguana-' + key + '-passphrase'] = {'logged': 'no'};
+        $localStorage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
         if (Object.keys(this.coindWalletLockResults).length === this.coindWalletLockCount) {
-          $localStorage['iguana-auth'] = {'timestamp': this.minEpochTimestamp}; // Jan 01 1970
+          $localStorage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp }; // Jan 01 1970
           $state.go('login');
         }
       };
 
-      this.reindexAssocArray = function (array) {
+      this.reindexAssocArray = function(array) {
         var _array = [];
 
         for (var i = 0; array.length > i; i++) {
@@ -108,8 +107,7 @@ angular
         return _array;
       };
 
-      this.constructCoinRepeater = function (coinsInfo) {
-
+      this.constructCoinRepeater = function(coinsInfo) {
         var index = 0,
           addCoinArray = [];
 
@@ -150,11 +148,11 @@ angular
         return addCoinArray;
       };
 
-      this.addCopyToClipboardFromElement = function (element, elementDisplayName) {
+      this.addCopyToClipboardFromElement = function(element, elementDisplayName) {
         if (!this.isExecCopyFailed) {
           try {
             clipboard.copyText(element.html());
-            this.ngPrepMessageModal( //TODO
+            this.ngPrepMessageModal( // TODO
               elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
               'blue',
               true
@@ -166,7 +164,7 @@ angular
         }
       };
 
-      this.ngPrepMessageModal = function (message, color) {
+      this.ngPrepMessageModal = function(message, color) {
         $uibModal.open({
           animation: true,
           ariaLabelledBy: 'modal-title',
@@ -182,8 +180,8 @@ angular
         });
       };
 
-      this.setCurrency = function (currencyShortName) {
-        $localStorage['iguana-currency'] = {'name': currencyShortName};
+      this.setCurrency = function(currencyShortName) {
+        $localStorage['iguana-currency'] = { 'name': currencyShortName };
 
         if (coinsInfo != undefined)
           for (var key in coinsInfo) {
@@ -196,12 +194,12 @@ angular
           }
       };
 
-      this.getCurrency = function () {
+      this.getCurrency = function() {
         return $localStorage['iguana-currency'];
       };
 
-      //TODO ?????
-      this.getCursorPositionInputElement = function (element) {
+      // TODO ?????
+      this.getCursorPositionInputElement = function(element) {
         if (element.selectionStart) return element.selectionStart;
 
         else if (document.selection) {
@@ -220,7 +218,7 @@ angular
         return 0;
       };
 
-      this.trimComma = function (str) {
+      this.trimComma = function(str) {
         if (str[str.length - 1] === ' ') {
           str = str.replace(/, $/, '');
         }
@@ -245,7 +243,7 @@ angular
         if (format === 'HHMM') return hour + ':' + min;
       };
 
-      //TODO ?????
+      // TODO ?????
       this.ratesUpdateElapsedTime = function(coin) {
         if ($localStorage['iguana-rates-' + coin.toLowerCase()]) {
           var currentEpochTime = new Date(Date.now()) / 1000,
@@ -320,7 +318,7 @@ angular
         return secondsElapsed;
       };
 
-      //TODO ?????
+      // TODO ?????
       this.checkIfIguanaOrCoindIsPresent = function() {
         var numPortsResponding = 0;
 
@@ -367,7 +365,7 @@ angular
         }
       };
 
-      //TODO not completed
+      // TODO not completed
       this.prepNoDaemonModal = function() {
         this.ngPrepMessageModal(this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
           ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' +
@@ -380,7 +378,7 @@ angular
           'red', true);
       };
 
-      //TODO useless
+      // TODO useless
       this.getCurrentPage = function() { // obsolete, remove
         return this.toState;
       };
@@ -392,9 +390,7 @@ angular
         //  this ensures that users won't interact with any elements until connectivity problems are resolved
       };
 
-
-
-      //TODO: not handled all states!!!
+      // TODO: not handled all states!!!
       function checkUserIdentify(toState) {
         if (!$localStorage['iguana-auth']) {
           this.logout();
@@ -412,7 +408,6 @@ angular
       }
 
       $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-
         self['toState'] = toState;
         self['toParams'] = toParams;
         self['fromState'] = fromState;

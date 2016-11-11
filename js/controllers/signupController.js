@@ -11,8 +11,7 @@ angular.module('IguanaGUIApp.controllers')
   'api',
   '$rootScope',
   '$uibModal',
-  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope,$uibModal) {
-
+  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope, $uibModal) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -31,7 +30,6 @@ angular.module('IguanaGUIApp.controllers')
     initPage();
 
     $scope.selectWallet = function () {
-
       if($scope.availableCoins && $scope.availableCoins.length) {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -49,12 +47,10 @@ angular.module('IguanaGUIApp.controllers')
               };
             },
             // {}
-
           }
         });
 
         modalInstance.result.then(function(receivedObject) {
-
           var coinId,
             availableCoin;
 
