@@ -14,46 +14,7 @@ angular.module('IguanaGUIApp.controllers')
       '$localStorage',
       '$timeout',
       '$rootScope',
-    function ($scope, $http, $state, util, $log, $uibModal, Api, $localStorage, $timeout,$rootScope) {
-      $scope.util = util;
-      $scope.$state = $state;
-      $scope.isIguana = $localStorage['isIguana'];
-      $scope.$log = $log;
-      $scope.passphraseModel = '';
-      $scope.dev = dev;
-      $scope.coinsSelectedToAdd = [];
-      $scope.$modalInstance = {};
-      $scope.receivedObject = undefined;
-
-      $rootScope.$on('getCoin', function ($ev, coins) {
-        $scope.availableCoins = util.constructCoinRepeater(coins);
-      });
-
-      $scope.openAddCoinModal = function () {
-        if ($scope.availableCoins && $scope.availableCoins.length) {
-          var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            controller: 'addCoinModalController',
-            // templateUrl: '/partials/add-coin.html',
-            templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
-            appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
-            resolve: {
-              receivedObject: function () {
-                return {
-                  receivedObject:$scope.receivedObject,
-                  coins:$scope.availableCoins,
-                };
-              },
-              // {}
-
-            }
-          });
-          modalInstance.result.then(function(receivedObject) {
-            var coinId,
-      function ($scope, $http, $state, util, $log, $uibModal, Api, $localStorage, $timeout) {
-        $localStorage['iguana-login-active-coin'] = [];
+      function ($scope, $http, $state, util, $log, $uibModal, Api, $localStorage, $timeout,$rootScope) {
         $scope.util = util;
         $scope.$state = $state;
         $scope.isIguana = $localStorage['isIguana'];
@@ -63,88 +24,55 @@ angular.module('IguanaGUIApp.controllers')
         $scope.coinsSelectedToAdd = [];
         $scope.$modalInstance = {};
         $scope.receivedObject = undefined;
-        Api.testCoinPorts(function () {
-          debugger;
-          $scope.availableCoins = util.constructCoinRepeater();
+
+        $rootScope.$on('getCoin', function ($ev, coins) {
+          $scope.availableCoins = util.constructCoinRepeater(coins);
         });
+
         $scope.openAddCoinModal = function () {
-          var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            controller: 'addCoinLoginModalController',
-            //removable Iguana-GUI
-            templateUrl: '/Iguana-GUI/partials/add-coin.html',
-            appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
-          });
-          modalInstance.result.then(onDone);
-          function onDone() {
-            $scope.receivedObject = $localStorage['iguana-login-active-coin'];
-            var coinId,
-              availableCoin;
+          if ($scope.availableCoins && $scope.availableCoins.length) {
+            var modalInstance = $uibModal.open({
+              animation: true,
+              ariaLabelledBy: 'modal-title',
+              ariaDescribedBy: 'modal-body',
+              controller: 'addCoinModalController',
+              // templateUrl: '/partials/add-coin.html',
+              templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
+              appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
+              resolve: {
+                receivedObject: function () {
+                  return {
+                    receivedObject:$scope.receivedObject,
+                    coins:$scope.availableCoins,
+                  };
+                },
+                // {}
 
-            if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
-            $scope.coinsSelectedToAdd = [];
-            $scope.receivedObject = $localStorage['iguana-login-active-coin'];
+              }
+            });
+            modalInstance.result.then(function(receivedObject) {
+              var coinId,
+                availableCoin;
 
-            for (var i = 0; $scope.receivedObject.length > i; i++) {
-              coinId = $scope.receivedObject[i];
+              if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
+              $scope.coinsSelectedToAdd = [];
+              $scope.receivedObject = $localStorage['iguana-login-active-coin'];
 
-              for (var id in $scope.availableCoins) {
-                availableCoin = $scope.availableCoins[id];
+              for (var i = 0; $scope.receivedObject.length > i; i++) {
+                coinId = $scope.receivedObject[i];
 
-                if (availableCoin.coinId == coinId) {
-                  $scope.coinsSelectedToAdd.push(availableCoin);
+                for (var id in $scope.availableCoins) {
+                  availableCoin = $scope.availableCoins[id];
+
+                  if (availableCoin.coinId == coinId) {
+                    $scope.coinsSelectedToAdd.push(availableCoin);
+                  }
                 }
               }
-            for (var i = 0; $scope.receivedObject.length > i; i++) {
-              coinId = Object.keys($scope.receivedObject[i])[0];
-              for (var id in $scope.availableCoins) {
-                availableCoin = $scope.availableCoins[id];
-                if (availableCoin.coinId == coinId) {
-                  $scope.coinsSelectedToAdd.push(availableCoin);
-                  $scope.passphraseModel = $scope.receivedObject[i][coinId];
-                }
-              }
-            }
-          });
-        }
-      };
-
-      $scope.login = function () {
-        var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
-        Api.walletLock(coinsSelectedToAdd[0].coinId);
-        Api.walletLogin(
-          $scope.passphraseModel,
-          settings.defaultSessionLifetime,
-          coinsSelectedToAdd[0].coinId,
-          walletLoginThen
-        );
-
-        function walletLoginThen(walletLogin) {
-          if (walletLogin === -14 || walletLogin === false) {
-            util.ngPrepMessageModal(
-              util.lang('MESSAGE.WRONG_PASSPHRASE'),
-              'red',
-              true);
-          } else if (walletLogin === -15) {
-            util.ngPrepMessageModal(
-              util.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
-              'red',
-              true
-            );
-          } else {
-            $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
-            $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
-            $timeout(function() {
-              $state.go('dashboard.main');
-            }, 250);
-          }
-        }
-      };
-    }]);
+            });
           }
         };
+
         $scope.login = function () {
           var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
           Api.walletLock(coinsSelectedToAdd[0].coinId);
@@ -154,6 +82,7 @@ angular.module('IguanaGUIApp.controllers')
             coinsSelectedToAdd[0].coinId,
             walletLoginThen
           );
+
           function walletLoginThen(walletLogin) {
             if (walletLogin === -14 || walletLogin === false) {
               util.ngPrepMessageModal(
@@ -167,13 +96,12 @@ angular.module('IguanaGUIApp.controllers')
                 true
               );
             } else {
-              $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = {'logged': 'yes'};
-              $localStorage['iguana-auth'] = {'timestamp': Date.now()};
-              $timeout(function () {
+              $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
+              $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
+              $timeout(function() {
                 $state.go('dashboard.main');
               }, 250);
             }
           }
         };
-        // }, function (dd) { debugger});
       }]);

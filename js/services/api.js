@@ -6,12 +6,13 @@ angular.module('IguanaGUIApp.controllers')
   [
     '$localStorage',
     'util',
+    'helper',
     '$http',
     '$state',
     '$timeout',
     '$interval',
     '$q',
-    function ($localStorage, util, $http, $state, $timeout, $interval, $q) {
+    function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q) {
       this.coinsInfo = [];
       this.isRT = false;
       $localStorage['isProxy'] = true;
@@ -24,7 +25,7 @@ angular.module('IguanaGUIApp.controllers')
             0;
         var index = 0;
 
-        util.getPortPollResponse.apply({
+        helper.getPortPollResponse.apply({
           setPortPollResponseDS: setPortPollResponseDS
         }); // TODO change this function to angular
 

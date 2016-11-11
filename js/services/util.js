@@ -392,6 +392,8 @@ angular
         //  this ensures that users won't interact with any elements until connectivity problems are resolved
       };
 
+
+
       //TODO: not handled all states!!!
       function checkUserIdentify(toState) {
         if (!$localStorage['iguana-auth']) {
