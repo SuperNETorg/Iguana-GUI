@@ -891,7 +891,6 @@ angular.module('IguanaGUIApp.controllers')
       headers: postAuthHeaders
     })
     .then(function(_response) {
-      debugger;
       if (this.errorHandler(_response, coin) !== 10) {
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(_response);
@@ -932,7 +931,6 @@ angular.module('IguanaGUIApp.controllers')
         cb.call(this, result);
       }
     }.bind(this), function(response) {
-      debugger;
       this.errorHandler(response, coin);
 
       if (this.errorHandler(response, coin) === -13) {
