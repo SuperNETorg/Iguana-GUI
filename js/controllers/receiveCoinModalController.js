@@ -3,16 +3,16 @@ var app = angular.module('IguanaGUIApp.controllers');
 app.controller('receiveCoinModalController', [
   '$scope',
   '$uibModalInstance',
-  'helper',
+  'util',
   '$localStorage',
   '$state',
   'Api',
   '$uibModal',
-  function ($scope, $uibModalInstance, helper, $localStorage, $state, Api, $uibModal) {
+  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal) {
     $scope.isIguana = isIguana;
     $scope.open = open;
     $scope.close = close;
-    $scope.helper = helper;
+    $scope.util = util;
 
     $scope.receiveCoin = {
       address: '',
@@ -20,7 +20,7 @@ app.controller('receiveCoinModalController', [
     };
 
     var defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    var defaultCurrency = util.getCurrency() ? util.getCurrency().name : null || settings.defaultCurrency;
 
     getReceiveCoinAddress();
 
@@ -33,7 +33,7 @@ app.controller('receiveCoinModalController', [
           currencyObj = $('.currency');
 
       var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      coinRate = helper.updateRates(coin, defaultCurrency, true);
+      coinRate = util.updateRates(coin, defaultCurrency, true);
 
       currencyCoin.on('keyup', function () {
         var calcAmount = $(this).val() * coinRate;
@@ -53,18 +53,18 @@ app.controller('receiveCoinModalController', [
             currentValue = $(this).val();
         if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
           if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+            if (util.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
             if (currentValue.match(/[.]/)) return false;
           }
           else if (inputCode == 45) {
             if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
+            if (util.getCursorPositionInputElement($(this)) != 0) return false;
           }
           else if (inputCode == 8) return true;
           else return false;
         }
         else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
+          if (currentValue.charAt(0) == '-' && util.getCursorPositionInputElement($(this)) == 0) return false;
         }
       });
       currencyInput.keydown(function(event) {
@@ -103,10 +103,10 @@ app.controller('receiveCoinModalController', [
       temp.val($('#address').text().replace(/ /g, '')).select();
 
       try {
-        helper.ngPrepMessageModal(helper.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
+        util.ngPrepMessageModal(util.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
         document.execCommand('copy');
       } catch(err) {
-        helper.ngPrepMessageModal(helper.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
+        util.ngPrepMessageModal(util.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
       }
 
       temp.remove();

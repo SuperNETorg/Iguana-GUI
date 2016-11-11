@@ -3,19 +3,19 @@ var app = angular.module('IguanaGUIApp.controllers');
 app.controller('sendCoinModalController', [
   '$scope',
   '$uibModalInstance',
-  'helper',
+  'util',
   '$localStorage',
   '$state',
   'Api',
   '$uibModal',
-  function ($scope, $uibModalInstance, helper, $localStorage, $state, Api, $uibModal) {
+  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal) {
     $scope.isIguana = isIguana;
     $scope.close = close;
-    $scope.helper = helper;
+    $scope.util = util;
     $scope.activeCoin = $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
 
     var defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    var defaultCurrency = util.getCurrency() ? util.getCurrency().name : null || settings.defaultCurrency;
 
     $scope.sendCoin = {
       initStep: true,
@@ -32,7 +32,7 @@ app.controller('sendCoinModalController', [
     api.getBalance(defaultAccount, $scope.activeCoin, toggleSendCoinModal);
 
     function toggleSendCoinModal(balance, coin) {
-      $scope.sendCoin.currencyRate = helper.updateRates(coin, defaultCurrency, true);
+      $scope.sendCoin.currencyRate = util.updateRates(coin, defaultCurrency, true);
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
@@ -63,18 +63,18 @@ app.controller('sendCoinModalController', [
             currentValue = $(this).val();
         if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
           if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+            if (util.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
             if (currentValue.match(/[.]/)) return false;
           }
           else if (inputCode == 45) {
             if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
+            if (util.getCursorPositionInputElement($(this)) != 0) return false;
           }
           else if (inputCode == 8) return true;
           else return false;
         }
         else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
+          if (currentValue.charAt(0) == '-' && util.getCursorPositionInputElement($(this)) == 0) return false;
         }
       });
 
@@ -106,7 +106,7 @@ app.controller('sendCoinModalController', [
         var keyCode = evt.keyCode || evt.which;
 
         if (keyCode !== 9) {
-          var currentCoinRate = helper.updateRates($scope.sendCoin.coinId, defaultCurrency, true);
+          var currentCoinRate = util.updateRates($scope.sendCoin.coinId, defaultCurrency, true);
 
           var modalSendCoinField = modalSendCoinClass + ' .' + fieldName;
           if (type) {
@@ -149,11 +149,11 @@ app.controller('sendCoinModalController', [
           txAddressValidation = $('.tx-address-validation');
       if (txAddressVal.length !== 34) {
         txAddressObj.addClass(errorClassName);
-        txAddressValidation.html(helper.lang('SEND.INCORRECT_ADDRESS')).
+        txAddressValidation.html(util.lang('SEND.INCORRECT_ADDRESS')).
                             addClass(errorClassName2);
       } else {
         txAddressObj.removeClass(errorClassName);
-        txAddressValidation.html(helper.lang('SEND.ENTER_A_WALLET_ADDRESS')).
+        txAddressValidation.html(util.lang('SEND.ENTER_A_WALLET_ADDRESS')).
                             removeClass(errorClassName2);
       }
       // coin amount
@@ -164,12 +164,12 @@ app.controller('sendCoinModalController', [
       if (Number(txAmountVal) === 0 || !txAmountVal.length || txAmountVal > activeCoinBalanceCoin) {
         txAmountObj.addClass(errorClassName);
         txAmountCurrencyObj.addClass(errorClassName);
-        txAmountValidation.html(Number(txAmountVal) === 0 || !txAmountVal.length ? helper.lang('SEND.PLEASE_ENTER_AN_AMOUNT') : helper.lang('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + coinName).
+        txAmountValidation.html(Number(txAmountVal) === 0 || !txAmountVal.length ? util.lang('SEND.PLEASE_ENTER_AN_AMOUNT') : util.lang('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + coinName).
                            addClass(errorClassName2);
       } else {
         txAmountObj.removeClass(errorClassName);
         txAmountCurrencyObj.removeClass(errorClassName);
-        txAmountValidation.html(helper.lang('RECEIVE.ENTER_IN') + ' ' + coinName + ' ' + helper.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
+        txAmountValidation.html(util.lang('RECEIVE.ENTER_IN') + ' ' + coinName + ' ' + util.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
                            removeClass(errorClassName2);
       }
       // fee
@@ -179,19 +179,19 @@ app.controller('sendCoinModalController', [
       if ((Number(txFeeVal) + Number(txAmountVal)) > activeCoinBalanceCoin) {
         txFeeObj.addClass(errorClassName);
         txFeeCurrencyObj.addClass(errorClassName);
-        txFeeValidation.html((activeCoinBalanceCoin - Number(txAmountVal)) > 0 ? helper.lang('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number(txAmountVal)) : helper.lang('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin).
+        txFeeValidation.html((activeCoinBalanceCoin - Number(txAmountVal)) > 0 ? util.lang('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number(txAmountVal)) : util.lang('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin).
                         addClass(errorClassName2);
       }
       if (Number(txFeeVal) < (coinsInfo[$scope.activeCoin].relayFee || 0.00001)) { // TODO: settings
         txFeeObj.addClass(errorClassName);
         txFeeCurrencyObj.addClass(errorClassName);
-        txFeeValidation.html((coinsInfo[$scope.activeCoin].relayFee || 0.00001) + ' ' + helper.lang('SEND.IS_A_MIN_REQUIRED_FEE')).
+        txFeeValidation.html((coinsInfo[$scope.activeCoin].relayFee || 0.00001) + ' ' + util.lang('SEND.IS_A_MIN_REQUIRED_FEE')).
                         addClass(errorClassName2);
       }
       if ((Number(txFeeVal) >= (coinsInfo[$scope.activeCoin].relayFee || 0.00001)) && (Number(txFeeVal) + Number(txAmountVal)) < activeCoinBalanceCoin)  {
         txFeeObj.removeClass(errorClassName);
         txFeeCurrencyObj.removeClass(errorClassName);
-        txFeeValidation.html(helper.lang('SEND.MINIMUM_FEE')).
+        txFeeValidation.html(util.lang('SEND.MINIMUM_FEE')).
                         removeClass(errorClassName2);
       }
 
@@ -210,7 +210,7 @@ app.controller('sendCoinModalController', [
 
     $scope.sendCoinFormConfirm = function() {
       if (!isIguana) {
-        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+        util.toggleModalWindow('send-coin-confirm-passphrase', 300);
         // dev only
         if (dev.isDev && !isIguana && dev.coinPW.coind[$scope.activeCoin]) $scope.sendCoin.passphrase = dev.coinPW.coind[$scope.activeCoin];
         if (dev.isDev && isIguana && dev.coinPW.iguana) $scope.sendCoin.passphrase = dev.coinPW.iguana;
@@ -223,10 +223,10 @@ app.controller('sendCoinModalController', [
       var coindWalletLogin = api.walletLogin($scope.sendCoin.passphrase, settings.defaultWalletUnlockPeriod, $scope.activeCoin);
 
       if (coindWalletLogin !== -14) {
-        helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
+        util.toggleModalWindow('send-coin-confirm-passphrase', 300);
         execSendCoinCall();
       } else {
-        helper.prepMessageModal(helper.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
+        util.prepMessageModal(util.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
       }
     }
 
@@ -248,7 +248,7 @@ app.controller('sendCoinModalController', [
         $scope.sendCoin.success = true;
       } else {
         // go to an error step
-        helper.prepMessageModal(helper.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+        util.prepMessageModal(util.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
       }
 
       // revert pay fee
@@ -262,7 +262,7 @@ app.controller('sendCoinModalController', [
           currencyObj = $('.currency');
 
       var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      coinRate = helper.updateRates(coin, defaultCurrency, true);
+      coinRate = util.updateRates(coin, defaultCurrency, true);
 
       currencyCoin.on('keyup', function () {
         var calcAmount = $(this).val() * coinRate;
@@ -282,18 +282,18 @@ app.controller('sendCoinModalController', [
             currentValue = $(this).val();
         if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
           if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
+            if (util.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
             if (currentValue.match(/[.]/)) return false;
           }
           else if (inputCode == 45) {
             if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
+            if (util.getCursorPositionInputElement($(this)) != 0) return false;
           }
           else if (inputCode == 8) return true;
           else return false;
         }
         else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
+          if (currentValue.charAt(0) == '-' && util.getCursorPositionInputElement($(this)) == 0) return false;
         }
       });
       currencyInput.keydown(function(event) {

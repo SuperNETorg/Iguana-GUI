@@ -5,60 +5,88 @@ app.controller('addCoinModalController',
   [
     '$scope',
     '$uibModalInstance',
-    'helper',
-    'receivedObject',
+    'util',
     '$localStorage',
-    '$rootScope',
-    'receivedObject',
-    function ($scope, $uibModalInstance, helper, coinsSelectedToAdd, $localStorage, $rootScope,receivedObject) {
+    function ($scope, $uibModalInstance, util, $localStorage, $rootScope,receivedObject) {
       $scope.isIguana = $localStorage['isIguana'];
       $scope.open = open;
       $scope.close = close;
       $scope.next = next;
       $scope.alouNext = false;
       $scope.availableCoins = receivedObject.coins;
-      $scope.helper = helper;
+      $scope.util = util;
       $scope.clickOnCoin = clickOnCoin;
       $scope.coinSearchModel = undefined;
-      $scope.coinsSelectedToAdd = coinsSelectedToAdd || [];
+      $scope.coinsSelectedToAdd = $localStorage['iguana-login-active-coin'] || [];
+
+      $scope.coinsSelectedFilter = function (item) {
+        var el;
+        if (!$scope.coinsSelectedToAdd.coins.length) {
+          return false;
+        }
+        for (var i = 0; $scope.coinsSelectedToAdd.coins.length > i; i++) {
+          el = $scope.coinsSelectedToAdd.coins[i];
+          if (Object.keys(el)[0] == item) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+      };
 
       function clickOnCoin(item, $event) {
         var coinDomElement = angular.element($event.currentTarget),
-            isDisable = false;
+            isDisable = false,
+            activeCoinStorageData = {};
 
-        $scope.coinsSelectedToAdd.coins.filter(function (el, id) {
+        $scope.coinsSelectedToAdd.coins.map(function (el, id) {
           if (el == item.coinId) {
-            $scope.coinsSelectedToAdd.splice(id, 1);
+            $scope.coinsSelectedToAdd.coins.splice(id, 1);
             coinDomElement.removeClass('active');
             isDisable = true;
           }
         });
 
         if (!isIguana) {
-          $scope.coinsSelectedToAdd = []
+          $scope.coinsSelectedToAdd.coins = []
         }
-
-        if (!isDisable) {
-          $scope.coinsSelectedToAdd.push(item.coinId);
+        if (!isDisable && $scope.coinsSelectedToAdd.coins.indexOf(item.coinId) == -1) {
+          $scope.coinsSelectedToAdd.coins.push(item.coinId);
           coinDomElement.addClass('active');
         }
-        $localStorage['iguana-login-active-coin'] = $scope.coinsSelectedToAdd;
+        if (!$localStorage['iguana-login-active-coin']) {
+          $localStorage['iguana-login-active-coin'] = [];
+        } else {
+          $localStorage['iguana-login-active-coin'].map(function (el, id) {
+            if (Object.keys(el)[0] == item.coinId) {
+              $localStorage['iguana-login-active-coin'].splice(id, 1);
+            }
+          });
+        }
+
+        activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] = '';
+
+        // dev only
+        if (dev.isDev && !isIguana && dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[0]]) {
+          activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] =
+            dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[0]];
+        }
+        if (dev.isDev && isIguana && dev.coinPW.iguana) {
+          activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] = dev.coinPW.iguana;
+        }
+
+        if (!isDisable && $localStorage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
+          $localStorage['iguana-login-active-coin'].push(activeCoinStorageData)
+        }
       }
 
       function close() {
-        $localStorage['iguana-login-active-coin'] = [];
         $uibModalInstance.dismiss();
       }
-
       function next() {
-        var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
-        // dev only
-        if (dev.isDev && !isIguana && dev.coinPW.coind[coinsSelectedToAdd[0]])
-          $scope.passphrase = dev.coinPW.coind[coinsSelectedToAdd[0]];
-        if (dev.isDev && isIguana && dev.coinPW.iguana)
-          $scope.passphrase = dev.coinPW.iguana;
-        $uibModalInstance.close($scope.passphrase);
+
+        $uibModalInstance.close();
       }
     }]);
-
 

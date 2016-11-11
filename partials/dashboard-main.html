@@ -2,7 +2,7 @@
   <!-- temp out of sync notice -->
   <div id="temp-out-of-sync" class="hidden" style="color:red;text-aling:center;font-weight:bold;font-size:1.2em"></div>
   <div class="balance-block unselectable">
-    <div class="label">{{ helper.lang('DASHBOARD.TOTAL_BALANCE') }}</div>
+    <div class="label">{{ util.lang('DASHBOARD.TOTAL_BALANCE') }}</div>
     <div class="balance">
       <span class="value">{{ (totalBalance || 0) | decimalPlacesFormat:'currency' }}</span>
       <span class="currency">{{ currency }}</span>
@@ -27,10 +27,11 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ helper.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET') }}</button>
+      <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ util.lang(isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET') }}</button>
     </div>
   </aside>
-  <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading" ng-class="{ 'loading': txUnit.loading }">
+  <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right loading"
+    ng-class="{ 'loading': txUnit.loading }">
     <div class="row">
       <div class="top-bar unselectable">
         <div ng-include="'partials/loader.html'"></div>
@@ -43,21 +44,24 @@
           <span class="currency">{{ currency }}</span>
         </div>
         <div class="action-buttons unselectable">
-          <button class="btn btn-send" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ helper.lang('DASHBOARD.SEND') }}</button>
-          <button class="btn btn-receive coinaddress btn-lg" ng-click="openReceiveCoinModal()">{{ helper.lang('DASHBOARD.RECEIVE') }}</button>
+          <button class="btn btn-send" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ util.lang('DASHBOARD.SEND') }}</button>
+          <button class="btn btn-receive coinaddress btn-lg" ng-click="openReceiveCoinModal()">{{ util.lang('DASHBOARD.RECEIVE') }}</button>
         </div>
         <div class="info unselectable">
           <i class="bi_doc-book-a"></i>
-          <span>{{ helper.lang('DASHBOARD.INFORMATION') }}</span>
+          <span>{{ util.lang('DASHBOARD.INFORMATION') }}</span>
         </div>
         <div class="clearfix"></div>
       </div>
       <div class="transactions-list">
-        <div class="title unselectable">{{ helper.lang('DASHBOARD.HISTORY') }}</div>
+        <div class="title unselectable">{{ util.lang('DASHBOARD.HISTORY') }}</div>
         <div class="transactions-list-repeater">
           <div ng-include="'partials/loader.html'" ng-if="txUnit.loading"></div>
-          <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ helper.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}</div>
-          <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
+          <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">
+            {{ util.lang('DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE') }}
+          </div>
+          <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
+            ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
             <div class="status unselectable">{{ item.status }}</div>
             <div class="amount unselectable" ng-class="{ 'smaller': item.switchStyle }">
               <span class="in-out {{ item.inOut }}"></span>
@@ -69,7 +73,8 @@
             </div>
             <div class="hash">{{ item.hash }}</div>
             <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-            <div class="timestamp two-lines unselectable time-ago">
+            <div class="timestamp two-lines unselectable time-ago"
+              ng-init="timeAgo('.' + item.txId + ' .time-ago')">
               <div class="timestamp-date time-ago-date">{{ item.timestampDate }}</div>
               <div class="timestamp-time time-ago-time">{{ item.timestampTime }}</div>
             </div>

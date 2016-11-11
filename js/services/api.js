@@ -5,13 +5,13 @@ angular.module('IguanaGUIApp.controllers')
   'api',
   [
     '$localStorage',
-    'helper',
+    'util',
     '$http',
     '$state',
     '$timeout',
     '$interval',
     '$q',
-    function ($localStorage, helper, $http, $state, $timeout, $interval, $q) {
+    function ($localStorage, util, $http, $state, $timeout, $interval, $q) {
       this.coinsInfo = [];
       this.isRT = false;
       $localStorage['isProxy'] = true;
@@ -20,11 +20,11 @@ angular.module('IguanaGUIApp.controllers')
       this.testConnection = function (cb) {
         var setPortPollResponseDS = $localStorage['iguana-port-poll'];
         var timeDiff = setPortPollResponseDS ?
-            Math.floor(helper.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
+            Math.floor(util.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
             0;
         var index = 0;
 
-        helper.getPortPollResponse.apply({
+        util.getPortPollResponse.apply({
           setPortPollResponseDS: setPortPollResponseDS
         }); // TODO change this function to angular
 
@@ -39,7 +39,7 @@ angular.module('IguanaGUIApp.controllers')
         }
 
         if (
-          timeDiff >= helper.portPollUpdateTimeout ||
+          timeDiff >= util.portPollUpdateTimeout ||
           timeDiff === 0 ||
           index === 0 ||
           $state.current.name === 'login' ||
@@ -89,7 +89,7 @@ angular.module('IguanaGUIApp.controllers')
 
                     if (dev.sessions[key]){
                       $timeout(function () {
-                        helper.prepNoDaemonModal(); // TODO change this function to angular
+                        util.prepNoDaemonModal(); // TODO change this function to angular
                       }, 300);
                     }
                   }
@@ -121,9 +121,9 @@ angular.module('IguanaGUIApp.controllers')
         if (response.data && response.data.error) {
           if (response.data.error.message === 'need to unlock wallet') {
             if ($state.current.name !== 'login') {
-              helper.prepMessageModal(helper.lang('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
+              util.prepMessageModal(util.lang('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
               $timeout(function() {
-                helper.logout();
+                util.logout();
               }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
               $interval.cancel(dashboardUpdateTimer);
             }
@@ -157,9 +157,9 @@ angular.module('IguanaGUIApp.controllers')
             $localStorage['activeCoin']++;
 
             if ($localStorage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
-              helper.prepMessageModal(helper.lang('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
+              util.prepMessageModal(util.lang('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
               $timeout(function() {
-                helper.logout();
+                util.logout();
               }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
               $interval.clear(dashboardUpdateTimer);
             }
@@ -282,8 +282,8 @@ angular.module('IguanaGUIApp.controllers')
           } else {
             var setPortPollResponseDS = $localStorage['iguana-port-poll'];
 
-            helper.setPortPollResponse();
-            helper.checkIfIguanaOrCoindIsPresent.apply({setPortPollResponseDS: setPortPollResponseDS});
+            util.setPortPollResponse();
+            util.checkIfIguanaOrCoindIsPresent.apply({setPortPollResponseDS: setPortPollResponseDS});
           }
         }
       };
@@ -418,7 +418,7 @@ angular.module('IguanaGUIApp.controllers')
         }
 
         if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
-          tempOutOfSync.html(helper.lang('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
+          tempOutOfSync.html(util.lang('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
           tempOutOfSync.removeClass('hidden');
         }
 
@@ -443,12 +443,12 @@ angular.module('IguanaGUIApp.controllers')
           }
         }
 
-        outOfSyncCoinsList = helper.trimComma(outOfSyncCoinsList);
+        outOfSyncCoinsList = util.trimComma(outOfSyncCoinsList);
 
         if (!outOfSyncCoinsList.length) {
           tempOutOfSync.addClass(hiddenClassName);
         } else {
-          tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' ' + helper.lang('EXPERIMENTAL.ARE') + ' ' : ' ' + helper.lang('EXPERIMENTAL.IS') + ' ') + helper.lang('EXPERIMENTAL.DASHBOARD_OUT_OF_SYNC_P3'));
+          tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' ' + util.lang('EXPERIMENTAL.ARE') + ' ' : ' ' + util.lang('EXPERIMENTAL.IS') + ' ') + util.lang('EXPERIMENTAL.DASHBOARD_OUT_OF_SYNC_P3'));
           tempOutOfSync.removeClass(hiddenClassName);
         }
       };

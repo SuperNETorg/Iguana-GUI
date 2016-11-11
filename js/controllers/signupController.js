@@ -5,15 +5,15 @@ angular.module('IguanaGUIApp.controllers')
   '$scope',
   '$http',
   '$state',
-  'helper',
+  'util',
   'passPhraseGenerator',
   '$localStorage',
   'api',
   '$rootScope',
   '$uibModal',
-  function($scope, $http, $state, helper, passPhraseGenerator, $localStorage, api, $rootScope,$uibModal) {
+  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope,$uibModal) {
 
-    $scope.helper = helper;
+    $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
     $scope.buttonCreateAccount = false;
@@ -85,9 +85,9 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     function copyPassphraseWord($event) {
-      $scope.helper.addCopyToClipboardFromElement(
+      $scope.util.addCopyToClipboardFromElement(
         angular.element($event.target),
-        $scope.helper.lang('LOGIN.PASSPHRASE')
+        $scope.util.lang('LOGIN.PASSPHRASE')
       );
     }
 
@@ -107,20 +107,20 @@ angular.module('IguanaGUIApp.controllers')
         var walletEncryptResponse = api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
 
         if (walletEncryptResponse !== -15) {
-          helper.ngPrepMessageModal(selectedCoindToEncrypt + helper.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          util.ngPrepMessageModal(selectedCoindToEncrypt + util.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
           if ($state.current.name === 'dashboard') {
-            helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
+            util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
           } else {
             $state.go('login');
           }
         } else {
-          helper.ngPrepMessageModal(helper.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          util.ngPrepMessageModal(util.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
           if ($state.current.name === 'dashboard') {
-            helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
+            util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
           }
         }
       } else {
-        helper.ngPrepMessageModal(helper.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        util.ngPrepMessageModal(util.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 

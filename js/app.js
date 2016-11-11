@@ -65,21 +65,22 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, helper, $timeout, api) {
+.run(function($rootScope, $location, $state, util, $timeout, api) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    // debugger;
     // TODO: find a better way
-    if (!helper.checkSession(true) && toState.name !== 'signup.step1') {
-      $timeout(function() {
-        $state.go('login');
-      }, 0);
-    }
-    if (helper.checkSession(true) && (toState.name === 'login' || toState.name === 'signup.step1')) {
-      event.preventDefault();
-      $timeout(function() {
-        $state.go('dashboard.main');
-      }, 0);
-    }
+  //   if (!util.checkSession() && toState.name !== 'signup.step1') {
+  //     $timeout(function() {
+  //       $state.go('login');
+  //     }, 0);
+  //   }
+  //   if (util.checkSession() && (toState.name === 'login' || toState.name === 'signup.step1')) {
+  //     event.preventDefault();
+  //     $timeout(function() {
+  //       $state.go('dashboard.main');
+  //     }, 0);
+  //   }
   });
 
   api.testConnection(function (coins) {

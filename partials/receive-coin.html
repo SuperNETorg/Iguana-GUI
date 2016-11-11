@@ -3,26 +3,26 @@
     <div class="modal-content receiving-coin-content"-->
   <header class="modal-header form-header orange-gradient box-shadow-bottom">
     <i class="bi_interface-cross cursor-pointer btn-close pull-left" ng-click="close()"></i>
-    <div class="text-center title text-shadow">{{ helper.lang('RECEIVE.RECEIVING_COINS') }}</div>
+    <div class="text-center title text-shadow">{{ util.lang('RECEIVE.RECEIVING_COINS') }}</div>
   </header>
   <div class="form-content modal-body">
     <div class="share-address-section">
       <!--div>
         <span class="text-section text-something">Something 2</span>
       </div-->
-      <div class="my-label my-address">{{ helper.lang('RECEIVE.MY_ADDRESS') }}:</div>
+      <div class="my-label my-address">{{ util.lang('RECEIVE.MY_ADDRESS') }}:</div>
       <h4 id="address">{{ receiveCoin.addressFormatted }}</h4>
       <div class="buttons text-center">
-        <button class="btn copy-btn margin-bottom pull-left" ng-click="copyToClipboard()">{{ helper.lang('RECEIVE.COPY') }}</button>
-        <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ helper.lang('RECEIVE.SHARE') }}</a>
+        <button class="btn copy-btn margin-bottom pull-left" ng-click="copyToClipboard()">{{ util.lang('RECEIVE.COPY') }}</button>
+        <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ util.lang('RECEIVE.SHARE') }}</a>
       </div>
       <div class="qr-code" id="qrcode">
         <img ng-src="{{ receiveCoin.qrCode }}" />
       </div>
       <div class="col-xs-12">
         <div class="amount-label row">
-          <span class="block amount-label-span">{{ helper.lang('RECEIVE.AMOUNT') }}:</span>
-          <span class="block text-section enter-in-currency">{{ helper.lang('RECEIVE.ENTER_IN') }} {{ currency }}<!-- any currency --></span>
+          <span class="block amount-label-span">{{ util.lang('RECEIVE.AMOUNT') }}:</span>
+          <span class="block text-section enter-in-currency">{{ util.lang('RECEIVE.ENTER_IN') }} {{ currency }}<!-- any currency --></span>
         </div>
       </div>
       <div class="col-xs-12">

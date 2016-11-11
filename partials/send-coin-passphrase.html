@@ -5,12 +5,13 @@
       <div class="modal-content">
         <header class="modal-header form-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-back cursor-pointer btn-close" ng-click="helper.toggleModalWindow('send-coin-confirm-passphrase', 300)"></i>
-          <div class="title text-shadow">{{ helper.lang('PASSPHRASE_MODAL.PROVIDE_PASSPHRASE') }}</div>
+          <div class="title text-shadow">{{
+            util.lang('PASSPHRASE_MODAL.PROVIDE_PASSPHRASE') }}</div>
         </header>
         <div class="modal-body form-content">
-          <div class="login-input-directions center offset-bottom-sm unselectable">{{ helper.lang('PASSPHRASE_MODAL.PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION') }}</div>
+          <div class="login-input-directions center offset-bottom-sm unselectable">{{ util.lang('PASSPHRASE_MODAL.PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION') }}</div>
           <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm center" ng-model="$parent.sendCoin.passphrase"></textarea>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-add-wallet" ng-class="{ 'disabled': !$parent.sendCoin.passphrase.length }" ng-click="confirmSendCoinPassphrase()">{{ helper.lang('PASSPHRASE_MODAL.CONFIRM') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-add-wallet" ng-class="{ 'disabled': !$parent.sendCoin.passphrase.length }" ng-click="confirmSendCoinPassphrase()">{{ util.lang('PASSPHRASE_MODAL.CONFIRM') }}</button>
         </div>
       </div>
     </div>

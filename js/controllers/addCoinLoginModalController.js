@@ -3,17 +3,18 @@ var app = angular.module('IguanaGUIApp.controllers');
 app.controller('addCoinLoginModalController', [
   '$scope',
   '$uibModalInstance',
-  'helper',
-  'receivedObject',
+  'util',
   '$localStorage',
   '$state',
   'Api',
   '$uibModal',
-  function ($scope, $uibModalInstance, helper, receivedObject, $localStorage, $state, Api, $uibModal) {
-    $scope.isIguana = isIguana;
+  'receivedObject',
+
+  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal, receivedObject) {
+    $scope.isIguana = $localStorage['isIguana'];
     $scope.open = open;
     $scope.close = close;
-    $scope.helper = helper;
+    $scope.util = util;
 
     $scope.$state = $state;
     $scope.passphrase = '';
@@ -23,7 +24,7 @@ app.controller('addCoinLoginModalController', [
     $scope.receivedObject = undefined;
 
     Api.testCoinPorts(function () {
-      $scope.availableCoins = helper.constructCoinRepeater();
+      $scope.availableCoins = util.constructCoinRepeater();
     });
 
     $scope.openAddCoinModal = function () {
@@ -65,7 +66,7 @@ app.controller('addCoinLoginModalController', [
     };
 
     $scope.login = function () {
-      var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
+      var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
       Api.walletLock(coinsSelectedToAdd[0].coinId);
       Api.walletLogin(
         $scope.passphrase,
@@ -76,13 +77,13 @@ app.controller('addCoinLoginModalController', [
 
       function walletLoginThen(walletLogin) {
         if (walletLogin === -14 || walletLogin === false) {
-          helper.ngPrepMessageModal(
-            helper.lang('MESSAGE.WRONG_PASSPHRASE'),
+          util.ngPrepMessageModal(
+            util.lang('MESSAGE.WRONG_PASSPHRASE'),
             'red',
             true);
         } else if (walletLogin === -15) {
-          helper.ngPrepMessageModal(
-            helper.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
+          util.ngPrepMessageModal(
+            util.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
             'red',
             true
           );

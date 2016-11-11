@@ -221,6 +221,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     //  this ensures that users won't interact with any elements until connectivity problems are resolved
   }
 
+  /**
+   * //TODO this function instance another 'PortPoll' service
+   * */
   /* store port poll data */
   this.setPortPollResponse = function() {
     var coinsInfoJSON = [],
@@ -248,6 +251,9 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
   }
 
+  /**
+   * //TODO this function instance another 'PortPoll' service
+   * */
   /* retrieve port poll data */
   this.getPortPollResponse = function() {
     if (this.setPortPollResponseDS) {

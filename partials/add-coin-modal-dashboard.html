@@ -5,13 +5,13 @@
       <div class="modal-content">
         <header class="modal-header form-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-cross cursor-pointer btn-close" ng-click="helper.toggleModalWindow('add-new-coin-form', 300)"></i>
-          <div class="title text-shadow">{{ isIguana ? helper.lang('ADD_COIN.ADDING_A_NEW_COIN') : helper.lang('DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
+          <div class="title text-shadow">{{ isIguana ? util.lang('ADD_COIN.ADDING_A_NEW_COIN') : util.lang('DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
         </header>
         <div class="form-content">
-          <div class="coins-title">{{ isIguana ? helper.lang('ADD_COIN.SELECT_COINS_TO_ADD') : helper.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD') }}</div>
+          <div class="coins-title">{{ isIguana ? util.lang('ADD_COIN.SELECT_COINS_TO_ADD') : util.lang('DASHBOARD.SELECT_A_WALLET_TO_ADD') }}</div>
           <div class="quick-search">
             <i class="icon bi_tool-magnifier"></i>
-            <input type="text" class="input text" placeholder="{{ helper.lang('ADD_COIN.FOR_EXAMPLE') }}, 'Bitcoin'" />
+            <input type="text" class="input text" placeholder="{{ util.lang('ADD_COIN.FOR_EXAMPLE') }}, 'Bitcoin'" />
           </div>
           <div class="supported-coins-repeater-container">
             <div class="supported-coins-repeater">
@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next" ng-click="addCoinNext()" ng-class="{ 'disabled': !objLen(coinsSelectedToAdd) }">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next" ng-click="addCoinNext()" ng-class="{ 'disabled': !objLen(coinsSelectedToAdd) }">{{ util.lang('CREATE_ACCOUNT.NEXT') }}</button>
         </div>
       </div>
     </div>
