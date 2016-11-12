@@ -7,9 +7,9 @@ angular.module('IguanaGUIApp')
   '$scope',
   '$uibModalInstance',
   'util',
-  '$localStorage',
-  function ($scope, $uibModalInstance, util, $localStorage, $rootScope, receivedObject) {
-    $scope.isIguana = $localStorage['isIguana'];
+  '$storage',
+  function ($scope, $uibModalInstance, util, $storage, $rootScope, receivedObject) {
+    $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
     $scope.next = next;
@@ -18,7 +18,7 @@ angular.module('IguanaGUIApp')
     $scope.util = util;
     $scope.clickOnCoin = clickOnCoin;
     $scope.coinSearchModel = undefined;
-    $scope.coinsSelectedToAdd = $localStorage['iguana-login-active-coin'] || [];
+    $scope.coinsSelectedToAdd = $storage['iguana-login-active-coin'] || [];
 
     $scope.coinsSelectedFilter = function (item) {
       var el;
@@ -49,19 +49,19 @@ angular.module('IguanaGUIApp')
         }
       });
 
-      if (!$localStorage['isIguana']) {
+      if (!$storage['isIguana']) {
         $scope.coinsSelectedToAdd = []
       }
       if (!isDisable && $scope.coinsSelectedToAdd.coins.indexOf(item.coinId) == -1) {
         $scope.coinsSelectedToAdd.coins.push(item.coinId);
         coinDomElement.addClass('active');
       }
-      if (!$localStorage['iguana-login-active-coin']) {
-        $localStorage['iguana-login-active-coin'] = [];
+      if (!$storage['iguana-login-active-coin']) {
+        $storage['iguana-login-active-coin'] = [];
       } else {
-        $localStorage['iguana-login-active-coin'].map(function (el, id) {
+        $storage['iguana-login-active-coin'].map(function (el, id) {
           if (Object.keys(el)[0] == item.coinId) {
-            $localStorage['iguana-login-active-coin'].splice(id, 1);
+            $storage['iguana-login-active-coin'].splice(id, 1);
           }
         });
       }
@@ -77,8 +77,8 @@ angular.module('IguanaGUIApp')
         activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] = dev.coinPW.iguana;
       }
 
-      if (!isDisable && $localStorage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
-        $localStorage['iguana-login-active-coin'].push(activeCoinStorageData)
+      if (!isDisable && $storage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
+        $storage['iguana-login-active-coin'].push(activeCoinStorageData)
       }
     }
 

@@ -12,7 +12,7 @@
   <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
     <div class="row">
       <div class="account-coins-repeater">
-        <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index }" ng-repeat="item in sideBarCoins track by item.id | orderBy: 'id'">
+        <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
           <spinner visibility="item.loading"></spinner>
           <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
           <div class="clickable-area" ng-click="activeCoin !== item.id ? setActiveCoin(item) : null">

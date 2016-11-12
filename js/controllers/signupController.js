@@ -6,18 +6,18 @@ angular.module('IguanaGUIApp')
   '$http',
   '$state',
   'util',
-  'passPhraseGenerator',
-  '$localStorage',
+  '$passPhraseGenerator',
+  '$storage',
   'api',
   '$rootScope',
   '$uibModal',
   '$filter',
-  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope, $uibModal, $filter) {
+  function($scope, $http, $state, util, $passPhraseGenerator, $storage, api, $rootScope, $uibModal, $filter) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
     $scope.buttonCreateAccount = false;
-    $scope.$localStorage = $localStorage;
+    $scope.$localStorage = $storage;
 
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
@@ -57,7 +57,7 @@ angular.module('IguanaGUIApp')
 
           if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
           $scope.coinsSelectedToAdd = [];
-          $scope.receivedObject = $localStorage['iguana-login-active-coin'];
+          $scope.receivedObject = $storage['iguana-login-active-coin'];
 
           for (var i = 0; $scope.receivedObject.length > i; i++) {
             coinId = $scope.receivedObject[i];
@@ -76,8 +76,8 @@ angular.module('IguanaGUIApp')
 
     function initPage() {
       if ($state.current.name === 'signup.step1') {
-        $scope.passphrase = passPhraseGenerator.generatePassPhrase($localStorage['isIguana'] ? 8 : 4);
-        $localStorage.passphrase = $scope.passphrase;
+        $scope.passphrase = $passPhraseGenerator.generatePassPhrase($storage['isIguana'] ? 8 : 4);
+        $storage.passphrase = $scope.passphrase;
       }
     }
 
@@ -90,7 +90,7 @@ angular.module('IguanaGUIApp')
 
     function pastPassphraseWord() {
       $scope.buttonCreateAccount = true;
-      $scope.passPhraseText = $localStorage.passphrase;
+      $scope.passPhraseText = $storage.passphrase;
     }
 
     function addAccount() {

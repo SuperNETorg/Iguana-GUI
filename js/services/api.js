@@ -12,14 +12,15 @@ angular.module('IguanaGUIApp')
   '$q',
   'app_variable',
   '$filter',
-  function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $filter) {
+  '$storage',
+  function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $filter, $storage) {
     this.coinsInfo = [];
     this.isRT = false;
-    $localStorage['isProxy'] = true;
-    $localStorage['iguanaNullReturnCount'] = 0;
+    $storage['isProxy'] = true;
+    $storage['iguanaNullReturnCount'] = 0;
 
     this.testConnection = function (cb) {
-      var setPortPollResponseDS = $localStorage['iguana-port-poll'];
+      var setPortPollResponseDS = $storage['iguana-port-poll'];
       var timeDiff = setPortPollResponseDS ?
           Math.floor(util.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
           0;
@@ -60,25 +61,25 @@ angular.module('IguanaGUIApp')
             if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
                 if (navigator.userAgent.indexOf(key) > -1) {
-                  $localStorage['isIguana'] = dev.sessions[key];
+                  $storage['isIguana'] = dev.sessions[key];
                 }
               }
             }
 
             if (dev.showConsoleMessages) {
-              if (!$localStorage['isIguana']) {
+              if (!$storage['isIguana']) {
                 console.log('running non-iguana env');
               } else {
                 console.log('running iguana env');
               }
             }
           } else {
-            $localStorage['isIguana'] = true;
+            $storage['isIguana'] = true;
           }
 
           this.errorHandler(response);
 
-          if(!$localStorage['isIguana']) {
+          if(!$storage['isIguana']) {
             this.testCoinPorts(cb);
           }
         }.bind(this), function(response) {
@@ -87,7 +88,7 @@ angular.module('IguanaGUIApp')
             if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
                 if (navigator.userAgent.indexOf(key) > -1) {
-                  $localStorage['isIguana'] = dev.sessions[key];
+                  $storage['isIguana'] = dev.sessions[key];
 
                   if (dev.sessions[key]){
                     $timeout(function () {
@@ -99,14 +100,14 @@ angular.module('IguanaGUIApp')
             }
 
             if (dev.showConsoleMessages) {
-              if (!$localStorage['isIguana']) {
+              if (!$storage['isIguana']) {
                 console.log('running non-iguana env');
               } else {
                 console.log('running iguana env');
               }
             }
           } else {
-            $localStorage['isIguana'] = true;
+            $storage['isIguana'] = true;
           }
 
           this.errorHandler(response);
@@ -155,10 +156,10 @@ angular.module('IguanaGUIApp')
 
           return 10;
         } else if (response.data.error.message === 'null return from iguana_bitcoinRPC') {
-          if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + $localStorage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
-          $localStorage['activeCoin']++;
+          if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + $storage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
+          $storage['activeCoin']++;
 
-          if ($localStorage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
+          if ($storage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
             util.prepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
             $timeout(function() {
               util.logout();
@@ -176,7 +177,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.testCoinIsnotIguanaMode = function(response, index) {
-      if (!$localStorage['isIguana']) {
+      if (!$storage['isIguana']) {
         this.coindCheckRT(index, function (coindCheckRTResponse) {
           var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
             syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
@@ -211,7 +212,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.testCoinIguanaMode = function (response, index) {
-      if (response.status && $localStorage['isIguana']) {
+      if (response.status && $storage['isIguana']) {
         if (response.status !== (null || -1) &&
           response.status instanceof  'string') {
           var iguanaGetInfo = response.status.split(' '),
@@ -283,7 +284,7 @@ angular.module('IguanaGUIApp')
           app_variable.coinsInfo = this.coinsInfo;
           cb(this.coinsInfo);
         } else {
-          var setPortPollResponseDS = $localStorage['iguana-port-poll'];
+          var setPortPollResponseDS = $storage['iguana-port-poll'];
 
           util.setPortPollResponse();
           util.checkIfIguanaOrCoindIsPresent.apply({setPortPollResponseDS: setPortPollResponseDS});
@@ -378,8 +379,7 @@ angular.module('IguanaGUIApp')
 
         this.errorHandler(response, index);
 
-        if (response.statusText === 'error' && !$localStorage['isIguana'])
-          $localStorage['isProxy'] = false;
+        if (response.statusText === 'error' && !$storage['isIguana']) $storage['isProxy'] = false;
         if (
           dev.showConsoleMessages &&
           dev.isDev &&
@@ -434,12 +434,12 @@ angular.module('IguanaGUIApp')
           (
             this.coinsInfo[index].RT === false &&
             this.coinsInfo[index].connection === true &&
-            $localStorage['isIguana'] && $localStorage['iguana-' + index + '-passphrase']
+            $storage['isIguana'] && $storage['iguana-' + index + '-passphrase']
           ) ||
           (
             this.coinsInfo[index].RT === false &&
-            !$localStorage['isIguana'] && $localStorage['iguana-' + index + '-passphrase'] &&
-            $localStorage['iguana-' + index + '-passphrase'].logged === 'yes'
+            !$storage['isIguana'] && $storage['iguana-' + index + '-passphrase'] &&
+            $storage['iguana-' + index + '-passphrase'].logged === 'yes'
           )
         ) {
           outOfSyncCoinsList += index.toUpperCase() + ', ';
@@ -541,12 +541,12 @@ angular.module('IguanaGUIApp')
     };
 
     this.walletLogin = function(passphrase, timeout, coin, cb) {
-      if (!$localStorage['isIguana']) {
+      if (!$storage['isIguana']) {
         timeout = settings.defaultWalletUnlockPeriod;
       }
 
       if (!timeout) {
-        timeout = $localStorage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind;
+        timeout = $storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind;
       }
 
       var result = false,
@@ -558,7 +558,7 @@ angular.module('IguanaGUIApp')
           postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' + passphrase + '\", ' + timeout, coin),
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-      $http.post($localStorage['isIguana'] ? defaultIguanaServerUrl : fullUrl, postData, {
+      $http.post($storage['isIguana'] ? defaultIguanaServerUrl : fullUrl, postData, {
         headers: postAuthHeaders
       })
       .then(function(response) {
@@ -633,17 +633,17 @@ angular.module('IguanaGUIApp')
       };
 
       // coin port switch hook
-      if (coin && conf.coins[coin].coindPort && !$localStorage['isIguana']) {
+      if (coin && conf.coins[coin].coindPort && !$storage['isIguana']) {
         conf.server.port = conf.coins[coin].coindPort;
 
         return conf;
       }
 
-      if ($localStorage['activeCoin'] && !discardCoinSpecificPort) {
-        conf.server.port = conf.coins[$localStorage['activeCoin']].portp2p;
+      if ($storage['activeCoin'] && !discardCoinSpecificPort) {
+        conf.server.port = conf.coins[$storage['activeCoin']].portp2p;
 
-        if (!$localStorage['isIguana'])
-          if (conf.coins[$localStorage['activeCoin']].coindPort) conf.server.port = conf.coins[$localStorage['activeCoin']].coindPort;
+        if (!$storage['isIguana'])
+          if (conf.coins[$storage['activeCoin']].coindPort) conf.server.port = conf.coins[$storage['activeCoin']].coindPort;
       } else {
         conf.server.port = conf.server.iguanaPort;
       }
@@ -654,7 +654,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getAccountAddress = function(coin, account) {
-      if (dev.coinAccountsDev && !$localStorage['isIguana']) {
+      if (dev.coinAccountsDev && !$storage['isIguana']) {
         if (dev.coinAccountsDev.coind[coin]) {
           account = dev.coinAccountsDev.coind[coin];
         }
@@ -828,13 +828,13 @@ angular.module('IguanaGUIApp')
 
     this.getBasicAuthHeaderObj = function(conf, coin) {
       if (conf) {
-        return $localStorage['isIguana'] ? { 'Content-Type': 'application/x-www-form-urlencoded' } : { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
-      } else if ($localStorage['activeCoin'] || coin) {
-        return $localStorage['isIguana'] ?
+        return $storage['isIguana'] ? { 'Content-Type': 'application/x-www-form-urlencoded' } : { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+      } else if ($storage['activeCoin'] || coin) {
+        return $storage['isIguana'] ?
           { 'Content-Type': 'application/x-www-form-urlencoded' } :
           {
-            'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $localStorage['activeCoin']].user + ':' +
-                              this.getConf().coins[coin ? coin : $localStorage['activeCoin']].pass)
+            'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage['activeCoin']].user + ':' +
+                              this.getConf().coins[coin ? coin : $storage['activeCoin']].pass)
           };
       }
 
@@ -842,7 +842,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getBitcoinRPCPayloadObj = function(method, params, coin) {
-      if ($localStorage['isIguana']) {
+      if ($storage['isIguana']) {
         return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') + '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
       } else {
         return '{ \"agent\": \"bitcoinrpc\",' +
@@ -852,14 +852,14 @@ angular.module('IguanaGUIApp')
 
     this.getFullApiRoute = function(method, conf, coin) {
       if (conf) {
-        return $localStorage['isIguana'] ? (this.getConf().server.protocol +
+        return $storage['isIguana'] ? (this.getConf().server.protocol +
           this.getConf().server.ip + ':' +
           conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
           this.getConf().server.ip + ':' +
           (conf.coindPort ? conf.coindPort : conf.portp2p));
       }
       else {
-        return $localStorage['isIguana'] ? (this.getConf().server.protocol +
+        return $storage['isIguana'] ? (this.getConf().server.protocol +
           this.getConf().server.ip + ':' +
           this.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
           this.getConf().server.ip + ':' +
@@ -1047,7 +1047,7 @@ angular.module('IguanaGUIApp')
       var result = false;
 
       // dev account lookup override
-      if (dev.coinAccountsDev && !$localStorage['isIguana']) {
+      if (dev.coinAccountsDev && !$storage['isIguana']) {
         if (dev.coinAccountsDev.coind[coin]) {
           account = dev.coinAccountsDev.coind[coin];
         }
@@ -1108,7 +1108,7 @@ angular.module('IguanaGUIApp')
       var result = false;
 
       // dev account lookup override
-      if (dev.coinAccountsDev && !$localStorage['isIguana']) {
+      if (dev.coinAccountsDev && !$storage['isIguana']) {
         if (dev.coinAccountsDev.coind[coin]) {
           account = dev.coinAccountsDev.coind[coin];
         }
@@ -1116,7 +1116,7 @@ angular.module('IguanaGUIApp')
 
       var fullUrl = this.getFullApiRoute('getbalance', null, coin),
           // avoid using account names in bitcoindarkd
-          postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !$localStorage['isIguana'] ? null : '\"' + account + '\"', coin),
+          postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !$storage['isIguana'] ? null : '\"' + account + '\"', coin),
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
       $http.post(fullUrl, postData, {

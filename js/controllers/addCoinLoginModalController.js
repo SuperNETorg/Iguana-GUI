@@ -5,14 +5,14 @@ angular.module('IguanaGUIApp')
   '$scope',
   '$uibModalInstance',
   'util',
-  '$localStorage',
+  '$storage',
   '$state',
   'Api',
   '$uibModal',
   'receivedObject',
   '$filter',
-  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal, receivedObject, $filter) {
-    $scope.isIguana = $localStorage['isIguana'];
+  function ($scope, $uibModalInstance, util, $storage, $state, Api, $uibModal, receivedObject, $filter) {
+    $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
     $scope.util = util;
@@ -50,7 +50,7 @@ angular.module('IguanaGUIApp')
 
         if (receivedObject.length > 1) $scope.passphrase = receivedObject; // dev
         $scope.coinsSelectedToAdd = [];
-        $scope.receivedObject = $localStorage['iguana-login-active-coin'];
+        $scope.receivedObject = $storage['iguana-login-active-coin'];
 
         for (var i = 0; $scope.receivedObject.length > i; i++) {
           coinId = $scope.receivedObject[i];

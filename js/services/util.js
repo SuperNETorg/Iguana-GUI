@@ -2,7 +2,7 @@
 
 angular.module('IguanaGUIApp')
 .service('util', [
-  '$localStorage',
+  '$storage',
   '$uibModal',
   '$rootScope',
   'clipboard',
@@ -13,10 +13,10 @@ angular.module('IguanaGUIApp')
   '$document',
   '$state',
   '$filter',
-  function($localStorage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter) {
+  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter) {
     var self = this;
 
-    this.isIguana = $localStorage['isIguana'];
+    this.isIguana = $storage['isIguana'];
     this.coinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
@@ -25,23 +25,14 @@ angular.module('IguanaGUIApp')
     this.coindWalletLockCount = 0;
     this.minEpochTimestamp = 1471620867; // Jan 01 1970
 
-    this.lang = function(langID) {
-      var langIDComponents = langID.split('.');
-
-      if (lang && langIDComponents && lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]])
-        return lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]];
-      else if (dev.showConsoleMessages && dev.isDev) console.log('Missing translation in js/' + settings.defaultLang.toLowerCase() + '.js ' + langID);
-      return '{{ ' + langID + ' }}';
-    };
-
     this.checkSession = function() {
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
         secondsElapsedSinceLastAuth =
         Number(currentEpochTime) - Number(
-          ($localStorage['iguana-auth'] ? $localStorage['iguana-auth'].timestamp : 1000) / 1000);
+          ($storage['iguana-auth'] ? $storage['iguana-auth'].timestamp : 1000) / 1000);
 
       if (secondsElapsedSinceLastAuth >
-        ($localStorage['isIguana'] ? settings.defaultSessionLifetimeIguana :
+        ($storage['isIguana'] ? settings.defaultSessionLifetimeIguana :
           settings.defaultSessionLifetimeCoind)) {
         return true;
       } else {
@@ -50,23 +41,23 @@ angular.module('IguanaGUIApp')
     };
 
     this.logout = function(noRedirect, cb) { // TODO: move to auth service
-      if ($localStorage['isIguana']) {
+      if ($storage['isIguana']) {
         apiProto.prototype.walletLock();
-        $localStorage['iguana-auth'] = { 'timestamp' : this.minEpochTimestamp };
+        $storage['iguana-auth'] = { 'timestamp' : this.minEpochTimestamp };
         $state.go('login');
       } else {
         this.coindWalletLockCount = 0;
 
         if (coinsInfo != undefined)
           for (var key in coinsInfo) {
-            if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
+            if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
               this.coindWalletLockCount++;
             }
           }
 
         // in case something went bad
         if (this.coindWalletLockCount === 0) {
-          $localStorage['iguana-auth'] = { 'timestamp' : this.minEpochTimestamp };
+          $storage['iguana-auth'] = { 'timestamp' : this.minEpochTimestamp };
           $state.go('login');
         }
 
@@ -78,7 +69,7 @@ angular.module('IguanaGUIApp')
     this.logoutCoind = function(cb) {
       if (coinsInfo != undefined)
         for (var key in coinsInfo) {
-          if ($localStorage['iguana-' + key + '-passphrase'] && $localStorage['iguana-' + key + '-passphrase'].logged === 'yes') {
+          if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
             this.walletLock(key, this.logoutCoindCB(key));
           }
         }
@@ -87,10 +78,10 @@ angular.module('IguanaGUIApp')
 
     this.logoutCoindCB = function(key) { // TODO: move to auth service
       this.coindWalletLockResults[key] = true;
-      $localStorage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
+      $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
       if (Object.keys(this.coindWalletLockResults).length === this.coindWalletLockCount) {
-        $localStorage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp }; // Jan 01 1970
+        $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp }; // Jan 01 1970
         $state.go('login');
       }
     };
@@ -110,16 +101,15 @@ angular.module('IguanaGUIApp')
         addCoinArray = [];
 
       this.defaultSessionLifetime =
-        ($localStorage['isIguana'] ? settings.defaultSessionLifetimeIguana :
+        ($storage['isIguana'] ? settings.defaultSessionLifetimeIguana :
           settings.defaultSessionLifetimeCoind);
 
       for (var key in supportedCoinsList) {
         if (
-          (
-            !$localStorage['iguana-' + key + '-passphrase'] ||
-            (
-              $localStorage['iguana-' + key + '-passphrase'] &&
-              $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes'
+          (!$storage['iguana-' + key + '-passphrase'] ||
+           (
+              $storage['iguana-' + key + '-passphrase'] &&
+              $storage['iguana-' + key + '-passphrase'].logged !== 'yes'
             )
           ) ||
           $state.current.name === 'login' ||
@@ -127,8 +117,8 @@ angular.module('IguanaGUIApp')
         ) {
 
           if (coinsInfo == undefined &&
-            ($localStorage['isIguana'] && !coinsInfo[key].iguana) ||
-            (!$localStorage['isIguana'] && coinsInfo[key].connection === true)
+            ($storage['isIguana'] && !coinsInfo[key].iguana) ||
+            (!$storage['isIguana'] && coinsInfo[key].connection === true)
           ) {
             addCoinArray.push({
               'id': key.toUpperCase(),
@@ -179,11 +169,11 @@ angular.module('IguanaGUIApp')
     };
 
     this.setCurrency = function(currencyShortName) {
-      $localStorage['iguana-currency'] = { 'name': currencyShortName };
+      $storage['iguana-currency'] = { 'name': currencyShortName };
 
       if (coinsInfo != undefined)
         for (var key in coinsInfo) {
-          $localStorage['iguana-rates-' + key] = {
+          $storage['iguana-rates-' + key] = {
             'shortName': null,
             'value': null,
             'updatedAt': this.minEpochTimestamp,
@@ -193,7 +183,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getCurrency = function() { // TODO: move to rates service
-      return $localStorage['iguana-currency'];
+      return $storage['iguana-currency'];
     };
 
     this.trimComma = function(str) {
@@ -222,10 +212,10 @@ angular.module('IguanaGUIApp')
     };
 
     this.ratesUpdateElapsedTime = function(coin) { // TODO: move to rates service
-      if ($localStorage['iguana-rates-' + coin.toLowerCase()]) {
+      if ($storage['iguana-rates-' + coin.toLowerCase()]) {
         var currentEpochTime = new Date(Date.now()) / 1000,
           secondsElapsed = Number(currentEpochTime) -
-            Number($localStorage['iguana-rates-' + coin.toLowerCase().updatedAt / 1000]);
+            Number($storage['iguana-rates-' + coin.toLowerCase().updatedAt / 1000]);
 
         return secondsElapsed;
       } else {
@@ -303,7 +293,7 @@ angular.module('IguanaGUIApp')
           if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
         }
 
-      if (this.setPortPollResponseDS && ((!$localStorage['isIguana'] && !numPortsResponding) ||
+      if (this.setPortPollResponseDS && ((!$storage['isIguana'] && !numPortsResponding) ||
         (this.setPortPollResponseDS.isIguana === false &&
         this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
         (this.setPortPollResponseDS.isIguana === false &&
@@ -362,7 +352,7 @@ angular.module('IguanaGUIApp')
 
     // TODO: not handled all states!!!
     function checkUserIdentify(toState) {
-      if (!$localStorage['iguana-auth']) {
+      if (!$storage['iguana-auth']) {
         this.logout();
       } else {
         if (this.checkSession()) {

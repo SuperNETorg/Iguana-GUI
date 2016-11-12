@@ -6,17 +6,17 @@ angular.module('IguanaGUIApp')
   '$uibModalInstance',
   'util',
   'helper',
-  '$localStorage',
+  '$storage',
   '$state',
   'api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal, $filter) {
-    $scope.isIguana = $localStorage['isIguana'];
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, api, $uibModal, $filter) {
+    $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
     $scope.helper = helper;
-    $scope.activeCoin = $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
+    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
     var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
@@ -261,7 +261,7 @@ angular.module('IguanaGUIApp')
 
     $scope.sendCoinKeying = function() { // !! ugly !!
       var coinRate,
-          coin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0,
+          coin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           currencyCoin = $('.currency-coin'),
           currencyObj = $('.currency');
 

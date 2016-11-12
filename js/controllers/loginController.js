@@ -9,14 +9,14 @@ angular.module('IguanaGUIApp')
   '$log',
   '$uibModal',
   'api',
-  '$localStorage',
+  '$storage',
   '$timeout',
   '$rootScope',
   '$filter',
-  function ($scope, $http, $state, util, $log, $uibModal, Api, $localStorage, $timeout, $rootScope, $filter) {
+  function ($scope, $http, $state, util, $log, $uibModal, Api, $storage, $timeout, $rootScope, $filter) {
     $scope.util = util;
     $scope.$state = $state;
-    $scope.isIguana = $localStorage['isIguana'];
+    $scope.isIguana = $storage['isIguana'];
     $scope.$log = $log;
     $scope.passphraseModel = '';
     $scope.dev = dev;
@@ -54,7 +54,7 @@ angular.module('IguanaGUIApp')
 
           if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
           $scope.coinsSelectedToAdd = [];
-          $scope.receivedObject = $localStorage['iguana-login-active-coin'];
+          $scope.receivedObject = $storage['iguana-login-active-coin'];
 
           for (var i = 0; $scope.receivedObject.length > i; i++) {
             coinId = $scope.receivedObject[i];
@@ -94,8 +94,8 @@ angular.module('IguanaGUIApp')
             true
           );
         } else {
-          $localStorage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
-          $localStorage['iguana-auth'] = { 'timestamp': Date.now() };
+          $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
+          $storage['iguana-auth'] = { 'timestamp': Date.now() };
           $timeout(function() {
             $state.go('dashboard.main');
           }, 250);

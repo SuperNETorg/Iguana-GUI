@@ -6,13 +6,13 @@ angular.module('IguanaGUIApp')
   '$uibModalInstance',
   'util',
   'helper',
-  '$localStorage',
+  '$storage',
   '$state',
   'api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal, $filter) {
-    $scope.isIguana = $localStorage['isIguana'];
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, api, $uibModal, $filter) {
+    $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
     $scope.util = util;
@@ -31,7 +31,7 @@ angular.module('IguanaGUIApp')
 
     $scope.sendCoinKeying = function() { // !! ugly !!
       var coinRate,
-          coin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0,
+          coin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           currencyCoin = $('.currency-coin'),
           currencyObj = $('.currency');
 
@@ -73,7 +73,7 @@ angular.module('IguanaGUIApp')
     }
 
     function getReceiveCoinAddress() {
-      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : $localStorage['iguana-active-coin'] && $localStorage['iguana-active-coin'].id ? $localStorage['iguana-active-coin'].id : 0;
+      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
       var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
 
       coinAccountAddress.then(function(response) {
