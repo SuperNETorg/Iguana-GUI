@@ -4,6 +4,8 @@
  *       it is expected to work normally as any coin in the list below
  */
 
+'use strict';
+
 var supportedCoinsList = {
   'btc': {
     'name': 'Bitcoin',

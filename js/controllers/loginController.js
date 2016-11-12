@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
+angular.module('IguanaGUIApp')
 .controller('loginController', [
   '$scope',
   '$http',

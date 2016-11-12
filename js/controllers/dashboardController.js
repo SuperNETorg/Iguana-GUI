@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
+angular.module('IguanaGUIApp')
 .controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator',
   '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable', 'helper', '$rootScope', '$filter',
   function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable, helper, $rootScope, $filter) {

@@ -1,6 +1,7 @@
-var app = angular.module('IguanaGUIApp.controllers');
+'use strict';
 
-app.controller('addCoinLoginModalController', [
+angular.module('IguanaGUIApp')
+.controller('addCoinLoginModalController', [
   '$scope',
   '$uibModalInstance',
   'util',

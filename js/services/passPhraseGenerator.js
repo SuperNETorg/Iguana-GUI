@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
+angular.module('IguanaGUIApp')
 .service('passPhraseGenerator', function () {
   this.seeds = 0;
   this.seedLimit = 512;

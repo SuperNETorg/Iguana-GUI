@@ -1,7 +1,7 @@
 'use strict';
 
-var app = angular.module('IguanaGUIApp')
-app.directive('numberOnly', ['$document', function($document) {
+angular.module('IguanaGUIApp')
+.directive('numberOnly', ['$document', function($document) {
   return {
     restrict: 'A',
     require: '?ngModel',

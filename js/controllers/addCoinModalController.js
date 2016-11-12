@@ -1,7 +1,9 @@
 /* Iguana/services/bootstrap */
-var app = angular.module('IguanaGUIApp.controllers');
 
-app.controller('addCoinModalController', [
+'use strict';
+
+angular.module('IguanaGUIApp')
+.controller('addCoinModalController', [
   '$scope',
   '$uibModalInstance',
   'util',

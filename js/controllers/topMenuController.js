@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
+angular.module('IguanaGUIApp')
 .controller('topMenuController', ['$scope', '$http', '$state', 'util', 'helper',
   function($scope, $http, $state, util, helper) {
   //debugger

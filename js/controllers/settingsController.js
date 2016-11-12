@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers')
+angular.module('IguanaGUIApp')
 .controller('settingsController', ['$scope', '$http', '$state', 'helper', 'util',
   function($scope, $http, $state, helper, util) {
     $scope.helper = helper;

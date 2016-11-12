@@ -1,7 +1,7 @@
 'use strict';
 
-var app = angular.module('IguanaGUIApp')
-app.directive('spinner', function() {
+angular.module('IguanaGUIApp')
+.directive('spinner', function() {
   return {
     restrict: 'E',
     replace: true,
