@@ -5,13 +5,13 @@
       <div class="modal-content"-->
   <header class="modal-header orange-gradient box-shadow-bottom">
     <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-    <div class="title text-shadow text-center">{{ util.lang(isIguana ? 'ADD_COIN.ADDING_A_NEW_COIN' : 'DASHBOARD.ADDING_A_NEW_WALLET') }}</div>
+    <div class="title text-shadow text-center">{{ ( isIguana ? 'ADD_COIN.ADDING_A_NEW_COIN' : 'DASHBOARD.ADDING_A_NEW_WALLET' ) | lang }}</div>
   </header>
   <div class="form-content modal-body">
     <div class="login-add-coin-selection">
       <div class="login-add-coin-selection-title cursor-pointer" ng-click="openAddCoinModal()">
         <span ng-if="!coinsSelectedToAdd.length">
-          {{ util.lang(isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET') }}
+          {{ ( isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET' ) | lang }}
         </span>
         <div ng-repeat="item in coinsSelectedToAdd"
              ng-if="coinsSelectedToAdd.length">
@@ -20,11 +20,11 @@
         </div>
       </div>
     </div>
-    <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">{{ util.lang('LOGIN.INCORRECT_INPUT_P1') }} {{ wordCount }} {{ util.lang('LOGIN.INCORRECT_INPUT_P2') }}</div>
-    <div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">{{ util.lang('LOGIN.ENTER_A_PASSPHRASE_TO_ADD') }} wallet</div>
+    <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} {{ wordCount }} {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
+    <div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">{{ 'LOGIN.ENTER_A_PASSPHRASE_TO_ADD' | lang }} wallet</div>
     <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center" ng-model="passphrase"></textarea>
-    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin" ng-click="login()" ng-class="{ 'disabled': !passphrase.length || !coinsSelectedToAdd.length }">{{ util.lang('LOGIN.ADD') }}</button>
-    <div class="login-or-delim center unselectable" ng-hide="isIguana">{{ util.lang('LOGIN.OR') }}</div>
-    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup" ng-click="openAddCoinWalletCreateModal()" ng-class="{ 'disabled': !coinsSelectedToAdd.length }" ng-hide="isIguana">{{ util.lang('LOGIN.CREATE_ACCOUNT') }}</button>
+    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin" ng-click="login()" ng-class="{ 'disabled': !passphrase.length || !coinsSelectedToAdd.length }">{{ 'LOGIN.ADD' | lang }}</button>
+    <div class="login-or-delim center unselectable" ng-hide="isIguana">{{ 'LOGIN.OR' | lang }}</div>
+    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup" ng-click="openAddCoinWalletCreateModal()" ng-class="{ 'disabled': !coinsSelectedToAdd.length }" ng-hide="isIguana">{{ 'LOGIN.CREATE_ACCOUNT' | lang }}</button>
   </div>
 </section>

@@ -1,8 +1,8 @@
 <div class="currency-content">
   <div class="col-md-3 col-md-offset-1 col-sm-5 container-left">
-    <h3 class="choose-currency">{{ util.lang('SETTINGS.REFERENCE_CURRENCY') }}:</h3>
-    <h4 class="transaction-amount">{{ util.lang('SETTINGS.CHOOSE_YOUR_CURRENCY') }}</h4>
-    <h4 class="transaction-amount">{{ util.lang('SETTINGS.AMOUNT_OF_TRANSACTIONS') }}</h4>
+    <h3 class="choose-currency">{{ 'SETTINGS.REFERENCE_CURRENCY' | lang }}:</h3>
+    <h4 class="transaction-amount">{{ 'SETTINGS.CHOOSE_YOUR_CURRENCY' | lang }}</h4>
+    <h4 class="transaction-amount">{{ 'SETTINGS.AMOUNT_OF_TRANSACTIONS' | lang }}</h4>
   </div>
   <div class="col-md-7 col-sm-6 currency-parent">
     <ul class="currency-loop clearfix">
@@ -13,7 +13,7 @@
           </span>
         </h1>
         <strong class="short-name">{{ item.shortName }}</strong>
-        <span class="full-name">{{ item.fullName }}</span>
+        <span class="full-name">{{ item.fullName | lang }}</span>
       </li>
     </ul>
   </div>

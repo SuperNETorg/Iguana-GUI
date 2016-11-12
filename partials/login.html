@@ -5,7 +5,7 @@
         <header class="form-header orange-gradient box-shadow-bottom">
           <i class="bi_interface-cross cursor-pointer hidden"></i>
           <div class="title text-shadow">
-            {{ util.lang('LOGIN.WELCOME') }}
+            {{ 'LOGIN.WELCOME' | lang }}
           </div>
         </header>
         <div class="form-content">
@@ -13,7 +13,7 @@
             <div class="login-add-coin-selection-title cursor-pointer"
                  ng-click="openAddCoinModal()">
               <span ng-if="!coinsSelectedToAdd.length">
-                {{ util.lang(util.isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET') }}
+                {{ ( util.isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET' ) | lang }}
               </span>
               <div ng-repeat="item in coinsSelectedToAdd"
                    ng-if="coinsSelectedToAdd.length">
@@ -23,17 +23,17 @@
             </div>
           </div>
           <div class="login-input-directions center offset-bottom-sm unselectable">
-            {{ util.lang('LOGIN.ENTER_A_PASSPHRASE_TO_LOGIN') }}
+            {{ 'LOGIN.ENTER_A_PASSPHRASE_TO_LOGIN' | lang }}
           </div>
           <textarea name="loginPassphrase" id="passphrase"
                     class="login-passphrase-textarea offset-bottom-sm row center"
                     ng-model="passphraseModel"></textarea>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
                   ng-click="login()" ng-class="{ 'disabled': !passphraseModel.length || !coinsSelectedToAdd.length }">
-            {{ util.lang('LOGIN.LOGIN') }}</button>
-          <div class="login-or-delim center unselectable">{{ util.lang('LOGIN.OR') }}</div>
+            {{ 'LOGIN.LOGIN' | lang }}</button>
+          <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"
-                  ng-click="$state.go('signup.step1')">{{ util.lang('LOGIN.CREATE_ACCOUNT') }}</button>
+                  ng-click="$state.go('signup.step1')">{{ 'LOGIN.CREATE_ACCOUNT' | lang }}</button>
         </div>
       </section>
     </div>

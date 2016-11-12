@@ -3,7 +3,7 @@
   <div class="modal-content"-->
 <header class="modal-header form-header orange-gradient box-shadow-bottom">
   <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-  <div class="title text-shadow">{{ helper.lang('SEND.SENDING') }}</div>
+  <div class="title text-shadow">{{ 'SEND.SENDING' | lang }}</div>
 </header>
 <div class="form-content send-modal">
   <div class="modal-body">
@@ -23,27 +23,27 @@
         </div>
         <div class="pop-form">
           <div class="pop-detail send">
-            <h4>{{ helper.lang('SEND.SEND_TO') }}:</h4>
-            <p class="tx-address-validation">{{ helper.lang('SEND.ENTER_A_WALLET_ADDRESS') }}<!-- or select a contact --></p>
+            <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
+            <p class="tx-address-validation">{{ 'SEND.ENTER_A_WALLET_ADDRESS' | lang }}<!-- or select a contact --></p>
             <div class="inner-addon right-addon">
               <input type="text" class="tx-address" ng-model="sendCoin.address" />
             <div class="tx-address-icon glyphicon"></div>
           </div>
           <div class="pop-detail crncy">
-            <h4>{{ helper.lang('RECEIVE.AMOUNT') }}:</h4>
-            <p class="tx-amount-validation">{{ helper.lang('RECEIVE.ENTER_IN') }} {{ coin_id }} or {{ currency }}</p>
+            <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
+            <p class="tx-amount-validation">{{ 'RECEIVE.ENTER_IN' | lang }} {{ coin_id }} or {{ currency }}</p>
             <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-amount" ng-model="sendCoin.amount" ng-keydown="verifySendCoinForm()" number-only /><span>=</span><input type="text" min="0" class="tx-amount-currency" ng-model="sendCoin.amountCurrency" ng-keydown="verifySendCoinForm()" placeholder="0 {{ sendCoin.currency }}" number-only />
           </div>
           <div class="pop-detail crncy">
-            <h4>{{ helper.lang('SEND.FEE_PER_KB') }}:</h4>
-            <p class="tx-fee-validation">{{ helper.lang('SEND.MINIMUM_FEE') }}</p>
+            <h4>{{ 'SEND.FEE_PER_KB' | lang }}:</h4>
+            <p class="tx-fee-validation">{{ 'SEND.MINIMUM_FEE' | lang }}</p>
             <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-model="sendCoin.fee" ng-keydown="verifySendCoinForm()" number-only /><span>=</span><input type="text" min="0" class="tx-fee-currency" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keydown="verifySendCoinForm()" number-only />
           </div>
           <div class="pop-detail">
-            <h4>{{ helper.lang('SEND.NOTE_OPTIONAL') }}:</h4>
+            <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
             <textarea class="tx-note" ng-model="sendCoin.note"></textarea>
           </div>
-          <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ helper.lang('CREATE_ACCOUNT.NEXT') }}</button>
+          <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
         </div>
       </div>
     </div>

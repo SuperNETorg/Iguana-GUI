@@ -1,26 +1,25 @@
 <nav class="navbar top unselectable navbar-inverse" ng-hide="!enabled">
   <div class="clearfix">
     <div class="navbar-header">
-      <div class="navbar-brand">{{ util.lang('IGUANA.APP_TITLE') }}</div>
-      <div class="cursor-pointer lnk-logout" ng-click="util.logout()">{{
-        util.lang('DASHBOARD.LOGOUT') }}</div>
+      <div class="navbar-brand">{{ 'IGUANA.APP_TITLE' | lang }}</div>
+      <div class="cursor-pointer lnk-logout" ng-click="util.logout()">{{ 'DASHBOARD.LOGOUT' | lang }}</div>
     </div>
     <div class="top" id="top-menu">
       <ul class="nav navbar-nav top-menu">
         <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' }">
-          <div class="text">{{ util.lang('PAGE.DASHBOARD') }}</div>
+          <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
           <div class="border"></div>
         </li>
         <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.settings')" ng-class="{ 'active': $state.current.name === 'dashboard.settings' }">
-          <div class="text">{{ util.lang('PAGE.SETTINGS') }}</div>
+          <div class="text">{{ 'PAGE.SETTINGS' | lang }}</div>
           <div class="border"></div>
         </li>
         <li class="item cursor-pointer text-center hidden">
-          <div class="text">{{ util.lang('PAGE.PAYMENTS') }}</div>
+          <div class="text">{{ 'PAGE.PAYMENTS' | lang }}</div>
           <div class="border"></div>
         </li>
         <li class="item cursor-pointer text-center hidden">
-          <div class="text">{{ util.lang('PAGE.CONTACTS') }}</div>
+          <div class="text">{{ 'PAGE.CONTACTS' | lang }}</div>
           <div class="border"></div>
         </li>
       </ul>

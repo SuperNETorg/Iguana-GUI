@@ -6,46 +6,46 @@
         <section class="create-account-form" ng-hide="!$parent.addCoinCreateAccount.initStep">
           <header class="modal-header form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-close" ng-click="helper.toggleModalWindow('add-coin-create-wallet-form', 300)"></i>
-            <div class="title text-shadow">{{ util.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
+            <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>
           </header>
           <div class="form-content">
             <div class="login-add-coin-selection unselectable">
               <div class="login-add-coin-selection-title offset-bottom-sm">
-                <span ng-if="!objLen(coinsSelectedToAdd)">{{ util.lang('LOGIN.SELECT_A_WALLET') }}</span>
+                <span ng-if="!objLen(coinsSelectedToAdd)">{{ 'LOGIN.SELECT_A_WALLET' | lang }}</span>
                 <div ng-repeat="item in availableCoins" ng-if="coinsSelectedToAdd[item.coinId]">
                   <div>{{ item.name }}</div>
                   <div class="small">{{ item.id }}</div>
                 </div>
               </div>
             </div>
-            <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ util.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1') }} {{ $parent.addCoinCreateAccount.wordCount }}-{{ util.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2') }} <strong>{{ util.lang('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3') }}</strong></div>
+            <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang }} {{ $parent.addCoinCreateAccount.wordCount }}-{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang }} <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang }}</strong></div>
             <div class="passphrase-container row center offset-bottom-md">
-              <div class="title unselectable">{{ util.lang('CREATE_ACCOUNT.COPY_PASSPHRASE') }}</div>
+              <div class="title unselectable">{{ 'CREATE_ACCOUNT.COPY_PASSPHRASE' | lang }}</div>
               <div class="generated-passhprase cursor-pointer" ng-click="!$parent.addCoinCreateAccount.copyToClipboardNotSupported ? copyPassphrase() : null">{{ $parent.addCoinCreateAccount.passphrase }}</div>
               <input type="text" class="generated-passhprase-hidden cursor-pointer" ng-model="$parent.addCoinCreateAccount.passphrase"></input>
             </div>
             <input type="checkbox" id="passphrase-saved-checkbox" name="passphraseSaved" class="checkbox" ng-class="{ 'checked': $parent.addCoinCreateAccount.passphraseSavedCheckbox }" />
             <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer" ng-model="$parent.addCoinCreateAccount.passphraseSavedCheckbox" ng-click="$parent.addCoinCreateAccount.passphraseSavedCheckbox = !$parent.addCoinCreateAccount.passphraseSavedCheckbox">
-              <span class="box"></span><span class="label-text unselectable">{{ util.lang('CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE') }}</span>
+              <span class="box"></span><span class="label-text unselectable">{{ 'CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE' | lang }}</span>
             </label>
             <div class="non-iguana-coins-repeater hidden"></div>
             <div class="non-iguana-coins-repeater-errors"></div>
             <div class="login-or-delim center"></div>
-            <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-click="$parent.addCoinCreateAccount.initStep = false" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseSavedCheckbox }">{{ util.lang('CREATE_ACCOUNT.NEXT') }}</button>
+            <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-verify-passphrase" ng-click="$parent.addCoinCreateAccount.initStep = false" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseSavedCheckbox }">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
           </div>
         </section>
         <section class="verify-passphrase-form" ng-hide="$parent.addCoinCreateAccount.initStep">
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="toggleAddCoinWalletCreateModal(true)"></i>
-            <div class="title text-shadow">{{ util.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</div>
+            <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>
           </header>
           <div class="form-content">
-            <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ util.lang('LOGIN.INCORRECT_INPUT_P1') }} {{ $parent.addCoinCreateAccount.wordCount }} {{ util.lang('LOGIN.INCORRECT_INPUT_P2') }}</div>
-            <div class="login-input-directions center offset-bottom-sm unselectable">{{ util.lang('CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE') }}</div>
+            <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} {{ $parent.addCoinCreateAccount.wordCount }} {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
+            <div class="login-input-directions center offset-bottom-sm unselectable">{{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}</div>
             <textarea name="verifyPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center" ng-model="$parent.addCoinCreateAccount.passphraseVerify"></textarea>
             <div class="non-iguana-walletpassphrase-errors"></div>
             <div class="login-or-delim center unselectable"></div>
-            <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="encryptCoindWallet()" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseVerify.length }">{{ util.lang('CREATE_ACCOUNT.ADD_ACCOUNT') }}</button>
+            <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="encryptCoindWallet()" ng-class="{ 'disabled': !$parent.addCoinCreateAccount.passphraseVerify.length }">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</button>
           </div>
         </section>
       </div>
