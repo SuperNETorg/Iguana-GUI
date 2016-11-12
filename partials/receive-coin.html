@@ -1,6 +1,4 @@
 <section id="myModal" class="modal-content receiving-coin-content">
-  <!--div class="modal-dialog modal-popup modal-lg">
-    <div class="modal-content receiving-coin-content"-->
   <header class="modal-header form-header orange-gradient box-shadow-bottom">
     <i class="bi_interface-cross cursor-pointer btn-close pull-left" ng-click="close()"></i>
     <div class="text-center title text-shadow">{{ 'RECEIVE.RECEIVING_COINS' | lang }}</div>
@@ -12,8 +10,9 @@
       </div-->
       <div class="my-label my-address">{{ 'RECEIVE.MY_ADDRESS' | lang }}:</div>
       <h4 id="address">{{ receiveCoin.addressFormatted }}</h4>
+      <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="invisible" />
       <div class="buttons text-center">
-        <button class="btn copy-btn margin-bottom pull-left" ng-click="copyToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
+        <button class="btn copy-btn margin-bottom pull-left" ng-click="copyAddressToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
         <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ 'RECEIVE.SHARE' | lang }}</a>
       </div>
       <div class="qr-code" id="qrcode">
@@ -29,7 +28,7 @@
         <div class="row">
           <div class="input">
             <div class="currency-input inner-addon right-addon">
-              <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0" ng-model="receiveCoin.coinAmount" number-only />
+              <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0" ng-model="receiveCoin.coinAmount" number-only ng-keyup="coinAmountKeying()" />
               <span class="unit coin-unit glyphicon">{{ receiveCoin.coinName }}</span>
             </div>
           </div>
@@ -38,7 +37,7 @@
           </div>
           <div class="input">
             <div class="currency-input inner-addon right-addon">
-              <input type="text" min="0" class="crypto-currency currency" placeholder="0" ng-model="receiveCoin.currencyAmount" number-only ng-keydown="sendCoinKeying()" />
+              <input type="text" min="0" class="crypto-currency currency" placeholder="0" ng-model="receiveCoin.currencyAmount" number-only ng-keyup="currencyAmountKeying()" />
               <span class="unit unit-currency glyphicon">{{ receiveCoin.currencyName }}</span>
             </div>
           </div>
@@ -47,6 +46,4 @@
       <div class="clearfix"></div>
     </div>
   </div>
-<!--/div>
-  </div-->
 </section>

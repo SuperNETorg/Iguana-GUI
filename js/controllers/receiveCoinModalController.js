@@ -8,73 +8,39 @@ angular.module('IguanaGUIApp')
   'helper',
   '$storage',
   '$state',
-  'api',
+  '$api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, api, $uibModal, $filter) {
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
     $scope.util = util;
+    $scope.receiveCoin = {};
 
-    $scope.receiveCoin = {
-      address: '',
-      qrCode: ''
-    };
-
-    var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+        defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
+        _activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
+        coinRate = helper.updateRates(_activeCoin, defaultCurrency, true);
 
     getReceiveCoinAddress();
 
     // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
 
-    $scope.sendCoinKeying = function() { // !! ugly !!
-      var coinRate,
-          coin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
-          currencyCoin = $('.currency-coin'),
-          currencyObj = $('.currency');
+    $scope.coinAmountKeying = function() {
+      if ($scope.receiveCoin.coinAmount)
+        $scope.receiveCoin.currencyAmount = coinRate * $scope.receiveCoin.coinAmount;
+        $scope.receiveCoin.currencyAmount = $filter('decimalPlacesFormat')($scope.receiveCoin.currencyAmount, 'currency');
+    }
 
-      var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      coinRate = helper.updateRates(coin, defaultCurrency, true);
-
-      currencyCoin.on('keyup', function () {
-        var calcAmount = $(this).val() * coinRate;
-        currencyObj.val(calcAmount); // TODO: use decimals filter
-      });
-
-      currencyObj.on('keyup', function () {
-        var calcAmount = $(this).val() / coinRate;
-        currencyCoin.val(calcAmount); // TODO: use decimals filter
-      });
-
-      // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
-      // allow numeric only entry
-      var currencyInput = $('.receiving-coin-content .currency-input input');
-      currencyInput.keypress(function(event) {
-        var inputCode = event.which,
-            currentValue = $(this).val();
-        if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
-          if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
-            if (currentValue.match(/[.]/)) return false;
-          }
-          else if (inputCode == 45) {
-            if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
-          }
-          else if (inputCode == 8) return true;
-          else return false;
-        }
-        else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
-        }
-      });
+    $scope.currencyAmountKeying = function() {
+      if ($scope.receiveCoin.currencyAmount && $scope.receiveCoin.currencyAmount > 0)
+        $scope.receiveCoin.coinAmount = $scope.receiveCoin.currencyAmount / coinRate;
+        $scope.receiveCoin.coinAmount = $filter('decimalPlacesFormat')($scope.receiveCoin.coinAmount, 'coin');
     }
 
     function getReceiveCoinAddress() {
-      var _activeCoin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
-      var coinAccountAddress = api.getAccountAddress(_activeCoin, defaultAccount);
+      var coinAccountAddress = $api.getAccountAddress(_activeCoin, defaultAccount);
 
       coinAccountAddress.then(function(response) {
         $scope.receiveCoin.address = response;
@@ -90,12 +56,12 @@ angular.module('IguanaGUIApp')
       $scope.receiveCoin.currencyName = defaultCurrency.toUpperCase();
     }
 
-    $scope.copyToClipboard = function() {
-      var temp = $('<input>');
+    $scope.copyAddressToClipboard = function() {
+      var temp = angular.element('<input>');
 
-      $('body').append(temp);
-      //remove spaces from address
-      temp.val($('#address').text().replace(/ /g, '')).select();
+      angular.element(document.body).append(temp);
+      temp[0].value = $scope.receiveCoin.address;
+      temp[0].select();
 
       try {
         helper.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
