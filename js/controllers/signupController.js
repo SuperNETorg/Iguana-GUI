@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp.controllers')
   'api',
   '$rootScope',
   '$uibModal',
-  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope, $uibModal) {
+  '$filter',
+  function($scope, $http, $state, util, passPhraseGenerator, $localStorage, api, $rootScope, $uibModal, $filter) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -83,7 +84,7 @@ angular.module('IguanaGUIApp.controllers')
     function copyPassphraseWord($event) {
       $scope.util.addCopyToClipboardFromElement(
         angular.element($event.target),
-        $scope.util.lang('LOGIN.PASSPHRASE')
+        $filter('lang')('LOGIN.PASSPHRASE')
       );
     }
 
@@ -103,20 +104,20 @@ angular.module('IguanaGUIApp.controllers')
         var walletEncryptResponse = api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
 
         if (walletEncryptResponse !== -15) {
-          util.ngPrepMessageModal(selectedCoindToEncrypt + util.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          util.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
           if ($state.current.name === 'dashboard') {
             util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
           } else {
             $state.go('login');
           }
         } else {
-          util.ngPrepMessageModal(util.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          util.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
           if ($state.current.name === 'dashboard') {
             util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
           }
         }
       } else {
-        util.ngPrepMessageModal(util.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        util.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 

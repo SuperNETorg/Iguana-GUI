@@ -6,7 +6,7 @@ app.controller('addCoinModalController', [
   '$uibModalInstance',
   'util',
   '$localStorage',
-  function ($scope, $uibModalInstance, util, $localStorage, $rootScope,receivedObject) {
+  function ($scope, $uibModalInstance, util, $localStorage, $rootScope, receivedObject) {
     $scope.isIguana = $localStorage['isIguana'];
     $scope.open = open;
     $scope.close = close;

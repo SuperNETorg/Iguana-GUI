@@ -11,8 +11,8 @@ angular.module('IguanaGUIApp.controllers')
   '$interval',
   '$q',
   'app_variable',
-  '$rootScope',
-  function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $rootScope) {
+  '$filter',
+  function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $filter) {
     this.coinsInfo = [];
     this.isRT = false;
     $localStorage['isProxy'] = true;
@@ -123,7 +123,7 @@ angular.module('IguanaGUIApp.controllers')
       if (response.data && response.data.error) {
         if (response.data.error.message === 'need to unlock wallet') {
           if ($state.current.name !== 'login') {
-            util.prepMessageModal(util.lang('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
+            util.prepMessageModal($filter('lang')('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -159,7 +159,7 @@ angular.module('IguanaGUIApp.controllers')
           $localStorage['activeCoin']++;
 
           if ($localStorage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
-            util.prepMessageModal(util.lang('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
+            util.prepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -421,7 +421,7 @@ angular.module('IguanaGUIApp.controllers')
       }
 
       if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
-        tempOutOfSync.html(util.lang('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
+        tempOutOfSync.html($filter('lang')('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
         tempOutOfSync.removeClass('hidden');
       }
 
@@ -451,7 +451,7 @@ angular.module('IguanaGUIApp.controllers')
       if (!outOfSyncCoinsList.length) {
         tempOutOfSync.addClass(hiddenClassName);
       } else {
-        tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' ' + util.lang('EXPERIMENTAL.ARE') + ' ' : ' ' + util.lang('EXPERIMENTAL.IS') + ' ') + util.lang('EXPERIMENTAL.DASHBOARD_OUT_OF_SYNC_P3'));
+        tempOutOfSync.html(outOfSyncCoinsList + (outOfSyncCoinsList.indexOf(',') > -1 ? ' ' + $filter('lang')('EXPERIMENTAL.ARE') + ' ' : ' ' + $filter('lang')('EXPERIMENTAL.IS') + ' ') + $filter('lang')('EXPERIMENTAL.DASHBOARD_OUT_OF_SYNC_P3'));
         tempOutOfSync.removeClass(hiddenClassName);
       }
     };

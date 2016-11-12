@@ -10,7 +10,8 @@ app.controller('sendCoinModalController', [
   '$state',
   'api',
   '$uibModal',
-  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal) {
+  '$filter',
+  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal, $filter) {
     $scope.isIguana = $localStorage['isIguana'];
     $scope.close = close;
     $scope.util = util;
@@ -152,11 +153,11 @@ app.controller('sendCoinModalController', [
           txAddressValidation = $('.tx-address-validation');
       if (txAddressVal.length !== 34) {
         txAddressObj.addClass(errorClassName);
-        txAddressValidation.html(util.lang('SEND.INCORRECT_ADDRESS')).
+        txAddressValidation.html($filter('lang')('SEND.INCORRECT_ADDRESS')).
                             addClass(errorClassName2);
       } else {
         txAddressObj.removeClass(errorClassName);
-        txAddressValidation.html(util.lang('SEND.ENTER_A_WALLET_ADDRESS')).
+        txAddressValidation.html($filter('lang')('SEND.ENTER_A_WALLET_ADDRESS')).
                             removeClass(errorClassName2);
       }
       // coin amount
@@ -167,12 +168,12 @@ app.controller('sendCoinModalController', [
       if (Number(txAmountVal) === 0 || !txAmountVal.length || txAmountVal > activeCoinBalanceCoin) {
         txAmountObj.addClass(errorClassName);
         txAmountCurrencyObj.addClass(errorClassName);
-        txAmountValidation.html(Number(txAmountVal) === 0 || !txAmountVal.length ? util.lang('SEND.PLEASE_ENTER_AN_AMOUNT') : util.lang('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + coinName).
+        txAmountValidation.html(Number(txAmountVal) === 0 || !txAmountVal.length ? $filter('lang')('SEND.PLEASE_ENTER_AN_AMOUNT') : $filter('lang')('SEND.NOT_ENOUGH_MONEY') + ' ' + activeCoinBalanceCoin + ' ' + coinName).
                            addClass(errorClassName2);
       } else {
         txAmountObj.removeClass(errorClassName);
         txAmountCurrencyObj.removeClass(errorClassName);
-        txAmountValidation.html(util.lang('RECEIVE.ENTER_IN') + ' ' + coinName + ' ' + util.lang('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
+        txAmountValidation.html(util.lang('RECEIVE.ENTER_IN') + ' ' + coinName + ' ' + $filter('lang')('LOGIN.OR') + ' ' + defaultCurrency.toUpperCase()).
                            removeClass(errorClassName2);
       }
       // fee
@@ -182,19 +183,19 @@ app.controller('sendCoinModalController', [
       if ((Number(txFeeVal) + Number(txAmountVal)) > activeCoinBalanceCoin) {
         txFeeObj.addClass(errorClassName);
         txFeeCurrencyObj.addClass(errorClassName);
-        txFeeValidation.html((activeCoinBalanceCoin - Number(txAmountVal)) > 0 ? util.lang('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number(txAmountVal)) : util.lang('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin).
+        txFeeValidation.html((activeCoinBalanceCoin - Number(txAmountVal)) > 0 ? $filter('lang')('SEND.FEE_CANNOT_EXCEED') + ' ' + (activeCoinBalanceCoin - Number(txAmountVal)) : $filter('lang')('SEND.TOTAL_AMOUNT_CANNOT_EXCEED') + ' ' + activeCoinBalanceCoin).
                         addClass(errorClassName2);
       }
       if (Number(txFeeVal) < (coinsInfo[$scope.activeCoin].relayFee || 0.00001)) { // TODO: settings
         txFeeObj.addClass(errorClassName);
         txFeeCurrencyObj.addClass(errorClassName);
-        txFeeValidation.html((coinsInfo[$scope.activeCoin].relayFee || 0.00001) + ' ' + util.lang('SEND.IS_A_MIN_REQUIRED_FEE')).
+        txFeeValidation.html((coinsInfo[$scope.activeCoin].relayFee || 0.00001) + ' ' + $filter('lang')('SEND.IS_A_MIN_REQUIRED_FEE')).
                         addClass(errorClassName2);
       }
       if ((Number(txFeeVal) >= (coinsInfo[$scope.activeCoin].relayFee || 0.00001)) && (Number(txFeeVal) + Number(txAmountVal)) < activeCoinBalanceCoin)  {
         txFeeObj.removeClass(errorClassName);
         txFeeCurrencyObj.removeClass(errorClassName);
-        txFeeValidation.html(util.lang('SEND.MINIMUM_FEE')).
+        txFeeValidation.html($filter('lang')('SEND.MINIMUM_FEE')).
                         removeClass(errorClassName2);
       }
 
@@ -229,7 +230,7 @@ app.controller('sendCoinModalController', [
         helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
         execSendCoinCall();
       } else {
-        helper.prepMessageModal(util.lang('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
+        helper.prepMessageModal($filter('lang')('MESSAGE.WRONG_PASSPHRASE'), 'red', true);
       }
     }
 
@@ -251,7 +252,7 @@ app.controller('sendCoinModalController', [
         $scope.sendCoin.success = true;
       } else {
         // go to an error step
-        helper.prepMessageModal(util.lang('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+        helper.prepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
       }
 
       // revert pay fee

@@ -9,7 +9,8 @@ app.controller('addCoinLoginModalController', [
   'Api',
   '$uibModal',
   'receivedObject',
-  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal, receivedObject) {
+  '$filter',
+  function ($scope, $uibModalInstance, util, $localStorage, $state, Api, $uibModal, receivedObject, $filter) {
     $scope.isIguana = $localStorage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -77,12 +78,12 @@ app.controller('addCoinLoginModalController', [
       function walletLoginThen(walletLogin) {
         if (walletLogin === -14 || walletLogin === false) {
           util.ngPrepMessageModal(
-            util.lang('MESSAGE.WRONG_PASSPHRASE'),
+            $filter('lang')('MESSAGE.WRONG_PASSPHRASE'),
             'red',
             true);
         } else if (walletLogin === -15) {
           util.ngPrepMessageModal(
-            util.lang('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
+            $filter('lang')('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
             'red',
             true
           );

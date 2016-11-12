@@ -2,8 +2,8 @@
 
 angular.module('IguanaGUIApp.controllers')
 .controller('dashboardController', ['$scope', '$http', '$state', 'util', 'passPhraseGenerator',
-  '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable', 'helper', '$rootScope',
-  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable, helper, $rootScope) {
+  '$timeout', '$interval', '$localStorage', '$uibModal', 'api', 'app_variable', 'helper', '$rootScope', '$filter',
+  function($scope, $http, $state, util, passPhraseGenerator, $timeout, $interval, $localStorage, $uibModal, api, app_variable, helper, $rootScope, $filter) {
     var isIguana = $localStorage['isIguana'],
         coinsInfo = [];
 
@@ -300,10 +300,10 @@ angular.module('IguanaGUIApp.controllers')
 
                   if (transactionDetails.details[0].category === 'send') {
                     txIncomeOrExpenseFlag = iconSentClass;
-                    txStatus = util.lang('DASHBOARD.SENT');
+                    txStatus = $filter('lang')('DASHBOARD.SENT');
                   } else {
                     txIncomeOrExpenseFlag = iconReceivedClass;
-                    txStatus = util.lang('DASHBOARD.RECEIVED');
+                    txStatus = $filter('lang')('DASHBOARD.RECEIVED');
                   }
               } else {
                 // iguana
@@ -314,16 +314,16 @@ angular.module('IguanaGUIApp.controllers')
 
                 if (txStatus === 'send') {
                   txIncomeOrExpenseFlag = iconSentClass;
-                  txStatus = util.lang('DASHBOARD.SENT');
+                  txStatus = $filter('lang')('DASHBOARD.SENT');
                 } else {
                   txIncomeOrExpenseFlag = iconReceivedClass;
-                  txStatus = util.lang('DASHBOARD.RECEIVED');
+                  txStatus = $filter('lang')('DASHBOARD.RECEIVED');
                 }
               }
 
             if (transactionDetails) {
               if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
-                txStatus = util.lang('DASHBOARD.IN_PROCESS');
+                txStatus = $filter('lang')('DASHBOARD.IN_PROCESS');
                 txCategory = 'process';
               }
               if (isIguana && txAmount !== undefined || !isIguana)
@@ -412,7 +412,7 @@ angular.module('IguanaGUIApp.controllers')
     }
 
     $scope.copyPassphrase = function() {
-      $scope.addCoinCreateAccount.copyToClipboardNotSupported = helper.addCopyToClipboardFromElement('.generated-passhprase', util.lang('LOGIN.PASSPHRASE'));
+      $scope.addCoinCreateAccount.copyToClipboardNotSupported = helper.addCopyToClipboardFromElement('.generated-passhprase', $filter('lang')('LOGIN.PASSPHRASE'));
     }
 
     $scope.encryptCoindWallet = function() {
@@ -429,13 +429,13 @@ angular.module('IguanaGUIApp.controllers')
 
         if (walletEncryptResponse !== -15) {
           helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          helper.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + util.lang('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          helper.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
         } else {
           helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          helper.prepMessageModal(util.lang('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          helper.prepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
         }
       } else {
-        helper.prepMessageModal(util.lang('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        helper.prepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 
@@ -483,6 +483,6 @@ angular.module('IguanaGUIApp.controllers')
       addedCoinsOutput = helper.trimComma(addedCoinsOutput);
       failedCoinsOutput = helper.trimComma(failedCoinsOutput);
 
-      helper.prepMessageModal(addedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + util.lang('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
+      helper.prepMessageModal(addedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
     }
 }]);

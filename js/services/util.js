@@ -12,7 +12,8 @@ angular.module('IguanaGUIApp.controllers')
   '$q',
   '$document',
   '$state',
-  function($localStorage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state) {
+  '$filter',
+  function($localStorage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter) {
     var self = this;
 
     this.isIguana = $localStorage['isIguana'];
@@ -150,13 +151,13 @@ angular.module('IguanaGUIApp.controllers')
         try {
           clipboard.copyText(element.html());
           this.ngPrepMessageModal( // TODO
-            elementDisplayName + ' ' + this.lang('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
+            elementDisplayName + ' ' + $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
             'blue',
             true
           );
         } catch (e) {
           this.isExecCopyFailed = true;
-          this.ngPrepMessageModal(this.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
+          this.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
         }
       }
     };
@@ -168,8 +169,8 @@ angular.module('IguanaGUIApp.controllers')
         ariaDescribedBy: 'modal-body',
         windowClass: 'iguana-modal message-container msg-' + color,
         template: '<div class="modal-header msgbox-header">' +
-        '<div class="msg-body" data-dismiss="modal">' + message + '</div>' +
-        '</div>',
+                    '<div class="msg-body" data-dismiss="modal">' + message + '</div>' +
+                  '</div>',
         resolve: {
           items: function () {
           }
@@ -264,20 +265,20 @@ angular.module('IguanaGUIApp.controllers')
           if (difference / dayTemplate < 1) {
             if (difference / timeTemplate < 1) {
               if (difference / minuteTemplate > 1) {
-                displayText = parseInt(difference / minuteTemplate) + ' ' + this.lang('TIME_AGO.MINUTE');
+                displayText = parseInt(difference / minuteTemplate) + ' ' + $filter('lang')('TIME_AGO.MINUTE');
               } else {
-                displayText = this.lang('TIME_AGO.MOMENT');
+                displayText = $filter('lang')('TIME_AGO.MOMENT');
               }
             } else {
-              displayText = parseInt(difference / timeTemplate) + ' ' + this.lang('TIME_AGO.HOURS');
+              displayText = parseInt(difference / timeTemplate) + ' ' + $filter('lang')('TIME_AGO.HOURS');
             }
           } else {
             var days = parseInt(difference / dayTemplate);
 
             if (days > 1) {
-              displayText = parseInt(difference / dayTemplate) + ' ' + this.lang('TIME_AGO.DAYS');
+              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAYS');
             } else {
-              displayText = parseInt(difference / dayTemplate) + ' ' + this.lang('TIME_AGO.DAY');
+              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAY');
             }
           }
           timeAgo.text(displayText);
@@ -341,19 +342,19 @@ angular.module('IguanaGUIApp.controllers')
     };
 
     this.prepNoDaemonModal = function() { // TODO: move portpoll service
-      this.ngPrepMessageModal(this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
+      this.ngPrepMessageModal($filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P1') +
         ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' +
-          this.lang('MESSAGE.NO_REQUIRED_DAEMON_P2') +
+          $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P2') +
         '</a> ' +
-        this.lang('MESSAGE.NO_REQUIRED_DAEMON_P3') +
+        $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P3') +
         (this.toState.name !== 'login' &&
           this.toState.name !== 'signup' ?
-        '<br/><br/><a onclick=\"this.logout()\">' + this.lang('DASHBOARD.LOGOUT') + '</a>' : ''),
+        '<br/><br/><a onclick=\"this.logout()\">' + $filter('lang')('DASHBOARD.LOGOUT') + '</a>' : ''),
         'red', true);
     };
 
     this.prepRequirementsModal = function() { // TODO: move portpoll service
-      this.ngPrepMessageModal(this.lang('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
+      this.ngPrepMessageModal($filter('lang')('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
 
       // "No required daemon is running" message always stays active on top of any ui
       //  this ensures that users won't interact with any elements until connectivity problems are resolved

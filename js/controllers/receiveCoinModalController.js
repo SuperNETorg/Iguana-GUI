@@ -10,7 +10,8 @@ app.controller('receiveCoinModalController', [
   '$state',
   'api',
   '$uibModal',
-  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal) {
+  '$filter',
+  function ($scope, $uibModalInstance, util, helper, $localStorage, $state, api, $uibModal, $filter) {
     $scope.isIguana = $localStorage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -97,10 +98,10 @@ app.controller('receiveCoinModalController', [
       temp.val($('#address').text().replace(/ /g, '')).select();
 
       try {
-        helper.ngPrepMessageModal(util.lang('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
+        helper.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
         document.execCommand('copy');
       } catch(err) {
-        helper.ngPrepMessageModal(util.lang('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
+        helper.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
       }
 
       temp.remove();
