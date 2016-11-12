@@ -8,11 +8,11 @@ angular.module('IguanaGUIApp')
   'util',
   '$passPhraseGenerator',
   '$storage',
-  'api',
+  '$api',
   '$rootScope',
   '$uibModal',
   '$filter',
-  function($scope, $http, $state, util, $passPhraseGenerator, $storage, api, $rootScope, $uibModal, $filter) {
+  function($scope, $http, $state, util, $passPhraseGenerator, $storage, $api, $rootScope, $uibModal, $filter) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -101,7 +101,7 @@ angular.module('IguanaGUIApp')
       // var selectedCoindToEncrypt = 'mzc';
 
       if ($scope.passPhraseText !== '') {
-        var walletEncryptResponse = api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
+        var walletEncryptResponse = $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
 
         if (walletEncryptResponse !== -15) {
           util.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);

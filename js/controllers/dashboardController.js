@@ -2,13 +2,13 @@
 
 angular.module('IguanaGUIApp')
 .controller('dashboardController', ['$scope', '$http', '$state', 'util', '$passPhraseGenerator',
-  '$timeout', '$interval', '$storage', '$uibModal', 'api', 'app_variable', 'helper', '$rootScope', '$filter',
-  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal, api, app_variable, helper, $rootScope, $filter) {
+  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter',
+  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal, $api, vars, helper, $rootScope, $filter) {
     var isIguana = $storage['isIguana'],
         coinsInfo = [];
 
     $rootScope.$on('getCoin', function ($ev, coins) {
-      coinsInfo = app_variable.coinsInfo;
+      coinsInfo = vars.coinsInfo;
       constructAccountCoinRepeater();
     });
 
@@ -105,8 +105,8 @@ angular.module('IguanaGUIApp')
     });
 
     $scope.$on('$viewContentLoaded', function(event) {
-      if (app_variable.coinsInfo && Object.keys(app_variable.coinsInfo).length) {
-        coinsInfo = app_variable.coinsInfo;
+      if (vars.coinsInfo && Object.keys(vars.coinsInfo).length) {
+        coinsInfo = vars.coinsInfo;
         constructAccountCoinRepeater(true);
       }
     });
@@ -193,7 +193,7 @@ angular.module('IguanaGUIApp')
           });
         }
         applyDashboardResizeFix();
-        api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
+        $api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
       }
     }
 
@@ -264,7 +264,7 @@ angular.module('IguanaGUIApp')
       if (!update) $scope.txUnit.loading = true;
 
       $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
-      api.listTransactions(defaultAccount, $scope.activeCoin, constructTransactionUnitRepeaterCB);
+      $api.listTransactions(defaultAccount, $scope.activeCoin, constructTransactionUnitRepeaterCB);
     }
 
     // new tx will appear at the top of the list
@@ -424,7 +424,7 @@ angular.module('IguanaGUIApp')
       var coinsSelectedToAdd = helper.reindexAssocArray($scope.coinsSelectedToAdd);
 
       if ($scope.addCoinCreateAccount.passphrase === $scope.addCoinCreateAccount.passphraseVerify) {
-        var walletEncryptResponse = api.walletEncrypt($scope.addCoinCreateAccount, coinsSelectedToAdd[0]);
+        var walletEncryptResponse = $api.walletEncrypt($scope.addCoinCreateAccount, coinsSelectedToAdd[0]);
 
         if (walletEncryptResponse !== -15) {
           helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
@@ -453,7 +453,7 @@ angular.module('IguanaGUIApp')
           if (coinsSelectedToAdd[i]) {
             (function(x) {
               $timeout(function() {
-                api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
+                $api.addCoin(coinsSelectedToAdd[x], addCoinDashboardCB);
               }, x === 0 ? 0 : settings.addCoinTimeout * 1000);
             })(i);
           }

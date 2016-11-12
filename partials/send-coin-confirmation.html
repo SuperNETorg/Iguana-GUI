@@ -1,6 +1,3 @@
-<!--div class="modal-overlay" ng-click="helper.toggleModalWindow('send-coin-form', 300)"></div>
-<div class="modal-dialog modal-popup modal-lg">
-  <div class="modal-content"-->
 <!--div class="send-coin-progress-overlay hidden">
   <div class="send-coin-status">Sending...</div>
   <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next">
@@ -37,14 +34,18 @@
               <span class="name">{{ sendCoin.coinName }}</span>
             </div>
             <div class="col-sm-6 hd-right col-xs-6 balance">
-              <span class="balance-coin"><span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span></span>
-              <p class="rs balance-currency"><span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span></p>
+              <span class="balance-coin">
+                <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
+              </span>
+              <p class="rs balance-currency">
+                <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+              </p>
             </div>
           </div>
         </div>
         <div class="pop-form">
           <div class="pop-detail send check">
-            <h4>{{ 'SEND.SEND_TO | lang }}:</h4>
+            <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
             <p>{{ sendCoin.address }}</p>
           </div>
           <div class="pop-detail crncy chk-crncy crncy-rs">
@@ -68,6 +69,4 @@
       </div>
     </div>
   </div>
-<!--/div>
-</div-->
 </div>

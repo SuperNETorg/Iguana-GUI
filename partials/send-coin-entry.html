@@ -1,6 +1,3 @@
-<!--div class="modal-overlay" ng-click="helper.toggleModalWindow('send-coin-form', 300)"></div>
-<div class="modal-dialog modal-popup modal-lg">
-  <div class="modal-content"-->
 <header class="modal-header form-header orange-gradient box-shadow-bottom">
   <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
   <div class="title text-shadow">{{ 'SEND.SENDING' | lang }}</div>
@@ -16,8 +13,12 @@
               <span class="name">{{ sendCoin.coinName }}</span>
             </div>
             <div class="col-sm-6 hd-right col-xs-6 balance">
-              <span class="balance-coin"><span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span></span>
-              <p class="rs balance-currency"><span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span></p>
+              <span class="balance-coin">
+                <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
+              </span>
+              <p class="rs balance-currency">
+                <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -32,12 +33,16 @@
           <div class="pop-detail crncy">
             <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
             <p class="tx-amount-validation">{{ 'RECEIVE.ENTER_IN' | lang }} {{ coin_id }} or {{ currency }}</p>
-            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-amount" ng-model="sendCoin.amount" ng-keydown="verifySendCoinForm()" number-only /><span>=</span><input type="text" min="0" class="tx-amount-currency" ng-model="sendCoin.amountCurrency" ng-keydown="verifySendCoinForm()" placeholder="0 {{ sendCoin.currency }}" number-only />
+            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-amount" ng-model="sendCoin.amount" ng-keydown="verifySendCoinForm()" number-only />
+            <span>=</span>
+            <input type="text" min="0" class="tx-amount-currency" ng-model="sendCoin.amountCurrency" ng-keydown="verifySendCoinForm()" placeholder="0 {{ sendCoin.currency }}" number-only />
           </div>
           <div class="pop-detail crncy">
             <h4>{{ 'SEND.FEE_PER_KB' | lang }}:</h4>
             <p class="tx-fee-validation">{{ 'SEND.MINIMUM_FEE' | lang }}</p>
-            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-model="sendCoin.fee" ng-keydown="verifySendCoinForm()" number-only /><span>=</span><input type="text" min="0" class="tx-fee-currency" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keydown="verifySendCoinForm()" number-only />
+            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-model="sendCoin.fee" ng-keydown="verifySendCoinForm()" number-only />
+            <span>=</span>
+            <input type="text" min="0" class="tx-fee-currency" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keydown="verifySendCoinForm()" number-only />
           </div>
           <div class="pop-detail">
             <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
@@ -49,5 +54,3 @@
     </div>
   </div>
 </div>
-  <!--/div>
-</div-->

@@ -8,10 +8,10 @@ angular.module('IguanaGUIApp')
   'helper',
   '$storage',
   '$state',
-  'api',
+  '$api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, api, $uibModal, $filter) {
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter) {
     $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
@@ -33,7 +33,7 @@ angular.module('IguanaGUIApp')
       passphrase: ''
     };
 
-    api.getBalance(defaultAccount, $scope.activeCoin, toggleSendCoinModal);
+    $api.getBalance(defaultAccount, $scope.activeCoin, toggleSendCoinModal);
 
     function toggleSendCoinModal(balance, coin) {
       $scope.sendCoin.currencyRate = helper.updateRates(coin, defaultCurrency, true);
@@ -224,7 +224,7 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.confirmSendCoinPassphrase = function() {
-      var coindWalletLogin = api.walletLogin($scope.sendCoin.passphrase, settings.defaultWalletUnlockPeriod, $scope.activeCoin);
+      var coindWalletLogin = $api.walletLogin($scope.sendCoin.passphrase, settings.defaultWalletUnlockPeriod, $scope.activeCoin);
 
       if (coindWalletLogin !== -14) {
         helper.toggleModalWindow('send-coin-confirm-passphrase', 300);
@@ -243,10 +243,10 @@ angular.module('IguanaGUIApp')
           };
 
       if (Number($scope.sendCoin.fee) !== Number(coinsInfo[$scope.activeCoin].relayFee) && Number($scope.sendCoin.fee) !== 0.00001 && Number($scope.sendCoin.fee) !== 0) {
-        setTxFeeResult = api.setTxFee($scope.activeCoin, sendFormDataCopy.fee);
+        setTxFeeResult = $api.setTxFee($scope.activeCoin, sendFormDataCopy.fee);
       }
 
-      var sendTxResult = api.sendToAddress($scope.activeCoin, txDataToSend);
+      var sendTxResult = $api.sendToAddress($scope.activeCoin, txDataToSend);
 
       if (sendTxResult.length === 64) {
         $scope.sendCoin.success = true;
@@ -256,7 +256,7 @@ angular.module('IguanaGUIApp')
       }
 
       // revert pay fee
-      if (setTxFeeResult) api.setTxFee($scope.activeCoin, 0);
+      if (setTxFeeResult) $api.setTxFee($scope.activeCoin, 0);
     }
 
     $scope.sendCoinKeying = function() { // !! ugly !!

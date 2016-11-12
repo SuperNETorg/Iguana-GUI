@@ -8,12 +8,12 @@ angular.module('IguanaGUIApp')
   'util',
   '$log',
   '$uibModal',
-  'api',
+  '$api',
   '$storage',
   '$timeout',
   '$rootScope',
   '$filter',
-  function ($scope, $http, $state, util, $log, $uibModal, Api, $storage, $timeout, $rootScope, $filter) {
+  function ($scope, $http, $state, util, $log, $uibModal, $api, $storage, $timeout, $rootScope, $filter) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.isIguana = $storage['isIguana'];
@@ -73,8 +73,8 @@ angular.module('IguanaGUIApp')
 
     $scope.login = function () {
       var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
-      Api.walletLock(coinsSelectedToAdd[0].coinId);
-      Api.walletLogin(
+      $api.walletLock(coinsSelectedToAdd[0].coinId);
+      $api.walletLogin(
         $scope.passphraseModel,
         settings.defaultSessionLifetime,
         coinsSelectedToAdd[0].coinId,

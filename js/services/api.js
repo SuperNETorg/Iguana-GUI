@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.service('api', [
-  '$localStorage',
+.service('$api', [
   'util',
   'helper',
   '$http',
@@ -10,10 +9,10 @@ angular.module('IguanaGUIApp')
   '$timeout',
   '$interval',
   '$q',
-  'app_variable',
+  'vars',
   '$filter',
   '$storage',
-  function ($localStorage, util, helper, $http, $state, $timeout, $interval, $q, app_variable, $filter, $storage) {
+  function (util, helper, $http, $state, $timeout, $interval, $q, vars, $filter, $storage) {
     this.coinsInfo = [];
     this.isRT = false;
     $storage['isProxy'] = true;
@@ -281,7 +280,7 @@ angular.module('IguanaGUIApp')
             }
           }, 1000);
 
-          app_variable.coinsInfo = this.coinsInfo;
+          vars.coinsInfo = this.coinsInfo;
           cb(this.coinsInfo);
         } else {
           var setPortPollResponseDS = $storage['iguana-port-poll'];

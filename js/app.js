@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap'])
-.value('app_variable', {})
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', 'app_variable', createHelpers])
+.value('vars', {})
+.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', 'vars', createHelpers])
 angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -81,7 +81,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, util, $timeout, api) {
+.run(function($rootScope, $location, $state, util, $timeout, $api) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
     // debugger;
@@ -99,7 +99,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
   //   }
   });
 
-  api.testConnection(function (coins) {
+  $api.testConnection(function (coins) {
     $rootScope.$broadcast('getCoin', coins);
   }); // switch with Api service once it's finished
 });
