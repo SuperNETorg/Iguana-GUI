@@ -48,8 +48,7 @@ angular.module('IguanaGUIApp.controllers')
       }
     };
 
-    // TODO move to api service
-    this.logout = function(noRedirect, cb) {
+    this.logout = function(noRedirect, cb) { // TODO: move to auth service
       if ($localStorage['isIguana']) {
         apiProto.prototype.walletLock();
         $localStorage['iguana-auth'] = { 'timestamp' : this.minEpochTimestamp };
@@ -85,8 +84,7 @@ angular.module('IguanaGUIApp.controllers')
       if (cb) cb();
     };
 
-    //TODO move to api service
-    this.logoutCoindCB = function(key) {
+    this.logoutCoindCB = function(key) { // TODO: move to auth service
       this.coindWalletLockResults[key] = true;
       $localStorage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
@@ -106,7 +104,7 @@ angular.module('IguanaGUIApp.controllers')
       return _array;
     };
 
-    this.constructCoinRepeater = function(coinsInfo) {
+    this.constructCoinRepeater = function(coinsInfo) { // TODO: move to add coin modal
       var index = 0,
         addCoinArray = [];
 
@@ -163,7 +161,7 @@ angular.module('IguanaGUIApp.controllers')
       }
     };
 
-    this.ngPrepMessageModal = function(message, color) {
+    this.ngPrepMessageModal = function(message, color) { // TODO: move to message service
       $uibModal.open({
         animation: true,
         ariaLabelledBy: 'modal-title',
@@ -193,28 +191,8 @@ angular.module('IguanaGUIApp.controllers')
         }
     };
 
-    this.getCurrency = function() {
+    this.getCurrency = function() { // TODO: move to rates service
       return $localStorage['iguana-currency'];
-    };
-
-    // TODO ?????
-    this.getCursorPositionInputElement = function(element) {
-      if (element.selectionStart) return element.selectionStart;
-
-      else if (document.selection) {
-        element.focus();
-        var r = document.selection.createRange();
-        if (r == null) return 0;
-
-        var re = element.createTextRange(),
-          rc = re.duplicate();
-        re.moveToBookmark(r.getBookmark());
-        rc.setEndPoint('EndToStart', re);
-
-        return rc.text.length;
-      }
-
-      return 0;
     };
 
     this.trimComma = function(str) {
@@ -228,7 +206,7 @@ angular.module('IguanaGUIApp.controllers')
       return str;
     };
 
-    this.convertUnixTime = function(UNIX_timestamp, format) {
+    this.convertUnixTime = function(UNIX_timestamp, format) { // TODO: move datetime service
       var a = new Date(UNIX_timestamp * 1000),
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         year = a.getFullYear(),
@@ -242,8 +220,7 @@ angular.module('IguanaGUIApp.controllers')
       if (format === 'HHMM') return hour + ':' + min;
     };
 
-    // TODO ?????
-    this.ratesUpdateElapsedTime = function(coin) {
+    this.ratesUpdateElapsedTime = function(coin) { // TODO: move to rates service
       if ($localStorage['iguana-rates-' + coin.toLowerCase()]) {
         var currentEpochTime = new Date(Date.now()) / 1000,
           secondsElapsed = Number(currentEpochTime) -
@@ -255,11 +232,11 @@ angular.module('IguanaGUIApp.controllers')
       }
     };
 
-    this.timeAgo = function(element) {
+    this.timeAgo = function(element) { // TODO: move datetime service
       //debugger;
       $timeout(function () {
         //debugger;
-        if($(element).length){
+        if($(element).length){ // TODO: refactor, no jquery
           var timeAgo = $(element),
             threshold = settings.thresholdTimeAgo,
             displayText = '';
@@ -310,15 +287,14 @@ angular.module('IguanaGUIApp.controllers')
     };
 
     // in seconds
-    this.getTimeDiffBetweenNowAndDate = function(from) {
+    this.getTimeDiffBetweenNowAndDate = function(from) { // TODO: move datetime service
       var currentEpochTime = new Date(Date.now()) / 1000,
         secondsElapsed = Number(currentEpochTime) - Number(from / 1000);
 
       return secondsElapsed;
     };
 
-    // TODO ?????
-    this.checkIfIguanaOrCoindIsPresent = function() {
+    this.checkIfIguanaOrCoindIsPresent = function() { // TODO: move portpoll service
       var numPortsResponding = 0;
 
       if (coinsInfo != undefined)
@@ -364,8 +340,7 @@ angular.module('IguanaGUIApp.controllers')
       }
     };
 
-    // TODO not completed
-    this.prepNoDaemonModal = function() {
+    this.prepNoDaemonModal = function() { // TODO: move portpoll service
       this.ngPrepMessageModal(this.lang('MESSAGE.NO_REQUIRED_DAEMON_P1') +
         ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' +
           this.lang('MESSAGE.NO_REQUIRED_DAEMON_P2') +
@@ -377,12 +352,7 @@ angular.module('IguanaGUIApp.controllers')
         'red', true);
     };
 
-    // TODO useless
-    this.getCurrentPage = function() { // obsolete, remove
-      return this.toState;
-    };
-
-    this.prepRequirementsModal = function() {
+    this.prepRequirementsModal = function() { // TODO: move portpoll service
       this.ngPrepMessageModal(this.lang('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
 
       // "No required daemon is running" message always stays active on top of any ui
@@ -414,6 +384,5 @@ angular.module('IguanaGUIApp.controllers')
 
       checkUserIdentify.apply(self, [toState, fromState]);
     });
-
   }
 ]);

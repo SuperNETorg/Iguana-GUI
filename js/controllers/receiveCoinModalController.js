@@ -69,13 +69,6 @@ app.controller('receiveCoinModalController', [
           if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
         }
       });
-      currencyInput.keydown(function(event) {
-        var keyCode = event.keyCode || event.which;
-
-        if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
-          event.preventDefault();
-        }
-      });
     }
 
     function getReceiveCoinAddress() {

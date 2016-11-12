@@ -111,25 +111,6 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     return $localStorage['iguana-currency'];
   }
 
-  this.getCursorPositionInputElement = function(element) {
-    if (element.selectionStart) return element.selectionStart;
-
-    else if (document.selection) {
-      element.focus();
-      var r = document.selection.createRange();
-      if (r == null) return 0;
-
-      var re = element.createTextRange(),
-          rc = re.duplicate();
-      re.moveToBookmark(r.getBookmark());
-      rc.setEndPoint('EndToStart', re);
-
-      return rc.text.length;
-    }
-
-    return 0;
-  }
-
   /* TODO: 1) filter
            2) add array to obj and obj to array conversion(?)
   */
@@ -519,32 +500,6 @@ var createHelpers = function($uibModal, $rootScope, clipboard, $timeout, $interv
     }
 
     return addCoinArray;
-  }
-
-  this.bindCoinRepeaterSearch = function() {
-    var fadeClassName = 'fade',
-        overrideOpacityClassName = 'override-opacity',
-        supportedCoinsRepeater = $('.supported-coins-repeater'),
-        supportedCoinsRepeaterCoin = $('.supported-coins-repeater-inner .coin');
-
-    $('.quick-search .input').keyup(function() {
-      var quickSearchVal = $(this).val().toLowerCase();
-
-      supportedCoinsRepeater.addClass(overrideOpacityClassName);
-      $('.supported-coins-repeater-inner .coin .name').each(function(index, item) {
-        var itemText = $(item).text().toString().toLowerCase();
-
-        if (itemText.indexOf(quickSearchVal) > -1) $(this).parent().removeClass(fadeClassName);
-        else $(this).parent().addClass(fadeClassName);
-      });
-
-      // fade in elements if nothing was found
-      if (supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === supportedCoinsRepeaterCoin.length ||
-          supportedCoinsRepeaterCoin.filter('.' + fadeClassName).length === 0) {
-        supportedCoinsRepeaterCoin.filter('.' + fadeClassName).removeClass(fadeClassName);
-        supportedCoinsRepeater.removeClass(overrideOpacityClassName);
-      }
-    });
   }
 
   /* TODO: move to rates service */

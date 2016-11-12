@@ -29,7 +29,7 @@
         <div class="row">
           <div class="input">
             <div class="currency-input inner-addon right-addon">
-              <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0" ng-model="receiveCoin.coinAmount" ng-keydown="sendCoinKeying()" />
+              <input type="text" min="0" class="crypto-currency currency-coin" placeholder="0" ng-model="receiveCoin.coinAmount" number-only />
               <span class="unit coin-unit glyphicon">{{ receiveCoin.coinName }}</span>
             </div>
           </div>
@@ -38,7 +38,7 @@
           </div>
           <div class="input">
             <div class="currency-input inner-addon right-addon">
-              <input type="text" min="0" class="crypto-currency currency" placeholder="0" ng-model="receiveCoin.currencyAmount" ng-keydown="sendCoinKeying()" />
+              <input type="text" min="0" class="crypto-currency currency" placeholder="0" ng-model="receiveCoin.currencyAmount" number-only ng-keydown="sendCoinKeying()" />
               <span class="unit unit-currency glyphicon">{{ receiveCoin.currencyName }}</span>
             </div>
           </div>
