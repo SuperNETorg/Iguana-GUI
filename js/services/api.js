@@ -42,9 +42,7 @@ angular.module('IguanaGUIApp')
       if (
         timeDiff >= util.portPollUpdateTimeout ||
         timeDiff === 0 ||
-        index === 0 ||
-        $state.current.name === 'login' ||
-        $state.current.name === 'signup'
+        index === 0
       ) {
         var defaultIguanaServerUrl = this.getConf().server.protocol +
           this.getConf().server.ip +
@@ -175,11 +173,11 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.testCoinIsnotIguanaMode = function(response, index) {
+    this.testCoinIsNotIguanaMode = function(response, index) {
       if (!$storage['isIguana']) {
         this.coindCheckRT(index, function (coindCheckRTResponse) {
           var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
-            syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
+              syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
           if (dev.showConsoleMessages && dev.isDev)
             console.log('Connections: ' + response.data.result.connections);
@@ -286,23 +284,23 @@ angular.module('IguanaGUIApp')
           var setPortPollResponseDS = $storage['iguana-port-poll'];
 
           util.setPortPollResponse();
-          util.checkIfIguanaOrCoindIsPresent.apply({setPortPollResponseDS: setPortPollResponseDS});
+          util.checkIfIguanaOrCoindIsPresent.apply({ setPortPollResponseDS: setPortPollResponseDS });
         }
       }
     };
 
-    this.getCoins = function (index, _index, conf){
+    this.getCoins = function(index, _index, conf) {
       var fullUrl = this.getFullApiRoute('getinfo', conf),
-        postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
-        postAuthHeaders = this.getBasicAuthHeaderObj(conf),
-        deferred = $q.defer();
+          postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
+          postAuthHeaders = this.getBasicAuthHeaderObj(conf),
+          deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
       .then(function(response) {
-        deferred.resolve([index, response, _index]);
+        deferred.resolve([index, response, ++_index]);
       },function(response) {
         deferred.reject([index, response, ++_index]);
       });
@@ -316,7 +314,7 @@ angular.module('IguanaGUIApp')
         debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
       if (dev.isDev && dev.showSyncDebug) {
-        debugSyncInfo.html(''); //ToDo change to angular broadcast
+        debugSyncInfo.html(''); // TODO: change to angular broadcast
       }
 
       var coins = this.getConf().coins;
@@ -338,8 +336,8 @@ angular.module('IguanaGUIApp')
 
       function onResolve(data) {
         var index = data[0],
-          response = data[1],
-          _index = data[2];
+            response = data[1],
+            _index = data[2];
 
         this.errorHandler(response, index);
 
@@ -364,10 +362,11 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
           this.coinsInfo[index].connection = true;
 
-          this.testCoinIsnotIguanaMode(response, index);
+          this.testCoinIsNotIguanaMode(response, index);
+        } else {
+          this.testCoinIguanaMode(response, index); // TODO: double check if this is working
         }
 
-        this.testCoinIguanaMode(response, index);
         this.checkLoopEnd(_index, cb);
       }
 
@@ -750,7 +749,7 @@ angular.module('IguanaGUIApp')
     this.getExternalRate = function(quote, cb) {
       var result = false,
           quoteComponents = quote.split('/'),
-          fullUrl = 'https://min-api.cryptocompare.comggg/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1];
+          fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1];
 
       $http.get(fullUrl, '', {
         cache: false
