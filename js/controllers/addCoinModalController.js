@@ -8,20 +8,61 @@ angular.module('IguanaGUIApp')
   '$uibModalInstance',
   'util',
   '$storage',
-  function ($scope, $uibModalInstance, util, $storage, $rootScope, receivedObject) {
+  '$rootScope',
+  'vars',
+  function ($scope, $uibModalInstance, util, $storage, $rootScope, vars, receivedObject) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
     $scope.next = next;
     $scope.alouNext = false;
-    $scope.availableCoins = receivedObject.coins;
+    $scope.availableCoins = constructCoinRepeater(vars.coinsInfo);
     $scope.util = util;
     $scope.clickOnCoin = clickOnCoin;
     $scope.coinSearchModel = undefined;
-    $scope.coinsSelectedToAdd = $storage['iguana-login-active-coin'] || [];
+    $scope.coinsSelectedToAdd = { coins: $storage['iguana-login-active-coin'] || [] };
+
+    $rootScope.$on('getCoin', function ($ev, coins) {
+      $scope.availableCoins = constructCoinRepeater(coins);
+      //$scope.coinsSelectedToAdd.coins = $scope.availableCoins;
+    });
+
+    function constructCoinRepeater(coinsInfo) {
+      var index = 0,
+          addCoinArray = [],
+          coinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
+
+      for (var key in supportedCoinsList) {
+        if (( !$storage['iguana-' + key + '-passphrase'] || (
+              $storage['iguana-' + key + '-passphrase'] &&
+              $storage['iguana-' + key + '-passphrase'].logged !== 'yes' ))) {
+
+          if (coinsInfo == undefined &&
+            ($storage['isIguana'] && !coinsInfo[key].iguana) ||
+            (!$storage['isIguana'] && coinsInfo[key].connection === true)
+          ) {
+            addCoinArray.push({
+              'id': key.toUpperCase(),
+              'coinId': key.toLowerCase(),
+              'name': supportedCoinsList[key].name,
+              'color': coinColors[index]
+            });
+
+            if (index === coinColors.length - 1) {
+              index = 0;
+            } else {
+              index++;
+            }
+          }
+        }
+      }
+
+      return addCoinArray;
+    };
 
     $scope.coinsSelectedFilter = function (item) {
       var el;
+
       if (!$scope.coinsSelectedToAdd.coins.length) {
         return false;
       }
@@ -33,7 +74,6 @@ angular.module('IguanaGUIApp')
           return false;
         }
       }
-
     };
 
     function clickOnCoin(item, $event) {
@@ -50,9 +90,9 @@ angular.module('IguanaGUIApp')
       });
 
       if (!$storage['isIguana']) {
-        $scope.coinsSelectedToAdd = []
+        $scope.coinsSelectedToAdd.coins = [];
       }
-      if (!isDisable && $scope.coinsSelectedToAdd.coins.indexOf(item.coinId) == -1) {
+      if (!isDisable && !$scope.coinsSelectedToAdd.coins[item.coinId]) {
         $scope.coinsSelectedToAdd.coins.push(item.coinId);
         coinDomElement.addClass('active');
       }
@@ -69,24 +109,24 @@ angular.module('IguanaGUIApp')
       activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] = '';
 
       // dev only
-      if (dev.isDev && !isIguana && dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[0]]) {
+      if (dev.isDev && !$scope.isIguana && dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[0]]) {
         activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] =
           dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[0]];
       }
-      if (dev.isDev && isIguana && dev.coinPW.iguana) {
+      if (dev.isDev && $scope.isIguana && dev.coinPW.iguana) {
         activeCoinStorageData[$scope.coinsSelectedToAdd.coins[0]] = dev.coinPW.iguana;
       }
 
       if (!isDisable && $storage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
-        $storage['iguana-login-active-coin'].push(activeCoinStorageData)
+        $storage['iguana-login-active-coin'].push(activeCoinStorageData);
       }
     }
 
     function close() {
       $uibModalInstance.dismiss();
     }
-    function next() {
 
+    function next() {
       $uibModalInstance.close();
     }
   }]);

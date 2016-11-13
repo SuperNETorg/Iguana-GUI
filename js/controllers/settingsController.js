@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('settingsController', ['$scope', '$http', '$state', 'helper', 'util',
-  function($scope, $http, $state, helper, util) {
+.controller('settingsController', ['$scope', '$http', '$state', 'helper', 'util', '$rates',
+  function($scope, $http, $state, helper, util, $rates) {
     $scope.helper = helper;
     $scope.util = util;
     $scope.$state = $state;
@@ -49,11 +49,11 @@ angular.module('IguanaGUIApp')
     //       due to possibility of ban for abuse
 
     $scope.currencyArr = currencyArr;
-    $scope.activeCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    $scope.activeCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
     $scope.setCurrency = function(item) {
       $scope.activeCurrency = item.shortName;
-      helper.setCurrency($scope.activeCurrency);
-      helper.updateRates(null, null, null, true);
+      $rates.setCurrency($scope.activeCurrency);
+      $rates.updateRates(null, null, null, true);
     }
 }]);

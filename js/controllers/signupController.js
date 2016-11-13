@@ -24,54 +24,47 @@ angular.module('IguanaGUIApp')
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
 
-    $rootScope.$on('getCoin', function ($ev, coins) {
-      $scope.availableCoins = helper.constructCoinRepeater(coins);
-    });
-
     initPage();
 
     $scope.selectWallet = function () {
-      if($scope.availableCoins && $scope.availableCoins.length) {
-        var modalInstance = $uibModal.open({
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          controller: 'addCoinModalController',
-          // templateUrl: '/partials/add-coin.html',
-          templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.coin-select-modal')),
-          resolve: {
-            receivedObject: function () {
-              return {
-                receivedObject:$scope.receivedObject,
-                coins:$scope.availableCoins,
-              };
-            },
-            // {}
-          }
-        });
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        controller: 'addCoinModalController',
+        // templateUrl: '/partials/add-coin.html',
+        templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
+        appendTo: angular.element(document.querySelector('.coin-select-modal')),
+        resolve: {
+          receivedObject: function () {
+            return {
+              receivedObject:$scope.receivedObject
+            };
+          },
+          // {}
+        }
+      });
 
-        modalInstance.result.then(function(receivedObject) {
-          var coinId,
-            availableCoin;
+      modalInstance.result.then(function(receivedObject) {
+        var coinId,
+          availableCoin;
 
-          if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
-          $scope.coinsSelectedToAdd = [];
-          $scope.receivedObject = $storage['iguana-login-active-coin'];
+        if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
+        $scope.coinsSelectedToAdd = [];
+        $scope.receivedObject = $storage['iguana-login-active-coin'];
 
-          for (var i = 0; $scope.receivedObject.length > i; i++) {
-            coinId = $scope.receivedObject[i];
+        for (var i = 0; $scope.receivedObject.length > i; i++) {
+          coinId = $scope.receivedObject[i];
 
-            for (var id in $scope.availableCoins) {
-              availableCoin = $scope.availableCoins[id];
+          for (var id in $scope.availableCoins) {
+            availableCoin = $scope.availableCoins[id];
 
-              if (availableCoin.coinId == coinId) {
-                $scope.coinsSelectedToAdd.push(availableCoin);
-              }
+            if (availableCoin.coinId == coinId) {
+              $scope.coinsSelectedToAdd.push(availableCoin);
             }
           }
-        });
-      }
+        }
+      });
     };
 
     function initPage() {

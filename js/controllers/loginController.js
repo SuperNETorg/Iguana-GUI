@@ -24,10 +24,6 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
 
-    $rootScope.$on('getCoin', function ($ev, coins) {
-      $scope.availableCoins = util.constructCoinRepeater(coins);
-    });
-
     $scope.openAddCoinModal = function () {
       if ($scope.availableCoins && $scope.availableCoins.length) {
         var modalInstance = $uibModal.open({
@@ -41,8 +37,7 @@ angular.module('IguanaGUIApp')
           resolve: {
             receivedObject: function () {
               return {
-                receivedObject:$scope.receivedObject,
-                coins:$scope.availableCoins,
+                receivedObject: $scope.receivedObject
               };
             },
             // {}

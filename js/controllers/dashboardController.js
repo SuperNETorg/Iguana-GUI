@@ -2,8 +2,8 @@
 
 angular.module('IguanaGUIApp')
 .controller('dashboardController', ['$scope', '$http', '$state', 'util', '$passPhraseGenerator',
-  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter',
-  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal, $api, vars, helper, $rootScope, $filter) {
+  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter', '$rates',
+  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal, $api, vars, helper, $rootScope, $filter, $rates) {
     var isIguana = $storage['isIguana'],
         coinsInfo = [];
 
@@ -80,7 +80,7 @@ angular.module('IguanaGUIApp')
           });
     };
 
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
+    var defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $('body').addClass('dashboard-page');
@@ -144,7 +144,7 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.removeCoin = function(coinId) {
-      if (confirm(util.lang('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
+      if (confirm($filter('lang')('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
         $storage['iguana-' + coinId + '-passphrase'] = { 'logged': 'no' };
 
         delete $scope.sideBarCoinsUnsorted[coinId];
@@ -165,8 +165,6 @@ angular.module('IguanaGUIApp')
       var index = 0;
 
       coinsSelectedByUser = [];
-
-      console.log($rootScope.coinsInfo);
 
       for (var key in coinsInfo) {
         if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
@@ -199,7 +197,7 @@ angular.module('IguanaGUIApp')
 
     // construct account coins array
     function constructAccountCoinRepeaterCB(balance, coin) {
-      var coinLocalRate = helper.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
+      var coinLocalRate = $rates.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
           currencyCalculatedValue = balance * coinLocalRate,
           coinBalanceVal = balance || 0,
           coinBalanceCurrencyVal = currencyCalculatedValue || 0;
@@ -252,7 +250,7 @@ angular.module('IguanaGUIApp')
           _totalBalance = 0;
 
       for (var key in sidebarCoins) {
-        var coinLocalRate = helper.updateRates(key, defaultCurrency, true) || 0;
+        var coinLocalRate = $rates.updateRates(key, defaultCurrency, true) || 0;
         _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
       }
 
@@ -386,7 +384,7 @@ angular.module('IguanaGUIApp')
       dashboardUpdateTimer = $interval(function() {
         //console.clear();
         helper.checkSession();
-        helper.updateRates(null, null, null, true);
+        $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
 
         if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');

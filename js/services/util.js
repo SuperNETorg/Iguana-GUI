@@ -17,7 +17,6 @@ angular.module('IguanaGUIApp')
     var self = this;
 
     this.isIguana = $storage['isIguana'];
-    this.coinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
     this.coindWalletLockResults = [];
@@ -96,46 +95,6 @@ angular.module('IguanaGUIApp')
       return _array;
     };
 
-    this.constructCoinRepeater = function(coinsInfo) { // TODO: move to add coin modal
-      var index = 0,
-        addCoinArray = [];
-
-      this.defaultSessionLifetime =
-        ($storage['isIguana'] ? settings.defaultSessionLifetimeIguana :
-          settings.defaultSessionLifetimeCoind);
-
-      for (var key in supportedCoinsList) {
-        if (
-          (!$storage['iguana-' + key + '-passphrase'] ||
-           (
-              $storage['iguana-' + key + '-passphrase'] &&
-              $storage['iguana-' + key + '-passphrase'].logged !== 'yes'
-            )
-          ) ||
-          $state.current.name === 'login' ||
-          $state.current.name === 'create-account'
-        ) {
-
-          if (coinsInfo == undefined &&
-            ($storage['isIguana'] && !coinsInfo[key].iguana) ||
-            (!$storage['isIguana'] && coinsInfo[key].connection === true)
-          ) {
-            addCoinArray.push({
-              'id': key.toUpperCase(),
-              'coinId': key.toLowerCase(),
-              'name': supportedCoinsList[key].name,
-              'color': this.coinColors[index]
-            });
-            index++;
-
-            if (index === this.coinColors.length - 1) index = 0;
-          }
-        }
-      }
-
-      return addCoinArray;
-    };
-
     this.addCopyToClipboardFromElement = function(element, elementDisplayName) {
       if (!this.isExecCopyFailed) {
         try {
@@ -168,24 +127,6 @@ angular.module('IguanaGUIApp')
       });
     };
 
-    this.setCurrency = function(currencyShortName) {
-      $storage['iguana-currency'] = { 'name': currencyShortName };
-
-      if (coinsInfo != undefined)
-        for (var key in coinsInfo) {
-          $storage['iguana-rates-' + key] = {
-            'shortName': null,
-            'value': null,
-            'updatedAt': this.minEpochTimestamp,
-            'forceUpdate': true
-          }; // force currency update
-        }
-    };
-
-    this.getCurrency = function() { // TODO: move to rates service
-      return $storage['iguana-currency'];
-    };
-
     this.trimComma = function(str) {
       if (str[str.length - 1] === ' ') {
         str = str.replace(/, $/, '');
@@ -209,18 +150,6 @@ angular.module('IguanaGUIApp')
 
       if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year + ' ';
       if (format === 'HHMM') return hour + ':' + min;
-    };
-
-    this.ratesUpdateElapsedTime = function(coin) { // TODO: move to rates service
-      if ($storage['iguana-rates-' + coin.toLowerCase()]) {
-        var currentEpochTime = new Date(Date.now()) / 1000,
-          secondsElapsed = Number(currentEpochTime) -
-            Number($storage['iguana-rates-' + coin.toLowerCase().updatedAt / 1000]);
-
-        return secondsElapsed;
-      } else {
-        return false;
-      }
     };
 
     this.timeAgo = function(element) { // TODO: move datetime service
@@ -274,7 +203,6 @@ angular.module('IguanaGUIApp')
           timeAgo.text(displayText);
         }
       }.bind(this), 100)
-
     };
 
     // in seconds

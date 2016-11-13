@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp')
   '$api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter) {
+  '$rates',
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter, $rates) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -19,9 +20,9 @@ angular.module('IguanaGUIApp')
     $scope.receiveCoin = {};
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
-        defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency,
+        defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
         _activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
-        coinRate = helper.updateRates(_activeCoin, defaultCurrency, true);
+        coinRate = $rates.updateRates(_activeCoin, defaultCurrency, true);
 
     getReceiveCoinAddress();
 

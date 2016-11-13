@@ -7,11 +7,11 @@ angular.module('IguanaGUIApp')
   'util',
   '$storage',
   '$state',
-  'Api',
+  '$api',
   '$uibModal',
   'receivedObject',
   '$filter',
-  function ($scope, $uibModalInstance, util, $storage, $state, Api, $uibModal, receivedObject, $filter) {
+  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -23,10 +23,6 @@ angular.module('IguanaGUIApp')
     $scope.coinsSelectedToAdd = [];
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
-
-    Api.testCoinPorts(function () {
-      $scope.availableCoins = util.constructCoinRepeater();
-    });
 
     $scope.openAddCoinModal = function () {
       var modalInstance = $uibModal.open({
@@ -68,8 +64,8 @@ angular.module('IguanaGUIApp')
 
     $scope.login = function () {
       var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
-      Api.walletLock(coinsSelectedToAdd[0].coinId);
-      Api.walletLogin(
+      $api.walletLock(coinsSelectedToAdd[0].coinId);
+      $api.walletLogin(
         $scope.passphrase,
         settings.defaultSessionLifetime,
         coinsSelectedToAdd[0].coinId,

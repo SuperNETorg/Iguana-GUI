@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp')
   '$api',
   '$uibModal',
   '$filter',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter) {
+  '$rates',
+  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter, $rates) {
     $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
@@ -19,7 +20,7 @@ angular.module('IguanaGUIApp')
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-    var defaultCurrency = helper.getCurrency() ? helper.getCurrency().name : null || settings.defaultCurrency;
+    var defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
     $scope.sendCoin = {
       initStep: true,
@@ -36,7 +37,7 @@ angular.module('IguanaGUIApp')
     $api.getBalance(defaultAccount, $scope.activeCoin, toggleSendCoinModal);
 
     function toggleSendCoinModal(balance, coin) {
-      $scope.sendCoin.currencyRate = helper.updateRates(coin, defaultCurrency, true);
+      $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
@@ -266,7 +267,7 @@ angular.module('IguanaGUIApp')
           currencyObj = $('.currency');
 
       var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      coinRate = helper.updateRates(coin, defaultCurrency, true);
+      coinRate = $rates.updateRates(coin, defaultCurrency, true);
 
       currencyCoin.on('keyup', function () {
         var calcAmount = $(this).val() * coinRate;
@@ -276,36 +277,6 @@ angular.module('IguanaGUIApp')
       currencyObj.on('keyup', function () {
         var calcAmount = $(this).val() / coinRate;
         currencyCoin.val(calcAmount); // TODO: use decimals filter
-      });
-
-      // ref: http://jsfiddle.net/dinopasic/a3dw74sz/
-      // allow numeric only entry
-      var currencyInput = $('.receiving-coin-content .currency-input input');
-      currencyInput.keypress(function(event) {
-        var inputCode = event.which,
-            currentValue = $(this).val();
-        if (inputCode > 0 && (inputCode < 48 || inputCode > 57)) {
-          if (inputCode == 46) {
-            if (helper.getCursorPositionInputElement($(this)) == 0 && currentValue.charAt(0) == '-') return false;
-            if (currentValue.match(/[.]/)) return false;
-          }
-          else if (inputCode == 45) {
-            if (currentValue.charAt(0) == '-') return false;
-            if (helper.getCursorPositionInputElement($(this)) != 0) return false;
-          }
-          else if (inputCode == 8) return true;
-          else return false;
-        }
-        else if (inputCode > 0 && (inputCode >= 48 && inputCode <= 57)) {
-          if (currentValue.charAt(0) == '-' && helper.getCursorPositionInputElement($(this)) == 0) return false;
-        }
-      });
-      currencyInput.keydown(function(event) {
-        var keyCode = event.keyCode || event.which;
-
-        if (keyCode === 189 || keyCode === 173 || keyCode === 109) { // disable "-" entry
-          event.preventDefault();
-        }
       });
     }
 
