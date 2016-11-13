@@ -12,7 +12,8 @@ angular.module('IguanaGUIApp')
   '$rootScope',
   '$uibModal',
   '$filter',
-  function($scope, $http, $state, util, $passPhraseGenerator, $storage, $api, $rootScope, $uibModal, $filter) {
+  '$message',
+  function($scope, $http, $state, util, $passPhraseGenerator, $storage, $api, $rootScope, $uibModal, $filter, $message) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -97,20 +98,20 @@ angular.module('IguanaGUIApp')
         var walletEncryptResponse = $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
 
         if (walletEncryptResponse !== -15) {
-          util.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          $message.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
           if ($state.current.name === 'dashboard') {
             util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
           } else {
             $state.go('login');
           }
         } else {
-          util.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
           if ($state.current.name === 'dashboard') {
             util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
           }
         }
       } else {
-        util.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 

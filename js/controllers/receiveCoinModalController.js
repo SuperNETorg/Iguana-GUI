@@ -4,19 +4,16 @@ angular.module('IguanaGUIApp')
 .controller('receiveCoinModalController', [
   '$scope',
   '$uibModalInstance',
-  'util',
-  'helper',
   '$storage',
-  '$state',
   '$api',
   '$uibModal',
   '$filter',
   '$rates',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter, $rates) {
+  '$message',
+  function ($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
-    $scope.util = util;
     $scope.receiveCoin = {};
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
@@ -65,10 +62,10 @@ angular.module('IguanaGUIApp')
       temp[0].select();
 
       try {
-        helper.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
         document.execCommand('copy');
       } catch(err) {
-        helper.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
       }
 
       temp.remove();

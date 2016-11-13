@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.service('$datetime', ['$filter', function ($filter) {
+.service('$datetime', ['$filter', '$timeout', function ($filter, $timeout) {
   this.convertUnixTime = function(UNIX_timestamp, format) { // TODO: move datetime service
     var a = new Date(UNIX_timestamp * 1000),
       months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],

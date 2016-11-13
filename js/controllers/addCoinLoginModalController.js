@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   'receivedObject',
   '$filter',
-  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter) {
+  '$message',
+  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter, $message) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -74,12 +75,12 @@ angular.module('IguanaGUIApp')
 
       function walletLoginThen(walletLogin) {
         if (walletLogin === -14 || walletLogin === false) {
-          util.ngPrepMessageModal(
+          $message.ngPrepMessageModal(
             $filter('lang')('MESSAGE.WRONG_PASSPHRASE'),
             'red',
             true);
         } else if (walletLogin === -15) {
-          util.ngPrepMessageModal(
+          $message.ngPrepMessageModal(
             $filter('lang')('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
             'red',
             true

@@ -12,11 +12,10 @@ angular.module('IguanaGUIApp')
   this.checkSession = function() {
     var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
         secondsElapsedSinceLastAuth =
-        Number(currentEpochTime) - Number(
-          ($storage['iguana-auth'] ? $storage['iguana-auth'].timestamp : 1000) / 1000);
+        Number(currentEpochTime) - Number(($storage['iguana-auth'] ? $storage['iguana-auth'].timestamp : 1000) / 1000);
 
-    if (secondsElapsedSinceLastAuth >
-        ($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
+    if (Math.floor(secondsElapsedSinceLastAuth) <
+        Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
       return true;
     } else {
       return false;
@@ -73,7 +72,7 @@ angular.module('IguanaGUIApp')
     if (!$storage['iguana-auth']) {
       this.logout();
     } else {
-      if (this.checkSession()) {
+      if (!this.checkSession()) {
         if (toState.name !== 'login') {
           $state.go('login');
         }
@@ -93,4 +92,4 @@ angular.module('IguanaGUIApp')
 
     checkUserIdentify.apply(self, [toState, fromState]);
   });
-)}];
+}]);

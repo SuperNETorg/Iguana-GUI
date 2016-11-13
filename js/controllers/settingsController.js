@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('settingsController', ['$scope', '$http', '$state', 'helper', 'util', '$rates',
-  function($scope, $http, $state, helper, util, $rates) {
-    $scope.helper = helper;
-    $scope.util = util;
+.controller('settingsController', ['$scope', '$state', '$rates', '$auth',
+  function($scope, $state, $rates, $auth) {
     $scope.$state = $state;
-    $scope.enabled = helper.checkSession(true);
+    $scope.enabled = $auth.checkSession(true);
 
     $('body').addClass('dashboard-page');
 

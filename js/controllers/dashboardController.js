@@ -2,8 +2,9 @@
 
 angular.module('IguanaGUIApp')
 .controller('dashboardController', ['$scope', '$http', '$state', 'util', '$passPhraseGenerator',
-  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter', '$rates',
-  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal, $api, vars, helper, $rootScope, $filter, $rates) {
+  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter', '$rates', '$auth', '$message', '$datetime',
+  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
+    $api, vars, helper, $rootScope, $filter, $rates, $auth, $message, $datetime) {
     var isIguana = $storage['isIguana'],
         coinsInfo = [];
 
@@ -15,7 +16,7 @@ angular.module('IguanaGUIApp')
     $scope.util = util;
     $scope.$state = $state;
     $scope.isIguana = isIguana;
-    $scope.enabled = helper.checkSession(true);
+    $scope.enabled = $auth.checkSession(true);
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -63,7 +64,7 @@ angular.module('IguanaGUIApp')
     };
 
     $scope.timeAgo = function (element) {
-      util.timeAgo(element);
+      $datetime.timeAgo(element);
     };
 
     // send coin updated logic
@@ -86,7 +87,7 @@ angular.module('IguanaGUIApp')
     $('body').addClass('dashboard-page');
 
     $(document).ready(function() {
-      helper.initTopNavBar();
+      util.initTopNavBar();
 
       $('body').scroll(function(e){
         if ($(window).width() < 768) {
@@ -101,7 +102,7 @@ angular.module('IguanaGUIApp')
     });
 
     $(window).resize(function() {
-      applyDashboardResizeFix();
+      util.applyDashboardResizeFix($scope.sideBarCoins);
     });
 
     $scope.$on('$viewContentLoaded', function(event) {
@@ -190,7 +191,7 @@ angular.module('IguanaGUIApp')
             return _sideBarCoins[key];
           });
         }
-        applyDashboardResizeFix();
+        util.applyDashboardResizeFix($scope.sideBarCoins);
         $api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
       }
     }
@@ -219,7 +220,7 @@ angular.module('IguanaGUIApp')
       });
       $scope.sideBarCoinsUnsorted = _sideBarCoins;
 
-      applyDashboardResizeFix();
+      util.applyDashboardResizeFix($scope.sideBarCoins);
 
       // run balances and tx unit update once left sidebar is updated
       if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
@@ -337,53 +338,24 @@ angular.module('IguanaGUIApp')
                 $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
                                                                    transactionDetails.timestamp ||
                                                                    transactionDetails.time;
-                $scope.txUnit.transactions[i].timestampDate = util.convertUnixTime(transactionDetails.blocktime ||
-                                                                                transactionDetails.timestamp ||
-                                                                                transactionDetails.time, 'DDMMMYYYY');
-                $scope.txUnit.transactions[i].timestampTime = util.convertUnixTime(transactionDetails.blocktime ||
-                                                                                transactionDetails.timestamp ||
-                                                                                transactionDetails.time, 'HHMM');
+                $scope.txUnit.transactions[i].timestampDate = $datetime.convertUnixTime(transactionDetails.blocktime ||
+                                                                                        transactionDetails.timestamp ||
+                                                                                        transactionDetails.time, 'DDMMMYYYY');
+                $scope.txUnit.transactions[i].timestampTime = $datetime.convertUnixTime(transactionDetails.blocktime ||
+                                                                                        transactionDetails.timestamp ||
+                                                                                        transactionDetails.time, 'HHMM');
             }
           }
         }
       }
 
-      applyDashboardResizeFix();
-    }
-
-    // not the best solution but it works
-    function applyDashboardResizeFix() {
-      var mainContent = $('.main-content'),
-          txUnit = $('.transactions-unit');
-
-      // tx unit resize
-      if ($(window).width() > 767) {
-        var width = Math.floor(mainContent.width() - $('.coins').width() - 80);
-        mainContent.css({ 'padding': '0 30px' });
-        txUnit.css({ 'max-width': width, 'width': width });
-      } else {
-        txUnit.removeAttr('style');
-        mainContent.removeAttr('style');
-      }
-
-      // coin tiles on the left
-      if ($scope.sideBarCoins) {
-        var accountCoinsRepeaterItem = '.account-coins-repeater .item';
-
-        for (var i=0; i < $scope.sideBarCoins.length; i++) {
-          var coin = $scope.sideBarCoins[i].id;
-
-          $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
-                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
-                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
-        }
-      }
+      util.applyDashboardResizeFix($scope.sideBarCoins);
     }
 
     function updateDashboardView(timeout) {
       dashboardUpdateTimer = $interval(function() {
         //console.clear();
-        helper.checkSession();
+        $auth.checkSession();
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
 
@@ -426,13 +398,13 @@ angular.module('IguanaGUIApp')
 
         if (walletEncryptResponse !== -15) {
           helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          helper.prepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+          $message.ngPrepMessageModal(supportedCoinsList[coinsSelectedToAdd[0]].name + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
         } else {
           helper.toggleModalWindow(addCoinCreateWalletModalClassName, 300);
-          helper.prepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
         }
       } else {
-        helper.prepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }
     }
 
@@ -480,6 +452,6 @@ angular.module('IguanaGUIApp')
       addedCoinsOutput = helper.trimComma(addedCoinsOutput);
       failedCoinsOutput = helper.trimComma(failedCoinsOutput);
 
-      helper.prepMessageModal(addedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
+      $message.ngPrepMessageModal(addedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
     }
 }]);

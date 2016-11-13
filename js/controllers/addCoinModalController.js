@@ -60,7 +60,7 @@ angular.module('IguanaGUIApp')
       return addCoinArray;
     };
 
-    $scope.coinsSelectedFilter = function (item) {
+    $scope.coinsSelectedFilter = function(item) {
       var el;
 
       if (!$scope.coinsSelectedToAdd.coins.length) {

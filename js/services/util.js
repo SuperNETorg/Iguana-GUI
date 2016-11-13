@@ -34,7 +34,7 @@ angular.module('IguanaGUIApp')
       return _array;
     };
 
-    this.addCopyToClipboardFromElement = function(element, elementDisplayName) {
+    this.addCopyToClipboardFromElement = function(element, elementDisplayName) { // TODO: move to signup controller
       if (!this.isExecCopyFailed) {
         try {
           clipboard.copyText(element.html());
@@ -50,22 +50,6 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.ngPrepMessageModal = function(message, color) { // TODO: move to message service
-      $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        windowClass: 'iguana-modal message-container msg-' + color,
-        template: '<div class="modal-header msgbox-header">' +
-                    '<div class="msg-body" data-dismiss="modal">' + message + '</div>' +
-                  '</div>',
-        resolve: {
-          items: function () {
-          }
-        }
-      });
-    };
-
     this.trimComma = function(str) {
       if (str[str.length - 1] === ' ') {
         str = str.replace(/, $/, '');
@@ -77,144 +61,85 @@ angular.module('IguanaGUIApp')
       return str;
     };
 
-    this.convertUnixTime = function(UNIX_timestamp, format) { // TODO: move datetime service
-      var a = new Date(UNIX_timestamp * 1000),
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        year = a.getFullYear(),
-        month = months[a.getMonth()],
-        date = a.getDate(),
-        hour = a.getHours() < 10 ? '0' + a.getHours() : a.getHours(),
-        min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(),
-        sec = a.getSeconds();
+    this.isMobile = function() {
+      var widthThreshold = 768; // px
 
-      if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year + ' ';
-      if (format === 'HHMM') return hour + ':' + min;
+      if ($(window).width <= widthThreshold)
+        return true;
+      else
+        return false;
     };
 
-    this.timeAgo = function(element) { // TODO: move datetime service
-      //debugger;
-      $timeout(function () {
-        //debugger;
-        if($(element).length){ // TODO: refactor, no jquery
-          var timeAgo = $(element),
-            threshold = settings.thresholdTimeAgo,
-            displayText = '';
+    this.initTopNavBar = function() {
+      if ($(window).width() < 768) {
+        var topMenu = $('#top-menu'),
+            btnLeft = $('.nav-buttons .nav-left', topMenu),
+            btnRight = $('.nav-buttons .nav-right', topMenu),
+            items = $('.item', topMenu), itemsLength = 0, item;
 
-          if (!timeAgo.prop('data-original')) {
-            timeAgo.prop('data-original', timeAgo[0].cloneNode(true));
-          }
-
-          var timeAgoOriginal = timeAgo.prop('data-original'),
-            date = timeAgo.find('.time-ago-date', timeAgoOriginal).text(),
-            time = timeAgo.find('.time-ago-time', timeAgoOriginal).text(),
-            dateTime = date + ' ' + time,
-            original = new Date(dateTime),
-            current = new Date(),
-            dayTemplate = 24 * 60 * 60 * 1000,
-            timeTemplate = 60 * 60 * 1000,
-            minuteTemplate = 60 * 1000,
-            difference = current - original;
-
-          if ((threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
-            (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
-            (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)) {
-            return;
-          }
-          if (difference / dayTemplate < 1) {
-            if (difference / timeTemplate < 1) {
-              if (difference / minuteTemplate > 1) {
-                displayText = parseInt(difference / minuteTemplate) + ' ' + $filter('lang')('TIME_AGO.MINUTE');
+        btnLeft.on('click swipeleft', function() {
+          if ($(window).width() < $('.top-menu', topMenu).width()) {
+            itemsLength = $('.top-menu', topMenu).width();
+            for (var i = items.length - 1; 0 <= i; i--) {
+              item = $(items[i]);
+              itemsLength -= $(items[i]).width();
+              if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() && itemsLength > $(items[i]).width()) {
+                item.closest('.navbar-nav').animate({'margin-left':
+                parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
+                itemsLength = 0;
+                break;
               } else {
-                displayText = $filter('lang')('TIME_AGO.MOMENT');
+                return;
               }
-            } else {
-              displayText = parseInt(difference / timeTemplate) + ' ' + $filter('lang')('TIME_AGO.HOURS');
-            }
-          } else {
-            var days = parseInt(difference / dayTemplate);
-
-            if (days > 1) {
-              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAYS');
-            } else {
-              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAY');
             }
           }
-          timeAgo.text(displayText);
-        }
-      }.bind(this), 100)
-    };
-
-    // in seconds
-    this.getTimeDiffBetweenNowAndDate = function(from) { // TODO: move datetime service
-      var currentEpochTime = new Date(Date.now()) / 1000,
-        secondsElapsed = Number(currentEpochTime) - Number(from / 1000);
-
-      return secondsElapsed;
-    };
-
-    this.checkIfIguanaOrCoindIsPresent = function() { // TODO: move portpoll service
-      var numPortsResponding = 0;
-
-      if (coinsInfo != undefined)
-        for (var key in coinsInfo) {
-          if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
-        }
-
-      if (this.setPortPollResponseDS && ((!$storage['isIguana'] && !numPortsResponding) ||
-        (this.setPortPollResponseDS.isIguana === false &&
-        this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
-        (this.setPortPollResponseDS.isIguana === false &&
-        this.setPortPollResponseDS.proxy === false))) {
-        this.prepNoDaemonModal();
-
-        // logout
-        $timeout(function() {
-          if (this.toState.name === 'dashboard' || this.toState.name === 'settings') {
-            this.logout();
-          }
-        }, 15000);
-      } else {
-        // 0.1.1, TODO: switch the below code
-        // This property for delete duplicate Timeout functions for message Modal
-        /*if (!window.messageModalTime) {
-         window.messageModalTime;
-         } else {
-         clearTimeout(messageModalTime);
-         }
-         var messageModal = $('#messageModal');
-         iguanaNullReturnCount = 0;
-         messageModal.removeClass('in');
-         messageModalTime = setTimeout(function() {
-         messageModal.modal('hide');
-         }, 250);*/
-
-        var messageModal = angular.element('#messageModal');
-
-        iguanaNullReturnCount = 0;
-        messageModal.removeClass('in');
-        setTimeout(function() {
-          messageModal.hide();
-        }, 250);
+        });
+        btnRight.on('click swiperight', function() {
+          if ($(window).width() < $('.top-menu', topMenu).width())
+            for (var i = 0; items.length > i; i++) {
+              item = $(items[i]);
+              itemsLength += $(items[i]).offset().left;
+              if ($(items[i]).offset().left < topMenu.width() && itemsLength > topMenu.width()) {
+                item.closest('.navbar-nav').animate({'margin-left':
+                  (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
+                itemsLength = 0;
+                break;
+              }
+            }
+        });
       }
     };
 
-    this.prepNoDaemonModal = function() { // TODO: move portpoll service
-      this.ngPrepMessageModal($filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P1') +
-        ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' +
-          $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P2') +
-        '</a> ' +
-        $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P3') +
-        (this.toState.name !== 'login' &&
-          this.toState.name !== 'signup' ?
-        '<br/><br/><a onclick=\"this.logout()\">' + $filter('lang')('DASHBOARD.LOGOUT') + '</a>' : ''),
-        'red', true);
-    };
+    // not the best solution but it works
+    this.applyDashboardResizeFix = function(coins) {
+      var mainContent = $('.main-content'),
+          txUnit = $('.transactions-unit');
 
-    this.prepRequirementsModal = function() { // TODO: move portpoll service
-      this.ngPrepMessageModal($filter('lang')('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
+      // tx unit resize
+      if ($(window).width() > 767) {
+        var width = Math.floor(mainContent.width() - $('.coins').width() - 80);
+        mainContent.css({ 'padding': '0 30px' });
+        txUnit.css({
+          'max-width': width,
+          'width': width
+        });
+      } else {
+        txUnit.removeAttr('style');
+        mainContent.removeAttr('style');
+      }
 
-      // "No required daemon is running" message always stays active on top of any ui
-      //  this ensures that users won't interact with any elements until connectivity problems are resolved
+      // coin tiles on the left
+      if (coins) {
+        var accountCoinsRepeaterItem = '.account-coins-repeater .item';
+
+        for (var i=0; i < coins.length; i++) {
+          var coin = coins[i].id;
+
+          $(accountCoinsRepeaterItem + '.' + coin + ' .coin .name').css({ 'width': Math.floor($(accountCoinsRepeaterItem + '.' + coin).width() -
+                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon').width() -
+                                                                                              $(accountCoinsRepeaterItem + '.' + coin + ' .balance').width() - 50) });
+        }
+      }
     };
   }
 ]);
