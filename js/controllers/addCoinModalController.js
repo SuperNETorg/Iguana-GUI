@@ -17,16 +17,18 @@ angular.module('IguanaGUIApp')
     $scope.util = util;
     $scope.clickOnCoin = clickOnCoin;
     $scope.coinSearchModel = undefined;
-    $scope.coinsSelectedToAdd = {coins: $storage['iguana-login-active-coin'] || []};
+    $scope.coinsSelectedToAdd = { coins: $storage['iguana-login-active-coin'] || [] };
     $scope.availableCoins = util.constructCoinRepeater(vars.coinsInfo);
 
     $scope.coinsSelectedFilter = function (item) {
       var el;
+
       if (!$scope.coinsSelectedToAdd.coins.length) {
         return false;
       }
       for (var i = 0; $scope.coinsSelectedToAdd.coins.length > i; i++) {
         el = $scope.coinsSelectedToAdd.coins[i];
+
         if (Object.keys(el)[0] == item) {
           return true;
         } else {
@@ -37,8 +39,9 @@ angular.module('IguanaGUIApp')
 
     function clickOnCoin(item, $event) {
       var coinDomElement = angular.element($event.currentTarget),
-        isDisable = false,
-        activeCoinStorageData = {};
+          isDisable = false,
+          activeCoinStorageData = {};
+
       $scope.coinsSelectedToAdd.coins.map(function (el, id) {
         if (el == item.coinId) {
           $scope.coinsSelectedToAdd.coins.splice(id, 1);
@@ -46,13 +49,16 @@ angular.module('IguanaGUIApp')
           isDisable = true;
         }
       });
+
       if (!$storage['isIguana']) {
         $scope.coinsSelectedToAdd.coins = [];
       }
+
       if (!isDisable && !$scope.coinsSelectedToAdd.coins[item.coinId]) {
         $scope.coinsSelectedToAdd.coins.push(item.coinId);
         coinDomElement.addClass('active');
       }
+
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = [];
       } else {
@@ -68,9 +74,11 @@ angular.module('IguanaGUIApp')
         activeCoinStorageData[$scope.coinsSelectedToAdd.coins[$scope.coinsSelectedToAdd.coins.length - 1]] =
           dev.coinPW.coind[$scope.coinsSelectedToAdd.coins[$scope.coinsSelectedToAdd.coins.length - 1]];
       }
+
       if (dev.isDev && $scope.isIguana && dev.coinPW.iguana) {
         activeCoinStorageData[$scope.coinsSelectedToAdd.coins[$scope.coinsSelectedToAdd.coins.length - 1]] = dev.coinPW.iguana;
       }
+
       if (!isDisable && $storage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
         $storage['iguana-login-active-coin'].push(activeCoinStorageData);
       }

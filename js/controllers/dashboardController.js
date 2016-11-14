@@ -32,7 +32,7 @@ angular.module('IguanaGUIApp')
     $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
 
-    $rootScope.$on('getCoin', function ($ev, coins) {
+    $rootScope.$on('coinsInfo', function($ev, coins) {
       coinsInfo = vars.coinsInfo;
       constructAccountCoinRepeater();
     });
@@ -44,7 +44,7 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
 
-    $scope.openAddCoinLoginModal = function () {
+    $scope.openAddCoinLoginModal = function() {
       var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',

@@ -16,6 +16,7 @@ angular.module('IguanaGUIApp')
   'vars',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
            $api, $rootScope, $uibModal, $filter, $message, vars) {
+
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -35,7 +36,6 @@ angular.module('IguanaGUIApp')
     }
 
     function onInit() {
-
       initPage();
 
       $scope.selectWallet = function () {
@@ -60,6 +60,7 @@ angular.module('IguanaGUIApp')
         modalInstance.result.then(function (receivedObject) {
           var coinId,
             availableCoin;
+
           $scope.coinsSelectedToAdd = [];
           $scope.receivedObject = $storage['iguana-login-active-coin'];
 
@@ -77,7 +78,6 @@ angular.module('IguanaGUIApp')
           }
         });
       };
-
     }
 
     function initPage() {
@@ -130,4 +130,5 @@ angular.module('IguanaGUIApp')
     function verifyPass() {
       $scope.buttonCreateAccount = false;
     }
-  }]);
+  }
+]);

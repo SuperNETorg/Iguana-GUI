@@ -12,7 +12,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$filter',
   '$storage',
-  function (util, helper, $http, $state, $timeout, $interval, $q, vars, $filter, $storage) {
+  '$syncStatus',
+  '$message',
+  function (util, helper, $http, $state, $timeout, $interval, $q, vars, $filter, $storage, $syncStatus, $message) {
     this.coinsInfo = [];
     this.isRT = false;
     $storage['isProxy'] = true;
@@ -88,7 +90,7 @@ angular.module('IguanaGUIApp')
 
                   if (dev.sessions[key]){
                     $timeout(function () {
-                      util.prepNoDaemonModal(); // TODO change this function to angular
+                      $syncStatus.prepNoDaemonModal(); // TODO change this function to angular
                     }, 300);
                   }
                 }
@@ -120,7 +122,7 @@ angular.module('IguanaGUIApp')
       if (response.data && response.data.error) {
         if (response.data.error.message === 'need to unlock wallet') {
           if ($state.current.name !== 'login') {
-            util.prepMessageModal($filter('lang')('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE'), 'red', true); // TODO Change Bootstrap alert
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -156,7 +158,7 @@ angular.module('IguanaGUIApp')
           $storage['activeCoin']++;
 
           if ($storage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
-            util.prepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red', true); // TODO Change Bootstrap alert
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
