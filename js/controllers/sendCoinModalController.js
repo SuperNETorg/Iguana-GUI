@@ -19,8 +19,8 @@ angular.module('IguanaGUIApp')
     $scope.helper = helper;
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
 
-    var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-    var defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
+    var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+        defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
     $scope.sendCoin = {
       initStep: true,
@@ -258,26 +258,6 @@ angular.module('IguanaGUIApp')
 
       // revert pay fee
       if (setTxFeeResult) $api.setTxFee($scope.activeCoin, 0);
-    }
-
-    $scope.sendCoinKeying = function() { // !! ugly !!
-      var coinRate,
-          coin = $scope.activeCoin ? $scope.activeCoin : $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
-          currencyCoin = $('.currency-coin'),
-          currencyObj = $('.currency');
-
-      var localrates = JSON.parse(localstorage.getVal("iguana-rates" + coin.toUpperCase()));
-      coinRate = $rates.updateRates(coin, defaultCurrency, true);
-
-      currencyCoin.on('keyup', function () {
-        var calcAmount = $(this).val() * coinRate;
-        currencyObj.val(calcAmount); // TODO: use decimals filter
-      });
-
-      currencyObj.on('keyup', function () {
-        var calcAmount = $(this).val() / coinRate;
-        currencyCoin.val(calcAmount); // TODO: use decimals filter
-      });
     }
 
     $scope.close = function() {

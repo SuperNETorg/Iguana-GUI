@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('settingsController', ['$scope', '$state', '$rates', '$auth',
-  function($scope, $state, $rates, $auth) {
+.controller('settingsController', [
+  '$scope',
+  '$state',
+  '$rates',
+  '$auth',
+  '$rootScope',
+  function($scope, $state, $rates, $auth, $rootScope) {
     $scope.$state = $state;
+    $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
-
-    $('body').addClass('dashboard-page');
 
     var currencyArr = [
       { 'shortName': 'USD', 'fullName': 'CURRENCY.USD', 'flagId': 'us' },
@@ -54,4 +58,5 @@ angular.module('IguanaGUIApp')
       $rates.setCurrency($scope.activeCurrency);
       $rates.updateRates(null, null, null, true);
     }
-}]);
+  }
+]);

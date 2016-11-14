@@ -57,7 +57,7 @@
     <script type="text/javascript" src="js/controllers/receiveCoinModalController.js"></script>
     <script type="text/javascript" src="js/controllers/sendCoinModalController.js"></script>
   </head>
-  <body>
+  <body ng-class="{ 'dashboard-page': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.settings' }">
     <div class="app-container">
       <div class="app-container-inner" ui-view></div>
     </div>

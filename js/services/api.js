@@ -883,15 +883,13 @@ angular.module('IguanaGUIApp')
           conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
           this.getConf().server.ip + ':' +
           (conf.coindPort ? conf.coindPort : conf.portp2p));
-      }
-      else {
+      } else {
         return $storage['isIguana'] ? (this.getConf().server.protocol +
           this.getConf().server.ip + ':' +
           this.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
           this.getConf().server.ip + ':' +
           this.getConf(false, coin).server.port);
       }
-
     };
 
     // TODO: merge wallet unlock/lock into sendtoaddress

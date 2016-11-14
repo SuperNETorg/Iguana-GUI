@@ -1,9 +1,29 @@
 'use strict';
 
-angular.module('IguanaGUIApp.controllers', ['ngAnimate', 'ngSanitize', 'ngStorage', 'ui.bootstrap'])
+angular.module('IguanaGUIApp.controllers', [
+  'ngAnimate',
+  'ngSanitize',
+  'ngStorage',
+  'ui.bootstrap'
+])
 .value('vars', {})
-.service('helper', ['$uibModal', '$rootScope', 'clipboard', '$timeout', '$interval', '$state', '$localStorage', 'vars', createHelpers])
-angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.controllers', 'angular-clipboard'])
+.service('helper', [
+  '$uibModal',
+  '$rootScope',
+  'clipboard',
+  '$timeout',
+  '$interval',
+  '$state',
+  '$localStorage',
+  'vars',
+  createHelpers
+])
+angular.module('IguanaGUIApp', [
+  'ui.router',
+  'ngSanitize',
+  'IguanaGUIApp.controllers',
+  'angular-clipboard'
+])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
@@ -52,11 +72,7 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
         'content@dashboard': {
           templateUrl: 'partials/dashboard-main.html',
           controller: 'dashboardController'
-        }/*,
-        'modals@dashboard': {
-          templateUrl: 'partials/dashboard-modals.html',
-          controller: 'dashboardController'
-        }*/
+        }
       }
     })
     .state('dashboard.settings', {

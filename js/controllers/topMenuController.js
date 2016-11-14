@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('topMenuController', ['$scope', '$http', '$state', 'util', 'helper', '$auth',
-  function($scope, $http, $state, util, helper, $auth) {
+.controller('topMenuController', [
+  '$scope',
+  '$state',
+  '$auth',
+  function($scope, $state, $auth) {
     $scope.$state = $state;
-    $scope.util = util;
-    $scope.helper = helper;
     $scope.enabled = $auth.checkSession(true);
-}]);
+  }
+]);

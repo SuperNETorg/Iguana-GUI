@@ -1,22 +1,41 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('dashboardController', ['$scope', '$http', '$state', 'util', '$passPhraseGenerator',
-  '$timeout', '$interval', '$storage', '$uibModal', '$api', 'vars', 'helper', '$rootScope', '$filter', '$rates', '$auth', '$message', '$datetime',
-  function($scope, $http, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-    $api, vars, helper, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+.controller('dashboardController', [
+  '$scope',
+  '$state',
+  'util',
+  '$passPhraseGenerator',
+  '$timeout',
+  '$interval',
+  '$storage',
+  '$uibModal',
+  '$api',
+  'vars',
+  'helper',
+  '$rootScope',
+  '$filter', '$rates',
+  '$auth',
+  '$message',
+  '$datetime',
+  function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
+           $api, vars, helper, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+
     var isIguana = $storage['isIguana'],
-        coinsInfo = [];
+        coinsInfo = [],
+        defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
+        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+
+    $scope.util = util;
+    $scope.$state = $state;
+    $scope.isIguana = isIguana;
+    $rootScope.$state = $state;
+    $scope.enabled = $auth.checkSession(true);
 
     $rootScope.$on('getCoin', function ($ev, coins) {
       coinsInfo = vars.coinsInfo;
       constructAccountCoinRepeater();
     });
-
-    $scope.util = util;
-    $scope.$state = $state;
-    $scope.isIguana = isIguana;
-    $scope.enabled = $auth.checkSession(true);
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -81,15 +100,10 @@ angular.module('IguanaGUIApp')
           });
     };
 
-    var defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
-
-    $('body').addClass('dashboard-page');
-
     $(document).ready(function() {
       util.initTopNavBar();
 
-      $('body').scroll(function(e){
+      $('body').scroll(function(e) {
         if ($(window).width() < 768) {
           if ($('.main-content,.currency-content').position().top  < -270) {
             $('#top-menu').addClass('hidden');
@@ -178,7 +192,7 @@ angular.module('IguanaGUIApp')
 
       coinBalances = [];
 
-      for (var i=0; i <coinsSelectedByUser.length; i++) {
+      for (var i=0; i < coinsSelectedByUser.length; i++) {
         if (isFirstRun) {
           _sideBarCoins[coinsSelectedByUser[i]] = {
             id: coinsSelectedByUser[i],
