@@ -67,12 +67,16 @@ angular.module('IguanaGUIApp')
     }
   };
 
+  function _checkSession() {
+    this.checkSession();
+  }
+
   // TODO: not handled all states!!!
   function checkUserIdentify(toState) {
     if (!$storage['iguana-auth']) {
       this.logout();
     } else {
-      if (!this.checkSession()) {
+      if (!_checkSession) {
         if (toState.name !== 'login') {
           $state.go('login');
         }

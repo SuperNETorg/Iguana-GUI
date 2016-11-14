@@ -34,8 +34,6 @@ angular.module('IguanaGUIApp')
     }
 
     function onInit(event, data) {
-      $scope.availableCoins = util.constructCoinRepeater(data);
-
       $scope.openAddCoinModal = function () {
         var modalInstance = $uibModal.open({
           animation: true,

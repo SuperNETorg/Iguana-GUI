@@ -127,6 +127,8 @@ angular.module('IguanaGUIApp')
       }
     });
 
+    constructAccountCoinRepeater(true);
+
     // TODO: merge all dashboard data into a single object for caching
     $scope.currency = defaultCurrency;
     $scope.totalBalance = 0;
