@@ -23,6 +23,7 @@ angular.module('IguanaGUIApp')
         allDashboardCoins = '',
         totalCoins = 0,
         coinToCurrencyRate = 0,
+        defaultCoin = '',
         defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
     for (var key in vars.coinsInfo) {

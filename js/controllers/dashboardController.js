@@ -14,7 +14,8 @@ angular.module('IguanaGUIApp')
   'vars',
   'helper',
   '$rootScope',
-  '$filter', '$rates',
+  '$filter',
+  '$rates',
   '$auth',
   '$message',
   '$datetime',
@@ -50,7 +51,7 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'addCoinLoginModalController',
-            templateUrl: '/partials/add-coin-login.html',
+            template: '<div ng-include="\'partials/add-coin-login.html\'"></div>',
             appendTo: angular.element(document.querySelector('.add-coin-login-container')),
             resolve: {
               receivedObject: function () {
@@ -77,7 +78,7 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'receiveCoinModalController',
-            templateUrl: '/partials/receive-coin.html',
+            template: '<div ng-include="\'partials/receive-coin.html\'"></div>',
             appendTo: angular.element(document.querySelector('.receive-coin-modal-container')),
           });
     };
@@ -95,7 +96,7 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'sendCoinModalController',
-            templateUrl: '/partials/send-coin.html',
+            template: '<div ng-include="\'partials/send-coin.html\'"></div>',
             appendTo: angular.element(document.querySelector('.send-coin-modal-container')),
           });
     };

@@ -19,9 +19,9 @@
       <div class="supported-coins-repeater">
         <div class="supported-coins-repeater-inner">
           <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
-                ng-repeat="item in availableCoins | filter:coinSearchModel"
-                ng-click="clickOnCoin(item, $event)"
-                ng-class="{ 'active': coinsSelectedFilter(item.coinId) }">
+               ng-repeat="item in availableCoins | filter:coinSearchModel"
+               ng-click="clickOnCoin(item, $event)"
+               ng-class="{ 'active': coinsSelectedFilter(item.coinId) }">
             <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
             <div class="name">{{ item.name }}</div>
           </div>

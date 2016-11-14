@@ -42,9 +42,7 @@ angular.module('IguanaGUIApp')
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
           controller: 'addCoinModalController',
-          //TODO: this original
-          templateUrl: '/partials/add-coin.html',
-          // templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
+          template: '<div ng-include="\'partials/add-coin.html\'"></div>',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
           resolve: {
             receivedObject: function () {
