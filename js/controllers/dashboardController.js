@@ -33,6 +33,11 @@ angular.module('IguanaGUIApp')
     $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
 
+    var coinBalances = [],
+        _sideBarCoins = {},
+        coinsSelectedByUser = [],
+        dashboardUpdateTimer;
+
     $rootScope.$on('coinsInfo', function($ev, coins) {
       coinsInfo = vars.coinsInfo;
       constructAccountCoinRepeater();
@@ -144,11 +149,6 @@ angular.module('IguanaGUIApp')
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
 
-    var coinBalances = [],
-        _sideBarCoins = {},
-        coinsSelectedByUser = [],
-        dashboardUpdateTimer;
-
     $scope.setActiveCoin = function(item) {
       $storage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
@@ -184,7 +184,8 @@ angular.module('IguanaGUIApp')
 
       coinsSelectedByUser = [];
 
-      for (var key in coinsInfo) {
+      var lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
+      for (var key in lookupArray) {
         if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
           coinsSelectedByUser[index] = key;
           index++;
@@ -241,7 +242,7 @@ angular.module('IguanaGUIApp')
 
       // run balances and tx unit update once left sidebar is updated
       if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
-        checkAddCoinButton();
+        //checkAddCoinButton();
         updateTotalBalance();
         $scope.setTxUnitBalance();
         constructTransactionUnitRepeater();
