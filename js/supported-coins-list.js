@@ -63,7 +63,7 @@ var supportedCoinsList = {
     'name': 'MazaCoin',
     'portp2p': 12832,
     'user': 'user', // add your rpc pair here
-    'pass': 'user',
+    'pass': 'pass',
     'currentBlockHeightExtSource': settings.proxy + 'explorer.cryptoadhd.com:2750/chain/Mazacoin/q/getblockcount'
   },
   'frk': {
