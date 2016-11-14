@@ -18,7 +18,40 @@ angular.module('IguanaGUIApp')
     $scope.clickOnCoin = clickOnCoin;
     $scope.coinSearchModel = undefined;
     $scope.coinsSelectedToAdd = { coins: $storage['iguana-login-active-coin'] || [] };
-    $scope.availableCoins = util.constructCoinRepeater(vars.coinsInfo);
+    $scope.availableCoins = constructCoinRepeater(vars.coinsInfo);
+
+    function constructCoinRepeater(coinsInfo) {
+      var index = 0,
+          addCoinArray = [],
+          coinColors = ['orange', 'breeze', 'light-blue', 'yellow'];
+
+      if (undefined !== coinsInfo) {
+        for (var key in supportedCoinsList) {
+          if (( !$storage['iguana-' + key + '-passphrase'] || (
+            $storage['iguana-' + key + '-passphrase'] &&
+            $storage['iguana-' + key + '-passphrase'].logged !== 'yes' ))) {
+            if (($storage['isIguana'] && coinsInfo[key].iguana === true) ||
+              (!$storage['isIguana'] && coinsInfo[key].connection === true)
+            ) {
+              addCoinArray.push({
+                'id': key.toUpperCase(),
+                'coinId': key.toLowerCase(),
+                'name': supportedCoinsList[key].name,
+                'color': coinColors[index]
+              });
+
+              if (index === coinColors.length - 1) {
+                index = 0;
+              } else {
+                index++;
+              }
+            }
+          }
+        }
+      }
+
+      return addCoinArray;
+    }
 
     $scope.coinsSelectedFilter = function (item) {
       var el;
