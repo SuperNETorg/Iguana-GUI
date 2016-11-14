@@ -11,7 +11,7 @@ var lang = {
     },
     'PAGE' : {
       'LOGIN': 'Login',
-      'SIGNUP': 'Create account',
+      'CREATE': 'Create account',
       'VERIFY': 'Verify passphrase',
       'DASHBOARD': 'Dashboard',
       'SETTINGS': 'Settings',

@@ -13,7 +13,8 @@ angular.module('IguanaGUIApp')
   '$document',
   '$state',
   '$filter',
-  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter) {
+  '$message',
+  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter,$message) {
     var self = this;
 
     this.isIguana = $storage['isIguana'];
@@ -38,7 +39,7 @@ angular.module('IguanaGUIApp')
       if (!this.isExecCopyFailed) {
         try {
           clipboard.copyText(element.html());
-          this.ngPrepMessageModal( // TODO
+          $message.ngPrepMessageModal( // TODO
             elementDisplayName + ' ' + $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
             'blue',
             true

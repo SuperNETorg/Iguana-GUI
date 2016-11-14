@@ -28,8 +28,7 @@ angular.module('IguanaGUIApp')
 
       if (!vars.coinsInfo) {
         $rootScope.$on('coinsInfo', onInit);
-      }
-      else {
+      } else {
         onInit(null, vars.coinsInfo);
       }
       function onInit(event, data) {
@@ -41,8 +40,8 @@ angular.module('IguanaGUIApp')
             ariaDescribedBy: 'modal-body',
             controller: 'addCoinModalController',
             //TODO: this original
-            // templateUrl: '/partials/add-coin.html',
-            templateUrl: '/Iguana-GUI/partials/add-coin.html',
+            templateUrl: '/partials/add-coin.html',
+            // templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
             appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
             resolve: {
               receivedObject: function () {

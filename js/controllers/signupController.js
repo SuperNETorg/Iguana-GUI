@@ -13,60 +13,72 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   '$filter',
   '$message',
-  function($scope, $http, $state, util, $passPhraseGenerator, $storage, $api, $rootScope, $uibModal, $filter, $message) {
+  'vars',
+  function($scope, $http, $state, util, $passPhraseGenerator, $storage,
+           $api, $rootScope, $uibModal, $filter, $message, vars) {
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
-
+    $scope.availableCoins = util.constructCoinRepeater(vars.coinsInfo);
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
+    $scope.coinsSelectedToAdd = [];
 
-    initPage();
+    if (!vars.coinsInfo) {
+      $rootScope.$on('coinsInfo', onInit);
+    } else {
+      onInit(null, vars.coinsInfo);
+    }
 
-    $scope.selectWallet = function () {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        controller: 'addCoinModalController',
-        // templateUrl: '/partials/add-coin.html',
-        templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
-        appendTo: angular.element(document.querySelector('.coin-select-modal')),
-        resolve: {
-          receivedObject: function () {
-            return {
-              receivedObject:$scope.receivedObject
-            };
-          },
-          // {}
-        }
-      });
+    function onInit() {
 
-      modalInstance.result.then(function(receivedObject) {
-        var coinId,
-          availableCoin;
+      initPage();
 
-        if (receivedObject.length > 1) $scope.passphraseModel = receivedObject; // dev
-        $scope.coinsSelectedToAdd = [];
-        $scope.receivedObject = $storage['iguana-login-active-coin'];
+      $scope.selectWallet = function () {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'addCoinModalController',
+          templateUrl: '/partials/add-coin.html',
+          //templateUrl: '/iguana/Iguana-GUI/partials/add-coin.html',
+          appendTo: angular.element(document.querySelector('.coin-select-modal')),
+          resolve: {
+            receivedObject: function () {
+              return {
+                receivedObject:$scope.receivedObject
+              };
+            },
+            // {}
+          }
+        });
 
-        for (var i = 0; $scope.receivedObject.length > i; i++) {
-          coinId = $scope.receivedObject[i];
+        modalInstance.result.then(function (receivedObject) {
+          var coinId,
+            availableCoin;
+          $scope.coinsSelectedToAdd = [];
+          $scope.receivedObject = $storage['iguana-login-active-coin'];
 
-          for (var id in $scope.availableCoins) {
-            availableCoin = $scope.availableCoins[id];
+          for (var i = 0; $scope.receivedObject.length > i; i++) {
+            coinId = $scope.receivedObject[i];
 
-            if (availableCoin.coinId == coinId) {
-              $scope.coinsSelectedToAdd.push(availableCoin);
+            for (var l = 0; $scope.availableCoins.length > l; l++) {
+              availableCoin = $scope.availableCoins[l];
+
+              if (Object.keys(coinId).indexOf(availableCoin.coinId) != -1) {
+                $scope.coinsSelectedToAdd.push(availableCoin);
+                $storage.coinsSelectedToAdd = $scope.coinsSelectedToAdd;
+              }
             }
           }
-        }
-      });
-    };
+        });
+      };
+
+    }
 
     function initPage() {
       if ($state.current.name === 'signup.step1') {
@@ -92,7 +104,7 @@ angular.module('IguanaGUIApp')
       var addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form';
 
       // if (coinsSelectedToAdd[0]) selectedCoindToEncrypt = coinsSelectedToAdd[0]; //todo receive from login controller
-      // var selectedCoindToEncrypt = 'mzc';
+      var selectedCoindToEncrypt = $storage.coinsSelectedToAdd[0]['coinId'];
 
       if ($scope.passPhraseText !== '') {
         var walletEncryptResponse = $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
