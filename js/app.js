@@ -98,6 +98,6 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
   //   }
   });
   $api.testConnection(function (coins) {
-    $rootScope.$broadcast('getCoin', coins);
+    $rootScope.$broadcast('coinsInfo', coins);
   }); // switch with Api service once it's finished
 });

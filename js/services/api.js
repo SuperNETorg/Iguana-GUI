@@ -261,7 +261,7 @@ angular.module('IguanaGUIApp')
 
       var debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
-      if (Object.keys(this.getConf().coins).length - 1 === _index) {
+      if (Object.keys(this.getConf().coins).length === _index) {
         if (cb) {
           if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
 
@@ -289,7 +289,9 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.getCoins = function(index, _index, conf) {
+    this.getCoins = function(coins, _index, coinsKeys) {
+      var index = coinsKeys[_index];
+      var conf = coins[index];
       var fullUrl = this.getFullApiRoute('getinfo', conf),
           postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
           postAuthHeaders = this.getBasicAuthHeaderObj(conf),
@@ -300,9 +302,9 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        deferred.resolve([index, response, _index]);
+        deferred.resolve([coins, response, ++_index, coinsKeys]);
       },function(response) {
-        deferred.reject([index, response, _index]);
+        deferred.reject([coins, response, ++_index, coinsKeys]);
       });
 
       return deferred.promise;
@@ -311,55 +313,55 @@ angular.module('IguanaGUIApp')
     this.testCoinPorts = function(cb) {
       var result = false,
           _index = 0,
-        debugSyncInfo = angular.element(document).find('#debug-sync-info');
-
+        coins = this.getConf().coins,
+        debugSyncInfo = angular.element(document).find('#debug-sync-info'),
+        self = this;
+      var coinsKeys = Object.keys(coins);
       if (dev.isDev && dev.showSyncDebug) {
         debugSyncInfo.html(''); // TODO: change to angular broadcast
       }
+      if (!$storage['isIguana']) {
+        self
+          .getCoins(coins, _index, coinsKeys)
+          .then(onResolve, onReject);
+      } else {
+        for (var i in coins) {
 
-      var coins = this.getConf().coins;
+          if (!this.coinsInfo[i]) {
+            this.coinsInfo[i] = [];
+          }
 
-      for (var index in coins) {
+          this.coinsInfo[i].connection = false;
+          this.coinsInfo[i].RT = false;
+          this.coinsInfo[i].iguana = true;
 
-        if (!this.coinsInfo[index]) {
-          this.coinsInfo[index] = [];
         }
-
-        this.coinsInfo[index].connection = false;
-        this.coinsInfo[index].RT = false;
-        if (!$storage['isIguana']) {
-          this.getCoins(index, _index, coins[index])
-            .then(
-              onResolve.bind(this),
-              onReject.bind(this)
-            );
-        } else {
-          this.coinsInfo[index].iguana = true;
-          this.checkLoopEnd(_index, cb);
-        }
-
-        _index++;
+        this.checkLoopEnd(coinsKeys.length, cb);
       }
 
-      function onResolve(data) {
-        var index = data[0],
-            response = data[1],
-            _index = data[2];
+      function onResolve(attributes) {
 
-        this.errorHandler(response, index);
+        var coins = attributes[0],
+            response = attributes[1],
+          _index = attributes[2],
+          coinsKeys = attributes[3],
+          index = coinsKeys[_index - 1];
+
+        if (!self.coinsInfo[index]) {
+          self.coinsInfo[index] = [];
+        }
+
+        self.errorHandler(response, index);
 
         if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
         if (dev.showConsoleMessages && dev.isDev) console.log(response);
-
         if (response.data && response.data.error === 'coin is busy processing') {
-          this.coinsInfo[index].connection = true;
-          this.coinsInfo[index].RT = false;
+          self.coinsInfo[index].connection = true;
+          self.coinsInfo[index].RT = false;
         }
-
         if (response.data && response.data.result && response.data.result.relayfee) {
-          this.coinsInfo[index].relayFee = response.data.result.relayfee;
+          self.coinsInfo[index].relayFee = response.data.result.relayfee;
         }
-
         if (response.data && (
             response.data.result && response.data.result.walletversion ||
             response.data.result && response.data.result.difficulty ||
@@ -367,22 +369,34 @@ angular.module('IguanaGUIApp')
           )) {
           if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
           if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
-          this.coinsInfo[index].connection = true;
+          self.coinsInfo[index].connection = true;
 
-          this.testCoinIsNotIguanaMode(response, index);
+          self.testCoinIsNotIguanaMode(response, index);
         } else {
-          this.testCoinIguanaMode(response, index); // TODO: double check if this is working
+          self.testCoinIguanaMode(response, index); // TODO: double check if this is working
         }
-
-        this.checkLoopEnd(_index, cb);
+        if (coinsKeys.length == _index) {
+          self.checkLoopEnd(_index, cb);
+        } else if (coinsKeys.length > _index) {
+          self
+            .getCoins(coins, _index, coinsKeys)
+            .then(onResolve, onReject);
+        }
       }
 
       function onReject(attributes) {
-        var index = attributes[0],
-          response = attributes[1];
-          _index = attributes[2]
 
-        this.errorHandler(response, index);
+        var coins = attributes[0],
+          response = attributes[1],
+          _index = attributes[2],
+          coinsKeys = attributes[3],
+          index = coinsKeys[_index - 1];
+
+        if (!self.coinsInfo[index]) {
+          self.coinsInfo[index] = [];
+        }
+
+        self.errorHandler(response, index);
 
         if (response.statusText === 'error' && !$storage['isIguana']) $storage['isProxy'] = false;
         if (
@@ -410,7 +424,14 @@ angular.module('IguanaGUIApp')
           }
         }
 
-        this.checkLoopEnd(_index, cb);
+        if (coinsKeys.length == _index) {
+          self.checkLoopEnd(_index, cb);
+        } else if (coinsKeys.length > _index) {
+          self
+            .getCoins(coins, _index, coinsKeys)
+            .then(onResolve, onReject);
+        }
+
       }
 
       return result;
@@ -751,7 +772,7 @@ angular.module('IguanaGUIApp')
       });
 
       return result;
-    }
+    };
 
     this.getExternalRate = function(quote, cb) {
       var result = false,
@@ -939,7 +960,7 @@ angular.module('IguanaGUIApp')
       }.bind(this));
 
       return result;
-    }
+    };
 
     this.setTxFee = function(coin, fee, cb) {
       var result = false,
@@ -1046,7 +1067,7 @@ angular.module('IguanaGUIApp')
       }
 
       return result;
-    }
+    };
 
     this.listTransactions = function(account, coin, cb, update) {
       var result = false;

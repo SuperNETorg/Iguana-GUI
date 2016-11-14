@@ -35,7 +35,6 @@ angular.module('IguanaGUIApp')
       };
 
       function clickOnCoin(item, $event) {
-        debugger
         var coinDomElement = angular.element($event.currentTarget),
           isDisable = false,
           activeCoinStorageData = {};
