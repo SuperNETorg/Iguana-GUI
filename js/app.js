@@ -84,7 +84,6 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
 .run(function($rootScope, $location, $state, util, $timeout, $api) {
   // check session and route
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-    // debugger;
     // TODO: find a better way
   //   if (!util.checkSession() && toState.name !== 'signup.step1') {
   //     $timeout(function() {
@@ -98,7 +97,6 @@ angular.module('IguanaGUIApp', ['ui.router', 'ngSanitize', 'IguanaGUIApp.control
   //     }, 0);
   //   }
   });
-
   $api.testConnection(function (coins) {
     $rootScope.$broadcast('getCoin', coins);
   }); // switch with Api service once it's finished

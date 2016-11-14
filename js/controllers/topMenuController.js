@@ -3,7 +3,6 @@
 angular.module('IguanaGUIApp')
 .controller('topMenuController', ['$scope', '$http', '$state', 'util', 'helper', '$auth',
   function($scope, $http, $state, util, helper, $auth) {
-  //debugger
     $scope.$state = $state;
     $scope.util = util;
     $scope.helper = helper;

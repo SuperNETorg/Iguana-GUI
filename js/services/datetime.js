@@ -17,9 +17,7 @@ angular.module('IguanaGUIApp')
   };
 
   this.timeAgo = function(element) { // TODO: move datetime service
-    //debugger;
     $timeout(function () {
-      //debugger;
       if($(element).length){ // TODO: refactor, no jquery
         var timeAgo = $(element),
           threshold = settings.thresholdTimeAgo,

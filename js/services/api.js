@@ -76,9 +76,8 @@ angular.module('IguanaGUIApp')
 
           this.errorHandler(response);
 
-          if(!$storage['isIguana']) {
-            this.testCoinPorts(cb);
-          }
+          this.testCoinPorts(cb);
+
         }.bind(this), function(response) {
           // non-iguana env
           if (dev.isDev) {
@@ -259,9 +258,10 @@ angular.module('IguanaGUIApp')
     };
 
     this.checkLoopEnd = function (_index, cb) {
+
       var debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
-      if (Object.keys(this.getConf().coins).length === _index) {
+      if (Object.keys(this.getConf().coins).length - 1 === _index) {
         if (cb) {
           if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + _index);
 
@@ -300,9 +300,9 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        deferred.resolve([index, response, ++_index]);
+        deferred.resolve([index, response, _index]);
       },function(response) {
-        deferred.reject([index, response, ++_index]);
+        deferred.reject([index, response, _index]);
       });
 
       return deferred.promise;
@@ -320,17 +320,24 @@ angular.module('IguanaGUIApp')
       var coins = this.getConf().coins;
 
       for (var index in coins) {
+
         if (!this.coinsInfo[index]) {
           this.coinsInfo[index] = [];
         }
 
         this.coinsInfo[index].connection = false;
         this.coinsInfo[index].RT = false;
-        this.getCoins(index, _index, coins[index])
-        .then(
-          onResolve.bind(this),
-          onReject.bind(this)
-        );
+        if (!$storage['isIguana']) {
+          this.getCoins(index, _index, coins[index])
+            .then(
+              onResolve.bind(this),
+              onReject.bind(this)
+            );
+        } else {
+          this.coinsInfo[index].iguana = true;
+          this.checkLoopEnd(_index, cb);
+        }
+
         _index++;
       }
 
