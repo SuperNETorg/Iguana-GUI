@@ -74,7 +74,12 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    $api.getBalance(defaultAccount, $scope.activeCoin, initSendCoinModal);
+    $api.getBalance(defaultAccount, $scope.activeCoin)
+    .then(function(response) {
+      initSendCoinModal(response[0], response[1]);
+    }, function(reason) {
+      console.log('request failed: ' + reason);
+    });
 
     function initSendCoinModal(balance, coin) {
       $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
