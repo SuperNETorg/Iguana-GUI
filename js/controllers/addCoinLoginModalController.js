@@ -64,6 +64,7 @@ angular.module('IguanaGUIApp')
 
     $scope.login = function () {
       var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
+
       $api.walletLock(coinsSelectedToAdd[0].coinId);
       $api.walletLogin(
         $scope.passphrase,
@@ -93,4 +94,5 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     }
-  }]);
+  }
+]);

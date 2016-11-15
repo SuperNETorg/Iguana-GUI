@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.directive('appTitle', ['$rootScope', '$timeout', '$filter',
+.directive('appTitle', [
+  '$rootScope',
+  '$timeout',
+  '$filter',
   function($rootScope, $timeout, $filter) {
     return {
       restrict: 'A',

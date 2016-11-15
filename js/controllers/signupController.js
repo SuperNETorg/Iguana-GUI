@@ -58,7 +58,7 @@ angular.module('IguanaGUIApp')
 
         modalInstance.result.then(function (receivedObject) {
           var coinId,
-            availableCoin;
+              availableCoin;
 
           $scope.coinsSelectedToAdd = [];
           $scope.receivedObject = $storage['iguana-login-active-coin'];

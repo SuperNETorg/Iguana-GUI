@@ -48,9 +48,9 @@ angular.module('IguanaGUIApp')
         index === 0
       ) {
         var defaultIguanaServerUrl = this.getConf().server.protocol +
-          this.getConf().server.ip +
-          ':' +
-          this.getConf().server.iguanaPort;
+                                     this.getConf().server.ip +
+                                     ':' +
+                                     this.getConf().server.iguanaPort;
 
         $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
@@ -133,7 +133,7 @@ angular.module('IguanaGUIApp')
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            $interval.cancel(dashboardUpdateTimer);//ToDo undefined variable
+            $interval.cancel(dashboardUpdateTimer); //ToDo undefined variable
           }
 
           return 10;
@@ -169,7 +169,7 @@ angular.module('IguanaGUIApp')
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            $interval.clear(dashboardUpdateTimer);//ToDo undefined variable
+            $interval.clear(dashboardUpdateTimer); //ToDo undefined variable
           }
 
           return 10;
@@ -185,7 +185,7 @@ angular.module('IguanaGUIApp')
       if (!$storage['isIguana']) {
         this.coindCheckRT(index, function (coindCheckRTResponse) {
           var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
-            syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
+              syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
           if (dev.showConsoleMessages && dev.isDev)
             console.log('Connections: ' + response.data.result.connections);
@@ -309,9 +309,9 @@ angular.module('IguanaGUIApp')
     };
 
     this.getCoins = function(coins, _index, coinsKeys) {
-      var index = coinsKeys[_index];
-      var conf = coins[index];
-      var fullUrl = this.getFullApiRoute('getinfo', conf),
+      var index = coinsKeys[_index],
+          conf = coins[index],
+          fullUrl = this.getFullApiRoute('getinfo', conf),
           postData = this.getBitcoinRPCPayloadObj('getinfo', null, index),
           postAuthHeaders = this.getBasicAuthHeaderObj(conf),
           deferred = $q.defer();
@@ -331,20 +331,19 @@ angular.module('IguanaGUIApp')
 
     this.testCoinPorts = function() {
       var result = false,
-        _index = 0,
-        coins = this.getConf().coins,
-        debugSyncInfo = angular.element(document).find('#debug-sync-info'),
-        self = this,
-        deferred = $q.defer(),
-        coinsKeys = Object.keys(coins);
+          _index = 0,
+          coins = this.getConf().coins,
+          debugSyncInfo = angular.element(document).find('#debug-sync-info'),
+          self = this,
+          deferred = $q.defer(),
+          coinsKeys = Object.keys(coins);
 
       if (dev.isDev && dev.showSyncDebug) {
         debugSyncInfo.html(''); // TODO: change to angular broadcast
       }
       if (!$storage['isIguana']) {
-        self
-          .getCoins(coins, _index, coinsKeys)
-          .then(onResolve, onReject);
+        self.getCoins(coins, _index, coinsKeys)
+            .then(onResolve, onReject);
       } else {
         for (var i in coins) {
           if (!this.coinsInfo[i]) {
@@ -354,7 +353,6 @@ angular.module('IguanaGUIApp')
           this.coinsInfo[i].connection = false;
           this.coinsInfo[i].RT = false;
           this.coinsInfo[i].iguana = true;
-
         }
 
         this.checkLoopEnd(coinsKeys.length);
@@ -408,10 +406,10 @@ angular.module('IguanaGUIApp')
 
       function onReject(attributes) {
         var coins = attributes[0],
-          response = attributes[1],
-          _index = attributes[2],
-          coinsKeys = attributes[3],
-          index = coinsKeys[_index - 1];
+            response = attributes[1],
+            _index = attributes[2],
+            coinsKeys = attributes[3],
+            index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = [];
@@ -450,9 +448,8 @@ angular.module('IguanaGUIApp')
           self.checkLoopEnd(_index);
           deferred.resolve(self.coinsInfo);
         } else if (coinsKeys.length > _index) {
-          self
-            .getCoins(coins, _index, coinsKeys)
-            .then(onResolve, onReject);
+          self.getCoins(coins, _index, coinsKeys)
+              .then(onResolve, onReject);
         }
 
       }
@@ -479,8 +476,7 @@ angular.module('IguanaGUIApp')
           coins = this.getConf().coins;
 
       for (var index in coins) {
-        if (
-          (
+        if ((
             this.coinsInfo[index].RT === false &&
             this.coinsInfo[index].connection === true &&
             $storage['isIguana'] && $storage['iguana-' + index + '-passphrase']
@@ -489,9 +485,8 @@ angular.module('IguanaGUIApp')
             this.coinsInfo[index].RT === false &&
             !$storage['isIguana'] && $storage['iguana-' + index + '-passphrase'] &&
             $storage['iguana-' + index + '-passphrase'].logged === 'yes'
-          )
-        ) {
-          outOfSyncCoinsList += index.toUpperCase() + ', ';
+          )) {
+            outOfSyncCoinsList += index.toUpperCase() + ', ';
         }
       }
 
@@ -507,9 +502,9 @@ angular.module('IguanaGUIApp')
 
     this.walletEncrypt = function(passphrase, coin) {
       var fullUrl = this.getFullApiRoute('encryptwallet', null, coin),
-        postData = this.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        deferred = $q.defer();
+          postData = this.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          deferred = $q.defer();
 
       console.log('walletEncrypt', fullUrl, postData, postAuthHeaders);
 
@@ -517,70 +512,66 @@ angular.module('IguanaGUIApp')
         cache: false,
         headers: postAuthHeaders
       })
-        .then(function(response) {
-          this.errorHandler(response, coin);
+      .then(function(response) {
+        this.errorHandler(response, coin);
 
-          if (dev.showConsoleMessages && dev.isDev) console.log(response);
+        if (dev.showConsoleMessages && dev.isDev) console.log(response);
 
-          if (response.result) {
-            // non-iguana
-            if (_response.result) {
-              deferred.resolve(response.result);
+        if (response.result) {
+          // non-iguana
+          if (_response.result) {
+            deferred.resolve(response.result);
+          } else {
+            deferred.resolve(false);
+          }
+        } else {
+          // iguana
+          if (response.data.error) {
+            // do something
+            if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.data.error);
+
+            deferred.resolve(false);
+          } else {
+            if (response.data.result === 'success') {
+              deferred.resolve(response.data);
             } else {
               deferred.resolve(false);
             }
-          } else {
-            // iguana
-            if (response.data.error) {
-              // do something
-              if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.data.error);
-
-              deferred.resolve(false);
-            } else {
-              if (response.data.result === 'success') {
-                deferred.resolve(response.data);
-              } else {
-                deferred.resolve(false);
-              }
-            }
           }
-        }.bind(this), function(response) {
-          if (response.status) {
-            if (response.status == -15) {
-              deferred.resolve(-15);
-            }
-
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log(response.responseText);
-            }
-          } else {
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log(response);
-            }
+        }
+      }.bind(this), function(response) {
+        if (response.status) {
+          if (response.status == -15) {
+            deferred.resolve(-15);
           }
-        }.bind(this));
+
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response.responseText);
+          }
+        } else {
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
+          }
+        }
+      }.bind(this));
 
       return deferred.promise;
     };
 
     this.walletLock = function (coin) {
-      var defer = $q.defer(), self = this;
-      var fullUrl = this.getFullApiRoute('walletlock', null, coin),
-        postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+      var defer = $q.defer(),
+          self = this,
+          fullUrl = this.getFullApiRoute('walletlock', null, coin),
+          postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-      console.log('walletLock', fullUrl, postData, postAuthHeaders);
+      //console.log('walletLock', fullUrl, postData, postAuthHeaders);
 
-      $http.post(
-        fullUrl,
-        postData,
-        {
-          cache: false,
-          headers: postAuthHeaders
-        }
-      )
-        .then(onResolve, onReject);
-
+      $http.post(fullUrl, postData, {
+        cache: false,
+        headers: postAuthHeaders
+      })
+      .then(onResolve, onReject);
 
       function onResolve(response) {
         self.errorHandler(response, coin);
@@ -610,7 +601,8 @@ angular.module('IguanaGUIApp')
     };
 
     this.walletLogin = function(passphrase, timeout, coin) {
-      var defer = $q.defer(), self = this;
+      var defer = $q.defer(),
+          self = this;
       if (!$storage['isIguana']) {
         timeout = settings.defaultWalletUnlockPeriod;
       }
@@ -622,23 +614,21 @@ angular.module('IguanaGUIApp')
       }
 
       var result = false,
-        fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
-        defaultIguanaServerUrl = this.getConf().server.protocol +
-          this.getConf().server.ip +
-          ':' +
-          this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
-        postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
-          passphrase + '\", ' + timeout, coin),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+          fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
+          defaultIguanaServerUrl = this.getConf().server.protocol +
+            this.getConf().server.ip +
+            ':' +
+            this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
+          postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
+            passphrase + '\", ' + timeout, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-      console.log(fullUrl, defaultIguanaServerUrl, postData, postAuthHeaders);
+      //console.log(fullUrl, defaultIguanaServerUrl, postData, postAuthHeaders);
 
-      $http.post(
-        $storage['isIguana'] ? defaultIguanaServerUrl : fullUrl,
-        postData,
-        {headers: postAuthHeaders}
-      )
-        .then(onResolve, onReject);
+      $http.post($storage['isIguana'] ? defaultIguanaServerUrl : fullUrl, postData, {
+        headers: postAuthHeaders
+      })
+      .then(onResolve, onReject);
 
       function onResolve(response) {
         if (dev.showConsoleMessages && dev.isDev) {
@@ -673,35 +663,36 @@ angular.module('IguanaGUIApp')
 
     this.coindCheckRT = function(coin) {
       var result = false,
-        fullUrl = this.getFullApiRoute('getblocktemplate', null, coin),
-        postData = this.getBitcoinRPCPayloadObj('getblocktemplate'),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        deferred = $q.defer();
+          fullUrl = this.getFullApiRoute('getblocktemplate', null, coin),
+          postData = this.getBitcoinRPCPayloadObj('getblocktemplate'),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
-        .then(function (response) {
-          this.errorHandler(response, coin);
+      .then(function(response) {
+        this.errorHandler(response, coin);
 
-          if (response.data.result.bits) {
-            result = true;
-          } else {
-            result = false;
-          }
+        if (response.data.result.bits) {
+          result = true;
+        } else {
+          result = false;
+        }
 
-          // if (cb) cb.call(this, result);
-          // deferred.resolve(result);
-        }.bind(this), function (response) {
-          if (response.data && response.data instanceof String && response.responseText.indexOf(':-10') === -1) {
-            result = true;
-          } else {
-            result = false;
-          }
+        // if (cb) cb.call(this, result);
+        // deferred.resolve(result);
+      }.bind(this), function(response) {
+        if (response.data && response.data instanceof String && response.responseText.indexOf(':-10') === -1) {
+          result = true;
+        } else {
+          result = false;
+        }
 
-          deferred.reject(result);
-        });
+        deferred.reject(result);
+      });
+
       return deferred.promise;
     }
 
@@ -744,9 +735,9 @@ angular.module('IguanaGUIApp')
       }
 
       var fullUrl = this.getFullApiRoute('getaccountaddress', null, coin),
-        postData = this.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        deferred = $q.defer();
+          postData = this.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
         cache: false,
@@ -774,17 +765,19 @@ angular.module('IguanaGUIApp')
 
     this.addCoin = function(coins, _index) {
       var coin = coins[_index],
-            coinsKeys = Object.keys(coins), self = this;
-      var result = [],
-            coinsLength = coinsKeys.length,
-            postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-            fullUrl = this.getConf().server.protocol +
-                      this.getConf().server.ip + ':' +
-                      this.getConf(true).server.port,
-            defer = $q.defer();
+          coinsKeys = Object.keys(coins),
+          self = this,
+          result = [],
+          coinsLength = coinsKeys.length,
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          fullUrl = this.getConf().server.protocol +
+                    this.getConf().server.ip + ':' +
+                    this.getConf(true).server.port,
+          defer = $q.defer();
 
-      $http.post(fullUrl, iguanaAddCoinParams[coin],
-                  {headers: postAuthHeaders})
+      $http.post(fullUrl, iguanaAddCoinParams[coin], {
+        headers: postAuthHeaders
+      })
       .then(onResolve, onReject);
 
       function onResolve(response) {
@@ -801,9 +794,9 @@ angular.module('IguanaGUIApp')
           defer.resolve([result, coin]);
         } else if (coinsLength > _index) {
           var i = ++_index;
-          self
-            .addCoin(coins, i)
-            .then(onResolve, onReject);
+
+          self.addCoin(coins, i)
+              .then(onResolve, onReject);
         }
         // if (cb) {
         //   cb.call(this, result.result ? result.result : result, coin);
@@ -814,6 +807,7 @@ angular.module('IguanaGUIApp')
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('error: ' + response.error);
         }
+
         defer.reject([response, coin]);
       }
 
@@ -822,20 +816,19 @@ angular.module('IguanaGUIApp')
 
     this.getIguanaRate = function(quote) {
       var result = false,
-        deferred = $q.defer(),
-        quoteComponents = quote.split('/'),
-        fullUrl = this.getServerUrl(true) +
-        '/iguana/addcoin?base=' +
-        quoteComponents[0] +
-        '&rel=' +
-        quoteComponents[1];
+          deferred = $q.defer(),
+          quoteComponents = quote.split('/'),
+          fullUrl = this.getServerUrl(true) +
+          '/iguana/addcoin?base=' +
+          quoteComponents[0] +
+          '&rel=' +
+          quoteComponents[1];
 
       $http.get(fullUrl, '', {
         cache: false
       })
       .then(function(_response) {
         var response = JSON.parse(_response);
-
 
         if (response.result === 'success') {
           result = response.quote;
@@ -848,6 +841,7 @@ angular.module('IguanaGUIApp')
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('error: ' + _response.error);
         }
+
         deferred.resolve(false);
       });
 
@@ -856,9 +850,9 @@ angular.module('IguanaGUIApp')
 
     this.getExternalRate = function(quote) {
       var result = false,
-        quoteComponents = quote.split('/'),
-        fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
-        deferred = $q.defer();
+          quoteComponents = quote.split('/'),
+          fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
+          deferred = $q.defer();
 
       $http.get(fullUrl, '', {
         cache: false
@@ -892,7 +886,7 @@ angular.module('IguanaGUIApp')
             $http.get('https://poloniex.com/public?command=returnTicker', '', {
               cache: false
             })
-            .then(function(response){
+            .then(function(response) {
               var response = response.data;
 
               if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
@@ -1026,7 +1020,6 @@ angular.module('IguanaGUIApp')
         }
 
         deferred.resolve(result);
-
       }.bind(this), function(response) {
         this.errorHandler(response, coin);
 
@@ -1035,8 +1028,8 @@ angular.module('IguanaGUIApp')
             console.log('unlock the wallet first');
           }
         }
-        result = false;
 
+        result = false;
       }.bind(this));
 
       deferred.resolve(result);
@@ -1048,12 +1041,11 @@ angular.module('IguanaGUIApp')
       var result = false,
           fullUrl = this.getFullApiRoute('settxfee', null, coin),
           postData = this.getBitcoinRPCPayloadObj('settxfee', '\"' + fee + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
-      var deferred = $q.defer();
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          deferred = $q.defer();
 
       $http.post(fullUrl,postData,{
         cache: false,
-        // async: cb ? true : false,
         headers: postAuthHeaders
       })
       .then(function(_response) {
@@ -1089,7 +1081,7 @@ angular.module('IguanaGUIApp')
           }
         }
 
-          deferred.resolve(result);
+        deferred.resolve(result);
       }.bind(this),
       function(response) {
         this.errorHandler(response, coin);
@@ -1102,12 +1094,11 @@ angular.module('IguanaGUIApp')
 
     this.getCoinCurrentHeight = function(coin) {
       var result = false,
-        deferred = $q.defer();
+          deferred = $q.defer();
 
       if (this.getConf().coins[coin].currentBlockHeightExtSource !== 'disabled') {
         $http.get(this.getConf().coins[coin].currentBlockHeightExtSource, '', {
-          cache: false,
-          async: cb ? true : false
+          cache: false
         })
         .then(function(response) {
           if (response.blockcount || response.info || response.height || response.data || response[coin] || response.blocks) {
@@ -1131,7 +1122,6 @@ angular.module('IguanaGUIApp')
             }
 
             deferred.resolve(result);
-
           } else {
             if (dev.showConsoleMessages && dev.isDev) console.log('error retrieving current block height from ' + this.getConf().coins[coin].currentBlockHeightExtSource);
             result = false;
@@ -1150,7 +1140,7 @@ angular.module('IguanaGUIApp')
 
     this.listTransactions = function(account, coin, update) {
       var result = false,
-        deferred = $q.defer();
+          deferred = $q.defer();
 
       // dev account lookup override
       if (dev.coinAccountsDev && !$storage['isIguana']) {
