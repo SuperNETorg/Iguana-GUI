@@ -48,13 +48,13 @@ angular.module('IguanaGUIApp')
   }
 
   /* retrieve port poll data */
-  this.getPortPollResponse = function() {
-    if (this.setPortPollResponseDS) {
-      for (var i=0; i < this.setPortPollResponseDS.info.length; i++) {
-        coinsInfo[this.setPortPollResponseDS.info[i].coin] = [];
-        coinsInfo[this.setPortPollResponseDS.info[i].coin].RT = this.setPortPollResponseDS.info[i].RT;
-        coinsInfo[this.setPortPollResponseDS.info[i].coin].connection = this.setPortPollResponseDS.info[i].connection;
-        $localStorage['isIguana'] = this.setPortPollResponseDS.isIguana;
+  this.getPortPollResponse = function(setPortPollResponseDS) {
+    if (setPortPollResponseDS) {
+      for (var i=0; i < setPortPollResponseDS.info.length; i++) {
+        coinsInfo[setPortPollResponseDS.info[i].coin] = [];
+        coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
+        coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
+        $localStorage['isIguana'] = setPortPollResponseDS.isIguana;
       }
 
       if (dev.isDev && dev.showSyncDebug) { // debug info
@@ -62,7 +62,7 @@ angular.module('IguanaGUIApp')
             transactionUnit = angular.element(document.getElementsByClassName('transactions-unit')),
             body = angular.element(document.body);
 
-        if (this.setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(this.setPortPollResponseDS.debugHTML));
+        if (setPortPollResponseDS.debugHTML) debugSyncInfo.html(JSON.parse(setPortPollResponseDS.debugHTML));
         body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
         $interval(function() {
           if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });

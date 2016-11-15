@@ -14,7 +14,8 @@ angular.module('IguanaGUIApp')
   '$state',
   '$filter',
   '$message',
-  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter,$message) {
+  '$localStorage',
+  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter,$message, $localStorage) {
     var self = this;
 
     this.isIguana = $storage['isIguana'];
@@ -142,5 +143,37 @@ angular.module('IguanaGUIApp')
         }
       }
     };
+
+    this.constructCoinRepeater = function(coinsInfo) {
+      var index = 0,
+        addCoinColors = ['orange', 'breeze', 'light-blue', 'yellow'],
+        addCoinArray = new Array;
+
+      for (var key in supportedCoinsList) {
+        if (
+          (!$localStorage['iguana-' + key + '-passphrase'] ||
+          ($localStorage['iguana-' + key + '-passphrase'] &&
+          $localStorage['iguana-' + key + '-passphrase'].logged !== 'yes')) ||
+          $state.current.name === 'login' ||
+          $state.current.name === 'create-account'
+        ) {
+          if (
+            ($localStorage['isIguana'] && coinsInfo[key].iguana !== false) ||
+            (!$localStorage['isIguana'] && coinsInfo[key].connection === true)
+          ) {
+            addCoinArray.push({
+              'id': key.toUpperCase(),
+              'coinId': key.toLowerCase(),
+              'name': supportedCoinsList[key].name,
+              'color': addCoinColors[index]
+            });
+            if (index === addCoinColors.length - 1) index = 0;
+            else index++;
+          }
+        }
+      }
+
+      return addCoinArray;
+    }
   }
 ]);
