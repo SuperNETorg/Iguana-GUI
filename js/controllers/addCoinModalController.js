@@ -104,7 +104,6 @@ angular.module('IguanaGUIApp')
       }
 
       function checkIguanaCoinsSelection(suppressAddCoin) {
-        debugger;
         var result = false,
           selectedCoins = 0,
           defer = $q.defer();
@@ -171,7 +170,6 @@ angular.module('IguanaGUIApp')
       }
 
       function next() {
-        debugger;
         if ($storage['isIguana']) {
           checkIguanaCoinsSelection(false).then(function () {
             $uibModalInstance.close()

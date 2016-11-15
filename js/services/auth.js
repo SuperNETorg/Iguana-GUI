@@ -35,9 +35,7 @@ angular.module('IguanaGUIApp')
       this.login = function (coinsSelectedToAdd, passphraseModel) {
         var coinsSelectedToAdd = util.reindexAssocArray(coinsSelectedToAdd);
         this.coinsSelectedToAdd = coinsSelectedToAdd;
-        debugger
         $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId).then(function (ddd) {
-          debugger
           $api.walletLock(coinsSelectedToAdd[0].coinId).then(function (dd) {
             debugger
             $api.walletLogin(passphraseModel,

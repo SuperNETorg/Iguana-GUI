@@ -774,7 +774,6 @@ angular.module('IguanaGUIApp')
     };
 
     this.addCoin = function(coins, _index) {
-      debugger;
       var coin = coins[_index],
             coinsKeys = Object.keys(coins), self = this;
       var result = [],
