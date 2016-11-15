@@ -114,7 +114,6 @@ angular.module('IguanaGUIApp', [
   //   }
   });
   $api.testConnection().then(function (coins) {
-    debugger
     $rootScope.$broadcast('coinsInfo', coins);
   }); // switch with Api service once it's finished
 });

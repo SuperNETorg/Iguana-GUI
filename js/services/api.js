@@ -519,7 +519,6 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
         .then(function(response) {
-          debugger
           this.errorHandler(response, coin);
 
           if (dev.showConsoleMessages && dev.isDev) console.log(response);
@@ -547,7 +546,6 @@ angular.module('IguanaGUIApp')
             }
           }
         }.bind(this), function(response) {
-          debugger
           if (response.status) {
             if (response.status == -15) {
               deferred.resolve(-15);
@@ -567,7 +565,6 @@ angular.module('IguanaGUIApp')
     };
 
     this.walletLock = function (coin) {
-      debugger
       var defer = $q.defer(), self = this;
       var fullUrl = this.getFullApiRoute('walletlock', null, coin),
         postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
@@ -587,7 +584,6 @@ angular.module('IguanaGUIApp')
 
 
       function onResolve(response) {
-        debugger
         self.errorHandler(response, coin);
 
         if (response.data.result) {
@@ -608,7 +604,6 @@ angular.module('IguanaGUIApp')
         }
       }
       function onReject(response) {
-        debugger
         defer.reject(response);
       }
 
@@ -647,7 +642,6 @@ angular.module('IguanaGUIApp')
         .then(onResolve, onReject);
 
       function onResolve(response) {
-        debugger
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response.data.result);
         }
@@ -655,7 +649,6 @@ angular.module('IguanaGUIApp')
         defer.resolve([response, coin]);
       }
       function onReject(response) {
-        debugger
         console.log(response);
         // TODO change response structure
         if (response.data) {
