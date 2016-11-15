@@ -362,12 +362,11 @@ angular.module('IguanaGUIApp')
       }
 
       function onResolve(attributes) {
-
         var coins = attributes[0],
             response = attributes[1],
-          _index = attributes[2],
-          coinsKeys = attributes[3],
-          index = coinsKeys[_index - 1];
+            _index = attributes[2],
+            coinsKeys = attributes[3],
+            index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = [];
@@ -398,8 +397,8 @@ angular.module('IguanaGUIApp')
           self.testCoinIguanaMode(response, index);
         }
         if (coinsKeys.length == _index) {
-          self.checkLoopEnd(_index, cb);
-          defered.resolve(self.coinsInfo);
+          self.checkLoopEnd(_index);
+          deferred.resolve(self.coinsInfo);
         } else if (coinsKeys.length > _index) {
           self
             .getCoins(coins, _index, coinsKeys)
@@ -1206,6 +1205,8 @@ angular.module('IguanaGUIApp')
         deferred.reject(result, update);
 
       }.bind(this));
+
+      return deferred.promise;
     };
 
     this.getBalance = function(account, coin) {
@@ -1255,7 +1256,7 @@ angular.module('IguanaGUIApp')
           }
         }
 
-        deferred.resolve(result, coin);
+        deferred.resolve([result, coin]);
       }.bind(this),
         function(response) {
           if (response.data) {
@@ -1272,5 +1273,8 @@ angular.module('IguanaGUIApp')
           deferred.resolve(false, coin);
         }.bind(this)
       );
+
+      return deferred.promise;
     };
-  }]);
+  }
+]);

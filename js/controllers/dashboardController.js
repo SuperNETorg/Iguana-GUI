@@ -210,7 +210,13 @@ angular.module('IguanaGUIApp')
           });
         }
         util.applyDashboardResizeFix($scope.sideBarCoins);
-        $api.getBalance(defaultAccount, coinsSelectedByUser[i], constructAccountCoinRepeaterCB);
+
+        $api.getBalance(defaultAccount, coinsSelectedByUser[i])
+        .then(function(response) {
+          constructAccountCoinRepeaterCB(response[0], response[1]);
+        }, function(reason) {
+          console.log('request failed: ' + reason);
+        });
       }
     }
 
@@ -281,7 +287,12 @@ angular.module('IguanaGUIApp')
       if (!update) $scope.txUnit.loading = true;
 
       $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
-      $api.listTransactions(defaultAccount, $scope.activeCoin, constructTransactionUnitRepeaterCB);
+      $api.listTransactions(defaultAccount, $scope.activeCoin)
+      .then(function(response) {
+        constructTransactionUnitRepeaterCB(response);
+      }, function(reason) {
+        console.log('request failed: ' + reason);
+      });
     }
 
     // new tx will appear at the top of the list
@@ -345,7 +356,7 @@ angular.module('IguanaGUIApp')
               if (isIguana && txAmount !== undefined || !isIguana)
                 $scope.txUnit.transactions[i].txId = transactionDetails.txid;
                 $scope.txUnit.transactions[i].status = txStatus;
-                $scope.txUnit.transactions[i].statusClass = txCategory;
+                $scope.txUnit.transactions[i].statusClass = transactionDetails.confirmations ? txCategory : 'process';
                 $scope.txUnit.transactions[i].confs = transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a';
                 $scope.txUnit.transactions[i].inOut = txIncomeOrExpenseFlag;
                 $scope.txUnit.transactions[i].amount = txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount);
@@ -472,4 +483,5 @@ angular.module('IguanaGUIApp')
 
       $message.ngPrepMessageModal(addedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
     }
-}]);
+  }
+]);
