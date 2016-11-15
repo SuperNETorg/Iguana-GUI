@@ -98,7 +98,7 @@ var lang = {
       'SEND': 'Send',
       'SENDING': 'Sending',
       'ENTER_A_WALLET_ADDRESS': 'Enter a wallet address',
-      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee',
+      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
       'MINIMUM_FEE': 'Minimum fee. Increase it to speed up transaction.',
       'NOTE_OPTIONAL': 'Note (optional)',
       'INCORRECT_ADDRESS': 'Incorrect address. Please, make sure you enter it right.',

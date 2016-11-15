@@ -14,7 +14,10 @@ angular.module('IguanaGUIApp')
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
-    $scope.receiveCoin = {};
+    $scope.receiveCoin = {
+      coinAmount: '',
+      currencyAmount: ''
+    };
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,

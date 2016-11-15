@@ -108,7 +108,7 @@
   display: inline-block;
   width: 100%;
 }
-.send-modal .pop-detail.crncy span {
+.send-modal .pop-detail.crncy .eq-sign {
   color: #fc6538;
   float: left;
   font-size: 1.8em;

@@ -5,6 +5,8 @@
 
   .login-form-modal {
     z-index: 1000;
+  }
+  .send-coin-passphrase-modal-container .modal-dialog {
     width: 400px;
   }
   .login-form-modal .modal-add-coin-login {
