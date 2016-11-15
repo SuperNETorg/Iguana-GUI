@@ -15,7 +15,9 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   '$localStorage',
-  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval, $http, $q, $document, $state, $filter,$message, $localStorage) {
+  function($storage, $uibModal, $rootScope, clipboard,
+           $timeout, $interval, $http, $q, $document, $state, $filter,
+           $message, $localStorage) {
     var self = this;
 
     this.isIguana = $storage['isIguana'];

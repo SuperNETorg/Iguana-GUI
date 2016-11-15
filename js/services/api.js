@@ -14,7 +14,9 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$syncStatus',
   '$message',
-  function (util, helper, $http, $state, $timeout, $interval, $q, vars, $filter, $storage, $syncStatus, $message) {
+  function (util, helper, $http, $state, $timeout,
+            $interval, $q, vars, $filter, $storage,
+            $syncStatus, $message) {
     this.coinsInfo = [];
     this.isRT = false;
     $storage['isProxy'] = true;
@@ -135,13 +137,13 @@ angular.module('IguanaGUIApp')
           }
 
           return 10;
-        } else if (response.data.error.message === 'iguana jsonstr expired') {
+        } else if (response.data.error === 'iguana jsonstr expired') {
           if (dev.showConsoleMessages && dev.isDev){
             console.log('server is busy');
           }
 
           return 10;
-        } else if (response.data.error.message === 'coin is busy processing') {
+        } else if (response.data.error === 'coin is busy processing') {
           if (!this.coinsInfo[index]) {
             this.coinsInfo[index] = [];
           }
@@ -158,7 +160,7 @@ angular.module('IguanaGUIApp')
           }
 
           return 10;
-        } else if (response.data.error.message === 'null return from iguana_bitcoinRPC') {
+        } else if (response.data.error === 'null return from iguana_bitcoinRPC') {
           if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + $storage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
           $storage['activeCoin']++;
 
@@ -778,34 +780,53 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.addCoin = function(coin) {
-      var result = false,
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        fullUrl = this.getConf().server.protocol + this.getConf().server.ip + ':' + this.getConf(true).server.port,
-        deferred = $q.defer();
+    this.addCoin = function(coins, _index) {
+      debugger;
+      var coin = coins[_index],
+            coinsKeys = Object.keys(coins), self = this;
+      var result = [],
+            coinsLength = coinsKeys.length,
+            postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+            fullUrl = this.getConf().server.protocol +
+                      this.getConf().server.ip + ':' +
+                      this.getConf(true).server.port,
+            defer = $q.defer();
 
-      $http.post(fullUrl, iguanaAddCoinParams[coin], {
-        headers: postAuthHeaders
-      })
-      .then(function(response) {
+      $http.post(fullUrl, iguanaAddCoinParams[coin],
+                  {headers: postAuthHeaders})
+      .then(onResolve, onReject);
+
+      function onResolve(response) {
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
         }
-
-        if (response.data.result === 'coin added' || response.data.result === 'coin already there') {
-          result = response.data;
+        if (response.data.result === 'coin added' ||
+          response.data.result === 'coin already there') {
+          result.push([result, coin]);
         } else {
-          result = false;
+          result.push([result, false]);
         }
-
-        deferred.resolve([response, coin]);
-      }, function(response) {
+        if (coinsKeys.length == _index) {
+          defer.resolve([result, coin]);
+        } else if (coinsLength > _index) {
+          var i = ++_index;
+          self
+            .addCoin(coins, i)
+            .then(onResolve, onReject);
+        }
+        // if (cb) {
+        //   cb.call(this, result.result ? result.result : result, coin);
+        // }
+      }
+      function onReject(response) {
         // do something
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('error: ' + response.error);
         }
-      });
-      return deferred.promise;
+        defer.reject([response, coin]);
+      }
+
+      return defer.promise
     };
 
     this.getIguanaRate = function(quote) {

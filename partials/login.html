@@ -29,7 +29,7 @@
                     class="login-passphrase-textarea offset-bottom-sm row center"
                     ng-model="passphraseModel"></textarea>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
-                  ng-click="login()" ng-class="{ 'disabled': !passphraseModel.length || !coinsSelectedToAdd.length }">
+                  ng-click="$auth.login(coinsSelectedToAdd, passphraseModel)" ng-class="{ 'disabled': !passphraseModel.length || !coinsSelectedToAdd.length }">
             {{ 'LOGIN.LOGIN' | lang }}</button>
           <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
           <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"

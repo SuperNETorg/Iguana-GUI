@@ -21,7 +21,7 @@
           <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
                ng-repeat="item in availableCoins | filter:coinSearchModel"
                ng-click="clickOnCoin(item, $event)"
-               ng-class="{ 'active': coinsSelectedFilter(item.coinId) }">
+               ng-class="{ 'active': (coinsSelectedToAdd.coins.indexOf(item.coinId) != -1) }">
             <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
             <div class="name">{{ item.name }}</div>
           </div>
