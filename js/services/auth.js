@@ -250,7 +250,6 @@ angular.module('IguanaGUIApp')
       return defer.promise;
     }
 
-
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
       self.toState = toState;
       self.toParams = toParams;

@@ -1,66 +1,68 @@
-<header class="modal-header form-header orange-gradient box-shadow-bottom">
-  <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-  <div class="title text-shadow">{{ 'SEND.SENDING' | lang }}</div>
-</header>
-<div class="form-content send-modal">
-  <div class="modal-body">
-    <div class="main-popup">
-      <div class="popup-head">
-        <div class="headd orange-gradient">
-          <div class="row">
-            <div class="col-sm-6 hd-left col-xs-6 coin">
-              <i class="icon cc {{ sendCoin.coinId }}-alt"></i>
-              <span class="name">{{ sendCoin.coinName }}</span>
+<script type="text/ng-template" id="partials/send-coin-entry.html">
+  <header class="modal-header form-header orange-gradient box-shadow-bottom">
+    <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
+    <div class="title text-shadow">{{ 'SEND.SENDING' | lang }}</div>
+  </header>
+  <div class="form-content send-modal">
+    <div class="modal-body">
+      <div class="main-popup">
+        <div class="popup-head">
+          <div class="headd orange-gradient">
+            <div class="row">
+              <div class="col-sm-6 hd-left col-xs-6 coin">
+                <i class="icon cc {{ sendCoin.coinId }}-alt"></i>
+                <span class="name">{{ sendCoin.coinName }}</span>
+              </div>
+              <div class="col-sm-6 hd-right col-xs-6 balance">
+                <span class="balance-coin">
+                  <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
+                </span>
+                <p class="rs balance-currency">
+                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+                </p>
+              </div>
             </div>
-            <div class="col-sm-6 hd-right col-xs-6 balance">
-              <span class="balance-coin">
-                <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
-              </span>
-              <p class="rs balance-currency">
-                <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+          </div>
+          <div class="pop-form">
+            <div class="pop-detail send">
+              <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
+              <p class="tx-address-validation" ng-class="{ 'col-red': !sendCoin.valid.address }">{{ sendCoin.valid.address ? 'SEND.ENTER_A_WALLET_ADDRESS' : 'SEND.INCORRECT_ADDRESS' | lang }}<!-- or select a contact --></p>
+              <div class="inner-addon right-addon">
+                <input type="text" class="tx-address" ng-class="{ 'validation-field-error': !sendCoin.valid.address }" ng-model="sendCoin.address" />
+                <div class="tx-address-icon glyphicon"></div>
+              </div>
+            </div>
+            <div class="pop-detail crncy">
+              <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
+              <p class="tx-amount-validation" ng-class="{ 'col-red': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }">
+                <span ng-if="sendCoin.valid.amount.empty">{{ 'SEND.PLEASE_ENTER_AN_AMOUNT' | lang }}</span>
+                <span ng-if="sendCoin.valid.amount.notEnoughMoney">{{ 'SEND.NOT_ENOUGH_MONEY' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
+                <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }} {{ sendCoin.coinId }} or {{ sendCoin.currency }}</span>
               </p>
+              <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }" ng-model="sendCoin.amount" ng-keyup="sendCoinKeyingAmount()" number-only />
+              <span class="eq-sign">=</span>
+              <input type="text" min="0" class="tx-amount-currency" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }" ng-model="sendCoin.amountCurrency" ng-keyup="sendCoinKeyingAmountCurrency()" placeholder="0 {{ sendCoin.currency }}" number-only />
             </div>
-          </div>
-        </div>
-        <div class="pop-form">
-          <div class="pop-detail send">
-            <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
-            <p class="tx-address-validation" ng-class="{ 'col-red': !sendCoin.valid.address }">{{ sendCoin.valid.address ? 'SEND.ENTER_A_WALLET_ADDRESS' : 'SEND.INCORRECT_ADDRESS' | lang }}<!-- or select a contact --></p>
-            <div class="inner-addon right-addon">
-              <input type="text" class="tx-address" ng-class="{ 'validation-field-error': !sendCoin.valid.address }" ng-model="sendCoin.address" />
-              <div class="tx-address-icon glyphicon"></div>
+            <div class="pop-detail crncy">
+              <h4>{{ 'SEND.FEE_PER_KB' | lang }}:</h4>
+              <p class="tx-fee-validation" ng-class="{ 'col-red': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }">
+                <span ng-if="!sendCoin.valid.fee.empty && !sendCoin.valid.fee.notEnoughMoney">{{ 'SEND.MINIMUM_FEE' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.empty">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.notEnoughMoney && (Number(sendCoin.coinValue) - Number(sendCoin.amount)) > 0">{{ 'SEND.FEE_CANNOT_EXCEED' | lang }} {{ sendCoin.coinValue - sendCoin.amount }} {{ sendCoin.coinId }}</span>
+                <span ng-if="sendCoin.valid.fee.notEnoughMoney && (Number(sendCoin.coinValue) - Number(sendCoin.amount)) < 0">{{ 'SEND.TOTAL_AMOUNT_CANNOT_EXCEED' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
+              </p>
+              <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
+              <span class="eq-sign">=</span>
+              <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
             </div>
+            <div class="pop-detail">
+              <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
+              <textarea class="tx-note" ng-model="sendCoin.note"></textarea>
+            </div>
+            <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
           </div>
-          <div class="pop-detail crncy">
-            <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
-            <p class="tx-amount-validation" ng-class="{ 'col-red': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }">
-              <span ng-if="sendCoin.valid.amount.empty">{{ 'SEND.PLEASE_ENTER_AN_AMOUNT' | lang }}</span>
-              <span ng-if="sendCoin.valid.amount.notEnoughMoney">{{ 'SEND.NOT_ENOUGH_MONEY' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
-              <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }} {{ sendCoin.coinId }} or {{ sendCoin.currency }}</span>
-            </p>
-            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }" ng-model="sendCoin.amount" ng-keyup="sendCoinKeyingAmount()" number-only />
-            <span class="eq-sign">=</span>
-            <input type="text" min="0" class="tx-amount-currency" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }" ng-model="sendCoin.amountCurrency" ng-keyup="sendCoinKeyingAmountCurrency()" placeholder="0 {{ sendCoin.currency }}" number-only />
-          </div>
-          <div class="pop-detail crncy">
-            <h4>{{ 'SEND.FEE_PER_KB' | lang }}:</h4>
-            <p class="tx-fee-validation" ng-class="{ 'col-red': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }">
-              <span ng-if="!sendCoin.valid.fee.empty && !sendCoin.valid.fee.notEnoughMoney">{{ 'SEND.MINIMUM_FEE' | lang }}</span>
-              <span ng-if="sendCoin.valid.fee.empty">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
-              <span ng-if="sendCoin.valid.fee.notEnoughMoney && (Number(sendCoin.coinValue) - Number(sendCoin.amount)) > 0">{{ 'SEND.FEE_CANNOT_EXCEED' | lang }} {{ sendCoin.coinValue - sendCoin.amount }} {{ sendCoin.coinId }}</span>
-              <span ng-if="sendCoin.valid.fee.notEnoughMoney && (Number(sendCoin.coinValue) - Number(sendCoin.amount)) < 0">{{ 'SEND.TOTAL_AMOUNT_CANNOT_EXCEED' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
-            </p>
-            <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
-            <span class="eq-sign">=</span>
-            <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
-          </div>
-          <div class="pop-detail">
-            <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
-            <textarea class="tx-note" ng-model="sendCoin.note"></textarea>
-          </div>
-          <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
         </div>
       </div>
     </div>
   </div>
-</div>
+</script>

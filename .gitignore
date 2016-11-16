@@ -1,3 +1,5 @@
 /js/supported-coins-list.js
+/js/dev.js
 .idea/
 node_modules/
+node_modules/compiled/dev

@@ -1,33 +1,35 @@
-<nav class="navbar top unselectable navbar-inverse" ng-hide="!enabled">
-  <div class="clearfix">
-    <div class="navbar-header">
-      <div class="navbar-brand">{{ 'IGUANA.APP_TITLE' | lang }}</div>
-      <div class="cursor-pointer lnk-logout" ng-click="$auth.logout()">{{
-        'DASHBOARD.LOGOUT' | lang }}</div>
-    </div>
-    <div class="top" id="top-menu">
-      <ul class="nav navbar-nav top-menu">
-        <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' }">
-          <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
-          <div class="border"></div>
-        </li>
-        <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.settings')" ng-class="{ 'active': $state.current.name === 'dashboard.settings' }">
-          <div class="text">{{ 'PAGE.SETTINGS' | lang }}</div>
-          <div class="border"></div>
-        </li>
-        <li class="item cursor-pointer text-center hidden">
-          <div class="text">{{ 'PAGE.PAYMENTS' | lang }}</div>
-          <div class="border"></div>
-        </li>
-        <li class="item cursor-pointer text-center hidden">
-          <div class="text">{{ 'PAGE.CONTACTS' | lang }}</div>
-          <div class="border"></div>
-        </li>
-      </ul>
-      <div class="nav-buttons">
-        <div class="nav-left"></div>
-        <div class="nav-right"></div>
+<script type="text/ng-template" id="partials/dashboard-top-menu.html">
+  <nav class="navbar top unselectable navbar-inverse" ng-hide="!enabled">
+    <div class="clearfix">
+      <div class="navbar-header">
+        <div class="navbar-brand">{{ 'IGUANA.APP_TITLE' | lang }}</div>
+        <div class="cursor-pointer lnk-logout" ng-click="$auth.logout()">{{
+          'DASHBOARD.LOGOUT' | lang }}</div>
+      </div>
+      <div class="top" id="top-menu">
+        <ul class="nav navbar-nav top-menu">
+          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' }">
+            <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
+            <div class="border"></div>
+          </li>
+          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.settings')" ng-class="{ 'active': $state.current.name === 'dashboard.settings' }">
+            <div class="text">{{ 'PAGE.SETTINGS' | lang }}</div>
+            <div class="border"></div>
+          </li>
+          <li class="item cursor-pointer text-center hidden">
+            <div class="text">{{ 'PAGE.PAYMENTS' | lang }}</div>
+            <div class="border"></div>
+          </li>
+          <li class="item cursor-pointer text-center hidden">
+            <div class="text">{{ 'PAGE.CONTACTS' | lang }}</div>
+            <div class="border"></div>
+          </li>
+        </ul>
+        <div class="nav-buttons">
+          <div class="nav-left"></div>
+          <div class="nav-right"></div>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</script>

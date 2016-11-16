@@ -7,8 +7,8 @@ angular.module('IguanaGUIApp')
   '$api',
   'helper',
   function ($storage, vars, $api, helper) {
-    var minEpochTimestamp = 1471620867,
-        self = this; // Jan 01 1970
+    var minEpochTimestamp = 1471620867, // Jan 01 1970
+        self = this;
 
     this.ratesUpdateElapsedTime = function(coin) {
       if ($storage['iguana-rates-' + coin.toLowerCase()]) {
