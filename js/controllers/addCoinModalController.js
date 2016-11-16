@@ -190,7 +190,7 @@ angular.module('IguanaGUIApp')
       if ($storage['isIguana']) {
         checkIguanaCoinsSelection(false)
         .then(function () {
-          $uibModalInstance.close()
+          $uibModalInstance.close(this.constructCoinRepeater(vars.coinsInfo))
         });
       } else {
         $uibModalInstance.close();

@@ -601,8 +601,6 @@ angular.module('IguanaGUIApp')
     };
 
     this.walletLogin = function(passphrase, timeout, coin) {
-      var defer = $q.defer(),
-          self = this;
       if (!$storage['isIguana']) {
         timeout = settings.defaultWalletUnlockPeriod;
       }
@@ -614,14 +612,15 @@ angular.module('IguanaGUIApp')
       }
 
       var result = false,
-          fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
-          defaultIguanaServerUrl = this.getConf().server.protocol +
-            this.getConf().server.ip +
-            ':' +
-            this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
-          postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
-            passphrase + '\", ' + timeout, coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+        fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
+        defaultIguanaServerUrl = this.getConf().server.protocol +
+          this.getConf().server.ip +
+          ':' +
+          this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
+        postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
+          passphrase + '\", ' + timeout, coin),
+        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+        deferred = $q.defer();
 
       //console.log(fullUrl, defaultIguanaServerUrl, postData, postAuthHeaders);
 
@@ -635,8 +634,9 @@ angular.module('IguanaGUIApp')
           console.log(response.data.result);
         }
 
-        defer.resolve([response, coin]);
+        deferred.resolve([response, coin]);
       }
+
       function onReject(response) {
         console.log(response);
         // TODO change response structure
@@ -655,10 +655,10 @@ angular.module('IguanaGUIApp')
           }
         }
 
-        defer.reject([result, coin]);
+        deferred.reject([result, coin]);
       }
 
-      return defer.promise
+      return deferred.promise
     };
 
     this.coindCheckRT = function(coin) {

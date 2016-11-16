@@ -22,7 +22,7 @@ angular.module('IguanaGUIApp')
     $scope.passphraseCheckbox = false;
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
-    $scope.availableCoins = util.constructCoinRepeater(vars.coinsInfo);
+    $scope.availableCoins = [];
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
@@ -60,14 +60,13 @@ angular.module('IguanaGUIApp')
           var coinId,
               availableCoin;
 
-          $scope.coinsSelectedToAdd = [];
           $scope.receivedObject = $storage['iguana-login-active-coin'];
 
           for (var i = 0; $scope.receivedObject.length > i; i++) {
             coinId = $scope.receivedObject[i];
 
-            for (var l = 0; $scope.availableCoins.length > l; l++) {
-              availableCoin = $scope.availableCoins[l];
+            for (var l = 0; receivedObject.length > l; l++) {
+              availableCoin = receivedObject[l];
 
               if (Object.keys(coinId).indexOf(availableCoin.coinId) != -1) {
                 $scope.coinsSelectedToAdd.push(availableCoin);
