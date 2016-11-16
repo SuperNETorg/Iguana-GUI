@@ -5,7 +5,7 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   function ($uibModal) {
     this.ngPrepMessageModal = function(message, color) {
-      $uibModal.open({
+      return $uibModal.open({
         animation: true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',

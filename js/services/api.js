@@ -530,7 +530,7 @@ angular.module('IguanaGUIApp')
             // do something
             if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.data.error);
 
-            deferred.resolve(false);
+            deferred.resolve(response.data);
           } else {
             if (response.data.result === 'success') {
               deferred.resolve(response.data);
@@ -694,7 +694,7 @@ angular.module('IguanaGUIApp')
       });
 
       return deferred.promise;
-    }
+    };
 
     this.getConf = function(discardCoinSpecificPort, coin) {
       var conf = {
@@ -763,44 +763,55 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.addCoin = function(coins, _index) {
+    this.addCoinRecursive = function(coins, _index, recursiveResult) {
       var coin = coins[_index],
-          coinsKeys = Object.keys(coins),
-          self = this,
-          result = [],
-          coinsLength = coinsKeys.length,
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-          fullUrl = this.getConf().server.protocol +
-                    this.getConf().server.ip + ':' +
-                    this.getConf(true).server.port,
-          defer = $q.defer();
+        result = recursiveResult || [],
+        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+        fullUrl = this.getConf().server.protocol +
+                  this.getConf().server.ip + ':' +
+                  this.getConf(true).server.port,
+        deferred = $q.defer();
 
       $http.post(fullUrl, iguanaAddCoinParams[coin], {
         headers: postAuthHeaders
       })
-      .then(onResolve, onReject);
+        .then(
+          function (response) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response);
+            }
+            if (response.data.result === 'coin added' ||
+              response.data.result === 'coin already there') {
+              result.push([coin, response]);
+            } else {
+              result.push([false, response]);
+            }
+            deferred.resolve([result, ++_index]);
+          },
+          function (response) {
+            deferred.reject([result, ++_index]);
+          }
+        );
 
-      function onResolve(response) {
-        if (dev.showConsoleMessages && dev.isDev) {
-          console.log(response);
-        }
-        if (response.data.result === 'coin added' ||
-          response.data.result === 'coin already there') {
-          result.push([result, coin]);
+      return deferred.promise;
+    };
+
+    this.addCoins = function (coins, _index, result) {
+      var self = this,
+        coinsKeys = Object.keys(coins),
+        coinsLength = coinsKeys.length,
+        deferred = $q.defer();
+      this.addCoinRecursive(coins, _index, result)
+        .then(onResolve, onReject);
+
+      function onResolve(result) {
+
+        if (coinsLength <= result[1]) {
+          deferred.resolve(result[0]);
         } else {
-          result.push([result, false]);
+          self.addCoinRecursive(coins, result[1], result[0])
+            .then(onResolve, onReject);
         }
-        if (coinsKeys.length == _index) {
-          defer.resolve([result, coin]);
-        } else if (coinsLength > _index) {
-          var i = ++_index;
-
-          self.addCoin(coins, i)
-              .then(onResolve, onReject);
-        }
-        // if (cb) {
-        //   cb.call(this, result.result ? result.result : result, coin);
-        // }
       }
       function onReject(response) {
         // do something
@@ -811,7 +822,7 @@ angular.module('IguanaGUIApp')
         defer.reject([response, coin]);
       }
 
-      return defer.promise
+      return deferred.promise;
     };
 
     this.getIguanaRate = function(quote) {
