@@ -35,13 +35,14 @@ angular.module('IguanaGUIApp')
 
     var coinBalances = [],
         _sideBarCoins = {},
-        coinsSelectedByUser = [],
-        dashboardUpdateTimer;
+        coinsSelectedByUser = [];
 
     $rootScope.$on('coinsInfo', function($ev, coins) {
       coinsInfo = vars.coinsInfo;
-      constructAccountCoinRepeater();
+      checkAddCoinButton();
     });
+
+    constructAccountCoinRepeater(true);
 
     // add coin login modal updated logic
     $scope.passphrase = '';
@@ -117,7 +118,8 @@ angular.module('IguanaGUIApp')
             $('#top-menu').removeClass('hidden');
           }
         }
-      })
+      });
+
       updateDashboardView(settings.ratesUpdateTimeout);
     });
 
@@ -128,11 +130,8 @@ angular.module('IguanaGUIApp')
     $scope.$on('$viewContentLoaded', function(event) {
       if (vars.coinsInfo && Object.keys(vars.coinsInfo).length) {
         coinsInfo = vars.coinsInfo;
-        constructAccountCoinRepeater(true);
       }
     });
-
-    constructAccountCoinRepeater(true);
 
     // TODO: merge all dashboard data into a single object for caching
     $scope.currency = defaultCurrency;
@@ -175,9 +174,6 @@ angular.module('IguanaGUIApp')
         updateTotalBalance();
       }
     }
-
-    //api.checkBackEndConnectionStatus();
-    //applyDashboardResizeFix();
 
     function constructAccountCoinRepeater(isFirstRun) {
       var index = 0;
@@ -248,26 +244,24 @@ angular.module('IguanaGUIApp')
 
       // run balances and tx unit update once left sidebar is updated
       if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
-        //checkAddCoinButton();
         updateTotalBalance();
         $scope.setTxUnitBalance();
         constructTransactionUnitRepeater();
       }
     }
 
-    // TODO: watch coinsInfo, checkAddCoinButton and connectivity status
-
     function checkAddCoinButton() {
       // disable add wallet/coin button if all coins/wallets are already in the sidebar
-      var _coinsLeftToAdd = 0;
-      for (var key in supportedCoinsList) {
+      var _coinsLeftToAdd = 0,
+          lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
+      for (var key in lookupArray) {
         if (!$storage['iguana-' + key + '-passphrase'] || $storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
-          if ((isIguana && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key].connection === true)) {
+          if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
             _coinsLeftToAdd++;
           }
         }
       }
-      //$scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false; // TODO: fix, breaks on portpoll
+      $scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false;
     }
 
     function updateTotalBalance() {
@@ -382,7 +376,7 @@ angular.module('IguanaGUIApp')
     }
 
     function updateDashboardView(timeout) {
-      dashboardUpdateTimer = $interval(function() {
+      vars['dashboardUpdateRef'] = $interval(function() {
         //console.clear();
         $auth.checkSession();
         $rates.updateRates(null, null, null, true);
@@ -391,6 +385,10 @@ angular.module('IguanaGUIApp')
         if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
       }, timeout * 1000);
     }
+
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+      $interval.cancel(vars.dashboardUpdateRef);
+    });
 
     /*
      *  add coin modal
