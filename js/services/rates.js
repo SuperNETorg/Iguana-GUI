@@ -7,7 +7,8 @@ angular.module('IguanaGUIApp')
   '$api',
   'helper',
   function ($storage, vars, $api, helper) {
-    var minEpochTimestamp = 1471620867; // Jan 01 1970
+    var minEpochTimestamp = 1471620867,
+        self = this; // Jan 01 1970
 
     this.ratesUpdateElapsedTime = function(coin) {
       if ($storage['iguana-rates-' + coin.toLowerCase()]) {
@@ -54,7 +55,12 @@ angular.module('IguanaGUIApp')
         }
 
         if (isUpdateTriggered) {
-          $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, this.updateRateCB);
+          $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency)
+          .then(function(response) {
+            self.updateRateCB(coin, response[0]);
+          }, function(reason) {
+            console.log('request failed: ' + reason);
+          });
           if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
         }
       } else {
@@ -64,7 +70,13 @@ angular.module('IguanaGUIApp')
 
         // iguana based rates are temp disabled
         //coinToCurrencyRate = localstorage.getVal('iguana-rates-' + coin).value; //!isIguana ? null : $api.getIguanaRate(coin + '/' + currency);
-        if (!$storage['iguana-rates-' + coin]) $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency, this.updateRateCB);
+        if (!$storage['iguana-rates-' + coin])
+          $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency)
+          .then(function(response) {
+            self.updateRateCB(coin, response[0]);
+          }, function(reason) {
+            console.log('request failed: ' + reason);
+          });
         if (!coinToCurrencyRate && $storage['iguana-rates-' + coin]) coinToCurrencyRate = $storage['iguana-rates-' + coin].value;
         if (returnValue && $storage['iguana-rates-' + coin]) return $storage['iguana-rates-' + coin].value;
       }
