@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
     injectPartials = require('gulp-inject-partials'),
     del = require('del'),
-    gutil = require('gulp-util');
+    gutil = require('gulp-util'),
+    sass = require('gulp-sass');
 
 gulp.task('index', ['cleanIndex'], function() {
   return gulp.src('index.html')
@@ -14,12 +15,18 @@ gulp.task('copyJS', ['cleanJS'], function() {
              .pipe(gulp.dest('compiled/dev/js'));
 });
 
-gulp.task('copyCSS', ['cleanCSS'], function() {
-  return gulp.src(['css/**/*'])
+gulp.task('scss', ['scss:css'], function() {
+  return gulp.src('sass/style.css')
+             .pipe(sass().on('error', sass.logError))
+             .pipe(gulp.dest('compiled/dev/'));
+});
+
+gulp.task('scss:css', function() {
+  return gulp.src('sass/**/*.css')
              .pipe(gulp.dest('compiled/dev/css'));
 });
 
-gulp.task('copyFonts', function() {
+gulp.task('copyFonts', ['cleanFonts'], function() {
   return gulp.src(['fonts/**/*'])
              .pipe(gulp.dest('compiled/dev/fonts'));
 });
@@ -28,16 +35,20 @@ gulp.task('cleanCSS', function() {
   return del(['compiled/dev/css']);
 });
 
-gulp.task('cleanAll', function() {
-  return del(['compiled/dev']);
-});
-
 gulp.task('cleanJS', function() {
   return del(['compiled/dev/js']);
 });
 
+gulp.task('cleanFonts', function() {
+  return del(['compiled/dev/fonts']);
+});
+
 gulp.task('cleanIndex', function() {
   return del(['compiled/dev/index.html']);
+});
+
+gulp.task('clean', function() {
+  return del(['compiled/dev']);
 });
 
 gulp.task('default', function() {
@@ -46,14 +57,14 @@ gulp.task('default', function() {
 
 var paths = {
   partials: ['partials/**/*.html'],
-  styles: ['css/**/*.css'],
+  styles: ['sass/**/*'],
   js: ['js/**/*.js']
 };
 
 gulp.task('watch:dev', function() {
   gulp.watch(paths.partials, ['index']);
-  gulp.watch(paths.styles, ['copyCSS']);
   gulp.watch(paths.js, ['copyJS']);
+  gulp.watch(paths.styles, ['scss']);
 });
 
-gulp.task('dev', ['cleanAll', 'copyFonts', 'index', 'copyJS', 'copyCSS', 'watch:dev']);
+gulp.task('dev', ['index', 'copyFonts', 'copyJS', 'scss', 'watch:dev']);

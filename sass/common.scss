@@ -3,7 +3,7 @@
  *
  */
 
-  @import url('fonts/common-proxima-b-r-font.css'); /* proxima-nova font */
+  @import 'fonts/common-proxima-b-r-font'; /* proxima-nova font */
 
   body,
   html {
@@ -54,14 +54,14 @@
 
   /* preload flag svgs */
   body:after {
-    content: url(fonts/flags/au.svg) url(fonts/flags/bg.svg) url(fonts/flags/br.svg) url(fonts/flags/ca.svg)
-             url(fonts/flags/ch.svg) url(fonts/flags/cn.svg) url(fonts/flags/cz.svg) url(fonts/flags/dk.svg)
-             url(fonts/flags/gb.svg) url(fonts/flags/hk.svg) url(fonts/flags/hr.svg) url(fonts/flags/hu.svg)
-             url(fonts/flags/id.svg) url(fonts/flags/il.svg) url(fonts/flags/in.svg) url(fonts/flags/jp.svg)
-             url(fonts/flags/kr.svg) url(fonts/flags/mx.svg) url(fonts/flags/my.svg) url(fonts/flags/no.svg)
-             url(fonts/flags/nz.svg) url(fonts/flags/ph.svg) url(fonts/flags/pl.svg) url(fonts/flags/ro.svg)
-             url(fonts/flags/ru.svg) url(fonts/flags/se.svg) url(fonts/flags/sg.svg) url(fonts/flags/th.svg)
-             url(fonts/flags/tr.svg) url(fonts/flags/za.svg) url(fonts/flags/eu.svg) url(fonts/flags/us.svg);
+    content: url(fonts/svg/flags/au.svg) url(fonts/svg/flags/bg.svg) url(fonts/svg/flags/br.svg) url(fonts/svg/flags/ca.svg)
+             url(fonts/svg/flags/ch.svg) url(fonts/svg/flags/cn.svg) url(fonts/svg/flags/cz.svg) url(fonts/svg/flags/dk.svg)
+             url(fonts/svg/flags/gb.svg) url(fonts/svg/flags/hk.svg) url(fonts/svg/flags/hr.svg) url(fonts/svg/flags/hu.svg)
+             url(fonts/svg/flags/id.svg) url(fonts/svg/flags/il.svg) url(fonts/svg/flags/in.svg) url(fonts/svg/flags/jp.svg)
+             url(fonts/svg/flags/kr.svg) url(fonts/svg/flags/mx.svg) url(fonts/svg/flags/my.svg) url(fonts/svg/flags/no.svg)
+             url(fonts/svg/flags/nz.svg) url(fonts/svg/flags/ph.svg) url(fonts/svg/flags/pl.svg) url(fonts/svg/flags/ro.svg)
+             url(fonts/svg/flags/ru.svg) url(fonts/svg/flags/se.svg) url(fonts/svg/flags/sg.svg) url(fonts/svg/flags/th.svg)
+             url(fonts/svg/flags/tr.svg) url(fonts/svg/flags/za.svg) url(fonts/svg/flags/eu.svg) url(fonts/svg/flags/us.svg);
     display: none;
     font-family: cryptocoins, icomoon;
   }

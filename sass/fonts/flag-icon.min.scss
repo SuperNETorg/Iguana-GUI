@@ -1,0 +1,111 @@
+.flag-icon,
+.flag-icon-background {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
+.flag-icon {
+	position: relative;
+	display: inline-block;
+	width: 1.8em;
+	line-height: 1.9em;
+}
+.flag-icon:before {
+	content: '\00a0';
+}
+.flag-icon-au {
+	background-image: url('fonts/svg/flags/au.svg');
+}
+.flag-icon-bg {
+	background-image: url('fonts/svg/flags/bg.svg');
+}
+.flag-icon-br {
+	background-image: url('fonts/svg/flags/br.svg');
+}
+.flag-icon-ca {
+	background-image: url('fonts/svg/flags/ca.svg');
+}
+.flag-icon-ch {
+	background-image: url('fonts/svg/flags/ch.svg');
+}
+.flag-icon-cn {
+	background-image: url('fonts/svg/flags/cn.svg');
+}
+.flag-icon-cz {
+	background-image: url('fonts/svg/flags/cz.svg');
+}
+.flag-icon-dk {
+	background-image: url('fonts/svg/flags/dk.svg');
+}
+.flag-icon-gb {
+	background-image: url('fonts/svg/flags/gb.svg');
+}
+.flag-icon-hk {
+	background-image: url('fonts/svg/flags/hk.svg');
+}
+.flag-icon-hr {
+	background-image: url('fonts/svg/flags/hr.svg');
+}
+.flag-icon-hu {
+	background-image: url('fonts/svg/flags/hu.svg');
+}
+.flag-icon-id {
+	background-image: url('fonts/svg/flags/id.svg');
+}
+.flag-icon-il {
+	background-image: url('fonts/svg/flags/il.svg');
+}
+.flag-icon-in {
+	background-image: url('fonts/svg/flags/in.svg');
+}
+.flag-icon-jp {
+	background-image: url('fonts/svg/flags/jp.svg');
+}
+.flag-icon-kr {
+	background-image: url('fonts/svg/flags/kr.svg');
+}
+.flag-icon-mx {
+	background-image: url('fonts/svg/flags/mx.svg');
+}
+.flag-icon-my {
+	background-image: url('fonts/svg/flags/my.svg');
+}
+.flag-icon-no {
+	background-image: url('fonts/svg/flags/no.svg');
+}
+.flag-icon-nz {
+	background-image: url('fonts/svg/flags/nz.svg');
+}
+.flag-icon-ph {
+	background-image: url('fonts/svg/flags/ph.svg');
+}
+.flag-icon-pl {
+	background-image: url('fonts/svg/flags/pl.svg');
+}
+.flag-icon-ro {
+	background-image: url('fonts/svg/flags/ro.svg');
+}
+.flag-icon-ru {
+	background-image: url('fonts/svg/flags/ru.svg');
+}
+.flag-icon-se {
+	background-image: url('fonts/svg/flags/se.svg');
+}
+.flag-icon-sg {
+	background-image: url('fonts/svg/flags/sg.svg');
+}
+.flag-icon-th {
+	background-image: url('fonts/svg/flags/th.svg');
+}
+.flag-icon-tr {
+	background-image: url('fonts/svg/flags/tr.svg');
+}
+.flag-icon-za {
+	background-image: url('fonts/svg/flags/za.svg');
+}
+.flag-icon-eu {
+	background-image: url('fonts/svg/flags/eu.svg');
+}
+.flag-icon-us {
+	background-image: url('fonts/svg/flags/us.svg');
+}
