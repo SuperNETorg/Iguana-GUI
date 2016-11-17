@@ -1,52 +1,97 @@
 /*!
- * Iguana dashboard/base
- *
- */
-  .dashboard.blur,
-  body.modal-open .dashboard {
-    -webkit-filter: blur(2px);
-    filter: blur(2px);
-  }
-  body.dashboard-page {
-    background: #F5F8FB;
-  }
-  .dashboard .navbar,
-  .dashboard .navbar .container-fluid {
+* Iguana dashboard/base
+*
+*/
+
+.dashboard.blur,
+body.modal-open .dashboard {
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
+}
+body.dashboard-page {
+  background: #F5F8FB;
+}
+.dashboard-main .row,
+.container-fluid.dashboard-main {
+  height: 100%;
+}
+.dashboard {
+  .navbar,
+  .navbar .container-fluid {
     padding: 0;
   }
-  .dashboard .navbar .navbar-brand {
+  .navbar .navbar-brand {
     margin-left: 0;
   }
-  .dashboard-main .row,
-  .container-fluid.dashboard-main {
-    height: 100%;
-  }
-  .dashboard .top {
+  .top {
     text-align: center;
     background: #0E101C;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 0;
     margin-bottom: 0;
+
+    .left {
+      font-size: 1.6em;
+      font-weight: 600;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      display: inline-block;
+    }
+    .right {
+      font-size: 1em;
+      font-weight: 600;
+      position: absolute;
+      right: 30px;
+      top: 20px;
+    }
   }
-  .dashboard .top .left {
-    font-size: 1.6em;
-    font-weight: 600;
-    position: absolute;
-    top: 15px;
-    left: 30px;
-    display: inline-block;
-  }
-  .dashboard .top-menu {
+  .top-menu {
     display: inline-block;
     margin: 0 auto;
     margin-bottom: 8px;
     float: none;
     vertical-align: top;
     white-space: nowrap;
+
+    .item {
+      font-size: 1.05em;
+      font-weight: 600;
+      margin: 0 5px;
+      top: 9px;
+      color: #8A8B93;
+      z-index: 100;
+      text-shadow: 0 0 0 #8A8B93;
+      display: inline-block;
+
+      .text {
+        padding: 0 17px;
+        height: 38px;
+        margin-top: 2px;
+        line-height: 34px;
+      }
+      .border {
+        width: 100%;
+        height: 3px;
+        border-radius: 4px;
+        padding: 0 22px;
+        background: transparent;
+      }
+    }
+    .item.active {
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
+
+      .border {
+        background: #FE450D;
+        box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
+      }
+    }
   }
   /* radial like highlight effect */
-  .dashboard .top-menu:before {
+  .top-menu:before {
     content: '';
     width: 100%;
     height: 100%;
@@ -64,180 +109,154 @@
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#222539', GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   }
-  .dashboard .top-menu .item {
-    font-size: 1.05em;
-    font-weight: 600;
-    margin: 0 5px;
-    top: 9px;
-    color: #8A8B93;
-    z-index: 100;
-    text-shadow: 0 0 0 #8A8B93;
-    display: inline-block;
-  }
-  .dashboard .top-menu .item .text {
-    padding: 0 17px;
-    height: 38px;
-    margin-top: 2px;
-    line-height: 34px;
-  }
-  .dashboard .top-menu .item .border {
-    width: 100%;
-    height: 3px;
-    border-radius: 4px;
-    padding: 0 22px;
-    background: transparent;
-  }
-  .dashboard .top-menu .item.active .border {
-    background: #FE450D;
-    box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
-  }
-  .dashboard .top-menu .item.active {
-    color: #fff;
-    font-weight: 600;
-    text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
-  }
-  .dashboard .top .right {
-    font-size: 1em;
-    font-weight: 600;
-    position: absolute;
-    right: 30px;
-    top: 20px;
-  }
-  .lnk-logout {
-    margin-top: 16px;
-    margin-bottom: 10px;
-    font-size: 1em;
-    font-weight: 600;
-    right: 15px;
-    position: absolute;
-  }
-  .navbar-inverse .navbar-brand {
-    color: #fff;
-    font-size: 1.6em;
-    font-weight: 600;
-    padding: 17px 15px;
-  }
-  .dashboard .main-content {
+  .main-content {
     margin: 0 auto 20px auto;
     max-width: 1500px;
   }
-  .dashboard .balance-block .label {
-    color: #95969F;
-    font-size: 0.92em;
-    font-weight: normal;
-    padding: 0;
+  .balance-block {
+    .label {
+      color: #95969F;
+      font-size: 0.92em;
+      font-weight: normal;
+      padding: 0;
+    }
+    .balance {
+      font-size: 1.7em;
+      font-weight: 600;
+
+      .value {
+        padding-right: 5px;
+      }
+    }
   }
-  .dashboard .balance-block .balance {
-    font-size: 1.7em;
-    font-weight: 600;
-  }
-  .dashboard .balance-block .balance .value {
-    padding-right: 5px;
-  }
-  .dashboard .coins,
-  .dashboard .transactions-unit {
+  .coins,
+  .transactions-unit {
     margin-top: 10px;
   }
-  .active-coin-balance {
-    font-size: 1.7em;
-    font-weight: 700;
-    padding-left: 30px;
-    padding-top: 25px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  }
-  .dashboard .active-coin-balance .value {
+  .active-coin-balance .value {
     padding-right: 5px;
   }
-  .dashboard .active-coin-balance-currency {
+  .active-coin-balance-currency {
     font-size: 1.1em;
     font-weight: 600;
     padding-left: 30px;
     position: relative;
     top: -3px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+    .value {
+      padding-right: 5px;
+    }
   }
-  .dashboard .active-coin-balance-currency .value {
-    padding-right: 5px;
-  }
-  .dashboard .btn.disabled,
-  .dashboard .btn.disabled:focus {
+  .btn.disabled,
+  .btn.disabled:focus {
     pointer-events: none;
   }
-  .dashboard .form-container.add-new-coin-form {
+  .form-container.add-new-coin-form {
     background: none;
   }
-  .nav-buttons .nav-left {
+  .balance-block,
+  .currency-content {
+    margin-top: 85px;
+  }
+}
+.lnk-logout {
+  margin-top: 16px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  right: 15px;
+  position: absolute;
+}
+.nav-buttons {
+  .nav-left {
     position: absolute;
     left: 0;
     height: 50%;
     width: 10px;
     top: 50%;
   }
-  .nav-buttons .nav-right {
+  .nav-right {
     position: absolute;
     right: 0;
     height: 50%;
     width: 10px;
     top: 50%;
   }
-  .block {
-    display: block;
-  }
-  .inline-block {
-    display: inline-block;
-  }
-  .margin-right-15 {
-    margin-right: 15px;
-  }
-  .margin-top-5 {
-    margin-top: 5px;
-  }
-  .margin-bottom {
-    margin-bottom: 15px;
-  }
-  /* enable absolute positioning */
-  .inner-addon {
-    position: relative;
-  }
-  /* style glyph */
-  .inner-addon .glyphicon {
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.margin-right-15 {
+  margin-right: 15px;
+}
+.margin-top-5 {
+  margin-top: 5px;
+}
+.margin-bottom {
+  margin-bottom: 15px;
+}
+/* enable absolute positioning */
+.inner-addon {
+  position: relative;
+
+  .glyphicon {
     position: absolute;
     padding: 7px;
     pointer-events: none;
   }
-  /* align glyph */
-  .left-addon .glyphicon  {
-    left: 0;
-  }
-  .right-addon .glyphicon {
+}
+.right-addon {
+  .glyphicon {
     right: 0;
   }
-  /* add padding  */
-  .left-addon input  {
-    padding-left: 30px;
-  }
-  .right-addon input {
+  input {
     padding-right: 30px;
   }
-  .navbar-inverse {
-    z-index: 1000;
-    position: fixed;
-    width: 100%;
-    top: 0;
+}
+.left-addon {
+  .glyphicon  {
+    left: 0;
   }
-  .dashboard .balance-block,
-  .dashboard .currency-content {
-    margin-top: 85px;
+  input  {
+    padding-left: 30px;
   }
-  .form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
-    max-width: 400px;
+}
+.active-coin-balance {
+  font-size: 1.7em;
+  font-weight: 700;
+  padding-left: 30px;
+  padding-top: 25px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.navbar-inverse {
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  top: 0;
+
+  .navbar-brand {
+    color: #fff;
+    font-size: 1.6em;
+    font-weight: 600;
+    padding: 17px 15px;
   }
-  .add-coin-create-wallet-form {
-    z-index: 2000;
+}
+.add-coin-create-wallet-form {
+  z-index: 2000;
+
+  .modal-content {
+    .bi_interface-arrow-left {
+      margin-top: 0;
+    }
+    .form-header .title {
+      padding-top: 2px;
+    }
   }
-  .add-coin-create-wallet-form  .modal-content .bi_interface-arrow-left {
-    margin-top: 0;
-  }
-  .add-coin-create-wallet-form .modal-content .form-header .title {
-    padding-top: 2px;
-  }
+}
+.form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
+  max-width: 400px;
+}

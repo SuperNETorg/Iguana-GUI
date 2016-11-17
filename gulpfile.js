@@ -16,7 +16,7 @@ gulp.task('copyJS', ['cleanJS'], function() {
 });
 
 gulp.task('scss', ['scss:css'], function() {
-  return gulp.src('sass/style.css')
+  return gulp.src('sass/style.scss')
              .pipe(sass().on('error', sass.logError))
              .pipe(gulp.dest('compiled/dev/'));
 });
@@ -67,4 +67,4 @@ gulp.task('watch:dev', function() {
   gulp.watch(paths.styles, ['scss']);
 });
 
-gulp.task('dev', ['index', 'copyFonts', 'copyJS', 'scss', 'watch:dev']);
+gulp.task('dev', ['index', 'cleanCSS', 'copyFonts', 'copyJS', 'scss', 'watch:dev']);
