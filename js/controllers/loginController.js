@@ -69,7 +69,7 @@ angular.module('IguanaGUIApp')
           $scope.coinsSelectedToAdd,
           $scope.passphraseModel
         )
-      }
+      };
     }
   }
 ]);
