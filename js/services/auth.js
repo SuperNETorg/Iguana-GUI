@@ -129,7 +129,7 @@ angular.module('IguanaGUIApp')
             );
           }
 
-          deferred.reject(data);
+          deferred.reject(result);
         }
 
         return deferred.promise;

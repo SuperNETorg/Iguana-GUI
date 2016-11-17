@@ -6,9 +6,10 @@ angular.module('IguanaGUIApp')
   'vars',
   '$api',
   'helper',
-  function ($storage, vars, $api, helper) {
-    var minEpochTimestamp = 1471620867, // Jan 01 1970
-        self = this;
+  'util',
+  '$q',
+  function ($storage, vars, $api,helper, $util, $q) {
+    var minEpochTimestamp = 1471620867; // Jan 01 1970
 
     this.ratesUpdateElapsedTime = function(coin) {
       if ($storage['iguana-rates-' + coin.toLowerCase()]) {
@@ -21,72 +22,93 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    /* TODO: move to rates service */
+    this.getRate = function (coin) {
+      this.updateRates(coin);
+    }
+
     this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
-      var coinsInfo = vars.coinsInfo,
-          apiExternalRate,
-          allDashboardCoins = '',
+
+      var allDashboardCoins = [],
           totalCoins = 0,
           coinToCurrencyRate = 0,
           defaultCoin = '',
-          defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
+          defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency,
+          self = this,
+          deferred = $q.defer();
 
       for (var key in vars.coinsInfo) {
-        if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
+        var storageKey = 'iguana-' + key + '-passphrase';
+
+        if ($storage[storageKey] && $storage[storageKey].logged === 'yes') {
           totalCoins++;
-          allDashboardCoins = allDashboardCoins + key.toUpperCase() + ',';
+          allDashboardCoins.push(key.toUpperCase());
         }
       }
 
-      allDashboardCoins = helper.trimComma(allDashboardCoins);
-
       var ratesUpdateTimeout = settings.ratesUpdateTimeout; // + totalCoins * settings.ratesUpdateMultiply;
 
-      // force rates update
-      var isUpdateTriggered = false;
-
       if (triggerUpdate) {
+        // force rates update
+        var isUpdateTriggered = false;
+
         for (var key in vars.coinsInfo) {
-          if (triggerUpdate && (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !$storage['iguana-rates-' + key])) {
-            if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
+          var storageKey = 'iguana-' + key + '-passphrase';
+
+          if (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !$storage['iguana-rates-' + key]) {
+            if ($storage[storageKey] && $storage[storageKey].logged === 'yes') {
               isUpdateTriggered = true;
             }
           }
         }
 
         if (isUpdateTriggered) {
-          $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency)
+          $api.getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
           .then(function(response) {
             self.updateRateCB(coin, response[0]);
-          }, function(reason) {
-            console.log('request failed: ' + reason);
+          }, function(response) {
+            console.log('request failed: ' + response);
           });
+
           if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
         }
       } else {
         if (!coin) coin = defaultCoin;
-        if (!currency) currency = defaultCurrency;
+
+        // if (!currency) {
+        //   currency = defaultCurrency;
+        // }
+
         coin = coin.toLowerCase();
+        var coinRates = 'iguana-rates-' + coin;
 
         // iguana based rates are temp disabled
         //coinToCurrencyRate = localstorage.getVal('iguana-rates-' + coin).value; //!isIguana ? null : $api.getIguanaRate(coin + '/' + currency);
-        if (!$storage['iguana-rates-' + coin])
-          $api.getExternalRate(allDashboardCoins + '/' + defaultCurrency)
+        if (!$storage[coinRates])
+          $api.getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
           .then(function(response) {
             self.updateRateCB(coin, response[0]);
+            if (!coinToCurrencyRate && $storage[coinRates]) {
+              coinToCurrencyRate = $storage[coinRates].value;
+            }
+
+            if (returnValue && $storage[coinRates]) {
+              deferred.resolve($storage[coinRates].value);
+            }
+
           }, function(reason) {
             console.log('request failed: ' + reason);
           });
-        if (!coinToCurrencyRate && $storage['iguana-rates-' + coin]) coinToCurrencyRate = $storage['iguana-rates-' + coin].value;
-        if (returnValue && $storage['iguana-rates-' + coin]) return $storage['iguana-rates-' + coin].value;
+
+          return deferred.promise;
       }
-    }.bind(this);
+    };
 
     this.updateRateCB = function(coin, result) {
       var defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency;
 
       for (var key in vars.coinsInfo) {
-        if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes' && key) {
+        var iguanaPassphraseKey = 'iguana-' + key + '-passphrase';
+        if ($storage[iguanaPassphraseKey] && $storage[iguanaPassphraseKey].logged === 'yes' && key) {
           $storage['iguana-rates-' + key] = {
             'shortName' : defaultCurrency,
             'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()],
@@ -94,7 +116,7 @@ angular.module('IguanaGUIApp')
           };
         }
       }
-    }.bind(this);
+    };
 
     this.setCurrency = function(currencyShortName) {
       $storage['iguana-currency'] = { 'name' : currencyShortName };

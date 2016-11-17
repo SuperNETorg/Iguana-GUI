@@ -30,6 +30,8 @@ angular.module('IguanaGUIApp')
     $scope.coinsSelectedToAdd = [];
     $scope.$modalInstance = {};
     $scope.coinResponses = [];
+    $scope.availableCoins = [];
+    $scope.openAddCoinModal;
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);

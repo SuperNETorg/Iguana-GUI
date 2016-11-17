@@ -14,8 +14,9 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
+  '$rates',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
-           $api, $rootScope, $uibModal, $filter, $message, vars) {
+           $api, $rootScope, $uibModal, $filter, $message, vars, $rates) {
 
     $scope.util = util;
     $scope.$state = $state;
@@ -28,6 +29,7 @@ angular.module('IguanaGUIApp')
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
     $scope.coinsSelectedToAdd = [];
+    $scope.receivedObject = [] ;
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -57,6 +59,10 @@ angular.module('IguanaGUIApp')
         });
 
         modalInstance.result.then(function (receivedObject) {
+          $scope.availableCoins = receivedObject[0];
+          $scope.coinsSelectedToAdd = receivedObject[1];
+          $scope.receivedObject = receivedObject[2] ;
+
           var coinId,
               availableCoin;
 

@@ -137,6 +137,7 @@ angular.module('IguanaGUIApp')
 
             if (Object.keys(coinId).indexOf(availableCoin.coinId) != -1) {
               coinsSelectedToAdd.push(availableCoin);
+              $storage.coinsSelectedToAdd = coinsSelectedToAdd;
             }
           }
         }
