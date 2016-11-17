@@ -53,7 +53,9 @@ angular.module('IguanaGUIApp')
         checkIguanaCoinsSelection(false)
           .then(function (data) {
             self.coinResponses = data;
-            walletLogin()
+            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId).then(function(ddd) {
+              walletLogin();
+            });
           });
       } else {
         walletLogin()
@@ -90,13 +92,11 @@ angular.module('IguanaGUIApp')
       function walletLogin() {
         var deferred = $q.defer();
 
-        $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId).then(function(ddd) {
           $api.walletLock(coinsSelectedToAdd[0].coinId).then(function(dd) {
             $api.walletLogin(passphraseModel,
               settings.defaultSessionLifetime,
               coinsSelectedToAdd[0].coinId).then(onResolve, onReject)
           });
-        });
 
         function onResolve(data) {
 

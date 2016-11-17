@@ -61,6 +61,7 @@ angular.module('IguanaGUIApp')
           $scope.availableCoins = data[0];
           $scope.coinsSelectedToAdd = data[1];
           $scope.receivedObject = data[2] ;
+          $scope.passphraseModel = $storage['iguana-login-active-coin'][0][data[2][0]];
         });
       };
       $scope.login = function (dd, gg) {
