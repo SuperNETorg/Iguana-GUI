@@ -5,10 +5,9 @@ angular.module('IguanaGUIApp')
   '$storage',
   'vars',
   '$api',
-  'helper',
   'util',
   '$q',
-  function ($storage, vars, $api,helper, $util, $q) {
+  function ($storage, vars, $api, util, $q) {
     var minEpochTimestamp = 1471620867; // Jan 01 1970
 
     this.ratesUpdateElapsedTime = function(coin) {

@@ -12,7 +12,6 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   '$api',
   'vars',
-  'helper',
   '$rootScope',
   '$filter',
   '$rates',
@@ -20,7 +19,7 @@ angular.module('IguanaGUIApp')
   '$message',
   '$datetime',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-           $api, vars, helper, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime) {
 
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
@@ -394,7 +393,7 @@ angular.module('IguanaGUIApp')
      *  add coin modal
      */
     // TODO: move to service
-    $scope.toggleAddCoinWalletCreateModal = function(initOnly) {
+    /*$scope.toggleAddCoinWalletCreateModal = function(initOnly) {
       $scope.addCoinCreateAccount = {
         passphrase: $passPhraseGenerator.generatePassPhrase(isIguana ? 8 : 4),
         wordCount: 12,
@@ -480,6 +479,6 @@ angular.module('IguanaGUIApp')
       failedCoinsOutput = helper.trimComma(failedCoinsOutput);
 
       $message.ngPrepMessageModal(addedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P1') + (failedCoinsOutput.length > 7 ? failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''), 'green', true);
-    }
+    }*/
   }
 ]);

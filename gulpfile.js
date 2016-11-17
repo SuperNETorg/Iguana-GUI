@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     del = require('del'),
     rimraf = require('gulp-rimraf');
     gutil = require('gulp-util'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat');
 
 var paths = {
   partials: 'partials/**/*.html',
@@ -14,6 +15,58 @@ var paths = {
   prodBuild: 'compiled/prod'
 };
 
+var js = [
+  <!-- legacy -->
+  'js/settings.js',
+  'js/dev.js',
+  'js/lang/en.js',
+  'js/supported-coins-list.js',
+  'js/iguana-add-coin-list.js',
+  //'js/helpers.js',
+  <!-- angular -->
+  'js/angular/angular.min.js',
+  'js/angular/angular-ui-router.min.js',
+  'js/angular/angular-sanitize.min.js',
+  'js/angular/angular-animate.js',
+  'js/angular/angular-storage.min.js',
+  'js/angular/angular-clipboard.js',
+  'js/angular/jquery.min.js',
+  <!-- libs -->
+  'js/libs/ui-bootstrap/ui-bootstrap.js',
+  'js/libs/kjua-0.1.1.min.js',
+  'js/libs/bootstrap.min.js',
+  'js/app.js',
+  <!-- directives -->
+  'js/directives/spinner.js',
+  'js/directives/numberOnly.js',
+  'js/directives/appTitle.js',
+  <!-- filters -->
+  'js/filters/decimalPlacesFormat.js',
+  'js/filters/lang.js',
+  <!-- services -->
+  'js/services/storage.js',
+  'js/services/rates.js',
+  'js/services/auth.js',
+  'js/services/datetime.js',
+  'js/services/syncStatus.js',
+  'js/services/message.js',
+  'js/services/passPhraseGenerator.js',
+  'js/services/util.js',
+  'js/services/api.js',
+  <!-- controllers -->
+  'js/controllers/loginController.js',
+  'js/controllers/signupController.js',
+  'js/controllers/dashboardController.js',
+  'js/controllers/settingsController.js',
+  'js/controllers/topMenuController.js',
+  <!-- modal -->
+  'js/controllers/addCoinModalController.js',
+  'js/controllers/addCoinLoginModalController.js',
+  'js/controllers/receiveCoinModalController.js',
+  'js/controllers/sendCoinModalController.js',
+  'js/controllers/sendCoinPassphraseModalController.js'
+];
+
 gulp.task('index', ['cleanIndex'], function() {
   return gulp.src('index.html')
              .pipe(injectPartials())
@@ -21,8 +74,11 @@ gulp.task('index', ['cleanIndex'], function() {
 });
 
 gulp.task('copyJS', ['cleanJS'], function() {
-  return gulp.src(paths.js)
-             .pipe(gulp.dest(paths.devBuild + '/js'));
+  return gulp.src(js)
+             .pipe(concat('all.js'))
+             .pipe(gulp.dest(paths.devBuild));
+  /*return gulp.src(paths.js)
+             .pipe(gulp.dest(paths.devBuild + '/js'));*/
 });
 
 gulp.task('scss', ['scss:css'], function() {

@@ -3,7 +3,6 @@
 angular.module('IguanaGUIApp')
 .service('$api', [
   'util',
-  'helper',
   '$http',
   '$state',
   '$timeout',
@@ -14,7 +13,7 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$syncStatus',
   '$message',
-  function (util, helper, $http, $state, $timeout,
+  function (util, $http, $state, $timeout,
             $interval, $q, vars, $filter, $storage,
             $syncStatus, $message) {
     this.coinsInfo = [];

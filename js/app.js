@@ -7,7 +7,7 @@ angular.module('IguanaGUIApp.controllers', [
   'ui.bootstrap'
 ])
 .value('vars', {})
-.service('helper', [
+/*.service('helper', [
   '$uibModal',
   '$rootScope',
   'clipboard',
@@ -17,7 +17,7 @@ angular.module('IguanaGUIApp.controllers', [
   '$localStorage',
   'vars',
   createHelpers
-])
+])*/
 angular.module('IguanaGUIApp', [
   'ui.router',
   'ngSanitize',
