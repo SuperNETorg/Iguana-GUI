@@ -4,10 +4,10 @@
   "description": "Iguana GUI",
   "main": "gulpfile.js",
   "dependencies": {
-    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.13",
     "gulp-inject-partials": "^1.0.2",
+    "gulp-rimraf": "^0.2.1",
     "gulp-sass": "^2.3.2",
     "gulp-util": "^3.0.7"
   },
