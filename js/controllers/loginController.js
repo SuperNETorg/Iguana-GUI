@@ -42,7 +42,7 @@ angular.module('IguanaGUIApp')
     function onInit() {
       $scope.availableCoins = [];
 
-      $scope.openAddCoinModal = function () {
+      $scope.openAddCoinModal = function() {
         var modalInstance = $uibModal.open({
           animation: true,
           ariaLabelledBy: 'modal-title',
@@ -66,7 +66,8 @@ angular.module('IguanaGUIApp')
           $scope.passphraseModel = $storage['iguana-login-active-coin'][0][data[2][0]];
         });
       };
-      $scope.login = function (dd, gg) {
+
+      $scope.login = function(dd, gg) {
         $auth.login(
           $scope.receivedObject,
           $scope.coinsSelectedToAdd,
