@@ -16,7 +16,6 @@ angular.module('IguanaGUIApp')
     '$q',
     function ($scope, $state, $uibModalInstance, util, $api, $storage,
               $rootScope, $timeout, vars) {
-      debugger;
       $scope.isIguana = $storage['isIguana'];
       $scope.open = open;
       $scope.close = close;
