@@ -30,7 +30,8 @@ angular.module('IguanaGUIApp')
     $scope.verifyPass = verifyPass;
     $scope.coinsSelectedToAdd = [];
     $scope.receivedObject = [] ;
-
+    $scope.passphraseCount = $storage['isIguana'] == true ? 24 : 12;
+    $storage['iguana-login-active-coin'] = [];
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {
@@ -111,21 +112,28 @@ angular.module('IguanaGUIApp')
       var selectedCoindToEncrypt = $storage.coinsSelectedToAdd[0]['coinId'];
 
       if ($scope.passPhraseText !== '') {
-        var walletEncryptResponse = $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt);
-
-        if (walletEncryptResponse !== -15) {
+        $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt).then(function(){
           $message.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green', true);
+
           if ($state.current.name === 'dashboard') {
             util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
           } else {
             $state.go('login');
           }
-        } else {
-          $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
-          if ($state.current.name === 'dashboard') {
-            util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
+        },function(response){
+          if (response == -15) {
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red', true);
+            $scope.$on('modal.closing',function () {
+
+            })
+
+            if ($state.current.name === 'dashboard') {
+              util.toggleModalWindow(addCoinCreateWalletModalClassName, 300);//todo change in the future
+            }
+
+              $state.go('login');
           }
-        }
+        });
       } else {
         $message.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red', true);
       }

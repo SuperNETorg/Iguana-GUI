@@ -40,7 +40,7 @@ var lang = {
     'CREATE_ACCOUNT': {
       'ADD_ACCOUNT': 'Add account',
       'WRITE_DOWN_THIS_P1': 'Write down this',
-      'WRITE_DOWN_THIS_P2': 'word passphrase and keep it safe. You can\'t access or restore your account, if you lose it!',
+      'WRITE_DOWN_THIS_P2': '-word passphrase and keep it safe. You can\'t access or restore your account, if you lose it!',
       'WRITE_DOWN_THIS_P3': 'Don\'t ever disclose your passphrase!',
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
       'I_SAVED_A_PASSPHRASE': 'I saved the passphrase in a secure place',
@@ -129,7 +129,7 @@ var lang = {
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
       'X_WALLET_IS_CREATED': ' wallet is created. Login to access it.',
-      'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase!',
+      'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',
       'PASSPHRASES_DONT_MATCH_ALT': 'Passphrases are not matching. Please repeat previous step one more time.',
       'COIN_ADD_P1': 'added.',
       'COIN_ADD_P2': 'failed to add.',

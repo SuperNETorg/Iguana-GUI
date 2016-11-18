@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row centered">
         <!-- // create account form start -->
-        <section class="form-container create-account-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step1') }" >
+        <section class="form-container create-account-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
             <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>
@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-            <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang }} 24-{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang }} <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang }}</strong></div>
+            <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang }} {{ passphraseCount }}{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang }} <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang }}</strong></div>
             <div class="passphrase-container row center offset-bottom-md">
               <div class="title unselectable">{{ 'CREATE_ACCOUNT.COPY_PASSPHRASE' | lang }}: {{ generatedPassphrase }}</div>
               <div class="generated-passhprase cursor-pointer" ng-click="copyPassphraseWord($event)">{{ passphrase }}</div>
@@ -46,7 +46,7 @@
         </section>
         <!-- // create account form end -->
         <!-- // verify passphrase form start -->
-        <section class="form-container verify-passphrase-form" ng-controller="signupController" ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
+        <section class="form-container verify-passphrase-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
             <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>

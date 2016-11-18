@@ -539,18 +539,16 @@ angular.module('IguanaGUIApp')
           }
         }
       }.bind(this), function(response) {
-        if (response.status) {
-          if (response.status == -15) {
-            deferred.resolve(-15);
-          }
-
+        if (response.data && response.data.error.code) {
+            deferred.reject(response.data.error.code);
           if (dev.showConsoleMessages && dev.isDev) {
-            console.log(response.responseText);
+            console.log(response.statusText);
           }
         } else {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(response);
           }
+          deferred.reject(response);
         }
       }.bind(this));
 
