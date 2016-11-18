@@ -22,7 +22,7 @@ angular.module('IguanaGUIApp')
 
           var inputValSplit = transformedInput.split('.');
 
-          if ((inputValSplit[0].match(/0/g) && inputValSplit[0].match(/0/g).length > 1) || // disallow leading zero on the left side
+          if ((inputValSplit[0].match(/0/g) && inputValSplit[0].match(/0/g).length > 1 && !inputValSplit[0].match(/[1-9]/g)) || // disallow leading zero on the left side
               (Number(inputValSplit[0][0]) === 0 && Number(inputValSplit[0][1]) > 0)) {
             transformedInput = '0.' + inputValSplit[1];
           }
