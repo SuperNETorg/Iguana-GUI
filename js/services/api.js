@@ -303,6 +303,7 @@ angular.module('IguanaGUIApp')
               angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
             }
           }, 1000);
+
           vars.coinsInfo = this.coinsInfo;
       }
     };
@@ -329,8 +330,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.testCoinPorts = function() {
-      var result = false,
-          _index = 0,
+      var _index = 0,
           coins = this.getConf().coins,
           debugSyncInfo = angular.element(document).find('#debug-sync-info'),
           self = this,
@@ -365,6 +365,9 @@ angular.module('IguanaGUIApp')
             coinsKeys = attributes[3],
             index = coinsKeys[_index - 1];
 
+        if (!self.coinsInfo) {
+          self.coinsInfo = new Array;
+        }
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = [];
         }
@@ -410,34 +413,32 @@ angular.module('IguanaGUIApp')
             coinsKeys = attributes[3],
             index = coinsKeys[_index - 1];
 
+        if (!self.coinsInfo) {
+          self.coinsInfo = new Array;
+        }
         if (!self.coinsInfo[index]) {
-          self.coinsInfo[index] = [];
+          self.coinsInfo[index] = new Array;
         }
 
         self.errorHandler(response, index);
 
         if (response.statusText === 'error' && !$storage['isIguana']) $storage['isProxy'] = false;
 
-        if (
-          dev.showConsoleMessages &&
-          dev.isDev &&
-          response.data.error &&
-          response.data.error.indexOf('Bad Gateway') === -1
-        ) {
-          console.log('is proxy server running?');
-        } else if (!response.status) {
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('server is busy, check back later');
+        if (response.data) {
+          if (dev.showConsoleMessages && dev.isDev && response.data.error &&
+            response.data.error.indexOf('Bad Gateway') === -1) {
+            console.log('is proxy server running?');
+          } else if (!response.status) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('server is busy, check back later');
+            }
           }
-        }
-
-        if (response.data.error && response.data.error.indexOf('Verifying blocks...') > -1){
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log(index + ' is verifying blocks...');
+          if (response.data.error &&
+            response.data.error.indexOf('Verifying blocks...') > -1){
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(index + ' is verifying blocks...');
+            }
           }
-        }
-
-        if (response.data){
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('coind response: ' + response.data);
           }
