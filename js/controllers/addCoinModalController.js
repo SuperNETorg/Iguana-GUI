@@ -3,6 +3,7 @@
 angular.module('IguanaGUIApp')
   .controller('addCoinModalController', [
     '$scope',
+    '$state',
     '$uibModalInstance',
     'util',
     '$api',
@@ -13,8 +14,9 @@ angular.module('IguanaGUIApp')
     '$filter',
     '$message',
     '$q',
-    function ($scope, $uibModalInstance, util, $api, $storage,
+    function ($scope, $state, $uibModalInstance, util, $api, $storage,
               $rootScope, $timeout, vars) {
+      debugger;
       $scope.isIguana = $storage['isIguana'];
       $scope.open = open;
       $scope.close = close;
@@ -87,8 +89,9 @@ angular.module('IguanaGUIApp')
           }
         });
 
-        if (!$storage['isIguana']) {
+        if (!$storage['isIguana'] || ($storage['isIguana'] && $state.$current.url == '/signup')) {
           $scope.coinsSelectedToAdd.coins = [];
+          $storage['iguana-login-active-coin'] = [];
         }
 
         if (!isDisable && !$scope.coinsSelectedToAdd.coins[item.coinId]) {
@@ -141,6 +144,7 @@ angular.module('IguanaGUIApp')
             }
           }
         }
+
         $uibModalInstance.close([
           constructCoinRepeater(vars.coinsInfo),
           coinsSelectedToAdd,
