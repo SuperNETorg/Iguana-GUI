@@ -67,7 +67,7 @@ angular.module('IguanaGUIApp')
         });
       };
 
-      $scope.login = function(dd, gg) {
+      $scope.login = function() {
         $auth.login(
           $scope.receivedObject,
           $scope.coinsSelectedToAdd,

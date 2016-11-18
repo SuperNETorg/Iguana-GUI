@@ -92,11 +92,11 @@ angular.module('IguanaGUIApp')
       function walletLogin() {
         var deferred = $q.defer();
 
-          $api.walletLock(coinsSelectedToAdd[0].coinId).then(function(dd) {
-            $api.walletLogin(passphraseModel,
-              settings.defaultSessionLifetime,
-              coinsSelectedToAdd[0].coinId).then(onResolve, onReject)
-          });
+        $api.walletLock(coinsSelectedToAdd[0].coinId).then(function(dd) {
+          $api.walletLogin(passphraseModel,
+            settings.defaultSessionLifetime,
+            coinsSelectedToAdd[0].coinId).then(onResolve, onReject)
+        });
 
         function onResolve(data) {
 
