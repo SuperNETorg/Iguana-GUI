@@ -32,6 +32,21 @@ angular.module('IguanaGUIApp')
     $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
 
+    // TODO: merge all dashboard data into a single object for caching
+    $scope.currency = defaultCurrency;
+    $scope.totalBalance = 0;
+    $scope.sideBarCoins;
+    $scope.txUnit = {
+      loading: true,
+      activeCoinBalance: 0,
+      activeCoinBalanceCurrency: 0,
+      transactions: []
+    };
+    $scope.sideBarCoinsUnsorted = {};
+    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    $scope.addCoinButtonState = true;
+    $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
+
     var coinBalances = [],
         _sideBarCoins = {},
         coinsSelectedByUser = [];
@@ -132,21 +147,6 @@ angular.module('IguanaGUIApp')
       }
     });
 
-    // TODO: merge all dashboard data into a single object for caching
-    $scope.currency = defaultCurrency;
-    $scope.totalBalance = 0;
-    $scope.sideBarCoins;
-    $scope.txUnit = {
-      loading: true,
-      activeCoinBalance: 0,
-      activeCoinBalanceCurrency: 0,
-      transactions: []
-    };
-    $scope.sideBarCoinsUnsorted = {};
-    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
-    $scope.addCoinButtonState = true;
-    $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
-
     $scope.setActiveCoin = function(item) {
       $storage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
@@ -187,7 +187,10 @@ angular.module('IguanaGUIApp')
         }
       }
 
-      if (coinsSelectedByUser.length && !$scope.activeCoin) $scope.activeCoin = coinsSelectedByUser[0];
+      if (coinsSelectedByUser.length && !$scope.activeCoin) {
+        $scope.activeCoin = coinsSelectedByUser[0];
+        $storage['iguana-active-coin'] = { id: $scope.activeCoin };
+      }
 
       coinBalances = [];
 
@@ -253,6 +256,7 @@ angular.module('IguanaGUIApp')
       // disable add wallet/coin button if all coins/wallets are already in the sidebar
       var _coinsLeftToAdd = 0,
           lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
+
       for (var key in lookupArray) {
         if (!$storage['iguana-' + key + '-passphrase'] || $storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
           if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
@@ -260,6 +264,7 @@ angular.module('IguanaGUIApp')
           }
         }
       }
+
       $scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false;
     }
 

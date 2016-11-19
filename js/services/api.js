@@ -16,6 +16,7 @@ angular.module('IguanaGUIApp')
   function (util, $http, $state, $timeout,
             $interval, $q, vars, $filter, $storage,
             $syncStatus, $message) {
+
     this.coinsInfo = [];
     this.isRT = false;
     $storage['isProxy'] = true;
@@ -610,15 +611,15 @@ angular.module('IguanaGUIApp')
       }
 
       var result = false,
-        fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
-        defaultIguanaServerUrl = this.getConf().server.protocol +
-          this.getConf().server.ip +
-          ':' +
-          this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
-        postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
-          passphrase + '\", ' + timeout, coin),
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        deferred = $q.defer();
+          fullUrl = this.getFullApiRoute('walletpassphrase', null, coin),
+          defaultIguanaServerUrl = this.getConf().server.protocol +
+            this.getConf().server.ip +
+            ':' +
+            this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
+          postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
+            passphrase + '\", ' + timeout, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          deferred = $q.defer();
 
       //console.log(fullUrl, defaultIguanaServerUrl, postData, postAuthHeaders);
 
@@ -763,47 +764,47 @@ angular.module('IguanaGUIApp')
 
     this.addCoinRecursive = function(coins, _index, recursiveResult) {
       var coin = coins[_index],
-        result = recursiveResult || [],
-        postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
-        fullUrl = this.getConf().server.protocol +
-                  this.getConf().server.ip + ':' +
-                  this.getConf(true).server.port,
-        deferred = $q.defer();
+          result = recursiveResult || [],
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          fullUrl = this.getConf().server.protocol +
+                    this.getConf().server.ip + ':' +
+                    this.getConf(true).server.port,
+          deferred = $q.defer();
 
       $http.post(fullUrl, iguanaAddCoinParams[coin], {
         headers: postAuthHeaders
       })
-        .then(
-          function (response) {
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log(response);
-            }
-            if (response.data.result === 'coin added' ||
-              response.data.result === 'coin already there') {
-              result.push([coin, response]);
-            } else {
-              result.push([false, response]);
-            }
-            deferred.resolve([result, ++_index]);
-          },
-          function (response) {
-            deferred.reject([result, ++_index]);
+      .then(
+        function (response) {
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(response);
           }
-        );
+          if (response.data.result === 'coin added' ||
+            response.data.result === 'coin already there') {
+            result.push([coin, response]);
+          } else {
+            result.push([false, response]);
+          }
+          deferred.resolve([result, ++_index]);
+        },
+        function (response) {
+          deferred.reject([result, ++_index]);
+        }
+      );
 
       return deferred.promise;
     };
 
     this.addCoins = function (coins, _index, result) {
       var self = this,
-        coinsKeys = Object.keys(coins),
-        coinsLength = coinsKeys.length,
-        deferred = $q.defer();
+          coinsKeys = Object.keys(coins),
+          coinsLength = coinsKeys.length,
+          deferred = $q.defer();
+
       this.addCoinRecursive(coins, _index, result)
-        .then(onResolve, onReject);
+          .then(onResolve, onReject);
 
       function onResolve(result) {
-
         if (coinsLength <= result[1]) {
           deferred.resolve(result[0]);
         } else {
@@ -979,7 +980,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    // TODO: merge wallet unlock/lock into sendtoaddress
+    // TODO: chain wallet unlock/lock and sendtoaddress
     this.sendToAddress = function(coin, sendInfo) {
       var result = false,
           deferred = $q.defer(),
@@ -997,30 +998,30 @@ angular.module('IguanaGUIApp')
             console.log(_response);
           }
 
-          if (_response.result) {
+          if (_response.data.result) {
             // non-iguana
-            if (_response.result.length) {
-              result = _response.result;
+            if (_response.data.result.length) {
+              result = _response.data.result;
             } else {
               result = false;
             }
           } else {
             // iguana
-            if (!_response.error) {
+            if (!_response.data.error) {
               var response = JSON.parse(_response);
             } else {
               response = _response;
             }
 
-            if (response.error) {
+            if (response.data.error) {
               // do something
               if (dev.showConsoleMessages && dev.isDev) {
-                console.log('error: ' + response.error);
+                console.log('error: ' + response.data.error);
               }
               result = false;
             } else {
-              if (response.result.length) {
-                result = response.result;
+              if (response.data.result.length) {
+                result = response.data.result;
               } else {
                 result = false;
               }
@@ -1033,15 +1034,15 @@ angular.module('IguanaGUIApp')
         this.errorHandler(response, coin);
 
         if (this.errorHandler(response, coin) === -13) {
+          result = false;
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('unlock the wallet first');
           }
         }
 
-        result = false;
+        deferred.resolve(result);
       }.bind(this));
-
-      deferred.resolve(result);
 
       return deferred.promise;
     };
@@ -1062,13 +1063,14 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(_response);
           }
-          if (_response.result) {
+          if (_response.data.result) {
             // non-iguana
-            if (_response.result.length) {
-              result = _response.result;
+            result = _response.data.result;
+
+            /*if (_response.data.result.length) {
             } else {
               result = false;
-            }
+            }*/
           } else {
             // iguana
             var response = JSON.parse(_response);
@@ -1081,8 +1083,8 @@ angular.module('IguanaGUIApp')
               result = false;
 
             } else {
-              if (response.result.length) {
-                result = response.result;
+              if (response.data.result.length) {
+                result = response.data.result;
               } else {
                 result = false;
               }

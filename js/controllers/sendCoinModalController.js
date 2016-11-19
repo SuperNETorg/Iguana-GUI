@@ -5,7 +5,6 @@ angular.module('IguanaGUIApp')
   '$scope',
   '$uibModalInstance',
   'util',
-  'helper',
   '$storage',
   '$state',
   '$api',
@@ -14,11 +13,10 @@ angular.module('IguanaGUIApp')
   '$rates',
   'vars',
   '$message',
-  function ($scope, $uibModalInstance, util, helper, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message) {
+  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message) {
     $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
-    $scope.helper = helper;
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
@@ -186,20 +184,47 @@ angular.module('IguanaGUIApp')
           };
 
       if (Number($scope.sendCoin.fee) !== Number(coinsInfo[$scope.activeCoin].relayFee) && Number($scope.sendCoin.fee) !== 0.00001 && Number($scope.sendCoin.fee) !== 0) {
-        setTxFeeResult = $api.setTxFee($scope.activeCoin, $scope.sendCoin.fee);
-      }
-
-      var sendTxResult = $api.sendToAddress($scope.activeCoin, txDataToSend);
-
-      if (sendTxResult.length === 64) {
-        $scope.sendCoin.success = true;
+        $api.setTxFee($scope.activeCoin, $scope.sendCoin.fee)
+        .then(function(response) {
+          $api.sendToAddress($scope.activeCoin, txDataToSend)
+          .then(function(response) {
+            if (response.length === 64) {
+              $scope.sendCoin.success = true;
+            }
+            // revert pay fee
+            $api.setTxFee($scope.activeCoin, 0)
+            .then(function(response) {
+              // do nothing
+            }, function(reason) {
+              console.log('request failed: ' + reason);
+              // TODO: show error
+            });
+          }, function(reason) {
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+            // revert pay fee
+            $api.setTxFee($scope.activeCoin, 0)
+            .then(function(response) {
+              // do nothing
+            }, function(reason) {
+              console.log('request failed: ' + reason);
+              // TODO: show error
+            });
+          });
+        }, function(reason) {
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+          console.log('request failed: ' + reason);
+        });
       } else {
-        // go to an error step
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+        $api.sendToAddress($scope.activeCoin, txDataToSend)
+        .then(function(response) {
+          if (response.length === 64) {
+            $scope.sendCoin.success = true;
+          }
+        }, function(reason) {
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+          console.log('request failed: ' + reason);
+        });
       }
-
-      // revert pay fee
-      if (setTxFeeResult) $api.setTxFee($scope.activeCoin, 0);
     }
 
     $scope.close = function() {
