@@ -178,7 +178,9 @@ var lang = {
     'TIME_AGO': {
       'MOMENT': 'Moment ago',
       'MINUTE': 'min ago',
+      'MINUTES': 'mins ago',
       'HOURS': 'hours ago',
+      'HOUR': 'hour ago',
       'DAY': 'day ago',
       'DAYS': 'days ago'
     },

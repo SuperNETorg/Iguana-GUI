@@ -49,21 +49,20 @@ angular.module('IguanaGUIApp')
           if (difference / dayTemplate < 1) {
             if (difference / timeTemplate < 1) {
               if (difference / minuteTemplate > 1) {
-                displayText = parseInt(difference / minuteTemplate) + ' ' + $filter('lang')('TIME_AGO.MINUTE');
-              } else {
-                displayText = $filter('lang')('TIME_AGO.MOMENT');
+                var minutes = parseInt(difference / minuteTemplate);
+
+                displayText = minutes + ' ' + $filter('lang')(minutes > 1 ? 'TIME_AGO.MINUTES' : 'TIME_AGO.MINUTE');
               }
             } else {
-              displayText = parseInt(difference / timeTemplate) + ' ' + $filter('lang')('TIME_AGO.HOURS');
+              var hours = parseInt(difference / timeTemplate);
+              console.log(hours);
+
+              displayText = hours + ' ' + $filter('lang')(hours > 1 ? 'TIME_AGO.HOURS' : 'TIME_AGO.HOUR');
             }
           } else {
             var days = parseInt(difference / dayTemplate);
 
-            if (days > 1) {
-              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAYS');
-            } else {
-              displayText = parseInt(difference / dayTemplate) + ' ' + $filter('lang')('TIME_AGO.DAY');
-            }
+            displayText = days + ' ' + $filter('lang')(days > 1 ? 'TIME_AGO.DAYS' : 'TIME_AGO.DAY');
           }
           timeAgo.text(displayText);
         }
