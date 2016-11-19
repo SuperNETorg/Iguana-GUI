@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('IguanaGUIApp')
 .controller('loginController', [
   '$scope',
@@ -33,6 +34,7 @@ angular.module('IguanaGUIApp')
     $scope.availableCoins = [];
 
     $storage['iguana-login-active-coin'] = [];
+    $storage['iguana-active-coin'] = {};
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -41,8 +43,6 @@ angular.module('IguanaGUIApp')
     }
 
     function onInit() {
-
-      console.log(vars)
       $scope.availableCoins = [];
 
       $scope.openAddCoinModal = function() {
@@ -53,7 +53,6 @@ angular.module('IguanaGUIApp')
           controller: 'addCoinModalController',
           template: '<div ng-include="\'partials/add-coin.html\'"></div>',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
-          backdrop: false,
           resolve: {
             receivedObject: function () {
               return {
@@ -66,10 +65,11 @@ angular.module('IguanaGUIApp')
         modalInstance.result.then(resultPromise, resultPromise);
 
         function resultPromise(data) {
-          if (data) {
+          if (data && data !== 'backdrop click') {
             $scope.availableCoins = data[0];
             $scope.coinsSelectedToAdd = data[1];
-            $scope.receivedObject = data[2] ;
+            $scope.receivedObject = data[2];
+
             if (data[2].length) {
               $scope.passphraseModel = $storage['iguana-login-active-coin'][0][data[2][0]];
             }
@@ -82,7 +82,7 @@ angular.module('IguanaGUIApp')
           $scope.receivedObject,
           $scope.coinsSelectedToAdd,
           $scope.passphraseModel
-        )
+        );
       };
     }
   }
