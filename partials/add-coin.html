@@ -26,13 +26,13 @@
               <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
               <div class="name">{{ item.name }}</div>
             </div>
-            <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next"
-                    ng-click="next()" ng-class="{ 'disabled': !coinsSelectedToAdd.length }">
-              {{ 'CREATE_ACCOUNT.NEXT' | lang }}
-            </button>
           </div>
         </div>
       </div>
+      <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next"
+              ng-click="next()" ng-class="{ 'disabled': !coinsSelectedToAdd.length }">
+        {{ 'CREATE_ACCOUNT.NEXT' | lang }}
+      </button>
     </div>
   </section>
 </script>
