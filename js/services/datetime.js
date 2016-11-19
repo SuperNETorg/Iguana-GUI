@@ -42,10 +42,11 @@ angular.module('IguanaGUIApp')
               difference = current - original;
 
           if ((threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
-            (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
-            (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)) {
+              (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
+              (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)) {
             return;
           }
+
           if (difference / dayTemplate < 1) {
             if (difference / timeTemplate < 1) {
               if (difference / minuteTemplate > 1) {
@@ -55,7 +56,6 @@ angular.module('IguanaGUIApp')
               }
             } else {
               var hours = parseInt(difference / timeTemplate);
-              console.log(hours);
 
               displayText = hours + ' ' + $filter('lang')(hours > 1 ? 'TIME_AGO.HOURS' : 'TIME_AGO.HOUR');
             }

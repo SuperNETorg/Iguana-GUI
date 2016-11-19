@@ -1249,7 +1249,7 @@ angular.module('IguanaGUIApp')
 
             } else {
               if (response) {
-                result = response;
+                result = response.data;
               } else {
                 result = false;
               }

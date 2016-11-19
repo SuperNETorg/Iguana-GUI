@@ -41,24 +41,28 @@ angular.module('IguanaGUIApp')
         Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         return true;
       } else {
+        this.logout();
         return false;
       }
     };
 
-    this.login = function(receivedObject, coinsSelectedToAdd, passphraseModel) {
+    this.login = function(receivedObject, coinsSelectedToAdd, passphraseModel, addCoinOnly) {
       self.coinsSelectedToAdd = util.reindexAssocArray(coinsSelectedToAdd);
       self.passphraseModel = passphraseModel;
       self.receivedObject = receivedObject;
 
       if ($storage['isIguana']) {
-        checkIguanaCoinsSelection(false)
+        checkIguanaCoinsSelection(false, addCoinOnly)
         .then(function(data) {
           self.coinResponses = data;
 
-          $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
-          .then(function(ddd) {
-            return walletLogin();
-          });
+          if (!addCoinOnly)
+            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
+            .then(function(ddd) {
+              return walletLogin();
+            });
+          else
+            return data;
         });
       } else {
         return walletLogin();
@@ -133,7 +137,6 @@ angular.module('IguanaGUIApp')
           deferred.reject(result);
         }
 
-        console.log(deferred);
         return deferred.promise;
       }
     };
@@ -141,6 +144,9 @@ angular.module('IguanaGUIApp')
     this.logout = function () { // TODO: move to auth service
       if ($storage['isIguana']) {
         $api.walletLock();
+        for (var key in supportedCoinsList) {
+          $storage['iguana-' + key + '-passphrase'].logged === 'no';
+        }
         $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
         $state.go('login');
       } else {
@@ -205,7 +211,7 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function checkIguanaCoinsSelection(suppressAddCoin) {
+    function checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly) {
       var defer = $q.defer();
 
       if (!suppressAddCoin) {
@@ -214,13 +220,11 @@ angular.module('IguanaGUIApp')
         }
 
         $api.addCoins(self.receivedObject, 0).then(onResolve);
-
       } else {
         defer.resolve(true);
       }
 
       function onResolve(coinResponses) {
-        console.log(coinResponses);
         var response,
             coin;
 
@@ -240,7 +244,8 @@ angular.module('IguanaGUIApp')
             $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'yes' };
           } else {
             self.failedCoinsOutput += coin + ', ';
-            $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'no' };
+            if (!addCoinOnly)
+              $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'no' };
           }
         }
 
