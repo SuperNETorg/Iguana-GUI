@@ -19,6 +19,8 @@ angular.module('IguanaGUIApp')
     $scope.util = util;
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
 
+    util.bodyBlurOn();
+
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
         coinsInfo = vars.coinsInfo;
@@ -230,5 +232,9 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     }
+
+    $scope.$on('$destroy', function() {
+      util.bodyBlurOff();
+    });
   }
 ]);

@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('IguanaGUIApp')
 .service('$auth', [
   '$storage',
@@ -35,6 +36,7 @@ angular.module('IguanaGUIApp')
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
           secondsElapsedSinceLastAuth =
             Number(currentEpochTime) - Number(($storage['iguana-auth'] ? $storage['iguana-auth'].timestamp : 1000) / 1000);
+
       if (Math.floor(secondsElapsedSinceLastAuth) <
         Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         return true;
@@ -44,25 +46,25 @@ angular.module('IguanaGUIApp')
     };
 
     this.login = function(receivedObject, coinsSelectedToAdd, passphraseModel) {
-
       self.coinsSelectedToAdd = util.reindexAssocArray(coinsSelectedToAdd);
       self.passphraseModel = passphraseModel;
       self.receivedObject = receivedObject;
 
       if ($storage['isIguana']) {
         checkIguanaCoinsSelection(false)
-          .then(function (data) {
-            self.coinResponses = data;
-            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId).then(function(ddd) {
-              walletLogin();
-            });
+        .then(function(data) {
+          self.coinResponses = data;
+
+          $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
+          .then(function(ddd) {
+            return walletLogin();
           });
+        });
       } else {
-        walletLogin()
+        return walletLogin();
       }
 
       function inguanaLogin() {
-
         // var defer = $q.defer();
         var message = $message.ngPrepMessageModal(
           self.addedCoinsOutput + ' ' +
@@ -99,21 +101,20 @@ angular.module('IguanaGUIApp')
         });
 
         function onResolve(data) {
-
-          $storage['iguana-auth'] = {'timestamp': Date.now()};
+          $storage['iguana-auth'] = { 'timestamp': Date.now() };
 
           if ($storage['isIguana']) {
             inguanaLogin();
           } else {
-            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = {'logged': 'yes'};
+            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
             $state.go('dashboard.main');
           }
 
           $storage['iguana-login-active-coin'] = [];
           deferred.resolve(data)
         }
-        function onReject(result) {
 
+        function onReject(result) {
           var walletLogin = result[0];
 
           if (walletLogin === -14 || walletLogin === false) {
@@ -132,6 +133,7 @@ angular.module('IguanaGUIApp')
           deferred.reject(result);
         }
 
+        console.log(deferred);
         return deferred.promise;
       }
     };
@@ -208,7 +210,7 @@ angular.module('IguanaGUIApp')
 
       if (!suppressAddCoin) {
         for (var key in vars.coinsInfo) {
-          $storage['iguana-' + key + '-passphrase'] = {' logged': 'no'};
+          $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
         }
 
         $api.addCoins(self.receivedObject, 0).then(onResolve);
@@ -220,7 +222,8 @@ angular.module('IguanaGUIApp')
       function onResolve(coinResponses) {
         console.log(coinResponses);
         var response,
-          coin;
+            coin;
+
         for (var i = 0; coinResponses.length > i; i++) {
           coin = coinResponses[i][0];
           response = coinResponses[i][1];
@@ -234,10 +237,10 @@ angular.module('IguanaGUIApp')
 
             vars.coinsInfo[coin].connection = true; // update coins info obj prior to scheduled port poll
             self.addedCoinsOutput += coin.toUpperCase() + ', ';
-            $storage['iguana-' + coin + '-passphrase'] = {'logged': 'yes'};
+            $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'yes' };
           } else {
             self.failedCoinsOutput += coin + ', ';
-            $storage['iguana-' + coin + '-passphrase'] = {'logged': 'no'};
+            $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'no' };
           }
         }
 

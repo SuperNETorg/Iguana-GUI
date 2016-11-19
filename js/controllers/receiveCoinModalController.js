@@ -10,7 +10,8 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$rates',
   '$message',
-  function ($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message) {
+  'util',
+  function ($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message, util) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -18,6 +19,8 @@ angular.module('IguanaGUIApp')
       coinAmount: '',
       currencyAmount: ''
     };
+
+    util.bodyBlurOn();
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
@@ -77,4 +80,8 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     }
+
+    $scope.$on('$destroy', function() {
+      util.bodyBlurOff();
+    });
   }]);

@@ -28,6 +28,14 @@ angular.module('IguanaGUIApp')
     this.coindWalletLockCount = 0;
     this.minEpochTimestamp = 1471620867; // Jan 01 1970
 
+    this.bodyBlurOn = function() {
+      angular.element(document).find('body').addClass('modal-open');
+    }
+
+    this.bodyBlurOff = function() {
+      angular.element(document).find('body').removeClass('modal-open');
+    }
+
     this.reindexAssocArray = function(array) {
       var _array = [];
 

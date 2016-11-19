@@ -7,6 +7,7 @@ angular.module('IguanaGUIApp')
   '$auth',
   function($scope, $state, $auth) {
     $scope.$state = $state;
+    $scope.$auth = $auth;
     $scope.enabled = $auth.checkSession(true);
   }
 ]);

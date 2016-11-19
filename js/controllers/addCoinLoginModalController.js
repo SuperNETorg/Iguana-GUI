@@ -17,6 +17,8 @@ angular.module('IguanaGUIApp')
     $scope.close = close;
     $scope.util = util;
 
+    util.bodyBlurOn();
+
     $scope.$state = $state;
     $scope.passphrase = '';
     $scope.dev = dev;
@@ -94,5 +96,9 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     }
+
+    $scope.$on('$destroy', function() {
+      util.bodyBlurOff();
+    });
   }
 ]);
