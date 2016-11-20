@@ -51,7 +51,7 @@
     margin-top: 40px;
   }
   .pop-detail {
-    margin-bottom: 0.5em;
+    margin-bottom: 20px;
 
     h4 {
       color: #282828;
@@ -236,7 +236,7 @@
 }
 .send-coin-progress-overlay .send-coin-status,
 .send-coin-success-overlay .send-coin-status {
-  padding-top: 40%;
+  padding-top: 50%;
   font-size: 1.1em;
   text-align: center;
 }
@@ -246,9 +246,10 @@
 .send-coin-success-overlay .btn-confirmed,
 .send-coin-success-overlay .btn-confirmed:focus {
   position: absolute;
-  bottom: 25%;
-  left: 25%;
-  right: 25%;
+  bottom: 12.1%;
+  left: 20%;
+  /* right: 25%; */
+  max-width: 359px;
   text-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
   font-size: 1.3em;
 
@@ -266,7 +267,7 @@
 
   .bi_interface-arrow-left {
     font-size: 26px;
-    margin-top: -5px;
+    margin-top: 7px;
     margin-left: -2px;
   }
   .coin {
@@ -301,6 +302,14 @@
     }
     .balance-currency {
       font-size: 1.2em;
+    }
+  }
+  .modal-header {
+    .bi_interface-cross {
+      margin-top: 4px;
+    }
+    .title {
+      padding-top: 9px;
     }
   }
 

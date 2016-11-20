@@ -8,6 +8,15 @@
   width: 100%;
   height: 100%;
   margin: 0 auto;
+
+  .form-header .title {
+    font-size: 1.23em;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    top: 18px;
+    z-index: 10;
+  }
 }
 .auth-main {
   .coin {
@@ -78,11 +87,12 @@
   }
   .bi_interface-cross {
     color: #fff;
-    font-size: 20px;
+    font-size: 1.2em;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     position: relative;
-    top: 12px;
+    top: 10px;
     left: 10px;
+    z-index: 20;
   }
   .bi_interface-arrow-left {
     color: #fff;
@@ -136,11 +146,11 @@
     .title {
       font-family: 'Proxima Nova', sans-serif;
       font-weight: 600;
-      font-size: 1.43em;
+      font-size: 1.15em;
       text-align: center;
       color: #fff;
-      padding-top: 12px;
       position: relative;
+      top: -18px;
       z-index: 10;
     }
   }

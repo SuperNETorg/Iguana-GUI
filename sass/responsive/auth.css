@@ -28,11 +28,12 @@
   .auth-main .form-content .login-passphrase-textarea.offset-bottom-sm.row.center {
     height: 158px;
     width: 398px;
-    padding: 18px 50px;
+    padding: 15px 50px;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 1.24em;
   }
   .auth-main .form-content {
     padding: 3.1em 1.6em 2em 1.6em;
@@ -49,9 +50,6 @@
   .auth-main .create-account-form .generated-passhprase {
     padding: 0 35px;
     font-size: 18px;
-  }
-  .auth-main .form-header .title {
-    padding-top: 18px;
   }
   .auth-main .bi_interface-arrow-left {
     margin-top: 15px;

@@ -16,18 +16,24 @@
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 
     .btn-close {
-      margin-top: 5px;
-      margin-left: 12px;
+      color: #fff;
+      font-size: 20px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      position: relative;
+      top: 6px;
+      left: 10px;
+      z-index: 20;
     }
     .title {
-      font-size: 20px;
+      font-family: 'Proxima Nova', sans-serif;
       font-weight: 600;
-      line-height: 100%;
-      margin-right: 28px;
-      margin-top: 6px;
-    }
-    .btn-close::before {
-      font-weight: 700;
+      font-size: 1.15em;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      top: 10px;
+      z-index: 10;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     }
   }
   .close {
@@ -108,7 +114,7 @@
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
   border: none;
-  box-shadow: none;
+  //box-shadow: none;
 }
 .buttons {
   padding: 6px 0;
