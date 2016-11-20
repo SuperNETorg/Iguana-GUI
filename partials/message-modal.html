@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="partials/message-modal.html">
-  <div class="modal-header msgbox-header msg-{{ color }} unselectable">
+  <div class="modal-header msgbox-header unselectable">
     <div class="msg-body" data-dismiss="modal">
       <span ng-if="messageType === 'noDaemon'">
         {{ 'MESSAGE.NO_REQUIRED_DAEMON_P1' | lang }} <a ng-click="requirementsInfo()" class="cursor-pointer">{{ 'MESSAGE.NO_REQUIRED_DAEMON_P2' | lang }}</a>

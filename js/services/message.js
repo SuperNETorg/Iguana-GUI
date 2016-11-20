@@ -8,7 +8,6 @@ angular.module('IguanaGUIApp')
     this.ngPrepMessageModal = function(message, color, messageType) {
       $rootScope.messageType = messageType; // TODO: rewrite
       $rootScope.message = message;
-      $rootScope.messageColor = color;
 
       return $uibModal.open({
         animation: true,
@@ -18,13 +17,13 @@ angular.module('IguanaGUIApp')
         ariaDescribedBy: 'modal-body',
         scope: $rootScope,
         controller: 'messageController',
-        windowClass: 'iguana-modal message-container',
+        windowClass: 'iguana-modal message-container msg-' + color,
         templateUrl: 'partials/message-modal.html'
       });
     };
 
     this.ngPrepMessageNoDaemonModal = function() {
-      this.ngPrepMessageModal(null, null, 'noDaemon');
+      this.ngPrepMessageModal(null, 'red', 'noDaemon');
     };
   }
 ]);

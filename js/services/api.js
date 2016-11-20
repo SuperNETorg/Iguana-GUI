@@ -86,7 +86,7 @@ angular.module('IguanaGUIApp')
           function(response) {
           // non-iguana env
           if (dev.isDev) {
-            if (dev.sessions) { // dev only
+            /*if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
                 if (navigator.userAgent.indexOf(key) > -1) {
                   $storage['isIguana'] = dev.sessions[key];
@@ -98,7 +98,7 @@ angular.module('IguanaGUIApp')
                   }
                 }
               }
-            }
+            }*/
 
             if (dev.showConsoleMessages) {
               if (!$storage['isIguana']) {

@@ -32,7 +32,7 @@
     box-shadow: 0 0 20px 0 rgb(222, 165, 171);
   }
   .msgbox-header {
-    padding: 15px;
+    padding: 16px 15px 14px 15px
   }
 }
 #messageModal .modal-content,
@@ -43,25 +43,34 @@
 .iguana-modal.message-container.modal:before {
   vertical-align: top;
 }
-.iguana-modal.message-container .msg-blue.msgbox-header,
-.iguana-modal.message-container .msg-blue.msgbox-content {
+.iguana-modal.message-container.msg-blue .msgbox-header,
+.iguana-modal.message-container.msg-blue .msgbox-content {
   background: -webkit-radial-gradient(top, rgba(0, 133, 255, 0.7), rgba(0, 132, 255, 1));
   background: -o-radial-gradient(right, rgba(0, 133, 255, 0.7), rgba(0, 132, 255, 1)); /* For Opera 11.1 to 12.0 */
   background: -moz-radial-gradient(right, rgba(0, 133, 255, 0.7), rgba(0, 132, 255, 1)); /* For Firefox 3.6 to 15 */
   background: radial-gradient(to top, rgba(0, 133, 255, 0.7), rgba(0, 132, 255, 1)); /* Standard syntax (must be last) */
-  box-shadow: 0 0 20px 0 rgba(0, 132, 255, 1);
+  box-shadow: 0 0 20px 0 rgba(0, 132, 255, 0.3);
 }
-.iguana-modal.message-container .msg-green.msgbox-header,
-.iguana-modal.message-container .msg-green.msgbox-content {
+.iguana-modal.message-container.msg-blue .modal-content {
+  box-shadow: 0 0 20px 0 rgba(0, 132, 255, 0.3);
+}
+.iguana-modal.message-container.msg-green .msgbox-header,
+.iguana-modal.message-container.msg-green .msgbox-content {
   background: -webkit-radial-gradient(top, rgba(8, 186, 89, 0.7), rgba(8, 185, 89, 1));
   background: -o-radial-gradient(right, rgba(8, 186, 89, 0.7), rgba(8, 185, 89, 1)); /* For Opera 11.1 to 12.0 */
   background: -moz-radial-gradient(right, rgba(8, 186, 89, 0.7), rgba(8, 185, 89, 1)); /* For Firefox 3.6 to 15 */
   background: radial-gradient(to top, rgba(8, 186, 89, 0.7), rgba(8, 185, 89, 1)); /* Standard syntax (must be last) */
 }
-.iguana-modal.message-container .msg-red.msgbox-header,
-.iguana-modal.message-container .msg-red.msgbox-content {
+.iguana-modal.message-container.msg-green .modal-content {
+  box-shadow: 0 0 20px 0 rgba(8, 185, 89, 0.3);
+}
+.iguana-modal.message-container.msg-red .msgbox-header,
+.iguana-modal.message-container.msg-red .msgbox-content {
   background: -webkit-radial-gradient(top, rgba(255, 1, 71, 0.7), rgba(255, 0, 71, 1));
   background: -o-radial-gradient(right, rgba(255, 1, 71, 0.7), rgba(255, 0, 71, 1)); /* For Opera 11.1 to 12.0 */
   background: -moz-radial-gradient(right, rgba(255, 1, 71, 0.7), rgba(255, 0, 71, 1)); /* For Firefox 3.6 to 15 */
   background: radial-gradient(to top, rgba(255, 1, 71, 0.7), rgba(255, 0, 71, 1)); /* Standard syntax (must be last) */
+}
+.iguana-modal.message-container.msg-red .modal-content {
+  box-shadow: 0 0 20px 0 rgba(255, 0, 71, 0.3);
 }

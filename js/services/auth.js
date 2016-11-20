@@ -58,7 +58,7 @@ angular.module('IguanaGUIApp')
 
           if (!addCoinOnly) {
             $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
-            .then(function(ddd) {
+            .then(function() {
               return walletLogin();
             });
           } else {
@@ -72,7 +72,6 @@ angular.module('IguanaGUIApp')
       }
 
       function inguanaLogin() {
-        // var defer = $q.defer();
         var message = $message.ngPrepMessageModal(
           self.addedCoinsOutput + ' ' +
           $filter('lang')('MESSAGE.COIN_ADD_P1') +
@@ -145,9 +144,12 @@ angular.module('IguanaGUIApp')
     this.logout = function () { // TODO: move to auth service
       if ($storage['isIguana']) {
         $api.walletLock();
+
         for (var key in supportedCoinsList) {
-          $storage['iguana-' + key + '-passphrase'].logged = 'no';
+          if ($storage['iguana-' + key + '-passphrase'])
+            $storage['iguana-' + key + '-passphrase'].logged = 'no';
         }
+
         $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
         $state.go('login');
       } else {
