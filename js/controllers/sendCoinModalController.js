@@ -59,7 +59,7 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'sendCoinPassphraseModalController',
-            template: '<div ng-include="\'partials/send-coin-passphrase.html\'"></div>',
+            templateUrl: 'partials/send-coin-passphrase.html',
             appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
             resolve: {
               receivedObject: function () {

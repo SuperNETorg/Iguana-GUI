@@ -24,7 +24,10 @@ angular.module('IguanaGUIApp')
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+        coinBalances = [],
+        _sideBarCoins = {},
+        coinsSelectedByUser = [];
 
     $scope.util = util;
     $scope.$state = $state;
@@ -47,10 +50,6 @@ angular.module('IguanaGUIApp')
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
 
-    var coinBalances = [],
-        _sideBarCoins = {},
-        coinsSelectedByUser = [];
-
     $rootScope.$on('coinsInfo', function($ev, coins) {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
@@ -65,18 +64,16 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
 
-      //$scope.availableCoins = [];
-
     $scope.openAddCoinModal = function() {
       var modalInstance = $uibModal.open({
         animation: true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         controller: 'addCoinModalController',
-        template: '<div ng-include="\'partials/add-coin.html\'"></div>',
+        templateUrl: 'partials/add-coin.html',
         appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
         resolve: {
-          receivedObject: function () {
+          receivedObject: function() {
             return {
               receivedObject: $scope.receivedObject
             };
@@ -113,10 +110,10 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'addCoinLoginModalController',
-            template: '<div ng-include="\'partials/add-coin-login.html\'"></div>',
+            template: 'partials/add-coin-login.html',
             appendTo: angular.element(document.querySelector('.add-coin-login-container')),
             resolve: {
-              receivedObject: function () {
+              receivedObject: function() {
                 return $scope.receivedObject;
               }
             }
@@ -133,31 +130,31 @@ angular.module('IguanaGUIApp')
     // receive coin updated logic
     $scope.$receiveCoinInstance = {};
 
-    $scope.openReceiveCoinModal = function () {
+    $scope.openReceiveCoinModal = function() {
       var receiveCoinInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'receiveCoinModalController',
-            template: '<div ng-include="\'partials/receive-coin.html\'"></div>',
+            templateUrl: 'partials/receive-coin.html',
             appendTo: angular.element(document.querySelector('.receive-coin-modal-container')),
           });
     };
 
-    $scope.timeAgo = function (element) {
+    $scope.timeAgo = function(element) {
       $datetime.timeAgo(element);
     };
 
     // send coin updated logic
     $scope.$sendCoinInstance = {};
 
-    $scope.openSendCoinModal = function () {
+    $scope.openSendCoinModal = function() {
       var sendCoinInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'sendCoinModalController',
-            template: '<div ng-include="\'partials/send-coin.html\'"></div>',
+            templateUrl: 'partials/send-coin.html',
             appendTo: angular.element(document.querySelector('.send-coin-modal-container')),
           });
     };
@@ -248,6 +245,7 @@ angular.module('IguanaGUIApp')
             return _sideBarCoins[key];
           });
         }
+
         util.applyDashboardResizeFix($scope.sideBarCoins);
 
         $api.getBalance(defaultAccount, coinsSelectedByUser[i])
