@@ -202,7 +202,7 @@ angular.module('IguanaGUIApp')
               // TODO: show error
             });
           }, function(reason) {
-            $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
             // revert pay fee
             $api.setTxFee($scope.activeCoin, coinsInfo[$scope.activeCoin].relayFee || 0.00001)
             .then(function(response) {
@@ -213,7 +213,7 @@ angular.module('IguanaGUIApp')
             });
           });
         }, function(reason) {
-          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
           console.log('request failed: ' + reason);
         });
       } else {
@@ -223,7 +223,7 @@ angular.module('IguanaGUIApp')
             $scope.sendCoin.success = true;
           }
         }, function(reason) {
-          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red', true);
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
           console.log('request failed: ' + reason);
         });
       }

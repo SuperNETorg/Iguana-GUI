@@ -37,23 +37,6 @@ angular.module('IguanaGUIApp')
       }, function(reason) {
         console.log('request failed: ' + reason);
       });
-
-      function walletLoginThen(walletLogin) {
-        if (walletLogin === -14 || walletLogin === false) {
-          $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.WRONG_PASSPHRASE'),
-            'red',
-            true);
-        } else if (walletLogin === -15) {
-          $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
-            'red',
-            true
-          );
-        } else {
-          $uibModalInstance.close(true);
-        }
-      }
     };
 
     $scope.close = function() {

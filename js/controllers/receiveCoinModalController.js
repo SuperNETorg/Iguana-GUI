@@ -68,10 +68,10 @@ angular.module('IguanaGUIApp')
       temp[0].select();
 
       try {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue');
         document.execCommand('copy');
       } catch(err) {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red', true);
+        $message.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red');
       }
 
       temp.remove();

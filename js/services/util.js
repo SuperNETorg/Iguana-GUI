@@ -18,6 +18,7 @@ angular.module('IguanaGUIApp')
   function($storage, $uibModal, $rootScope, clipboard,
            $timeout, $interval, $http, $q, $document, $state, $filter,
            $message, $localStorage) {
+
     var self = this;
 
     this.isIguana = $storage['isIguana'];
@@ -52,12 +53,11 @@ angular.module('IguanaGUIApp')
           clipboard.copyText(element.html());
           $message.ngPrepMessageModal( // TODO
             elementDisplayName + ' ' + $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html(),
-            'blue',
-            true
+            'blue'
           );
         } catch (e) {
           this.isExecCopyFailed = true;
-          this.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red', true);
+          this.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED'), 'red');
         }
       }
     };
@@ -82,22 +82,26 @@ angular.module('IguanaGUIApp')
         return false;
     };
 
-    this.initTopNavBar = function() {
+    this.initTopNavBar = function() { // TODO: switch to jqlite
       if ($(window).width() < 768) {
         var topMenu = $('#top-menu'),
             btnLeft = $('.nav-buttons .nav-left', topMenu),
             btnRight = $('.nav-buttons .nav-right', topMenu),
-            items = $('.item', topMenu), itemsLength = 0, item;
+            items = $('.item', topMenu),
+            itemsLength = 0,
+            item;
 
         btnLeft.on('click swipeleft', function() {
           if ($(window).width() < $('.top-menu', topMenu).width()) {
             itemsLength = $('.top-menu', topMenu).width();
+
             for (var i = items.length - 1; 0 <= i; i--) {
               item = $(items[i]);
               itemsLength -= $(items[i]).width();
+
               if ($(items[i]).offset().left + $(items[i]).width() < $('.top-menu', topMenu).width() && itemsLength > $(items[i]).width()) {
-                item.closest('.navbar-nav').animate({'margin-left':
-                parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width()}, "slow");
+                item.closest('.navbar-nav').animate({ 'margin-left':
+                parseFloat(item.closest('.navbar-nav').css('margin-left')) + $(items[i]).width() }, 'slow');
                 itemsLength = 0;
                 break;
               } else {
@@ -111,9 +115,10 @@ angular.module('IguanaGUIApp')
             for (var i = 0; items.length > i; i++) {
               item = $(items[i]);
               itemsLength += $(items[i]).offset().left;
+
               if ($(items[i]).offset().left < topMenu.width() && itemsLength > topMenu.width()) {
-                item.closest('.navbar-nav').animate({'margin-left':
-                  (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width())}, "slow");
+                item.closest('.navbar-nav').animate({ 'margin-left':
+                  (parseFloat(item.closest('.navbar-nav').css('margin-left')) - $(items[i]).width()) }, 'slow');
                 itemsLength = 0;
                 break;
               }
@@ -123,7 +128,7 @@ angular.module('IguanaGUIApp')
     };
 
     // not the best solution but it works
-    this.applyDashboardResizeFix = function(coins) {
+    this.applyDashboardResizeFix = function(coins) { // TODO: switch to jqlite
       var mainContent = $('.main-content'),
           txUnit = $('.transactions-unit');
 
