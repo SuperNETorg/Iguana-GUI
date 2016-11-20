@@ -5,7 +5,7 @@
     <div class="balance-block unselectable">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
-        <span class="value">{{ (totalBalance || 0) | decimalPlacesFormat:'currency' }}</span>
+        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat:'currency') : 0 }}</span>
         <span class="currency">{{ currency }}</span>
       </div>
     </div>
@@ -22,8 +22,8 @@
                 <div class="name">{{ item.name }}</div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }">
-                <div class="coin-value"><span class="val">{{ item.coinValue | decimalPlacesFormat:'coin' }}</span> {{ item.coinIdUc }}</div>
-                <div class="currency-value"><span class="val">{{ item.currencyValue | decimalPlacesFormat:'currency' }}</span> {{ item.currencyName }}</div>
+                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat:'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
+                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat:'currency') : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
           </div>
@@ -36,11 +36,11 @@
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>
           <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ (txUnit.activeCoinBalance || 0) | decimalPlacesFormat:'coin' }}</span>
+            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat:'coin') : 0 }}</span>
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
           </div>
           <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ (txUnit.activeCoinBalanceCurrency || 0) | decimalPlacesFormat:'currency' }}</span>
+            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat:'currency') : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
           <div class="action-buttons unselectable">
@@ -71,7 +71,7 @@
               <div class="hash">{{ item.hash }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
               <div class="timestamp two-lines unselectable time-ago"
-                ng-init="timeAgo('.' + item.txId + ' .time-ago')">
+                ng-init="item.txId ? timeAgo('.' + item.txId + ' .time-ago') : null">
                 <div class="timestamp-date time-ago-date">{{ item.timestampDate }}</div>
                 <div class="timestamp-time time-ago-time">{{ item.timestampTime }}</div>
               </div>
