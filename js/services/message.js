@@ -3,21 +3,28 @@
 angular.module('IguanaGUIApp')
 .service('$message', [
   '$uibModal',
-  function ($uibModal) {
-    this.ngPrepMessageModal = function(message, color) {
+  '$rootScope',
+  function ($uibModal, $rootScope) {
+    this.ngPrepMessageModal = function(message, color, messageType) {
+      $rootScope.messageType = messageType; // TODO: rewrite
+      $rootScope.message = message;
+      $rootScope.messageColor = color;
+
       return $uibModal.open({
         animation: true,
+        backdrop: messageType ? false : true,
+        keyboard : messageType ? false : true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
-        windowClass: 'iguana-modal message-container msg-' + color,
-        template: '<div class="modal-header msgbox-header">' +
-                    '<div class="msg-body" data-dismiss="modal">' + message + '</div>' +
-                  '</div>',
-        resolve: {
-          items: function () {
-          }
-        }
+        scope: $rootScope,
+        controller: 'messageController',
+        windowClass: 'iguana-modal message-container',
+        templateUrl: 'partials/message-modal.html'
       });
+    };
+
+    this.ngPrepMessageNoDaemonModal = function() {
+      this.ngPrepMessageModal(null, null, 'noDaemon');
     };
   }
 ]);

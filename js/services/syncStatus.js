@@ -2,29 +2,9 @@
 
 angular.module('IguanaGUIApp')
 .service('$syncStatus', [
-  '$message',
   '$filter',
   '$state',
-  function ($message, $filter, $state) {
-    this.prepNoDaemonModal = function() { // TODO: move portpoll service
-      $message.ngPrepMessageModal($filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P1') +
-        ' <a onclick="this.prepRequirementsModal()" class="cursor-pointer">' +
-          $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P2') +
-        '</a> ' +
-        $filter('lang')('MESSAGE.NO_REQUIRED_DAEMON_P3') +
-        ($state.current.name !== 'login' &&
-          $state.current.name !== 'signup' ?
-        '<br/><br/><a onclick=\"this.logout()\">' + $filter('lang')('DASHBOARD.LOGOUT') + '</a>' : ''),
-        'red', true);
-    };
-
-    this.prepRequirementsModal = function() { // TODO: move portpoll service
-      $message.ngPrepMessageModal($filter('lang')('MESSAGE.MINIMUM_DAEMON_CONF'), 'blue', true);
-
-      // "No required daemon is running" message always stays active on top of any ui
-      //  this ensures that users won't interact with any elements until connectivity problems are resolved
-    };
-
+  function ($filter, $state) {
     this.setPortPollResponse = function() {
       var coinsInfoJSON = [],
           result = false;
@@ -70,7 +50,7 @@ angular.module('IguanaGUIApp')
           body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
           $interval(function() {
             if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
-            body.css({ 'padding-bottom':debugSyncInfo.outerHeight() * 1.5 });
+            body.css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
           }, 1000);
         }
       }
