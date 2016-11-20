@@ -118,7 +118,7 @@ angular.module('IguanaGUIApp')
             $state.go('login');
           }
         }, function(response) {
-          if (response =-= -15) {
+          if (response === -15) {
             $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red');
 
             if ($state.current.name === 'dashboard') {
