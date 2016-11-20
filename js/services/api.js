@@ -93,7 +93,7 @@ angular.module('IguanaGUIApp')
 
                   if (dev.sessions[key]){
                     $timeout(function () {
-                      $syncStatus.prepNoDaemonModal();
+                      $message.ngPrepMessageNoDaemonModal();
                     }, 300);
                   }
                 }
@@ -467,9 +467,12 @@ angular.module('IguanaGUIApp')
         if (this.coinsInfo[key].connection === true) totalCoinsRunning++;
       }
 
-      if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
+      /*if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
         tempOutOfSync.html($filter('lang')('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
         tempOutOfSync.removeClass('hidden');
+      }*/
+      if (totalCoinsRunning === 0) {
+        $message.ngPrepMessageNoDaemonModal();
       }
 
       // out of sync message
