@@ -11,7 +11,10 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   'receivedObject',
   '$filter',
-  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter) {
+  'vars',
+  '$rootScope',
+  '$auth',
+  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter, vars, $rootScope, $auth) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -26,72 +29,64 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
 
-    $scope.openAddCoinModal = function () {
-      var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            controller: 'addCoinModalController',
-            template: '<div ng-include="\'partials/add-coin.html\'"></div>',
-            appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
-            resolve: {
-              receivedObject: function () {
-                return $scope.receivedObject;
-              }
-            }
-          });
-      modalInstance.result.then(onDone);
+    $storage['iguana-login-active-coin'] = [];
+    $storage['iguana-active-coin'] = {};
 
-      function onDone(receivedObject) {
-        var coinId,
-            availableCoin;
+    if (!vars.coinsInfo) {
+      $rootScope.$on('coinsInfo', onInit);
+    } else {
+      onInit(null, vars.coinsInfo);
+    }
 
-        if (receivedObject.length > 1) $scope.passphrase = receivedObject; // dev
-        $scope.coinsSelectedToAdd = [];
-        $scope.receivedObject = $storage['iguana-login-active-coin'];
+    function onInit() {
+      $scope.availableCoins = [];
 
-        for (var i = 0; $scope.receivedObject.length > i; i++) {
-          coinId = $scope.receivedObject[i];
+      $scope.openAddCoinModal = function() {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'addCoinModalController',
+          template: '<div ng-include="\'partials/add-coin.html\'"></div>',
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
+          resolve: {
+            receivedObject: function () {
+              return {
+                receivedObject: $scope.receivedObject
+              };
+            },
+          }
+        });
 
-          for (var id in $scope.availableCoins) {
-            availableCoin = $scope.availableCoins[id];
+        modalInstance.result.then(resultPromise, resultPromise);
 
-            if (availableCoin.coinId == coinId) {
-              $scope.coinsSelectedToAdd.push(availableCoin);
+        function resultPromise(data) {
+          if (data && data !== 'backdrop click') {
+            $scope.availableCoins = data[0];
+            $scope.coinsSelectedToAdd = data[1];
+            $scope.receivedObject = data[2];
+            console.log($storage);
+
+            if (data[2].length) {
+              $scope.passphrase = $storage['iguana-login-active-coin'][0][data[2][0]];
             }
           }
         }
-      }
-    };
+      };
 
-    $scope.login = function () {
-      var coinsSelectedToAdd = util.reindexAssocArray($scope.coinsSelectedToAdd);
-
-      $api.walletLock(coinsSelectedToAdd[0].coinId);
-      $api.walletLogin(
-        $scope.passphrase,
-        settings.defaultSessionLifetime,
-        coinsSelectedToAdd[0].coinId,
-        walletLoginThen
-      );
-
-      function walletLoginThen(walletLogin) {
-        if (walletLogin === -14 || walletLogin === false) {
-          util.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.WRONG_PASSPHRASE'),
-            'red',
-            true);
-        } else if (walletLogin === -15) {
-          util.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
-            'red',
-            true
-          );
-        } else {
-          $uibModalInstance.close(coinsSelectedToAdd[0].coinId);
-        }
-      }
-    };
+      $scope.login = function() {
+        $auth.login(
+          $scope.receivedObject,
+          $scope.coinsSelectedToAdd,
+          $scope.passphrase
+        )
+        .then(function(response) {
+          $uibModalInstance.close(true);
+        }, function(reason) {
+          console.log('request failed: ' + reason);
+        });
+      };
+    }
 
     $scope.close = function() {
       $uibModalInstance.dismiss();

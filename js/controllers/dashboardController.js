@@ -65,6 +65,48 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
 
+      //$scope.availableCoins = [];
+
+    $scope.openAddCoinModal = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        controller: 'addCoinModalController',
+        template: '<div ng-include="\'partials/add-coin.html\'"></div>',
+        appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
+        resolve: {
+          receivedObject: function () {
+            return {
+              receivedObject: $scope.receivedObject
+            };
+          },
+        }
+      });
+
+      modalInstance.result.then(resultPromise, resultPromise);
+
+      function resultPromise(data) {
+        if (data && data !== 'backdrop click') {
+          $scope.availableCoins = data[0];
+          $scope.coinsSelectedToAdd = data[1];
+          $scope.receivedObject = data[2];
+
+          $auth.login(
+            $scope.receivedObject,
+            $scope.coinsSelectedToAdd,
+            null,
+            true
+          )
+          .then(function(response) {
+            constructAccountCoinRepeater();
+          }, function(reason) {
+            console.log('request failed: ' + reason);
+          });
+        }
+      }
+    };
+
     $scope.openAddCoinLoginModal = function() {
       var modalInstance = $uibModal.open({
             animation: true,
@@ -82,8 +124,7 @@ angular.module('IguanaGUIApp')
       modalInstance.result.then(onDone);
 
       function onDone(receivedObject) {
-        if (receivedObject.length > 1) {
-          $storage['iguana-' + receivedObject + '-passphrase'] = { 'logged': 'yes' };
+        if (receivedObject) {
           constructAccountCoinRepeater(); // TODO: fix, not effecient
         }
       }
@@ -361,7 +402,7 @@ angular.module('IguanaGUIApp')
                 $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
                 $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
                 $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
-                $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false); // mobile only
+                if (txAmount) $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false); // mobile only
                 $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
                                                                    transactionDetails.timestamp ||
                                                                    transactionDetails.time;
