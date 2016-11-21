@@ -4,15 +4,20 @@
   "description": "Iguana GUI",
   "main": "gulpfile.js",
   "dependencies": {
+    "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.1",
     "gulp-inject-partials": "^1.0.2",
+    "gulp-replace": "^0.5.4",
     "gulp-rimraf": "^0.2.1",
     "gulp-sass": "^2.3.2",
-    "gulp-util": "^3.0.7"
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
