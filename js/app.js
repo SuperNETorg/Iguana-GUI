@@ -1,5 +1,7 @@
 'use strict';
 
+if (!dev) var dev = ''; // prod
+
 angular.module('IguanaGUIApp.controllers', [
   'ngAnimate',
   'ngSanitize',
@@ -7,17 +9,6 @@ angular.module('IguanaGUIApp.controllers', [
   'ui.bootstrap'
 ])
 .value('vars', {})
-/*.service('helper', [
-  '$uibModal',
-  '$rootScope',
-  'clipboard',
-  '$timeout',
-  '$interval',
-  '$state',
-  '$localStorage',
-  'vars',
-  createHelpers
-])*/
 angular.module('IguanaGUIApp', [
   'ui.router',
   'ngSanitize',
