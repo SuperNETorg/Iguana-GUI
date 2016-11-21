@@ -290,7 +290,9 @@ angular.module('IguanaGUIApp')
             console.log('port poll done ' + _index);
           }
 
-          this.checkBackEndConnectionStatus();
+          if (!$storage['isIguana']) {
+            this.checkBackEndConnectionStatus();
+          }
 
           if (dev.isDev && dev.showSyncDebug && debugSyncInfo.text()) {// debug info
             angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });

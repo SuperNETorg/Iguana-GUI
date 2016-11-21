@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     injectPartials = require('gulp-inject-partials'),
     del = require('del'),
-    rimraf = require('gulp-rimraf');
+    rimraf = require('gulp-rimraf'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
     concat = require('gulp-concat');
@@ -60,6 +60,7 @@ var js = [
   'js/controllers/settingsController.js',
   'js/controllers/topMenuController.js',
   <!-- modal -->
+  'js/controllers/messageController.js',
   'js/controllers/addCoinModalController.js',
   'js/controllers/addCoinLoginModalController.js',
   'js/controllers/receiveCoinModalController.js',
