@@ -39,7 +39,7 @@ angular.module('IguanaGUIApp')
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {
-      onInit(null, vars.coinsInfo);
+      onInit();
     }
 
     function onInit() {
@@ -85,5 +85,10 @@ angular.module('IguanaGUIApp')
         );
       };
     }
+
+    $scope.$on('$destroy', function () {
+      $storage['iguana-login-active-coin'] = [];
+      $storage['iguana-active-coin'] = {};
+    })
   }
 ]);

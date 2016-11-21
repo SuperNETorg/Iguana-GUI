@@ -443,7 +443,7 @@ angular.module('IguanaGUIApp')
             }
           }
           if (dev.showConsoleMessages && dev.isDev) {
-            console.log('coind response: ' + response.data);
+            console.log('coind response: ', response.data);
           }
         }
 
