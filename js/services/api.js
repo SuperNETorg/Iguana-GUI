@@ -56,8 +56,7 @@ angular.module('IguanaGUIApp')
           cache: false,
           timeout: 500
         })
-        .then(
-          function(response) {
+        .then(function(response) {
           if (dev.isDev) {
             if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
@@ -82,23 +81,22 @@ angular.module('IguanaGUIApp')
           this.testCoinPorts().then(function (coins) {
             deferred.resolve(coins);
           });
-        }.bind(this),
-          function(response) {
+        }.bind(this), function(response) {
           // non-iguana env
           if (dev.isDev) {
-            /*if (dev.sessions) { // dev only
+            if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
                 if (navigator.userAgent.indexOf(key) > -1) {
                   $storage['isIguana'] = dev.sessions[key];
 
-                  if (dev.sessions[key]){
+                  /*if (dev.sessions[key]){
                     $timeout(function () {
                       $message.ngPrepMessageNoDaemonModal();
                     }, 300);
-                  }
+                  }*/
                 }
               }
-            }*/
+            }
 
             if (dev.showConsoleMessages) {
               if (!$storage['isIguana']) {
@@ -108,7 +106,7 @@ angular.module('IguanaGUIApp')
               }
             }
           } else {
-            $storage['isIguana'] = true;
+            $storage['isIguana'] = false;
           }
 
           this.errorHandler(response);
