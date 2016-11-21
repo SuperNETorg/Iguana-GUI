@@ -30,7 +30,7 @@ angular.module('IguanaGUIApp')
     $scope.verifyPass = verifyPass;
     $scope.coinsSelectedToAdd = [];
     $scope.receivedObject = [] ;
-    $scope.passphraseCount = $storage['isIguana'] == true ? 24 : 12;
+    $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
     $storage['iguana-login-active-coin'] = [];
 
     if (!vars.coinsInfo) {
@@ -136,5 +136,9 @@ angular.module('IguanaGUIApp')
     function verifyPass() {
       $scope.buttonCreateAccount = false;
     }
+
+    $scope.$on('$destroy', function iVeBeenDismissed() {
+      $storage['passphrase'] = '';
+    })
   }
 ]);
