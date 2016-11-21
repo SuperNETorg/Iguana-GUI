@@ -39,7 +39,8 @@ angular.module('IguanaGUIApp')
         Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
         return true;
       } else {
-        this.logout();
+        //todo change logout
+        // this.logout();
         return false;
       }
     };
