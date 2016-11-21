@@ -30,17 +30,43 @@ angular.module('IguanaGUIApp')
     this.failedCoinsOutput = '';
     this.passphraseModel = '';
 
-    this.checkSession = function() {
-      var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
-          secondsElapsedSinceLastAuth =
-            Number(currentEpochTime) - Number(($storage['iguana-auth'] ? $storage['iguana-auth'].timestamp : 1000) / 1000);
+    this.checkSession = function(returnVal) {
+      var inAuth = (self.toState.name.indexOf('login') != -1 ||
+                    self.toState.name.indexOf('signup') != -1);
+      var inDashboard = (self.toState.name.indexOf('dashboard') != -1);
 
-      if (Math.floor(secondsElapsedSinceLastAuth) <
-        Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana : settings.defaultSessionLifetimeCoind)) {
+      if (returnVal) {
+        return this._userIdentify();
+      } else {
+        if (!$storage['iguana-auth']) {
+          self.logout();
+        } else {
+          if (!self._userIdentify()) {
+            if (!inAuth) {
+              $state.go('login');
+            }
+          } else {
+            if (!inDashboard) {
+              $state.go('dashboard.main');
+            }
+          }
+        }
+      }
+    };
+
+    this._userIdentify = function () {
+      var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
+        secondsElapsedSinceLastAuth =
+          Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
+              $storage['iguana-auth'].timestamp : 1000) / 1000);
+
+      if (
+        Math.floor(secondsElapsedSinceLastAuth) <
+        Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana :
+          settings.defaultSessionLifetimeCoind)
+      ) {
         return true;
       } else {
-        //todo change logout
-        // this.logout();
         return false;
       }
     };
@@ -59,9 +85,7 @@ angular.module('IguanaGUIApp')
 
           if (!addCoinOnly) {
             $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
-            .then(function() {
-              return walletLogin();
-            });
+                .then(walletLogin);
           } else {
             deferred.resolve(data);
           }
@@ -101,9 +125,8 @@ angular.module('IguanaGUIApp')
       function walletLogin() {
         var deferred = $q.defer();
 
-        $api.walletLock(coinsSelectedToAdd[0].coinId).then(function(dd) {
-          $api.walletLogin(passphraseModel,
-            settings.defaultSessionLifetime,
+        $api.walletLock(coinsSelectedToAdd[0].coinId).then(function() {
+          $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
             coinsSelectedToAdd[0].coinId).then(onResolve, onReject)
         });
 
@@ -194,27 +217,6 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    function _checkSession() {
-      this.checkSession();
-    }
-
-    // TODO: not handled all states!!!
-    function checkUserIdentify(toState) {
-      if (!$storage['iguana-auth']) {
-        self.logout();
-      } else {
-        if (!_checkSession) {
-          if (toState.name !== 'login') {
-            $state.go('login');
-          }
-        } else {
-          if (toState.name !== 'dashboard') {
-            $state.go('dashboard');
-          }
-        }
-      }
-    }
-
     function checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly) {
       var defer = $q.defer();
 
@@ -260,16 +262,5 @@ angular.module('IguanaGUIApp')
 
       return defer.promise;
     }
-
-    $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-      self.toState = toState;
-      self.toParams = toParams;
-      self.fromState = fromState;
-      self.fromParams = fromParams;
-
-      checkUserIdentify.apply(self, [toState, fromState]);
-    });
-
-    $rootScope.$broadcast('$auth', this.logout);
   }
 ]);

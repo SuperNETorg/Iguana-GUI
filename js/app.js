@@ -98,22 +98,18 @@ angular.module('IguanaGUIApp', [
     $state.go("login");
   });
 })
-.run(function($rootScope, $location, $state, util, $timeout, $api) {
-  // check session and route
-  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-    // TODO: find a better way
-  //   if (!util.checkSession() && toState.name !== 'signup.step1') {
-  //     $timeout(function() {
-  //       $state.go('login');
-  //     }, 0);
-  //   }
-  //   if (util.checkSession() && (toState.name === 'login' || toState.name === 'signup.step1')) {
-  //     event.preventDefault();
-  //     $timeout(function() {
-  //       $state.go('dashboard.main');
-  //     }, 0);
-  //   }
+.run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
+
+  $rootScope.$on("$stateChangeStart", function (event, toState, toParams,
+                                                fromState, fromParams) {
+    $auth.toState = toState;
+    $auth.toParams = toParams;
+    $auth.fromState = fromState;
+    $auth.fromParams = fromParams;
+    // check session and route
+    $timeout($auth.checkSession);
   });
+
   $api.testConnection().then(function (coins) {
     $rootScope.$broadcast('coinsInfo', coins);
   }); // switch with Api service once it's finished

@@ -91,7 +91,8 @@ angular.module('IguanaGUIApp')
         }
       });
 
-      if (!$storage['isIguana'] || ($storage['isIguana'] && $state.$current.url == '/signup')) {
+      if (!$storage['isIguana'] || ($storage['isIguana'] &&
+        $state.$current.url == '/signup')) {
         $scope.coinsSelectedToAdd = [];
         $storage['iguana-login-active-coin'] = [];
       }
