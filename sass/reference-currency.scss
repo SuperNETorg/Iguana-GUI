@@ -3,6 +3,8 @@
  *
  */
 
+@import 'dev.scss';
+
 .reference-currency-main {
   padding-bottom: 40px;
 
@@ -68,7 +70,7 @@
       }
       .country-li {
         background-color: #fff;
-        border-radius: 6px;
+        border-radius: $border-radius-small;
         list-style-type: none;
         text-align: center;
         max-width: 180px;

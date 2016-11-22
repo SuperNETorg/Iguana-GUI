@@ -3,6 +3,10 @@
  *
  */
 
+@import '../dev.scss';
+
+$coin-repeater-coin-name-color: #878892;
+
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
   display: block;
@@ -11,7 +15,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
 }
 .add-coin-create-wallet-form {
   .login-add-coin-selection {
-    pointer-events: none;
+    @include unclickable;
   }
   .create-account-form,
   .verify-passphrase-form {
@@ -42,31 +46,31 @@ body .add-coin-login-form .modal-add-coin-login-form,
     height: 34px;
     border: none;
     padding-left: 40px;
-    border-radius: 4px;
+    border-radius: $border-radius-smaller;
   }
   i.icon {
-    color: #C7CCD0;
+    color: $color-medium-gray;
     font-size: 1.2em;
     position: absolute;
     margin-top: 6px;
     margin-left: 7px;
   }
 }
-.quick-search .input.text::-webkit-input-placeholder {
+@mixin quick-search-placeholder {
   font-size: 1.1em;
   padding-top: 1px;
+}
+.quick-search .input.text::-webkit-input-placeholder {
+  @include quick-search-placeholder;
 }
 .quick-search .input.text:-moz-placeholder { /* Firefox 18- */
-  font-size: 1.1em;
-  padding-top: 1px;
+  @include quick-search-placeholder;
 }
 .quick-search .input.text::-moz-placeholder {  /* Firefox 19+ */
-  font-size: 1.1em;
-  padding-top: 1px;
+  @include quick-search-placeholder;
 }
 .quick-search .input.text:-ms-input-placeholder {
-  font-size: 1.1em;
-  padding-top: 1px;
+  @include quick-search-placeholder;
 }
 .supported-coins-repeater {
   max-height: 400px;
@@ -76,36 +80,35 @@ body .add-coin-login-form .modal-add-coin-login-form,
   position: relative;
 
   .coin {
-    cursor: hand;
-    cursor: pointer;
+    @include cursor-pointer;
     width: 11.5em;
     height: 9em;
     display: inline-block;
-    border-radius: 6px;
+    border-radius: $border-radius-small;
     border: 2px solid transparent;
-    background: #fff;
+    background: $color-white;
     margin: 8px;
     text-align: center;
     padding-top: 35px;
-    box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 3px 2px rgba-black(0.07);
     opacity: 1;
-    transition: opacity 0.25s;
+    transition: opacity $transition-length;
 
     .icon {
       font-size: 2em;
-      color: #fff;
+      color: $color-white;
       padding: 11px;
       border-radius: 50%;
     }
     .name {
       padding-top: 16px;
-      color: #878892;
+      color: $coin-repeater-coin-name-color;
       font-size: 1.05em;
     }
   }
   .coin.fade {
     opacity: 0 !important; /* override opacity set in js */
-    transition: opacity 0.25s;
+    transition: opacity $transition-length;
   }
   .coin.active {
     border: 2px solid rgb(255, 109, 54);
@@ -120,16 +123,16 @@ body .add-coin-login-form .modal-add-coin-login-form,
   !important is required to override svg's white bg
  */
 .col-orange {
-  background-color: #FE760D !important;
+  background-color: $color-add-coin-orange !important;
 }
 .col-breeze {
-  background-color: #1ABC9C !important;
+  background-color: $color-add-coin-breeze !important;
 }
 .col-yellow {
-  background-color: #F7D441 !important;
+  background-color: $color-add-coin-yellow !important;
 }
 .col-light-blue {
-  background-color: #73C7EF !important;
+  background-color: $color-add-coin-light-blue !important;
 }
 .add-new-coin-form {
   z-index: 5000;
@@ -145,27 +148,22 @@ body .add-coin-login-form .modal-add-coin-login-form,
     .supported-coins-repeater-container {
       position: relative;
     }
-    .supported-coins-repeater-container:after {
+    @mixin supported-coins-repeater-selector($vpos, $height, $gradient-type) {
       position: absolute;
       left: 0;
-      bottom: -1px;
+      #{$vpos}: -1px;
       width: 100%;
-      height: 20%;
-      content: "";
-      background: linear-gradient(to top, rgb(245, 248, 251) 20%, rgba(255,255,255, 0) 80% );
+      height: #{$height};
+      content: '';
+      background: linear-gradient(to #{gradient-type}top, rgb(245, 248, 251) 20%, rgba(255, 255, 255, 0) 80%);
       pointer-events: none;
       z-index: 1;
     }
+    .supported-coins-repeater-container:after {
+      @include supported-coins-repeater-selector(bottom, 20%, top);
+    }
     .supported-coins-repeater-container:before {
-      position: absolute;
-      left: 0;
-      top: -1px;
-      width: 100%;
-      height: 10%;
-      content: "";
-      background: linear-gradient(to bottom, rgb(245, 248, 251) 20%, rgba(255,255,255, 0) 80% );
-      pointer-events: none;
-      z-index: 100;
+      @include supported-coins-repeater-selector(top, 10%, bottom);
     }
   }
 }

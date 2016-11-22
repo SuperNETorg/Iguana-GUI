@@ -3,16 +3,18 @@
  *
  */
 
+@import '../dev.scss';
+
 .transactions-unit {
   position: relative;
-  border-radius: 4px;
+  border-radius: $border-radius-smaller;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 
   .top-bar {
     font-weight: 600;
     color: #fff;
     min-height: 150px;
-    border-radius: 4px 4px 0 0;
+    border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
 
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe640d+8,fe640d+26,fe4b0d+77,fc3600+100 */
@@ -48,7 +50,7 @@
       font-size: 1.1em;
       color: #FE450D;
       background: #fff;
-      border-radius: 4px;
+      border-radius: $border-radius-smaller;
       box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
       padding: 6px 35px 4px 35px;
       margin-bottom: 10px;
@@ -70,7 +72,7 @@
 .transactions-list {
   background: #fff;
   padding: 25px 2.5% 60px 2.5%;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 $border-radius-smaller $border-radius-smaller;
 
   .title {
     font-size: 1.3em;
@@ -91,7 +93,7 @@
     font-weight: 600;
     font-size: 1.2em;
     background: rgb(246, 250, 255);
-    border-radius: 4px;
+    border-radius: $border-radius-smaller;
     padding: 20px 3% 23px 3%;
     margin-bottom: 25px;
     transition: all 0.25s;
