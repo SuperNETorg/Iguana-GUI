@@ -18,6 +18,12 @@ html {
   position: absolute;
   @include proxima;
 }
+.unselectable {
+  @include unselectable;
+}
+.cursor-pointer {
+  @include cursor-pointer;
+}
 .orange-gradient,
 .btn.orange-gradient:focus {
   @include orange-gradient;
