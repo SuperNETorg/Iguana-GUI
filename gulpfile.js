@@ -100,7 +100,7 @@ function indexHTML() {
   return gulp.src('index.html')
              .pipe(replace('<!-- partial:insertJS --><!-- partial -->', buildMode === 'dev' ? '<!-- partial:jsIncludes.js --><!-- partial -->' : prodInsertJS))
              .pipe(replace('<style><!-- partial:insertCSS --><!-- partial --></style>',
-                            buildMode === 'dev' ? '<style>\n<!-- partial:' + paths.build[buildMode] + '/css/style.scss --><!-- partial -->\n</style>' : prodInsertCSS))
+                            buildMode === 'dev' ? '<style>\n<!-- partial:' + paths.build[buildMode] + '/css/style.scss --><!-- partial -->\n</style><link rel="stylesheet" href="css/responsive/auth.css"><link rel="stylesheet" href="css/responsive/dashboard.css">' : prodInsertCSS))
              .pipe(injectPartials({
                removeTags: true
              }))

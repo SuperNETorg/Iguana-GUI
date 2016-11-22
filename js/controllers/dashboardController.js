@@ -110,7 +110,7 @@ angular.module('IguanaGUIApp')
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             controller: 'addCoinLoginModalController',
-            template: 'partials/add-coin-login.html',
+            templateUrl: 'partials/add-coin-login.html',
             appendTo: angular.element(document.querySelector('.add-coin-login-container')),
             resolve: {
               receivedObject: function() {
