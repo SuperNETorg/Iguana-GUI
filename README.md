@@ -1,5 +1,6 @@
-#Iguana GUI
+Please see the Wiki at https://github.com/SuperNETorg/Iguana-GUI/wiki for more information.
 
+#Iguana GUI
 Iguana GUI can be used either with Iguana Core or with regular daemons like bitcoind, bitcoindarkd etc
 
 ##Dependencies in Iguana mode:##
