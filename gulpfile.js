@@ -2,6 +2,7 @@
  *  Iguana-GUI gulp build file
  *  Usage: gulp dev to build dev only verion
  *         gulp prod to build production version
+ *         gulp zip to build prod and compress it into latest.zip
  */
 
 // dependencies
@@ -74,8 +75,10 @@ function initJSIncludesArray() {
 function indexHTML() {
   return gulp.src('index.html')
              .pipe(replace('insertJS', buildMode === 'dev' ? 'jsIncludes.js' : 'jsIncludesProd.js'))
+             .pipe(replace('<!-- partial:insertCSS -->',
+                            buildMode === 'dev' ? '<!-- partial:' + paths.build[buildMode] + '/css/style.scss -->' : ''/*'<!-- partial:' + paths.build[buildMode] + '/css/style.scss -->'*/))
              .pipe(injectPartials({
-               removeTags: buildMode === 'dev' ? false : true
+               removeTags: true
              }))
              .pipe(gulp.dest(paths.build[buildMode]));
 }
@@ -101,9 +104,9 @@ function copyProdConfigurableJS() {
 
 function scss() {
   if (buildMode === 'dev') {
-    return gulp.src('sass/style.scss')
-               .pipe(sass().on('error', sass.logError))
-               .pipe(gulp.dest(paths.build[buildMode]));
+    return gulp.src(['sass/**/*.scss', '!sass/style.scss'])
+               .pipe(sass({ style: 'expanded' }).on('error', sass.logError))
+               .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp.src('sass/style.scss')
                .pipe(sass().on('error', sass.logError))
@@ -137,9 +140,30 @@ function compress() {
 }
 
 function copyFonts() {
-  return gulp.src(paths.fonts)
-             .pipe(gulp.dest(paths.build[buildMode] + '/fonts'));
+  if (buildMode === 'dev') {
+    return gulp.src(paths.fonts)
+               .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts'));
+  } else {
+    return gulp.src(paths.fonts)
+               .pipe(gulp.dest(paths.build[buildMode] + '/fonts'));
+  }
 }
+
+function copySVG() {
+  return gulp.src('fonts/svg/**/*')
+             .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg'));
+}
+
+gulp.task('devStyle', ['cleanIndex'], function() {
+  return gulp.src('sass/style.scss')
+             .pipe(replace('@import \'', '@import url(\'css/'))
+             .pipe(replace('\';', '.css\');'))
+             .pipe(gulp.dest(paths.build[buildMode] + '/css'));
+});
+
+gulp.task('indexDev', ['devStyle'], function() {
+  indexHTML();
+});
 
 gulp.task('index', ['cleanIndex'], function() {
   indexHTML();
@@ -162,7 +186,11 @@ gulp.task('compress', function() {
 });
 
 gulp.task('copyFonts', ['cleanFonts'], function() {
-  copyFonts();
+  if (buildMode === 'dev') {
+    return es.merge(copyFonts(), copySVG());
+  } else {
+    copyFonts();
+  }
 });
 
 gulp.task('cleanCSS', function() {
@@ -191,6 +219,12 @@ gulp.task('cleanAllProd', function() {
              .pipe(rimraf());
 });
 
+gulp.task('cleanAllDev', function() {
+  buildMode = 'dev';
+  return gulp.src(paths.build[buildMode], { read: false })
+             .pipe(rimraf());
+});
+
 gulp.task('default', function() {
   return gutil.log('Run gulp dev to build dev version or run gulp prod to build production version');
 });
@@ -201,9 +235,9 @@ gulp.task('watch:dev', function() {
   gulp.watch(paths.styles, ['scss']);
 });
 
-gulp.task('dev', function() {
+gulp.task('dev', ['cleanAllDev'], function() {
   buildMode = 'dev';
-  gulp.start('cleanCSS', 'index', 'copyFonts', 'copyJS', 'scss', 'watch:dev');
+  gulp.start('copyJS', 'scss', 'indexDev', 'copyFonts', 'watch:dev');
 });
 
 gulp.task('prod', ['cleanAllProd'], function () {
@@ -216,7 +250,13 @@ gulp.task('prod', ['cleanAllProd'], function () {
       _copyJS = copyJS(),
       _copyProdConfigurableJS = copyProdConfigurableJS();
 
-  return es.merge(_indexHTML, _copyFonts, _copyJS, _copyProdConfigurableJS, _css, _scss);
+  return es.merge(
+    _indexHTML,
+    _copyFonts,
+    _copyJS,
+    _copyProdConfigurableJS,
+    _css,
+    _scss);
 });
 
 gulp.task('zip', ['prod'], function() {
