@@ -43,7 +43,8 @@ var paths = {
       }
     };
 
-var buildMode;
+var buildMode,
+    buildModeModifier;
 
 function initJSIncludesArray() {
   var splitData,
@@ -73,10 +74,33 @@ function initJSIncludesArray() {
 }
 
 function indexHTML() {
+  var prodInsertCSS,
+      prodInsertJS;
+
+  if (buildModeModifier === 'compact') {
+    prodInsertJS = '<script type="text/javascript" src="js/settings.js"></script>' +
+                   '<script type="text/javascript" src="js/supported-coins-list.js"></script>' +
+                   '<script type="text/javascript">' +
+                     '<!-- partial:' + paths.build[buildMode] + '/all.js --><!-- partial -->' +
+                   '</script>';
+    prodInsertCSS = '<style>' +
+                      '<!-- partial:' + paths.build[buildMode] + '/style.css --><!-- partial -->' +
+                      '<!-- partial:' + paths.build[buildMode] + '/css/responsive/auth.css --><!-- partial -->' +
+                      '<!-- partial:' + paths.build[buildMode] + '/css/responsive/dashboard.css --><!-- partial -->' +
+                    '</style>';
+  } else {
+    prodInsertJS = '<script type="text/javascript" src="js/settings.js"></script>' +
+                   '<script type="text/javascript" src="js/supported-coins-list.js"></script>' +
+                   '<script type="text/javascript" src="all.js"></script>';
+    prodInsertCSS = '<link rel="stylesheet" href="style.css">\n' +
+                    '<link rel="stylesheet" href="css/responsive/auth.css">\n' +
+                    '<link rel="stylesheet" href="css/responsive/dashboard.css">\n';
+  }
+
   return gulp.src('index.html')
-             .pipe(replace('insertJS', buildMode === 'dev' ? 'jsIncludes.js' : 'jsIncludesProd.js'))
-             .pipe(replace('<!-- partial:insertCSS -->',
-                            buildMode === 'dev' ? '<!-- partial:' + paths.build[buildMode] + '/css/style.scss -->' : ''/*'<!-- partial:' + paths.build[buildMode] + '/css/style.scss -->'*/))
+             .pipe(replace('<!-- partial:insertJS --><!-- partial -->', buildMode === 'dev' ? '<!-- partial:jsIncludes.js --><!-- partial -->' : prodInsertJS))
+             .pipe(replace('<style><!-- partial:insertCSS --><!-- partial --></style>',
+                            buildMode === 'dev' ? '<style>\n<!-- partial:' + paths.build[buildMode] + '/css/style.scss --><!-- partial -->\n</style>' : prodInsertCSS))
              .pipe(injectPartials({
                removeTags: true
              }))
@@ -92,7 +116,9 @@ function copyJS() {
 
     return gulp.src(jsIncludesArray)
                .pipe(concat('all.js'))
-               .pipe(uglify({ mangle: false }))
+               .pipe(uglify({
+                 mangle: false
+               }))
                .pipe(gulp.dest(paths.build[buildMode]));
   }
 }
@@ -105,17 +131,20 @@ function copyProdConfigurableJS() {
 function scss() {
   if (buildMode === 'dev') {
     return gulp.src(['sass/**/*.scss', '!sass/style.scss'])
-               .pipe(sass({ style: 'expanded' }).on('error', sass.logError))
+               .pipe(sass({
+                 style: 'expanded'
+               }).on('error', sass.logError))
                .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp.src('sass/style.scss')
                .pipe(sass().on('error', sass.logError))
-               .pipe(cleanCSS({ debug: true }, function(details) {
-                  console.log(details.name + ' original size : ' + details.stats.originalSize);
-                  console.log(details.name + ' minified size: ' + details.stats.minifiedSize);
-                }))
+               .pipe(cleanCSS({
+                 debug: true
+               }, function(details) {
+                 console.log(details.name + ' original size : ' + details.stats.originalSize);
+                 console.log(details.name + ' minified size: ' + details.stats.minifiedSize);
+               }))
                .pipe(gulp.dest(paths.build[buildMode]));
-
   }
 }
 
@@ -125,7 +154,9 @@ function css() {
                .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp.src(paths.styles + '.css')
-               .pipe(cleanCSS({ debug: true }, function(details) {
+               .pipe(cleanCSS({
+                 debug: true
+               }, function(details) {
                  console.log(details.name + ' original size: ' + details.stats.originalSize);
                  console.log(details.name + ' minified size: ' + details.stats.minifiedSize);
                }))
@@ -194,34 +225,54 @@ gulp.task('copyFonts', ['cleanFonts'], function() {
 });
 
 gulp.task('cleanCSS', function() {
-  return gulp.src(paths.build[buildMode] + '/css/*', { read: false })
+  return gulp.src(paths.build[buildMode] + '/css/*', {
+               read: false
+             })
              .pipe(rimraf());
 });
 
 gulp.task('cleanJS', function() {
-  return gulp.src(paths.build[buildMode] + '/js/*', { read: false })
+  return gulp.src(paths.build[buildMode] + '/js/*', {
+               read: false
+             })
              .pipe(rimraf());
 });
 
 gulp.task('cleanFonts', function() {
-  return gulp.src(paths.build[buildMode] + '/fonts/*', { read: false })
+  return gulp.src(paths.build[buildMode] + '/fonts/*', {
+               read: false
+             })
              .pipe(rimraf());
 });
 
 gulp.task('cleanIndex', function() {
-  return gulp.src(paths.build[buildMode] + '/index.html', { read: false })
+  return gulp.src(paths.build[buildMode] + '/index.html', {
+               read: false
+             })
              .pipe(rimraf());
 });
 
 gulp.task('cleanAllProd', function() {
   buildMode = 'prod';
-  return gulp.src(paths.build[buildMode], { read: false })
+  return gulp.src(paths.build[buildMode], {
+               read: false
+             })
+             .pipe(rimraf());
+});
+
+gulp.task('cleanProdCompact', ['prod-compact-index'], function() {
+  buildMode = 'prod';
+  return gulp.src([paths.build[buildMode] + '/css', paths.build[buildMode] + '/all.js', paths.build[buildMode] + '/style.css'], {
+               read: false
+             })
              .pipe(rimraf());
 });
 
 gulp.task('cleanAllDev', function() {
   buildMode = 'dev';
-  return gulp.src(paths.build[buildMode], { read: false })
+  return gulp.src(paths.build[buildMode], {
+               read: false
+             })
              .pipe(rimraf());
 });
 
@@ -240,26 +291,38 @@ gulp.task('dev', ['cleanAllDev'], function() {
   gulp.start('copyJS', 'scss', 'indexDev', 'copyFonts', 'watch:dev');
 });
 
-gulp.task('prod', ['cleanAllProd'], function () {
+gulp.task('prodAssets', ['cleanAllProd'], function () {
   buildMode = 'prod';
 
-  var _indexHTML = indexHTML(),
-      _copyFonts = copyFonts(),
+  var _copyFonts = copyFonts(),
       _css = css(),
       _scss = scss(),
       _copyJS = copyJS(),
       _copyProdConfigurableJS = copyProdConfigurableJS();
 
   return es.merge(
-    _indexHTML,
     _copyFonts,
     _copyJS,
     _copyProdConfigurableJS,
     _css,
-    _scss);
+    _scss
+  );
 });
 
-gulp.task('zip', ['prod'], function() {
+gulp.task('prod', ['prodAssets'], function () {
+  buildMode = 'prod';
+  gulp.start('index');
+});
+
+gulp.task('prod-compact-index', ['prodAssets'], function () {
+  buildMode = 'prod';
+  buildModeModifier = 'compact';
+  gulp.start('index');
+});
+
+gulp.task('prod-compact', ['cleanProdCompact']);
+
+gulp.task('zip', ['prod-compact'], function() {
   compress();
 });
 
