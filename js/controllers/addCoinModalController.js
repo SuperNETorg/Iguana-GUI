@@ -6,7 +6,6 @@ angular.module('IguanaGUIApp')
   '$scope',
   '$state',
   '$uibModalInstance',
-  'util',
   '$api',
   '$storage',
   '$rootScope',
@@ -15,57 +14,72 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   '$q',
-  function ($scope, $state, $uibModalInstance, util, $api, $storage,
+  function ($scope, $state, $uibModalInstance, $api, $storage,
             $rootScope, $timeout, vars) {
 
     $scope.isIguana = $storage['isIguana'];
+    $scope.coinSearchModel = undefined;
+    $scope.coinColors = [
+      'orange',
+      'breeze',
+      'light-blue',
+      'yellow'
+    ];
+
     $scope.open = open;
     $scope.close = close;
     $scope.next = next;
-    $scope.alouNext = false;
-    $scope.util = util;
     $scope.clickOnCoin = clickOnCoin;
-    $scope.coinSearchModel = undefined;
-    $scope.coinsSelectedToAdd = getSelectedCoins();
-    $scope.availableCoins = constructCoinRepeater(vars.coinsInfo);
+
+    $scope.coins = constructCoinRepeater();
+    $scope.selectedCoins = getSelectedCoins();
+
+    $scope.$on('modal.dismissing', function () {
+      $rootScope.$broadcast('modal.dismissed', constructCoinRepeater());
+    });
 
     function getSelectedCoins() {
-      var result = [];
+      var result = {},
+        coins = constructCoinRepeater();
 
       if ($storage['iguana-login-active-coin']) {
-        $storage['iguana-login-active-coin'].map(function (el) {
-          result.push(Object.keys(el)[0]);
-        });
+        for (var i = 0; coins.length > i; i++) {
+          if ($storage['iguana-login-active-coin'][coins[i].coinId]) {
+            result[coins[i].coinId] = constructCoinRepeater()[i];
+          }
+        }
       }
+
       return result;
     }
 
-    function constructCoinRepeater(coinsInfo) {
+    function constructCoinRepeater() {
       var index = 0,
-          addCoinArray = [],
-          coinColors = [
-            'orange',
-            'breeze',
-            'light-blue',
-            'yellow'
-          ];
+          coinsArray = [],
+        coinsInfo = vars.coinsInfo;
 
       if (undefined !== coinsInfo) {
         for (var key in supportedCoinsList) {
-          if (( !$storage['iguana-' + key + '-passphrase'] || (
-            $storage['iguana-' + key + '-passphrase'] &&
-            $storage['iguana-' + key + '-passphrase'].logged !== 'yes' ))) {
-            if (($storage['isIguana'] && coinsInfo[key].iguana === true) ||
+          if (
+            (!$storage['iguana-' + key + '-passphrase'] ||
+              (
+                $storage['iguana-' + key + '-passphrase'] &&
+                $storage['iguana-' + key + '-passphrase'].logged !== 'yes'
+              )
+            )
+          ) {
+            if (
+              ($storage['isIguana'] && coinsInfo[key].iguana === true) ||
               (!$storage['isIguana'] && coinsInfo[key].connection === true)
             ) {
-              addCoinArray.push({
+              coinsArray.push({
                 'id': key.toUpperCase(),
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
-                'color': coinColors[index]
+                'color': $scope.coinColors[index]
               });
 
-              if (index === coinColors.length - 1) {
+              if (index === $scope.coinColors.length - 1) {
                 index = 0;
               } else {
                 index++;
@@ -75,100 +89,57 @@ angular.module('IguanaGUIApp')
         }
       }
 
-      return addCoinArray;
+      return coinsArray;
     }
 
     function clickOnCoin(item, $event) {
-      var coinElement = angular.element($event.currentTarget),
-          isDisable = false,
-          activeCoinStorageData = {};
-
-      $scope.coinsSelectedToAdd.map(function (el, id) {
-        if (el == item.coinId) {
-          $scope.coinsSelectedToAdd.splice(id, 1);
-          coinElement.removeClass('active');
-          isDisable = true;
-        }
-      });
+      var coinElement = angular.element($event.currentTarget);
 
       if (!$storage['isIguana'] || ($storage['isIguana'] &&
         $state.$current.url == '/signup')) {
-        $scope.coinsSelectedToAdd = [];
-        $storage['iguana-login-active-coin'] = [];
-      }
-
-      if (!isDisable && !$scope.coinsSelectedToAdd[item.coinId]) {
-        $scope.coinsSelectedToAdd.push(item.coinId);
-        coinElement.addClass('active');
+        $scope.selectedCoins = [];
+        $storage['iguana-login-active-coin'] = {};
       }
 
       if (!$storage['iguana-login-active-coin']) {
-        $storage['iguana-login-active-coin'] = [];
+        $storage['iguana-login-active-coin'] = {};
+      }
+
+      if (!$storage['iguana-login-active-coin'][item.coinId]) {
+        coinElement.addClass('active');
+        item.pass = getPassphrase(item.coinId);
+        $storage['iguana-login-active-coin'][item.coinId] = item;
       } else {
-        $storage['iguana-login-active-coin'].map(function (el, id) {
-          if (Object.keys(el)[0] == item.coinId) {
-            $storage['iguana-login-active-coin'].splice(id, 1);
-          }
-        });
-      }
-      activeCoinStorageData[$scope.coinsSelectedToAdd[$scope.coinsSelectedToAdd.length - 1]] = '';
-
-      // dev only
-      if (dev.isDev && !$scope.isIguana && dev.coinPW.coind[$scope.coinsSelectedToAdd[0]]) {
-        activeCoinStorageData[$scope.coinsSelectedToAdd[$scope.coinsSelectedToAdd.length - 1]] =
-          dev.coinPW.coind[$scope.coinsSelectedToAdd[$scope.coinsSelectedToAdd.length - 1]];
+        coinElement.removeClass('active');
+        delete $storage['iguana-login-active-coin'][item.coinId];
       }
 
-      if (dev.isDev && $scope.isIguana && dev.coinPW.iguana) {
-        activeCoinStorageData[$scope.coinsSelectedToAdd[$scope.coinsSelectedToAdd.length - 1]] = dev.coinPW.iguana;
-      }
-
-      if (!isDisable && $storage['iguana-login-active-coin'].indexOf(activeCoinStorageData) == -1) {
-        $storage['iguana-login-active-coin'].push(activeCoinStorageData);
-      }
+      $scope.selectedCoins = $storage['iguana-login-active-coin'];
     }
 
     function close() {
-      var coinsSelectedToAdd = closeCallback();
-
-      $uibModalInstance.dismiss([
-        constructCoinRepeater(vars.coinsInfo),
-        coinsSelectedToAdd,
-        getSelectedCoins($scope.receivedObject)
-      ]);
+      $uibModalInstance.dismiss(constructCoinRepeater());
     }
 
     function next() {
-      var coinsSelectedToAdd = closeCallback();
-
-      $uibModalInstance.close([
-        constructCoinRepeater(vars.coinsInfo),
-        coinsSelectedToAdd,
-        getSelectedCoins($scope.receivedObject)
-      ]);
+      $uibModalInstance.close(constructCoinRepeater());
     }
 
-    function closeCallback() {
-      var coinId,
-          availableCoin,
-          coinsSelectedToAdd = [];
+    $scope.isActive = function(item) {
+      return $storage['iguana-login-active-coin'][item.coinId];
+    };
 
-      $scope.receivedObject = $storage['iguana-login-active-coin'];
+    $scope.isDisabled = function() {
+        return Object.keys($storage['iguana-login-active-coin']).length == 0;
+    };
 
-      for (var i = 0; $scope.receivedObject.length > i; i++) {
-        coinId = $scope.receivedObject[i];
-
-        for (var l = 0; $scope.availableCoins.length > l; l++) {
-          availableCoin = $scope.availableCoins[l];
-
-          if (Object.keys(coinId).indexOf(availableCoin.coinId) != -1) {
-            coinsSelectedToAdd.push(availableCoin);
-            $storage.coinsSelectedToAdd = coinsSelectedToAdd;
-          }
-        }
-      }
-
-      return coinsSelectedToAdd;
+    function getPassphrase(coinId) {
+      return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
+          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
     }
+
+    $scope.$on('$destroy', function () {
+      delete $rootScope.$$listeners['modal.dismissed'];
+    });
   }
 ]);
