@@ -138,8 +138,9 @@ angular.module('IguanaGUIApp')
     }
 
     function getPassphrase(coinId) {
-      return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
-          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
+      if (dev && dev.coinPW)
+        return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
+            (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
     }
 
     $scope.$on('$destroy', function () {
