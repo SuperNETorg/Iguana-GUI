@@ -569,8 +569,6 @@ angular.module('IguanaGUIApp')
           postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
 
-      //console.log('walletLock', fullUrl, postData, postAuthHeaders);
-
       $http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
@@ -766,9 +764,9 @@ angular.module('IguanaGUIApp')
     };
 
     this.addCoinRecursive = function(coins, _index, recursiveResult) {
-      var coin = coins[_index],
-          result = recursiveResult || [],
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
+      var coin = coins[_index] || {},
+          result = recursiveResult || [];
+      var postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
           fullUrl = this.getConf().server.protocol +
                     this.getConf().server.ip + ':' +
                     this.getConf(true).server.port,
@@ -805,8 +803,12 @@ angular.module('IguanaGUIApp')
           coinsLength = coinsKeys.length,
           deferred = $q.defer();
 
-      this.addCoinRecursive(coins, _index, result)
+      if (coins.length) {
+        this.addCoinRecursive(coins, _index, result)
           .then(onResolve, onReject);
+      } else {
+        deferred.reject(false);
+      }
 
       function onResolve(result) {
         if (coinsLength <= result[1]) {

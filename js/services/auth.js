@@ -71,9 +71,19 @@ angular.module('IguanaGUIApp')
     };
 
     this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
+      if (!$storage['dashboard-logged-in-coins']) {
+        $storage['dashboard-logged-in-coins'] = {};
+      }
+
       var coinKeys = Object.keys(coinsSelectedToAdd);
       self.coinsSelectedToAdd = coinsSelectedToAdd;
       self.passphraseModel = passphraseModel;
+
+      for (var name in coinsSelectedToAdd) {
+        if (!$storage['dashboard-logged-in-coins'][name]) {
+          $storage['dashboard-logged-in-coins'][name] = coinsSelectedToAdd[name];
+        }
+      }
 
       if ($storage['isIguana']) {
         var deferred = $q.defer();
@@ -166,9 +176,18 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.logout = function () { // TODO: move to auth service
+    this.logout = function (coin) {
       if ($storage['isIguana']) {
-        $api.walletLock();
+        if (!coin) {
+          for (var name in $storage['dashboard-logged-in-coins']) {
+            coin = $storage['dashboard-logged-in-coins'][name];
+            $api.walletLock(coin.coinId);
+          }
+        } else {
+          if ($storage['dashboard-logged-in-coins'][coin]) {
+            $api.walletLock(coin);
+          }
+        }
 
         for (var key in supportedCoinsList) {
           if ($storage['iguana-' + key + '-passphrase'])
@@ -180,13 +199,14 @@ angular.module('IguanaGUIApp')
       } else {
         this.coindWalletLockCount = 0;
 
-        if (vars.coinsInfo != undefined)
+        if (vars.coinsInfo != undefined) {
           for (var key in vars.coinsInfo) {
             if ($storage['iguana-' + key + '-passphrase'] &&
               $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
               this.coindWalletLockCount++;
             }
           }
+        }
         // in case something went bad
         if (this.coindWalletLockCount === 0) {
           $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
@@ -223,12 +243,17 @@ angular.module('IguanaGUIApp')
           coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
 
       if (!suppressAddCoin) {
-        if (!addCoinOnly)
+        if (!addCoinOnly) {
           for (var key in vars.coinsInfo) {
             $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
           }
+        }
 
-        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
+        if (coinsSelectedToAdd.length) {
+          $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
+        } else {
+          defer.resolve(true);
+        }
       } else {
         defer.resolve(true);
       }
