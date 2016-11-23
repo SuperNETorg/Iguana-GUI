@@ -23,20 +23,19 @@ angular.module('IguanaGUIApp')
     $scope.passphraseCheckbox = false;
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
-    $scope.availableCoins = [];
+    $scope.coins = [];
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
-    $scope.coinsSelectedToAdd = [];
-    $scope.receivedObject = [] ;
+    $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
     $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
-    $storage['iguana-login-active-coin'] = [];
+    $storage['iguana-login-active-coin'] = {};
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {
-      onInit(null, vars.coinsInfo);
+      onInit();
     }
 
     function onInit() {
@@ -50,40 +49,17 @@ angular.module('IguanaGUIApp')
           controller: 'addCoinModalController',
           templateUrl: 'partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.coin-select-modal')),
-          resolve: {
-            receivedObject: function () {
-              return {
-                receivedObject:$scope.receivedObject
-              };
-            },
-            // {}
-          }
         });
 
-        modalInstance.result.then(function (receivedObject) {
-          $scope.availableCoins = receivedObject[0];
-          $scope.coinsSelectedToAdd = receivedObject[1];
-          $scope.receivedObject = receivedObject[2] ;
-
-          var coinId,
-              availableCoin;
-
-          $scope.receivedObject = $storage['iguana-login-active-coin'];
-
-          for (var i = 0; $scope.receivedObject.length > i; i++) {
-            coinId = $scope.receivedObject[i];
-
-            for (var l = 0; receivedObject.length > l; l++) {
-              availableCoin = receivedObject[l];
-
-              if (Object.keys(coinId).indexOf(availableCoin.coinId) != -1) {
-                $scope.coinsSelectedToAdd.push(availableCoin);
-                $storage.coinsSelectedToAdd = $scope.coinsSelectedToAdd;
-              }
-            }
-          }
+        modalInstance.result.then(function (data) {
+          $scope.coins = data;
         });
       };
+
+      $scope.getActiveCoins = function () {
+        return $storage['iguana-login-active-coin'];
+      };
+
     }
 
     function initPage() {
@@ -104,38 +80,48 @@ angular.module('IguanaGUIApp')
 
     function addAccount() {
       $scope.$localStorage.passphrase = '';
+      var coinKeys = Object.keys($scope.getActiveCoins());
       var addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form',
-          selectedCoindToEncrypt = $storage.coinsSelectedToAdd[0].coinId;
+          selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
       if ($scope.passPhraseText.length) {
         $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt)
         .then(function() {
-          $message.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green');
+          $message.ngPrepMessageModal(
+            selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
+            'green'
+          );
 
-          if ($state.current.name === 'dashboard') {
-            util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
-          } else {
-            $state.go('login');
-          }
+          $state.go('login');
         }, function(response) {
           if (response === -15) {
-            $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red');
-
-            if ($state.current.name === 'dashboard') {
-              util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
-            }
+            $message.ngPrepMessageModal(
+              $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'),
+              'red'
+            );
 
             $state.go('login');
           }
         });
       } else {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red');
+        $message.ngPrepMessageModal(
+          $filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'),
+          'red'
+        );
       }
     }
 
     function verifyPass() {
       $scope.buttonCreateAccount = false;
     }
+
+    $scope.isDisabled = function() {
+      if (!$storage['iguana-login-active-coin']) {
+        $storage['iguana-login-active-coin'] = {};
+      }
+
+      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+    };
 
     $scope.$on('$destroy', function iVeBeenDismissed() {
       $storage['passphrase'] = '';

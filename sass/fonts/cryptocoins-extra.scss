@@ -1,14 +1,26 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?knqa0m');
-  src:  url('fonts/icomoon.eot?knqa0m#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?knqa0m') format('truetype'),
-    url('fonts/icomoon.woff?knqa0m') format('woff'),
-    url('fonts/icomoon.svg?knqa0m#icomoon') format('svg');
+  src: url('fonts/icomoon.eot?d6hbo3');
+  src: url('fonts/icomoon.eot?d6hbo3#iefix') format('embedded-opentype'),
+       url('fonts/icomoon.ttf?d6hbo3') format('truetype'),
+       url('fonts/icomoon.woff?d6hbo3') format('woff'),
+       url('fonts/icomoon.svg?d6hbo3#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
+.NLG-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e910" !important;
+}
+.SC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e906";
+}
+.ABC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90a";
+}
 .BTM-alt:before {
   font-family: 'icomoon' !important;
   content: "\e900";
@@ -16,6 +28,38 @@
 .UNO-alt:before {
   font-family: 'icomoon' !important;
   content: "\e901";
+}
+.FRC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90f";
+}
+.MEC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90b";
+}
+.XRP-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90c" !important;
+}
+.PPC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90d" !important;
+}
+.LMC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e90e";
+}
+.EMC2-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e911";
+}
+.APC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e912";
+}
+.GMC-alt:before {
+  font-family: 'icomoon' !important;
+  content: "\e905";
 }
 .ZET-alt:before {
   font-family: 'icomoon' !important;
@@ -28,10 +72,6 @@
 .KMD-alt:before {
   font-family: 'icomoon' !important;
   content: "\e904";
-}
-.GMC-alt:before {
-  font-family: 'icomoon' !important;
-  content: "\e905";
 }
 .DEM-alt:before {
   font-family: 'icomoon' !important;

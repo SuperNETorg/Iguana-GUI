@@ -1,6 +1,6 @@
 'use strict';
 
-if (!dev) var dev = ''; // prod
+if (!dev) var dev = { isDev: false, showSyncDebug: false, showConsoleMessages: false, coinPW: null, coinAccountsDev: null, sessions: null }; // prod
 
 angular.module('IguanaGUIApp.controllers', [
   'ngAnimate',

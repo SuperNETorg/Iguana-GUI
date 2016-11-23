@@ -4178,6 +4178,10 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.p
         return !modalWindow.value.modalScope.$broadcast('modal.closing', resultOrReason, closing).defaultPrevented;
       }
 
+      function broadcastDismissing(modalWindow, resultOrReason, closing) {
+        return !modalWindow.value.modalScope.$broadcast('modal.dismissing', resultOrReason, closing).defaultPrevented;
+      }
+
       function unhideBackgroundElements() {
         Array.prototype.forEach.call(
           document.querySelectorAll('[' + ARIA_HIDDEN_ATTRIBUTE_NAME + ']'),
@@ -4210,7 +4214,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.p
       $modalStack.dismiss = function(modalInstance, reason) {
         var modalWindow = openedWindows.get(modalInstance);
         unhideBackgroundElements();
-        if (modalWindow && broadcastClosing(modalWindow, reason, false)) {
+        if (modalWindow && broadcastDismissing(modalWindow, reason, false)) {
           modalWindow.value.modalScope.$$uibDestructionScheduled = true;
           modalWindow.value.deferred.reject(reason);
           removeModalWindow(modalInstance, modalWindow.value.modalOpener);

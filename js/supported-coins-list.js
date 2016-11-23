@@ -121,5 +121,75 @@ var supportedCoinsList = {
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
+  },
+  'sc': {
+    'name': 'Siacoin',
+    'portp2p': 9980, // https://github.com/NebulousLabs/Sia/blob/master/siad/daemon_test.go
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'xrp': {
+    'name': 'Ripple',
+    'portp2p': 5005, // https://github.com/ripple/rippled/blob/release/doc/rippled-example.cfg#L907-L930
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'abc': {
+    'name': 'Abundance',
+    'portp2p': 32531,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'mec': {
+    'name': 'Megacoin',
+    'portp2p': 7951,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'frc': {
+    'name': 'Freicoin',
+    'portp2p': 8639, // https://github.com/freicoin/freicoin/blob/master/doc/Tor.txt
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'ppc': {
+    'name': 'Peercoin',
+    'portp2p': 9902,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'lmc': {
+    'name': 'Lemoncoin',
+    'portp2p': 3338,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'emc2': {
+    'name': 'Einsteinium',
+    'portp2p': 41879,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'apc': {
+    'name': 'Applecoin',
+    'portp2p': 9556,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'nlg': {
+    'name': 'Gulden',
+    'portp2p': 9232,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
   }
 };

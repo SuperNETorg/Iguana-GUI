@@ -13,11 +13,10 @@
             <div class="login-add-coin-selection">
               <div class="login-add-coin-selection-title cursor-pointer"
                    ng-click="openAddCoinModal()">
-                <span ng-if="!coinsSelectedToAdd.length">
+                <span ng-if="isDisabled()">
                   {{ ( util.isIguana ? 'LOGIN.SELECT_A_COIN' : 'LOGIN.SELECT_A_WALLET' ) | lang }}
                 </span>
-                <div ng-repeat="item in coinsSelectedToAdd"
-                     ng-if="coinsSelectedToAdd.length">
+                <div ng-repeat="(name, item) in getActiveCoins()" ng-if="!isDisabled()">
                   <div>{{ item.name }}</div>
                   <div class="small">{{ item.id }}</div>
                 </div>
@@ -30,7 +29,7 @@
                       class="login-passphrase-textarea offset-bottom-sm row center"
                       ng-model="passphraseModel"></textarea>
             <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
-                    ng-click="login()" ng-disabled="!passphraseModel.length || !coinsSelectedToAdd.length">
+                    ng-click="login()" ng-disabled="!passphraseModel.length || isDisabled()">
               {{ 'LOGIN.LOGIN' | lang }}</button>
             <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
             <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"

@@ -3,6 +3,8 @@
  *
  */
 
+@import 'dev.scss';
+
 .iguana-modal.message-container {
   font-family: 'Proxima Nova', sans-serif;
   background: rgba(255, 255, 255, 0.7);
@@ -26,7 +28,7 @@
     min-width: 300px;
     margin: 0 auto;
     top: 34px;
-    border-radius: 4px;
+    border-radius: $border-radius-smaller;
     border: none;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 20px 0 rgb(222, 165, 171);
