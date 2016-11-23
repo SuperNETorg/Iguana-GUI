@@ -16,11 +16,8 @@ angular.module('IguanaGUIApp')
   '$message',
   '$localStorage',
   function($storage, $uibModal, $rootScope, clipboard,
-           $timeout, $interval, $http, $q, $document, $state, $filter,
-           $message, $localStorage) {
-
-    var self = this;
-
+           $timeout, $interval, $http, $q, $document,
+           $state, $filter, $message) {
     this.isIguana = $storage['isIguana'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
@@ -31,20 +28,35 @@ angular.module('IguanaGUIApp')
 
     this.bodyBlurOn = function() {
       angular.element(document).find('body').addClass('modal-open');
-    }
+    };
 
     this.bodyBlurOff = function() {
       angular.element(document).find('body').removeClass('modal-open');
-    }
+    };
 
-    this.reindexAssocArray = function(array) {
-      var _array = [];
+    this.reindexAssocArray = function(object) {
+      var _array = [],
+          _index,
+          item;
 
-      for (var i = 0; array.length > i; i++) {
-        if (array[i]) _array.push(array[i]);
+      for (var name in object) {
+        item = object[name];
+        if (!_array[_index]) _array.push(item);
+        ++_index;
       }
 
       return _array;
+    };
+    
+    this.getCoinKeys = function (coins) {
+      var coin, result = [];
+
+      for (var i = 0; coins.length > i ;i++) {
+        coin = coins[i];
+        result.push(coin.coinId);
+      }
+
+      return result;
     };
 
     this.addCopyToClipboardFromElement = function(element, elementDisplayName) { // TODO: move to signup controller

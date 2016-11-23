@@ -30,7 +30,7 @@ angular.module('IguanaGUIApp')
     $scope.verifyPass = verifyPass;
     $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
     $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
-    $storage['iguana-login-active-coin'] = [];
+    $storage['iguana-login-active-coin'] = {};
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -60,9 +60,6 @@ angular.module('IguanaGUIApp')
         return $storage['iguana-login-active-coin'];
       };
 
-      $scope.isDisabled = () => {
-        return Object.keys($storage['iguana-login-active-coin']).length == 0;
-      };
     }
 
     function initPage() {
@@ -90,32 +87,41 @@ angular.module('IguanaGUIApp')
       if ($scope.passPhraseText.length) {
         $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt)
         .then(function() {
-          $message.ngPrepMessageModal(selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'), 'green');
+          $message.ngPrepMessageModal(
+            selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
+            'green'
+          );
 
-          if ($state.current.name === 'dashboard') {
-            util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
-          } else {
-            $state.go('login');
-          }
+          $state.go('login');
         }, function(response) {
           if (response === -15) {
-            $message.ngPrepMessageModal($filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'), 'red');
-
-            if ($state.current.name === 'dashboard') {
-              util.toggleModalWindow(addCoinCreateWalletModalClassName, 300); //todo change in the future
-            }
+            $message.ngPrepMessageModal(
+              $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'),
+              'red'
+            );
 
             $state.go('login');
           }
         });
       } else {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'), 'red');
+        $message.ngPrepMessageModal(
+          $filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'),
+          'red'
+        );
       }
     }
 
     function verifyPass() {
       $scope.buttonCreateAccount = false;
     }
+
+    $scope.isDisabled = function() {
+      if (!$storage['iguana-login-active-coin']) {
+        $storage['iguana-login-active-coin'] = {};
+      }
+
+      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+    };
 
     $scope.$on('$destroy', function iVeBeenDismissed() {
       $storage['passphrase'] = '';

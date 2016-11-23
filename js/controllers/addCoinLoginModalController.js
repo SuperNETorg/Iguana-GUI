@@ -49,35 +49,28 @@ angular.module('IguanaGUIApp')
           controller: 'addCoinModalController',
           templateUrl: 'partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
-          resolve: {
-            receivedObject: function () {
-              return {
-                receivedObject: $scope.receivedObject
-              };
-            },
-          }
         });
 
-        modalInstance.result.then(resultPromise, resultPromise);
+        modalInstance.result.then(resultPromise);
+
+        $rootScope.$on('modal.dismissed', function (event, coins) {
+          resultPromise(coins);
+        });
 
         function resultPromise(data) {
-          if (data && data !== 'backdrop click') {
-            $scope.availableCoins = data[0];
-            $scope.coinsSelectedToAdd = data[1];
-            $scope.receivedObject = data[2];
-            console.log($storage);
-
-            if (data[2].length) {
-              $scope.passphrase = $storage['iguana-login-active-coin'][0][data[2][0]];
-            }
-          }
+          var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+          $scope.coins = data;
+          $scope.passphrase = (
+            coinKeys.length ?
+              $storage['iguana-login-active-coin'][coinKeys[0]].pass :
+              ''
+          );
         }
       };
 
       $scope.login = function() {
         $auth.login(
-          $scope.receivedObject,
-          $scope.coinsSelectedToAdd,
+          $scope.getActiveCoins(),
           $scope.passphrase
         )
         .then(function(response) {
@@ -90,7 +83,11 @@ angular.module('IguanaGUIApp')
 
     $scope.close = function() {
       $uibModalInstance.dismiss();
-    }
+    };
+
+    $scope.getActiveCoins = function () {
+      return $storage['iguana-login-active-coin'];
+    };
 
     $scope.$on('$destroy', function() {
       util.bodyBlurOff();

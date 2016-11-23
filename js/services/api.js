@@ -624,8 +624,6 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
           deferred = $q.defer();
 
-      //console.log(fullUrl, defaultIguanaServerUrl, postData, postAuthHeaders);
-
       $http.post($storage['isIguana'] ? defaultIguanaServerUrl : fullUrl, postData, {
         headers: postAuthHeaders
       })
@@ -768,13 +766,13 @@ angular.module('IguanaGUIApp')
     this.addCoinRecursive = function(coins, _index, recursiveResult) {
       var coin = coins[_index],
           result = recursiveResult || [],
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
           fullUrl = this.getConf().server.protocol +
                     this.getConf().server.ip + ':' +
                     this.getConf(true).server.port,
           deferred = $q.defer();
 
-      $http.post(fullUrl, iguanaAddCoinParams[coin], {
+      $http.post(fullUrl, iguanaAddCoinParams[coin.coinId], {
         headers: postAuthHeaders
       })
       .then(
@@ -784,14 +782,15 @@ angular.module('IguanaGUIApp')
           }
           if (response.data.result === 'coin added' ||
             response.data.result === 'coin already there') {
-            result.push([coin, response]);
+            result.push([coin.coinId, response]);
           } else {
             result.push([false, response]);
           }
           deferred.resolve([result, ++_index]);
         },
         function (response) {
-          deferred.reject([result, ++_index]);
+          result.push([response, ++_index]);
+          deferred.reject(result);
         }
       );
 
@@ -800,7 +799,7 @@ angular.module('IguanaGUIApp')
 
     this.addCoins = function (coins, _index, result) {
       var self = this,
-          coinsKeys = Object.keys(coins),
+          coinsKeys = util.getCoinKeys(coins),
           coinsLength = coinsKeys.length,
           deferred = $q.defer();
 
@@ -815,13 +814,15 @@ angular.module('IguanaGUIApp')
             .then(onResolve, onReject);
         }
       }
-      function onReject(response) {
+      function onReject(data) {
+        var response = data[0],
+            coin = data[1];
         // do something
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('error: ' + response.error);
         }
 
-        defer.reject([response, coin]);
+        deferred.reject([response, coin]);
       }
 
       return deferred.promise;

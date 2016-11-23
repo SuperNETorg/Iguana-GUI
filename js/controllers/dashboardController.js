@@ -72,35 +72,28 @@ angular.module('IguanaGUIApp')
         controller: 'addCoinModalController',
         templateUrl: 'partials/add-coin.html',
         appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
-        resolve: {
-          receivedObject: function() {
-            return {
-              receivedObject: $scope.receivedObject
-            };
-          },
-        }
       });
 
-      modalInstance.result.then(resultPromise, resultPromise);
+      modalInstance.result.then(resultPromise);
+
+      $rootScope.$on('modal.dismissed', function (event, coins) {
+        resultPromise(coins);
+      });
 
       function resultPromise(data) {
-        if (data && data !== 'backdrop click') {
-          $scope.availableCoins = data[0];
-          $scope.coinsSelectedToAdd = data[1];
-          $scope.receivedObject = data[2];
+        // $scope.availableCoins = data;
+        $scope.receivedObject = util.getCoinKeys(util.reindexAssocArray($scope.getActiveCoins()));
 
-          $auth.login(
-            $scope.receivedObject,
-            $scope.coinsSelectedToAdd,
-            null,
-            true
-          )
-          .then(function(response) {
-            constructAccountCoinRepeater();
-          }, function(reason) {
-            console.log('request failed: ' + reason);
-          });
-        }
+        $auth.login(
+          $scope.getActiveCoins(),
+          null,
+          true
+        )
+        .then(function(response) {
+          constructAccountCoinRepeater();
+        }, function(reason) {
+          console.log('request failed: ' + reason);
+        });
       }
     };
 
@@ -190,12 +183,12 @@ angular.module('IguanaGUIApp')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
-    }
+    };
 
     $scope.setTxUnitBalance = function(item) {
       $scope.txUnit.activeCoinBalance = item ? item.coinValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].coinValue;
       $scope.txUnit.activeCoinBalanceCurrency = item ? item.currencyValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].currencyValue;
-    }
+    };
 
     $scope.removeCoin = function(coinId) {
       if (confirm($filter('lang')('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
@@ -210,7 +203,11 @@ angular.module('IguanaGUIApp')
         checkAddCoinButton();
         updateTotalBalance();
       }
-    }
+    };
+
+    $scope.getActiveCoins = function () {
+      return $storage['iguana-login-active-coin'];
+    };
 
     function constructAccountCoinRepeater(isFirstRun) {
       var index = 0;

@@ -83,11 +83,15 @@ angular.module('IguanaGUIApp')
       $scope.getActiveCoins = function () {
         return $storage['iguana-login-active-coin'];
       };
-
-      $scope.isDisabled = () => {
-        return Object.keys($storage['iguana-login-active-coin']).length == 0;
-      };
     }
+
+    $scope.isDisabled = function () {
+      if (!$storage['iguana-login-active-coin']) {
+        $storage['iguana-login-active-coin'] = {};
+      }
+
+      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+    };
 
     $scope.$on('$destroy', function () {
       $storage['iguana-login-active-coin'] = [];

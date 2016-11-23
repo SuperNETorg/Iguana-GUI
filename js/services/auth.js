@@ -17,8 +17,7 @@ angular.module('IguanaGUIApp')
             $message, $filter, $timeout, $q) {
 
     var self = this,
-        minEpochTimestamp = 1471620867, // Jan 01 1970
-        coinsInfo = vars.coinsInfo;
+        minEpochTimestamp = 1471620867; // Jan 01 1970
 
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;
@@ -71,10 +70,10 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.login = function(receivedObject, coinsSelectedToAdd, passphraseModel, addCoinOnly) {
-      self.coinsSelectedToAdd = util.reindexAssocArray(coinsSelectedToAdd);
+    this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
+      var coinKeys = Object.keys(coinsSelectedToAdd);
+      self.coinsSelectedToAdd = coinsSelectedToAdd;
       self.passphraseModel = passphraseModel;
-      self.receivedObject = receivedObject;
 
       if ($storage['isIguana']) {
         var deferred = $q.defer();
@@ -84,7 +83,7 @@ angular.module('IguanaGUIApp')
           self.coinResponses = data;
 
           if (!addCoinOnly) {
-            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[0].coinId)
+            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[coinKeys[0]].coinId)
                 .then(walletLogin);
           } else {
             deferred.resolve(data);
@@ -123,11 +122,13 @@ angular.module('IguanaGUIApp')
       }
 
       function walletLogin() {
-        var deferred = $q.defer();
+        var deferred = $q.defer(),
+            coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
+        var coinKeys = util.getCoinKeys(coinsSelectedToAdd);
 
-        $api.walletLock(coinsSelectedToAdd[0].coinId).then(function() {
+        $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
-            coinsSelectedToAdd[0].coinId).then(onResolve, onReject)
+            self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
         });
 
         function onResolve(data) {
@@ -140,7 +141,7 @@ angular.module('IguanaGUIApp')
             $state.go('dashboard.main');
           }
 
-          $storage['iguana-login-active-coin'] = [];
+          $storage['iguana-login-active-coin'] = {};
           deferred.resolve(data);
         }
 
@@ -218,7 +219,8 @@ angular.module('IguanaGUIApp')
     };
 
     function checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly) {
-      var defer = $q.defer();
+      var defer = $q.defer(),
+          coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
 
       if (!suppressAddCoin) {
         if (!addCoinOnly)
@@ -226,7 +228,7 @@ angular.module('IguanaGUIApp')
             $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
           }
 
-        $api.addCoins(self.receivedObject, 0).then(onResolve);
+        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
       } else {
         defer.resolve(true);
       }

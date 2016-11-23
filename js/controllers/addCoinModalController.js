@@ -34,6 +34,18 @@ angular.module('IguanaGUIApp')
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
 
+    $scope.isActive = function(item) {
+      if (!$storage['iguana-login-active-coin']) {
+        $storage['iguana-login-active-coin'] = {};
+      }
+
+      return $storage['iguana-login-active-coin'][item.coinId];
+    };
+
+    $scope.isDisabled = function() {
+      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+    };
+
     $scope.$on('modal.dismissing', function () {
       $rootScope.$broadcast('modal.dismissed', constructCoinRepeater());
     });
@@ -124,14 +136,6 @@ angular.module('IguanaGUIApp')
     function next() {
       $uibModalInstance.close(constructCoinRepeater());
     }
-
-    $scope.isActive = function(item) {
-      return $storage['iguana-login-active-coin'][item.coinId];
-    };
-
-    $scope.isDisabled = function() {
-        return Object.keys($storage['iguana-login-active-coin']).length == 0;
-    };
 
     function getPassphrase(coinId) {
       return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
