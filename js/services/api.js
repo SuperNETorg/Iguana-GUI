@@ -22,13 +22,13 @@ angular.module('IguanaGUIApp')
     $storage['isProxy'] = true;
     $storage['iguanaNullReturnCount'] = 0;
 
-    this.testConnection = function () {
+    this.testConnection = function() {
       var deferred = $q.defer(),
-        setPortPollResponseDS = $storage['iguana-port-poll'],
-        timeDiff = setPortPollResponseDS ?
-          Math.floor(util.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
-          0,
-        index = 0;
+          setPortPollResponseDS = $storage['iguana-port-poll'],
+          timeDiff = setPortPollResponseDS ?
+            Math.floor(util.getTimeDiffBetweenNowAndDate(setPortPollResponseDS.updatedAt)) :
+            0,
+          index = 0;
 
       $syncStatus.getPortPollResponse(setPortPollResponseDS);
 
@@ -78,9 +78,10 @@ angular.module('IguanaGUIApp')
           }
 
           this.errorHandler(response);
-          this.testCoinPorts().then(function (coins) {
-            deferred.resolve(coins);
-          });
+          this.testCoinPorts()
+              .then(function(coins) {
+                deferred.resolve(coins);
+              });
         }.bind(this), function(response) {
           // non-iguana env
           if (dev.isDev) {
@@ -110,9 +111,10 @@ angular.module('IguanaGUIApp')
           }
 
           this.errorHandler(response);
-          this.testCoinPorts().then(function (coins) {
-            deferred.resolve(coins);
-          });
+          this.testCoinPorts()
+              .then(function (coins) {
+                deferred.resolve(coins);
+              });
         }.bind(this));
 
       } else {
@@ -224,7 +226,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.testCoinIguanaMode = function (response, index) {
+    this.testCoinIguanaMode = function(response, index) {
       if (response.status && $storage['isIguana']) {
         if (
           response.status !== (null || -1) &&
@@ -249,7 +251,7 @@ angular.module('IguanaGUIApp')
           }
 
           // disable coin in iguna mode
-          if (iguanaAddCoinParams[index] && iguanaAddCoinParams[index] === 'disabled'){
+          if (!iguanaAddCoinParams[index]){
             this.coinsInfo[index].iguana = false;
           }
 
@@ -352,7 +354,7 @@ angular.module('IguanaGUIApp')
 
           this.coinsInfo[i].connection = false;
           this.coinsInfo[i].RT = false;
-          this.coinsInfo[i].iguana = true;
+          this.coinsInfo[i].iguana = iguanaAddCoinParams[i] ? true : false;
         }
 
         this.checkLoopEnd(coinsKeys.length);
