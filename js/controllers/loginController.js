@@ -64,6 +64,7 @@ angular.module('IguanaGUIApp')
 
         function resultPromise(data) {
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
           $scope.coins = data;
           $scope.passphraseModel = (
             coinKeys.length ?
@@ -80,7 +81,7 @@ angular.module('IguanaGUIApp')
         );
       };
 
-      $scope.getActiveCoins = function () {
+      $scope.getActiveCoins = function() {
         return $storage['iguana-login-active-coin'];
       };
     }
@@ -90,7 +91,7 @@ angular.module('IguanaGUIApp')
         $storage['iguana-login-active-coin'] = {};
       }
 
-      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+      return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
     $scope.$on('$destroy', function () {

@@ -56,10 +56,9 @@ angular.module('IguanaGUIApp')
         });
       };
 
-      $scope.getActiveCoins = function () {
+      $scope.getActiveCoins = function() {
         return $storage['iguana-login-active-coin'];
       };
-
     }
 
     function initPage() {
@@ -80,8 +79,8 @@ angular.module('IguanaGUIApp')
 
     function addAccount() {
       $scope.$localStorage.passphrase = '';
-      var coinKeys = Object.keys($scope.getActiveCoins());
-      var addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form',
+      var coinKeys = Object.keys($scope.getActiveCoins()),
+          addCoinCreateWalletModalClassName = 'add-coin-create-wallet-form',
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
       if ($scope.passPhraseText.length) {
@@ -120,11 +119,11 @@ angular.module('IguanaGUIApp')
         $storage['iguana-login-active-coin'] = {};
       }
 
-      return Object.keys($storage['iguana-login-active-coin']).length == 0;
+      return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
     $scope.$on('$destroy', function iVeBeenDismissed() {
       $storage['passphrase'] = '';
-    })
+    });
   }
 ]);

@@ -18,6 +18,7 @@ angular.module('IguanaGUIApp')
   function($storage, $uibModal, $rootScope, clipboard,
            $timeout, $interval, $http, $q, $document,
            $state, $filter, $message) {
+
     this.isIguana = $storage['isIguana'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
@@ -41,15 +42,17 @@ angular.module('IguanaGUIApp')
 
       for (var name in object) {
         item = object[name];
+
         if (!_array[_index]) _array.push(item);
         ++_index;
       }
 
       return _array;
     };
-    
+
     this.getCoinKeys = function (coins) {
-      var coin, result = [];
+      var coin,
+          result = [];
 
       for (var i = 0; coins.length > i ;i++) {
         coin = coins[i];
@@ -147,6 +150,7 @@ angular.module('IguanaGUIApp')
       // tx unit resize
       if ($(window).width() > 767) {
         var width = Math.floor(mainContent.width() - $('.coins').width() - 80);
+
         mainContent.css({ 'padding': '0 30px' });
         txUnit.css({
           'max-width': width,

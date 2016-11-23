@@ -59,6 +59,7 @@ angular.module('IguanaGUIApp')
 
         function resultPromise(data) {
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
           $scope.coins = data;
           $scope.passphrase = (
             coinKeys.length ?

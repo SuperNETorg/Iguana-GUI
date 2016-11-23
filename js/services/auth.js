@@ -31,8 +31,8 @@ angular.module('IguanaGUIApp')
 
     this.checkSession = function(returnVal) {
       var inAuth = (self.toState.name.indexOf('login') != -1 ||
-                    self.toState.name.indexOf('signup') != -1);
-      var inDashboard = (self.toState.name.indexOf('dashboard') != -1);
+                    self.toState.name.indexOf('signup') != -1),
+          inDashboard = (self.toState.name.indexOf('dashboard') != -1);
 
       if (returnVal) {
         return this._userIdentify();
@@ -55,9 +55,9 @@ angular.module('IguanaGUIApp')
 
     this._userIdentify = function () {
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
-        secondsElapsedSinceLastAuth =
-          Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
-              $storage['iguana-auth'].timestamp : 1000) / 1000);
+          secondsElapsedSinceLastAuth =
+            Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
+                $storage['iguana-auth'].timestamp : 1000) / 1000);
 
       if (
         Math.floor(secondsElapsedSinceLastAuth) <
@@ -107,17 +107,17 @@ angular.module('IguanaGUIApp')
 
       function inguanaLogin() {
         var message = $message.ngPrepMessageModal(
-          self.addedCoinsOutput + ' ' +
-          $filter('lang')('MESSAGE.COIN_ADD_P1') +
-          (
-            self.failedCoinsOutput.length > 7 ?
-            self.failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''
-          ) +
-          (
-            self.coinResponses.length ?
-            '<br/>' + $filter('lang')('MESSAGE.REDIRECTING_TO_DASHBOARD') + '...'
-              : ''
-          ), 'green', true);
+                        self.addedCoinsOutput + ' ' +
+                        $filter('lang')('MESSAGE.COIN_ADD_P1') +
+                        (
+                          self.failedCoinsOutput.length > 7 ?
+                          self.failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''
+                        ) +
+                        (
+                          self.coinResponses.length ?
+                          '<br/>' + $filter('lang')('MESSAGE.REDIRECTING_TO_DASHBOARD') + '...'
+                            : ''
+                        ), 'green', true);
 
         if (self.coinResponses.length) {
           // since there's no error on nonexistent wallet passphrase in Iguana
@@ -133,8 +133,8 @@ angular.module('IguanaGUIApp')
 
       function walletLogin() {
         var deferred = $q.defer(),
-            coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
-        var coinKeys = util.getCoinKeys(coinsSelectedToAdd);
+            coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd),
+            coinKeys = util.getCoinKeys(coinsSelectedToAdd);
 
         $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,

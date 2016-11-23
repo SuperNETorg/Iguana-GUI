@@ -52,7 +52,7 @@ angular.module('IguanaGUIApp')
 
     function getSelectedCoins() {
       var result = {},
-        coins = constructCoinRepeater();
+          coins = constructCoinRepeater();
 
       if ($storage['iguana-login-active-coin']) {
         for (var i = 0; coins.length > i; i++) {
@@ -68,7 +68,7 @@ angular.module('IguanaGUIApp')
     function constructCoinRepeater() {
       var index = 0,
           coinsArray = [],
-        coinsInfo = vars.coinsInfo;
+          coinsInfo = vars.coinsInfo;
 
       if (undefined !== coinsInfo) {
         for (var key in supportedCoinsList) {

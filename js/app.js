@@ -1,6 +1,13 @@
 'use strict';
 
-if (!dev) var dev = { isDev: false, showSyncDebug: false, showConsoleMessages: false, coinPW: null, coinAccountsDev: null, sessions: null }; // prod
+if (!dev) var dev = { // prod
+  isDev: false,
+  showSyncDebug: false,
+  showConsoleMessages: false,
+  coinPW: null,
+  coinAccountsDev: null,
+  sessions: null
+};
 
 angular.module('IguanaGUIApp.controllers', [
   'ngAnimate',
@@ -91,14 +98,14 @@ angular.module('IguanaGUIApp', [
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
 
-  $rootScope.$on("$stateChangeStart", function (event, toState, toParams,
-                                                fromState, fromParams) {
-    $auth.toState = toState;
-    $auth.toParams = toParams;
-    $auth.fromState = fromState;
-    $auth.fromParams = fromParams;
-    // check session and route
-    $timeout($auth.checkSession);
+  $rootScope.$on("$stateChangeStart",
+    function (event, toState, toParams, fromState, fromParams) {
+      $auth.toState = toState;
+      $auth.toParams = toParams;
+      $auth.fromState = fromState;
+      $auth.fromParams = fromParams;
+      // check session and route
+      $timeout($auth.checkSession);
   });
 
   $api.testConnection().then(function (coins) {

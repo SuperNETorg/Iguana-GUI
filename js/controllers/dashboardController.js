@@ -95,11 +95,11 @@ angular.module('IguanaGUIApp')
             null,
             true
           )
-            .then(function(response) {
-              constructAccountCoinRepeater();
-            }, function(reason) {
-              console.log('request failed: ' + reason);
-            });
+          .then(function(response) {
+            constructAccountCoinRepeater();
+          }, function(reason) {
+            console.log('request failed: ' + reason);
+          });
         }
       };
 
@@ -310,7 +310,8 @@ angular.module('IguanaGUIApp')
 
         for (var key in sidebarCoins) {
           var coinLocalRate = $rates.updateRates(key, defaultCurrency, true) || 0;
-              _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
+
+          _totalBalance += coinLocalRate * sidebarCoins[key].coinBalanceUnformatted;
         }
 
         $scope.totalBalance = _totalBalance || 0;
@@ -334,11 +335,14 @@ angular.module('IguanaGUIApp')
       function constructTransactionUnitRepeaterCB(response) {
         var transactionsList = response,
             decimalPlacesTxUnit = settings.decimalPlacesTxUnit;
+
         // sort tx in desc order by timestamp
         if (transactionsList) {
           if (transactionsList.length) $scope.txUnit.loading = false;
+
           for (var i=0; i < transactionsList.length; i++) {
             $scope.txUnit.transactions[i] = {};
+
             if (transactionsList[i].txid) {
               // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
               // timestamp is converted to 24h format
