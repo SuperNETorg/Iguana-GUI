@@ -158,21 +158,8 @@ angular.module('IguanaGUIApp')
         });
       };
 
-      $(document).ready(function() {
-        util.initTopNavBar();
-
-        $('body').scroll(function(e) {
-          if ($(window).width() < 768) {
-            if ($('.main-content,.currency-content').position().top  < -270) {
-              $('#top-menu').addClass('hidden');
-            } else {
-              $('#top-menu').removeClass('hidden');
-            }
-          }
-        });
-
-        updateDashboardView(settings.ratesUpdateTimeout);
-      });
+      util.initTopNavBar();
+      updateDashboardView(settings.ratesUpdateTimeout);
 
       $(window).resize(function() {
         util.applyDashboardResizeFix($scope.sideBarCoins);
