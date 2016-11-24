@@ -12,12 +12,10 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$timeout',
   '$q',
-  function ($storage, vars,
-            $api, $state, $rootScope, util,
-            $message, $filter, $timeout, $q) {
+  function ($storage, vars, $api, $state, $rootScope, util, $message, $filter,
+            $timeout, $q) {
 
-    var self = this,
-        minEpochTimestamp = 1471620867; // Jan 01 1970
+    var self = this;
 
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;
@@ -59,15 +57,12 @@ angular.module('IguanaGUIApp')
             Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
                 $storage['iguana-auth'].timestamp : 1000) / 1000);
 
-      if (
-        Math.floor(secondsElapsedSinceLastAuth) <
-        Number($storage['isIguana'] ? settings.defaultSessionLifetimeIguana :
-          settings.defaultSessionLifetimeCoind)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      return Math.floor(secondsElapsedSinceLastAuth) <
+        Number(
+          $storage['isIguana'] ?
+            settings.defaultSessionLifetimeIguana :
+            settings.defaultSessionLifetimeCoind
+        );
     };
 
     this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
@@ -114,21 +109,16 @@ angular.module('IguanaGUIApp')
                           self.failedCoinsOutput + ' ' + $filter('lang')('MESSAGE.COIN_ADD_P2') : ''
                         ) +
                         (
-                          self.coinResponses.length ?
                           '<br/>' + $filter('lang')('MESSAGE.REDIRECTING_TO_DASHBOARD') + '...'
-                            : ''
                         ), 'green', true);
 
-        if (self.coinResponses.length) {
-          // since there's no error on nonexistent wallet passphrase in Iguana
-          // redirect to dashboard with 5s timeout
-          // TODO(?): point out if a coin is already running
-          $timeout(function () {
-            console.log(message);
-            message.close();
-            $state.go('dashboard.main');
-          }, settings.addCoinInfoModalTimeout * 1000);
-        }
+        // since there's no error on nonexistent wallet passphrase in Iguana
+        // redirect to dashboard with 5s timeout
+        // TODO(?): point out if a coin is already running
+        $timeout(function () {
+          message.close();
+          $state.go('dashboard.main');
+        }, settings.addCoinInfoModalTimeout * 1000);
       }
 
       function walletLogin() {
@@ -145,29 +135,30 @@ angular.module('IguanaGUIApp')
           $storage['iguana-auth'] = { 'timestamp': Date.now() };
 
           if ($storage['isIguana']) {
-            inguanaLogin();
+            if (self.coinResponses.length) {
+              inguanaLogin();
+            }
           } else {
             $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
             $state.go('dashboard.main');
           }
 
           $storage['iguana-login-active-coin'] = {};
+
           deferred.resolve(data);
         }
 
         function onReject(result) {
-          var walletLogin = result[0];
+          var walletLogin = result[0],
+              message;
 
           if (walletLogin === -14 || walletLogin === false) {
-            $message.ngPrepMessageModal(
-              $filter('lang')('MESSAGE.WRONG_PASSPHRASE'),
-              'red');
+            message = 'MESSAGE.WRONG_PASSPHRASE';
           } else if (walletLogin === -15) {
-            $message.ngPrepMessageModal(
-              $filter('lang')('MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET'),
-              'red'
-            );
+            message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
           }
+
+          $message.ngPrepMessageModal($filter('lang')(message), 'red');
 
           deferred.reject(result);
         }
@@ -180,18 +171,16 @@ angular.module('IguanaGUIApp')
       if ($storage['isIguana']) {
         if (!coin) {
           for (var name in $storage['dashboard-logged-in-coins']) {
-            coin = $storage['dashboard-logged-in-coins'][name];
-            $api.walletLock(coin.coinId);
+            $api.walletLock($storage['dashboard-logged-in-coins'][name].coinId);
           }
         } else {
-          if ($storage['dashboard-logged-in-coins'][coin]) {
-            $api.walletLock(coin);
-          }
+          $api.walletLock(coin);
         }
 
         for (var key in supportedCoinsList) {
-          if ($storage['iguana-' + key + '-passphrase'])
+          if ($storage['iguana-' + key + '-passphrase']) {
             $storage['iguana-' + key + '-passphrase'].logged = 'no';
+          }
         }
 
         $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
@@ -215,17 +204,18 @@ angular.module('IguanaGUIApp')
 
         this.logoutCoind();
       }
+      $storage['dashboard-logged-in-coins'] = {};
     };
 
-    this.logoutCoind = function (cb) {
-      if (vars.coinsInfo != undefined)
+    this.logoutCoind = function () {
+      if (vars.coinsInfo != undefined) {
         for (var key in vars.coinsInfo) {
-          if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
+          if ($storage['iguana-' + key + '-passphrase'] &&
+            $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
             $api.walletLock(key, this.logoutCoindCB(key));
           }
         }
-
-      if (cb) cb();
+      }
     };
 
     this.logoutCoindCB = function (key) {
