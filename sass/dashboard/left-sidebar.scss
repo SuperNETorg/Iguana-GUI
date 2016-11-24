@@ -5,6 +5,8 @@
 
 @import '../dev.scss';
 
+$account-coins-repeater-coin-color: #D3D3D4;
+
 .account-coins-repeater {
   .item {
     position: relative;
@@ -13,7 +15,7 @@
     margin-bottom: 20px;
     background: $color-white;
     height: 85px;
-    font-weight: 600;
+    @include bold;
     @include cursor-pointer;
 
     .clickable-area {
@@ -21,13 +23,13 @@
       height: 100%;
     }
     .remove-coin:before {
+      @include budicon;
       content: '\ead7';
-      font-family: 'budicon';
       font-size: 1.2em;
       display: block;
       position: absolute;
       right: 0;
-      color: #858690;
+      color: $color-dark-gray;
       width: 20px;
       height: 20px;
       z-index: 200;
@@ -61,11 +63,11 @@
         font-size: 2.5em;
         margin: 25px 10px 0 12px;
         display: inline-block;
-        color: #D3D3D4;
+        color: $account-coins-repeater-coin-color;
       }
       .name {
         font-weight: normal;
-        color: #858690;
+        color: $color-dark-gray;
         top: -4px;
         overflow: hidden;
         display: inline-block;
@@ -93,32 +95,26 @@
   }
   .item.active {
     cursor: default;
-    color: #fff;
+    color: $color-white;
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe640d+8,fe640d+26,fe4b0d+77,fe450d+100 */
-    background: #fe640d; /* Old browsers */
-    background: -moz-linear-gradient(top, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fe450d 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fe450d 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fe450d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe640d', endColorstr='#fe450d', GradientType=0); /* IE6-9 */
+    text-shadow: 0 1px 3px rgba-black(0.25);
+    @include orange-gradient;
 
     .remove-coin:before {
-      color: #fff;
+      color: $color-white;
     }
     .loader .path4 {
-      stroke: #FFF;
+      stroke: $color-white;
     }
     .coin i,
     .coin .name {
-      color: #fff;
+      color: $color-white;
     }
   }
   .item.active:after {
+    @include budicon;
     content: '\eb14';
-    color: #C8CCD0;
-    font-family: 'budicon';
+    color: $color-form-arrow;
     font-size: 2.0em;
     font-weight: normal;
     text-shadow: none;
@@ -128,14 +124,14 @@
   }
 }
 .btn-add-coin {
-  font-weight: 600;
-  background: #fff;
-  color: #FE450D;
+  @include bold;
+  background: $color-white;
+  color: $color-orange;
   border-radius: $border-radius-smaller;
-  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.125);
+  box-shadow: 0 2px 2px 1px rgba-black(0.125);
   width: 100%;
   padding: 7px 0;
 }
 .btn-add-coin:hover {
-  color: #FE450D;
+  color: $color-orange;
 }

@@ -6,21 +6,21 @@
 @import 'dev.scss';
 
 .iguana-modal.message-container {
-  font-family: 'Proxima Nova', sans-serif;
+  @include proxima;
   background: rgba(255, 255, 255, 0.7);
   z-index: 5000;
 
   a,
   a:visited,
   a:active {
-    color: #fff;
+    color: $color-white;
     text-decoration: underline;
   }
   .msg-body {
-    color: #fff;
+    @include bold;
+    color: $color-white;
     text-align: center;
     font-size: 1.1em;
-    font-weight: 600;
   }
   .msgbox-header,
   .modal-content {
@@ -30,7 +30,7 @@
     top: 34px;
     border-radius: $border-radius-smaller;
     border: none;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 3px rgba-black(0.3);
     box-shadow: 0 0 20px 0 rgb(222, 165, 171);
   }
   .msgbox-header {

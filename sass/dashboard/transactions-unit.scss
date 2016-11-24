@@ -5,24 +5,23 @@
 
 @import '../dev.scss';
 
+$txunit-item-receive-amount-color: #27C26F;
+$txunit-item-progress-icon-color: #CBCFD3;
+$txunit-item-progress-amount-color: #0082FF;
+$txunit-item-progress-icon-before-color: #2092FE;
+
 .transactions-unit {
   position: relative;
   border-radius: $border-radius-smaller;
-  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 3px 1px rgba-black(0.1);
 
   .top-bar {
-    font-weight: 600;
-    color: #fff;
+    @include bold;
+    color: $color-white;
     min-height: 150px;
     border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
-
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe640d+8,fe640d+26,fe4b0d+77,fc3600+100 */
-    background: #fe640d; /* Old browsers */
-    background: -moz-linear-gradient(top, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fc3600 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fc3600 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #fe640d 8%, #fe640d 26%, #fe4b0d 77%, #fc3600 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe640d', endColorstr='#fc3600', GradientType=0); /* IE6-9 */
+    @include orange-gradient;
 
     .loader {
       display: block;
@@ -36,7 +35,7 @@
         stroke-width: 3px;
       }
       .path4 {
-        stroke: #FFF;
+        stroke: $color-white;
       }
     }
   }
@@ -46,10 +45,10 @@
     padding-left: 16px;
 
     .btn {
-      font-weight: 600;
+      @include bold;
       font-size: 1.1em;
-      color: #FE450D;
-      background: #fff;
+      color: $color-orange;
+      background: $color-white;
       border-radius: $border-radius-smaller;
       box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
       padding: 6px 35px 4px 35px;
@@ -59,7 +58,7 @@
       margin: 0 1em 0.7em 1em;
     }
     .btn:hover {
-      color: #FE450D;
+      color: $color-orange;
     }
   }
   .info {
@@ -70,13 +69,13 @@
   }
 }
 .transactions-list {
-  background: #fff;
+  background: $color-white;
   padding: 25px 2.5% 60px 2.5%;
   border-radius: 0 0 $border-radius-smaller $border-radius-smaller;
 
   .title {
     font-size: 1.3em;
-    color: #C7CCD0;
+    color: $color-medium-gray;
     padding-bottom: 20px;
   }
 }
@@ -88,15 +87,14 @@
     cursor: pointer;
   }
   .item {
-    cursor: hand;
-    cursor: pointer;
-    font-weight: 600;
+    @include cursor-pointer;
+    @include bold;
     font-size: 1.2em;
     background: rgb(246, 250, 255);
     border-radius: $border-radius-smaller;
     padding: 20px 3% 23px 3%;
     margin-bottom: 25px;
-    transition: all 0.25s;
+    transition: all $transition-length;
 
     div {
       display: inline-block;
@@ -104,7 +102,7 @@
     .status {
       font-weight: normal;
       font-size: 0.9em;
-      color: #858690;
+      color: $color-dark-gray;
       text-transform: capitalize;
       width: 100px;
     }
@@ -129,7 +127,7 @@
     .timestamp {
       float: right;
       text-align: right;
-      color: #858690;
+      color: $color-dark-gray;
       font-weight: normal;
       font-size: 0.9em;
       padding-top: 8px;
@@ -144,7 +142,7 @@
       margin-top: -2px;
     }
     .progress-status .icon:before {
-      font-family: 'budicon';
+      @include budicon;
       font-size: 1.2em;
       height: 20px;
       display: block;
@@ -167,11 +165,11 @@
   }
   .item.receive {
     .amount {
-      color: #27C26F;
+      color: $txunit-item-receive-amount-color;
     }
     .progress-status .icon:before {
       content: '\eb47';
-      color: #CBCFD3;
+      color: $txunit-item-progress-icon-color;
       top: 4px;
       left: 1px;
       font-size: 1.4em;
@@ -179,27 +177,27 @@
   }
   .item.send .progress-status .icon:before {
     content: '\eb4b';
-    color: #CBCFD3;
+    color: $txunit-item-progress-icon-color;
     top: 4px;
     left: 1px;
     font-size: 1.4em;
   }
   .item.process {
     .amount {
-      color: #0082FF;
+      color: $txunit-item-progress-amount-color;
     }
     .progress-status {
       .icon:before {
+        @include bold;
         content: '\ead6';
-        color: #2092FE;
-        font-weight: bold;
+        color: $txunit-item-progress-icon-before-color;
       }
       .icon:after {
         content: '';
         display: block;
         width: 14px;
         height: 11px;
-        background: #F5F8FB;
+        background: $color-modal-bg;
         position: relative;
         float: right;
         top: -15px;
@@ -209,7 +207,7 @@
     }
   }
   .item:hover {
-    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
-    transition: all 0.25s;
+    box-shadow: 0 2px 3px 1px rgba-black(0.1);
+    transition: all $transition-length;
   }
 }

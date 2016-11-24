@@ -5,19 +5,29 @@
 
 @import 'dev.scss';
 
+$send-coin-head-color: #E8CEC6;
+$send-coin-title-color: #282828;
+$send-coin-text-color: #90929B;
+$send-coin-input-color: #333333;
+$send-coin-input-error-bg-color: #FFF5F5;
+$send-coin-input-error-border-color: #FD2F2F;
+$send-coin-p-color: #37373A;
+$send-coin-small-title-color: #A2A3AC;
+$send-coin-eq-sign-color: #FC6538;
+
 .send-modal {
   .headd {
     border-radius: $border-radius-smaller;
-    color: #fff;
+    color: $color-white;
     padding: 23px 21px 20px;
     position: relative;
-    box-shadow: 0 0 7px 4px #e8cec6;
+    box-shadow: 0 0 7px 4px $send-coin-head-color;
     margin-top: 0.5em;
   }
   .headd::before {
-    font-family: 'budicon';
+    @include budicon;
     font-size: 2.0em;
-    color: #C8CCD0;
+    color: $color-form-arrow;
     top: 100px;
     content: '\eac5';
     height: 40px;
@@ -30,14 +40,14 @@
   .modal-content {
     .modal-header {
       border-bottom: medium none;
-      color: #fff;
+      color: $color-white;
       padding: 16px 40px;
       position: relative;
       text-align: center;
       border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     }
     .modal-body {
-      background: #f5f8fb none repeat scroll 0 0;
+      background: $color-modal-bg none repeat scroll 0 0;
       padding: 50px 0;
     }
   }
@@ -46,9 +56,9 @@
     max-width: 360px;
   }
   .hd-right > span {
+    @include bold;
     display: block;
     font-size: 18px;
-    font-weight: 600;
   }
   .pop-form {
     margin-top: 40px;
@@ -57,27 +67,27 @@
     margin-bottom: 20px;
 
     h4 {
-      color: #282828;
+      color: $send-coin-title-color;
       font-size: 1.07em;
       font-weight: 400;
       margin: 0;
     }
     p {
-      color: #90929b;
+      color: $send-coin-text-color;
       font-size: 13px;
       margin: 4px 0;
     }
     input[type="text"] {
-      border: 1px solid #c7ccd0;
+      border: 1px solid $color-medium-gray;
       border-radius: $border-radius-smaller;
-      color: #333333;
+      color: $send-coin-input-color;
       font-weight: 500;
       height: 34px;
       padding: 1px 6px;
       width: 100%;
     }
     .tx-note {
-      border: 1px solid #c7ccd0;
+      border: 1px solid $color-medium-gray;
       border-radius: $border-radius-smaller;
       height: 34px;
       margin-top: 4px;
@@ -99,7 +109,7 @@
     width: 100%;
 
     .eq-sign {
-      color: #fc6538;
+      color: $send-coin-eq-sign-color;
       float: left;
       font-size: 1.8em;
       font-weight: 500;
@@ -112,13 +122,12 @@
   }
   .pop-form .btn-next,
   .pop-form .btn-confirm-tx {
+    @include proxima;
+    @include bold;
     border: 0 none;
     border-radius: $border-radius-smaller;
-    color: #fff;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-    font-family: 'Proxima Nova', sans-serif;
-    font-weight: 600;
-    color: #fff;
+    color: $color-white;
+    box-shadow: 0 0 2px 1px rgba-black(0.2);
     font-size: 1.075em;
     height: 34px;
     width: 100%;
@@ -138,10 +147,10 @@
       resize: both;
     }
     .tx-address-icon:before {
+      @include budicon;
       content: '\ea16';
-      font-family: 'budicon';
       font-size: 1.2em;
-      color: #FE450D;
+      color: $color-orange;
       display: block;
       position: absolute;
       right: 6px;
@@ -154,7 +163,7 @@
       margin: 0;
     }
     h4 {
-      color: #a2a3ac;
+      color: $send-coin-small-title-color;
       margin-bottom: 5px;
     }
     h5 {
@@ -163,7 +172,7 @@
     }
   }
   .pop-detail.pay-dtl p {
-    color: #37373a;
+    color: $send-coin-p-color;
     font-size: 1.1em;
   }
   .pop-detail.crncy.chk-crncy {
@@ -180,17 +189,17 @@
   }
   .pop-detail.send.check {
     h4 {
-      color: #a2a3ac;
+      color: $send-coin-small-title-color;
     }
     p {
-      color: #000000;
+      color: $color-black;
       font-size: 1em;
       letter-spacing: 1px;
       margin-top: 7px;
     }
   }
   .pop-detail.pay-dtl h4 {
-    color: #a2a3ac;
+    color: $send-coin-small-title-color;
   }
   .chk-crncy.crncy-rs h5 {
     margin-top: -1px;
@@ -205,11 +214,11 @@
     margin-top: 30px;
   }
   p.col-red {
-    color: #FF0000;
+    color: $color-red;
   }
   .pop-detail input[type="text"].validation-field-error {
-    background: #FFF5F5;
-    border-color: #FD2F2F;
+    background: $send-coin-input-error-bg-color;
+    border-color: $send-coin-input-error-border-color;
   }
 }
 .modal .modal-content {
@@ -226,8 +235,7 @@
     TODO: gracefull fallback(?) !
 */
 .send-modal.blur {
-  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
-  filter: blur(2px);
+  @include blur;
 }
 .send-coin-progress-overlay,
 .send-coin-success-overlay {
@@ -252,7 +260,7 @@
   bottom: 12.1%;
   left: 20%;
   max-width: 359px;
-  text-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 3px 5px rgba-black(0.25);
   font-size: 1.3em;
 
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
@@ -283,20 +291,20 @@
       margin-left: -6px;
       font-size: 3.5em;
       display: inline-block;
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      color: $color-white;
+      text-shadow: 0 1px 3px rgba-black(0.25);
     }
     .name {
       font-weight: normal;
       color: #fff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      text-shadow: 0 1px 3px rgba-black(0.25);
       position: relative;
       top: -15px;
       left: 19px;
     }
   }
   .balance {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 3px rgba-black(0.25);
   }
   .hd-right.balance {
     .balance-coin {
@@ -346,10 +354,10 @@
 }
 .modal-send-coin .bi_interface-arrow-left,
 .modal-add-coin-login .bi_interface-arrow-left {
-  color: #fff;
+  color: $color-white;
   font-size: 26px;
   margin-left: 10px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba-black(0.3);
   position: absolute;
   z-index: 100;
 }

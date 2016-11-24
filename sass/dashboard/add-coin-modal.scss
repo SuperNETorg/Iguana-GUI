@@ -31,108 +31,110 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .form-container.mdl.add-new-coin-form .form-content .btn-next {
   margin: 20px auto;
 }
-.coins-title {
-  font-size: 1.1em;
-  padding-top: 2em;
-  text-align: center;
-}
-.quick-search {
-  text-align: center;
-  padding-top: 34px;
-  padding-bottom: 20px;
-
-  .input.text {
-    width: 300px;
-    height: 34px;
-    border: none;
-    padding-left: 40px;
-    border-radius: $border-radius-smaller;
-  }
-  i.icon {
-    color: $color-medium-gray;
-    font-size: 1.2em;
-    position: absolute;
-    margin-top: 6px;
-    margin-left: 7px;
-  }
-}
-@mixin quick-search-placeholder {
-  font-size: 1.1em;
-  padding-top: 1px;
-}
-.quick-search .input.text::-webkit-input-placeholder {
-  @include quick-search-placeholder;
-}
-.quick-search .input.text:-moz-placeholder { /* Firefox 18- */
-  @include quick-search-placeholder;
-}
-.quick-search .input.text::-moz-placeholder {  /* Firefox 19+ */
-  @include quick-search-placeholder;
-}
-.quick-search .input.text:-ms-input-placeholder {
-  @include quick-search-placeholder;
-}
-.supported-coins-repeater {
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  text-align: center;
-  position: relative;
-
-  .coin {
-    @include cursor-pointer;
-    width: 11.5em;
-    height: 9em;
-    display: inline-block;
-    border-radius: $border-radius-small;
-    border: 2px solid transparent;
-    background: $color-white;
-    margin: 8px;
+.auth-add-coin-modal-container {
+  .coins-title {
+    font-size: 1.1em;
+    padding-top: 2em;
     text-align: center;
-    padding-top: 35px;
-    box-shadow: 0 2px 3px 2px rgba-black(0.07);
-    opacity: 1;
-    transition: opacity $transition-length;
+  }
+  .quick-search {
+    text-align: center;
+    padding-top: 34px;
+    padding-bottom: 20px;
 
-    .icon {
-      font-size: 2em;
-      color: $color-white;
-      padding: 11px;
-      border-radius: 50%;
+    .input.text {
+      width: 300px;
+      height: 34px;
+      border: none;
+      padding-left: 40px;
+      border-radius: $border-radius-smaller;
     }
-    .name {
-      padding-top: 16px;
-      color: $coin-repeater-coin-name-color;
-      font-size: 1.05em;
+    i.icon {
+      color: $color-medium-gray;
+      font-size: 1.2em;
+      position: absolute;
+      margin-top: 6px;
+      margin-left: 7px;
     }
   }
-  .coin.fade {
-    opacity: 0 !important; /* override opacity set in js */
-    transition: opacity $transition-length;
+  @mixin quick-search-placeholder {
+    font-size: 1.1em;
+    padding-top: 1px;
   }
-  .coin.active {
-    border: 2px solid rgb(255, 109, 54);
+  .quick-search .input.text::-webkit-input-placeholder {
+    @include quick-search-placeholder;
   }
-}
-.supported-coins-repeater.override-opacity .coin {
-  opacity: 1 !important; /* override opacity set in js */
-}
+  .quick-search .input.text:-moz-placeholder { /* Firefox 18- */
+    @include quick-search-placeholder;
+  }
+  .quick-search .input.text::-moz-placeholder {  /* Firefox 19+ */
+    @include quick-search-placeholder;
+  }
+  .quick-search .input.text:-ms-input-placeholder {
+    @include quick-search-placeholder;
+  }
+  .supported-coins-repeater {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    position: relative;
 
-/*
-  Icon colors
-  !important is required to override svg's white bg
- */
-.col-orange {
-  background-color: $color-add-coin-orange !important;
-}
-.col-breeze {
-  background-color: $color-add-coin-breeze !important;
-}
-.col-yellow {
-  background-color: $color-add-coin-yellow !important;
-}
-.col-light-blue {
-  background-color: $color-add-coin-light-blue !important;
+    .coin {
+      @include cursor-pointer;
+      width: 11.5em;
+      height: 9em;
+      display: inline-block;
+      border-radius: $border-radius-small;
+      border: 2px solid transparent;
+      background: $color-white;
+      margin: 8px;
+      text-align: center;
+      padding-top: 35px;
+      box-shadow: 0 2px 3px 2px rgba-black(0.07);
+      opacity: 1;
+      transition: opacity $transition-length;
+
+      .icon {
+        font-size: 2em;
+        color: $color-white;
+        padding: 11px;
+        border-radius: 50%;
+      }
+      .name {
+        padding-top: 16px;
+        color: $coin-repeater-coin-name-color;
+        font-size: 1.05em;
+      }
+    }
+    .coin.fade {
+      opacity: 0 !important; /* override opacity set in js */
+      transition: opacity $transition-length;
+    }
+    .coin.active {
+      border: 2px solid rgb(255, 109, 54);
+    }
+  }
+  .supported-coins-repeater.override-opacity .coin {
+    opacity: 1 !important; /* override opacity set in js */
+  }
+
+  /*
+    Icon colors
+    !important is required to override svg's white bg
+   */
+  .col-orange {
+    background-color: $color-add-coin-orange !important;
+  }
+  .col-breeze {
+    background-color: $color-add-coin-breeze !important;
+  }
+  .col-yellow {
+    background-color: $color-add-coin-yellow !important;
+  }
+  .col-light-blue {
+    background-color: $color-add-coin-light-blue !important;
+  }
 }
 .add-new-coin-form {
   z-index: 5000;

@@ -31,3 +31,16 @@
 @function rgba-black($opacity) {
   @return 'rgba(0, 0, 0, $opacity)';
 }
+
+@mixin bold {
+  font-weight: 600;
+}
+
+@mixin budicon {
+  font-family: 'budicon';
+}
+
+@mixin blur {
+  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  filter: blur(2px);
+}

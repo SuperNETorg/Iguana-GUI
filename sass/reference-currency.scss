@@ -5,6 +5,9 @@
 
 @import 'dev.scss';
 
+$reference-currency-tile-color: #FD5624;
+$reference-currency-tile-span-color: #D3D4D6;
+
 .reference-currency-main {
   padding-bottom: 40px;
 
@@ -28,7 +31,7 @@
       -webkit-padding-start: 0;
     }
     .flag-icon {
-      box-shadow: 0 1px 4px 0 #ccc;
+      box-shadow: 0 1px 4px 0 $color-default-gray;
       width: 43px;
       height: 32px;
       background-size: 100%;
@@ -45,8 +48,9 @@
         font-size: 20px;
         padding-bottom: 5px;
       }
+      $reference-currency-txamount: #898A94;
       .transaction-amount {
-        color: #898a94;
+        color: $reference-currency-txamount;
         font-weight: 500;
         font-size: 16px;
       }
@@ -55,8 +59,8 @@
       margin-top: 30px;
     }
     .country-li.country-li.active {
-      border: 2px solid #FD5624;
-      color: #FD5624;
+      border: 2px solid $reference-currency-tile-color;
+      color: $reference-currency-tile-color;
       box-shadow: none;
     }
     .currency-loop {
@@ -65,11 +69,11 @@
       text-align: center;
 
       .active .full-name {
-        color: #FD5624;
-        font-weight: 600;
+        @include bold;
+        color: $reference-currency-tile-color;
       }
       .country-li {
-        background-color: #fff;
+        background-color: $color-white;
         border-radius: $border-radius-small;
         list-style-type: none;
         text-align: center;
@@ -81,12 +85,12 @@
         display: table-cell;
         vertical-align: middle;
         float: left;
-        box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 3px 1px rgba-black(0.12);
         border: 2px solid transparent;
 
         span {
-          color: #d3d4d6;
-          font-weight: 600;
+          @include bold;
+          color: $reference-currency-tile-span-color;
         }
       }
     }
@@ -98,10 +102,10 @@
         padding: 7px;
       }
       .short-name {
+        @include bold;
         width: 100%;
         display: block;
         padding-top: 2px;
-        font-weight: 600;
       }
       .full-name {
         top: -2px;

@@ -5,6 +5,17 @@
 
 @import 'dev.scss';
 
+$receive-coin-text-selection-color: #8C8484;
+$receive-coin-share-title-color: #252528;
+$receive-coin-share-address-color: #2F2E2E;
+$receive-coin-button-bg-color: #FBFDFE;
+$receive-coin-button-color: #FD5630;
+$receive-coin-button-link-color: #FE6542;
+$receive-coin-amount-label-color: #423F3F;
+$receive-coin-unit-color: #83848E;
+$receive-coin-input-color: #2E3746;
+$receive-coin-eq-sign-color: #FE5C0D;
+
 #myModal {
   background: none;
 }
@@ -13,35 +24,35 @@
 
   .form-header {
     height: 60px;
-    color: #FFF;
+    color: $color-white;
     border-radius: $border-radius-smaller $border-radius-smaller 0 0;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px 0 rgba-black(0.2);
 
     .btn-close {
-      color: #fff;
+      color: $color-white;
       font-size: 20px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      text-shadow: 1px 1px 3px rgba-black(0.3);
       position: relative;
       top: 6px;
       left: 10px;
       z-index: 20;
     }
     .title {
-      font-family: 'Proxima Nova', sans-serif;
-      font-weight: 600;
+      @include proxima;
+      @include bold;
       font-size: 1.15em;
       text-align: center;
-      color: #fff;
+      color: $color-white;
       position: relative;
       top: 10px;
       z-index: 10;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      text-shadow: 0 1px 3px rgba-black(0.25);
     }
   }
   .close {
     float: left;
     opacity: 1;
-    color: #fff;
+    color: $color-white;
     text-shadow: none;
     font-weight: normal;
     font-size: 32px;
@@ -52,7 +63,7 @@
   }
   .modal-title {
     text-align: center;
-    color: #fff;
+    color: $color-white;
     right: 10px;
     position: relative;
     font-size: 20px;
@@ -68,7 +79,7 @@
     background: radial-gradient(to top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* Standard syntax (must be last) */
   }
   .modal-body {
-    background-color: #f5f8fb;
+    background-color: $color-modal-bg;
 
     .share-address-section .btn {
       display: inline-block;
@@ -82,7 +93,7 @@
   box-shadow: 0 2px 40px rgba(125, 125, 125, 0.3)
 }
 .text-section {
-  color: #8c8484;
+  color: $receive-coin-text-selection-color;
   font-weight: 500;
   font-size: 14px;
   font-family: inherit;
@@ -97,16 +108,16 @@
   margin: 0 auto;
 
   h4 {
+    @include bold;
     font-size: 18px;
-    font-weight: 600;
     margin-bottom: 4px;
-    color: #252528;
+    color: $receive-coin-share-title-color;
     word-break: break-word;
     padding-top: -18px;
     margin-top: 2px;
   }
   .my-address {
-    color: #2f2e2e;
+    color: $receive-coin-share-address-color;
     font-size: 1.1em;
     padding: 34px 0 4px 0;
   }
@@ -124,36 +135,36 @@
 
   .copy-btn,
   .share-btn {
-    background-color: #fbfdfe;
-    color: #fd5630;
-    font-weight: 600;
-    border: 1px solid #fbfdfe;
+    @include bold;
+    background-color: $receive-coin-button-bg-color;
+    color: $receive-coin-button-color;
+    border: 1px solid $receive-coin-button-bg-color;
     border-radius: $border-radius-smaller;
-    -webkit-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
-    -moz-box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
-    box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.14);
+    -webkit-box-shadow: 0 3px 14px -1px rgba-black(0.14);
+    -moz-box-shadow: 0 3px 14px -1px rgba-black(0.14);
+    box-shadow: 0 3px 14px -1px rgba-black(0.14);
   }
   .copy-btn:focus,
   .share-btn:focus {
-    border: 0 solid #fbfdfe;
+    border: 0 solid $receive-coin-button-bg-color;
     outline: none;
   }
   .copy-btn a {
     text-decoration: none;
-    color: #fe6542;
+    color: $receive-coin-button-link-color;
   }
 }
 .modal-backdrop.in {
   opacity: 0.8;
 }
 .modal-backdrop {
-  background-color: #fff;
+  background-color: $color-white;
 }
 .qr-code {
   clear: both;
   width: 210px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: $color-white;
   position: relative;
   top: 16px;
 
@@ -168,7 +179,7 @@
   margin-top: 46px;
 
   .amount-label-span {
-    color: #423f3f;
+    color: $receive-coin-amount-label-color;
     font-size: 16px;
     font-family: inherit;
   }
@@ -184,17 +195,17 @@
     height: 34px;
     padding: 4px;
     border-radius: $border-radius-smaller;
-    border: 1px solid #ccc;
+    border: 1px solid $color-default-gray;
   }
   .equals-sign {
-    color: #fe5c0d;
+    @include bold;
+    color: $receive-coin-eq-sign-color;
     margin: 5px 4px;
     display: block;
     font-size: 1.5em;
-    font-weight: 600;
   }
   .unit {
-    color: #83848E;
+    color: $receive-coin-unit-color;
     font-size: 1.065em;
   }
   .unit-currency {
@@ -204,7 +215,7 @@
   input[type="text"] {
     padding: 6px;
     padding-right: 42px;
-    color: #2E3746;
+    color: $receive-coin-input-color;
     font-size: 1.065em;
   }
 }
@@ -220,16 +231,16 @@ input[type="text"].crypto-currency.currency-coin {
   top: 0;
 }
 .currency-input input[type="text"]::-webkit-input-placeholder {
-  color: #2E3746;
+  color: $receive-coin-input-color;
 }
 .currency-input input[type="text"]:-moz-placeholder { /* Firefox 18- */
-  color: #2E3746;
+  color: $receive-coin-input-color;
 }
 .currency-input input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
-  color: #2E3746;
+  color: $receive-coin-input-color;
 }
 .currency-input input[type="text"]:-ms-input-placeholder {
-  color: #2E3746;
+  color: $receive-coin-input-color;
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,

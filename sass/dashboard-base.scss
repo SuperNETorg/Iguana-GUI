@@ -5,13 +5,17 @@
 
 @import 'dev.scss';
 
+$dashboard-topbar-bg-color: #0E101C;
+$dashboard-topbar-item-color: #8A8B93;
+$dashboard-balance-block-label-color: #95969F;
+
 .dashboard.blur,
 body.modal-open .dashboard {
   -webkit-filter: blur(2px);
   filter: blur(2px);
 }
 body.dashboard-page {
-  background: #F5F8FB;
+  background: $color-modal-bg;
 }
 .dashboard-main .row,
 .container-fluid.dashboard-main {
@@ -27,23 +31,23 @@ body.dashboard-page {
   }
   .top {
     text-align: center;
-    background: #0E101C;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
-    color: #fff;
+    background: $dashboard-topbar-bg-color;
+    box-shadow: 0 4px 5px 0 rgba-black(0.2);
+    color: $color-white;
     border-radius: 0;
     margin-bottom: 0;
 
     .left {
+      @include bold;
       font-size: 1.6em;
-      font-weight: 600;
       position: absolute;
       top: 15px;
       left: 30px;
       display: inline-block;
     }
     .right {
+      @include bold;
       font-size: 1em;
-      font-weight: 600;
       position: absolute;
       right: 30px;
       top: 20px;
@@ -58,13 +62,13 @@ body.dashboard-page {
     white-space: nowrap;
 
     .item {
+      @include bold;
       font-size: 1.05em;
-      font-weight: 600;
       margin: 0 5px;
       top: 9px;
-      color: #8A8B93;
+      color: $dashboard-topbar-item-color;
       z-index: 100;
-      text-shadow: 0 0 0 #8A8B93;
+      text-shadow: 0 0 0 $dashboard-topbar-item-color;
       display: inline-block;
 
       .text {
@@ -82,12 +86,12 @@ body.dashboard-page {
       }
     }
     .item.active {
-      color: #fff;
-      font-weight: 600;
+      @include bold;
+      color: $color-white;
       text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
 
       .border {
-        background: #FE450D;
+        background: $color-orange;
         box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
       }
     }
@@ -117,14 +121,14 @@ body.dashboard-page {
   }
   .balance-block {
     .label {
-      color: #95969F;
+      color: $dashboard-balance-block-label-color;
       font-size: 0.92em;
       font-weight: normal;
       padding: 0;
     }
     .balance {
+      @include bold;
       font-size: 1.7em;
-      font-weight: 600;
 
       .value {
         padding-right: 5px;
@@ -139,12 +143,12 @@ body.dashboard-page {
     padding-right: 5px;
   }
   .active-coin-balance-currency {
+    @include bold;
     font-size: 1.1em;
-    font-weight: 600;
     padding-left: 30px;
     position: relative;
     top: -3px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 3px rgba-black(0.25);
 
     .value {
       padding-right: 5px;
@@ -152,7 +156,7 @@ body.dashboard-page {
   }
   .btn.disabled,
   .btn.disabled:focus {
-    pointer-events: none;
+    @include unclickable;
   }
   .form-container.add-new-coin-form {
     background: none;
@@ -163,27 +167,26 @@ body.dashboard-page {
   }
 }
 .lnk-logout {
+  @include bold;
   margin-top: 16px;
   margin-bottom: 10px;
   font-size: 1em;
-  font-weight: 600;
   right: 15px;
   position: absolute;
 }
+@mixin nav-buttons($position) {
+  position: absolute;
+  #{$position}: 0;
+  height: 50%;
+  width: 10px;
+  top: 50%;
+}
 .nav-buttons {
   .nav-left {
-    position: absolute;
-    left: 0;
-    height: 50%;
-    width: 10px;
-    top: 50%;
+    @include nav-buttons(left);
   }
   .nav-right {
-    position: absolute;
-    right: 0;
-    height: 50%;
-    width: 10px;
-    top: 50%;
+    @include nav-buttons(right);
   }
 }
 .block {
@@ -232,7 +235,7 @@ body.dashboard-page {
   font-weight: 700;
   padding-left: 30px;
   padding-top: 25px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 3px rgba-black(0.25);
 }
 .navbar-inverse {
   z-index: 1000;
@@ -241,9 +244,9 @@ body.dashboard-page {
   top: 0;
 
   .navbar-brand {
-    color: #fff;
+    @include bold;
+    color: $color-white;
     font-size: 1.6em;
-    font-weight: 600;
     padding: 17px 15px;
   }
 }
