@@ -1,0 +1,16 @@
+{
+  "name": "Iguana",
+  "description": "Welcome to Iguana! Lorem Ipsum. Lorem Ipsum. Lorem Ipsum. ",
+  "version": "0.1.1",
+  "manifest_version": 2,
+  "permissions": [
+    "experimental",
+    "storage"
+  ],
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons": { "16": "chrome-app/16.png", "128": "chrome-app/128.png" }
+}

@@ -22,6 +22,15 @@ angular.module('IguanaGUIApp', [
   'IguanaGUIApp.controllers'
 ])
 .config(function($stateProvider, $urlRouterProvider) {
+  //ToDo history provider
+  /*$provider.decorator('$window', function($delegate) {
+    Object.defineProperty($delegate, 'history',
+      {get: function () {
+        return null;
+      }});
+    return $delegate;
+  });*/
+
   $stateProvider
     .state('login', {
       url: '/login',
