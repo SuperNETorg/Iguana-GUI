@@ -7,97 +7,92 @@
 
 // dependencies
 var gulp = require('gulp'),
-    injectPartials = require('gulp-inject-partials'),
-    rimraf = require('gulp-rimraf'),
     gutil = require('gulp-util'),
-    sass = require('gulp-sass'),
-    cleanCSS = require('gulp-clean-css'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    replace = require('gulp-replace'),
     zip = require('gulp-zip'),
     es = require('event-stream'),
-    fs = require('fs'),
+    runSequence = require('run-sequence'),
     // task files
-    jsExports = require('./gulp-tasks/js-task.js'),
-    htmlExports = require('./gulp-tasks/html-task.js'),
-    cssExports = require('./gulp-tasks/css-task.js'),
-    fontExports = require('./gulp-tasks/font-task.js'),
-    cleanExports = require('./gulp-tasks/clean-task.js')
-    pathsExports = require('./gulp-tasks/paths.js');
+    _exports = {
+      js: require('./gulp-tasks/js-task.js'),
+      html: require('./gulp-tasks/html-task.js'),
+      css: require('./gulp-tasks/css-task.js'),
+      font: require('./gulp-tasks/font-task.js'),
+      clean: require('./gulp-tasks/clean-task.js'),
+      paths: require('./gulp-tasks/paths.js')
+    };
 
 var buildMode,
     buildModeModifier,
-    paths = pathsExports.getPaths();
+    paths = _exports.paths.getPaths();
 
 function compress() {
-  return
-    gulp.src(paths.build[buildMode] + '/**/*')
-        .pipe(zip('latest.zip'))
-        .pipe(gulp.dest(''));
+  return gulp
+         .src(paths.build[buildMode] + '/**/*')
+         .pipe(zip('latest.zip'))
+         .pipe(gulp.dest(''));
 }
 
-gulp.task('devStyle', ['cleanIndex'], function() {
-  cssExports.devInjectStyles(buildMode, paths);
+gulp.task('devStyle', function() {
+  return _exports.css.devInjectStyles(buildMode);
 });
 
-gulp.task('indexDev', ['devStyle'], function() {
-  htmlExports.indexHTML(buildMode, buildModeModifier, paths);
+gulp.task('indexDev', function() {
+  return _exports.html.indexHTML(buildMode, buildModeModifier);
 });
 
-gulp.task('index', ['cleanIndex'], function() {
-  html.Exports.indexHTML(buildMode, buildModeModifier, paths);
+gulp.task('index', function() {
+  return _exports.html.indexHTML(buildMode, buildModeModifier);
 });
 
-gulp.task('scss', ['scss:css'], function() {
-  cssExports.scss(buildMode, paths);
+gulp.task('scss', function() {
+  return _exports.css.scss(buildMode);
 });
 
 gulp.task('scss:css', function() {
-  cssExports.css(buildMode, paths);
+  return _exports.css.css(buildMode);
 });
 
 gulp.task('compress', function() {
   compress();
 });
 
-gulp.task('copyJS', ['cleanJS'], function() {
-  jsExports.copyJS(buildMode, paths);
+gulp.task('copyJS', function() {
+  return _exports.js.copyJS(buildMode);
 });
 
-gulp.task('copyFonts', ['cleanFonts'], function() {
-  fontExports.copyFontsESMerge(buildMode, paths);
+gulp.task('copyFonts', function() {
+  return _exports.font.copyFontsESMerge(buildMode);
 });
 
 gulp.task('cleanCSS', function() {
-  cleanExports.cleanCSS(buildMode, paths);
+  return _exports.clean.cleanCSS(buildMode);
 });
 
 gulp.task('cleanJS', function() {
-  cleanExports.cleanJS(buildMode, paths);
+  return _exports.clean.cleanJS(buildMode);
 });
 
 gulp.task('cleanFonts', function() {
-  cleanExports.cleanFonts(buildMode, paths);
+  return _exports.clean.cleanFonts(buildMode);
 });
 
 gulp.task('cleanIndex', function() {
-  cleanExports.cleanIndex(buildMode, paths);
+  return _exports.clean.cleanIndex(buildMode);
 });
 
 gulp.task('cleanAllProd', function() {
   buildMode = 'prod';
-  cleanExports.cleanAllProd(buildMode, paths);
+  return _exports.clean.cleanAllProd(buildMode);
 });
 
 gulp.task('cleanProdCompact', ['prod-compact-index'], function() {
   buildMode = 'prod';
-  cleanExports.cleanProdCompact(buildMode, paths);
+  return _exports.clean.cleanProdCompact(buildMode);
 });
 
 gulp.task('cleanAllDev', function() {
   buildMode = 'dev';
-  cleanExports.cleanAllDev(buildMode, paths);
+  return _exports.clean.cleanAllDev(buildMode);
 });
 
 gulp.task('default', function() {
@@ -110,36 +105,44 @@ gulp.task('watch:dev', function() {
   gulp.watch(paths.styles, ['scss']);
 });
 
-gulp.task('dev', ['cleanAllDev'], function() {
+gulp.task('dev', function() {
   buildMode = 'dev';
-  gulp.start(
+
+  runSequence(
+    'cleanAllDev',
     'copyJS',
+    'scss:css',
     'scss',
+    'devStyle',
     'indexDev',
     'copyFonts',
     'watch:dev'
   );
 });
 
-gulp.task('prodAssets', ['cleanAllProd'], function () {
+gulp.task('prodAssets', function() {
   buildMode = 'prod';
 
-  return
-    es.merge(
-      fontExports.copyFonts(buildMode, paths),
-      cssExports.css(buildMode, paths),
-      cssExports.scss(buildMode, paths),
-      jsExports.copyJS(buildMode, paths),
-      jsExports.copyProdConfigurableJS(buildMode, paths)
-    );
+  return es.merge(
+           _exports.font.copyFonts(buildMode),
+           _exports.css.css(buildMode),
+           _exports.css.scss(buildMode),
+           _exports.js.copyJS(buildMode),
+           _exports.js.copyProdConfigurableJS(buildMode)
+         );
 });
 
-gulp.task('prod', ['prodAssets'], function () {
+gulp.task('prod', function() {
   buildMode = 'prod';
-  gulp.start('index');
+
+  runSequence(
+    'cleanAllProd',
+    'prodAssets',
+    'index'
+  );
 });
 
-gulp.task('prod-compact-index', ['prodAssets'], function () {
+gulp.task('prod-compact-index', ['prodAssets'], function() {
   buildMode = 'prod';
   buildModeModifier = 'compact';
   gulp.start('index');

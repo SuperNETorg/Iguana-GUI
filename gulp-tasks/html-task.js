@@ -1,17 +1,11 @@
 var gulp = require('gulp'),
     injectPartials = require('gulp-inject-partials'),
-    rimraf = require('gulp-rimraf'),
-    gutil = require('gulp-util'),
-    sass = require('gulp-sass'),
-    cleanCSS = require('gulp-clean-css'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
     replace = require('gulp-replace'),
-    zip = require('gulp-zip'),
-    es = require('event-stream'),
-    fs = require('fs');
+    pathsExports = require('../gulp-tasks/paths.js');
 
-exports.indexHTML = function(buildMode, buildModeModifier, paths) {
+paths = pathsExports.getPaths();
+
+exports.indexHTML = function(buildMode, buildModeModifier) {
   var prodInsertCSS,
       prodInsertJS;
 
@@ -35,13 +29,13 @@ exports.indexHTML = function(buildMode, buildModeModifier, paths) {
                     '<link rel="stylesheet" href="css/responsive/dashboard.css">\n';
   }
 
-  return
-    gulp.src('index.html')
-        .pipe(replace('<!-- partial:insertJS --><!-- partial -->', buildMode === 'dev' ? '<!-- partial:jsIncludes.js --><!-- partial -->' : prodInsertJS))
-        .pipe(replace('<style><!-- partial:insertCSS --><!-- partial --></style>',
-                      buildMode === 'dev' ? '<style>\n<!-- partial:' + paths.build[buildMode] + '/css/style.scss --><!-- partial -->\n</style><link rel="stylesheet" href="css/responsive/auth.css"><link rel="stylesheet" href="css/responsive/dashboard.css">' : prodInsertCSS))
-        .pipe(injectPartials({
-          removeTags: true
-        }))
-        .pipe(gulp.dest(paths.build[buildMode]));
+  return gulp
+         .src('index.html')
+         .pipe(replace('<!-- partial:insertJS --><!-- partial -->', buildMode === 'dev' ? '<!-- partial:jsIncludes.js --><!-- partial -->' : prodInsertJS))
+         .pipe(replace('<style><!-- partial:insertCSS --><!-- partial --></style>',
+                       buildMode === 'dev' ? '<style>\n<!-- partial:' + paths.build[buildMode] + '/css/style.scss --><!-- partial -->\n</style><link rel="stylesheet" href="css/responsive/auth.css"><link rel="stylesheet" href="css/responsive/dashboard.css">' : prodInsertCSS))
+         .pipe(injectPartials({
+           removeTags: true
+         }))
+         .pipe(gulp.dest(paths.build[buildMode]));
 }
