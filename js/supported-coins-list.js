@@ -129,16 +129,9 @@ var supportedCoinsList = {
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
   },
-  'xrp': {
-    'name': 'Ripple',
-    'portp2p': 5005, // https://github.com/ripple/rippled/blob/release/doc/rippled-example.cfg#L907-L930
-    'user': 'user', // add your rpc pair here
-    'pass': 'pass',
-    'currentBlockHeightExtSource': ''
-  },
-  'abc': {
-    'name': 'Abundance',
-    'portp2p': 32531,
+  'dem': {
+    'name': 'Deutsche eMark',
+    'portp2p': 6666,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
@@ -165,8 +158,8 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   },
   'lmc': {
-    'name': 'Lemoncoin',
-    'portp2p': 3338,
+    'name': 'Lomocoin',
+    'portp2p': 6802,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
@@ -188,6 +181,13 @@ var supportedCoinsList = {
   'nlg': {
     'name': 'Gulden',
     'portp2p': 9232,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'blk': {
+    'name': 'Blackcoin',
+    'portp2p': 15715,
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
