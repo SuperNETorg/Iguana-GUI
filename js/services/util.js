@@ -5,7 +5,6 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$uibModal',
   '$rootScope',
-  'clipboard',
   '$timeout',
   '$interval',
   '$http',
@@ -16,7 +15,7 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   '$localStorage',
-  function($storage, $uibModal, $rootScope, clipboard, $timeout, $interval,
+  function($storage, $uibModal, $rootScope, $timeout, $interval,
            $http, $q, $document, $window, $state, $filter, $message) {
 
     var self = this;
@@ -64,16 +63,27 @@ angular.module('IguanaGUIApp')
       return result;
     };
 
-    this.addCopyToClipboardFromElement = function(element, elementDisplayName) {
-      // TODO: move to signup controller
+    this.execCommandCopy = function(element, elementDisplayName) {
+
       if (!this.isExecCopyFailed) {
         var message,
-            color;
+            color,
+            temp = angular.element('<input>');
+        elementDisplayName = (elementDisplayName ? elementDisplayName : '');
+
+        if (element[0] instanceof HTMLElement) {
+          element = element.text();
+        }
+
+        angular.element(document.body).append(temp);
+        temp[0].value = element;
+        temp[0].select();
 
         try {
-          clipboard.copyText(element.html());
+          document.execCommand('copy');
+
           message = elementDisplayName + ' ' +
-            $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' ' + element.html();
+            $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
           color = 'blue';
         } catch (e) {
           this.isExecCopyFailed = true;
@@ -81,6 +91,7 @@ angular.module('IguanaGUIApp')
           color = 'red';
         }
 
+        temp.remove();
         $message.ngPrepMessageModal(message, color);
       }
     };

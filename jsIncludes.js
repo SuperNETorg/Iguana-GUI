@@ -10,7 +10,6 @@
 <script type="text/javascript" src="js/angular/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="js/angular/angular-animate.js"></script>
 <script type="text/javascript" src="js/angular/angular-storage.min.js"></script>
-<script type="text/javascript" src="js/angular/angular-clipboard.js"></script>
 <script type="text/javascript" src="js/angular/jquery.min.js"></script>
 <!-- libs -->
 <script type="text/javascript" src="js/libs/ui-bootstrap/ui-bootstrap.js"></script>

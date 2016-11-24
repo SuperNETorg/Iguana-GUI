@@ -69,7 +69,7 @@ angular.module('IguanaGUIApp')
     }
 
     function copyPassphraseWord($event) {
-      util.addCopyToClipboardFromElement(angular.element($event.target), $filter('lang')('LOGIN.PASSPHRASE'));
+      util.execCommandCopy(angular.element($event.target), $filter('lang')('LOGIN.PASSPHRASE'));
     }
 
     function pastPassphraseWord() {

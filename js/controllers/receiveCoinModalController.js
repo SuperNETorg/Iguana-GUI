@@ -35,13 +35,13 @@ angular.module('IguanaGUIApp')
       if ($scope.receiveCoin.coinAmount)
         $scope.receiveCoin.currencyAmount = coinRate * $scope.receiveCoin.coinAmount;
         $scope.receiveCoin.currencyAmount = $filter('decimalPlacesFormat')($scope.receiveCoin.currencyAmount, 'currency');
-    }
+    };
 
     $scope.currencyAmountKeying = function() {
       if ($scope.receiveCoin.currencyAmount && $scope.receiveCoin.currencyAmount > 0)
         $scope.receiveCoin.coinAmount = $scope.receiveCoin.currencyAmount / coinRate;
         $scope.receiveCoin.coinAmount = $filter('decimalPlacesFormat')($scope.receiveCoin.coinAmount, 'coin');
-    }
+    };
 
     function getReceiveCoinAddress() {
       var coinAccountAddress = $api.getAccountAddress(_activeCoin, defaultAccount);
@@ -61,25 +61,12 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.copyAddressToClipboard = function() {
-      var temp = angular.element('<input>');
-
-      angular.element(document.body).append(temp);
-      temp[0].value = $scope.receiveCoin.address;
-      temp[0].select();
-
-      try {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.ADDRESS_IS_COPIED'), 'blue');
-        document.execCommand('copy');
-      } catch(err) {
-        $message.ngPrepMessageModal($filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED_ADDRESS'), 'red');
-      }
-
-      temp.remove();
-    }
+      util.execCommandCopy($scope.receiveCoin.address, 'Address')
+    };
 
     $scope.close = function() {
       $uibModalInstance.dismiss();
-    }
+    };
 
     $scope.$on('$destroy', function() {
       util.bodyBlurOff();

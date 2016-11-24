@@ -19,8 +19,7 @@ angular.module('IguanaGUIApp.controllers', [
 angular.module('IguanaGUIApp', [
   'ui.router',
   'ngSanitize',
-  'IguanaGUIApp.controllers',
-  'angular-clipboard'
+  'IguanaGUIApp.controllers'
 ])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
