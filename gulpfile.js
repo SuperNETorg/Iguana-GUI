@@ -85,7 +85,7 @@ gulp.task('cleanAllProd', function() {
   return _exports.clean.cleanAllProd(buildMode);
 });
 
-gulp.task('cleanProdCompact', ['prod-compact-index'], function() {
+gulp.task('cleanProdCompact', function() {
   buildMode = 'prod';
   return _exports.clean.cleanProdCompact(buildMode);
 });
@@ -142,16 +142,16 @@ gulp.task('prod', function() {
   );
 });
 
-gulp.task('prod-compact-index', ['prodAssets'], function() {
+gulp.task('zip', function() {
   buildMode = 'prod';
   buildModeModifier = 'compact';
-  gulp.start('index');
-});
 
-gulp.task('prod-compact', ['cleanProdCompact']);
-
-gulp.task('zip', ['prod-compact'], function() {
-  compress();
+  runSequence(
+    'prodAssets',
+    'index',
+    'cleanProdCompact',
+    'compress'
+  );
 });
 
 gulp.task('clean:dev', function() {
