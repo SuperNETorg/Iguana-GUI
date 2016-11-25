@@ -5,7 +5,12 @@ var paths = {
       fonts: 'fonts/**/*',
       build: {
         dev: 'compiled/dev',
-        prod: 'compiled/prod'
+        prod: 'compiled/prod',
+        chrome: 'chrome-app/app'
+      },
+      chrome:{
+        buildMode:'./**/*',
+        path:'chrome-app/app'
       },
       configurable: {
         js: [

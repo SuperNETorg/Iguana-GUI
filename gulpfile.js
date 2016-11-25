@@ -90,6 +90,15 @@ gulp.task('cleanProdCompact', function() {
   return _exports.clean.cleanProdCompact(buildMode);
 });
 
+gulp.task('chromeApp', function() {
+  buildMode = 'chrome';
+  chromeApp.createChromeApp(buildMode, paths);
+});
+
+gulp.task('cleanChromeApp', function() {
+  chromeApp.cleanChromeApp(paths.chrome['path']);
+});
+
 gulp.task('cleanAllDev', function() {
   buildMode = 'dev';
   return _exports.clean.cleanAllDev(buildMode);
