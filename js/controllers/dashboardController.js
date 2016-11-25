@@ -158,7 +158,6 @@ angular.module('IguanaGUIApp')
         });
       };
 
-      util.initTopNavBar();
       updateDashboardView(settings.ratesUpdateTimeout);
 
       $(window).resize(function() {

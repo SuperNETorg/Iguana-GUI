@@ -60,6 +60,9 @@ body.dashboard-page {
     float: none;
     vertical-align: top;
     white-space: nowrap;
+    -webkit-transition: margin 400ms;
+    -moz-transition: margin 400ms;
+    transition: margin 400ms;
 
     .item {
       @include bold;
@@ -180,6 +183,7 @@ body.dashboard-page {
   height: 50%;
   width: 10px;
   top: 50%;
+  z-index: 10000;
 }
 .nav-buttons {
   .nav-left {

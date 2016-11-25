@@ -7,7 +7,7 @@
           'DASHBOARD.LOGOUT' | lang }}</div>
       </div>
       <div class="top" id="top-menu">
-        <ul class="nav navbar-nav top-menu">
+        <ul class="nav navbar-nav top-menu" ng-style="getNavbarStyle()">
           <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' }">
             <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
             <div class="border"></div>
@@ -26,8 +26,8 @@
           </li>
         </ul>
         <div class="nav-buttons">
-          <div class="nav-left"></div>
-          <div class="nav-right"></div>
+          <div class="nav-left" ng-click="clickLeft($event)"></div>
+          <div class="nav-right" ng-click="clickRight($event)"></div>
         </div>
       </div>
     </div>
