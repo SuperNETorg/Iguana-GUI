@@ -52,12 +52,26 @@ gulp.task('scss:css', function() {
   return _exports.css.css(buildMode);
 });
 
+gulp.task('cssModifyCryptocoins', function() {
+  return _exports.css.cssModifyCryptocoins(buildMode);
+});
+
+gulp.task('cssModifyProxima', function() {
+  return _exports.css.cssModifyProxima(buildMode);
+});
+
 gulp.task('compress', function() {
   compress();
 });
 
-gulp.task('copyJS', function() {
+gulp.task('copyCoreJS', function() {
+  buildMode = 'dev';
   return _exports.js.copyJS(buildMode);
+});
+
+gulp.task('copyBowerJS', function() {
+  buildMode = 'dev';
+  return _exports.js.copyBowerJS(buildMode);
 });
 
 gulp.task('copyFonts', function() {
@@ -110,8 +124,8 @@ gulp.task('default', function() {
 
 gulp.task('watch:dev', function() {
   gulp.watch(paths.partials, ['index']);
-  gulp.watch(paths.js, ['copyJS']);
-  gulp.watch(paths.styles, ['scss']);
+  gulp.watch(paths.js.default, ['copyCoreJS']);
+  gulp.watch(paths.styles.default, ['scss', 'scss:css']);
 });
 
 gulp.task('dev', function() {
@@ -119,8 +133,11 @@ gulp.task('dev', function() {
 
   runSequence(
     'cleanAllDev',
-    'copyJS',
+    'copyCoreJS',
+    'copyBowerJS',
     'scss:css',
+    'cssModifyCryptocoins',
+    'cssModifyProxima',
     'scss',
     'devStyle',
     'indexDev',
@@ -161,9 +178,4 @@ gulp.task('zip', function() {
     'cleanProdCompact',
     'compress'
   );
-});
-
-gulp.task('clean:dev', function() {
-  buildMode = 'dev';
-  gulp.start('cleanAll');
 });

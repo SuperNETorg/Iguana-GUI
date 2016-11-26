@@ -5,16 +5,14 @@
 <script type="text/javascript" src="js/lang/en.js"></script>
 <script type="text/javascript" src="js/iguana-add-coin-list.js"></script>
 <!-- angular -->
-<script type="text/javascript" src="js/angular/angular.min.js"></script>
-<script type="text/javascript" src="js/angular/angular-ui-router.min.js"></script>
-<script type="text/javascript" src="js/angular/angular-sanitize.min.js"></script>
-<script type="text/javascript" src="js/angular/angular-animate.js"></script>
-<script type="text/javascript" src="js/angular/angular-storage.min.js"></script>
-<script type="text/javascript" src="js/angular/jquery.min.js"></script>
-<!-- libs -->
-<script type="text/javascript" src="js/libs/ui-bootstrap/ui-bootstrap.js"></script>
-<script type="text/javascript" src="js/libs/kjua-0.1.1.min.js"></script>
-<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/angular.js" omit="true"></script>
+<script type="text/javascript" src="js/angular-ui-router.js" omit="true"></script>
+<script type="text/javascript" src="js/angular-sanitize.js" omit="true"></script>
+<script type="text/javascript" src="js/angular-animate.js" omit="true"></script>
+<script type="text/javascript" src="js/ngStorage.js" omit="true"></script>
+<script type="text/javascript" src="js/jquery.js" omit="true"></script>
+<script type="text/javascript" src="js/ui-bootstrap-tpls.js" omit="true"></script>
+<script type="text/javascript" src="js/kjua.min.js" omit="true"></script>
 <script type="text/javascript" src="js/app.js"></script>
 <!-- directives -->
 <script type="text/javascript" src="js/directives/spinner.js"></script>

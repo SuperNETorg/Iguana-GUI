@@ -3,7 +3,7 @@
 /******************************************************************************
  * Copyright © 2016 The Waves Core Developers.                                *
  *                                                                            *
- * See the LICENSE files at                                                                                             *
+ * See the LICENSE files at                                                   *
  * the top-level directory of this distribution for the individual copyright  *
  * holder information and the developer policies on copyright and licensing.  *
  *                                                                            *

@@ -7,16 +7,18 @@
  *  Common styling
  */
 
-@import 'bootstrap.min';
-@import 'fonts/common-proxima-b-r-font'; /* proxima-nova font */
+@import 'bootstrap';
+/* fonts */
+@import 'cryptocoins';
+@import 'iguana-font-coins';
+@import 'proxima-nova';
+@import 'fonts/budicon.min';
+@import 'fonts/flag-icon';
+/* fonts end 8*/
 @import 'common';
 @import 'message-modal';
 @import 'loader';
 @import 'modal';
-@import 'fonts/cryptocoins.min';
-@import 'fonts/cryptocoins-extra';
-@import 'fonts/budicon.min';
-@import 'fonts/flag-icon.min';
 
 /*
  *  Page specific styling

@@ -31,7 +31,9 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .form-container.mdl.add-new-coin-form .form-content .btn-next {
   margin: 20px auto;
 }
-.auth-add-coin-modal-container {
+.auth-add-coin-modal-container,
+.auth-add-coin-modal,
+.coin-select-modal {
   .coins-title {
     font-size: 1.1em;
     padding-top: 2em;
