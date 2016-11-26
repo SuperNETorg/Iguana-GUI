@@ -44,6 +44,24 @@ exports.cleanAllProd = function(buildMode) {
          .pipe(rimraf());
 }
 
+exports.cleanProdOnEnd = function(buildMode) {
+  console.log([
+            paths.build[buildMode] + '/css',
+            paths.build[buildMode] + '/js',
+            '!' + paths.build[buildMode] + '/' + paths.configurable.js[0],
+            '!' + paths.build[buildMode] + '/' + paths.configurable.js[1],
+            '!' + paths.build[buildMode] + '/css/responsive'
+         ]);
+  return gulp
+         .src([
+            paths.build[buildMode] + '/css',
+            paths.build[buildMode] + '/js',
+         ], {
+           read: false
+         })
+         .pipe(rimraf());
+}
+
 exports.cleanProdCompact = function(buildMode) {
   return gulp
          .src([

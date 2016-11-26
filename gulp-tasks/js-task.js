@@ -14,22 +14,33 @@ function initJSIncludesArray(buildMode) {
   splitData.pop();
 
   for (var i=0; i < splitData.length; i++) {
+    var isBower = splitData[i].indexOf('omit=') > -1 ? true : false;
+
     if (splitData[i].indexOf(paths.configurable.js[0]) === -1 &&
         splitData[i].indexOf(paths.configurable.js[1]) === -1 &&
         splitData[i].indexOf(paths.omit[buildMode].js[0]) === -1 &&
-        splitData[i].indexOf('omit=') === -1) {
+        splitData[i].indexOf(buildMode === 'dev' ? 'omit=' : 'null') === -1) {
       splitData[i] = splitData[i].replace('\n<script type="text/javascript" src="', '')
                                  .replace(/<!--.*-->/, '')
                                  .replace('\n', '')
-                                 .replace('">', '');
+                                 .replace('">', '')
+                                 .replace('" omit="true', '');
+      if (isBower && buildMode !== 'dev') {
+        splitData[i] = paths.build[buildMode] + '/' + splitData[i];
+        splitData[i] = splitData[i].replace('.js', '.min.js');
+      } else {
+        splitData[i] = paths.build[buildMode] + '/' + splitData[i];
+      }
     } else {
       delete splitData[i];
     }
   }
 
-  splitData.filter(function(item) {
-    return item != undefined;
-  }).join();
+  splitData = splitData.filter(function(item) {
+    if (item !== undefined) {
+      return item;
+    }
+  });
 
   return splitData;
 }
@@ -37,13 +48,25 @@ function initJSIncludesArray(buildMode) {
 exports.copyJS = function(buildMode) {
   paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
 
-  if (buildMode === 'dev') {
-    return gulp
-           .src(paths.js.default)
-           .pipe(gulp.dest(paths.build[buildMode] + '/js'));
-  } else {
-    var jsIncludesArray = initJSIncludesArray(buildMode);
+  return gulp
+         .src(paths.js.default)
+         .pipe(gulp.dest(paths.build[buildMode] + '/js'));
+}
 
+exports.copyBowerJS = function(buildMode) {
+  paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
+
+  return gulp
+         .src(paths.js.extend)
+         .pipe(gulp.dest(paths.build[buildMode] + '/js'));
+}
+
+exports.compressJS = function(buildMode, buildModeModifier) {
+  paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
+
+  var jsIncludesArray = initJSIncludesArray(buildMode);
+
+  if (buildModeModifier) {
     return gulp
            .src(jsIncludesArray)
            .pipe(concat('all.js'))
@@ -51,26 +74,10 @@ exports.copyJS = function(buildMode) {
              mangle: false
            }))
            .pipe(gulp.dest(paths.build[buildMode]));
-  }
-}
-
-exports.copyBowerJS = function(buildMode) {
-  paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
-
-  //console.log(paths.js.extra);
-  if (buildMode === 'dev') {
-    return gulp
-           .src(paths.js.extend)
-           .pipe(gulp.dest(paths.build[buildMode] + '/js'));
   } else {
-    var jsIncludesArray = initJSIncludesArray(buildMode);
-
     return gulp
            .src(jsIncludesArray)
            .pipe(concat('all.js'))
-           .pipe(uglify({
-             mangle: false
-           }))
            .pipe(gulp.dest(paths.build[buildMode]));
   }
 }

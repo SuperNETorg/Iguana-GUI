@@ -5,6 +5,8 @@
  *         gulp zip to build prod and compress it into latest.zip
  */
 
+ // TODO: add prod size evaluation print out
+
 // dependencies
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
@@ -65,13 +67,15 @@ gulp.task('compress', function() {
 });
 
 gulp.task('copyCoreJS', function() {
-  buildMode = 'dev';
   return _exports.js.copyJS(buildMode);
 });
 
 gulp.task('copyBowerJS', function() {
-  buildMode = 'dev';
   return _exports.js.copyBowerJS(buildMode);
+});
+
+gulp.task('compressJS', function() {
+  return _exports.js.compressJS(buildMode, buildModeModifier);
 });
 
 gulp.task('copyFonts', function() {
@@ -97,6 +101,21 @@ gulp.task('cleanIndex', function() {
 gulp.task('cleanAllProd', function() {
   buildMode = 'prod';
   return _exports.clean.cleanAllProd(buildMode);
+});
+
+gulp.task('cleanProdOnEnd', function() {
+  buildMode = 'prod';
+  return _exports.clean.cleanProdOnEnd(buildMode);
+});
+
+gulp.task('copyProdConfigurableJS', function() {
+  buildMode = 'prod';
+  return _exports.js.copyProdConfigurableJS(buildMode);
+});
+
+gulp.task('copyResponsiveCSS', function() {
+  buildMode = 'prod';
+  return _exports.css.copyResponsiveCSS(buildMode);
 });
 
 gulp.task('cleanProdCompact', function() {
@@ -146,25 +165,24 @@ gulp.task('dev', function() {
   );
 });
 
-gulp.task('prodAssets', function() {
-  buildMode = 'prod';
-
-  return es.merge(
-           _exports.font.copyFonts(buildMode),
-           _exports.css.css(buildMode),
-           _exports.css.scss(buildMode),
-           _exports.js.copyJS(buildMode),
-           _exports.js.copyProdConfigurableJS(buildMode)
-         );
-});
-
-gulp.task('prod', function() {
+gulp.task('prod', function(cb) {
   buildMode = 'prod';
 
   runSequence(
     'cleanAllProd',
-    'prodAssets',
-    'index'
+    'copyBowerJS',
+    'copyCoreJS',
+    'compressJS',
+    'copyFonts',
+    'scss:css',
+    'cssModifyCryptocoins',
+    'cssModifyProxima',
+    'scss',
+    'cleanProdOnEnd',
+    'copyProdConfigurableJS',
+    'copyResponsiveCSS',
+    'index',
+    cb
   );
 });
 
@@ -173,8 +191,7 @@ gulp.task('zip', function() {
   buildModeModifier = 'compact';
 
   runSequence(
-    'prodAssets',
-    'index',
+    'prod',
     'cleanProdCompact',
     'compress'
   );

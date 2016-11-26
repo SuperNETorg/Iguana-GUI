@@ -30,18 +30,20 @@ exports.copySVG = function(buildMode) {
     flagsSVGPaths.push(paths.svg.default + '/' + paths.svg.size + '/' + paths.svg.flags[i] + '.svg');
   }
 
-  return gulp
-         .src(flagsSVGPaths)
-         .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg'));
+  if (buildMode === 'dev') {
+    return gulp
+           .src(flagsSVGPaths)
+           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg'));
+  } else {
+    return gulp
+           .src(flagsSVGPaths)
+           .pipe(gulp.dest(paths.build[buildMode] + '/fonts/svg'));
+  }
 }
 
 exports.copyFontsESMerge = function(buildMode) {
-  if (buildMode === 'dev') {
-    return es.merge(
-             exports.copyFonts(buildMode),
-             exports.copySVG(buildMode)
-           );
-  } else {
-    exports.copyFonts(buildMode);
-  }
+  return es.merge(
+           exports.copyFonts(buildMode),
+           exports.copySVG(buildMode)
+         );
 }

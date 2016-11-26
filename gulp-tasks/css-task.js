@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     cleanCSS = require('gulp-clean-css'),
     replace = require('gulp-replace'),
     fs = require('fs'),
+    rename = require('gulp-rename'),
     pathsExports = require('../gulp-tasks/paths.js');
 
 paths = pathsExports.getPaths();
@@ -10,14 +11,17 @@ paths = pathsExports.getPaths();
 exports.scss = function(buildMode) {
   if (buildMode === 'dev') {
     return gulp
-           .src([paths.styles.default + '.scss', '!' + paths.styles.prodConcat])
+           .src([
+             paths.styles.default + '.scss',
+             '!' + paths.styles.prodConcat
+           ])
            .pipe(sass({
              style: 'expanded'
            }).on('error', sass.logError))
            .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp
-           .src(paths.styles.prodConcat)
+           .src([paths.build[buildMode] + '/css/style.scss'])
            .pipe(sass().on('error', sass.logError))
            .pipe(cleanCSS({
              debug: true
@@ -30,7 +34,7 @@ exports.scss = function(buildMode) {
 }
 
 exports.css = function(buildMode) {
-  var extendCSS = [paths.styles.default + '.css'];
+  var extendCSS = [paths.styles.default + '.*'];
 
   for (var i=0; i < paths.styles.extend.length; i++) {
     extendCSS.push(paths.styles.extend[i]);
@@ -44,27 +48,36 @@ exports.css = function(buildMode) {
            .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp
-           .src(paths.styles.default + '.css')
-           .pipe(cleanCSS({
-             debug: true
-           }, function(details) {
-             console.log(details.name + ' original size: ' + details.stats.originalSize);
-             console.log(details.name + ' minified size: ' + details.stats.minifiedSize);
+           .src(extendCSS)
+           .pipe(rename(function(path) {
+              path.extname = '.scss';
            }))
            .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   }
 }
 
+exports.copyResponsiveCSS = function(buildMode) {
+  return gulp
+         .src('sass/responsive/*.css')
+         .pipe(cleanCSS({
+           debug: true
+         }, function(details) {
+           console.log(details.name + ' original size : ' + details.stats.originalSize);
+           console.log(details.name + ' minified size: ' + details.stats.minifiedSize);
+         }))
+         .pipe(gulp.dest(paths.build[buildMode] + '/css/responsive'));
+}
+
 exports.cssModifyCryptocoins = function(buildMode) {
   return gulp
-         .src(paths.build[buildMode] + '/css/cryptocoins.css')
+         .src(paths.build[buildMode] + '/css/cryptocoins.' + (buildMode === 'dev' ? 'css' : 'scss'))
          .pipe(replace(/src:/, '/*src:')) // the below code is not efficient enough
-         .pipe(replace(/font-weight:/, '*/\n' + 'src: url(\'fonts/cryptocoins.ttf?d2eit9\') format(\'truetype\');\n' + 'font-weight:'))
+         .pipe(replace(/font-weight:/, '*/\nsrc: url(\'fonts/cryptocoins.ttf?d2eit9\') format(\'truetype\');\nfont-weight:'))
          .pipe(gulp.dest(paths.build[buildMode] + '/css'));
 }
 
 exports.cssModifyProxima = function(buildMode) { // select only defined font variations, see paths.js
-  content = fs.readFileSync(paths.build[buildMode] + '/css/proxima-nova.css', 'utf-8');
+  content = fs.readFileSync(paths.build[buildMode] + '/css/proxima-nova.' + (buildMode === 'dev' ? 'css' : 'scss'), 'utf-8');
 
   var splitContent = content.split('@font-face {'),
       fontOutput = '';
@@ -95,7 +108,7 @@ exports.cssModifyProxima = function(buildMode) { // select only defined font var
     }
   }
 
-  return fs.writeFileSync(paths.build[buildMode] + '/css/proxima-nova.css', fontOutput, 'utf-8');
+  return fs.writeFileSync(paths.build[buildMode] + '/css/proxima-nova.' + (buildMode === 'dev' ? 'css' : 'scss'), fontOutput, 'utf-8');
 }
 
 exports.devInjectStyles = function(buildMode) {

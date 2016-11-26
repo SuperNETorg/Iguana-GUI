@@ -35,7 +35,7 @@ exports.getPaths = function(isDev) {
         default: 'fonts/**/*',
         extend: [
           bowerDir + '/cryptocoins/fonts/cryptocoins.ttf',
-          bowerDir + '/Iguana-GUI-font/font/*'
+          bowerDir + '/Iguana-GUI-font/font/icomoon.ttf'
         ]
       },
       build: {
