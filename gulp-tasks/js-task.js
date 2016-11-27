@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     fs = require('fs'),
+    jscs = require('gulp-jscs'), // rules ref: http://jscs.info/rules
     pathsExports = require('../gulp-tasks/paths.js');
 
 function initJSIncludesArray(buildMode) {
@@ -49,7 +50,9 @@ exports.copyJS = function(buildMode) {
   paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
 
   return gulp
-         .src(paths.js.default)
+         .src([paths.js.default])
+         .pipe(jscs())
+         .pipe(jscs.reporter())
          .pipe(gulp.dest(paths.build[buildMode] + '/js'));
 }
 
