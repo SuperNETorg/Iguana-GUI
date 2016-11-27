@@ -4,9 +4,15 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     fs = require('fs'),
     rename = require('gulp-rename'),
-    pathsExports = require('../gulp-tasks/paths.js');
+    autoprefixer = require('gulp-autoprefixer'),
+    csslint = require('gulp-csslint'),
+    csslintStylish = require('csslint-stylish'),
+    pathsExports = require('../gulp-tasks/paths.js'),
+    cssLintRulesExports = require('../gulp-tasks/css-lint-rules.js');
 
 paths = pathsExports.getPaths();
+cssLintRules = cssLintRulesExports.getCSSLintRules();
+csslint.addFormatter('csslint-stylish');
 
 exports.scss = function(buildMode) {
   if (buildMode === 'dev') {
@@ -18,11 +24,19 @@ exports.scss = function(buildMode) {
            .pipe(sass({
              style: 'expanded'
            }).on('error', sass.logError))
+           .pipe(autoprefixer({
+             browsers: ['last 5 versions', 'ios 7', 'android 4']
+           }))
+           .pipe(csslint(cssLintRules))
+           .pipe(csslint.formatter('stylish'))
            .pipe(gulp.dest(paths.build[buildMode] + '/css'));
   } else {
     return gulp
            .src([paths.build[buildMode] + '/css/style.scss'])
            .pipe(sass().on('error', sass.logError))
+           .pipe(autoprefixer({
+             browsers: ['last 5 versions', 'ios 7', 'android 4']
+           }))
            .pipe(cleanCSS({
              debug: true
            }, function(details) {
