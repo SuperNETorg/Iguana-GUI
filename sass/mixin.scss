@@ -29,7 +29,7 @@
 }
 
 @function rgba-black($opacity) {
-  @return 'rgba(0, 0, 0, $opacity)';
+  @return rgba(0, 0, 0, $opacity);
 }
 
 @mixin bold {
