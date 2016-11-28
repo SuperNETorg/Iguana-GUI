@@ -18,6 +18,7 @@ var gulp = require('gulp'),
       js: require('./gulp-tasks/js-task.js'),
       html: require('./gulp-tasks/html-task.js'),
       css: require('./gulp-tasks/css-task.js'),
+      chrome: require('./gulp-tasks/chrome-app'),
       font: require('./gulp-tasks/font-task.js'),
       clean: require('./gulp-tasks/clean-task.js'),
       paths: require('./gulp-tasks/paths.js')
@@ -125,11 +126,11 @@ gulp.task('cleanProdCompact', function() {
 
 gulp.task('chromeApp', function() {
   buildMode = 'chrome';
-  chromeApp.createChromeApp(buildMode, paths);
+  _exports.chrome.createChromeApp(buildMode, paths);
 });
 
 gulp.task('cleanChromeApp', function() {
-  chromeApp.cleanChromeApp(paths.chrome['path']);
+  _exports.chrome.cleanChromeApp(paths.chrome['path']);
 });
 
 gulp.task('cleanAllDev', function() {

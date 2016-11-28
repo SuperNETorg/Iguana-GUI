@@ -5,7 +5,9 @@ angular.module('IguanaGUIApp')
   '$localStorage',
   function ($localStorage) {
     //todo Storage for chrome App
+    /*-- start --*/
     /*return chrome.storage.sync;*/
     return $localStorage;
+    /*-- end --*/
   }
 ]);
