@@ -33,7 +33,8 @@ exports.copySVG = function(buildMode) {
   if (buildMode === 'dev') {
     return gulp
            .src(flagsSVGPaths)
-           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg'));
+           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/flags'))
+           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags'));
   } else {
     return gulp
            .src(flagsSVGPaths)
