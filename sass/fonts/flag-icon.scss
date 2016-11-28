@@ -2,15 +2,15 @@ $flags-path: 'fonts/svg/flags';
 
 .flag-icon,
 .flag-icon-background {
+  background-position: 50%;
+  background-repeat: no-repeat;
 	background-size: contain;
-	background-position: 50%;
-	background-repeat: no-repeat;
 }
 .flag-icon {
+  display: inline-block;
+  line-height: 1.9em;
 	position: relative;
-	display: inline-block;
 	width: 1.8em;
-	line-height: 1.9em;
 }
 .flag-icon:before {
 	content: '\00a0';

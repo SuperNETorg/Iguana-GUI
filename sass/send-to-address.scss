@@ -18,33 +18,33 @@ $send-coin-eq-sign-color: #FC6538;
 .send-modal {
   .headd {
     border-radius: $border-radius-smaller;
+    box-shadow: 0 0 7px 4px $send-coin-head-color;
     color: $color-white;
+    margin-top: 0.5em;
     padding: 23px 21px 20px;
     position: relative;
-    box-shadow: 0 0 7px 4px $send-coin-head-color;
-    margin-top: 0.5em;
   }
   .headd::before {
     @include budicon;
-    font-size: 2.0em;
     color: $color-form-arrow;
-    top: 100px;
     content: '\eac5';
+    font-size: 2.0em;
     height: 40px;
-    width: 40px;
+    left: 18px;
     margin: auto;
     position: absolute;
-    left: 18px;
     right: 0;
+    top: 100px;
+    width: 40px;
   }
   .modal-content {
     .modal-header {
       border-bottom: medium none;
+      border-radius: $border-radius-smaller $border-radius-smaller 0 0;
       color: $color-white;
       padding: 16px 40px;
       position: relative;
       text-align: center;
-      border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     }
     .modal-body {
       background: $color-modal-bg none repeat scroll 0 0;
@@ -89,20 +89,20 @@ $send-coin-eq-sign-color: #FC6538;
     .tx-note {
       border: 1px solid $color-medium-gray;
       border-radius: $border-radius-smaller;
+      font-weight: normal;
       height: 34px;
       margin-top: 4px;
+      padding: 4px 12px;
       resize: none;
       width: 100%;
-      padding: 4px 12px;
-      font-weight: normal;
     }
   }
   .modal {
     padding-left: 0;
   }
   .hd-right {
-    text-align: right;
     font-size: 12px;
+    text-align: right;
   }
   .pop-detail.crncy {
     display: inline-block;
@@ -122,25 +122,25 @@ $send-coin-eq-sign-color: #FC6538;
   }
   .pop-form .btn-next,
   .pop-form .btn-confirm-tx {
-    @include proxima;
-    @include bold;
     border: 0 none;
     border-radius: $border-radius-smaller;
-    color: $color-white;
     box-shadow: 0 0 2px 1px rgba-black(0.2);
+    color: $color-white;
+    @include proxima;
     font-size: 1.075em;
+    @include bold;
     height: 34px;
-    width: 100%;
-    padding-top: 3px;
     margin-top: 10px;
+    padding-top: 3px;
+    width: 100%;
   }
   .pop-detail.send {
     .tx-address-icon {
-      width: 20px;
       height: 20px;
       position: absolute;
-      top: -3px;
       right: 3px;
+      top: -3px;
+      width: 20px;
     }
     .tx-address {
       padding-right: 32px;
@@ -148,10 +148,10 @@ $send-coin-eq-sign-color: #FC6538;
     }
     .tx-address-icon:before {
       @include budicon;
-      content: '\ea16';
-      font-size: 1.2em;
       color: $color-orange;
+      content: '\ea16';
       display: block;
+      font-size: 1.2em;
       position: absolute;
       right: 6px;
     }
@@ -210,13 +210,10 @@ $send-coin-eq-sign-color: #FC6538;
   .pop-detail.crncy.chk-crncy.crncy-fee {
     margin: 0 0 13px;
   }
-  #myModal1 .pop-form .btn-next {
-    margin-top: 30px;
-  }
-  p.col-red {
+  .col-red {
     color: $color-red;
   }
-  .pop-detail input[type="text"].validation-field-error {
+  .pop-detail .validation-field-error {
     background: $send-coin-input-error-bg-color;
     border-color: $send-coin-input-error-border-color;
   }
@@ -239,16 +236,16 @@ $send-coin-eq-sign-color: #FC6538;
 }
 .send-coin-progress-overlay,
 .send-coin-success-overlay {
-  position: absolute;
   background: rgba(255, 255, 255, 0.9);
-  width: 100%;
   height: 100%;
+  position: absolute;
+  width: 100%;
   z-index: 100;
 }
 .send-coin-progress-overlay .send-coin-status,
 .send-coin-success-overlay .send-coin-status {
-  padding-top: 50%;
   font-size: 1.1em;
+  padding-top: 50%;
   text-align: center;
 }
 .send-coin-progress-overlay .btn-next {
@@ -256,51 +253,51 @@ $send-coin-eq-sign-color: #FC6538;
 }
 .send-coin-success-overlay .btn-confirmed,
 .send-coin-success-overlay .btn-confirmed:focus {
-  position: absolute;
-  bottom: 12.1%;
-  left: 20%;
-  max-width: 359px;
-  text-shadow: 0 3px 5px rgba-black(0.25);
-  font-size: 1.3em;
-
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
   background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
   background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
   background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%,rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  bottom: 12.1%;
+  /* csslint ignore:start */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760',GradientType=1); /* IE6-9 fallback on horizontal gradient */
+  /* csslint ignore:end */
+  font-size: 1.3em;
+  left: 20%;
+  max-width: 359px;
+  position: absolute;
+  text-shadow: 0 3px 5px rgba-black(0.25);
 }
-
 .modal-send-coin {
-  display: block;
-  border-radius: $border-radius-smaller;
   background: none;
+  border-radius: $border-radius-smaller;
+  display: block;
 
   .bi_interface-arrow-left {
     font-size: 26px;
-    margin-top: 7px;
     margin-left: -2px;
+    margin-top: 7px;
   }
   .coin {
     float: left;
 
     .icon {
-      width: 35px;
       height: 35px;
+      width: 35px;
     }
     i {
-      margin-left: -6px;
-      font-size: 3.5em;
-      display: inline-block;
       color: $color-white;
+      display: inline-block;
+      font-size: 3.5em;
+      margin-left: -6px;
       text-shadow: 0 1px 3px rgba-black(0.25);
     }
     .name {
-      font-weight: normal;
       color: #fff;
-      text-shadow: 0 1px 3px rgba-black(0.25);
-      position: relative;
-      top: -15px;
+      font-weight: normal;
       left: 19px;
+      position: relative;
+      text-shadow: 0 1px 3px rgba-black(0.25);
+      top: -15px;
     }
   }
   .balance {
@@ -329,17 +326,17 @@ $send-coin-eq-sign-color: #FC6538;
     ref: http://stackoverflow.com/questions/5230148/create-svg-progress-circle
   */
   .progress-indicator {
-    width: 20px;
     height: 20px;
     margin: 0 auto;
     position: relative;
     top: -2px;
+    width: 20px;
   }
   .over {
     -webkit-animation: rotator 1.5s ease-in-out infinite;
     stroke-dasharray: 107,38;
   }
-  .modal-dialog .modal-content .modal-header [class *="btn-"] {
+  .modal-dialog .modal-content .modal-header i {
     margin-left: 6px;
   }
   .modal-dialog .modal-content .modal-header .title {
@@ -357,8 +354,8 @@ $send-coin-eq-sign-color: #FC6538;
   color: $color-white;
   font-size: 26px;
   margin-left: 10px;
-  text-shadow: 1px 1px 3px rgba-black(0.3);
   position: absolute;
+  text-shadow: 1px 1px 3px rgba-black(0.3);
   z-index: 100;
 }
 .send-coin-confirm-passphrase {

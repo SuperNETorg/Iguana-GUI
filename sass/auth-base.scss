@@ -12,24 +12,24 @@ $login-button-disabled-color: #B2B4B7;
 
 .body-wrapper.auth-main {
   display: table;
-  width: 100%;
   height: 100%;
   margin: 0 auto;
+  width: 100%;
 
   .form-header .title {
-    font-size: 1.23em;
-    text-align: center;
     color: $color-white;
+    font-size: 1.23em;
     position: relative;
+    text-align: center;
     top: 18px;
     z-index: 10;
   }
 }
 .auth-main {
   .coin {
+    display: inline-block;
     padding: 20px;
     width: 130px;
-    display: inline-block;
 
     input[type='checkbox'] + label {
       display: inline-block;
@@ -37,8 +37,8 @@ $login-button-disabled-color: #B2B4B7;
   }
   .coin.block {
     display: block;
-    width: 100%;
     padding: 0;
+    width: 100%;
   }
   .container-fluid {
     display: table-cell;
@@ -51,13 +51,13 @@ $login-button-disabled-color: #B2B4B7;
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
   .form-container {
-    margin: 0 auto;
     background-color: transparent;
+    margin: 0 auto;
   }
   .login-or-delim {
     font-family: sans-serif;
-    padding: 20px 0;
     letter-spacing: 1px;
+    padding: 20px 0;
   }
   .login-add-coin-selection {
     text-align: center;
@@ -66,24 +66,24 @@ $login-button-disabled-color: #B2B4B7;
     textarea {
       @include proxima;
       @include bold;
-      width: 100%;
-      height: 120px;
-      border-radius: $border-radius-smaller;
       border: solid 1px $color-medium-gray;
-      padding: 10px 12px;
+      border-radius: $border-radius-smaller;
       font-size: 1.16em;
+      height: 120px;
+      padding: 10px 12px;
       resize: none;
+      width: 100%;
     }
   }
   .passphrase-container {
     @include proxima;
     @include bold;
-    width: 100%;
-    border-radius: $border-radius-smaller;
     background: $color-white;
+    border-radius: $border-radius-smaller;
     box-shadow: 0 2px 3px 1px rgba-black(0.1);
-    padding: 36px 12px 15px;
     font-size: 1.16em;
+    padding: 36px 12px 15px;
+    width: 100%;
 
     .title {
       font-family: sans-serif;
@@ -95,27 +95,27 @@ $login-button-disabled-color: #B2B4B7;
   .bi_interface-cross {
     color: $color-white;
     font-size: 1.2em;
-    text-shadow: 1px 1px 3px rgba-black(0.3);
-    position: relative;
-    top: 10px;
     left: 10px;
+    position: relative;
+    text-shadow: 1px 1px 3px rgba-black(0.3);
+    top: 10px;
     z-index: 20;
   }
   .bi_interface-arrow-left {
     color: $color-white;
     font-size: 26px;
-    margin-top: 10px;
     margin-left: 10px;
-    text-shadow: 1px 1px 3px rgba-black(0.3);
+    margin-top: 10px;
     position: absolute;
+    text-shadow: 1px 1px 3px rgba-black(0.3);
     z-index: 100;
   }
-  textarea.error {
+  .error {
     border: solid 1px $color-red;
   }
   .center {
-    text-align: center;
     font-size: 1.03em;
+    text-align: center;
   }
   .offset-bottom-sm {
     margin: 15px auto;
@@ -126,9 +126,9 @@ $login-button-disabled-color: #B2B4B7;
   }
   .create-account-form .login-input-directions,
   .verify-passphrase-form .login-input-directions {
+    margin-bottom: 0;
     width: 80%;
     word-wrap: break-word;
-    margin-bottom: 0;
     //margin-top: 10em;
   }
   .header {
@@ -138,10 +138,10 @@ $login-button-disabled-color: #B2B4B7;
     text-align: center;
   }
   .form-content {
-    padding: 20px 1.6em;
-    font-size: 1.05em;
     color: $login-content-color-bg;
+    font-size: 1.05em;
     margin: 0 auto;
+    padding: 20px 1.6em;
 
     .row {
       width: 100%;
@@ -153,10 +153,10 @@ $login-button-disabled-color: #B2B4B7;
     .title {
       @include proxima;
       @include bold;
-      font-size: 1.15em;
-      text-align: center;
       color: $color-white;
+      font-size: 1.15em;
       position: relative;
+      text-align: center;
       top: -18px;
       z-index: 10;
     }
@@ -174,8 +174,8 @@ $login-button-disabled-color: #B2B4B7;
   }
   .btn:hover,
   .btn:focus {
-    color: $color-white;
     box-shadow: 0 0 2px 1px rgba-black(0.2);
+    color: $color-white;
   }
   .btn.disabled:hover {
     box-shadow: none;
@@ -193,19 +193,19 @@ $login-button-disabled-color: #B2B4B7;
     display: none;
   }
   input[type='checkbox'] + label {
-    font-weight: normal;
     display: block;
+    font-weight: normal;
     text-align: center;
 
     .box {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin: -4px 17px 0 0;
-      vertical-align: middle;
       background: transparent;
       border: solid 2px $color-medium-gray;
       border-radius: $border-radius-smaller;
+      display: inline-block;
+      height: 20px;
+      margin: -4px 17px 0 0;
+      vertical-align: middle;
+      width: 20px;
     }
   }
   input[type='checkbox']:checked + label .box {
@@ -214,9 +214,9 @@ $login-button-disabled-color: #B2B4B7;
   }
   input[type='checkbox']:checked + label .box:before {
     @include budicon;
+    color: $color-white;
     content: '\eb23';
     font-weight: bold;
-    color: $color-white;
     position: relative;
     top: -1px;
   }
@@ -225,20 +225,20 @@ $login-button-disabled-color: #B2B4B7;
     opacity: 0;
   }
   .paste-from-clipboard-link {
-    padding-top: 2px;
     border-bottom: dotted 1px $color-black;
+    padding-top: 2px;
   }
   .login-add-coin-selection-title {
-    font-size: 1.03em;
-    width: auto;
-    padding: 7px 0;
-    margin: 0 auto;
-    max-width: 300px;
     background: $color-white;
-    font-weight: 600;
-    color: $login-coin-selection-color;
     border-radius: $border-radius-smaller;
     box-shadow: 0 3px 10px 3px rgba-black(0.065);
+    color: $login-coin-selection-color;
+    font-size: 1.03em;
+    @include bold;
+    margin: 0 auto;
+    max-width: 300px;
+    padding: 7px 0;
+    width: auto;
 
     .small {
       font-size: 0.9em;
@@ -248,7 +248,7 @@ $login-button-disabled-color: #B2B4B7;
 .auth-main .btn.disabled,
 .auth-main .btn.disabled:focus,
 .modal .btn.disabled {
-  pointer-events: none;
   background: $login-button-disabled-color;
+  pointer-events: none;
   text-shadow: none;
 }

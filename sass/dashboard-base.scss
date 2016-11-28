@@ -10,11 +10,10 @@ $dashboard-topbar-item-color: #8A8B93;
 $dashboard-balance-block-label-color: #95969F;
 
 .dashboard.blur,
-body.modal-open .dashboard {
-  -webkit-filter: blur(2px);
-  filter: blur(2px);
+.modal-open .dashboard {
+  @include blur;
 }
-body.dashboard-page {
+.dashboard-page {
   background: $color-modal-bg;
 }
 .dashboard-main .row,
@@ -22,6 +21,8 @@ body.dashboard-page {
   height: 100%;
 }
 .dashboard {
+  font-size: inherit;
+
   .navbar,
   .navbar .container-fluid {
     padding: 0;
@@ -30,20 +31,20 @@ body.dashboard-page {
     margin-left: 0;
   }
   .top {
-    text-align: center;
     background: $dashboard-topbar-bg-color;
+    border-radius: 0;
     box-shadow: 0 4px 5px 0 rgba-black(0.2);
     color: $color-white;
-    border-radius: 0;
     margin-bottom: 0;
+    text-align: center;
 
     .left {
       @include bold;
+      display: inline-block;
       font-size: 1.6em;
+      left: 30px;
       position: absolute;
       top: 15px;
-      left: 30px;
-      display: inline-block;
     }
     .right {
       @include bold;
@@ -55,37 +56,35 @@ body.dashboard-page {
   }
   .top-menu {
     display: inline-block;
+    float: none;
     margin: 0 auto;
     margin-bottom: 8px;
-    float: none;
+    transition: margin 400ms;
     vertical-align: top;
     white-space: nowrap;
-    -webkit-transition: margin 400ms;
-    -moz-transition: margin 400ms;
-    transition: margin 400ms;
 
     .item {
       @include bold;
+      color: $dashboard-topbar-item-color;
+      display: inline-block;
       font-size: 1.05em;
       margin: 0 5px;
-      top: 9px;
-      color: $dashboard-topbar-item-color;
-      z-index: 100;
       text-shadow: 0 0 0 $dashboard-topbar-item-color;
-      display: inline-block;
+      top: 9px;
+      z-index: 100;
 
       .text {
-        padding: 0 17px;
         height: 38px;
-        margin-top: 2px;
         line-height: 34px;
+        margin-top: 2px;
+        padding: 0 17px;
       }
       .border {
-        width: 100%;
-        height: 3px;
-        border-radius: $border-radius-smaller;
-        padding: 0 22px;
         background: transparent;
+        border-radius: $border-radius-smaller;
+        height: 3px;
+        padding: 0 22px;
+        width: 100%;
       }
     }
     .item.active {
@@ -101,22 +100,22 @@ body.dashboard-page {
   }
   /* radial like highlight effect */
   .top-menu:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    width: 350px;
-    margin-left: -13px;
-    opacity: 0.25;
-    border-radius: 25%;
-    position: absolute;
-    z-index: 50;
-
+    /* csslint ignore:start */
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,222539+0 */
     background: rgb(0, 0, 0); /* Old browsers */
     background: -moz-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* FF3.6-15 */
     background: -webkit-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%,rgba(34, 37, 57, 1) 0%); /* Chrome10-25,Safari5.1-6 */
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    border-radius: 25%;
+    content: '';
+    height: 100%;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#222539', GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    margin-left: -13px;
+    opacity: 0.25;
+    position: absolute;
+    width: 350px;
+    z-index: 50;
+    /* csslint ignore:end */
   }
   .main-content {
     margin: 0 auto 20px auto;
@@ -130,8 +129,8 @@ body.dashboard-page {
       padding: 0;
     }
     .balance {
-      @include bold;
       font-size: 1.7em;
+      @include bold;
 
       .value {
         padding-right: 5px;
@@ -146,12 +145,12 @@ body.dashboard-page {
     padding-right: 5px;
   }
   .active-coin-balance-currency {
-    @include bold;
     font-size: 1.1em;
+    @include bold;
     padding-left: 30px;
     position: relative;
-    top: -3px;
     text-shadow: 0 1px 3px rgba-black(0.25);
+    top: -3px;
 
     .value {
       padding-right: 5px;
@@ -170,20 +169,21 @@ body.dashboard-page {
   }
 }
 .lnk-logout {
-  @include bold;
-  margin-top: 16px;
-  margin-bottom: 10px;
   font-size: 1em;
+  @include bold;
+  margin-bottom: 10px;
+  margin-top: 16px;
+  position: absolute;
   right: 15px;
-  position: absolute;
 }
+/* csslint ignore:start */
 @mixin nav-buttons($position) {
-  position: absolute;
   #{$position}: 0;
   height: 50%;
-  width: 10px;
+  position: absolute;
   top: 50%;
   z-index: 10000;
+  width: 10px;
 }
 .nav-buttons {
   .nav-left {
@@ -193,6 +193,7 @@ body.dashboard-page {
     @include nav-buttons(right);
   }
 }
+/* csslint ignore:end */
 .block {
   display: block;
 }
@@ -213,9 +214,9 @@ body.dashboard-page {
   position: relative;
 
   .glyphicon {
-    position: absolute;
     padding: 7px;
     pointer-events: none;
+    position: absolute;
   }
 }
 .right-addon {
@@ -242,15 +243,15 @@ body.dashboard-page {
   text-shadow: 0 1px 3px rgba-black(0.25);
 }
 .navbar-inverse {
-  z-index: 1000;
   position: fixed;
-  width: 100%;
   top: 0;
+  width: 100%;
+  z-index: 1000;
 
   .navbar-brand {
-    @include bold;
     color: $color-white;
     font-size: 1.6em;
+    @include bold;
     padding: 17px 15px;
   }
 }

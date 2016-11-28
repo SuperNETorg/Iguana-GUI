@@ -7,16 +7,15 @@
 
 body,
 html {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%; /* override default bootstrap modal css */
-  padding: 0 !important;
-  overflow: auto !important; /* prevent scrolling when modal is visible */
-  left: 0;
-  top: 0;
-  position: absolute;
   @include proxima;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  overflow: auto !important; /* prevent scrolling when modal is visible */
+  padding: 0 !important;
+  position: absolute;
+  top: 0;
+  width: 100%; /* override default bootstrap modal css */
 }
 .unselectable {
   @include unselectable;
@@ -36,8 +35,12 @@ html {
 }
 .app-container,
 .app-container-inner {
-  height: 100%;
   @include login-orange-gradient;
+  height: 100%;
+}
+.dashboard-page .app-container,
+.dashboard-page .app-container-inner {
+  background: inherit;
 }
 .invisible {
   opacity: 0;

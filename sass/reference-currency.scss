@@ -17,42 +17,49 @@ $reference-currency-tile-span-color: #D3D4D6;
   h4,
   h5,
   h6 {
+    line-height: 20px;
     margin: 0;
     padding: 0;
-    line-height: 20px;
   }
   .currency-content {
     ul {
+      /* csslint ignore:start */
       list-style-type: none;
+      -moz-margin-before: 0;
+      -moz-margin-after: 0;
+      -moz-margin-start: 0;
+      -moz-margin-end: 0;
+      -moz-padding-start: 0;
       -webkit-margin-before: 0;
       -webkit-margin-after: 0;
       -webkit-margin-start: 0;
       -webkit-margin-end: 0;
       -webkit-padding-start: 0;
+      /* csslint ignore:end */
     }
     .flag-icon {
-      box-shadow: 0 1px 4px 0 $color-default-gray;
-      width: 43px;
-      height: 32px;
       background-size: 100%;
+      box-shadow: 0 1px 4px 0 $color-default-gray;
+      height: 32px;
+      width: 43px;
     }
     .container {
-      font-family: 'Proxima Nova';
+      @include proxima;
       margin: 0 auto;
     }
     .container-left {
       padding-top: 75px;
 
       .choose-currency {
-        font-weight: 700;
         font-size: 20px;
+        font-weight: 700;
         padding-bottom: 5px;
       }
       $reference-currency-txamount: #898A94;
       .transaction-amount {
         color: $reference-currency-txamount;
-        font-weight: 500;
         font-size: 16px;
+        font-weight: 500;
       }
     }
     .currency-parent {
@@ -60,12 +67,12 @@ $reference-currency-tile-span-color: #D3D4D6;
     }
     .country-li.country-li.active {
       border: 2px solid $reference-currency-tile-color;
-      color: $reference-currency-tile-color;
       box-shadow: none;
+      color: $reference-currency-tile-color;
     }
     .currency-loop {
-      padding-left: 0;
       font-size: 0.95em;
+      padding-left: 0;
       text-align: center;
 
       .active .full-name {
@@ -74,19 +81,19 @@ $reference-currency-tile-span-color: #D3D4D6;
       }
       .country-li {
         background-color: $color-white;
+        border: 2px solid transparent;
         border-radius: $border-radius-small;
+        box-shadow: 0 2px 3px 1px rgba-black(0.12);
+        display: table-cell;
+        float: left;
+        height: 132px;
         list-style-type: none;
-        text-align: center;
+        margin: 10px;
         max-width: 180px;
         min-width: 166px;
         padding-top: 20px;
-        margin: 10px;
-        height: 132px;
-        display: table-cell;
+        text-align: center;
         vertical-align: middle;
-        float: left;
-        box-shadow: 0 2px 3px 1px rgba-black(0.12);
-        border: 2px solid transparent;
 
         span {
           @include bold;
@@ -103,13 +110,13 @@ $reference-currency-tile-span-color: #D3D4D6;
       }
       .short-name {
         @include bold;
-        width: 100%;
         display: block;
         padding-top: 2px;
+        width: 100%;
       }
       .full-name {
-        top: -2px;
         position: relative;
+        top: -2px;
       }
     }
   }

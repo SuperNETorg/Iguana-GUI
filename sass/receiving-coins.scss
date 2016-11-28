@@ -16,76 +16,75 @@ $receive-coin-unit-color: #83848E;
 $receive-coin-input-color: #2E3746;
 $receive-coin-eq-sign-color: #FE5C0D;
 
-#myModal {
-  background: none;
-}
 .receiving-coin-content {
   border-radius: $border-radius-small;
 
   .form-header {
-    height: 60px;
-    color: $color-white;
     border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
+    color: $color-white;
+    height: 60px;
 
     .btn-close {
       color: $color-white;
       font-size: 20px;
-      text-shadow: 1px 1px 3px rgba-black(0.3);
-      position: relative;
-      top: 6px;
       left: 10px;
+      position: relative;
+      text-shadow: 1px 1px 3px rgba-black(0.3);
+      top: 6px;
       z-index: 20;
     }
     .title {
       @include proxima;
       @include bold;
-      font-size: 1.15em;
-      text-align: center;
       color: $color-white;
+      font-size: 1.15em;
       position: relative;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba-black(0.25);
       top: 10px;
       z-index: 10;
-      text-shadow: 0 1px 3px rgba-black(0.25);
     }
   }
   .close {
-    float: left;
-    opacity: 1;
     color: $color-white;
-    text-shadow: none;
-    font-weight: normal;
+    float: left;
     font-size: 32px;
+    font-weight: normal;
     left: 10px;
-    top: 3px;
+    opacity: 1;
     position: relative;
+    text-shadow: none;
+    top: 3px;
     z-index: 9999;
   }
   .modal-title {
-    text-align: center;
     color: $color-white;
-    right: 10px;
-    position: relative;
     font-size: 20px;
     font-weight: 600;
+    position: relative;
+    right: 10px;
+    text-align: center;
   }
   .modal-header {
+    /* csslint ignore:start */
     background-color: #fe5c0d;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
     background: -webkit-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(252, 62, 5, 1)); /* For Safari 5.1 to 6.0 */
     background: -o-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* For Opera 11.1 to 12.0 */
     background: -moz-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* For Firefox 3.6 to 15 */
     background: radial-gradient(to top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* Standard syntax (must be last) */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    /* csslint ignore:end */
   }
   .modal-body {
     background-color: $color-modal-bg;
 
     .share-address-section .btn {
       display: inline-block;
-      width: 47%;
       height: 36px;
       line-height: 22px;
+      width: 47%;
     }
   }
 }
@@ -94,27 +93,29 @@ $receive-coin-eq-sign-color: #FE5C0D;
 }
 .text-section {
   color: $receive-coin-text-selection-color;
-  font-weight: 500;
-  font-size: 14px;
   font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
 }
 .text-something {
   font-size: 16px;
 }
 
 .share-address-section {
+  margin: 0 auto;
   position: relative;
   width: 300px;
-  margin: 0 auto;
 
   h4 {
     @include bold;
+    color: $receive-coin-share-title-color;
     font-size: 18px;
     margin-bottom: 4px;
-    color: $receive-coin-share-title-color;
-    word-break: break-word;
-    padding-top: -18px;
     margin-top: 2px;
+    /* csslint ignore:start */
+    padding-top: -18px;
+    /* csslint ignore:end */
+    word-break: break-all;
   }
   .my-address {
     color: $receive-coin-share-address-color;
@@ -124,25 +125,23 @@ $receive-coin-eq-sign-color: #FE5C0D;
 }
 
 .modal-content {
+  border: none;
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
-  border: none;
   //box-shadow: none;
 }
 .buttons {
-  padding: 6px 0;
   font-size: 16px;
+  padding: 6px 0;
 
   .copy-btn,
   .share-btn {
-    @include bold;
     background-color: $receive-coin-button-bg-color;
-    color: $receive-coin-button-color;
     border: 1px solid $receive-coin-button-bg-color;
     border-radius: $border-radius-smaller;
-    -webkit-box-shadow: 0 3px 14px -1px rgba-black(0.14);
-    -moz-box-shadow: 0 3px 14px -1px rgba-black(0.14);
     box-shadow: 0 3px 14px -1px rgba-black(0.14);
+    color: $receive-coin-button-color;
+    @include bold;
   }
   .copy-btn:focus,
   .share-btn:focus {
@@ -150,8 +149,8 @@ $receive-coin-eq-sign-color: #FE5C0D;
     outline: none;
   }
   .copy-btn a {
-    text-decoration: none;
     color: $receive-coin-button-link-color;
+    text-decoration: none;
   }
 }
 .modal-backdrop.in {
@@ -161,18 +160,18 @@ $receive-coin-eq-sign-color: #FE5C0D;
   background-color: $color-white;
 }
 .qr-code {
-  clear: both;
-  width: 210px;
-  margin: 0 auto;
   background-color: $color-white;
+  clear: both;
+  margin: 0 auto;
   position: relative;
   top: 16px;
+  width: 210px;
 
   canvas {
-    width: 200px;
     display: block;
     margin: 0 auto;
     padding: 15px;
+    width: 200px;
   }
 }
 .amount-label {
@@ -180,29 +179,29 @@ $receive-coin-eq-sign-color: #FE5C0D;
 
   .amount-label-span {
     color: $receive-coin-amount-label-color;
-    font-size: 16px;
     font-family: inherit;
+    font-size: 16px;
   }
 }
 .currency-input {
+  float: left;
   margin-top: 4px;
   position: relative;
-  float: left;
   width: 46%;
 
   .crypto-currency {
-    width: 100%;
+    border: 1px solid $color-default-gray;
+    border-radius: $border-radius-smaller;
     height: 34px;
     padding: 4px;
-    border-radius: $border-radius-smaller;
-    border: 1px solid $color-default-gray;
+    width: 100%;
   }
   .equals-sign {
     @include bold;
     color: $receive-coin-eq-sign-color;
-    margin: 5px 4px;
     display: block;
     font-size: 1.5em;
+    margin: 5px 4px;
   }
   .unit {
     color: $receive-coin-unit-color;
@@ -213,22 +212,22 @@ $receive-coin-eq-sign-color: #FE5C0D;
     top: 0;
   }
   input[type="text"] {
-    padding: 6px;
-    padding-right: 42px;
     color: $receive-coin-input-color;
     font-size: 1.065em;
+    padding: 6px;
+    padding-right: 42px;
   }
 }
 .currency-input.input-addon {
   width: 18px;
 }
-input[type="text"].crypto-currency.currency-coin {
+.crypto-currency.currency-coin {
   padding-right: 52px;
 }
 .unit.coin-unit {
-  width: 47px;
   right: 2px;
   top: 0;
+  width: 47px;
 }
 .currency-input input[type="text"]::-webkit-input-placeholder {
   color: $receive-coin-input-color;

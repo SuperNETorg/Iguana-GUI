@@ -19,31 +19,23 @@
   .msg-body {
     @include bold;
     color: $color-white;
-    text-align: center;
     font-size: 1.1em;
+    text-align: center;
   }
   .msgbox-header,
   .modal-content {
+    border: none;
+    border-radius: $border-radius-smaller;
+    box-shadow: 0 0 20px 0 rgb(222, 165, 171);
+    margin: 0 auto;
     max-width: 390px;
     min-width: 300px;
-    margin: 0 auto;
-    top: 34px;
-    border-radius: $border-radius-smaller;
-    border: none;
     text-shadow: 1px 1px 3px rgba-black(0.3);
-    box-shadow: 0 0 20px 0 rgb(222, 165, 171);
+    top: 34px;
   }
   .msgbox-header {
     padding: 16px 15px 14px 15px
   }
-}
-#messageModal .modal-content,
-#messageModal .modal-dialog {
-  height: inherit;
-}
-#messageModal.modal:before,
-.iguana-modal.message-container.modal:before {
-  vertical-align: top;
 }
 .iguana-modal.message-container.msg-blue .msgbox-header,
 .iguana-modal.message-container.msg-blue .msgbox-content {

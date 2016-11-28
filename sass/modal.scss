@@ -10,32 +10,32 @@
 }
 .form-container {
   .form-header {
-    position: relative;
-    width: 100%;
-    height: 60px;
-    color: $color-white;
     border-radius: 4px 4px 0 0;
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
+    color: $color-white;
+    height: 60px;
+    position: relative;
+    width: 100%;
 
     .title {
       @include proxima;
       @include bold;
-      position: relative;
-      text-align: center;
       color: $color-white;
       font-size: 1.23em;
+      position: relative;
+      text-align: center;
       z-index: 90;
     }
   }
   .bi_interface-cross {
     color: $color-white;
     font-size: 1.2em;
-    position: absolute;
-    top: 16px;
     left: 20px;
-    margin-top: 5px;
     margin-left: 12px;
+    margin-top: 5px;
+    position: absolute;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
+    top: 16px;
     z-index: 100;
   }
   .bi_interface-cross:before {
@@ -44,20 +44,20 @@
   .btn {
     @include proxima;
     @include bold;
+    box-shadow: 0 0 2px 1px rgba-black(0.2);
     color: $color-white;
     font-size: 1.20em;
     height: 34px;
-    max-width: 300px;
     margin: 0 auto;
-    box-shadow: 0 0 2px 1px rgba-black(0.2);
+    max-width: 300px;
   }
   .text-shadow {
     text-shadow: 0 1px 3px rgba-black(0.25);
   }
   .btn:hover,
   .btn:focus {
-    color: $color-white;
     box-shadow: 0 0 2px 1px rgba-black(0.2);
+    color: $color-white;
   }
 }
 .modal,
@@ -73,14 +73,14 @@
   min-width: 100%;
 }
 .modal {
-  text-align: center;
-  padding: 0 !important;
   background: rgba(251, 252, 253,0.7);
+  padding: 0 !important;
+  text-align: center;
 
   .modal-header {
     color: $color-white;
-    font-weight: 700;
     font-size: 16px;
+    font-weight: 700;
     padding-bottom: 0;
     padding-top: 8px;
   }
@@ -92,15 +92,15 @@
   content: '';
   display: inline-block;
   height: 100%;
-  vertical-align: middle;
   margin-right: -4px;
+  vertical-align: middle;
   z-index: -1;
 }
 .modal-dialog {
   display: inline-block;
+  margin: auto;
   text-align: left;
   vertical-align: middle;
-  margin: auto;
 
   .modal-body{
     padding: 15px 1em 3.2em 1em;
