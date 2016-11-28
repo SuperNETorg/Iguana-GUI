@@ -37,6 +37,7 @@ html {
 .app-container,
 .app-container-inner {
   height: 100%;
+  @include login-orange-gradient;
 }
 .invisible {
   opacity: 0;

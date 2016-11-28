@@ -28,6 +28,16 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe640d', endColorstr='#fe450d', GradientType=0); /* IE6-9 */
 }
 
+@mixin login-orange-gradient {
+  /* Permalink - use to edit and share this gradient:  */
+  background: -moz-linear-gradient(125deg, rgb(243, 44, 0) 0%, rgb(216, 146, 0) 45%, rgb(216, 146, 0) 68%, rgb(243, 44, 0) 100%); /* ff3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgb(243, 44, 0)), color-stop(32%, rgb(216, 146, 0)), color-stop(55%, rgb(216, 146, 0)), color-stop(100%, rgba(255,0,0,0.95))); /* safari4+,chrome */
+  background: -webkit-linear-gradient(125deg, rgb(243, 44, 0) 0%, rgb(216, 146, 0) 45%, rgb(216, 146, 0) 68%, rgb(243, 44, 0) 100%); /* safari5.1+,chrome10+ */
+  background: -o-linear-gradient(125deg, rgb(243, 44, 0) 0%, rgb(216, 146, 0) 45%, rgb(216, 146, 0) 68%, rgb(243, 44, 0) 100%); /* opera 11.10+ */
+  background: -ms-linear-gradient(125deg, rgb(243, 44, 0) 0%, rgb(216, 146, 0) 45%, rgb(216, 146, 0) 68%, rgb(243, 44, 0) 100%); /* ie10+ */
+  background: linear-gradient(325deg, rgb(243, 44, 0) 0%, rgb(216, 146, 0) 45%, rgb(216, 146, 0) 68%, rgb(243, 44, 0) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0000', endColorstr='#FF0000',GradientType=0 ); /* ie6-9 */}
+
 @function rgba-black($opacity) {
   @return rgba(0, 0, 0, $opacity);
 }
