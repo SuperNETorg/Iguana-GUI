@@ -4,7 +4,7 @@ angular.module('IguanaGUIApp')
 .service('$datetime', [
   '$filter',
   '$timeout',
-  function ($filter, $timeout) {
+  function($filter, $timeout) {
     this.convertUnixTime = function(UNIX_timestamp, format) {
       var a = new Date(UNIX_timestamp * 1000),
           months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -21,7 +21,7 @@ angular.module('IguanaGUIApp')
 
     this.timeAgo = function(element) { // TODO: move datetime service
       $timeout(function() {
-        if($(element).length) { // TODO: refactor, no jquery
+        if ($(element).length) { // TODO: refactor, no jquery
           var timeAgo = $(element),
               threshold = settings.thresholdTimeAgo,
               displayText = '';

@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 angular.module('IguanaGUIApp')
-.service('$passPhraseGenerator', function () {
+.service('$passPhraseGenerator', function() {
   this.seeds = 0;
   this.seedLimit = 512;
   this.passPhrase = '';
@@ -305,23 +305,23 @@ angular.module('IguanaGUIApp')
     'youth', 'zebra', 'zero', 'zone', 'zoo'
   ];
 
-  this.push = function (seed) {
+  this.push = function(seed) {
     Math.seedrandom(seed, true);
     this.seeds++;
   };
 
-  this.isDone = function () {
+  this.isDone = function() {
     if (this.seeds == this.seedLimit) {
       return true;
     }
     return false;
   };
 
-  this.percentage = function () {
+  this.percentage = function() {
     return Math.round((this.seeds / this.seedLimit) * 100)
   };
 
-  this.generatePassPhrase = function (bits) {
+  this.generatePassPhrase = function(bits) {
     var crypto = window.crypto || window.msCrypto,
         random = new Uint32Array(bits); // 24 words, 280 / 32
 
@@ -351,7 +351,7 @@ angular.module('IguanaGUIApp')
     return this.passPhrase;
   };
 
-  this.reset = function () {
+  this.reset = function() {
     this.passPhrase = '';
     this.seeds = 0;
   };

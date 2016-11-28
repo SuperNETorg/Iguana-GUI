@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.filter('decimalPlacesFormat', function () {
+.filter('decimalPlacesFormat', function() {
   return function(value, type) {
     if (value && type) {
       var valueComponents = value.toString().split('.'),

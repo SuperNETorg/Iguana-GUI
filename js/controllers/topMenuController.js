@@ -34,7 +34,7 @@ angular.module('IguanaGUIApp')
       isMobile = util.isMobile();
     });
 
-    $scope.clickLeft = function () {
+    $scope.clickLeft = function() {
       if (isMobile) {
         if (window.innerWidth < itemsParent.offsetWidth) {
           for (var i = 0; items.length > i; i++) {
@@ -50,7 +50,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    $scope.clickRight = function () {
+    $scope.clickRight = function() {
       if (isMobile) {
         if (window.innerWidth < itemsParent.offsetWidth) {
           for (var i = items.length - 1; 0 <= i; i--) {
@@ -66,7 +66,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    $scope.getNavbarStyle = function () {
+    $scope.getNavbarStyle = function() {
       return $scope.navbarStyle;
     };
 

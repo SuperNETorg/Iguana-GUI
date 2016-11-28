@@ -12,7 +12,7 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$timeout',
   '$q',
-  function ($storage, vars, $api, $state, $rootScope, util, $message, $filter,
+  function($storage, vars, $api, $state, $rootScope, util, $message, $filter,
             $timeout, $q) {
 
     var self = this;
@@ -51,7 +51,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this._userIdentify = function () {
+    this._userIdentify = function() {
       var currentEpochTime = new Date(Date.now()) / 1000, // calc difference in seconds between current time and session timestamp
           secondsElapsedSinceLastAuth =
             Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
@@ -115,7 +115,7 @@ angular.module('IguanaGUIApp')
         // since there's no error on nonexistent wallet passphrase in Iguana
         // redirect to dashboard with 5s timeout
         // TODO(?): point out if a coin is already running
-        $timeout(function () {
+        $timeout(function() {
           message.close();
           $state.go('dashboard.main');
         }, settings.addCoinInfoModalTimeout * 1000);
@@ -167,7 +167,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.logout = function (coin) {
+    this.logout = function(coin) {
       if ($storage['isIguana']) {
         if (!coin) {
           for (var name in $storage['dashboard-logged-in-coins']) {
@@ -207,7 +207,7 @@ angular.module('IguanaGUIApp')
       $storage['dashboard-logged-in-coins'] = {};
     };
 
-    this.logoutCoind = function () {
+    this.logoutCoind = function() {
       if (vars.coinsInfo != undefined) {
         for (var key in vars.coinsInfo) {
           if ($storage['iguana-' + key + '-passphrase'] &&
@@ -218,7 +218,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.logoutCoindCB = function (key) {
+    this.logoutCoindCB = function(key) {
       this.coindWalletLockResults[key] = true;
       $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 

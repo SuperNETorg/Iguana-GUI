@@ -72,7 +72,7 @@ angular.module('IguanaGUIApp', [
       data: {
         pageTitle: 'PAGE.DASHBOARD'
       },
-      views : {
+      views: {
         'top@dashboard': {
           templateUrl: 'partials/dashboard-top-menu.html',
           controller: 'topMenuController'
@@ -88,7 +88,7 @@ angular.module('IguanaGUIApp', [
       data: {
         pageTitle: 'PAGE.SETTINGS'
       },
-      views : {
+      views: {
         'top@dashboard': {
           templateUrl: 'partials/dashboard-top-menu.html',
           controller: 'topMenuController'
@@ -109,7 +109,7 @@ angular.module('IguanaGUIApp', [
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
 
   $rootScope.$on("$stateChangeStart",
-    function (event, toState, toParams, fromState, fromParams) {
+    function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
       $auth.toParams = toParams;
       $auth.fromState = fromState;
@@ -118,7 +118,7 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  $api.testConnection().then(function (coins) {
+  $api.testConnection().then(function(coins) {
     $rootScope.$broadcast('coinsInfo', coins);
   }); // switch with Api service once it's finished
 });

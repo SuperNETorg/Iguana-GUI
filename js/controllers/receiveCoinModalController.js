@@ -11,7 +11,7 @@ angular.module('IguanaGUIApp')
   '$rates',
   '$message',
   'util',
-  function ($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message, util) {
+  function($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message, util) {
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;

@@ -9,7 +9,7 @@ var lang = {
     'IGUANA': {
       'APP_TITLE': 'Iguana'
     },
-    'PAGE' : {
+    'PAGE': {
       'LOGIN': 'Login',
       'CREATE': 'Create account',
       'VERIFY': 'Verify passphrase',
@@ -72,7 +72,7 @@ var lang = {
       'SENT': 'sent',
       'RECEIVED': 'received',
       'IN_PROCESS': 'in process',
-      'ARE_YOU_SURE_YOU_WANT' : 'Are you sure you want to remove'
+      'ARE_YOU_SURE_YOU_WANT': 'Are you sure you want to remove'
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',
@@ -139,7 +139,7 @@ var lang = {
       'ADDRESS_IS_COPIED': 'Address is copied to clipboard',
       'TRANSACTION_ERROR': 'Transaction was not send due to an error!',
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
-      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
+      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

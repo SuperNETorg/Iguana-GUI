@@ -13,7 +13,7 @@ angular.module('IguanaGUIApp')
   '$rates',
   'vars',
   '$message',
-  function ($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message) {
+  function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message) {
     $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
@@ -62,7 +62,7 @@ angular.module('IguanaGUIApp')
             templateUrl: 'partials/send-coin-passphrase.html',
             appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
             resolve: {
-              receivedObject: function () {
+              receivedObject: function() {
                 return $scope.receivedObject;
               }
             }

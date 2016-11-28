@@ -4,7 +4,7 @@ angular.module('IguanaGUIApp')
 .service('$message', [
   '$uibModal',
   '$rootScope',
-  function ($uibModal, $rootScope) {
+  function($uibModal, $rootScope) {
     this.ngPrepMessageModal = function(message, color, messageType) {
       $rootScope.messageType = messageType; // TODO: rewrite
       $rootScope.message = message;
@@ -12,7 +12,7 @@ angular.module('IguanaGUIApp')
       return $uibModal.open({
         animation: true,
         backdrop: messageType ? false : true,
-        keyboard : messageType ? false : true,
+        keyboard: messageType ? false : true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         scope: $rootScope,

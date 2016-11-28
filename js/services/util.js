@@ -53,10 +53,10 @@ angular.module('IguanaGUIApp')
       return _array;
     };
 
-    this.getCoinKeys = function (coins) {
+    this.getCoinKeys = function(coins) {
       var result = [];
 
-      for (var i = 0; coins.length > i ;i++) {
+      for (var i = 0; coins.length > i; i++) {
         result.push(coins[i].coinId);
       }
 
@@ -112,7 +112,7 @@ angular.module('IguanaGUIApp')
     };
 
     // native javascript
-    this.getElementOffset = function (element) {
+    this.getElementOffset = function(element) {
       var docEl = document.documentElement,
           boundClientRect = element.getBoundingClientRect();
 

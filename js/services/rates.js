@@ -7,7 +7,7 @@ angular.module('IguanaGUIApp')
   '$api',
   'util',
   '$q',
-  function ($storage, vars, $api, util, $q) {
+  function($storage, vars, $api, util, $q) {
     var minEpochTimestamp = 1471620867; // Jan 01 1970
 
     this.ratesUpdateElapsedTime = function(coin) {
@@ -112,7 +112,7 @@ angular.module('IguanaGUIApp')
 
         if ($storage[iguanaPassphraseKey] && $storage[iguanaPassphraseKey].logged === 'yes' && key) {
           $storage['iguana-rates-' + key] = {
-            'shortName' : defaultCurrency,
+            'shortName': defaultCurrency,
             'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()],
             'updatedAt': Date.now()
           };
@@ -121,11 +121,11 @@ angular.module('IguanaGUIApp')
     };
 
     this.setCurrency = function(currencyShortName) {
-      $storage['iguana-currency'] = { 'name' : currencyShortName };
+      $storage['iguana-currency'] = { 'name': currencyShortName };
 
       for (var key in vars.coinsInfo) {
         $storage['iguana-rates-' + key] = {
-          'shortName' : null,
+          'shortName': null,
           'value': null,
           'updatedAt': minEpochTimestamp,
           'forceUpdate': true

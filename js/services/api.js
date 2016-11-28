@@ -13,7 +13,7 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$syncStatus',
   '$message',
-  function (util, $http, $state, $timeout,
+  function(util, $http, $state, $timeout,
             $interval, $q, vars, $filter, $storage,
             $syncStatus, $message) {
 
@@ -112,7 +112,7 @@ angular.module('IguanaGUIApp')
 
           this.errorHandler(response);
           this.testCoinPorts()
-              .then(function (coins) {
+              .then(function(coins) {
                 deferred.resolve(coins);
               });
         }.bind(this));
@@ -138,7 +138,7 @@ angular.module('IguanaGUIApp')
 
           return 10;
         } else if (response.data.error === 'iguana jsonstr expired') {
-          if (dev.showConsoleMessages && dev.isDev){
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log('server is busy');
           }
 
@@ -150,7 +150,7 @@ angular.module('IguanaGUIApp')
           this.coinsInfo[index].connection = true;
 
           if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
-            if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug){
+            if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug) {
               $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
             }
           }
@@ -183,7 +183,7 @@ angular.module('IguanaGUIApp')
 
     this.testCoinIsNotIguanaMode = function(response, index) {
       if (!$storage['isIguana']) {
-        this.coindCheckRT(index, function (coindCheckRTResponse) {
+        this.coindCheckRT(index, function(coindCheckRTResponse) {
           var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
               syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
@@ -251,17 +251,17 @@ angular.module('IguanaGUIApp')
           }
 
           // disable coin in iguna mode
-          if (!iguanaAddCoinParams[index]){
+          if (!iguanaAddCoinParams[index]) {
             this.coinsInfo[index].iguana = false;
           }
 
-          if (dev.showConsoleMessages && dev.isDev){
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log('Connections: ' + peers[0].replace('peers.', ''));
           }
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('Blocks: ' + currentHeight);
           }
-          if (dev.showConsoleMessages && dev.isDev){
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
               totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
           }
@@ -282,7 +282,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.checkLoopEnd = function (_index) {
+    this.checkLoopEnd = function(_index) {
       var debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
       if (Object.keys(this.getConf().coins).length === _index) {
@@ -437,7 +437,7 @@ angular.module('IguanaGUIApp')
             }
           }
           if (response.data.error &&
-            response.data.error.indexOf('Verifying blocks...') > -1){
+            response.data.error.indexOf('Verifying blocks...') > -1) {
             if (dev.showConsoleMessages && dev.isDev) {
               console.log(index + ' is verifying blocks...');
             }
@@ -562,7 +562,7 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.walletLock = function (coin) {
+    this.walletLock = function(coin) {
       var defer = $q.defer(),
           self = this,
           fullUrl = this.getFullApiRoute('walletlock', null, coin),
@@ -776,7 +776,7 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(
-        function (response) {
+        function(response) {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(response);
           }
@@ -788,7 +788,7 @@ angular.module('IguanaGUIApp')
           }
           deferred.resolve([result, ++_index]);
         },
-        function (response) {
+        function(response) {
           result.push([response, ++_index]);
           deferred.reject(result);
         }
@@ -797,7 +797,7 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.addCoins = function (coins, _index, result) {
+    this.addCoins = function(coins, _index, result) {
       var self = this,
           coinsKeys = util.getCoinKeys(coins),
           coinsLength = coinsKeys.length,
@@ -927,7 +927,7 @@ angular.module('IguanaGUIApp')
           } else {
             deferred.resolve([false]);
           }
-        }, function(response){
+        }, function(response) {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('both services failed to respond');
           }

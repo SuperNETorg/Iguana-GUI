@@ -14,7 +14,7 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   '$q',
-  function ($scope, $state, $uibModalInstance, $api, $storage,
+  function($scope, $state, $uibModalInstance, $api, $storage,
             $rootScope, $timeout, vars) {
 
     $scope.isIguana = $storage['isIguana'];
@@ -46,7 +46,7 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length == 0;
     };
 
-    $scope.$on('modal.dismissing', function () {
+    $scope.$on('modal.dismissing', function() {
       $rootScope.$broadcast('modal.dismissed', constructCoinRepeater());
     });
 
@@ -150,7 +150,7 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       delete $rootScope.$$listeners['modal.dismissed'];
     });
   }

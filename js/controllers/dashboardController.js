@@ -78,12 +78,12 @@ angular.module('IguanaGUIApp')
           ariaDescribedBy: 'modal-body',
           controller: 'addCoinModalController',
           templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container')),
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
         });
 
         modalInstance.result.then(resultPromise);
 
-        $rootScope.$on('modal.dismissed', function (event, coins) {
+        $rootScope.$on('modal.dismissed', function(event, coins) {
           resultPromise(coins);
         });
 
@@ -137,7 +137,7 @@ angular.module('IguanaGUIApp')
           ariaDescribedBy: 'modal-body',
           controller: 'receiveCoinModalController',
           templateUrl: 'partials/receive-coin.html',
-          appendTo: angular.element(document.querySelector('.receive-coin-modal-container')),
+          appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
         });
       };
 
@@ -155,7 +155,7 @@ angular.module('IguanaGUIApp')
           ariaDescribedBy: 'modal-body',
           controller: 'sendCoinModalController',
           templateUrl: 'partials/send-coin.html',
-          appendTo: angular.element(document.querySelector('.send-coin-modal-container')),
+          appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
         });
       };
 
@@ -195,7 +195,7 @@ angular.module('IguanaGUIApp')
         }
       };
 
-      $scope.getActiveCoins = function () {
+      $scope.getActiveCoins = function() {
         return $storage['iguana-login-active-coin'];
       };
 

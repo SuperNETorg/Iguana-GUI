@@ -41,17 +41,17 @@ angular.module('IguanaGUIApp')
     function onInit() {
       initPage();
 
-      $scope.selectWallet = function () {
+      $scope.selectWallet = function() {
         var modalInstance = $uibModal.open({
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
           controller: 'addCoinModalController',
           templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.coin-select-modal')),
+          appendTo: angular.element(document.querySelector('.coin-select-modal'))
         });
 
-        modalInstance.result.then(function (data) {
+        modalInstance.result.then(function(data) {
           $scope.coins = data;
         });
       };

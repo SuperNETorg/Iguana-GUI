@@ -16,7 +16,7 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
-  function ($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
+  function($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
             $timeout, $rootScope, $filter, $message, vars) {
 
     $scope.util = util;
@@ -53,12 +53,12 @@ angular.module('IguanaGUIApp')
           ariaDescribedBy: 'modal-body',
           controller: 'addCoinModalController',
           templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal')),
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
         });
 
         modalInstance.result.then(resultPromise);
 
-        $rootScope.$on('modal.dismissed', function (event, coins) {
+        $rootScope.$on('modal.dismissed', function(event, coins) {
           resultPromise(coins);
         });
 
@@ -86,7 +86,7 @@ angular.module('IguanaGUIApp')
       };
     }
 
-    $scope.isDisabled = function () {
+    $scope.isDisabled = function() {
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = {};
       }
@@ -94,7 +94,7 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       $storage['iguana-login-active-coin'] = [];
       $storage['iguana-active-coin'] = {};
     })

@@ -4,7 +4,7 @@ angular.module('IguanaGUIApp')
 .service('$syncStatus', [
   '$filter',
   '$state',
-  function ($filter, $state) {
+  function($filter, $state) {
     this.setPortPollResponse = function() {
       var coinsInfoJSON = [],
           result = false;

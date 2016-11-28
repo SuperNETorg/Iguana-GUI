@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.filter('lang', function () {
+.filter('lang', function() {
   return function(langID) {
     if (langID) {
       var langIDComponents = langID.split('.');
