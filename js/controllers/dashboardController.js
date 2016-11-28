@@ -18,8 +18,9 @@ angular.module('IguanaGUIApp')
   '$auth',
   '$message',
   '$datetime',
+  '$window',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
 
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
@@ -160,7 +161,7 @@ angular.module('IguanaGUIApp')
 
       updateDashboardView(settings.ratesUpdateTimeout);
 
-      $(window).resize(function() {
+      angular.element($window).on('resize', function() {
         util.applyDashboardResizeFix($scope.sideBarCoins);
       });
 
@@ -185,7 +186,10 @@ angular.module('IguanaGUIApp')
             return $scope.sideBarCoinsUnsorted[key];
           });
 
-          if ($scope.activeCoin === coinId) $scope.setActiveCoin($scope.sideBarCoins[0]);
+          if ($scope.activeCoin === coinId) {
+            $scope.setActiveCoin($scope.sideBarCoins[0]);
+          }
+
           checkAddCoinButton();
           updateTotalBalance();
         }
@@ -202,7 +206,8 @@ angular.module('IguanaGUIApp')
 
         var lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
         for (var key in lookupArray) {
-          if ($storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
+          if ($storage['iguana-' + key + '-passphrase'] &&
+            $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
             coinsSelectedByUser[index] = key;
             index++;
           }
@@ -280,8 +285,11 @@ angular.module('IguanaGUIApp')
             lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
 
         for (var key in lookupArray) {
-          if (!$storage['iguana-' + key + '-passphrase'] || $storage['iguana-' + key + '-passphrase'] && $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
-            if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) || (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
+          if (!$storage['iguana-' + key + '-passphrase'] ||
+            $storage['iguana-' + key + '-passphrase'] &&
+            $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
+            if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) ||
+              (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
               _coinsLeftToAdd++;
             }
           }
@@ -305,7 +313,9 @@ angular.module('IguanaGUIApp')
 
       // construct transaction unit array
       function constructTransactionUnitRepeater(update) {
-        if (!update) $scope.txUnit.loading = true;
+        if (!update) {
+          $scope.txUnit.loading = true;
+        }
 
         $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
         $api.listTransactions(defaultAccount, $scope.activeCoin)
@@ -324,7 +334,9 @@ angular.module('IguanaGUIApp')
 
         // sort tx in desc order by timestamp
         if (transactionsList) {
-          if (transactionsList.length) $scope.txUnit.loading = false;
+          if (transactionsList.length) {
+            $scope.txUnit.loading = false;
+          }
 
           for (var i=0; i < transactionsList.length; i++) {
             $scope.txUnit.transactions[i] = {};
@@ -341,7 +353,7 @@ angular.module('IguanaGUIApp')
                   iconSentClass = 'bi_interface-minus',
                   iconReceivedClass = 'bi_interface-plus';
 
-              if (transactionDetails)
+              if (transactionDetails) {
                 if (transactionDetails.details) {
                   txAddress = transactionDetails.details[0].address;
                   txAmount = transactionDetails.details[0].amount;
@@ -371,6 +383,7 @@ angular.module('IguanaGUIApp')
                     txStatus = $filter('lang')('DASHBOARD.RECEIVED');
                   }
                 }
+              }
 
               if (transactionDetails) {
                 if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {

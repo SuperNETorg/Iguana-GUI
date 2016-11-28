@@ -126,13 +126,14 @@ angular.module('IguanaGUIApp')
     this.applyDashboardResizeFix = function(coins) {
       var mainContent = document.querySelectorAll('.main-content')[0],
           txUnit = document.querySelectorAll('.transactions-unit')[0],
+          coin = document.querySelectorAll('.coins')[0],
           width,
           padding;
 
       if (mainContent && txUnit) {
         // tx unit resize
         if (!self.isMobile()) {
-          width = Math.floor(mainContent.offsetWidth - $('.coins').width() - 80);
+          width = Math.floor(mainContent.offsetWidth - coin.offsetWidth - 80);
           padding = '0 30px';
         } else {
           width = '';

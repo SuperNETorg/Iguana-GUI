@@ -107,8 +107,12 @@ angular.module('IguanaGUIApp')
     function clickOnCoin(item, $event) {
       var coinElement = angular.element($event.currentTarget);
 
-      if (!$storage['isIguana'] || ($storage['isIguana'] &&
-        $state.$current.url == '/signup')) {
+      if (
+        (
+          !$storage['isIguana'] ||
+          ($storage['isIguana'] && $state.$current.url == '/signup')
+        ) &&
+        !coinElement.hasClass('active')) {
         $scope.selectedCoins = [];
         $storage['iguana-login-active-coin'] = {};
       }
@@ -138,9 +142,12 @@ angular.module('IguanaGUIApp')
     }
 
     function getPassphrase(coinId) {
-      if (dev && dev.coinPW)
+      if (dev && dev.coinPW) {
         return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
-            (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
+          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
+      } else {
+        return '';
+      }
     }
 
     $scope.$on('$destroy', function () {
