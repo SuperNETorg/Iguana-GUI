@@ -145,7 +145,7 @@ gulp.task('default', function() {
 gulp.task('watch:dev', function() {
   gulp.watch(paths.partials, ['index']);
   gulp.watch(paths.js.default, ['copyCoreJS']);
-  gulp.watch(paths.styles.default, ['scss', 'scss:css']);
+  gulp.watch(paths.styles.default, ['scss']);
 });
 
 gulp.task('dev', function() {
