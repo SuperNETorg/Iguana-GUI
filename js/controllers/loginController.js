@@ -17,7 +17,10 @@ angular.module('IguanaGUIApp')
   '$message',
   'vars',
   function($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
-            $timeout, $rootScope, $filter, $message, vars) {
+           $timeout, $rootScope, $filter, $message, vars) {
+
+    $storage['iguana-login-active-coin'] = [];
+    $storage['iguana-active-coin'] = {};
 
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
@@ -36,6 +39,8 @@ angular.module('IguanaGUIApp')
 
     $storage['iguana-login-active-coin'] = {};
     $storage['iguana-active-coin'] = {};
+
+    angular.element(document.body).addClass('auth-orange-gradient');
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -74,6 +79,24 @@ angular.module('IguanaGUIApp')
         }
       };
 
+      $scope.openSignupCoinModal = function () {
+        $storage['iguana-login-active-coin'] = [];
+        $storage['iguana-active-coin'] = {};
+        var modalInstance = $uibModal.open({
+          animation: true,
+          size: 'full',
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'signupSelectCoinModalController',
+          templateUrl: 'partials/add-coin.html',
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
+        });
+
+        modalInstance.result.then(function (data) {
+          $state.go('signup.step1');
+        })
+      };
+
       $scope.login = function() {
         $auth.login(
           $scope.getActiveCoins(),
@@ -93,10 +116,5 @@ angular.module('IguanaGUIApp')
 
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
-
-    $scope.$on('$destroy', function() {
-      $storage['iguana-login-active-coin'] = [];
-      $storage['iguana-active-coin'] = {};
-    })
   }
 ]);

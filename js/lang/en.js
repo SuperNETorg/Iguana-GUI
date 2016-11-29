@@ -23,13 +23,12 @@ var lang = {
       'SELECT_A_WALLET': 'Select a wallet',
       'ENTER_A_PASSPHRASE_TO_LOGIN': 'Enter a passphrase to log in',
       'LOGIN': 'Log in',
-      'CREATE_ACCOUNT': 'Create an account',
+      'CREATE_ACCOUNT': 'Create wallet',
       'ADD': 'Add',
       'ENTER_A_PASSPHRASE_TO_ADD': 'Enter a passphrase to add',
       'INCORRECT_INPUT_P1': 'Incorrect input. Passphrase must consist of',
       'INCORRECT_INPUT_P2': 'words. Try one more time.',
       'OR': 'or',
-      'SELECT_A_WALLET': 'Select a wallet',
       'SELECT_A_COIN': 'Select a coin',
       'CREATE_NEW_WALLET': 'Create new wallet',
       'SELECT_A_WALLET_TO_CREATE': 'Select a wallet to create',
@@ -50,9 +49,11 @@ var lang = {
       'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'Click here to paste from the clipboard.'
     },
     'ADD_COIN': {
+      'WALLET_TYPE': 'Wallet type',
+      'SELECT_CREATED_WALLET_TYPE': 'Select a wallet type to create it',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
-      'FOR_EXAMPLE': 'For example',
+      'FOR_EXAMPLE': 'For example "Bitcoin" or "BTN"',
       'SELECT_A_COIN_TO_ADD': 'Select a coin to add',
       'A_COIN': 'a coin',
       'A_WALLET': 'a wallet'

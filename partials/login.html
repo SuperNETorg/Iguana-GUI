@@ -2,12 +2,19 @@
   <div class="body-wrapper auth-main">
     <div class="container-fluid">
       <div class="row centered">
+        <nav class="navbar top unselectable">
+          <div class="clearfix">
+            <div class="navbar-header">
+              <div class="navbar-brand col-white">
+                {{ 'IGUANA.APP_TITLE' | lang }}
+              </div>
+            </div>
+          </div>
+        </nav>
         <section class="form-container login-form">
           <header class="form-header">
             <i class="bi_interface-cross cursor-pointer hidden"></i>
-            <div class="title text-shadow">
-              {{ 'LOGIN.WELCOME' | lang }}
-            </div>
+            <div class="title text-shadow">{{ 'LOGIN.WELCOME' | lang }}</div>
           </header>
           <div class="form-content">
             <div class="login-add-coin-selection">
@@ -33,12 +40,11 @@
               {{ 'LOGIN.LOGIN' | lang }}</button>
             <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
             <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"
-                    ng-click="$state.go('signup.step1')">{{ 'LOGIN.CREATE_ACCOUNT' | lang }}</button>
+                    ng-click="openSignupCoinModal()">{{ 'LOGIN.CREATE_ACCOUNT' | lang }}</button>
           </div>
         </section>
       </div>
     </div>
   </div>
   <div class="auth-add-coin-modal"></div>
-  <div class="message-modal" ng-include="'partials/message-modal.html'"></div>
 </script>

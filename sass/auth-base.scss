@@ -13,7 +13,6 @@ $login-button-disabled-color: #B2B4B7;
 .body-wrapper.auth-main {
   display: table;
   height: 100%;
-  margin: 0 auto;
   width: 100%;
 
   .form-header .title {
@@ -24,6 +23,17 @@ $login-button-disabled-color: #B2B4B7;
     top: 18px;
     z-index: 10;
   }
+  .navbar {
+    .navbar-header{
+      .navbar-brand{
+        font-size: 22px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+.auth-orange-gradient {
+  @include login-orange-gradient;
 }
 .auth-main {
   .coin {

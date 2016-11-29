@@ -43,6 +43,10 @@ body .add-coin-login-form .modal-add-coin-login-form,
   .btn {
     margin-top: 25px;
   }
+  .supported-coins-repeater-container {
+    position: relative;
+    margin-top: 2em;
+  }
 }
 .add-new-coin-form {
   z-index: 5000;
@@ -83,27 +87,29 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .auth-add-coin-modal,
 .auth-add-coin-modal-container {
   .coins-title {
-    font-size: 1.1em;
-    padding-top: 2em;
+    font-size: 14.8px;
     text-align: center;
+    font-weight: 600;
+    color: #6f6f6f;
   }
   .quick-search {
     padding-bottom: 20px;
-    padding-top: 34px;
+    padding-top: 28px;
     text-align: center;
+    font-size: 13px;
 
     .input.text {
       border: none;
       border-radius: $border-radius-smaller;
       height: 34px;
-      padding-left: 40px;
-      width: 300px;
+      padding-left: 34px;
+      width: 276px;
     }
     i.icon {
-      color: $color-medium-gray;
-      font-size: 1.2em;
-      margin-left: 7px;
-      margin-top: 6px;
+      color: #C7CCD0;
+      font-size: 14px;
+      margin-left: 8px;
+      margin-top: 8px;
       position: absolute;
     }
   }
@@ -125,36 +131,52 @@ body .add-coin-login-form .modal-add-coin-login-form,
   }
   .supported-coins-repeater {
     max-height: 400px;
+    max-width: 1020px;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
     text-align: center;
+    margin: 0 auto;
 
     .coin {
       background: $color-white;
       border: 2px solid transparent;
-      border-radius: $border-radius-small;
-      box-shadow: 0 2px 3px 2px rgba-black(0.07);
+      border-radius: $border-radius-smaller;
+      box-shadow: 0 2px 3px 2px rgba-black(0.08);
       @include cursor-pointer;
       display: inline-block;
-      height: 9em;
-      margin: 8px;
+      margin: 10px;
       opacity: 1;
-      padding-top: 35px;
+      padding: 6px 24px;
       text-align: center;
       transition: opacity $transition-length;
       width: 11.5em;
 
       .icon {
         border-radius: 50%;
-        color: $color-white;
-        font-size: 2em;
-        padding: 11px;
+        background-color: $color-white;
+        margin-top: 12px;
+        font-size: 2.2em;
+        padding: 2px;
+        width: 30%;
       }
       .name {
         color: $coin-repeater-coin-name-color;
         font-size: 1.05em;
-        padding-top: 16px;
+        padding: 10px 8px 12px 8px;
+        width: 70%;
+        .help-block {
+          margin: 0;
+          font-size: 14px;
+        }
+        .help-block:first-child {
+          font-weight: 700;
+        }
+        .help-block:last-child {
+          font-weight: 400;
+          font-size: 12px;
+          color: rgb(146, 147, 156);
+        }
       }
     }
     .coin.fade {
@@ -163,21 +185,27 @@ body .add-coin-login-form .modal-add-coin-login-form,
     }
     .coin.active {
       border: 2px solid rgb(255, 109, 54);
+      .name {
+        .help-block {
+          font-weight: 700;
+          color: rgb(255, 109, 54);
+        }
+      }
     }
   }
   .supported-coins-repeater.override-opacity .coin {
     opacity: 1 !important; /* override opacity set in js */
   }
   .col-orange {
-    background-color: $color-add-coin-orange !important;
+    color: $color-add-coin-orange !important;
   }
   .col-breeze {
-    background-color: $color-add-coin-breeze !important;
+    color: $color-add-coin-breeze !important;
   }
   .col-yellow {
-    background-color: $color-add-coin-yellow !important;
+    color: $color-add-coin-yellow !important;
   }
   .col-light-blue {
-    background-color: $color-add-coin-light-blue !important;
+    color: $color-add-coin-light-blue !important;
   }
 }

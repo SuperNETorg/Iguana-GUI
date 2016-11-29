@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp.controllers', [
   'ngStorage',
   'ui.bootstrap'
 ])
-.value('vars', {})
+.value('vars', {});
 angular.module('IguanaGUIApp', [
   'ui.router',
   'ngSanitize',

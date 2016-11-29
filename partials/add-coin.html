@@ -3,17 +3,17 @@
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
       <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
       <div class="title text-shadow">
-        {{ ( isIguana ? 'ADD_COIN.ADDING_A_NEW_COIN' : 'DASHBOARD.ADDING_A_NEW_WALLET' ) | lang }}
+        {{ 'ADD_COIN.WALLET_TYPE' | lang }}
       </div>
     </header>
     <div class="form-content">
       <div class="coins-title">
-        {{ ( isIguana ? 'ADD_COIN.SELECT_COINS_TO_ADD' : 'DASHBOARD.SELECT_A_WALLET_TO_ADD' ) | lang }}
+        {{ 'ADD_COIN.SELECT_CREATED_WALLET_TYPE' | lang }}
       </div>
       <div class="quick-search">
         <i class="icon bi_tool-magnifier"></i>
         <input type="text" class="input text"
-               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}, 'Bitcoin'"
+               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
                ng-model="coinSearchModel"/>
       </div>
       <div class="supported-coins-repeater-container">
@@ -23,17 +23,15 @@
                  ng-repeat="(name, item) in coins | filter:coinSearchModel"
                  ng-click="clickOnCoin(item, $event)"
                  ng-class="{ 'active': isActive(item) }">
-              <i class="icon cc {{ item.id }}-alt col-{{ item.color }}"></i>
-              <div class="name">{{ item.name }}</div>
+              <i class="icon cc {{ item.id }}-alt col-{{ item.color }} pull-left"></i>
+              <div class="name pull-right text-left">
+                <div class="help-block">{{ item.name }}</div>
+                <div class="help-block">{{ item.id }}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next"
-              ng-click="next()"
-              ng-class="{ 'disabled': isDisabled() }">
-        {{ 'CREATE_ACCOUNT.NEXT' | lang }}
-      </button>
     </div>
   </section>
 </script>

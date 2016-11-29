@@ -5,6 +5,9 @@
 
 @import 'dev.scss';
 
+.iguana-modal.message-container::before {
+  display: initial;
+}
 .iguana-modal.message-container {
   @include proxima;
   background: rgba(255, 255, 255, 0.7);

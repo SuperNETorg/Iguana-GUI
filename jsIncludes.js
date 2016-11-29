@@ -38,6 +38,7 @@
 <script type="text/javascript" src="js/controllers/settingsController.js"></script>
 <script type="text/javascript" src="js/controllers/topMenuController.js"></script>
 <!-- modal -->
+<script type="text/javascript" src="js/controllers/signupSelectCoinModalController.js"></script>
 <script type="text/javascript" src="js/controllers/addCoinModalController.js"></script>
 <script type="text/javascript" src="js/controllers/addCoinLoginModalController.js"></script>
 <script type="text/javascript" src="js/controllers/receiveCoinModalController.js"></script>

@@ -30,13 +30,15 @@ html {
 .col-red {
   color: $color-red;
 }
+.col-white {
+  color: $color-white;
+}
 .modal .modal-dialog.modal-lg {
   width: 800px;
 }
 .app-container,
 .app-container-inner {
-  @include login-orange-gradient;
-  height: 100%;
+
 }
 .dashboard-page .app-container,
 .dashboard-page .app-container-inner {

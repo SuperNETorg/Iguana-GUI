@@ -24,13 +24,15 @@ angular.module('IguanaGUIApp')
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
     $scope.coins = [];
+    $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
+    $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
+
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
-    $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
-    $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
-    $storage['iguana-login-active-coin'] = {};
+
+    angular.element(document.body).removeClass('auth-orange-gradient');
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -115,15 +117,21 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.isDisabled = function() {
-      if (!$storage['iguana-login-active-coin']) {
-        $storage['iguana-login-active-coin'] = {};
+      if (
+        !$storage['iguana-login-active-coin'] ||
+        !Object.keys($storage['iguana-login-active-coin']).length
+      ) {
+        $state.go('login');
+        return false;
+      } else {
+        return Object.keys($storage['iguana-login-active-coin']).length === 0;
       }
-
-      return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
-    $scope.$on('$destroy', function iVeBeenDismissed() {
+    $scope.$on('$destroy', function () {
       $storage['passphrase'] = '';
-    });
+      $storage['iguana-login-active-coin'] = [];
+      $storage['iguana-active-coin'] = {};
+    })
   }
 ]);
