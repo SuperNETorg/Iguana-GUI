@@ -44,8 +44,8 @@ body .add-coin-login-form .modal-add-coin-login-form,
     margin-top: 25px;
   }
   .supported-coins-repeater-container {
-    position: relative;
     margin-top: 2em;
+    position: relative;
   }
 }
 .add-new-coin-form {
@@ -87,16 +87,16 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .auth-add-coin-modal,
 .auth-add-coin-modal-container {
   .coins-title {
-    font-size: 14.8px;
-    text-align: center;
-    font-weight: 600;
     color: #6f6f6f;
+    font-size: 14.8px;
+    font-weight: 600;
+    text-align: center;
   }
   .quick-search {
+    font-size: 13px;
     padding-bottom: 20px;
     padding-top: 28px;
     text-align: center;
-    font-size: 13px;
 
     .input.text {
       border: none;
@@ -106,7 +106,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       width: 276px;
     }
     i.icon {
-      color: #C7CCD0;
+      color: $color-medium-gray;
       font-size: 14px;
       margin-left: 8px;
       margin-top: 8px;
@@ -130,13 +130,13 @@ body .add-coin-login-form .modal-add-coin-login-form,
     @include quick-search-placeholder;
   }
   .supported-coins-repeater {
+    margin: 0 auto;
     max-height: 400px;
     max-width: 1020px;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
     text-align: center;
-    margin: 0 auto;
 
     .coin {
       background: $color-white;
@@ -153,10 +153,10 @@ body .add-coin-login-form .modal-add-coin-login-form,
       width: 11.5em;
 
       .icon {
-        border-radius: 50%;
         background-color: $color-white;
-        margin-top: 12px;
+        border-radius: 50%;
         font-size: 2.2em;
+        margin-top: 12px;
         padding: 2px;
         width: 30%;
       }
@@ -166,16 +166,16 @@ body .add-coin-login-form .modal-add-coin-login-form,
         padding: 10px 8px 12px 8px;
         width: 70%;
         .help-block {
-          margin: 0;
           font-size: 14px;
+          margin: 0;
         }
         .help-block:first-child {
           font-weight: 700;
         }
         .help-block:last-child {
-          font-weight: 400;
-          font-size: 12px;
           color: rgb(146, 147, 156);
+          font-size: 12px;
+          font-weight: 400;
         }
       }
     }
@@ -187,8 +187,8 @@ body .add-coin-login-form .modal-add-coin-login-form,
       border: 2px solid rgb(255, 109, 54);
       .name {
         .help-block {
-          font-weight: 700;
           color: rgb(255, 109, 54);
+          font-weight: 700;
         }
       }
     }

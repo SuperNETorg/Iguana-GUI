@@ -74,22 +74,22 @@
   padding: 0 !important;
   text-align: center;
 
-  .modal-dialog.modal-full {
-    width: 100%;
+  .modal-full {
     height: 100%;
     margin: 0;
     padding: 0;
+    width: 100%;
 
     .modal-content{
+      border-radius: 0;
       height: auto;
       min-height: 100%;
-      border-radius: 0;
 
       .modal-header{
-        height: 54px;
-        border-radius: 0;
-        padding-top: 7px;
         border-bottom:none;
+        border-radius: 0;
+        height: 54px;
+        padding-top: 7px;
       }
     }
   }
@@ -113,12 +113,12 @@
   z-index: -1;
 }
 .modal-dialog {
-  display: inline-block;
-  margin: auto;
-  text-align: left;
-  vertical-align: middle;
+        display: inline-block;
+        margin: auto;
+        text-align: left;
+        vertical-align: middle;
 
-  .modal-body{
-    padding: 15px 1em 3.2em 1em;
-  }
-}
+        .modal-body{
+          padding: 15px 1em 3.2em 1em;
+        }
+      }
