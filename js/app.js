@@ -42,6 +42,11 @@ angular.module('IguanaGUIApp', [
         pageTitle: 'PAGE.LOGIN'
       }
     })
+    .state('login.step2', {
+      data: {
+        pageTitle: 'PAGE.LOGIN'
+      }
+    })
     .state('signup', {
       templateUrl: 'partials/signup.html',
       controller: 'signupController'

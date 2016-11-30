@@ -23,6 +23,18 @@ $login-button-disabled-color: #B2B4B7;
     top: 18px;
     z-index: 10;
   }
+  .form-header .page-title {
+    color: $color-white;
+    font-size: 4.23em;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    top: 18px;
+    z-index: 10;
+  }
+  .advanced-benefits {
+    font-weight: bold;
+  }
   .navbar {
     .navbar-header{
       .navbar-brand{
@@ -66,6 +78,9 @@ $login-button-disabled-color: #B2B4B7;
     font-family: sans-serif;
     letter-spacing: 1px;
     padding: 20px 0;
+  }
+  .login-or-delim {
+    color:#FEFBF9;
   }
   .login-add-coin-selection {
     text-align: center;
@@ -127,10 +142,12 @@ $login-button-disabled-color: #B2B4B7;
   }
   .offset-bottom-sm {
     margin: 15px auto;
-    width: 264px;
   }
   .offset-bottom-md {
     margin: 30px auto 30px auto;
+  }
+  .advanced-benefits {
+    color:#FEFBF9;
   }
   .create-account-form .login-input-directions,
   .verify-passphrase-form .login-input-directions {
