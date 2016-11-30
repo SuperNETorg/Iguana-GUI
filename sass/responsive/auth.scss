@@ -1,0 +1,106 @@
+/*!
+ * Iguana authentication responsive
+ *
+ */
+
+$screenWidth: 768px;
+
+$widthResolution: "screen and (min-width: "$screenWidth")";
+$mobileResolution: "screen and (max-width: "$screenWidth")";
+
+/* for width resolution */
+@media #{$widthResolution} {
+  .auth-main {
+    .form-header {
+      height: 60px;
+      display: table-caption;
+    }
+    .btn.row {
+      font-size: 1.05em;
+      height: 34px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 300px;
+    }
+    .offset-bottom-sm {
+      margin-bottom: 30px;
+    }
+    .form-content {
+      padding: 0;
+
+      .login-passphrase-textarea.offset-bottom-sm.row.center {
+        display: block;
+        font-size: 1.24em;
+        font-weight: 600;
+        height: 158px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 15px 50px;
+        width: 398px;
+      }
+    }
+    .create-account-form {
+      .form-content {
+        vertical-align: middle;
+        display: table-cell;
+        margin: 0;
+
+        .form-content-inner {
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+      .login-input-directions {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+      .generated-passhprase {
+        font-size: 18px;
+        padding: 0 35px;
+      }
+    }
+    .bi_interface-arrow-left {
+      margin-top: 15px;
+    }
+    .verify-passphrase-form {
+      .login-or-delim {
+        padding: 12px 0;
+      }
+      .login-input-directions {
+        width: 210px;
+      }
+    }
+  }
+  .form-container.mdl .form-header,
+  .modal-content,
+  .modal-dialog.modal-popup,
+  .modal-dialog .modal-body,
+  .modal .modal-content.receiving-coin-content {
+    border-radius: 0;
+  }
+  .form-container .form-content {
+    padding: 3.45em 10px;
+  }
+}
+
+@media #{$mobileResolution} {
+  .form-container.mdl .form-header,
+  .form-container.mdl .modal-content,
+  .modal-dialog.modal-popup,
+  .modal-dialog .modal-body,
+  .modal .modal-content.receiving-coin-content {
+    border-radius: 0;
+  }
+  .add-new-coin-form .supported-coins-repeater-inner {
+    padding: 30px 0;
+  }
+  .form-container .form-content {
+    padding: 40px 10px;
+  }
+  .coins-title {
+    padding-top: 0;
+  }
+  .form-container.mdl .bi_interface-cross {
+    margin-top: 3px;
+  }
+}

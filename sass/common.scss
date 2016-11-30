@@ -13,7 +13,6 @@ html {
   margin: 0;
   overflow: auto !important; /* prevent scrolling when modal is visible */
   padding: 0 !important;
-  position: absolute;
   top: 0;
   width: 100%; /* override default bootstrap modal css */
 }

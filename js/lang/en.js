@@ -37,7 +37,7 @@ var lang = {
       'ADD_WALLET': 'Add wallet'
     },
     'CREATE_ACCOUNT': {
-      'ADD_ACCOUNT': 'Add account',
+      'ADD_ACCOUNT': 'Create {{ coin }} wallet',
       'WRITE_DOWN_THIS_P1': 'Write down this',
       'WRITE_DOWN_THIS_P2': '-word passphrase and keep it safe. You can\'t access or restore your account, if you lose it!',
       'WRITE_DOWN_THIS_P3': 'Don\'t ever disclose your passphrase!',
@@ -53,7 +53,7 @@ var lang = {
       'SELECT_CREATED_WALLET_TYPE': 'Select a wallet type to create it',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
-      'FOR_EXAMPLE': 'For example "Bitcoin" or "BTN"',
+      'FOR_EXAMPLE': 'For example. "Bitcoin" or "BTN"',
       'SELECT_A_COIN_TO_ADD': 'Select a coin to add',
       'A_COIN': 'a coin',
       'A_WALLET': 'a wallet'

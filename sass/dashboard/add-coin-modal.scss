@@ -5,7 +5,7 @@
 
 @import '../dev.scss';
 
-$coin-repeater-coin-name-color: #878892;
+$coin-repeater-coin-name-color: #2c2d2f;
 
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
@@ -37,14 +37,14 @@ body .add-coin-login-form .modal-add-coin-login-form,
       margin-top: 3px;
     }
     .title {
-      padding-top: 10px;
+      padding-top: 0.55em;
     }
   }
   .btn {
     margin-top: 25px;
   }
   .supported-coins-repeater-container {
-    margin-top: 2em;
+    margin-top: 2.62em;
     position: relative;
   }
 }
@@ -87,34 +87,33 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .auth-add-coin-modal,
 .auth-add-coin-modal-container {
   .coins-title {
-    color: #6f6f6f;
-    font-size: 14.8px;
-    font-weight: 600;
+    font-size: 1.14em;
     text-align: center;
   }
   .quick-search {
-    font-size: 13px;
+    font-size: 15px;
     padding-bottom: 20px;
-    padding-top: 28px;
+    padding-top: 2em;
     text-align: center;
 
     .input.text {
       border: none;
       border-radius: $border-radius-smaller;
       height: 34px;
-      padding-left: 34px;
-      width: 276px;
+      padding-left: 2.4em;
+      width: 300px;
     }
     i.icon {
       color: $color-medium-gray;
-      font-size: 14px;
-      margin-left: 8px;
-      margin-top: 8px;
+      font-size: 1.1em;
+      margin-left: 0.44em;
+      margin-top: 0.4em;
       position: absolute;
     }
   }
   @mixin quick-search-placeholder {
-    font-size: 1.1em;
+    color: $color-form-arrow;
+    font-size: 1.07em;
     padding-top: 1px;
   }
   .quick-search .input.text::-webkit-input-placeholder {
@@ -142,15 +141,15 @@ body .add-coin-login-form .modal-add-coin-login-form,
       background: $color-white;
       border: 2px solid transparent;
       border-radius: $border-radius-smaller;
-      box-shadow: 0 2px 3px 2px rgba-black(0.08);
+      box-shadow: 0 3px 2px 1px rgba-black(0.1);
       @include cursor-pointer;
       display: inline-block;
-      margin: 10px;
+      margin: 0.6em 0.72em;
       opacity: 1;
-      padding: 6px 24px;
+      padding: 0.9em 1.9em;
       text-align: center;
       transition: opacity $transition-length;
-      width: 11.5em;
+      width: 12.86em;
 
       .icon {
         background-color: $color-white;
@@ -163,18 +162,20 @@ body .add-coin-login-form .modal-add-coin-login-form,
       .name {
         color: $coin-repeater-coin-name-color;
         font-size: 1.05em;
-        padding: 10px 8px 12px 8px;
+        padding: 1em 0.56em 10px 0.56em;
         width: 70%;
+
         .help-block {
-          font-size: 14px;
+          font-size: 16px;
           margin: 0;
         }
         .help-block:first-child {
-          font-weight: 700;
+          @include bold;
+          line-height: 1.1;
         }
         .help-block:last-child {
           color: rgb(146, 147, 156);
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 400;
         }
       }

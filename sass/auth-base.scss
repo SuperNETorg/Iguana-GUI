@@ -17,7 +17,7 @@ $login-button-disabled-color: #B2B4B7;
 
   .form-header .title {
     color: $color-white;
-    font-size: 1.23em;
+    font-size: 1.44em;
     position: relative;
     text-align: center;
     top: 18px;
@@ -27,7 +27,7 @@ $login-button-disabled-color: #B2B4B7;
     .navbar-header{
       .navbar-brand{
         font-size: 22px;
-        font-weight: 600;
+        @include bold;
       }
     }
   }
@@ -61,8 +61,6 @@ $login-button-disabled-color: #B2B4B7;
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
   .form-container {
-    background-color: transparent;
-    margin: 0 auto;
   }
   .login-or-delim {
     font-family: sans-serif;

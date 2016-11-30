@@ -17,7 +17,6 @@ angular.module('IguanaGUIApp')
   '$rates',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
            $api, $rootScope, $uibModal, $filter, $message, vars, $rates) {
-
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -26,12 +25,15 @@ angular.module('IguanaGUIApp')
     $scope.coins = [];
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
+    $scope.title = setTitle();
 
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
 
+    isCoinSelected();
+    var pageTitle;
     angular.element(document.body).removeClass('auth-orange-gradient');
 
     if (!vars.coinsInfo) {
@@ -112,11 +114,21 @@ angular.module('IguanaGUIApp')
       }
     }
 
+    function setTitle() {
+      pageTitle = $filter('lang')('CREATE_ACCOUNT.ADD_ACCOUNT');
+
+      if ($scope.activeCoins[Object.keys($scope.activeCoins)[0]]) {
+        pageTitle = pageTitle.replace('{{ coin }}', $scope.activeCoins[Object.keys($scope.activeCoins)[0]].name);
+      }
+
+      return pageTitle;
+    }
+
     function verifyPass() {
       $scope.buttonCreateAccount = false;
     }
 
-    $scope.isDisabled = function() {
+    function isCoinSelected() {
       if (
         !$storage['iguana-login-active-coin'] ||
         !Object.keys($storage['iguana-login-active-coin']).length
@@ -126,7 +138,7 @@ angular.module('IguanaGUIApp')
       } else {
         return Object.keys($storage['iguana-login-active-coin']).length === 0;
       }
-    };
+    }
     $scope.$on('$destroy', function() {
       $storage['passphrase'] = '';
       $storage['iguana-login-active-coin'] = {};
