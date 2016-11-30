@@ -1,6 +1,6 @@
 {
   "name": "Iguana",
-  "description": "Welcome to Iguana! Lorem Ipsum. Lorem Ipsum. Lorem Ipsum.",
+  "description": "Iguana is an app providing advanced benefits from cryptocurrencies and blockchain. Iguana itself combines a set of tools (from multi-currency wallet to real-time exchange) and backend technologies (The Multigateway, InstatDEX, Teleport, Telepathy, etc.) to reveal new types operations with cryptocurrencies, enhance personal security and anonymity, to accelerate transactions clearing procedure speed.",
   "version": "0.1.1",
   "manifest_version": 2,
   "permissions": [
@@ -12,5 +12,5 @@
       "scripts": ["background.js"]
     }
   },
-  "icons": { "16": "16.png", "128": "128.png" }
+  "icons": { "16": "Logo.png", "128": "Logo.png" }
 }

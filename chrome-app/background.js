@@ -1,8 +1,8 @@
  chrome.app.runtime.onLaunched.addListener(function() {
   chrome.app.window.create("app/index.html", {
     'outerBounds': {
-      'width': 700,
-      'height': 500
+      'width': window.screen.availWidth,
+      'height': window.screen.availHeight
     }
   });
 });
