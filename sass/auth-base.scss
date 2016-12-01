@@ -24,7 +24,7 @@ $login-button-disabled-color: #B2B4B7;
     z-index: 10;
   }
   .page-form-header {
-    margin: 1.2em;
+    margin: 1.1em;
     .page-title {
       color: $color-white;
       font-size: 4.1em;
@@ -36,7 +36,7 @@ $login-button-disabled-color: #B2B4B7;
     }
   }
   .advanced-benefits {
-    font-size: 1.11em;
+    font-size: 1.06em;
     font-weight: bold;
   }
   .navbar {
@@ -78,7 +78,7 @@ $login-button-disabled-color: #B2B4B7;
   }
   .form-container {
     display: table;
-    height: 100%;
+    height: 90%;
     left: 0;
     margin: 0;
     padding: 0;
@@ -87,16 +87,14 @@ $login-button-disabled-color: #B2B4B7;
     width: 100%;
   }
   .login-or-delim {
+    color:#FEFBF9;
     font-family: sans-serif;
     letter-spacing: 1px;
     padding: 20px 0;
-  }
-  .login-or-delim {
-    color:#FEFBF9;
+
   }
   .login-add-coin-selection {
     text-align: center;
-    //margin-top: 6em;
 
     textarea {
       @include proxima;
@@ -115,7 +113,7 @@ $login-button-disabled-color: #B2B4B7;
     @include bold;
     background: $color-white;
     border-radius: $border-radius-smaller;
-    box-shadow: 0 2px 3px 1px rgba-black(0.1);
+    box-shadow: 0 2px 3px 2px rgba-black(0.12);
     font-size: 1.16em;
     padding: 36px 12px 15px;
     width: 100%;
@@ -145,6 +143,9 @@ $login-button-disabled-color: #B2B4B7;
     text-shadow: 1px 1px 3px rgba-black(0.3);
     z-index: 100;
   }
+  .login-buttons-container {
+    margin-top: 64px;;
+  }
   .error {
     border: solid 1px $color-red;
   }
@@ -156,7 +157,7 @@ $login-button-disabled-color: #B2B4B7;
     margin: 15px auto;
   }
   .offset-bottom-md {
-    margin: 30px auto 30px auto;
+    margin: 32px auto 27px auto;
   }
   .advanced-benefits {
     color:#FEFBF9;
@@ -223,7 +224,7 @@ $login-button-disabled-color: #B2B4B7;
   .label-text {
     cursor: hand;
     cursor: pointer;
-    font-size: 1.05em;
+    font-size: 1.09em;
   }
   input[type='checkbox'] {
     display: none;
@@ -231,6 +232,7 @@ $login-button-disabled-color: #B2B4B7;
   input[type='checkbox'] + label {
     display: block;
     font-weight: normal;
+    margin-bottom: 8px;
     text-align: center;
 
     .box {
@@ -239,7 +241,7 @@ $login-button-disabled-color: #B2B4B7;
       border-radius: $border-radius-smaller;
       display: inline-block;
       height: 20px;
-      margin: -4px 17px 0 0;
+      margin: 0 16px 2px 1px;
       vertical-align: middle;
       width: 20px;
     }

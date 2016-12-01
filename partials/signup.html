@@ -3,14 +3,26 @@
     <div class="container-fluid">
       <div class="row centered">
         <!-- // create account form start -->
-        <section class="form-container create-account-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
+        <section class="form-container create-account-form"
+                 ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
             <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content">
             <div class="form-content-inner">
-              <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang }} {{ passphraseCount }}{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang }} <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang }}</strong></div>
+              <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">
+                <div>
+                  {{ ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang) }}
+                  {{ passphraseCount + ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang) }}
+                </div>
+                <div>
+                  {{ ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang) }}
+                </div>
+                <div>
+                  <b>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P4' | lang }}</b>
+                </div>
+              </div>
               <div class="passphrase-container row center offset-bottom-md">
                 <div class="title unselectable">{{ 'CREATE_ACCOUNT.COPY_PASSPHRASE' | lang }}: {{ generatedPassphrase }}</div>
                 <div class="generated-passhprase cursor-pointer" ng-click="copyPassphraseWord($event)">{{ passphrase }}</div>
@@ -34,31 +46,30 @@
         </section>
         <!-- // create account form end -->
         <!-- // verify passphrase form start -->
-        <section class="form-container verify-passphrase-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
+        <section class="form-container verify-passphrase-form"
+                 ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
             <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content" ng-click="pastPassphraseWord()">
-            <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
-            <div class="login-input-directions center offset-bottom-sm unselectable">
-              {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }}
-              <span class="paste-from-clipboard-link cursor-pointer" ng-click="pastPassphraseWord()">
-                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2' | lang }}
-              </span>
+            <div class="form-content-inner">
+              <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
+              <div class="login-input-directions center offset-bottom-sm unselectable">
+                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }}
+              </div>
+              <textarea
+                name="verifyPassphrase"
+                id="passphrase"
+                class="login-passphrase-textarea offset-bottom-sm row center"
+                ng-model="passPhraseText" ng-change="verifyPass()"></textarea>
+              <div class="non-iguana-walletpassphrase-errors"></div>
+              <div class="login-or-delim center unselectable"></div>
+              <button ng-disabled="!buttonCreateAccount"
+                      class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="addAccount()">
+                {{ 'CREATE_ACCOUNT.CREATE' | lang }}
+              </button>
             </div>
-            <textarea
-              name="verifyPassphrase"
-              id="passphrase"
-              class="login-passphrase-textarea offset-bottom-sm row center"
-              ng-model="passPhraseText" ng-change="verifyPass()"></textarea>
-            <div class="non-iguana-walletpassphrase-errors"></div>
-            <div class="login-or-delim center unselectable"></div>
-            <button ng-disabled="!buttonCreateAccount"
-                    class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="addAccount()">
-              <!--ng-click="$state.go('signup.passphrase')"-->
-              {{ title }}
-            </button>
           </div>
         </section>
         <!-- // verify passphrase form end -->

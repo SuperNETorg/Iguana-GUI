@@ -3,6 +3,8 @@
  *
  */
 
+@import '../dev.scss';
+
 $screenWidth: 768px;
 
 $widthResolution: "screen and (min-width: "$screenWidth")";
@@ -22,8 +24,10 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
       margin-right: auto;
       width: 300px;
     }
-    .offset-bottom-sm {
-      margin-bottom: 65px;
+    .btn.row:disabled {
+      background: $background-for-page;
+      @include no-box-shadow;
+      @include no-text-shadow;
     }
     .form-content {
       display: table-cell;
@@ -35,18 +39,19 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
         max-width: 622px;
       }
 
-      .login-passphrase-textarea.offset-bottom-sm.row.center, .login-passphrase-textarea {
+      .login-passphrase-textarea.offset-bottom-sm.row.center,
+      .login-passphrase-textarea {
+        border-radius: 4px;
         display: block;
-        font-size: 1.24em;
+        font-size: 1.28em;
         font-weight: 600;
-        height: 158px;
-        margin-left: auto;
-        margin-right: auto;
+        height: 110px;
+        margin: 28px auto;
         padding: 15px 50px;
-        width: 398px;
       }
     }
-    .create-account-form {
+    .create-account-form,
+    .verify-passphrase-form{
       .form-content {
         display: table-cell;
         margin: 0;
@@ -55,11 +60,26 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
         .form-content-inner {
           margin: 0 auto;
           max-width: 600px;
+
+          .passphrase-word-count {
+            b {
+              @include bold
+            }
+          }
+          .btn.row {
+            font-size: 1.05em;
+            height: 34px;
+            @include left-right-auto;
+            max-width: none;
+            width: 100%;
+          }
         }
       }
       .login-input-directions {
-        padding-left: 13px;
-        padding-right: 13px;
+        font-size: 1.09em;
+        line-height: 1.26em;
+        padding-left: 12px;
+        padding-right: 12px;
       }
       .generated-passhprase {
         font-size: 18px;
@@ -74,7 +94,7 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
         padding: 12px 0;
       }
       .login-input-directions {
-        width: 210px;
+        width: 249px;
       }
     }
   }

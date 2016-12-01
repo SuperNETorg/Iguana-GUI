@@ -41,10 +41,12 @@ var lang = {
       'ADD_WALLET': 'Add wallet'
     },
     'CREATE_ACCOUNT': {
-      'ADD_ACCOUNT': 'Create {{ coin }} wallet',
-      'WRITE_DOWN_THIS_P1': 'Write down this',
-      'WRITE_DOWN_THIS_P2': '-word passphrase and keep it safe. You can\'t access or restore your account, if you lose it!',
-      'WRITE_DOWN_THIS_P3': 'Don\'t ever disclose your passphrase!',
+      'CREATE': 'Create',
+      'ADD_ACCOUNT': 'Create {{ coin }} wallet ',
+      'WRITE_DOWN_THIS_P1': 'You will need this ',
+      'WRITE_DOWN_THIS_P2': '-word passphrase to login. ',
+      'WRITE_DOWN_THIS_P3': 'Write it down and keep it safe.',
+      'WRITE_DOWN_THIS_P4': 'Lost passphrase means lost wallet!',
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
       'I_SAVED_A_PASSPHRASE': 'I saved the passphrase in a secure place',
       'NEXT': 'Next',
