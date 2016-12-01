@@ -43,8 +43,8 @@
         <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
         <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
       </header>
-      <div class="passphrase-section" style="">
-        <div class="inner-passphrase-section" style="">
+      <div class="passphrase-section">
+        <div class="inner-passphrase-section">
           <div class="login-input-directions center unselectable"
                ng-class="{'hidden': errPassphrase.length }">
             {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
