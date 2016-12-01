@@ -37,7 +37,7 @@
         <section class="form-container verify-passphrase-form" ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
-            <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>
+            <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content" ng-click="pastPassphraseWord()">
             <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
@@ -57,7 +57,7 @@
             <button ng-disabled="!buttonCreateAccount"
                     class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="addAccount()">
               <!--ng-click="$state.go('signup.passphrase')"-->
-              {{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}
+              {{ title }}
             </button>
           </div>
         </section>

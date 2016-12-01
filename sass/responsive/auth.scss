@@ -12,8 +12,8 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
 @media #{$widthResolution} {
   .auth-main {
     .form-header {
-      height: 60px;
       display: table-caption;
+      height: 60px;
     }
     .btn.row {
       font-size: 1.05em;
@@ -26,13 +26,13 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
       margin-bottom: 65px;
     }
     .form-content {
-      vertical-align: middle;
       display: table-cell;
       margin: 0;
+      vertical-align: middle;
 
       .form-content-inner {
-        max-width: 600px;
         margin: 0 auto;
+        max-width: 622px;
       }
 
       .login-passphrase-textarea.offset-bottom-sm.row.center, .login-passphrase-textarea {
@@ -48,13 +48,13 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
     }
     .create-account-form {
       .form-content {
-        vertical-align: middle;
         display: table-cell;
         margin: 0;
+        vertical-align: middle;
 
         .form-content-inner {
-          max-width: 600px;
           margin: 0 auto;
+          max-width: 600px;
         }
       }
       .login-input-directions {

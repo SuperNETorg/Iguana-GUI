@@ -13,18 +13,15 @@
             </div>
           </nav>
           <section class="form-container login-form">
-            <header class="form-header">
-              <i class="bi_interface-cross cursor-pointer hidden"></i>
-              <div class="page-title text-shadow">{{ 'LOGIN.WELCOME' | lang }}</div>
-            </header>
             <div class="form-content">
+              <header class="page-form-header">
+                <i class="bi_interface-cross cursor-pointer hidden"></i>
+                <div class="page-title text-shadow">{{ 'LOGIN.WELCOME' | lang }}</div>
+              </header>
               <div class="form-content-inner">
                 <div class="login-input-directions center offset-bottom-sm unselectable">
                   <span class="advanced-benefits">{{ 'LOGIN.PROVIDING_ADVANCED_BENEFITS' | lang }}</span>
                 </div>
-                <!--<textarea name="loginPassphrase" id="passphrase"
-                          class="login-passphrase-textarea offset-bottom-sm row center"
-                          ng-model="passphraseModel"></textarea>-->
                 <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
                         ng-click="openLoginCoinModal()">
                   {{ 'LOGIN.LOGIN' | lang }}</button>
