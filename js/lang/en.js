@@ -146,7 +146,8 @@ var lang = {
       'ADDRESS_IS_COPIED': 'Address is copied to clipboard',
       'TRANSACTION_ERROR': 'Transaction was not send due to an error!',
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
-      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.'
+      'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
+      'INCORRECT_INPUT_P3':'Incorrect input. Check it try one more time',
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

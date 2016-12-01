@@ -35,6 +35,7 @@ angular.module('IguanaGUIApp')
     $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
     $storage['iguana-login-active-coin'] = {};
     $storage['iguana-active-coin'] = {};
+    $scope.errPassphrase = '';
 
     $scope.title = setTitle;
 
@@ -91,7 +92,14 @@ angular.module('IguanaGUIApp')
         $auth.login(
           $scope.getActiveCoins(),
           $scope.passphraseModel
-        );
+        ).then(function (resolve) {
+
+        }, function (reject) {
+          if(reject[2]=='MESSAGE.INCORRECT_INPUT_P3') {
+            $scope.errPassphrase = reject[2];
+            document.getElementById('passphrase').value = '';
+          }
+        });
       };
 
       $scope.getActiveCoins = function() {
@@ -105,6 +113,16 @@ angular.module('IguanaGUIApp')
       }
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
+
+    $scope.$on("$stateChangeStart",
+      function() {
+        if ($state.current.name === 'login') {
+          angular.element(document.body).removeClass('auth-orange-gradient');
+        } else if($state.current.name === 'login.step2') {
+          $scope.errPassphrase ='';
+          angular.element(document.body).addClass('auth-orange-gradient');
+        }
+      });
 
     function setTitle() {
       return $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]] ?

@@ -43,17 +43,30 @@
         <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
         <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
       </header>
-      <div class="login-input-directions center offset-bottom-sm unselectable">
-        {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
+      <div class="passphrase-section" style="">
+        <div class="inner-passphrase-section" style="">
+          <div class="login-input-directions center unselectable"
+               ng-class="{'hidden': errPassphrase.length }">
+            {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
+          </div>
+          <div class="center txt-massage"
+               ng-class="{'hidden': !errPassphrase.length }">
+            <span>{{ errPassphrase | lang }}</span>
+          </div>
+          <div class="login-input-directions center  unselectable">
+            <textarea name="loginPassphrase" id="passphrase"
+                      class="login-passphrase-textarea row center"
+                      ng-model="passphraseModel"
+                      ng-class="{'error-msg': errPassphrase.length }">
+            </textarea>
+          </div>
+          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin-account"
+                  ng-click="login()" ng-disabled="!passphraseModel.length || isCoinSelected()">
+            {{ 'LOGIN.LOGIN' | lang }}
+          </button>
+        </div>
       </div>
-      <div class="login-input-directions center offset-bottom-sm unselectable">
-        <textarea name="loginPassphrase" id="passphrase"
-                  class="login-passphrase-textarea offset-bottom-sm row center"
-                  ng-model="passphraseModel"></textarea>
-      </div>
-      <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
-              ng-click="login()" ng-disabled="!passphraseModel.length || isDisabled()">
-        {{ 'LOGIN.LOGIN' | lang }}</button>
+
     </div>
   </section>
   <div class="auth-add-coin-modal"></div>

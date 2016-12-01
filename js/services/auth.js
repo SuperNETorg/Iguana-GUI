@@ -153,11 +153,12 @@ angular.module('IguanaGUIApp')
               message;
 
           if (walletLogin === -14 || walletLogin === false) {
-            message = 'MESSAGE.WRONG_PASSPHRASE';
+            message = 'MESSAGE.INCORRECT_INPUT_P3';
           } else if (walletLogin === -15) {
             message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
           }
 
+          result.push(message);
           $message.ngPrepMessageModal($filter('lang')(message), 'red');
 
           deferred.reject(result);
