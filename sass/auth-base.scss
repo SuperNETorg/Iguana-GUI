@@ -15,24 +15,62 @@ $login-button-disabled-color: #B2B4B7;
   height: 100%;
   width: 100%;
 
-  .form-header .title {
-    color: $color-white;
-    font-size: 1.44em;
-    position: relative;
-    text-align: center;
-    top: 18px;
-    z-index: 10;
-  }
-  .page-form-header {
-    margin: 1.1em;
-    .page-title {
-      color: $color-white;
-      font-size: 4.1em;
-      font-weight: bold;
-      position: relative;
-      text-align: center;
-      top: 18px;
-      z-index: 10;
+  .form-container {
+    display: table;
+    height: 90%;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    .form-header {
+      display: table-caption;
+      height: 60px;
+
+      .title {
+        color: $color-white;
+        font-size: 1.44em;
+        position: relative;
+        text-align: center;
+        top: 18px;
+        z-index: 10;
+      }
+    }
+    .form-content {
+      display: table-cell;
+      margin: 0;
+      vertical-align: middle;
+
+      .page-form-header {
+        margin: 1em;
+
+        .page-title {
+          color: $color-white;
+          font-size: 4.1em;
+          font-weight: bold;
+          position: relative;
+          text-align: center;
+          top: 18px;
+          z-index: 10;
+          @include no-text-shadow
+        }
+      }
+      .form-content-inner {
+        margin: 0 auto;
+        max-width: 622px;
+      }
+      .login-passphrase-textarea.offset-bottom-sm.row.center,
+      .login-passphrase-textarea {
+        border-radius: 4px;
+        display: block;
+        font-size: 1.28em;
+        font-weight: 600;
+        height: 110px;
+        margin: 28px auto;
+        padding: 15px 50px;
+      }
     }
   }
   .passphrase-section {
@@ -114,16 +152,6 @@ $login-button-disabled-color: #B2B4B7;
   .box-shadow-bottom {
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
-  .form-container {
-    display: table;
-    height: 90%;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
   .login-or-delim {
     color:#FEFBF9;
     font-family: sans-serif;
@@ -180,9 +208,6 @@ $login-button-disabled-color: #B2B4B7;
     position: absolute;
     text-shadow: 1px 1px 3px rgba-black(0.3);
     z-index: 100;
-  }
-  .login-buttons-container {
-    margin-top: 64px;;
   }
   .error {
     border: solid 1px $color-red;
@@ -244,9 +269,6 @@ $login-button-disabled-color: #B2B4B7;
     height: 40px;
     margin: 0 auto;
   }
-  .text-shadow {
-    text-shadow: 0 1px 3px rgba-black(0.25);
-  }
   .btn:hover,
   .btn:focus {
     box-shadow: 0 0 2px 1px rgba-black(0.2);
@@ -255,6 +277,18 @@ $login-button-disabled-color: #B2B4B7;
   .btn.disabled:hover {
     box-shadow: none;
     text-shadow: none;
+  }
+  .btn:disabled {
+    background: $background-for-page;
+    @include no-box-shadow;
+    @include no-text-shadow;
+  }
+  .btn.row {
+    font-size: 1.05em;
+    height: 34px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
   }
   .checkbox {
     display: inline-block;

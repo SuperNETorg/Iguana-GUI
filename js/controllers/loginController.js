@@ -97,10 +97,10 @@ angular.module('IguanaGUIApp')
         $auth.login(
           $scope.getActiveCoins(),
           $scope.passphraseModel
-        ).then(function (resolve) {
+        ).then(function(resolve) {
 
-        }, function (reject) {
-          if(reject[2]=='MESSAGE.INCORRECT_INPUT_P3') {
+        }, function(reject) {
+          if (reject[2] == 'MESSAGE.INCORRECT_INPUT_P3') {
             $scope.errPassphrase = reject[2];
             document.getElementById('passphrase').value = '';
           }
@@ -123,7 +123,7 @@ angular.module('IguanaGUIApp')
       function() {
         if ($state.current.name === 'login') {
           angular.element(document.body).removeClass('auth-orange-gradient');
-        } else if($state.current.name === 'login.step2') {
+        } else if ($state.current.name === 'login.step2') {
           $scope.errPassphrase ='';
           angular.element(document.body).addClass('auth-orange-gradient');
         }

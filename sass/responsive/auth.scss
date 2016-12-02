@@ -2,145 +2,143 @@
  * Iguana authentication responsive
  *
  */
-
 @import '../dev.scss';
 
 $screenWidth: 768px;
 
-$widthResolution: "screen and (min-width: "$screenWidth")";
-$mobileResolution: "screen and (max-width: "$screenWidth")";
+$widthResolution: "screen and (min-width: " $screenWidth ")";
+$mobileResolution: "screen and (max-width: " $screenWidth ")";
 
-/* for width resolution */
-@media #{$widthResolution} {
-  .auth-main {
-    .form-header {
-      display: table-caption;
-      height: 60px;
+body {
+
+  /* for width resolution */
+  @media #{$widthResolution} {
+    .mobile-hidden {
+      display: inherit;
     }
-    .btn.row {
-      font-size: 1.05em;
-      height: 34px;
-      margin-left: auto;
-      margin-right: auto;
-      width: 300px;
-    }
-    .btn.row:disabled {
-      background: $background-for-page;
-      @include no-box-shadow;
-      @include no-text-shadow;
-    }
-    .form-content {
-      display: table-cell;
-      margin: 0;
-      vertical-align: middle;
+    .auth-main {
+      .create-account-form,
+      .verify-passphrase-form {
+        .form-content {
+          .form-content-inner {
+            margin: 0 auto;
+            max-width: 600px;
 
-      .form-content-inner {
-        margin: 0 auto;
-        max-width: 622px;
-      }
-
-      .login-passphrase-textarea.offset-bottom-sm.row.center,
-      .login-passphrase-textarea {
-        border-radius: 4px;
-        display: block;
-        font-size: 1.28em;
-        font-weight: 600;
-        height: 110px;
-        margin: 28px auto;
-        padding: 15px 50px;
-      }
-    }
-    .create-account-form,
-    .verify-passphrase-form{
-      .form-content {
-        display: table-cell;
-        margin: 0;
-        vertical-align: middle;
-
-        .form-content-inner {
-          margin: 0 auto;
-          max-width: 600px;
-
-          .passphrase-word-count {
-            b {
-              @include bold
+            .passphrase-word-count {
+              b {
+                @include bold
+              }
+            }
+            .btn.row {
+              font-size: 1.05em;
+              height: 34px;
+              @include left-right-auto;
+              max-width: none;
+              width: 100%;
             }
           }
-          .btn.row {
-            font-size: 1.05em;
-            height: 34px;
-            @include left-right-auto;
-            max-width: none;
-            width: 100%;
+        }
+        .login-input-directions {
+          font-size: 1.09em;
+          line-height: 1.26em;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .generated-passhprase {
+          font-size: 18px;
+          padding: 0 35px;
+        }
+        .login-or-delim {
+          padding: 12px 0;
+        }
+      }
+      .bi_interface-arrow-left {
+        margin-top: 15px;
+      }
+      .login-buttons-container {
+        margin-top: 68px;
+      }
+    }
+    .form-container.mdl .form-header,
+    .modal-content,
+    .modal-dialog.modal-popup,
+    .modal-dialog .modal-body,
+    .modal .modal-content.receiving-coin-content {
+      border-radius: 0;
+    }
+    .form-container .form-content {
+      padding: 3.45em 10px;
+    }
+  }
+  /* for mobile resolution */
+  @media #{$mobileResolution} {
+    .mobile-hidden {
+      display: none;
+    }
+    .form-container.mdl .form-header,
+    .form-container.mdl .modal-content,
+    .modal-dialog.modal-popup,
+    .modal-dialog .modal-body,
+    .modal .modal-content.receiving-coin-content {
+      border-radius: 0;
+    }
+    .body-wrapper.auth-main {
+      .form-container {
+        .form-content {
+          padding: 0 10px;
+          vertical-align: top;
+
+          .page-form-header {
+            margin: 1.2em 1.6em;
+
+            .page-title {
+              font-size: 3em;
+              line-height: 1em;
+              max-width: 5em;
+              text-align: left;
+            }
+          }
+          .form-content-inner {
+            .login-input-directions {
+              margin: 2.7em 1.6em;
+              max-width: 20em;
+              text-align: left;
+            }
+            .advanced-benefits {
+              font-size: 1.15em;
+              font-weight: bold;
+              line-height: 1em;
+            }
+            .login-buttons-container {
+              margin-top: 40%;
+
+              .btn.row {
+                height: 50px;
+                max-width: 90%;
+              }
+            }
           }
         }
       }
-      .login-input-directions {
-        font-size: 1.09em;
-        line-height: 1.26em;
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-      .generated-passhprase {
-        font-size: 18px;
-        padding: 0 35px;
-      }
     }
-    .bi_interface-arrow-left {
-      margin-top: 15px;
+    .coins-title {
+      padding-top: 0;
     }
-    .verify-passphrase-form {
-      .login-or-delim {
-        padding: 12px 0;
-      }
-      .login-input-directions {
-        width: 249px;
-      }
+    .form-container.mdl .bi_interface-cross {
+      margin-top: 3px;
     }
-  }
-  .form-container.mdl .form-header,
-  .modal-content,
-  .modal-dialog.modal-popup,
-  .modal-dialog .modal-body,
-  .modal .modal-content.receiving-coin-content {
-    border-radius: 0;
-  }
-  .form-container .form-content {
-    padding: 3.45em 10px;
-  }
-}
-
-@media #{$mobileResolution} {
-  .form-container.mdl .form-header,
-  .form-container.mdl .modal-content,
-  .modal-dialog.modal-popup,
-  .modal-dialog .modal-body,
-  .modal .modal-content.receiving-coin-content {
-    border-radius: 0;
-  }
-  .add-new-coin-form .supported-coins-repeater-inner {
-    padding: 30px 0;
-  }
-  .form-container .form-content {
-    padding: 40px 10px;
-  }
-  .coins-title {
-    padding-top: 0;
-  }
-  .form-container.mdl .bi_interface-cross {
-    margin-top: 3px;
-  }
-  .btn-signin-account {
-    bottom: 0;
-    position: absolute;
-  }
-  .form-content-inner {
-    display: table;
-    height: 100%;
-    position: absolute;
-  }
-  .middle-sheet {
-    display: table-cell;
-    vertical-align: middle;
+    .btn-signin-account {
+      bottom: 0;
+      position: absolute;
+    }
+    .form-content-inner {
+      display: table;
+      height: 100%;
+      position: absolute;
+    }
+    .middle-sheet {
+      display: table-cell;
+      vertical-align: middle;
+    }
   }
 }

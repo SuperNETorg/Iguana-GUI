@@ -9,7 +9,6 @@
   @include blur;
 }
 .form-container {
-  display: table;
   height: 100%;
   left: 0;
   margin: 0;
@@ -56,7 +55,7 @@
     font-size: 1.20em;
     height: 34px;
     margin: 0 auto;
-    max-width: 300px;
+    max-width: 312px;
   }
   .text-shadow {
     text-shadow: 0 1px 3px rgba-black(0.25);
