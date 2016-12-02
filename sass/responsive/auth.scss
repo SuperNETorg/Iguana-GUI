@@ -130,4 +130,17 @@ $mobileResolution: "screen and (max-width: "$screenWidth")";
   .form-container.mdl .bi_interface-cross {
     margin-top: 3px;
   }
+  .btn-signin-account {
+    bottom: 0;
+    position: absolute;
+  }
+  .form-content-inner {
+    display: table;
+    height: 100%;
+    position: absolute;
+  }
+  .middle-sheet {
+    display: table-cell;
+    vertical-align: middle;
+  }
 }

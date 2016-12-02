@@ -33,10 +33,10 @@ angular.module('IguanaGUIApp')
     $scope.coinResponses = [];
     $scope.coins = [];
     $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
-    $storage['iguana-login-active-coin'] = {};
     $storage['iguana-active-coin'] = {};
     $scope.errPassphrase = '';
-
+    $scope.loginActiveCoin = '';
+    $scope.clearMessage = clearMessage;
     $scope.title = setTitle;
 
     angular.element(document.body).addClass('auth-orange-gradient');
@@ -44,6 +44,10 @@ angular.module('IguanaGUIApp')
       $rootScope.$on('coinsInfo', onInit);
     } else {
       onInit();
+    }
+
+    if($state.current.name =='login.step2') {
+      angular.element(document.body).removeClass('auth-orange-gradient');
     }
 
     function onInit() {
@@ -84,6 +88,7 @@ angular.module('IguanaGUIApp')
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
         });
         modalInstance.result.then(function(data) {
+          $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
           $state.go('signup.step1');
         })
       };
@@ -127,6 +132,10 @@ angular.module('IguanaGUIApp')
     function setTitle() {
       return $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]] ?
         $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]['name'] : '';
+    }
+
+    function clearMessage() {
+      $scope.errPassphrase = '';
     }
   }
 ]);

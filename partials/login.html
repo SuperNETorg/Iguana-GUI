@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="partials/login.html">
-  <section ng-class="{ 'hidden': !($state.current.name === 'login' ||  $state.current.name === 'login') }" >
+  <section ng-class="{ 'hidden': !($state.current.name === 'login') }" >
     <div class="body-wrapper auth-main">
       <div class="container-fluid">
         <div class="row centered">
@@ -37,36 +37,45 @@
       </div>
     </div>
   </section>
-  <section ng-class="{ 'hidden': !($state.current.name === 'login.step2') }" >
+  <section ng-class="{ 'hidden': !($state.current.name === 'login.step2') }">
     <div class="body-wrapper auth-main">
-      <header class="form-header orange-gradient box-shadow-bottom">
-        <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
-        <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
-      </header>
-      <div class="passphrase-section">
-        <div class="inner-passphrase-section">
-          <div class="login-input-directions center unselectable"
-               ng-class="{'hidden': errPassphrase.length }">
-            {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
+      <div class="container-fluid">
+        <div class="row centered">
+          <div class="form-container">
+            <header class="form-header orange-gradient box-shadow-bottom">
+              <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
+              <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
+            </header>
+            <div class="form-content">
+              <div class="form-content-inner">
+                <div class="middle-sheet">
+                  <div class="login-input-directions center unselectable"
+                       ng-class="{'hidden': errPassphrase.length }">
+                    {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
+                  </div>
+                  <div class="center txt-massage"
+                       ng-class="{'hidden': !errPassphrase.length || !passphraseModel }">
+                    <span>{{ errPassphrase | lang }}</span>
+                  </div>
+                  <div class="login-input-directions center  unselectable">
+                  <textarea name="loginPassphrase" id="passphrase"
+                            class="login-passphrase-textarea row center"
+                            ng-model="passphraseModel"
+                            ng-class="{'error-msg': errPassphrase.length }"
+                            ng-change="clearMessage()">
+                  </textarea>
+
+                  </div>
+                  <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-signin-account"
+                          ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
+                    {{ 'LOGIN.LOGIN' | lang }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="center txt-massage"
-               ng-class="{'hidden': !errPassphrase.length }">
-            <span>{{ errPassphrase | lang }}</span>
-          </div>
-          <div class="login-input-directions center  unselectable">
-            <textarea name="loginPassphrase" id="passphrase"
-                      class="login-passphrase-textarea row center"
-                      ng-model="passphraseModel"
-                      ng-class="{'error-msg': errPassphrase.length }">
-            </textarea>
-          </div>
-          <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin-account"
-                  ng-click="login()" ng-disabled="!passphraseModel.length || isCoinSelected()">
-            {{ 'LOGIN.LOGIN' | lang }}
-          </button>
         </div>
       </div>
-
     </div>
   </section>
   <div class="auth-add-coin-modal"></div>

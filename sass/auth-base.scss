@@ -55,11 +55,13 @@ $login-button-disabled-color: #B2B4B7;
     margin-left: auto;
     margin-right: auto;
     padding: 15px 50px;
-    min-width: 450px;
+    resize:none;
+    width: 100%;
   }
   .btn-signin-account {
     margin-top: 50px;
-    min-width: 450px;
+    max-width:none;
+    width: 100%;
   }
   .txt-massage {
     color: red;

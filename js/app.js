@@ -43,6 +43,7 @@ angular.module('IguanaGUIApp', [
       }
     })
     .state('login.step2', {
+      // url: '/step2',
       data: {
         pageTitle: 'PAGE.LOGIN'
       }
