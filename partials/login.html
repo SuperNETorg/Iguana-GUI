@@ -14,11 +14,11 @@
           </nav>
           <section class="form-container login-form">
             <div class="form-content">
-              <div class="form-content-inner row">
+              <div class="form-content-inner-login-state row">
                 <header class="page-form-header">
                   <div class="page-title text-shadow">{{ 'LOGIN.WELCOME' | lang }}</div>
                 </header>
-                <div class="login-input-directions center offset-bottom-sm unselectable">
+                <div class="login-input-directions-login-state center offset-bottom-sm unselectable">
                   <span class="advanced-benefits">{{ 'LOGIN.PROVIDING_ADVANCED_BENEFITS' | lang }}</span>
                 </div>
                 <div class="login-buttons-container col-xs-12">
@@ -50,10 +50,10 @@
               <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
               <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
             </header>
-            <div class="form-content">
-              <div class="form-content-inner">
+            <div class="form-content row">
+              <div class="form-content-inner col-lg-offset-3 col-md-offset-2 col-sm-offset-2 col-xs-12 col-md-8 col-sm-8 col-lg-6">
                 <div class="middle-sheet">
-                  <div class="login-input-directions center unselectable"
+                  <div class="login-input-directions-msg center unselectable"
                        ng-class="{'hidden': errPassphrase.length }">
                     {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
                   </div>
@@ -61,19 +61,19 @@
                        ng-class="{'hidden': !errPassphrase.length || !passphraseModel }">
                     <span>{{ errPassphrase | lang }}</span>
                   </div>
-                  <div class="login-input-directions center  unselectable">
-                  <textarea name="loginPassphrase" id="passphrase"
-                            class="login-passphrase-textarea row center"
-                            ng-model="passphraseModel"
-                            ng-class="{'error-msg': errPassphrase.length }"
-                            ng-change="clearMessage()">
-                  </textarea>
-
+                  <div class="login-input-directions center  unselectable row">
+                    <textarea name="loginPassphrase" id="passphrase"
+                              class="login-passphrase-textarea row center form-control"
+                              ng-model="passphraseModel"
+                              ng-class="{'error-msg': errPassphrase.length }"
+                              ng-change="clearMessage()">
+                    </textarea>
+                    <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-signin-account form-control"
+                            ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
+                      {{ 'LOGIN.LOGIN' | lang }}
+                    </button>
                   </div>
-                  <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-signin-account"
-                          ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
-                    {{ 'LOGIN.LOGIN' | lang }}
-                  </button>
+
                 </div>
               </div>
             </div>

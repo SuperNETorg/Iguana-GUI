@@ -10,14 +10,14 @@
       <div class="coins-title">
         {{ 'ADD_COIN.SELECT_CREATED_WALLET_TYPE' | lang }}
       </div>
-      <div class="quick-search">
-        <i class="icon bi_tool-magnifier"></i>
-        <input type="text" class="input text"
-               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
-               ng-model="coinSearchModel"/>
+      <div class="quick-search col-xs-12">
+
+          <i class="icon bi_tool-magnifier"></i>
+          <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
+                 ng-model="coinSearchModel"/>
       </div>
-      <div class="supported-coins-repeater-container">
-        <div class="supported-coins-repeater">
+      <div class="supported-coins-repeater-container col-xs-12 col-md-10 col-md-offset-1">
+        <div class="supported-coins-repeater row">
           <div class="supported-coins-repeater-inner">
             <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
                  ng-repeat="(name, item) in coins | filter:coinSearchModel"
@@ -32,6 +32,7 @@
           </div>
         </div>
       </div>
+      <div class="clearfix"></div>
     </div>
   </section>
 </script>

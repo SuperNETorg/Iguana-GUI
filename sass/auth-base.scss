@@ -57,9 +57,8 @@ $login-button-disabled-color: #B2B4B7;
           @include no-text-shadow
         }
       }
-      .form-content-inner {
+      .form-content-inner-login-state {
         margin: 0 auto;
-        max-width: 622px;
       }
       .login-passphrase-textarea.offset-bottom-sm.row.center,
       .login-passphrase-textarea {
@@ -108,8 +107,10 @@ $login-button-disabled-color: #B2B4B7;
   .error-msg {
     border:1px solid red;
   }
-  .login-input-directions {
-    margin-bottom:25px;
+
+  .login-input-directions-msg {
+    margin: 0 auto;
+    text-align: center!important;
   }
   .advanced-benefits {
     font-size: 1.06em;
@@ -204,7 +205,7 @@ $login-button-disabled-color: #B2B4B7;
     color: $color-white;
     font-size: 26px;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 15px;
     position: absolute;
     text-shadow: 1px 1px 3px rgba-black(0.3);
     z-index: 100;
@@ -241,7 +242,6 @@ $login-button-disabled-color: #B2B4B7;
     color: $login-content-color-bg;
     font-size: 1.05em;
     margin: 0 auto;
-    padding: 20px 1.6em;
   }
   .form-header {
     height: 50px;

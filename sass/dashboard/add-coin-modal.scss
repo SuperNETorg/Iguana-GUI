@@ -129,9 +129,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
     @include quick-search-placeholder;
   }
   .supported-coins-repeater {
-    margin: 0 auto;
     max-height: 400px;
-    max-width: 1020px;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;

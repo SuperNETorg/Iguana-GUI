@@ -69,6 +69,17 @@ body {
     .form-container .form-content {
       padding: 3.45em 10px;
     }
+    .auth-add-coin-modal {
+      .modal-full {
+        .add-new-coin-form-login-state {
+          .form-content {
+            .quick-search .input {
+              width: 300px;
+            }
+          }
+        }
+      }
+    }
   }
   /* for mobile resolution */
   @media #{$mobileResolution} {
@@ -88,7 +99,7 @@ body {
       }
       .form-container {
         .form-content {
-          padding: 0 10px;
+          padding: 0 18px;
           vertical-align: top;
 
           .page-form-header {
@@ -101,10 +112,14 @@ body {
               text-align: left;
             }
           }
-          .form-content-inner {
-            .login-input-directions {
+          .form-content-inner,
+          .form-content-inner-login-state {
+            .login-input-directions-login-state {
               margin: 2.7em 1.1em;
               max-width: 23em;
+              text-align: left;
+            }
+            .login-input-directions {
               text-align: left;
             }
             .advanced-benefits {
@@ -126,6 +141,7 @@ body {
       }
     }
     .coins-title {
+      margin-top: 30px;
       padding-top: 0;
     }
     .form-container.mdl .bi_interface-cross {
@@ -135,13 +151,30 @@ body {
       bottom: 0;
       position: absolute;
     }
-    .form-content-inner {
+    .form-content-inner,
+    .form-content-inner-login-state {
       display: table;
       height: 100%;
     }
     .middle-sheet {
       display: table-cell;
       vertical-align: middle;
+    }
+    .txt-massage {
+      margin-bottom:0;
+    }
+    .btn-signin-account {
+      bottom: 15px;
+    }
+    .auth-add-coin-modal {
+      .modal-full {
+        .add-new-coin-form-login-state {
+          .form-content {
+            max-width: 30em;
+            margin: 0 auto;
+          }
+        }
+      }
     }
   }
 }
