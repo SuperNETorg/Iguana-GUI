@@ -28,27 +28,12 @@
 }
 
 @mixin orange-gradient {
-  /* csslint ignore:start */
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fe640d+8,fe640d+26,fe4b0d+77,fe450d+100 */
   background: #fe470d; /* Old browsers */
-  //background: -moz-linear-gradient(top, #FE660D 8%, #FE660D 26%, #fe4b0d 77%, #fe450d 100%); /* FF3.6-15 */
-  //background: -webkit-linear-gradient(top, #FE660D 8%, #FE660D 26%, #fe4b0d 77%, #fe450d 100%); /* Chrome10-25,Safari5.1-6 */
-  //background: linear-gradient(to bottom, #FE660D 8%, #FE660D 26%, #fe4b0d 77%, #fe450d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FE660D', endColorstr='#fe450d', GradientType=0); /* IE6-9 */
-  /* csslint ignore:end */
 }
 
-@mixin login-orange-gradient {
-  /* csslint ignore:start */
-  /* Permalink - use to edit and share this gradient:  */
-  background: -moz-linear-gradient(125deg, #E7411F 0%, #D89200 45%, #D89200 68%, #E7411F 100%); /* ff3.6+ */
-  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #E7411F), color-stop(32%, #D89200), color-stop(55%, #D89200), color-stop(100%, #E7411F)); /* safari4+,chrome */
-  background: -webkit-linear-gradient(125deg, #E7411F 0%, #D89200 45%, #D89200 68%, #E7411F 100%); /* safari5.1+,chrome10+ */
-  background: -o-linear-gradient(125deg, #E7411F 0%, #D89200 45%, #D89200 68%, #E7411F 100%); /* opera 11.10+ */
-  background: -ms-linear-gradient(125deg, #E7411F 0%, #D89200 45%, #D89200 68%, #E7411F 100%); /* ie10+ */
-  background: linear-gradient(325deg, #E7411F 0%, #D89200 45%, #D89200 68%, #E7411F 100%); /* w3c */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0000', endColorstr='#FF0000',GradientType=0 ); /* ie6-9 */
-  /* csslint ignore:end */
+@mixin login-orange-image {
+  background: url("/images/bg.png") fixed no-repeat center;
+  background-size: cover;
 }
 
 @function rgba-black($opacity) {

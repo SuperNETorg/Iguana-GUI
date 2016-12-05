@@ -25,7 +25,7 @@ body {
             max-width: 600px;
 
             .passphrase-word-count {
-              b {
+              strong {
                 @include bold
               }
             }
@@ -56,7 +56,7 @@ body {
         margin-top: 15px;
       }
       .login-buttons-container {
-        margin-top: 68px;
+        margin-top: 42px;
       }
     }
     .form-container.mdl .form-header,
@@ -83,38 +83,42 @@ body {
       border-radius: 0;
     }
     .body-wrapper.auth-main {
+      .btn.row {
+        font-size: 1.2em;
+      }
       .form-container {
         .form-content {
           padding: 0 10px;
           vertical-align: top;
 
           .page-form-header {
-            margin: 1.2em 1.6em;
+            margin: 1em 1.3em;
+            max-width: 220px;
 
             .page-title {
               font-size: 3em;
               line-height: 1em;
-              max-width: 5em;
               text-align: left;
             }
           }
           .form-content-inner {
             .login-input-directions {
-              margin: 2.7em 1.6em;
-              max-width: 20em;
+              margin: 2.7em 1.1em;
+              max-width: 23em;
               text-align: left;
             }
             .advanced-benefits {
-              font-size: 1.15em;
+              font-size: 1.17em;
               font-weight: bold;
               line-height: 1em;
             }
             .login-buttons-container {
-              margin-top: 40%;
+              margin-top: 20%;
+              margin-bottom: 20%;
 
               .btn.row {
-                height: 50px;
-                max-width: 90%;
+                height: 47px;
+                max-width: 340px;
               }
             }
           }
@@ -134,7 +138,6 @@ body {
     .form-content-inner {
       display: table;
       height: 100%;
-      position: absolute;
     }
     .middle-sheet {
       display: table-cell;

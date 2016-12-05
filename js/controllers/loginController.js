@@ -39,7 +39,10 @@ angular.module('IguanaGUIApp')
     $scope.clearMessage = clearMessage;
     $scope.title = setTitle;
 
-    angular.element(document.body).addClass('auth-orange-gradient');
+    angular
+      .element(document.getElementById('app-background'))
+      .addClass('auth-orange-gradient');
+
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {
@@ -47,7 +50,9 @@ angular.module('IguanaGUIApp')
     }
 
     if($state.current.name =='login.step2') {
-      angular.element(document.body).removeClass('auth-orange-gradient');
+      angular
+        .element(document.getElementById('app-background'))
+        .removeClass('auth-orange-gradient');
     }
 
     function onInit() {
@@ -122,10 +127,14 @@ angular.module('IguanaGUIApp')
     $scope.$on("$stateChangeStart",
       function() {
         if ($state.current.name === 'login') {
-          angular.element(document.body).removeClass('auth-orange-gradient');
+          angular
+            .element(document.getElementById('app-background'))
+            .removeClass('auth-orange-gradient');
         } else if ($state.current.name === 'login.step2') {
           $scope.errPassphrase ='';
-          angular.element(document.body).addClass('auth-orange-gradient');
+          angular
+            .element(document.getElementById('app-background'))
+            .addClass('auth-orange-gradient');
         }
       });
 

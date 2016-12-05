@@ -80,6 +80,9 @@ exports.getPaths = function(isDev) {
           'ro', 'ru', 'se', 'sg', 'th', 'tr',
           'us', 'za'
         ]
+      },
+      image:{
+        default: 'images'
       }
     };
 

@@ -11,6 +11,7 @@
     "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.1",
     "gulp-csslint": "^1.0.0",
+    "gulp-image": "^2.7.2",
     "gulp-inject-partials": "^1.0.2",
     "gulp-jscs": "^4.0.0",
     "gulp-rename": "^1.2.2",

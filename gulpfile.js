@@ -18,6 +18,7 @@ var gulp = require('gulp'),
       js: require('./gulp-tasks/js-task.js'),
       html: require('./gulp-tasks/html-task.js'),
       css: require('./gulp-tasks/css-task.js'),
+      image: require('./gulp-tasks/image-task.js'),
       chrome: require('./gulp-tasks/chrome-app'),
       font: require('./gulp-tasks/font-task.js'),
       clean: require('./gulp-tasks/clean-task.js'),
@@ -37,6 +38,15 @@ function compress() {
 
 gulp.task('devStyle', function() {
   return _exports.css.devInjectStyles(buildMode);
+});
+
+gulp.task('copyImages', function() {
+  if (buildMode) {
+    return _exports.image.copyImages(buildMode);
+  } else {
+    return _exports.image.copyImages('dev'),
+      _exports.image.copyImages('prod');
+  }
 });
 
 gulp.task('indexDev', function() {
@@ -153,6 +163,7 @@ gulp.task('dev', function() {
 
   runSequence(
     'cleanAllDev',
+    'copyImages',
     'copyCoreJS',
     'copyBowerJS',
     'scss:css',
@@ -171,6 +182,7 @@ gulp.task('prod', function(cb) {
 
   runSequence(
     'cleanAllProd',
+    'copyImages',
     'copyBowerJS',
     'copyCoreJS',
     'compressJS',
