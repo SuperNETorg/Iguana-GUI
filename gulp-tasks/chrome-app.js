@@ -9,21 +9,35 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence');
 
 exports.createChromeApp = function(buildMode, paths) {
-  var path= 'chrome-app/app',
-      buildMode= 'compiled/prod/**/*';
-
-  runSequence('prod', function (path,buildMode) {
-    exports.copyAllFiles(buildMode, paths);
+  runSequence('prod', function () {
+    exports.copyAllFiles(paths.chrome.prodPath, paths);
   });
 };
 
-exports.copyAllFiles = function() {
-  var path= 'chrome-app/app',
-    buildMode= 'compiled/prod/**/*';
+exports.changeBackgroundAddress = function(paths) {
+  return gulp
+    .src(paths['chrome'].path+'/style.css')
+    .pipe(replace('../images/bg.png', 'images/bg.png'))
+    .pipe(gulp.dest(paths['chrome'].path+'/'));
+};
 
-  gulp.src(__dirname + '/../' + buildMode)
-      .pipe(gulp.dest(__dirname + '/../' + path));
-}
+exports.copyAllFiles = function(buildMode, paths) {
+  var stream =
+      gulp
+        .src(__dirname + '/../' + buildMode)
+        .pipe(gulp.dest(__dirname + '/../' + paths.chrome.path));
+  stream.on('end',function() {
+    exports.changeBackgroundAddress(paths);
+    exports.zipChromeApps('chrome-app','chrome-app');
+  });
+};
+
+exports.zipChromeApps = function(path, zipName) {
+  gulp
+    .src(path + '/**/*')
+    .pipe(zip(zipName+'.zip'))
+    .pipe(gulp.dest(''));
+};
 
 exports.cleanChromeApp = function(buildMode) {
   return gulp.src(buildMode, {read: false}).pipe(rimraf());

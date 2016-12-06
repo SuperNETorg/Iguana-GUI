@@ -136,11 +136,11 @@ gulp.task('cleanProdCompact', function() {
 
 gulp.task('chromeApp', function() {
   buildMode = 'chrome';
-  _exports.chrome.createChromeApp(buildMode, paths);
+  _exports.chrome.createChromeApp(paths.chrome.prodPath, paths);
 });
 
 gulp.task('cleanChromeApp', function() {
-  _exports.chrome.cleanChromeApp(paths.chrome['path']);
+  _exports.chrome.cleanChromeApp(paths.chrome.path);
 });
 
 gulp.task('cleanAllDev', function() {
