@@ -90,3 +90,7 @@
   box-shadow: 0 0 2px 1px rgba-black(0.2);
   color: $color-white;
 }
+
+@mixin center {
+  text-align: center;
+}

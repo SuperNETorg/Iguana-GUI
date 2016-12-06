@@ -45,8 +45,9 @@ body {
           padding-right: 12px;
         }
         .generated-passhprase {
-          font-size: 18px;
+          font-size: 1.3em;
           padding: 0 35px;
+          line-height: 1.3em;
         }
         .login-or-delim {
           padding: 12px 0;
@@ -56,7 +57,7 @@ body {
         margin-top: 15px;
       }
       .login-buttons-container {
-        margin-top: 42px;
+        margin-top: 40px;
       }
     }
     .form-container.mdl .form-header,
@@ -72,6 +73,11 @@ body {
     .auth-add-coin-modal {
       .modal-full {
         .add-new-coin-form-login-state {
+          .form-header {
+            .btn-close {
+              margin-top: 0.2em;
+            }
+          }
           .form-content {
             .quick-search .input {
               width: 300px;
@@ -97,10 +103,31 @@ body {
       .btn.row {
         font-size: 1.2em;
       }
+      .form-container.create-account-form,
+      .form-container.verify-passphrase-form {
+        .form-content{
+          .form-content-inner {
+            .login-input-directions{
+              @include center
+            }
+            .login-passphrase-textarea {
+              height: 133px;
+              padding: 15px 10px;
+              font-size: 1.2em;
+            }
+            .btn.row:last-child {
+              bottom: 15px;
+              left: 15px;
+              max-width: 90%;
+              position: absolute;
+              right: 15px;
+            }
+          }
+        }
+      }
       .form-container {
         .form-content {
           padding: 0 18px;
-          vertical-align: top;
 
           .page-form-header {
             margin: 1em 1.3em;
@@ -154,7 +181,6 @@ body {
     .form-content-inner,
     .form-content-inner-login-state {
       display: table;
-      height: 100%;
     }
     .middle-sheet {
       display: table-cell;
@@ -168,10 +194,53 @@ body {
     }
     .auth-add-coin-modal {
       .modal-full {
+        .form-container {
+          .form-header {
+            height: 4em;
+            padding: 1em 0.8em;
+
+            .btn-close {
+              font-size: 1.5em;
+              margin-left: auto;
+            }
+            .title {
+              font-size: 1.3em;
+              margin-left: 0.5em;
+            }
+          }
+        }
         .add-new-coin-form-login-state {
           .form-content {
             max-width: 30em;
             margin: 0 auto;
+
+            .coins-title {
+              font-size: 1.18em;
+            }
+            .quick-search {
+              padding-bottom: 1em;
+              padding-top: 1em;
+
+              .input.text {
+                height: 42px
+              }
+              .icon {
+                margin-left: 0.5em;
+                margin-top: 0.6em;
+              }
+            }
+            .supported-coins-repeater-container {
+              margin-top: auto;
+              .coin {
+                margin: 0.6em;
+                opacity: 1;
+                padding: 1em 2em;
+
+                .icon {
+                  font-size: 2.6em;
+                }
+              }
+            }
           }
         }
       }

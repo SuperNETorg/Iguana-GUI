@@ -136,9 +136,6 @@
   .auth-main .container-fluid {
     display: block;
   }
-  .modal .modal-dialog {
-    height: 100%;
-  }
   .modal .modal-dialog .modal-header {
     min-height: 50px;
   }

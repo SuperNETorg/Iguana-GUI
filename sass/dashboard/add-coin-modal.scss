@@ -32,14 +32,6 @@ body .add-coin-login-form .modal-add-coin-login-form,
   margin: 20px auto;
 }
 .add-new-coin-form-login-state {
-  .form-header {
-    .bi_interface-cross {
-      margin-top: 3px;
-    }
-    .title {
-      padding-top: 0.55em;
-    }
-  }
   .btn {
     margin-top: 25px;
   }
@@ -101,7 +93,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       border-radius: $border-radius-smaller;
       height: 34px;
       padding-left: 2.4em;
-      width: 300px;
+      width: 100%;
     }
     i.icon {
       color: $color-medium-gray;

@@ -60,7 +60,6 @@ $login-button-disabled-color: #B2B4B7;
       .form-content-inner-login-state {
         margin: 0 auto;
       }
-      .login-passphrase-textarea.offset-bottom-sm.row.center,
       .login-passphrase-textarea {
         border-radius: 4px;
         display: block;
@@ -113,7 +112,7 @@ $login-button-disabled-color: #B2B4B7;
     text-align: center!important;
   }
   .advanced-benefits {
-    font-size: 1.06em;
+    font-size: 1.1em;
     font-weight: bold;
   }
   .navbar {
@@ -181,8 +180,8 @@ $login-button-disabled-color: #B2B4B7;
     background: $color-white;
     border-radius: $border-radius-smaller;
     box-shadow: 0 2px 3px 2px rgba-black(0.12);
-    font-size: 1.16em;
-    padding: 36px 12px 15px;
+    padding: 40px 12px;
+    margin: 30px auto;
     width: 100%;
 
     .title {
@@ -214,14 +213,14 @@ $login-button-disabled-color: #B2B4B7;
     border: solid 1px $color-red;
   }
   .center {
-    font-size: 1.03em;
     text-align: center;
   }
   .offset-bottom-sm {
     margin: 15px auto;
   }
   .offset-bottom-md {
-    margin: 32px auto 27px auto;
+    margin: 0 auto;
+    margin-bottom: 30px;
   }
   .advanced-benefits {
     color:#FEFBF9;
@@ -229,6 +228,7 @@ $login-button-disabled-color: #B2B4B7;
   .create-account-form .login-input-directions,
   .verify-passphrase-form .login-input-directions {
     margin-bottom: 0;
+    margin-top: 4em;
     width: 80%;
     word-wrap: break-word;
   }
@@ -298,7 +298,7 @@ $login-button-disabled-color: #B2B4B7;
   input[type='checkbox'] + label {
     display: block;
     font-weight: normal;
-    margin-bottom: 8px;
+    margin-bottom: 1.6em;
     text-align: center;
 
     .box {
