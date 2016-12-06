@@ -36,7 +36,7 @@ angular.module('IguanaGUIApp')
 
     isCoinSelected();
     var pageTitle;
-    angular.element(document.querySelector('app-background')).removeClass('auth-orange-gradient');
+    angular.element(document.querySelector('.app-background')).removeClass('auth-orange-gradient');
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
