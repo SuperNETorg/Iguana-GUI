@@ -17,6 +17,9 @@ angular.module('IguanaGUIApp')
   '$rates',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
            $api, $rootScope, $uibModal, $filter, $message, vars) {
+
+    var pageTitle;
+
     $scope.util = util;
     $scope.$state = $state;
     $scope.passphraseCheckbox = false;
@@ -36,7 +39,6 @@ angular.module('IguanaGUIApp')
     $scope.$on('$destroy', destroy);
 
     isCoinSelected();
-    var pageTitle;
     angular.element(document.querySelector('.app-background')).removeClass('auth-orange-gradient');
 
     if (!vars.coinsInfo) {
@@ -130,7 +132,7 @@ angular.module('IguanaGUIApp')
       // TODO: not completed
       // addAccount();
     }
-    
+
     function destroy() {
       $storage['passphrase'] = '';
       $storage['iguana-login-active-coin'] = {};

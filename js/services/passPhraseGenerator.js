@@ -314,6 +314,7 @@ angular.module('IguanaGUIApp')
     if (this.seeds == this.seedLimit) {
       return true;
     }
+
     return false;
   };
 

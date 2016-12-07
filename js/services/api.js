@@ -286,28 +286,28 @@ angular.module('IguanaGUIApp')
       var debugSyncInfo = angular.element(document).find('#debug-sync-info');
 
       if (Object.keys(this.getConf().coins).length === _index) {
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('port poll done ' + _index);
-          }
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('port poll done ' + _index);
+        }
 
-          if (!$storage['isIguana']) {
-            this.checkBackEndConnectionStatus();
-          }
+        if (!$storage['isIguana']) {
+          this.checkBackEndConnectionStatus();
+        }
 
-          if (dev.isDev && dev.showSyncDebug && debugSyncInfo.text()) {// debug info
+        if (dev.isDev && dev.showSyncDebug && debugSyncInfo.text()) {// debug info
+          angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
+        }
+
+        $interval(function() {
+          var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
+
+          if (debugSyncInfo.text()) {
+            if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
             angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
           }
+        }, 1000);
 
-          $interval(function() {
-            var transactionUnit = angular.element(document.querySelector('.transactions-unit'));
-
-            if (debugSyncInfo.text()) {
-              if (transactionUnit) transactionUnit.css({ 'margin-bottom': debugSyncInfo.outerHeight() * 1.5 });
-              angular.element(document.body).css({ 'padding-bottom': debugSyncInfo.outerHeight() * 1.5 });
-            }
-          }, 1000);
-
-          vars.coinsInfo = this.coinsInfo;
+        vars.coinsInfo = this.coinsInfo;
       }
     };
 
@@ -403,9 +403,8 @@ angular.module('IguanaGUIApp')
           self.checkLoopEnd(_index);
           deferred.resolve(self.coinsInfo);
         } else if (coinsKeys.length > _index) {
-          self
-            .getCoins(coins, _index, coinsKeys)
-            .then(onResolve, onReject);
+          self.getCoins(coins, _index, coinsKeys)
+              .then(onResolve, onReject);
         }
       }
 
@@ -766,7 +765,7 @@ angular.module('IguanaGUIApp')
     this.addCoinRecursive = function(coins, _index, recursiveResult) {
       var coin = coins[_index] || {},
           result = recursiveResult || [];
-      var postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
           fullUrl = this.getConf().server.protocol +
                     this.getConf().server.ip + ':' +
                     this.getConf(true).server.port,

@@ -22,10 +22,10 @@ var lang = {
       'WELCOME': 'Welcome to Iguana!',
       'SELECT_A_WALLET': 'Select a wallet',
       'ENTER_A_PASSPHRASE_TO_LOGIN': 'Enter a passphrase to log in',
-      'PROVIDING_ADVANCED_BENEFITS':'Iguana is an app providing advanced benefits of cryptocurrencies and blockchain.',
-      'TYPE_OR_PASTE_THE_PASSPHRASE':'Type or paste the passphrase',
-      'LOGIN_TO_WALLET':'Log in to ',
-      'WALLET':' wallet',
+      'PROVIDING_ADVANCED_BENEFITS': 'Iguana is an app providing advanced benefits of cryptocurrencies and blockchain.',
+      'TYPE_OR_PASTE_THE_PASSPHRASE': 'Type or paste the passphrase',
+      'LOGIN_TO_WALLET': 'Log in to ',
+      'WALLET': ' wallet',
       'LOGIN': 'Log in',
       'CREATE_ACCOUNT': 'Create wallet',
       'ADD': 'Add',
@@ -55,7 +55,7 @@ var lang = {
       'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'to confirm you saved it properly.',
       'TERMS-CONDITIONALS': 'If you lose access to your copay wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that copay wallet become inaccessible. ',
       'ACCEPT': 'Accept',
-      'DECLINE': 'Decline',
+      'DECLINE': 'Decline'
     },
     'ADD_COIN': {
       'WALLET_TYPE': 'Wallet type',
@@ -151,7 +151,7 @@ var lang = {
       'TRANSACTION_ERROR': 'Transaction was not send due to an error!',
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
-      'INCORRECT_INPUT_P3':'Incorrect input. Check it try one more time',
+      'INCORRECT_INPUT_P3': 'Incorrect input. Check it try one more time'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

@@ -237,11 +237,11 @@ angular.module('IguanaGUIApp')
           util.applyDashboardResizeFix($scope.sideBarCoins);
 
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-            .then(function(response) {
-              constructAccountCoinRepeaterCB(response[0], response[1]);
-            }, function(reason) {
-              console.log('request failed: ' + reason);
-            });
+              .then(function(response) {
+                constructAccountCoinRepeaterCB(response[0], response[1]);
+              }, function(reason) {
+                console.log('request failed: ' + reason);
+              });
         }
       }
 

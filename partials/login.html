@@ -53,11 +53,11 @@
             <div class="form-content">
               <div class="form-content-inner">
                 <div class="login-input-directions-msg center unselectable"
-                     ng-class="{'hidden': errPassphrase.length }">
+                     ng-class="{ 'hidden': errPassphrase.length }">
                   {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
                 </div>
                 <div class="center txt-massage"
-                     ng-class="{'hidden': !errPassphrase.length || !passphraseModel }">
+                     ng-class="{ 'hidden': !errPassphrase.length || !passphraseModel }">
                   <span>{{ errPassphrase | lang }}</span>
                 </div>
                 <div class="login-input-directions center  unselectable row">

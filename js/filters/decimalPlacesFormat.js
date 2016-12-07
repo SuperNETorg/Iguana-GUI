@@ -8,7 +8,7 @@ angular.module('IguanaGUIApp')
           decimalPlaces = {
             coin: 0,
             currency: 0
-          }
+          };
 
       if (value < 1 && value > 0) {
         for (var i=0; i < valueComponents[1].length; i++) {

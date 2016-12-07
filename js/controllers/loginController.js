@@ -18,6 +18,7 @@ angular.module('IguanaGUIApp')
   'vars',
   function($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
            $timeout, $rootScope, $filter, $message, vars) {
+
     $storage['iguana-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
@@ -49,7 +50,7 @@ angular.module('IguanaGUIApp')
       onInit();
     }
 
-    if($state.current.name =='login.step2') {
+    if ($state.current.name === 'login.step2') {
       angular
         .element(document.querySelector('.app-background'))
         .removeClass('auth-orange-gradient');
@@ -57,6 +58,7 @@ angular.module('IguanaGUIApp')
 
     function onInit() {
       $scope.coins = [];
+
       $scope.openLoginCoinModal = function() {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -75,6 +77,7 @@ angular.module('IguanaGUIApp')
 
         function resultPromise(data) {
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
           $scope.coins = data;
           $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
         }
@@ -83,6 +86,7 @@ angular.module('IguanaGUIApp')
       $scope.openSignupCoinModal = function() {
         $storage['iguana-login-active-coin'] = {};
         $storage['iguana-active-coin'] = {};
+
         var modalInstance = $uibModal.open({
           animation: true,
           size: 'full',
@@ -92,6 +96,7 @@ angular.module('IguanaGUIApp')
           templateUrl: 'partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
         });
+
         modalInstance.result.then(function(data) {
           $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
           $state.go('signup.step1');
@@ -103,7 +108,7 @@ angular.module('IguanaGUIApp')
           $scope.getActiveCoins(),
           $scope.passphraseModel
         ).then(function(resolve) {
-
+          // do nothing
         }, function(reject) {
           if (reject[2] == 'MESSAGE.INCORRECT_INPUT_P3') {
             $scope.errPassphrase = reject[2];
@@ -121,6 +126,7 @@ angular.module('IguanaGUIApp')
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = {};
       }
+
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
@@ -136,7 +142,8 @@ angular.module('IguanaGUIApp')
             .element(document.querySelector('.app-background'))
             .addClass('auth-orange-gradient');
         }
-      });
+      }
+    );
 
     function setTitle() {
       return $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]] ?

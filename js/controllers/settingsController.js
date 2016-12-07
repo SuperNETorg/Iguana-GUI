@@ -12,12 +12,13 @@ angular.module('IguanaGUIApp')
     $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
 
-    var currencyArr = [
-                       'USD', 'EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK',
-                       'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY',
-                       'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON',  'RUB',
-                       'SEK', 'SGD', 'THB', 'TRY', 'ZAR'
-                      ];
+    var currencyArr =
+          [
+           'USD', 'EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK',
+           'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY',
+           'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON',  'RUB',
+           'SEK', 'SGD', 'THB', 'TRY', 'ZAR'
+          ];
 
     function initCurrencyArray() {
       var currencyArray = [];

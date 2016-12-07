@@ -71,6 +71,7 @@ angular.module('IguanaGUIApp')
       }
 
       var coinKeys = Object.keys(coinsSelectedToAdd);
+
       self.coinsSelectedToAdd = coinsSelectedToAdd;
       self.passphraseModel = passphraseModel;
 
@@ -158,7 +159,7 @@ angular.module('IguanaGUIApp')
             message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
           }
 
-              result.push(message);
+          result.push(message);
 
           deferred.reject(result);
         }

@@ -3,6 +3,7 @@
  *  Usage: gulp dev to build dev only verion
  *         gulp prod to build production version
  *         gulp zip to build prod and compress it into latest.zip
+ *         gulp chromeApp to build chrome app version
  */
 
  // TODO: add prod size evaluation print out
@@ -45,7 +46,7 @@ gulp.task('copyImages', function() {
     return _exports.image.copyImages(buildMode);
   } else {
     return _exports.image.copyImages('dev'),
-      _exports.image.copyImages('prod');
+           _exports.image.copyImages('prod');
   }
 });
 

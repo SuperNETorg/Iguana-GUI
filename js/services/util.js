@@ -64,12 +64,12 @@ angular.module('IguanaGUIApp')
     };
 
     this.execCommandCopy = function(element, elementDisplayName) {
-
       if (!this.isExecCopyFailed) {
         var message,
             color,
             temp = angular.element('<input>');
-        elementDisplayName = (elementDisplayName ? elementDisplayName : '');
+
+        elementDisplayName = elementDisplayName ? elementDisplayName : '';
 
         if (element[0] instanceof HTMLElement) {
           element = element.text();
@@ -81,9 +81,8 @@ angular.module('IguanaGUIApp')
 
         try {
           document.execCommand('copy');
-
           message = elementDisplayName + ' ' +
-            $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
+                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
           color = 'blue';
         } catch (e) {
           this.isExecCopyFailed = true;
@@ -148,8 +147,9 @@ angular.module('IguanaGUIApp')
       // coin tiles on the left
       if (coins.length) {
         var accountCoinsRepeaterItem = '.account-coins-repeater .item',
-          coin,
-          coinEl;
+            coin,
+            coinEl;
+
         for (var i=0; i < coins.length; i++) {
           coin = coins[i].id;
           coinEl = document.querySelector(accountCoinsRepeaterItem + '.' + coin + ' .coin .name');
