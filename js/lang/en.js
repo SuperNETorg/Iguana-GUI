@@ -103,6 +103,7 @@ var lang = {
       'CONFIRMATION': 'Confirmation',
       'SEND_TO': 'Send to',
       'FEE_PER_KB': 'Fee (per KB of data)',
+      'FEE': 'Fee',
       'NOTE': 'Note',
       'THE_FINAL_AMOUNT': 'The final amount may be slightly more because of network fees',
       'SEND': 'Send',

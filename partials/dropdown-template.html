@@ -1,0 +1,28 @@
+<script type="text/ng-template" id="partials/dropdown-template.html">
+  <div class="btn-group" dropdown>
+
+  <!-- button style dropdown -->
+  <button ng-if="isButton" type="button"
+          class="btn btn-primary dropdown-button-style">{{ ngModel.name || default}}<br/>{{ ngModel.name? ngModel.text:'' }}
+  </button>
+  <button ng-if="isButton" type="button" class="btn btn-primary dropdown-toggle dropdown-button-style" dropdown-toggle>
+    <span class="caret"></span>
+  </button>
+
+  <!-- no button, plz -->
+  <a ng-if="!isButton" href
+     class="dropdown-toggle"
+     dropdown-toggle >(ngModel.name + ngModel.text) || default
+  </a>
+  <span ng-if="!isButton" class="caret"></span>
+
+  <!-- dropdown items -->
+  <ul class="dropdown-menu" role="menu">
+    <li ng-repeat="item in items">
+      <a href="#"
+         ng-click="select(item)">{{ item.name }}<br/> {{ item.text }}</a>
+    </li>
+  </ul>
+
+</div>
+</script>

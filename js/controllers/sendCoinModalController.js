@@ -21,6 +21,38 @@ angular.module('IguanaGUIApp')
 
     util.bodyBlurOn();
 
+    $scope.dropDown = {};
+
+    // items collection
+    $scope.dropDown.items = [{
+      id: 0,
+      name: 'Low (Slow confirmation)',
+      text:'0.0001326BTC = $0.10',
+    },{
+      id: 1,
+      name: 'Normal (Average confirmation)',
+      text:'0.00006632BTC = $0.05',
+    },{
+      id: 2,
+      name: 'High (Fast confirmation)',
+      text:'0.00001325BTC = $0.01',
+    },{
+      id: 3,
+      name: 'Custom fee',
+      text:'',
+    }];
+
+    // current item
+    $scope.dropDown.item = null; // dropDown.items[1];
+
+    // directive callback function
+    $scope.dropDown.callback = function(item) {
+      debugger;
+      $scope.dropDown.fromCallback = 'callback received ' + angular.toJson(item);
+    };
+
+
+
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
         coinsInfo = vars.coinsInfo;

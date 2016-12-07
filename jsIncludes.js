@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/app.js"></script>
 <!-- directives -->
 <script type="text/javascript" src="js/directives/spinner.js"></script>
+<script type="text/javascript" src="js/directives/dropDownSelect.js"></script>
 <script type="text/javascript" src="js/directives/numberOnly.js"></script>
 <script type="text/javascript" src="js/directives/appTitle.js"></script>
 <!-- filters -->

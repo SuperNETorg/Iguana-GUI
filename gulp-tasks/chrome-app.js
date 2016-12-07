@@ -33,7 +33,7 @@ exports.copyAllFiles = function(buildMode, paths) {
 };
 
 exports.zipChromeApps = function(path, zipName) {
-  gulp
+  return gulp
     .src(path + '/**/*')
     .pipe(zip(zipName+'.zip'))
     .pipe(gulp.dest(''));
