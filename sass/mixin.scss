@@ -28,7 +28,11 @@
 }
 
 @mixin orange-gradient {
-  background: #fe470d; /* Old browsers */
+  background: #fe470d;
+}
+
+@mixin width-gradient {
+  background: #FFF;
 }
 
 @mixin login-orange-image {
@@ -93,4 +97,12 @@
 
 @mixin center {
   text-align: center;
+}
+
+@mixin btn-bottom($bottom) {
+  bottom: $bottom;
+  left: 15px;
+  max-width: 90%;
+  position: absolute;
+  right: 15px;
 }

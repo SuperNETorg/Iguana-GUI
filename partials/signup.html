@@ -56,7 +56,8 @@
             <div class="form-content-inner">
               <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
               <div class="login-input-directions center offset-bottom-sm unselectable">
-                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }}
+                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }} <br/>
+                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2' | lang }}
               </div>
               <textarea
                 name="verifyPassphrase"
@@ -66,8 +67,35 @@
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
               <button ng-disabled="!buttonCreateAccount"
-                      class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="addAccount()">
+                      class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-add-account" ng-click="$state.go('signup.step3')">
                 {{ 'CREATE_ACCOUNT.CREATE' | lang }}
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- // verify passphrase form end -->
+        <!-- // verify passphrase form start -->
+        <section class="form-container terms-conditionals-form"
+                 ng-class="{ 'hidden': !($state.current.name === 'signup.step3') }" >
+          <header class="form-header orange-gradient box-shadow-bottom">
+            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"
+               ng-click="$state.go('signup.step2')"></i>
+            <div class="title text-shadow">{{ title }}</div>
+          </header>
+          <div class="form-content">
+            <div class="form-content-inner">
+              <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
+              <div class="login-input-directions center offset-bottom-sm unselectable offset-bottom-md">
+                {{ 'CREATE_ACCOUNT.TERMS-CONDITIONALS' | lang }}
+              </div>
+              <button ng-disabled="!buttonCreateAccount"
+                      class="last-child btn btn-block width-gradient box-shadow-all text-shadow row btn-terms-conditions-accept"
+                      ng-click="chooseConditions(1)">
+                {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
+              </button>
+              <button class="last-child btn btn-block orange-gradient box-shadow-all text-shadow row btn-terms-conditions-decline"
+                      ng-click="chooseConditions(0)">
+                {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
               </button>
             </div>
           </div>

@@ -31,6 +31,7 @@ angular.module('IguanaGUIApp')
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
+    $scope.chooseConditions = chooseConditions;
     $scope.getActiveCoins = getActiveCoins;
     $scope.$on('$destroy', destroy);
 
@@ -125,6 +126,11 @@ angular.module('IguanaGUIApp')
       }
     }
 
+    function chooseConditions() {
+      // TODO: not completed
+      // addAccount();
+    }
+    
     function destroy() {
       $storage['passphrase'] = '';
       $storage['iguana-login-active-coin'] = {};

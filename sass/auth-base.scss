@@ -28,14 +28,12 @@ $login-button-disabled-color: #B2B4B7;
     .form-header {
       display: table-caption;
       height: 60px;
+      padding: 15px;
 
       .title {
-        color: $color-white;
-        font-size: 1.44em;
-        position: relative;
-        text-align: center;
-        top: 18px;
-        z-index: 10;
+        font-size: 1.4em;
+        margin-left: 1em;
+        margin-top: 0.2em;
       }
     }
     .form-content {
@@ -51,10 +49,10 @@ $login-button-disabled-color: #B2B4B7;
           font-size: 4.09em;
           font-weight: bold;
           position: relative;
-          text-align: center;
           top: 18px;
+          text-align: center;
           z-index: 10;
-          @include no-text-shadow
+          @include no-text-shadow;
         }
       }
       .form-content-inner-login-state {
@@ -177,6 +175,8 @@ $login-button-disabled-color: #B2B4B7;
   .passphrase-container {
     @include proxima;
     @include bold;
+    font-size: 1.3em;
+    line-height: 1.3em;
     background: $color-white;
     border-radius: $border-radius-smaller;
     box-shadow: 0 2px 3px 2px rgba-black(0.12);
@@ -203,11 +203,12 @@ $login-button-disabled-color: #B2B4B7;
   .bi_interface-arrow-left {
     color: $color-white;
     font-size: 26px;
-    margin-left: 10px;
-    margin-top: 15px;
     position: absolute;
     text-shadow: 1px 1px 3px rgba-black(0.3);
-    z-index: 100;
+
+    ::before {
+      font-weight: 900;
+    }
   }
   .error {
     border: solid 1px $color-red;
@@ -227,9 +228,9 @@ $login-button-disabled-color: #B2B4B7;
   }
   .create-account-form .login-input-directions,
   .verify-passphrase-form .login-input-directions {
+    font-size: 1.05em;
     margin-bottom: 0;
     margin-top: 4em;
-    width: 80%;
     word-wrap: break-word;
   }
   .header {
@@ -247,14 +248,9 @@ $login-button-disabled-color: #B2B4B7;
     height: 50px;
 
     .title {
-      @include proxima;
-      @include bold;
-      color: $color-white;
       font-size: 1.15em;
-      position: relative;
-      text-align: center;
-      top: -18px;
-      z-index: 10;
+      margin-left: 0.5em;
+      margin-top: 0.2em;
     }
   }
   .btn {

@@ -18,6 +18,8 @@ body {
     }
     .auth-main {
       .create-account-form,
+      .terms-conditionals-form,
+      .login-account-form,
       .verify-passphrase-form {
         .form-content {
           .form-content-inner {
@@ -45,16 +47,12 @@ body {
           padding-right: 12px;
         }
         .generated-passhprase {
-          font-size: 1.3em;
-          padding: 0 35px;
           line-height: 1.3em;
+          padding: 0 35px;
         }
         .login-or-delim {
           padding: 12px 0;
         }
-      }
-      .bi_interface-arrow-left {
-        margin-top: 15px;
       }
       .login-buttons-container {
         margin-top: 40px;
@@ -103,24 +101,42 @@ body {
       .btn.row {
         font-size: 1.2em;
       }
+      .form-container.terms-conditionals-form,
       .form-container.create-account-form,
+      .form-container.login-account-form,
       .form-container.verify-passphrase-form {
+        .form-header {
+          border: none;
+          border-radius: 0;
+          height: 4em;
+          padding: 1em 0.5em;
+
+          .btn-back {
+            font-size: 2.4em;
+            left: 5px;
+            line-height: 0.4em;
+          }
+        }
         .form-content{
           .form-content-inner {
+            .generated-passhprase {
+            }
             .login-input-directions{
-              @include center
+              @include center;
             }
             .login-passphrase-textarea {
+              font-size: 1.2em;
               height: 133px;
               padding: 15px 10px;
-              font-size: 1.2em;
             }
             .btn.row:last-child {
-              bottom: 15px;
-              left: 15px;
-              max-width: 90%;
-              position: absolute;
-              right: 15px;
+              @include btn-bottom(15px);
+            }
+            .btn-terms-conditions-accept {
+              @include btn-bottom(85px);
+            }
+            .btn-terms-conditions-decline {
+              @include btn-bottom(15px);
             }
           }
         }
@@ -155,8 +171,8 @@ body {
               line-height: 1em;
             }
             .login-buttons-container {
-              margin-top: 20%;
               margin-bottom: 20%;
+              margin-top: 20%;
 
               .btn.row {
                 height: 47px;
@@ -178,10 +194,6 @@ body {
       bottom: 0;
       position: absolute;
     }
-    .form-content-inner,
-    .form-content-inner-login-state {
-      display: table;
-    }
     .middle-sheet {
       display: table-cell;
       vertical-align: middle;
@@ -197,22 +209,23 @@ body {
         .form-container {
           .form-header {
             height: 4em;
-            padding: 1em 0.8em;
+            padding: 1.2em 0.8em;
 
             .btn-close {
               font-size: 1.5em;
               margin-left: auto;
             }
             .title {
-              font-size: 1.3em;
+              font-size: 1.4em;
               margin-left: 0.5em;
+              margin-top: 0.1em;
             }
           }
         }
         .add-new-coin-form-login-state {
           .form-content {
-            max-width: 30em;
             margin: 0 auto;
+            max-width: 30em;
 
             .coins-title {
               font-size: 1.18em;
