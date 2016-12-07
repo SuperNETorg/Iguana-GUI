@@ -5,17 +5,23 @@ var gulp = require('gulp'),
 
 exports.copyImages = function (buildMode) {
   buildPaths = paths.build[buildMode ? buildMode : 'dev'];
-  return gulp.src(paths.image.default + '/*')
-    .pipe(image({
-      pngquant: true,
-      optipng: false,
-      zopflipng: true,
-      jpegRecompress: false,
-      jpegoptim: true,
-      mozjpeg: true,
-      gifsicle: true,
-      svgo: true,
-      concurrent: 10
-    }))
-    .pipe(gulp.dest(buildPaths + '/' + paths.image.default));
+
+  if (buildMode === 'prod') {
+    return gulp.src(paths.image.default + '/*')
+               .pipe(image({
+                 pngquant: true,
+                 optipng: false,
+                 zopflipng: true,
+                 jpegRecompress: false,
+                 jpegoptim: true,
+                 mozjpeg: true,
+                 gifsicle: true,
+                 svgo: true,
+                 concurrent: 10
+               }))
+               .pipe(gulp.dest(buildPaths + '/' + paths.image.default));
+  } else {
+    return gulp.src(paths.image.default + '/*')
+               .pipe(gulp.dest(buildPaths + '/' + paths.image.default));
+  }
 };
