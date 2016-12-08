@@ -54,14 +54,10 @@
                 <h3>{{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</h3>
                 <h5>or {{ sendCoin.amountCurrency | decimalPlacesFormat:'currency' }} {{ sendCoin.currency }}</h5>
               </div>
-              <div class="pop-detail crncy chk-crncy crncy-fee">
-                <h4>{{ 'SEND.FEE_PER_KB' | lang }}:</h4>
-                <h3>{{ sendCoin.fee | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</h3>
-                <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency | decimalPlacesFormat:'currency' }} {{ currency }}</h5>
-              </div>
               <div class="pop-detail pay-dtl">
-                <h4>{{ 'SEND.FEE_PER_KB' | lang }}: </h4>
-                <p>{{ sendCoin.note }}</p>
+                <h4>{{ 'SEND.FEE' | lang }}: </h4>
+                <p>{{ dropDown.item.name }}</p>
+                <p>{{ dropDown.item.name=='Custom fee' ? sendCoin.fee+'MZC=$'+sendCoin.feeCurrency : dropDown.item.text }}</p>
               </div>
               <h4>{{ 'SEND.THE_FINAL_AMOUNT' | lang }}.</h4>
               <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</button>

@@ -361,3 +361,18 @@ $login-button-disabled-color: #B2B4B7;
   background-color: white;
   color:#5a606c;
 }
+.crncy dropdown {
+  padding: 0;
+}
+.crncy dropdown .btn-group {
+  width: 100%;
+}
+.crncy dropdown .btn-group button:first-child {
+  width: 100%;
+}
+.crncy dropdown .btn-group ul {
+  width: 100%;
+}
+.custom-fee-inputs {
+  margin-top: 15px;
+}

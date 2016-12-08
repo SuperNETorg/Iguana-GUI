@@ -45,13 +45,13 @@
             </div>
             <div class="pop-detail crncy">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
-
               <dropdown is-button ng-model="dropDown.item" items="dropDown.items" callback="dropDown.callback(item)"></dropdown>
-
-              <!--<input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
-              <span class="eq-sign">=</span>
-              <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
-            -->
+              <div>{{dropDown.callback(item)}}</div>
+              <div class="custom-fee-inputs" ng-hide="!(dropDown.item.name =='Custom fee')">
+                <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
+                <span class="eq-sign">=</span>
+                <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
+              </div>
             </div>
             <div class="pop-detail">
               <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>

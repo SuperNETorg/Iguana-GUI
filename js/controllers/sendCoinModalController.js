@@ -13,7 +13,8 @@ angular.module('IguanaGUIApp')
   '$rates',
   'vars',
   '$message',
-  function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message) {
+  '$http',
+  function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message, $http) {
     $scope.isIguana = $storage['isIguana'];
     $scope.close = close;
     $scope.util = util;
@@ -23,31 +24,20 @@ angular.module('IguanaGUIApp')
 
     $scope.dropDown = {};
 
-    // items collection
-    $scope.dropDown.items = [{
-      id: 0,
-      name: 'Low (Slow confirmation)',
-      text:'0.0001326BTC = $0.10',
-    },{
-      id: 1,
-      name: 'Normal (Average confirmation)',
-      text:'0.00006632BTC = $0.05',
-    },{
-      id: 2,
-      name: 'High (Fast confirmation)',
-      text:'0.00001325BTC = $0.01',
-    },{
-      id: 3,
-      name: 'Custom fee',
-      text:'',
-    }];
+    function checkFeeCount(fee) {
+      var coin = fee*1024/100000000;
+      var amount = $scope.sendCoin.currencyRate * coin;
+      return {
+        'coin':coin,
+        'amount':amount
+      };
+    }
 
     // current item
     $scope.dropDown.item = null; // dropDown.items[1];
 
     // directive callback function
     $scope.dropDown.callback = function(item) {
-      debugger;
       $scope.dropDown.fromCallback = 'callback received ' + angular.toJson(item);
     };
 
@@ -109,6 +99,31 @@ angular.module('IguanaGUIApp')
     $api.getBalance(defaultAccount, $scope.activeCoin)
     .then(function(response) {
       initSendCoinModal(response[0], response[1]);
+
+      $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended').then(function(response) {
+        var fastestFee = checkFeeCount(response.data.fastestFee);
+        var halfHourFee = checkFeeCount(response.data.halfHourFee);
+        var hourFee = checkFeeCount(response.data.hourFee);
+
+        $scope.dropDown.items = [{
+          id: 0,
+          name: 'Low (Slow confirmation)',
+          text:hourFee.coin+'MZC=$'+hourFee.amount.toFixed(15)
+        },{
+          id: 1,
+          name: 'Normal (Average confirmation)',
+          text:halfHourFee.coin+'MZC=$'+halfHourFee.amount.toFixed(15)
+        },{
+          id: 2,
+          name: 'High (Fast confirmation)',
+          text:fastestFee.coin+'MZC=$'+fastestFee.amount.toFixed(15)
+        },{
+          id: 3,
+          name: 'Custom fee',
+          text:''
+        }];
+      });
+
     }, function(reason) {
       console.log('request failed: ' + reason);
     });
