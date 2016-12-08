@@ -2,69 +2,92 @@
 * Iguana common
 *
 */
-
 @import 'dev';
 
-body,
 html {
-  background-color: #f5fafd;
-  @include proxima;
-  height: 100%;
-  left: 0;
-  margin: 0;
-  overflow: auto !important; /* prevent scrolling when modal is visible */
-  padding: 0 !important;
-  top: 0;
-  width: 100%; /* override default bootstrap modal css */
-}
-.app-background {
-  height: 100%;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
-.unselectable {
-  @include unselectable;
-}
-.cursor-pointer {
-  @include cursor-pointer;
-}
-.orange-gradient,
-.btn.orange-gradient:focus {
-  @include orange-gradient;
-}
-.col-red {
-  color: $color-red;
-}
-.col-white {
-  color: $color-white;
-}
-.modal .modal-dialog.modal-lg {
-  width: 800px;
-}
-.app-container,
-.app-container-inner {
+  body {
+    background-color: #f5fafd;
+    @include proxima;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    overflow: auto !important; /* prevent scrolling when modal is visible */
+    padding: 0 !important;
+    top: 0;
+    width: 100%; /* override default bootstrap modal css */
 
-}
-.dashboard-page .app-container,
-.dashboard-page .app-container-inner {
-  background: inherit;
-}
-.invisible {
-  opacity: 0;
-}
+    /* preload flag svgs */
+    :after {
+      content: url(fonts/svg/flags/au.svg) url(fonts/svg/flags/bg.svg) url(fonts/svg/flags/br.svg) url(fonts/svg/flags/ca.svg)
+               url(fonts/svg/flags/ch.svg) url(fonts/svg/flags/cn.svg) url(fonts/svg/flags/cz.svg) url(fonts/svg/flags/dk.svg)
+               url(fonts/svg/flags/gb.svg) url(fonts/svg/flags/hk.svg) url(fonts/svg/flags/hr.svg) url(fonts/svg/flags/hu.svg)
+               url(fonts/svg/flags/id.svg) url(fonts/svg/flags/il.svg) url(fonts/svg/flags/in.svg) url(fonts/svg/flags/jp.svg)
+               url(fonts/svg/flags/kr.svg) url(fonts/svg/flags/mx.svg) url(fonts/svg/flags/my.svg) url(fonts/svg/flags/no.svg)
+               url(fonts/svg/flags/nz.svg) url(fonts/svg/flags/ph.svg) url(fonts/svg/flags/pl.svg) url(fonts/svg/flags/ro.svg)
+               url(fonts/svg/flags/ru.svg) url(fonts/svg/flags/se.svg) url(fonts/svg/flags/sg.svg) url(fonts/svg/flags/th.svg)
+               url(fonts/svg/flags/tr.svg) url(fonts/svg/flags/za.svg) url(fonts/svg/flags/eu.svg) url(fonts/svg/flags/us.svg);
+      display: none;
+      font-family: cryptocoins, icomoon;
+    }
+    .app-background {
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    .unselectable {
+      @include unselectable;
+    }
+    .cursor-pointer {
+      @include cursor-pointer;
+    }
+    .no-padding-left-right {
+      @include no-padding-left-right;
+    }
+    .orange-gradient,
+    .btn.orange-gradient,
+    .btn.orange-gradient:focus,
+    .btn.orange-gradient:hover {
+      @include orange-gradient;
+    }
+    .width-gradient,
+    .btn.width-gradient,
+    .btn.width-gradient:focus,
+    .btn.width-gradient:hover {
+      @include width-gradient;
+      }
+    .btn:disabled,
+    .btn:disabled:hover,
+    .btn:disabled:active {
+      background: $background-for-page;
+      @include no-box-shadow;
+      @include no-text-shadow;
+    }
+    .col-red {
+      color: $color-red;
+    }
+    .col-white {
+      color: $color-white;
+    }
+    .modal .modal-dialog.modal-lg {
+      width: 800px;
+    }
+    .dashboard-page .app-container,
+    .dashboard-page .app-container-inner {
+      background: inherit;
+    }
+    .invisible {
+      opacity: 0;
+    }
+    textarea {
+      border: 1px solid #cac9c9;
+      box-shadow: none;
+      outline: none;
+      overflow: auto;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+  }
 
-/* preload flag svgs */
-body:after {
-  content: url(fonts/svg/flags/au.svg) url(fonts/svg/flags/bg.svg) url(fonts/svg/flags/br.svg) url(fonts/svg/flags/ca.svg)
-           url(fonts/svg/flags/ch.svg) url(fonts/svg/flags/cn.svg) url(fonts/svg/flags/cz.svg) url(fonts/svg/flags/dk.svg)
-           url(fonts/svg/flags/gb.svg) url(fonts/svg/flags/hk.svg) url(fonts/svg/flags/hr.svg) url(fonts/svg/flags/hu.svg)
-           url(fonts/svg/flags/id.svg) url(fonts/svg/flags/il.svg) url(fonts/svg/flags/in.svg) url(fonts/svg/flags/jp.svg)
-           url(fonts/svg/flags/kr.svg) url(fonts/svg/flags/mx.svg) url(fonts/svg/flags/my.svg) url(fonts/svg/flags/no.svg)
-           url(fonts/svg/flags/nz.svg) url(fonts/svg/flags/ph.svg) url(fonts/svg/flags/pl.svg) url(fonts/svg/flags/ro.svg)
-           url(fonts/svg/flags/ru.svg) url(fonts/svg/flags/se.svg) url(fonts/svg/flags/sg.svg) url(fonts/svg/flags/th.svg)
-           url(fonts/svg/flags/tr.svg) url(fonts/svg/flags/za.svg) url(fonts/svg/flags/eu.svg) url(fonts/svg/flags/us.svg);
-  display: none;
-  font-family: cryptocoins, icomoon;
 }

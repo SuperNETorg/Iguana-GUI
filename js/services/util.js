@@ -138,11 +138,11 @@ angular.module('IguanaGUIApp')
           width = '';
           padding = '';
         }
-      }
 
-      txUnit.style.maxWidth = width;
-      txUnit.style.width = width;
-      mainContent.style.padding = padding;
+        txUnit.style.maxWidth = width;
+        txUnit.style.width = width;
+        mainContent.style.padding = padding;
+      }
 
       // coin tiles on the left
       if (coins.length) {

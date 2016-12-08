@@ -26,13 +26,18 @@ body {
             margin: 0 auto;
             max-width: 600px;
 
+            .form-title {
+              color: $color-dark-gray;
+              font-size: 1.1em;
+            }
             .passphrase-word-count {
               strong {
                 @include bold
               }
             }
             .btn.row {
-              font-size: 1.05em;
+              font-size: 1em;
+              font-weight: 700;
               height: 34px;
               @include left-right-auto;
               max-width: none;
@@ -101,6 +106,11 @@ body {
       .btn.row {
         font-size: 1.2em;
       }
+      .form-container.login-form {
+        .form-content {
+          vertical-align: top;
+        }
+      }
       .form-container.terms-conditionals-form,
       .form-container.create-account-form,
       .form-container.login-account-form,
@@ -113,12 +123,16 @@ body {
 
           .btn-back {
             font-size: 2.4em;
-            left: 5px;
+            left: 8px;
             line-height: 0.4em;
           }
         }
         .form-content{
           .form-content-inner {
+            .form-title {
+              color: $color-dark-gray;
+              font-size: 1.1em;
+            }
             .generated-passhprase {
             }
             .login-input-directions{
@@ -132,11 +146,11 @@ body {
             .btn.row:last-child {
               @include btn-bottom(15px);
             }
-            .btn-terms-conditions-accept {
-              @include btn-bottom(85px);
-            }
-            .btn-terms-conditions-decline {
+            .btn.row.btn-terms-conditions-accept {
               @include btn-bottom(15px);
+            }
+            .btn.row.btn-terms-conditions-decline {
+              @include btn-bottom(45px);
             }
           }
         }

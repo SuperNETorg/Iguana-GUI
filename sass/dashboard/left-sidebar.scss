@@ -94,11 +94,11 @@ $account-coins-repeater-coin-color: #D3D3D4;
     opacity: 0.65;
   }
   .item.active {
-    @include orange-gradient;
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
     color: $color-white;
     cursor: default;
     text-shadow: 0 1px 3px rgba-black(0.25);
+    @include orange-gradient;
 
     .remove-coin:before {
       color: $color-white;

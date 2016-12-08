@@ -18,6 +18,7 @@ angular.module('IguanaGUIApp')
   'vars',
   function($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
            $timeout, $rootScope, $filter, $message, vars) {
+    var pageTitle;
 
     $storage['iguana-active-coin'] = {};
     $scope.util = util;
@@ -33,16 +34,14 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.coinResponses = [];
     $scope.coins = [];
-    $scope.activeCoins = $storage['iguana-login-active-coin'] || [];
+    $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $storage['iguana-active-coin'] = {};
     $scope.errPassphrase = '';
     $scope.loginActiveCoin = '';
-    $scope.clearMessage = clearMessage;
     $scope.title = setTitle;
-
-    angular
-      .element(document.querySelector('.app-background'))
-      .addClass('auth-orange-gradient');
+    $rootScope.background = true;
+    $scope.clearMessage = clearMessage;
+    $scope.$on("$stateChangeStart", stateChangeStart);
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -51,9 +50,7 @@ angular.module('IguanaGUIApp')
     }
 
     if ($state.current.name === 'login.step2') {
-      angular
-        .element(document.querySelector('.app-background'))
-        .removeClass('auth-orange-gradient');
+      $rootScope.background = false;
     }
 
     function onInit() {
@@ -130,24 +127,27 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     };
 
-    $scope.$on("$stateChangeStart",
-      function() {
+    function stateChangeStart() {
         if ($state.current.name === 'login') {
-          angular
-            .element(document.querySelector('.app-background'))
-            .removeClass('auth-orange-gradient');
+          $rootScope.background = false;
         } else if ($state.current.name === 'login.step2') {
-          $scope.errPassphrase ='';
-          angular
-            .element(document.querySelector('.app-background'))
-            .addClass('auth-orange-gradient');
+          $scope.errPassphrase = '';
+          $rootScope.background = true;
         }
       }
-    );
 
     function setTitle() {
-      return $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]] ?
-        $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]['name'] : '';
+      pageTitle = $filter('lang')('LOGIN.LOGIN_TO_WALLET');
+
+      if (
+        $storage['iguana-login-active-coin'] &&
+        Object.keys($storage['iguana-login-active-coin']).length &&
+        $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]
+      ) {
+        pageTitle = pageTitle.replace('{{ coin }}', $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]].name);
+      }
+
+      return pageTitle;
     }
 
     function clearMessage() {

@@ -764,7 +764,7 @@ angular.module('IguanaGUIApp')
 
     this.addCoinRecursive = function(coins, _index, recursiveResult) {
       var coin = coins[_index] || {},
-          result = recursiveResult || [];
+          result = recursiveResult || [],
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin.coinId),
           fullUrl = this.getConf().server.protocol +
                     this.getConf().server.ip + ':' +

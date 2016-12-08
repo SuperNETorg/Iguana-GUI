@@ -51,6 +51,7 @@ angular.module('IguanaGUIApp')
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
+    $rootScope.background = false;
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -76,7 +77,8 @@ angular.module('IguanaGUIApp')
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
-          controller: 'addCoinModalController',
+          size: 'lg',
+          controller: 'loginSelectCoinModalController',
           templateUrl: 'partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
         });

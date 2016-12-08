@@ -23,12 +23,12 @@
                 </div>
                 <div class="login-buttons-container col-xs-12">
                   <div class="row">
-                    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin"
+                    <button class="btn btn-block btn-hover-orange orange-gradient text-shadow row btn-signin"
                             ng-click="openLoginCoinModal()">
                       {{ 'LOGIN.LOGIN' | lang }}
                     </button>
                     <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
-                    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signup"
+                    <button class="btn btn-block btn-hover-orange orange-gradient text-shadow row btn-signup"
                             ng-click="openSignupCoinModal()">
                       {{ 'LOGIN.CREATE_ACCOUNT' | lang }}
                     </button>
@@ -48,11 +48,11 @@
           <div class="form-container login-account-form">
             <header class="form-header orange-gradient box-shadow-bottom">
               <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
-              <div class="title text-shadow">{{ 'LOGIN.LOGIN_TO_WALLET'  | lang }} <span>{{ title() }}</span> {{ 'LOGIN.WALLET'  | lang }}</div>
+              <div class="title text-shadow">{{ title() }}</div>
             </header>
             <div class="form-content">
               <div class="form-content-inner">
-                <div class="login-input-directions-msg center unselectable"
+                <div class="login-input-directions center offset-bottom-md unselectable"
                      ng-class="{ 'hidden': errPassphrase.length }">
                   {{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}
                 </div>
@@ -60,14 +60,12 @@
                      ng-class="{ 'hidden': !errPassphrase.length || !passphraseModel }">
                   <span>{{ errPassphrase | lang }}</span>
                 </div>
-                <div class="login-input-directions center  unselectable row">
-                  <textarea name="loginPassphrase" id="passphrase"
-                            class="login-passphrase-textarea row center form-control"
-                            ng-model="passphraseModel"
-                            ng-class="{'error-msg': errPassphrase.length }"
-                            ng-change="clearMessage()">
-                  </textarea>
-                </div>
+                <textarea name="loginPassphrase" id="passphrase"
+                          class="login-passphrase-textarea row center form-control"
+                          ng-model="passphraseModel"
+                          ng-class="{'error-msg': errPassphrase.length }"
+                          ng-change="clearMessage()">
+                </textarea>
                 <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin-account form-control"
                         ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
                     {{ 'LOGIN.LOGIN' | lang }}

@@ -29,17 +29,16 @@ angular.module('IguanaGUIApp')
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
     $scope.title = setTitle();
+    $rootScope.background = false;
 
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
-    $scope.chooseConditions = chooseConditions;
     $scope.getActiveCoins = getActiveCoins;
     $scope.$on('$destroy', destroy);
 
     isCoinSelected();
-    angular.element(document.querySelector('.app-background')).removeClass('auth-orange-gradient');
 
     if (!vars.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -105,7 +104,11 @@ angular.module('IguanaGUIApp')
     function setTitle() {
       pageTitle = $filter('lang')('CREATE_ACCOUNT.ADD_ACCOUNT');
 
-      if ($scope.activeCoins[Object.keys($scope.activeCoins)[0]]) {
+      if (
+        $storage['iguana-login-active-coin'] &&
+        Object.keys($storage['iguana-login-active-coin']).length &&
+        $scope.activeCoins[Object.keys($scope.activeCoins)[0]]
+      ) {
         pageTitle = pageTitle.replace('{{ coin }}', $scope.activeCoins[Object.keys($scope.activeCoins)[0]].name);
       }
 
@@ -126,11 +129,6 @@ angular.module('IguanaGUIApp')
       } else {
         return Object.keys($storage['iguana-login-active-coin']).length === 0;
       }
-    }
-
-    function chooseConditions() {
-      // TODO: not completed
-      // addAccount();
     }
 
     function destroy() {

@@ -62,9 +62,10 @@ angular.module('IguanaGUIApp', [
       data: {
         pageTitle: 'PAGE.VERIFY'
       }
-    }).state('signup.step3', {
+    })
+    .state('signup.step3', {
       data: {
-        pageTitle: 'PAGE.VERIFY' //TODO: must be changed
+        pageTitle: 'PAGE.CONFIRMATION'
       }
     })
     .state('dashboard', {
