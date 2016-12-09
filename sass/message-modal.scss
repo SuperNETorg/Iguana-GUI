@@ -5,6 +5,8 @@
 
 @import 'dev.scss';
 
+$iguana-modal-boxshadow: #DEA5AB;
+
 .iguana-modal.message-container::before {
   display: initial;
 }
@@ -29,7 +31,7 @@
   .modal-content {
     border: none;
     border-radius: $border-radius-smaller;
-    box-shadow: 0 0 20px 0 #DEA5AB;
+    box-shadow: 0 0 20px 0 $iguana-modal-boxshadow;
     margin: 0 auto;
     max-width: 390px;
     min-width: 300px;

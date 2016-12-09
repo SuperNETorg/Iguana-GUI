@@ -4,9 +4,12 @@
 */
 @import 'dev';
 
+$color-body-bg: #F5FAFD;
+$color-textarea-border: #CAC9C9;
+
 html {
   body {
-    background-color: #f5fafd;
+    background-color: $color-body-bg;
     @include proxima;
     height: 100%;
     left: 0;
@@ -81,7 +84,7 @@ html {
       opacity: 0;
     }
     textarea {
-      border: 1px solid #cac9c9;
+      border: 1px solid $color-textarea-border;
       box-shadow: none;
       outline: none;
       overflow: auto;

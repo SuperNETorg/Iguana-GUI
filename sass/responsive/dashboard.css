@@ -82,6 +82,17 @@
 }
 
 @media (max-width: 992px) {
+  .dashboard .transactions-unit,
+  .dashboard .coins {
+    width: 100%;
+    max-width: 100%;
+  }
+  .reference-currency-main .currency-content .container-left {
+    padding-top: 15px;
+  }
+  .col-md-7.col-sm-6.currency-parent {
+    width: 100%;
+  }
   .modal .modal-dialog.modal-lg {
     width: 90%;
   }
@@ -106,6 +117,15 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .dashboard .top {
+    border-top: 2px solid #1E2136;
+  }
+  .dashboard .top-menu .item .text {
+    margin-top: -3px;
+  }
+  .account-coins-repeater .item .icon .name:before {
+    display: none;
+  }
   /* Auth */
   .auth-main .form-container .form-content {
     max-width: 400px;
@@ -242,14 +262,16 @@
     display: inline-block;
     float: none;
   }
-  .main-content .transactions-unit {
-    padding-left: 0;
-    padding-right: 0;
+  .account-coins-repeater .item .icon .name:before {
+    display: inherit;
   }
 }
 
 @media (max-width: 360px) {
   .share-address-section {
     width: 96%;
+  }
+  .account-coins-repeater .item .icon .name:before {
+    display: inherit;
   }
 }

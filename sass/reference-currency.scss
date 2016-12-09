@@ -7,6 +7,7 @@
 
 $reference-currency-tile-color: #FD5624;
 $reference-currency-tile-span-color: #D3D4D6;
+$reference-currency-txamount: #898A94;
 
 .reference-currency-main {
   padding-bottom: 40px;
@@ -55,7 +56,6 @@ $reference-currency-tile-span-color: #D3D4D6;
         font-weight: 700;
         padding-bottom: 5px;
       }
-      $reference-currency-txamount: #898A94;
       .transaction-amount {
         color: $reference-currency-txamount;
         font-size: 16px;

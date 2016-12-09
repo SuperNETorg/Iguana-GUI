@@ -129,31 +129,47 @@ body {
   }
 
   @media (max-width: 992px) {
+    .dashboard .transactions-unit,
+    .dashboard .coins {
+      width: 100%;
+      max-width: 100%;
+    }
+    .reference-currency-main .currency-content .container-left {
+      padding-top: 15px;
+    }
+    .col-md-7.col-sm-6.currency-parent {
+      width: 100%;
+    }
     .modal .modal-dialog.modal-lg {
       width: 90%;
     }
-    .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
-      display: block;
-      margin-top: 35px;
-    }
-    .transactions-unit .transactions-list .transactions-list-repeater .item .amount {
-      clear: both;
-      float: left;
-      width: 32%;
-      line-height: 44px;
-    }
-    .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
-      float: right;
-      word-wrap: break-word;
-      width: 50%;
-      font-size: 14px;
-      margin-right: 25px;
-      margin-left: 0;
+    .transactions-unit .transactions-list .transactions-list-repeater .item {
+      .clearfix {
+        display: block;
+        margin-top: 35px;
+      }
+      .amount {
+        clear: both;
+        float: left;
+        width: 32%;
+        line-height: 44px;
+      }
+      .hash {
+        float: right;
+        word-wrap: break-word;
+        width: 50%;
+        font-size: 14px;
+        margin-right: 25px;
+        margin-left: 0;
+      }
     }
   }
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .account-coins-repeater .item .icon .name:before {
+      display: none;
+    }
     .app-container {
       .app-container-inner {
         .dashboard-main {
@@ -292,15 +308,17 @@ body {
       display: inline-block;
       float: none;
     }
-    .main-content .transactions-unit {
-      padding-left: 0;
-      padding-right: 0;
+    .account-coins-repeater .item .icon .name:before {
+      display: inherit;
     }
   }
 
   @media (max-width: 360px) {
     .share-address-section {
       width: 96%;
+    }
+    .account-coins-repeater .item .icon .name:before {
+      display: inherit;
     }
   }
 }
