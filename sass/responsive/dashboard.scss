@@ -135,7 +135,7 @@ body {
       max-width: 100%;
     }
     .reference-currency-main .currency-content .container-left {
-      padding-top: 15px;
+      padding-top: 5px;
     }
     .col-md-7.col-sm-6.currency-parent {
       width: 100%;
@@ -167,11 +167,20 @@ body {
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .dashboard .top-menu {
+      padding: 0 0 19px;
+    }
+    .dashboard .top-menu .item {
+      margin: 0 15px;
+      top: 20px;
+    }
     .dashboard .top {
       border-top: 2px solid #1E2136;
     }
     .dashboard .top-menu .item .text {
-      margin-top: -3px;
+      margin-top: 0;
+      position: relative;
+      top: -8px;
     }
     .account-coins-repeater .item .icon .name:before {
       display: none;

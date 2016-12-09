@@ -11,7 +11,7 @@ $account-coins-repeater-coin-color: #D3D3D4;
   .item {
     @include bold;
     @include cursor-pointer;
-    background: $color-white;
+    background: $color-absolute-white;
     border-radius: $border-radius-smaller;
     box-shadow: 0 2px 2px 1px rgba-black(0.125);
     height: 85px;
@@ -95,20 +95,20 @@ $account-coins-repeater-coin-color: #D3D3D4;
   }
   .item.active {
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
-    color: $color-white;
+    color: $color-absolute-white;
     cursor: default;
     text-shadow: 0 1px 3px rgba-black(0.25);
     @include orange-gradient;
 
     .remove-coin:before {
-      color: $color-white;
+      color: $color-absolute-white;
     }
     .loader .path4 {
-      stroke: $color-white;
+      stroke: $color-absolute-white;
     }
     .coin i,
     .coin .name {
-      color: $color-white;
+      color: $color-absolute-white;
     }
   }
   .item.active:after {
@@ -125,7 +125,7 @@ $account-coins-repeater-coin-color: #D3D3D4;
 }
 .btn-add-coin {
   @include bold;
-  background: $color-white;
+  background: $color-absolute-white;
   border-radius: $border-radius-smaller;
   box-shadow: 0 2px 2px 1px rgba-black(0.125);
   color: $color-orange;

@@ -20,7 +20,7 @@ $txunit-item-progress-icon-before-color: #2092FE;
     @include orange-gradient;
     border-radius: $border-radius-smaller $border-radius-smaller 0 0;
     box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
-    color: $color-white;
+    color: $color-absolute-white;
     min-height: 150px;
 
     .loader {
@@ -35,7 +35,7 @@ $txunit-item-progress-icon-before-color: #2092FE;
         stroke-width: 3px;
       }
       .path4 {
-        stroke: $color-white;
+        stroke: $color-absolute-white;
       }
     }
   }
@@ -46,7 +46,7 @@ $txunit-item-progress-icon-before-color: #2092FE;
 
     .btn {
       @include bold;
-      background: $color-white;
+      background: $color-absolute-white;
       border-radius: $border-radius-smaller;
       box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
       color: $color-orange;
@@ -69,7 +69,7 @@ $txunit-item-progress-icon-before-color: #2092FE;
   }
 }
 .transactions-list {
-  background: $color-white;
+  background: $color-absolute-white;
   border-radius: 0 0 $border-radius-smaller $border-radius-smaller;
   padding: 25px 2.5% 60px 2.5%;
 

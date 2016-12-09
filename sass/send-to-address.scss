@@ -46,6 +46,7 @@ $send-coin-eq-sign-color: #FC6538;
   }
   .dropdown-fee .btn.btn-primary.dropdown-button-style.open:before {
     transform: rotate(0deg);
+    right: 15px;
   }
   .dropdown-fee .btn.btn-primary.dropdown-button-style:focus {
     border: 1px solid $color-medium-gray;
@@ -381,10 +382,10 @@ $send-coin-eq-sign-color: #FC6538;
   }
   .modal-header {
     .bi_interface-cross {
-      margin-top: 4px;
+      margin-top: 6px;
     }
     .title {
-      padding-top: 9px;
+      padding-top: 3px;
     }
   }
 

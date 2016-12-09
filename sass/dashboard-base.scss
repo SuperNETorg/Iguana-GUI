@@ -31,7 +31,7 @@ $dashboard-balance-block-label-color: #95969F;
     background: $dashboard-topbar-bg-color;
     border-radius: 0;
     box-shadow: 0 4px 5px 0 rgba-black(0.2);
-    color: $color-white;
+    color: $color-absolute-white;
     margin-bottom: 0;
     text-align: center;
 
@@ -80,7 +80,7 @@ $dashboard-balance-block-label-color: #95969F;
     }
     .item.active {
       @include bold;
-      color: $color-white;
+      color: $color-absolute-white;
       text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
 
       .border {
@@ -240,7 +240,7 @@ $dashboard-balance-block-label-color: #95969F;
   z-index: 1000;
 
   .navbar-brand {
-    color: $color-white;
+    color: $color-absolute-white;
     font-size: 1.6em;
     @include bold;
   }
