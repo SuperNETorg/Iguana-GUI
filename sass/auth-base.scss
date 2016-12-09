@@ -175,6 +175,7 @@ $login-button-disabled-color: #B2B4B7;
   .passphrase-container {
     @include proxima;
     @include bold;
+    @include cursor-pointer;
     font-size: 1.3em;
     line-height: 1.3em;
     background: $color-white;

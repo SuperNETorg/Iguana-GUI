@@ -23,9 +23,9 @@
                   <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P4' | lang }}</strong>
                 </div>
               </div>
-              <div class="passphrase-container row center">
+              <div class="passphrase-container row center" ng-click="copyPassphraseWord($event)">
                 <!--<div class="title unselectable">{{ 'CREATE_ACCOUNT.COPY_PASSPHRASE' | lang }}: {{ generatedPassphrase }}</div>-->
-                <div class="generated-passhprase cursor-pointer" ng-click="copyPassphraseWord($event)">{{ passphrase }}</div>
+                <div class="generated-passhprase">{{ passphrase }}</div>
               </div>
               <input type="checkbox"
                      id="passphrase-saved-checkbox"
@@ -47,12 +47,12 @@
         <!-- // create account form end -->
         <!-- // verify passphrase form start -->
         <section class="form-container verify-passphrase-form"
-                 ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }" >
+                 ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }">
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
             <div class="title text-shadow unselectable">{{ title }}</div>
           </header>
-          <div class="form-content" ng-click="pastPassphraseWord()">
+          <div class="form-content">
             <div class="form-content-inner">
               <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
               <div class="login-input-directions center offset-bottom-sm unselectable">
@@ -60,11 +60,11 @@
                 {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2' | lang }}
               </div>
               <textarea name="verifyPassphrase" id="passphrase"
-                class="login-passphrase-textarea offset-bottom-sm row center"
-                ng-model="passPhraseText" ng-change="verifyPass()"></textarea>
+                        class="login-passphrase-textarea offset-bottom-sm row center"
+                        ng-model="passPhraseText"></textarea>
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
-              <button ng-disabled="!buttonCreateAccount"
+              <button ng-disabled="!passPhraseText.length"
                       class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="$state.go('signup.step3')">
                 {{ 'CREATE_ACCOUNT.CREATE' | lang }}
               </button>

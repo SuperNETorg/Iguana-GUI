@@ -32,7 +32,6 @@ angular.module('IguanaGUIApp')
     $rootScope.background = false;
 
     $scope.copyPassphraseWord = copyPassphraseWord;
-    $scope.pastPassphraseWord = pastPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.verifyPass = verifyPass;
     $scope.getActiveCoins = getActiveCoins;
@@ -59,11 +58,6 @@ angular.module('IguanaGUIApp')
 
     function copyPassphraseWord($event) {
       util.execCommandCopy(angular.element($event.target), $filter('lang')('LOGIN.PASSPHRASE'));
-    }
-
-    function pastPassphraseWord() {
-      $scope.buttonCreateAccount = true;
-      $scope.passPhraseText = $storage.passphrase;
     }
 
     function addAccount() {
