@@ -17,9 +17,11 @@ angular.module('IguanaGUIApp')
 
           element.on('click', function(event) {
             event.preventDefault();
+            event.stopPropagation();
             angular.element(element[0].querySelector('.dropdown-menu')).toggleClass('block');
-
-
+          });
+          angular.element(document.body).on('click', function () {
+            angular.element(document.querySelector('.dropdown-menu')).removeClass('block');
           });
 
           scope.default = 'Please select item';

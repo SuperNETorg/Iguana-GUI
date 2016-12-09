@@ -38,10 +38,12 @@ angular.module('IguanaGUIApp')
 
     // directive callback function
     $scope.dropDown.callback = function(item) {
+      $scope.sendCoin.fee = $scope.dropDown.item.coin;
+      if( $scope.dropDown.item !== null ) {
+        angular.element(document.querySelectorAll('.dropdown-button-style')).removeClass('validation-field-error');
+      }
       $scope.dropDown.fromCallback = 'callback received ' + angular.toJson(item);
     };
-
-
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
@@ -108,19 +110,27 @@ angular.module('IguanaGUIApp')
         $scope.dropDown.items = [{
           id: 0,
           name: 'Low (Slow confirmation)',
-          text:hourFee.coin+'MZC=$'+hourFee.amount.toFixed(15)
-        },{
+          text: hourFee.coin + $scope.sendCoin.coinId + '=$' + hourFee.amount.toFixed(15),
+          coin: hourFee.coin,
+          amount: hourFee.amount.toFixed(15)
+        }, {
           id: 1,
           name: 'Normal (Average confirmation)',
-          text:halfHourFee.coin+'MZC=$'+halfHourFee.amount.toFixed(15)
-        },{
+          text: halfHourFee.coin + $scope.sendCoin.coinId + '=$' + halfHourFee.amount.toFixed(15),
+          coin: halfHourFee.coin,
+          amount: halfHourFee.amount.toFixed(15)
+        }, {
           id: 2,
           name: 'High (Fast confirmation)',
-          text:fastestFee.coin+'MZC=$'+fastestFee.amount.toFixed(15)
-        },{
+          text: fastestFee.coin + $scope.sendCoin.coinId + '=$' + fastestFee.amount.toFixed(15),
+          coin: fastestFee.coin,
+          amount: fastestFee.amount.toFixed(15)
+        }, {
           id: 3,
           name: 'Custom fee',
-          text:''
+          text: '',
+          coin: '',
+          amount: ''
         }];
       });
 
@@ -201,6 +211,9 @@ angular.module('IguanaGUIApp')
           && (Number($scope.sendCoin.fee) + Number($scope.sendCoin.amount)) < Number($scope.sendCoin.coinValue)) {
         $scope.sendCoin.valid.fee.empty = false;
         $scope.sendCoin.valid.fee.notEnoughMoney = false;
+      }
+      if( $scope.dropDown.item === null ) {
+        angular.element(document.querySelectorAll('.dropdown-button-style')).addClass('validation-field-error');
       }
       // final check
       if ($scope.sendCoin.address.length !== 34 ||

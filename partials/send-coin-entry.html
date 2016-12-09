@@ -45,8 +45,7 @@
             </div>
             <div class="pop-detail crncy">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
-              <dropdown is-button ng-model="dropDown.item" items="dropDown.items" callback="dropDown.callback(item)"></dropdown>
-              <div>{{dropDown.callback(item)}}</div>
+              <dropdown is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="dropDown.callback(item)"></dropdown>
               <div class="custom-fee-inputs" ng-hide="!(dropDown.item.name =='Custom fee')">
                 <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
                 <span class="eq-sign">=</span>

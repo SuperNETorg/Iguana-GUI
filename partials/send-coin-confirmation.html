@@ -56,8 +56,8 @@
               </div>
               <div class="pop-detail pay-dtl">
                 <h4>{{ 'SEND.FEE' | lang }}: </h4>
-                <p>{{ dropDown.item.name }}</p>
-                <p>{{ dropDown.item.name=='Custom fee' ? sendCoin.fee+'MZC=$'+sendCoin.feeCurrency : dropDown.item.text }}</p>
+                <h3>{{ dropDown.item.name=='Custom fee' ? sendCoin.fee : dropDown.item.coin }}{{ sendCoin.coinId }}</h3>
+                <h5>{{ dropDown.item.name=='Custom fee' ? 'or $' + sendCoin.feeCurrency : 'or $' + dropDown.item.amount }}</h5>
               </div>
               <h4>{{ 'SEND.THE_FINAL_AMOUNT' | lang }}.</h4>
               <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</button>

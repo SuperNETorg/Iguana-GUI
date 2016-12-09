@@ -358,22 +358,35 @@ $login-button-disabled-color: #B2B4B7;
   color:#5a606c;
   height: 60px;
 }
-.btn-group .dropdown-button-style:hover {
+.dropdown-fee .btn-group .dropdown-button-style:hover {
   background-color: white;
   color:#5a606c;
 }
-.crncy dropdown {
+.crncy .dropdown-fee {
   padding: 0;
 }
-.crncy dropdown .btn-group {
+.crncy .dropdown-fee .btn-group {
   width: 100%;
 }
-.crncy dropdown .btn-group button:first-child {
-  width: 100%;
+.crncy .dropdown-fee .btn-group button:first-child {
+  width: 92%;
+  max-width: none;
 }
-.crncy dropdown .btn-group ul {
+.crncy .dropdown-fee .btn-group button:nth-child(2) {
+  width: 8%;
+  max-width: none;
+
+}
+.crncy .dropdown-fee .btn-group ul {
   width: 100%;
 }
 .custom-fee-inputs {
   margin-top: 15px;
+}
+.pay-dtl h3 {
+  margin-top: 0;
+  margin-bottom:0;
+}
+.pay-dtl h5 {
+  margin-top: 0;
 }
