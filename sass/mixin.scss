@@ -35,7 +35,7 @@
   background: -ms-linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* IE10+ */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
   //background: linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* W3C */
-  color: #FFF;
+  color: $color-white;
 }
 
 @mixin width-gradient {
@@ -96,6 +96,17 @@
   -webkit-border-radius: 0;
 }
 
+@mixin text-left {
+  @media #{$small-min-Resolution} {
+    text-align: left;
+  }
+
+  /** on mobile resolution required important */
+  @media #{$small-max-Resolution} {
+    text-align: left !important;
+  }
+}
+
 @mixin no-padding-left-right {
   /** on include required important */
   padding-left: 0 !important;
@@ -105,6 +116,12 @@
 @mixin left-right-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+@mixin absolute-horizontal-center {
+  left: 15px;
+  position: absolute;
+  right: 15px;
 }
 
 @mixin disabled {
@@ -124,8 +141,6 @@
 
 @mixin btn-bottom($bottom) {
   bottom: $bottom;
-  left: 15px;
   max-width: 90%;
-  position: absolute;
-  right: 15px;
+  @include absolute-horizontal-center;
 }

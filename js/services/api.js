@@ -133,7 +133,7 @@ angular.module('IguanaGUIApp')
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            $interval.cancel(dashboardUpdateTimer); //ToDo undefined variable
+            // $interval.cancel(dashboardUpdateTimer); //ToDo undefined variable
           }
 
           return 10;
@@ -161,7 +161,9 @@ angular.module('IguanaGUIApp')
 
           return 10;
         } else if (response.data.error === 'null return from iguana_bitcoinRPC') {
-          if (dev.showConsoleMessages && dev.isDev) console.log('iguana crashed? attempts: ' + $storage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('iguana crashed? attempts: ' + $storage['activeCoin'] + ' of ' + settings.iguanaNullReturnCountThreshold + ' max');
+          }
           $storage['activeCoin']++;
 
           if ($storage['activeCoin'] > settings.iguanaNullReturnCountThreshold) {
@@ -169,7 +171,7 @@ angular.module('IguanaGUIApp')
             $timeout(function() {
               util.logout();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            $interval.clear(dashboardUpdateTimer); //ToDo undefined variable
+            // $interval.clear(dashboardUpdateTimer); //ToDo undefined variable
           }
 
           return 10;
@@ -187,9 +189,10 @@ angular.module('IguanaGUIApp')
           var networkCurrentHeight = 0, //apiProto.prototype.getCoinCurrentHeight(index); temp disabled
               syncPercentage = (response.data.result.blocks * 100 / networkCurrentHeight).toFixed(2);
 
-          if (dev.showConsoleMessages && dev.isDev)
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log('Connections: ' + response.data.result.connections);
-          if (dev.showConsoleMessages && dev.isDev)
+          }
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log(
               'Blocks: ' +
               response.data.result.blocks +
@@ -199,6 +202,7 @@ angular.module('IguanaGUIApp')
               (syncPercentage !== 'Infinity' ? syncPercentage : 'N/A ') +
               '% synced)'
             );
+          }
 
           if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
             this.isRT = true;
@@ -369,7 +373,7 @@ angular.module('IguanaGUIApp')
             index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo) {
-          self.coinsInfo = new Array;
+          self.coinsInfo = [];
         }
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = [];
@@ -416,15 +420,17 @@ angular.module('IguanaGUIApp')
             index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo) {
-          self.coinsInfo = new Array;
+          self.coinsInfo = [];
         }
         if (!self.coinsInfo[index]) {
-          self.coinsInfo[index] = new Array;
+          self.coinsInfo[index] = [];
         }
 
         self.errorHandler(response, index);
 
-        if (response.statusText === 'error' && !$storage['isIguana']) $storage['isProxy'] = false;
+        if (response.statusText === 'error' && !$storage['isIguana']) {
+          $storage['isProxy'] = false;
+        }
 
         if (response.data) {
           if (dev.showConsoleMessages && dev.isDev && response.data.error &&

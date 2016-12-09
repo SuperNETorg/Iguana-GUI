@@ -38,7 +38,7 @@ $login-button-disabled-color: #B2B4B7;
     }
     .form-content {
       display: table-cell;
-      margin: 0;
+      margin: 0 auto;
       vertical-align: middle;
 
       .page-form-header {
@@ -97,11 +97,10 @@ $login-button-disabled-color: #B2B4B7;
     max-width:none;
     width: 100%;
   }
-  .txt-massage {
-    color: red;
-    margin-bottom:25px
-  }
   .error-msg {
+    color: red;
+  }
+  .error-field {
     border:1px solid red;
   }
 

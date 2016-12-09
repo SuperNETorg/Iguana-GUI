@@ -90,7 +90,6 @@ angular.module('IguanaGUIApp')
         });
 
         function resultPromise(data) {
-          // $scope.availableCoins = data;
           $scope.receivedObject = util.getCoinKeys(util.reindexAssocArray($scope.getActiveCoins()));
 
           $auth.login(
@@ -163,9 +162,10 @@ angular.module('IguanaGUIApp')
 
       updateDashboardView(settings.ratesUpdateTimeout);
 
-      angular.element($window).on('resize', function() {
-        util.applyDashboardResizeFix($scope.sideBarCoins);
-      });
+      // TODO: to be removed
+      // angular.element($window).on('resize', function() {
+        // util.applyDashboardResizeFix($scope.sideBarCoins);
+      // });
 
       $scope.setActiveCoin = function(item) {
         $storage['iguana-active-coin'] = { id: item.id };
@@ -236,7 +236,8 @@ angular.module('IguanaGUIApp')
             });
           }
 
-          util.applyDashboardResizeFix($scope.sideBarCoins);
+          // TODO: to be removed
+          // util.applyDashboardResizeFix($scope.sideBarCoins);
 
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
               .then(function(response) {
@@ -271,7 +272,8 @@ angular.module('IguanaGUIApp')
         });
         $scope.sideBarCoinsUnsorted = _sideBarCoins;
 
-        util.applyDashboardResizeFix($scope.sideBarCoins);
+        // TODO: to be removed
+        // util.applyDashboardResizeFix($scope.sideBarCoins);
 
         // run balances and tx unit update once left sidebar is updated
         if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
@@ -425,7 +427,8 @@ angular.module('IguanaGUIApp')
           }
         }
 
-        util.applyDashboardResizeFix($scope.sideBarCoins);
+        // TODO: to be removed
+        // util.applyDashboardResizeFix($scope.sideBarCoins);
       }
 
       function updateDashboardView(timeout) {

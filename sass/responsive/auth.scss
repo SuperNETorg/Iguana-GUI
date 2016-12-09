@@ -4,15 +4,9 @@
  */
 @import '../dev.scss';
 
-$screenWidth: 768px;
-
-$widthResolution: "screen and (min-width: " $screenWidth ")";
-$mobileResolution: "screen and (max-width: " $screenWidth ")";
-
 body {
-
   /* for width resolution */
-  @media #{$widthResolution} {
+  @media #{$small-min-Resolution} {
     .mobile-hidden {
       display: inherit;
     }
@@ -91,7 +85,7 @@ body {
     }
   }
   /* for mobile resolution */
-  @media #{$mobileResolution} {
+  @media #{$small-max-Resolution} {
     .mobile-hidden {
       display: none;
     }
@@ -109,6 +103,19 @@ body {
       .form-container.login-form {
         .form-content {
           vertical-align: top;
+          display: block;
+        }
+      }
+      .form-container.terms-conditionals-form {
+        .form-content{
+          .form-content-inner {
+            .login-input-directions {
+              @include text-left;
+              @include bold;
+              font-size: 1.2em;
+              line-height: 1.25em;
+            }
+          }
         }
       }
       .form-container.terms-conditionals-form,
@@ -131,9 +138,11 @@ body {
           .form-content-inner {
             .form-title {
               color: $color-dark-gray;
-              font-size: 1.1em;
-            }
-            .generated-passhprase {
+              font-size: 1.15em;
+              line-height: 1.1em;
+              max-width: 14em;
+              top: 5.4em;
+              @include absolute-horizontal-center;
             }
             .login-input-directions{
               @include center;

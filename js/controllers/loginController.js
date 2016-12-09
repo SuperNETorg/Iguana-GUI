@@ -7,7 +7,6 @@ angular.module('IguanaGUIApp')
   '$state',
   'util',
   '$auth',
-  '$log',
   '$uibModal',
   '$api',
   '$storage',
@@ -16,31 +15,31 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
-  function($scope, $http, $state, util, $auth, $log, $uibModal, $api, $storage,
+  function($scope, $http, $state, util, $auth, $uibModal, $api, $storage,
            $timeout, $rootScope, $filter, $message, vars) {
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
+    $scope.isChanged = false;
     $scope.$auth = $auth;
     $scope.$state = $state;
     $scope.isIguana = $storage['isIguana'];
-    $scope.$log = $log;
     $scope.passphraseModel = '';
     $scope.addedCoinsOutput = '';
     $scope.failedCoinsOutput = '';
-    $scope.dev = dev;
     $scope.$modalInstance = {};
     $scope.coinResponses = [];
     $scope.coins = [];
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $storage['iguana-active-coin'] = {};
-    $scope.errPassphrase = '';
+    $scope.messages = '';
     $scope.loginActiveCoin = '';
-    $scope.title = setTitle;
     $rootScope.background = true;
-    $scope.clearMessage = clearMessage;
+    $scope.title = setTitle;
+    $scope.setIsChanged = isChanged;
+
     $scope.$on("$stateChangeStart", stateChangeStart);
 
     if (!$scope.coinsInfo) {
@@ -74,7 +73,6 @@ angular.module('IguanaGUIApp')
 
         function resultPromise(data) {
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
-
           $scope.coins = data;
           $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
         }
@@ -104,14 +102,7 @@ angular.module('IguanaGUIApp')
         $auth.login(
           $scope.getActiveCoins(),
           $scope.passphraseModel
-        ).then(function(resolve) {
-          // do nothing
-        }, function(reject) {
-          if (reject[2] == 'MESSAGE.INCORRECT_INPUT_P3') {
-            $scope.errPassphrase = reject[2];
-            document.getElementById('passphrase').value = '';
-          }
-        });
+        );
       };
 
       $scope.getActiveCoins = function() {
@@ -131,7 +122,6 @@ angular.module('IguanaGUIApp')
         if ($state.current.name === 'login') {
           $rootScope.background = false;
         } else if ($state.current.name === 'login.step2') {
-          $scope.errPassphrase = '';
           $rootScope.background = true;
         }
       }
@@ -150,8 +140,10 @@ angular.module('IguanaGUIApp')
       return pageTitle;
     }
 
-    function clearMessage() {
-      $scope.errPassphrase = '';
+    function isChanged() {
+      $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT')
+        .replace('{{ count }}', $scope.isIguana ? '24' : '12');
+      $scope.isChanged = true;
     }
   }
 ]);
