@@ -206,6 +206,7 @@ angular.module('IguanaGUIApp')
       if ($scope.sendCoin.address.length !== 34 ||
           Number($scope.sendCoin.amount) === 0 ||
           !$scope.sendCoin.amount.length ||
+          (Number($scope.sendCoin.fee) < Number($scope.sendCoin.minFee)) ||
           Number($scope.sendCoin.amount) > Number($scope.sendCoin.coinValue) ||
           (Number($scope.sendCoin.fee) + Number($scope.sendCoin.amount)) > Number($scope.sendCoin.coinValue)) {
         $scope.sendCoin.entryFormIsValid = false;
