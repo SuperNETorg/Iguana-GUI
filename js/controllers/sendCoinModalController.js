@@ -25,11 +25,12 @@ angular.module('IguanaGUIApp')
     $scope.dropDown = {};
 
     function checkFeeCount(fee) {
-      var coin = fee*1024/100000000;
-      var amount = $scope.sendCoin.currencyRate * coin;
+      var coin = fee * 1024 / 100000000, // TODO: explain the math
+          amount = $scope.sendCoin.currencyRate * coin;
+
       return {
-        'coin':coin,
-        'amount':amount
+        'coin': coin,
+        'amount': amount
       };
     }
 
@@ -39,9 +40,11 @@ angular.module('IguanaGUIApp')
     // directive callback function
     $scope.dropDown.callback = function(item) {
       $scope.sendCoin.fee = $scope.dropDown.item.coin;
-      if( $scope.dropDown.item !== null ) {
+
+      if ( $scope.dropDown.item !== null ) { // TODO: use ng-class
         angular.element(document.querySelectorAll('.dropdown-button-style')).removeClass('validation-field-error');
       }
+
       $scope.dropDown.fromCallback = 'callback received ' + angular.toJson(item);
     };
 
@@ -103,31 +106,31 @@ angular.module('IguanaGUIApp')
       initSendCoinModal(response[0], response[1]);
 
       $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended').then(function(response) {
-        var fastestFee = checkFeeCount(response.data.fastestFee);
-        var halfHourFee = checkFeeCount(response.data.halfHourFee);
-        var hourFee = checkFeeCount(response.data.hourFee);
+        var fastestFee = checkFeeCount(response.data.fastestFee),
+            halfHourFee = checkFeeCount(response.data.halfHourFee),
+            hourFee = checkFeeCount(response.data.hourFee);
 
         $scope.dropDown.items = [{
           id: 0,
-          name: 'Low (Slow confirmation)',
-          text: hourFee.coin + $scope.sendCoin.coinId + '=$' + hourFee.amount.toFixed(15),
+          name: 'Low (Slow confirmation)', // TODO: move to lang.js
+          text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
           coin: hourFee.coin,
           amount: hourFee.amount.toFixed(15)
         }, {
           id: 1,
-          name: 'Normal (Average confirmation)',
-          text: halfHourFee.coin + $scope.sendCoin.coinId + '=$' + halfHourFee.amount.toFixed(15),
+          name: 'Normal (Average confirmation)', // TODO
+          text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
           coin: halfHourFee.coin,
           amount: halfHourFee.amount.toFixed(15)
         }, {
           id: 2,
-          name: 'High (Fast confirmation)',
-          text: fastestFee.coin + $scope.sendCoin.coinId + '=$' + fastestFee.amount.toFixed(15),
+          name: 'High (Fast confirmation)', // TODO
+          text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
           coin: fastestFee.coin,
           amount: fastestFee.amount.toFixed(15)
         }, {
           id: 3,
-          name: 'Custom fee',
+          name: 'Custom fee', // TODO
           text: '',
           coin: '',
           amount: ''
@@ -153,8 +156,6 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.fee = 0.00001;
         $scope.sendCoin.note = sendDataTest[coin].note;
       }
-
-      console.log($scope.sendCoin);
     }
 
     $scope.toggleSendCoinModal = function() {
@@ -212,7 +213,7 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.valid.fee.empty = false;
         $scope.sendCoin.valid.fee.notEnoughMoney = false;
       }
-      if( $scope.dropDown.item === null ) {
+      if ( $scope.dropDown.item === null ) { // TODO: ng-class
         angular.element(document.querySelectorAll('.dropdown-button-style')).addClass('validation-field-error');
       }
       // final check

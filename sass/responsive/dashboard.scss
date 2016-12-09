@@ -167,6 +167,12 @@ body {
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .dashboard .top {
+      border-top: 2px solid #1E2136;
+    }
+    .dashboard .top-menu .item .text {
+      margin-top: -3px;
+    }
     .account-coins-repeater .item .icon .name:before {
       display: none;
     }

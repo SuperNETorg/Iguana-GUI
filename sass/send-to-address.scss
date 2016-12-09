@@ -16,6 +16,70 @@ $send-coin-small-title-color: #A2A3AC;
 $send-coin-eq-sign-color: #FC6538;
 
 .send-modal {
+  .dropdown-fee .btn.btn-primary.dropdown-button-style {
+    border: 1px solid $color-medium-gray;
+    font-size: 1.1em;
+    color: #74767D;
+    font-weight: 500;
+    padding: 5px 20px;
+    margin-top: 5px;
+    text-align: left;
+    border-radius: 4px;
+    width: 100%;
+    outline: none;
+    box-shadow: none;
+
+    strong {
+      color: #000;
+      font-size: 1.05em;
+      font-weight: 500;
+    }
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style:before {
+    @include budicon;
+    transform: rotate(180deg);
+    display: inline-block;
+    content: '\eb24';
+    position: absolute;
+    right: 17px;
+    top: 19px;
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style.open:before {
+    transform: rotate(0deg);
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style:focus {
+    border: 1px solid $color-medium-gray;
+    box-shadow: none;
+    outline: none;
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style.open {
+    border: solid 1px $color-orange;
+    box-shadow: 0 0 2px 3px rgba(254, 69, 13, 0.25);
+    outline: none;
+  }
+  .dropdown-fee {
+    text-align: left;
+
+    .dropdown-menu {
+      padding: 0;
+    }
+    .dropdown-menu a {
+      @include cursor-pointer;
+      font-size: 1.1em;
+      color: #74767D;
+      font-weight: 500;
+      padding: 10px 20px;
+
+      strong {
+        color: #000;
+        font-size: 1.05em;
+        font-weight: 500;
+      }
+    }
+    .dropdown-menu a:hover {
+      @include cursor-pointer;
+    }
+  }
   .headd {
     border-radius: $border-radius-smaller;
     box-shadow: 0 0 7px 4px $send-coin-head-color;
@@ -59,6 +123,7 @@ $send-coin-eq-sign-color: #FC6538;
     @include bold;
     display: block;
     font-size: 18px;
+    white-space: nowrap;
   }
   .pop-form {
     margin-top: 40px;
@@ -299,6 +364,9 @@ $send-coin-eq-sign-color: #FC6538;
       text-shadow: 0 1px 3px rgba-black(0.25);
       top: -15px;
     }
+  }
+  .col-sm-6.hd-right.col-xs-6.balance {
+    padding-right: 11px;
   }
   .balance {
     text-shadow: 0 1px 3px rgba-black(0.25);
