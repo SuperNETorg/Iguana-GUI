@@ -25,7 +25,7 @@ angular.module('IguanaGUIApp')
           angular.element(document.querySelector('.dropdown-menu')).removeClass('block');
         });
 
-        scope.default = 'Please select item'; // TODO: move to lang.js
+        scope.default = $filter('lang')('SEND.PLEASE_SELECT_ITEM');
         scope.isButton = 'isButton' in attrs;
 
         // selection changed handler

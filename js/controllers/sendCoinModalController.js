@@ -25,7 +25,7 @@ angular.module('IguanaGUIApp')
     $scope.dropDown = {};
 
     function checkFeeCount(fee) {
-      var coin = fee * 1024 / 100000000, // TODO: explain the math
+      var coin = fee * 1024 / 100000000, // satoshi per kb
           amount = $scope.sendCoin.currencyRate * coin;
 
       return {
@@ -41,7 +41,7 @@ angular.module('IguanaGUIApp')
     $scope.dropDown.callback = function(item) {
       $scope.sendCoin.fee = $scope.dropDown.item.coin;
 
-      if ( $scope.dropDown.item !== null ) { // TODO: use ng-class
+      if ($scope.dropDown.item !== null) { // TODO: use ng-class
         angular.element(document.querySelectorAll('.dropdown-button-style')).removeClass('validation-field-error');
       }
 
@@ -101,8 +101,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    $api.getBalance(defaultAccount, $scope.activeCoin)
-    .then(function(response) {
+    $api.getBalance(defaultAccount, $scope.activeCoin).then(function(response) {
       initSendCoinModal(response[0], response[1]);
 
       $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended').then(function(response) {
@@ -112,29 +111,31 @@ angular.module('IguanaGUIApp')
 
         $scope.dropDown.items = [{
           id: 0,
-          name: 'Low (Slow confirmation)', // TODO: move to lang.js
+          name: $filter('lang')('SEND.FEE_LOW'),
           text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
           coin: hourFee.coin,
           amount: hourFee.amount.toFixed(15)
         }, {
           id: 1,
-          name: 'Normal (Average confirmation)', // TODO
+          name: $filter('lang')('SEND.FEE_NORMAL'),
           text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
           coin: halfHourFee.coin,
           amount: halfHourFee.amount.toFixed(15)
         }, {
           id: 2,
-          name: 'High (Fast confirmation)', // TODO
+          name: $filter('lang')('SEND.FEE_HIGH'),
           text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
           coin: fastestFee.coin,
           amount: fastestFee.amount.toFixed(15)
         }, {
           id: 3,
-          name: 'Custom fee', // TODO
+          name: $filter('lang')('SEND.FEE_CUSTOM'),
           text: '',
           coin: '',
           amount: ''
         }];
+
+        if ($scope.activeCoin !== 'btc') $scope.dropDown.item = $scope.dropDown.items[3];
       });
 
     }, function(reason) {
