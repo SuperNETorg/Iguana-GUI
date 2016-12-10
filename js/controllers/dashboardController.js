@@ -162,12 +162,7 @@ angular.module('IguanaGUIApp')
       });
     };
 
-    updateDashboardView(settings.ratesUpdateTimeout);
-
-    // TODO: to be removed
-    // angular.element($window).on('resize', function() {
-      // util.applyDashboardResizeFix($scope.sideBarCoins);
-    // });
+    updateDashboardView(settings.dashboardUpdateTimout);
 
     $scope.setActiveCoin = function(item) {
       $storage['iguana-active-coin'] = { id: item.id };
@@ -238,8 +233,6 @@ angular.module('IguanaGUIApp')
           });
         }
 
-        // TODO: to be removed
-        // util.applyDashboardResizeFix($scope.sideBarCoins);
         if (!renderNow) {
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
               .then(function(response) {
@@ -274,9 +267,6 @@ angular.module('IguanaGUIApp')
         return _sideBarCoins[key];
       });
       $scope.sideBarCoinsUnsorted = _sideBarCoins;
-
-      // TODO: to be removed
-      // util.applyDashboardResizeFix($scope.sideBarCoins);
 
       // run balances and tx unit update once left sidebar is updated
       if (Object.keys(coinsSelectedByUser).length === Object.keys(coinBalances).length) {
@@ -360,6 +350,7 @@ angular.module('IguanaGUIApp')
                 iconSentClass = 'bi_interface-minus',
                 iconReceivedClass = 'bi_interface-plus';
 
+                console.log(transactionDetails);
             if (transactionDetails) {
               if (transactionDetails.details) {
                 txAddress = transactionDetails.details[0].address;
@@ -429,14 +420,11 @@ angular.module('IguanaGUIApp')
           }
         }
       }
-
-      // TODO: to be removed
-      // util.applyDashboardResizeFix($scope.sideBarCoins);
     }
 
     function updateDashboardView(timeout) {
       vars['dashboardUpdateRef'] = $interval(function() {
-        //console.clear();
+        // console.clear();
         $auth.checkSession();
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();

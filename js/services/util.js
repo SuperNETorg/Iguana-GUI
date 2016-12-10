@@ -107,7 +107,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.isMobile = function() {
-      return $window.innerWidth < 768
+      return $window.innerWidth < 1100;
     };
 
     // native javascript
@@ -119,50 +119,6 @@ angular.module('IguanaGUIApp')
         top: boundClientRect.top + window.pageYOffset - docEl.clientTop,
         left: boundClientRect.left + window.pageXOffset - docEl.clientLeft
       };
-    };
-
-    // not the best solution but it works
-    this.applyDashboardResizeFix = function(coins) {
-      var mainContent = document.querySelectorAll('.main-content')[0],
-          txUnit = document.querySelectorAll('.transactions-unit')[0],
-          coin = document.querySelectorAll('.coins')[0],
-          width,
-          padding;
-
-      if (mainContent && txUnit) {
-        // tx unit resize
-        if (!self.isMobile()) {
-          width = Math.floor(mainContent.offsetWidth - coin.offsetWidth - 80);
-          padding = '0 30px';
-        } else {
-          width = '';
-          padding = '';
-        }
-
-        txUnit.style.maxWidth = width;
-        txUnit.style.width = width;
-        mainContent.style.padding = padding;
-      }
-
-      // coin tiles on the left
-      if (coins.length) {
-        var accountCoinsRepeaterItem = '.account-coins-repeater .item',
-            coin,
-            coinEl;
-
-        for (var i=0; i < coins.length; i++) {
-          coin = coins[i].id;
-          coinEl = document.querySelector(accountCoinsRepeaterItem + '.' + coin + ' .coin .name');
-
-          if (coinEl) {
-            coinEl.style.width = Math.floor(
-              document.querySelector(accountCoinsRepeaterItem + '.' + coin).offsetWidth -
-              document.querySelector(accountCoinsRepeaterItem + '.' + coin + ' .coin .icon') -
-              document.querySelector(accountCoinsRepeaterItem + '.' + coin + ' .balance') - 50
-            );
-          }
-        }
-      }
     };
   }
 ]);
