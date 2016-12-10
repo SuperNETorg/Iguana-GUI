@@ -64,6 +64,9 @@ angular.module('IguanaGUIApp')
 
             displayText = days + ' ' + $filter('lang')(days > 1 ? 'TIME_AGO.DAYS' : 'TIME_AGO.DAY');
           }
+
+          if (displayText.length) $('body').find('.time-ago').removeClass('two-lines');
+          else $('body').find('.time-ago').addClass('two-lines');
           timeAgo.text(displayText);
         }
       }.bind(this), 100)

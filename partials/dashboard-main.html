@@ -59,18 +59,18 @@
             <spinner visibility="txUnit.loading"></spinner>
             <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}</div>
             <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
-              <div class="status unselectable pull-left">{{ item.status }}</div>
+              <div class="status unselectable">{{ item.status }}</div>
               <div class="amount unselectable" ng-class="{ 'smaller': item.switchStyle }">
-                <span class="in-out pull-left {{ item.inOut }}"></span>
-                <span class="value pull-left">{{ item.amount }}</span>
-                <span class="coin-name pull-left">{{ item.coin }}</span>
+                <span class="in-out {{ item.inOut }}"></span>
+                <span class="value">{{ item.amount }}</span>
+                <span class="coin-name">{{ item.coin }}</span>
               </div>
-              <div class="progress-status pull-left unselectable">
+              <div class="progress-status unselectable">
                 <i class="icon"></i>
               </div>
               <div class="hash">{{ item.hash }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-              <div class="timestamp two-lines unselectable time-ago"
+              <div class="timestamp unselectable time-ago two-lines"
                 ng-init="item.txId ? timeAgo('.' + item.txId + ' .time-ago') : null">
                 <div class="timestamp-date time-ago-date">{{ item.timestampDate }}</div>
                 <div class="timestamp-time time-ago-time">{{ item.timestampTime }}</div>
