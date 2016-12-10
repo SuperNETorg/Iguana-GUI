@@ -413,7 +413,7 @@ angular.module('IguanaGUIApp')
 
               if (txAmount) {
                 // mobile only
-                $scope.txUnit.transactions[i].switchStyle = (txAmount.toString().length > 8 ? true : false);
+                $scope.txUnit.transactions[i].switchStyle = txAmount.toString().length > 8 ? true : false;
               }
 
               $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||

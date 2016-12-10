@@ -118,6 +118,7 @@ var lang = {
       'PLEASE_ENTER_AN_AMOUNT': 'Please enter an amount.',
       'NOT_ENOUGH_MONEY': 'Not enough money. Max.',
       'FEE_CANNOT_EXCEED': 'Fee cannot exceed',
+      'FEE_MIN': 'Minimum (Very slow confirmation)',
       'PLEASE_SELECT_ITEM': 'Please select item',
       'FEE_LOW': 'Low (Slow confirmation)',
       'FEE_NORMAL': 'Normal (Average confirmation)',

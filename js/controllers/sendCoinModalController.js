@@ -34,14 +34,10 @@ angular.module('IguanaGUIApp')
       };
     }
 
-    // current item
-    $scope.dropDown.item = null; // dropDown.items[1];
-
     // directive callback function
     $scope.dropDown.callback = function(item) {
-      $scope.sendCoin.fee = $scope.dropDown.item.coin;
-
-      if ($scope.dropDown.item !== null) { // TODO: use ng-class
+      if ($scope.dropDown.item) { // TODO: use ng-class
+        $scope.sendCoin.fee = $scope.dropDown.item.coin;
         angular.element(document.querySelectorAll('.dropdown-button-style')).removeClass('validation-field-error');
       }
 
@@ -104,38 +100,63 @@ angular.module('IguanaGUIApp')
     $api.getBalance(defaultAccount, $scope.activeCoin).then(function(response) {
       initSendCoinModal(response[0], response[1]);
 
+      // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
       $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended').then(function(response) {
         var fastestFee = checkFeeCount(response.data.fastestFee),
             halfHourFee = checkFeeCount(response.data.halfHourFee),
             hourFee = checkFeeCount(response.data.hourFee);
 
-        $scope.dropDown.items = [{
-          id: 0,
-          name: $filter('lang')('SEND.FEE_LOW'),
-          text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
-          coin: hourFee.coin,
-          amount: hourFee.amount.toFixed(15)
-        }, {
-          id: 1,
-          name: $filter('lang')('SEND.FEE_NORMAL'),
-          text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
-          coin: halfHourFee.coin,
-          amount: halfHourFee.amount.toFixed(15)
-        }, {
-          id: 2,
-          name: $filter('lang')('SEND.FEE_HIGH'),
-          text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
-          coin: fastestFee.coin,
-          amount: fastestFee.amount.toFixed(15)
-        }, {
-          id: 3,
-          name: $filter('lang')('SEND.FEE_CUSTOM'),
-          text: '',
-          coin: '',
-          amount: ''
-        }];
+        if ($scope.activeCoin === 'btc') {
+          $scope.dropDown.items = [{
+            id: 0,
+            name: $filter('lang')('SEND.FEE_LOW'),
+            text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
+            coin: hourFee.coin,
+            amount: hourFee.amount.toFixed(15)
+          }, {
+            id: 1,
+            name: $filter('lang')('SEND.FEE_NORMAL'),
+            text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
+            coin: halfHourFee.coin,
+            amount: halfHourFee.amount.toFixed(15)
+          }, {
+            id: 2,
+            name: $filter('lang')('SEND.FEE_HIGH'),
+            text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
+            coin: fastestFee.coin,
+            amount: fastestFee.amount.toFixed(15)
+          }, {
+            id: 3,
+            name: $filter('lang')('SEND.FEE_MIN'),
+            text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
+            coin: $scope.sendCoin.minFee,
+            amount: $scope.sendCoin.minFee
+          }, {
+            id: 4,
+            name: $filter('lang')('SEND.FEE_CUSTOM'),
+            text: '',
+            coin: '',
+            amount: ''
+          }];
 
-        if ($scope.activeCoin !== 'btc') $scope.dropDown.item = $scope.dropDown.items[3];
+          $scope.dropDown.item = $scope.dropDown.items[0];
+        } else {
+          $scope.dropDown.items = [{
+            id: 0,
+            name: $filter('lang')('SEND.FEE_MIN'),
+            text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
+            coin: $scope.sendCoin.minFee,
+            amount: $scope.sendCoin.minFee
+          }, {
+            id: 1,
+            name: $filter('lang')('SEND.FEE_CUSTOM'),
+            text: '',
+            coin: '',
+            amount: ''
+          }];
+
+          $scope.dropDown.item = $scope.dropDown.items[0];
+        }
       });
 
     }, function(reason) {
