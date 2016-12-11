@@ -7,7 +7,7 @@
       </div>
       <div class="top" id="top-menu">
         <ul class="nav navbar-nav top-menu" ng-style="getNavbarStyle()">
-          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' }">
+          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.mobileCoins' || $state.current.name === 'dashboard.mobileTransactions' }">
             <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
             <div class="border"></div>
           </li>

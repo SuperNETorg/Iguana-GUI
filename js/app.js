@@ -94,6 +94,38 @@ angular.module('IguanaGUIApp', [
         }
       }
     })
+    .state('dashboard.mobileCoins', {
+      url: '/dashboard-coins',
+      data: {
+        pageTitle: 'PAGE.DASHBOARD'
+      },
+      views: {
+        'top@dashboard': {
+          templateUrl: 'partials/dashboard-top-menu.html',
+          controller: 'topMenuController'
+        },
+        'content@dashboard': {
+          templateUrl: 'partials/dashboard-main.html',
+          controller: 'dashboardController'
+        }
+      }
+    })
+    .state('dashboard.mobileTransactions', {
+      url: '/dashboard-transactions',
+      data: {
+        pageTitle: 'PAGE.DASHBOARD'
+      },
+      views: {
+        'top@dashboard': {
+          templateUrl: 'partials/dashboard-top-menu.html',
+          controller: 'topMenuController'
+        },
+        'content@dashboard': {
+          templateUrl: 'partials/dashboard-main.html',
+          controller: 'dashboardController'
+        }
+      }
+    })
     .state('dashboard.settings', {
       url: '/settings',
       data: {

@@ -370,18 +370,33 @@ body {
   }
 
   @media only screen and (max-width: 440px) {
+    .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
+      padding-top: 10px;
+    }
     .app-container {
       .app-container-inner {
         .dashboard-main {
           .dashboard {
             .main-content {
-              .transactions-unit {
+              .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
                 padding: 0;
+                padding-top: 82px;
+                border-radius: 0;
 
+                .top-bar {
+                  border-radius: 0;
+                }
+                .info {
+                  top: 114px;
+                }
                 .transactions-list {
                   .transactions-list-repeater {
                     .item {
                       .timestamp {
+                        right: 6px;
+                        margin-top: -46px;
+                      }
+                      .timestamp.two-lines {
                         right: 6px;
                         margin-top: -74px;
                       }

@@ -2,7 +2,7 @@
   <div class="main-content container-fluid" ng-hide="!enabled">
     <!-- temp out of sync notice -->
     <div id="temp-out-of-sync" class="hidden" style="color:red;text-aling:center;font-weight:bold;font-size:1.2em"></div>
-    <div class="balance-block unselectable">
+    <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
         <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat:'currency') : 0 }}</span>
@@ -10,13 +10,13 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12">
+    <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="row">
         <div class="account-coins-repeater">
-          <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': activeCoin === item.id || activeCoin === $index }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
+          <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': (activeCoin === item.id || activeCoin === $index) && !util.isMobile() }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
-            <div class="clickable-area" ng-click="activeCoin !== item.id ? setActiveCoin(item) : null">
+            <div class="clickable-area" ng-click="util.isMobile() ? setActiveCoin(item) : (activeCoin !== item.id ? setActiveCoin(item) : null)">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt"></i>
                 <div class="name">{{ item.name }}</div>
@@ -31,7 +31,7 @@
         <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
       </div>
     </aside>
-    <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right">
+    <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right" ng-hide="$state.current.name === 'dashboard.mobileCoins'">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>

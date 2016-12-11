@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="partials/dashboard.html">
-  <div class="container-fluid dashboard-main" ng-class="{ 'dashboard-main': $state.current.name === 'dashboard.main', 'reference-currency-main': $state.current.name === 'dashboard.settings' }">
+  <div class="container-fluid dashboard-main" ng-class="{ 'dashboard-main': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.mobileCoins' || $state.current.name === 'dashboard.mobileTransactions', 'reference-currency-main': $state.current.name === 'dashboard.settings' }">
     <div class="row">
       <section class="dashboard main">
         <div ui-view="top" class="unselectable"></div>

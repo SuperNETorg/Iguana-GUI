@@ -22,6 +22,13 @@ angular.module('IguanaGUIApp')
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
 
+    if (util.isMobile() && $state.current.name === 'dashboard.main') {
+      $state.go('dashboard.mobileCoins');
+    }
+    if (!util.isMobile() && !$state.current.name === 'dashboard.main') {
+      $state.go('dashboard.main');
+    }
+
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
@@ -169,6 +176,10 @@ angular.module('IguanaGUIApp')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
+
+      if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
+        $state.go('dashboard.mobileTransactions');
+      }
     };
 
     $scope.setTxUnitBalance = function(item) {
