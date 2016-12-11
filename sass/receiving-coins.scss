@@ -29,20 +29,20 @@ $receive-coin-eq-sign-color: #FE5C0D;
       color: $color-white;
       font-size: 20px;
       left: 10px;
-      position: relative;
+      position: absolute;
       text-shadow: 1px 1px 3px rgba-black(0.3);
-      top: 6px;
+      top: 19px;
       z-index: 20;
     }
     .title {
       @include proxima;
       @include bold;
       color: $color-white;
-      font-size: 1.15em;
+      font-size: 1.25em;
       position: relative;
       text-align: center;
       text-shadow: 0 1px 3px rgba-black(0.25);
-      top: 10px;
+      top: 5px;
       z-index: 10;
     }
   }
@@ -211,7 +211,7 @@ $receive-coin-eq-sign-color: #FE5C0D;
     right: 2px;
     top: 0;
   }
-  input[type="text"] {
+  input[type='text'] {
     color: $receive-coin-input-color;
     font-size: 1.065em;
     padding: 6px;
@@ -229,16 +229,16 @@ $receive-coin-eq-sign-color: #FE5C0D;
   top: 0;
   width: 47px;
 }
-.currency-input input[type="text"]::-webkit-input-placeholder {
+.currency-input input[type='text']::-webkit-input-placeholder {
   color: $receive-coin-input-color;
 }
-.currency-input input[type="text"]:-moz-placeholder { /* Firefox 18- */
+.currency-input input[type='text']:-moz-placeholder { /* Firefox 18- */
   color: $receive-coin-input-color;
 }
-.currency-input input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
+.currency-input input[type='text']::-moz-placeholder {  /* Firefox 19+ */
   color: $receive-coin-input-color;
 }
-.currency-input input[type="text"]:-ms-input-placeholder {
+.currency-input input[type='text']:-ms-input-placeholder {
   color: $receive-coin-input-color;
 }
 .modal-dialog.modal-popup,

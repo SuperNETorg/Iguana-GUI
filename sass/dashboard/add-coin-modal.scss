@@ -6,6 +6,8 @@
 @import '../dev.scss';
 
 $coin-repeater-coin-name-color: #2C2D2F;
+$add-coin-modal-active-tile-color: #FF6D36;
+$add-coin-modal-help-block-color: #92939C;
 
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
@@ -164,7 +166,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
           line-height: 1.1;
         }
         .help-block:last-child {
-          color: #92939C;
+          color: $add-coin-modal-help-block-color;
           font-size: 13px;
           font-weight: 400;
         }
@@ -175,10 +177,11 @@ body .add-coin-login-form .modal-add-coin-login-form,
       transition: opacity $transition-length;
     }
     .coin.active {
-      border: 2px solid #FF6D36;
+      border: 2px solid $add-coin-modal-active-tile-color;
+
       .name {
         .help-block {
-          color: #FF6D36;
+          color: $add-coin-modal-active-tile-color;
           font-weight: 700;
         }
       }

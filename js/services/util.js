@@ -107,7 +107,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.isMobile = function() {
-      return $window.innerWidth < 1100;
+      return $window.innerWidth < 768;
     };
 
     // native javascript

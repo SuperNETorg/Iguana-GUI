@@ -9,6 +9,11 @@ $login-header-color-bg: #FE700D;
 $login-content-color-bg: #363639;
 $login-coin-selection-color: #FF4912;
 $login-button-disabled-color: #B2B4B7;
+$login-boxshadow-color: #F9602F;
+$login-delim-color: #FEFBF9;
+$login-button-hover-color: #FE743D;
+$login-advanced-benefits: #FEFBF9;
+$dropdown-button-style-color: #5A606C;
 
 .body-wrapper.auth-main {
   display: table;
@@ -89,12 +94,12 @@ $login-button-disabled-color: #B2B4B7;
     margin-left: auto;
     margin-right: auto;
     padding: 15px 50px;
-    resize:none;
+    resize: none;
     width: 100%;
   }
   .btn-signin-account {
     margin-top: 50px;
-    max-width:none;
+    max-width: none;
     width: 100%;
   }
   .error-msg {
@@ -103,7 +108,6 @@ $login-button-disabled-color: #B2B4B7;
   .error-field {
     border: 1px solid red;
   }
-
   .login-input-directions-msg {
     margin: 0 auto;
     text-align: center !important;
@@ -113,8 +117,8 @@ $login-button-disabled-color: #B2B4B7;
     font-weight: bold;
   }
   .navbar {
-    .navbar-header{
-      .navbar-brand{
+    .navbar-header {
+      .navbar-brand {
         font-size: 22px;
         @include bold;
       }
@@ -144,13 +148,13 @@ $login-button-disabled-color: #B2B4B7;
     vertical-align: middle;
   }
   .box-shadow-all {
-    box-shadow: 0 1px 5px 1px #f9602f;
+    box-shadow: 0 1px 5px 1px $login-boxshadow-color;
   }
   .box-shadow-bottom {
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
   .login-or-delim {
-    color: #FEFBF9;
+    color: $login-delim-color;
     font-family: sans-serif;
     letter-spacing: 1px;
     padding: 20px 0;
@@ -228,7 +232,7 @@ $login-button-disabled-color: #B2B4B7;
     margin-bottom: 45px;
   }
   .advanced-benefits {
-    color:#FEFBF9;
+    color: $login-advanced-benefits;
   }
   .create-account-form,
   .login-account-form,
@@ -242,7 +246,7 @@ $login-button-disabled-color: #B2B4B7;
   }
   .header {
     background-color: $login-header-color-bg;
-    color: white;
+    color: $color-absolute-white;
     padding: 15px 10px;
     text-align: center;
   }
@@ -273,9 +277,8 @@ $login-button-disabled-color: #B2B4B7;
   }
   .btn.btn-hover-orange:not([disabled]):hover,
   .btn.btn-hover-orange:not([disabled]):focus {
-    background: #FE743D;
+    background: $login-button-hover-color;
   }
-
   .btn.row {
     font-size: 1.02em;
     height: 34px;
@@ -285,8 +288,7 @@ $login-button-disabled-color: #B2B4B7;
     display: inline-block;
   }
   .label-text {
-    cursor: hand;
-    cursor: pointer;
+    @include cursor-pointer;
     font-size: 1.09em;
   }
   input[type='checkbox'] {
@@ -354,38 +356,41 @@ $login-button-disabled-color: #B2B4B7;
   text-shadow: none;
 }
 .btn-group .dropdown-button-style {
-  background-color: white;
-  color:#5a606c;
+  background-color: $color-absolute-white;
+  color: $dropdown-button-style-color;
   height: 60px;
 }
 .dropdown-fee .btn-group .dropdown-button-style:hover {
-  background-color: white;
-  color:#5a606c;
+  background-color: $color-absolute-white;
+  color: $dropdown-button-style-color;
 }
-.crncy .dropdown-fee {
-  padding: 0;
-}
-.crncy .dropdown-fee .btn-group {
-  width: 100%;
-}
-.crncy .dropdown-fee .btn-group button:first-child {
-  width: 92%;
-  max-width: none;
-}
-.crncy .dropdown-fee .btn-group button:nth-child(2) {
-  width: 8%;
-  max-width: none;
+.crncy {
+  .dropdown-fee {
+    padding: 0;
 
-}
-.crncy .dropdown-fee .btn-group ul {
-  width: 100%;
+    .btn-group {
+      width: 100%;
+
+      button:first-child {
+        width: 92%;
+        max-width: none;
+      }
+      button:nth-child(2) {
+        width: 8%;
+        max-width: none;
+      }
+      ul {
+        width: 100%;
+      }
+    }
+  }
 }
 .custom-fee-inputs {
   margin-top: 15px;
 }
 .pay-dtl h3 {
   margin-top: 0;
-  margin-bottom:0;
+  margin-bottom: 0;
 }
 .pay-dtl h5 {
   margin-top: 0;

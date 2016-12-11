@@ -350,7 +350,6 @@ angular.module('IguanaGUIApp')
                 iconSentClass = 'bi_interface-minus',
                 iconReceivedClass = 'bi_interface-plus';
 
-                console.log(transactionDetails);
             if (transactionDetails) {
               if (transactionDetails.details) {
                 txAddress = transactionDetails.details[0].address;

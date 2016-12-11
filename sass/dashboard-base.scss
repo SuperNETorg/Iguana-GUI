@@ -66,13 +66,13 @@ $dashboard-balance-block-label-color: #95969F;
       font-size: 1.05em;
       margin: 0 5px;
       text-shadow: 0 0 0 $dashboard-topbar-item-color;
-      top: 9px;
+      top: 8px;
       z-index: 100;
 
       .border {
         background: transparent;
         border-radius: $border-radius-smaller;
-        height: 4px;
+        height: 3px;
         padding: 0 22px;
         width: 96%;
         margin-left: 3%;

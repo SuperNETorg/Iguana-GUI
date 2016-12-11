@@ -45,7 +45,7 @@
 }
 
 @mixin btn-default-shadow {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=0, Color=#E9ECF0)";/*IE 8*/
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=0, Color=#E9ECF0)';/*IE 8*/
   -moz-box-shadow: 0 6px 10px 4px #E9ECF0;/*FF 3.5+*/
   -webkit-box-shadow: 0 6px 10px 4px #E9ECF0;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
   box-shadow: 0 6px 10px 4px #E9ECF0;/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
@@ -53,7 +53,7 @@
 }
 
 @mixin login-orange-image {
-  background: url("./../images/bg.jpg") fixed no-repeat center;
+  background: url('./../images/bg.jpg') fixed no-repeat center;
   background-size: cover;
 }
 

@@ -4,66 +4,87 @@
  */
 @import '../dev.scss';
 
+$dashboard-navbar-color: #FEFBF9;
+$dashboard-top-border-color: #1E2136;
+
 body {
   @media screen and (max-width: 1366px) {
     .dashboard .coins {
       min-width: 210px;
     }
-    .dashboard .account-coins-repeater .item .coin .name:before {
-      content: '';
-      display: block;
-      position: absolute;
-      z-index: 100;
-      width: 15px;
-      height: 17px;
-      right: 0;
+    .dashboard .account-coins-repeater {
+      .item {
+        .coin .name:before {
+          content: '';
+          display: block;
+          position: absolute;
+          z-index: 100;
+          width: 15px;
+          height: 17px;
+          right: 0;
 
-      background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-      background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-    }
-    .dashboard .account-coins-repeater .item.active .coin .name:before {
-      content: '';
-      display: block;
-      position: absolute;
-      z-index: 100;
-      width: 15px;
-      height: 17px;
-      right: 0;
+          background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+          background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+          background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+        }
+        .progress-status {
+          max-width: 70px;
+        }
+        .status {
+          width: 76px;
+        }
+      }
+      .item.active .coin .name:before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: 100;
+        width: 15px;
+        height: 17px;
+        right: 0;
 
-      background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-      background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-      background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
-    }
-    .dashboard .transactions-list-repeater .item .progress-status {
-      max-width: 70px;
-    }
-    .dashboard .transactions-list-repeater .item .status {
-      width: 76px;
+        background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+        background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+        background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
+      }
     }
   }
 
   @media screen and (max-width: 1300px) {
-    .dashboard .transactions-list-repeater .item .hash {
-      max-width: 338px;
-      overflow: hidden;
-      position: relative;
-      top: 8px;
-    }
-    .dashboard .transactions-list-repeater .item .hash:before {
-      content: '';
-      display: block;
-      position: absolute;
-      z-index: 100;
-      width: 10%;
-      height: 25px;
-      margin-top: -2px;
-      right: 0;
+    .dashboard .transactions-list-repeater .item {
+      .hash {
+        max-width: 338px;
+        overflow: hidden;
+        position: relative;
+        top: 8px;
+      }
+      .hash:before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: 100;
+        width: 10%;
+        height: 25px;
+        margin-top: -2px;
+        right: 0;
 
-      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
-      background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6-15 */
-      background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
+        background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      }
+    }
+  }
+
+  @media screen and (max-width: 1140px) {
+    .dashboard .transactions-list-repeater .item {
+      .hash {
+        margin-left: 6%;
+        max-width: 150px;
+      }
+      .amount {
+        margin-right: 6%;
+      }
     }
   }
 
@@ -71,7 +92,8 @@ body {
   @media #{$small-min-Resolution} {
     .app-container {
       .app-container-inner {
-        .dashboard-main {
+        .dashboard-main,
+        .reference-currency-main {
           .dashboard {
             /** top nav bar */
             .navbar {
@@ -83,7 +105,7 @@ body {
 
                 .navbar-header {
                   .navbar-brand {
-                    color: #FEFBF9;
+                    color: $dashboard-navbar-color;
                     font-size: 1.9em;
                     font-weight: 600;
                   }
@@ -129,13 +151,13 @@ body {
   }
 
   @media (max-width: 992px) {
-    .dashboard .transactions-unit,
+    /*.dashboard .transactions-unit,
     .dashboard .coins {
       width: 100%;
       max-width: 100%;
-    }
+    }*/
     .reference-currency-main .currency-content .container-left {
-      padding-top: 5px;
+      padding-top: 35px;
     }
     .col-md-7.col-sm-6.currency-parent {
       width: 100%;
@@ -144,6 +166,8 @@ body {
       width: 90%;
     }
     .transactions-unit .transactions-list .transactions-list-repeater .item {
+      padding: 50px 3% 50px 3%;
+
       .clearfix {
         display: block;
         margin-top: 35px;
@@ -153,36 +177,65 @@ body {
         float: left;
         width: 32%;
         line-height: 44px;
+        position: relative;
+        top: 23px;
+        margin-right: 14%;
+        text-align: left;
       }
       .hash {
         float: right;
         word-wrap: break-word;
+        text-align: right;
         width: 50%;
         font-size: 14px;
-        margin-right: 25px;
-        margin-left: 0;
+        margin-right: 3px;
+        margin-left: 4%;
+        position: relative;
+        top: 23px;
+      }
+      .hash:before {
+        display: none;
+      }
+      .progress-status {
+        position: relative;
+        top: 23px;
+      }
+      .status {
+        position: absolute;
+        float: left;
+        left: 35px;
+        margin-top: -31px;
+      }
+      .timestamp {
+        position: absolute;
+        right: 32px;
+        margin-top: -65px;
       }
     }
   }
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
-    .dashboard .top-menu {
-      padding: 0 0 19px;
+    .dashboard {
+      .top-menu {
+        padding: 0 0 19px;
+
+        .item {
+          margin: 0 15px;
+          top: 20px;
+
+          .text {
+            margin-top: 0;
+            position: relative;
+            top: -8px;
+          }
+        }
+      }
+      .top {
+        border-top: 2px solid $dashboard-top-border-color;
+      }
     }
-    .dashboard .top-menu .item {
-      margin: 0 15px;
-      top: 20px;
-    }
-    .dashboard .top {
-      border-top: 2px solid #1E2136;
-    }
-    .dashboard .top-menu .item .text {
-      margin-top: 0;
-      position: relative;
-      top: -8px;
-    }
-    .account-coins-repeater .item .icon .name:before {
+    .account-coins-repeater .item .coin .name:before {
       display: none;
     }
     .app-container {
@@ -210,7 +263,6 @@ body {
                     text-align: center;
                   }
                 }
-
                 .transactions-list {
                   .transactions-list-repeater {
                     .item {
@@ -218,31 +270,30 @@ body {
                         clear: both;
                         width: 40%;
                         line-height: 44px;
+                        margin-right: 6%;
+                      }
+                      .amount.smaller {
+                        font-size: 85%;
+                      }
+                      .progress-status {
+                        line-height: 44px;
+                      }
+                      .hash {
+                        float: right;
+                        word-wrap: break-word;
+                        width: 43%;
+                        font-size: 14px;
+                        margin: 0;
+                        margin-left: 6%;
+                        top: 28px;
+                      }
+                      .clearfix {
+                        display: block;
+                        margin-top: 35px;
                       }
                     }
                   }
                 }
-              }
-              .transactions-unit .transactions-list .transactions-list-repeater .item .progress-status {
-                line-height: 44px;
-              }
-              .transactions-unit .transactions-list .transactions-list-repeater .item .hash {
-                float: right;
-                word-wrap: break-word;
-                width: 43%;
-                font-size: 14px;
-                margin: 0;
-              }
-              .transactions-unit .transactions-list .transactions-list-repeater .item .timestamp {
-                float: right;
-                margin-top: 1px;
-              }
-              .transactions-unit .transactions-list .transactions-list-repeater .item .clearfix {
-                display: block;
-                margin-top: 35px;
-              }
-              .transactions-list-repeater .item .amount.smaller {
-                font-size: 85%;
               }
             }
           }
@@ -256,56 +307,56 @@ body {
     .account-coins-repeater .item.active:after {
       display: none;
     }
-    .modal .modal-dialog.modal-lg {
-      width: 100%;
-    }
     .auth-main .container-fluid {
       display: block;
     }
-    .modal .modal-dialog .modal-header {
-      min-height: 50px;
+    .modal .modal-dialog {
+      .modal-header {
+        min-height: 50px;
+
+        .btn-back {
+          top: 16px;
+        }
+        .title {
+          font-size: 17px;
+        }
+      }
+      .modal-body {
+        padding: 0 0.8em 3.2em 0.8em;
+      }
+    }
+    .modal .modal-dialog.modal-lg {
+      width: 100%;
     }
     .form-container .modal .modal-dialog .modal-header .btn-close,
     .modal .modal-dialog .modal-content .modal-header .btn-back {
       margin-left: -8px;
     }
-    .modal .modal-dialog .modal-header .btn-back {
-      top: 16px;
-    }
     .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
       top: 12px;
       margin-left: 6px;
     }
-    .modal .modal-dialog .modal-header .title {
-      font-size: 17px;
-    }
-    .modal .modal-dialog .modal-body {
-      padding: 0 0.8em 3.2em 0.8em;
-    }
-    .reference-currency-main .currency-content .currency-parent {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-    .reference-currency-main .currency-content .currency-loop .country-li {
-      min-width: 162px;
+    .reference-currency-main .currency-content {
+      .currency-parent {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .currency-loop .country-li {
+        min-width: 162px;
+      }
     }
     /* send coin modal */
     .modal-send-coin .modal-dialog .modal-content .send-modal,
-    .modal-send-coin .modal-dialog .modal-content .send-modal {
-      padding-top: 2em;
-    }
-    /* Add Wallet modal */
+    .modal-send-coin .modal-dialog .modal-content .send-modal,
     .add-coin-login-form .modal-add-coin-login-form .modal-dialog .modal-body {
       padding-top: 2em;
     }
+    /* Add Wallet modal */
+    .add-coin-login-form .modal-add-coin .modal-dialog .modal-header {
+      height: 55px;
+    }
     .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
       padding-top: 30%;
-    }
-    /*.add-new-coin-form .modal-add-coin .modal-dialog .modal-header .modal-title {
-      padding-top: 5px;
-    }*/
-    .add-new-coin-form .modal-add-coin .modal-dialog .modal-header {
-      height: 55px;
     }
     .receiving-coin-content .form-header .btn-close {
       margin-left: 0;
@@ -318,12 +369,54 @@ body {
     }
   }
 
+  @media only screen and (max-width: 440px) {
+    .app-container {
+      .app-container-inner {
+        .dashboard-main {
+          .dashboard {
+            .main-content {
+              .transactions-unit {
+                padding: 0;
+
+                .transactions-list {
+                  .transactions-list-repeater {
+                    .item {
+                      .timestamp {
+                        right: 6px;
+                        margin-top: -74px;
+                      }
+                      .status {
+                        left: 16px;
+                        margin-top: -38px;
+                      }
+                      .amount {
+                        margin-right: 3%;
+                        top: 20px;
+                      }
+                      .hash {
+                        margin-left: 3%;
+                        top: 22px;
+                      }
+                      .progress-status {
+                        top: 17px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 380px) {
     .reference-currency-main .currency-content .currency-loop .country-li {
       display: inline-block;
       float: none;
     }
-    .account-coins-repeater .item .icon .name:before {
+    .account-coins-repeater .item .coin .name:before {
       display: inherit;
     }
   }
@@ -332,7 +425,7 @@ body {
     .share-address-section {
       width: 96%;
     }
-    .account-coins-repeater .item .icon .name:before {
+    .account-coins-repeater .item .coin .name:before {
       display: inherit;
     }
   }
