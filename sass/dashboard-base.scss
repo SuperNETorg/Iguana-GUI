@@ -120,7 +120,9 @@ $dashboard-balance-block-label-color: #95969F;
       padding: 0;
     }
     .balance {
-      font-size: 1.7em;
+      font-size: 2em;
+      font-weight: 600;
+      line-height: 1.2em;
       @include bold;
 
       .value {
@@ -132,16 +134,12 @@ $dashboard-balance-block-label-color: #95969F;
   .transactions-unit {
     margin-top: 1.1em;
   }
-  .active-coin-balance .value {
-    padding-right: 5px;
-  }
   .active-coin-balance-currency {
     font-size: 1.1em;
     @include bold;
-    padding-left: 30px;
-    position: relative;
+    line-height: 1.6em;
+    margin-left: 0.4em;
     text-shadow: 0 1px 3px rgba-black(0.25);
-    top: -3px;
 
     .value {
       padding-right: 5px;
@@ -227,10 +225,10 @@ $dashboard-balance-block-label-color: #95969F;
   }
 }
 .active-coin-balance {
-  font-size: 1.7em;
+  font-size: 2em;
   font-weight: 700;
-  padding-left: 30px;
-  padding-top: 25px;
+  line-height: 1em;
+  margin-left: 0.2em;
   text-shadow: 0 1px 3px rgba-black(0.25);
 }
 .navbar-inverse {

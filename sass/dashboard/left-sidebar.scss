@@ -14,7 +14,7 @@ $account-coins-repeater-coin-color: #D3D3D4;
     background: $color-absolute-white;
     border-radius: $border-radius-smaller;
     box-shadow: 0 2px 2px 1px rgba-black(0.125);
-    height: 85px;
+    height: 94px;
     margin-bottom: 20px;
     position: relative;
 
@@ -36,42 +36,31 @@ $account-coins-repeater-coin-color: #D3D3D4;
     }
     .balance {
       float: right;
-      padding-right: 18px;
-      padding-top: 25px;
 
-      .currency-value {
-        font-size: 12px;
-        font-weight: normal;
-        position: relative;
-        text-align: right;
-        top: -4px;
-      }
       .coin-value {
-        font-size: 1.35em;
+        font-size: 1.4em;
+        line-height: 0.8em;
+      }
+      .currency-value {
+        font-size: 0.96em;
+        line-height: 1.8em;
+        @include bold;
+      }
+      .currency-value,
+      .coin-value {
         text-align: right;
       }
     }
     .coin {
       float: left;
-      margin-right: 2px;
 
-      .icon {
-        height: 33px;
-        width: 33px;
-      }
       i {
         color: $account-coins-repeater-coin-color;
-        display: inline-block;
         font-size: 2.5em;
-        margin: 25px 10px 0 12px;
       }
       .name {
         color: $color-dark-gray;
-        display: inline-block;
         font-weight: normal;
-        overflow: hidden;
-        position: relative;
-        top: -4px;
       }
     }
     .loader {
@@ -111,16 +100,17 @@ $account-coins-repeater-coin-color: #D3D3D4;
       color: $color-absolute-white;
     }
   }
-  .item.active:after {
-    @include budicon;
-    color: $color-form-arrow;
-    content: '\eb14';
-    font-size: 2.0em;
-    font-weight: normal;
-    text-shadow: none;
+  .item:not(.active) .active-arrow {
+    display: none;
+  }
+  .item.active .active-arrow {
+    color: #c4c7cb;
+    font-size: 2.1em;
+    font-weight: 900;
     position: absolute;
-    right: -40px;
-    top: 25px;
+    text-shadow: none;
+    top: 1em;
+    right: -1.8em;
   }
 }
 .btn-add-coin {

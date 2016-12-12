@@ -13,8 +13,6 @@ $transactions-list-repeater-item: #F6FAFF;
 
 .transactions-unit {
   border-radius: $border-radius-smaller;
-  box-shadow: 0 2px 3px 1px rgba-black(0.1);
-  position: relative;
 
   .top-bar {
     @include bold;
@@ -39,39 +37,35 @@ $transactions-list-repeater-item: #F6FAFF;
         stroke: $color-absolute-white;
       }
     }
+    .info {
+      font-size: 0.93em;
+      margin: 0.2em 0.28em 0.28em 0.28em;
+
+      i {
+        font-size: 1.2em;
+      }
+    }
   }
   .action-buttons {
-    float: left;
-    padding-left: 16px;
-    padding-top: 18px;
-
     .btn {
       @include bold;
       background: $color-absolute-white;
       border-radius: $border-radius-smaller;
       box-shadow: 0 2px 3px 1px rgba-black(0.1);
       color: $color-orange;
-      font-size: 1.1em;
-      margin-bottom: 10px;
-      padding: 6px 35px 4px 35px;
-    }
-    .btn:first-child {
-      margin: 0 1em 0.7em 1em;
+      font-size: 1.12em;
+      padding: 6px 2.52em 4px 2.52em;
     }
     .btn:hover {
       color: $color-orange;
     }
   }
-  .info {
-    position: absolute;
-    right: 25px;
-    text-shadow: 0 1px 3px rgba-black(0.25);
-    top: 25px;
-  }
+
 }
 .transactions-list {
   background: $color-absolute-white;
   border-radius: 0 0 $border-radius-smaller $border-radius-smaller;
+  box-shadow: 0 2px 3px 1px rgba-black(0.1);
   padding: 25px 2.5%;
 
   .title {
@@ -106,13 +100,11 @@ $transactions-list-repeater-item: #F6FAFF;
       width: 100px;
     }
     .amount {
-      margin-right: 3%;
       text-align: right;
       width: 22%;
       white-space: nowrap;
     }
     .hash {
-      margin-left: 3%;
       width: 41%;
     }
     .in-out {
@@ -187,8 +179,6 @@ $transactions-list-repeater-item: #F6FAFF;
     }
     .progress-status {
       .icon:before {
-        @include bold;
-        content: '\ead6';
         color: $color-medium-gray;
       }
       .icon:after {

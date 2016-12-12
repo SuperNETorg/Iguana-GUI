@@ -118,6 +118,11 @@
   margin-right: auto;
 }
 
+@mixin margin-top-bottom($size) {
+  margin-top: $size;
+  margin-bottom: $size;
+}
+
 @mixin absolute-horizontal-center {
   left: 15px;
   position: absolute;

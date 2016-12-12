@@ -57,7 +57,7 @@
                   <span ng-if="isChanged && !passphraseModel.length" class="error-msg">{{ messages }}</span>
                 </div>
                 <textarea name="loginPassphrase" id="passphrase"
-                          class="login-passphrase-textarea row center form-control"
+                          class="login-passphrase-textarea row center"
                           ng-model="passphraseModel"
                           ng-class="{'error-field': isChanged && !passphraseModel.length }"
                           ng-change="setIsChanged(true)">

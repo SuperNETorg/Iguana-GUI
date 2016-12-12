@@ -4,9 +4,6 @@
  */
 @import '../dev.scss';
 
-$dashboard-navbar-color: #FEFBF9;
-$dashboard-top-border-color: #1E2136;
-
 body {
   @media screen and (max-width: 1366px) {
     .dashboard .coins {
@@ -135,9 +132,46 @@ body {
             .main-content {
               padding: 40px;
 
+              /** Left Sidebar */
               .coins {
                 min-width: 20em;
                 max-width: 21.44em;
+
+                .account-coins-repeater {
+                  .item {
+                    padding: 1.44em;
+
+                    .coin {
+                      font-size: 1.3em;
+                      margin-left: -0.36em;
+                      @include margin-top-bottom(0.2em);
+
+                      .icon {
+
+                      }
+                      .name {
+                        font-size: 0.72em;
+                        margin-top: 1.1em;
+                        margin-left: 0.4em;
+                      }
+                    }
+                    .balance {
+                      font-weight: 900;
+                      @include margin-top-bottom(0.8em)
+                    }
+                  }
+                }
+              }
+              /** Transaction Bar */
+              .transactions-unit {
+                .top-bar {
+                  padding: 2.4em 2.6em 1.4em 2.6em;
+
+                  .action-buttons {
+                    margin-left: 0.3em;
+                    margin-top: 1.6em;
+                  }
+                }
               }
             }
           }
@@ -378,6 +412,23 @@ body {
     }
   }
 
+  @media #{$large-min-Resolution} {
+    .app-container {
+      .app-container-inner {
+        .dashboard-main,
+        .reference-currency-main {
+          .dashboard {
+            .main-content {
+              .transactions-unit {
+                width: 71.666667%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 440px) {
     .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
       padding-top: 10px;
@@ -388,6 +439,16 @@ body {
           .dashboard {
             .main-content {
               .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
+                padding: 0;
+                padding-top: 82px;
+                border-radius: 0;
+
+                .top-bar {
+                  border-radius: 0;
+                }
+                .info {
+                  top: 114px;
+                }
                 .transactions-list {
                   .transactions-list-repeater {
                     .item {

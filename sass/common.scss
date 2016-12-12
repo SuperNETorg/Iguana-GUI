@@ -91,5 +91,47 @@ html {
       -moz-box-shadow: none;
       -webkit-box-shadow: none;
     }
+    .offset-bottom-sm {
+      margin: 0 auto;
+      margin-bottom: 15px;
+    }
+    .offset-bottom-md {
+      margin: 0 auto;
+      margin-bottom: 30px;
+    }
+    .offset-bottom-lg {
+      margin: 0 auto;
+      margin-bottom: 45px;
+    }
+    .offset-top-sm {
+      margin: 0 auto;
+      margin-top: 15px;
+    }
+    .offset-top-md {
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+    .offset-top-lg {
+      margin: 0 auto;
+      margin-top: 45px;
+    }
+    .offset-left-sm {
+      margin-left: 15px;
+    }
+    .offset-left-md {
+      margin-left: 30px;
+    }
+    .offset-left-lg {
+      margin-left: 45px;
+    }
+    .offset-right-sm {
+      margin-right: 15px;
+    }
+    .offset-right-md {
+      margin-right: 30px;
+    }
+    .offset-right-lg {
+      margin-right: 45px;
+    }
   }
 }

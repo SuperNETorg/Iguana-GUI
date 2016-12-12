@@ -10,31 +10,39 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <aside class="coins unselectable col-md-3 col-sm-3 col-xs-12" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
+    <aside class="coins unselectable col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="row">
         <div class="account-coins-repeater">
-          <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}" data-coin-balance-value="{{ item.coinBalanceUnformatted }}" ng-class="{ 'active': (activeCoin === item.id || activeCoin === $index) && !util.isMobile() }" ng-repeat="item in sideBarCoins | orderBy: 'id'">
+          <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
+               data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
+               ng-class="{ 'active': (activeCoin === item.id || activeCoin === $index) && !util.isMobile() }"
+               ng-repeat="item in sideBarCoins | orderBy: 'id'">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
             <div class="clickable-area" ng-click="util.isMobile() ? setActiveCoin(item) : (activeCoin !== item.id ? setActiveCoin(item) : null)">
               <div class="coin">
-                <i class="icon cc {{ item.coinIdUc }}-alt"></i>
-                <div class="name">{{ item.name }}</div>
+                <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
+                <div class="name pull-left">{{ item.name }}</div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }">
                 <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat:'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
                 <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat:'currency') : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
+            <div class="bi_interface-right active-arrow"></div>
           </div>
         </div>
         <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
       </div>
     </aside>
-    <div class="transactions-unit col-md-8 col-sm-7 col-xs-12 pull-right" ng-hide="$state.current.name === 'dashboard.mobileCoins'">
+    <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right" ng-hide="$state.current.name === 'dashboard.mobileCoins'">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>
+          <div class="info unselectable pull-right">
+            <i class="bi_doc-book-a"></i>
+            <span>{{ 'DASHBOARD.INFORMATION' | lang }}</span>
+          </div>
           <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
             <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat:'coin') : 0 }}</span>
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
@@ -43,13 +51,9 @@
             <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat:'currency') : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
-          <div class="action-buttons unselectable">
-            <button class="btn btn-send" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ 'DASHBOARD.SEND' | lang }}</button>
-            <button class="btn btn-receive coinaddress btn-lg" ng-click="openReceiveCoinModal()">{{ 'DASHBOARD.RECEIVE' | lang }}</button>
-          </div>
-          <div class="info unselectable">
-            <i class="bi_doc-book-a"></i>
-            <span>{{ 'DASHBOARD.INFORMATION' | lang }}</span>
+          <div class="action-buttons unselectable offset-top-md">
+            <button class="btn btn-send offset-right-sm" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ 'DASHBOARD.SEND' | lang }}</button>
+            <button class="btn btn-receive coinaddress offset-right-sm" ng-click="openReceiveCoinModal()">{{ 'DASHBOARD.RECEIVE' | lang }}</button>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -66,7 +70,7 @@
                 <span class="coin-name">{{ item.coin }}</span>
               </div>
               <div class="progress-status unselectable">
-                <i class="icon"></i>
+                <i class="icon bi_interface-arrow-right"></i>
               </div>
               <div class="hash">{{ item.hash }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
