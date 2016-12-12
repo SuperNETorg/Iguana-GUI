@@ -83,7 +83,7 @@ angular.module('IguanaGUIApp')
           ) {
             if (
               ($storage['isIguana'] && coinsInfo[key].iguana === true) ||
-              (!$storage['isIguana'] && coinsInfo[key].connection === true)
+              (!$storage['isIguana'] && (coinsInfo[key].connection === true || (dev && dev.isDev && dev.showAllCoindCoins)))
             ) {
               coinsArray.push({
                 'id': key.toUpperCase(),

@@ -191,5 +191,40 @@ var supportedCoinsList = {
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
+  },
+  'zcc': {
+    'name': 'ZcCoin',
+    'portp2p': 12210,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'xpm': {
+    'name': 'Primecoin',
+    'portp2p': 9914,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'wdc': {
+    'name': 'WorldCoin',
+    'portp2p': 11082,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'dgc': {
+    'name': 'Digitalcoin',
+    'portp2p': 7998,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'src': {
+    'name': 'SecureCoin',
+    'portp2p': 12568,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
   }
 };

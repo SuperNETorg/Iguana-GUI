@@ -203,3 +203,10 @@ body .add-coin-login-form .modal-add-coin-login-form,
     color: $color-add-coin-light-blue !important;
   }
 }
+/* dgc icon fix */
+i.cc.DGC:before {
+  content: '\e977';
+}
+i.cc.DGC-alt:before {
+  content: '\e978';
+}
