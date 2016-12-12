@@ -123,7 +123,10 @@ var lang = {
       'FEE_LOW': 'Low (Slow confirmation)',
       'FEE_NORMAL': 'Normal (Average confirmation)',
       'FEE_HIGH': 'High (Fast confirmation)',
-      'FEE_CUSTOM': 'Custom fee'
+      'FEE_CUSTOM': 'Custom fee',
+      'MINIMUM_TIME': 'Min Time',
+      'MAXIMUM_TIME': 'Max Time',
+      'MIN': 'Mins'
     },
     'PASSPHRASE_MODAL': {
       'PROVIDE_PASSPHRASE': 'Provide passphrase',

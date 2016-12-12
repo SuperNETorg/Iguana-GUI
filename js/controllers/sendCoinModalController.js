@@ -99,65 +99,106 @@ angular.module('IguanaGUIApp')
 
     $api.getBalance(defaultAccount, $scope.activeCoin).then(function(response) {
       initSendCoinModal(response[0], response[1]);
-
       // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
-      $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended').then(function(response) {
-        var fastestFee = checkFeeCount(response.data.fastestFee),
+      $api.bitcoinFees().then(function (response) {
+        $api.bitcoinFeesAll().then(function(responseAll){
+
+          var fastestFee = checkFeeCount(response.data.fastestFee),
             halfHourFee = checkFeeCount(response.data.halfHourFee),
             hourFee = checkFeeCount(response.data.hourFee);
 
-        if ($scope.activeCoin === 'btc') {
-          $scope.dropDown.items = [{
-            id: 0,
-            name: $filter('lang')('SEND.FEE_LOW'),
-            text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
-            coin: hourFee.coin,
-            amount: hourFee.amount.toFixed(15)
-          }, {
-            id: 1,
-            name: $filter('lang')('SEND.FEE_NORMAL'),
-            text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
-            coin: halfHourFee.coin,
-            amount: halfHourFee.amount.toFixed(15)
-          }, {
-            id: 2,
-            name: $filter('lang')('SEND.FEE_HIGH'),
-            text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
-            coin: fastestFee.coin,
-            amount: fastestFee.amount.toFixed(15)
-          }, {
-            id: 3,
-            name: $filter('lang')('SEND.FEE_MIN'),
-            text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
-            coin: $scope.sendCoin.minFee,
-            amount: $scope.sendCoin.minFee
-          }, {
-            id: 4,
-            name: $filter('lang')('SEND.FEE_CUSTOM'),
-            text: '',
-            coin: '',
-            amount: ''
-          }];
+          if ($scope.activeCoin === 'btc') {
+            var feeLowTimeMin='', feeLowTimeMax='', feeNormalTimeMin='',
+                feeNormalTimeMax='', feeHighTimeMin='', feeHighTimeMax='';
 
-          $scope.dropDown.item = $scope.dropDown.items[0];
-        } else {
-          $scope.dropDown.items = [{
-            id: 0,
-            name: $filter('lang')('SEND.FEE_MIN'),
-            text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
-            coin: $scope.sendCoin.minFee,
-            amount: $scope.sendCoin.minFee
-          }, {
-            id: 1,
-            name: $filter('lang')('SEND.FEE_CUSTOM'),
-            text: '',
-            coin: '',
-            amount: ''
-          }];
+            responseAll.data.fees.forEach(function (el) {
+              if (
+                el.maxFee >= response.data.fastestFee &&
+                el.minFee <= response.data.fastestFee
+              ) {
+                feeLowTimeMin=el.minMinutes;
+                feeLowTimeMax=el.maxMinutes;
+              } else if(
+                el.maxFee >= response.data.halfHourFee &&
+                el.minFee <= response.data.halfHourFee
+              ) {
+                feeNormalTimeMin=el.minMinutes;
+                feeNormalTimeMax=el.maxMinutes;
+              } else if(
+                el.maxFee >= response.data.hourFee &&
+                el.minFee <= response.data.hourFee
+              ) {
+                feeHighTimeMin=el.minMinutes;
+                feeHighTimeMax=el.maxMinutes;
+              }
+            });
 
-          $scope.dropDown.item = $scope.dropDown.items[0];
-        }
-      });
+            $scope.dropDown.items = [{
+              id: 0,
+              name: $filter('lang')('SEND.FEE_LOW'),
+              text: hourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(hourFee.amount, 'currency'),
+              coin: hourFee.coin,
+              amount: hourFee.amount.toFixed(15),
+              feeMinTime: feeLowTimeMin,
+              feeMaxTime: feeLowTimeMax
+            }, {
+              id: 1,
+              name: $filter('lang')('SEND.FEE_NORMAL'),
+              text: halfHourFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(halfHourFee.amount, 'currency'),
+              coin: halfHourFee.coin.toFixed(15),
+              amount: halfHourFee.amount.toFixed(15),
+              feeMinTime: feeNormalTimeMin,
+              feeMaxTime: feeNormalTimeMax
+            }, {
+              id: 2,
+              name: $filter('lang')('SEND.FEE_HIGH'),
+              text: fastestFee.coin + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')(fastestFee.amount, 'currency'),
+              coin: fastestFee.coin.toFixed(15),
+              amount: fastestFee.amount.toFixed(15),
+              feeMinTime: feeHighTimeMin,
+              feeMaxTime: feeHighTimeMax
+            }, {
+              id: 3,
+              name: $filter('lang')('SEND.FEE_MIN'),
+              text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
+              coin: $scope.sendCoin.minFee.toFixed(15),
+              amount: $scope.sendCoin.minFee.toFixed(15),
+              feeMinTime: '',
+              feeMaxTime: ''
+            }, {
+              id: 4,
+              name: $filter('lang')('SEND.FEE_CUSTOM'),
+              text: '',
+              coin: '',
+              amount: '',
+              feeMinTime: '',
+              feeMaxTime: ''
+            }];
+
+            $scope.dropDown.item = $scope.dropDown.items[0];
+          } else {
+            $scope.dropDown.items = [{
+              id: 0,
+              name: $filter('lang')('SEND.FEE_MIN'),
+              text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
+              coin: $scope.sendCoin.minFee.toFixed(15),
+              amount: $scope.sendCoin.minFee.toFixed(15),
+              feeMinTime: '',
+              feeMaxTime: ''
+            }, {
+              id: 1,
+              name: $filter('lang')('SEND.FEE_CUSTOM'),
+              text: '',
+              coin: '',
+              amount: '',
+              feeMinTime: '',
+              feeMaxTime: ''
+            }];
+
+            $scope.dropDown.item = $scope.dropDown.items[0];
+          }
+        }.bind(this));
+      }.bind(this));
 
     }, function(reason) {
       console.log('request failed: ' + reason);
@@ -199,7 +240,7 @@ angular.module('IguanaGUIApp')
     $scope.sendCoinKeyingFeeCurrency = function() {
       if ($scope.sendCoin.feeCurrency && $scope.sendCoin.feeCurrency > 0)
         $scope.sendCoin.fee = $filter('decimalPlacesFormat')($scope.sendCoin.feeCurrency / $scope.sendCoin.currencyRate, 'coin');
-    }
+    };
 
     $scope.validateSendCoinForm = function() {
       if (_validateSendCoinForm()) {
@@ -207,7 +248,7 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.feeCurrency = $scope.sendCoin.currencyRate * $scope.sendCoin.fee;
         $scope.sendCoin.initStep = false;
       }
-    }
+    };
 
     // TODO: 1) coin address validity check e.g. btcd address cannot be used in bitcoin send tx
     //      1a) address byte prefix check
@@ -259,7 +300,7 @@ angular.module('IguanaGUIApp')
       } else {
         execSendCoinCall();
       }
-    }
+    };
 
     function execSendCoinCall() {
       var setTxFeeResult = false,

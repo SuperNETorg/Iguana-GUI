@@ -47,7 +47,7 @@
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <dropdown is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="dropDown.callback(item)"></dropdown>
               <div class="custom-fee-inputs" ng-hide="!(dropDown.item.name =='Custom fee')">
-                <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
+                <input type="text" min="0" placeholder="0" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
                 <span class="eq-sign">=</span>
                 <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
               </div>
@@ -56,7 +56,7 @@
               <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
               <textarea class="tx-note" ng-model="sendCoin.note"></textarea>
             </div>
-            <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+              <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
           </div>
         </div>
       </div>

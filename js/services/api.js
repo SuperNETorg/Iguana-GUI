@@ -1290,5 +1290,13 @@ angular.module('IguanaGUIApp')
 
       return deferred.promise;
     };
+
+    this.bitcoinFees = function () {
+      return $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended');
+    };
+
+    this.bitcoinFeesAll = function () {
+      return $http.get('https://bitcoinfees.21.co/api/v1/fees/list');
+    };
   }
 ]);

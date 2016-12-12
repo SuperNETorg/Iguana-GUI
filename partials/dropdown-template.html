@@ -2,7 +2,7 @@
   <div class="btn-group" dropdown>
     <!-- button style dropdown -->
     <button ng-if="isButton" type="button"
-            class="btn btn-primary dropdown-button-style" dropdown-toggle><strong>{{ ngModel.name || default }}</strong><br/>{{ ngModel.name ? ngModel.text : '' }}
+            class="btn btn-primary dropdown-button-style" dropdown-toggle><strong>{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMinTime }} {{ 'SEND.MIN' | lang }}-{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</strong><br/>{{ ngModel.name ? ngModel.text : '' }}
     </button>
     <!--button ng-if="isButton" type="button" class="btn btn-primary dropdown-toggle dropdown-button-style">
       <span class="caret"></span>
@@ -18,7 +18,7 @@
     <!-- dropdown items -->
     <ul class="dropdown-menu" role="menu">
       <li ng-repeat="item in items">
-        <a ng-click="select(item)"><strong>{{ item.name }}</strong><br/>{{ item.text }}</a>
+        <a ng-click="select(item)"><strong>{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMinTime }} {{ 'SEND.MIN' | lang }}-{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</strong><br/>{{ item.text }}</a>
       </li>
     </ul>
   </div>
