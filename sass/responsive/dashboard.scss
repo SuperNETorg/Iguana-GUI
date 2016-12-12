@@ -252,9 +252,13 @@ body {
               /*  dashboard transactions bar */
               .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
                 margin-left: 0;
+                padding: 0;
                 padding-top: 82px;
+                border-radius: 0;
 
                 .top-bar {
+                  border-radius: 0;
+
                   .active-coin-balance,
                   .active-coin-balance-currency {
                     padding-left: 15px;
@@ -384,16 +388,6 @@ body {
           .dashboard {
             .main-content {
               .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
-                padding: 0;
-                padding-top: 82px;
-                border-radius: 0;
-
-                .top-bar {
-                  border-radius: 0;
-                }
-                .info {
-                  top: 114px;
-                }
                 .transactions-list {
                   .transactions-list-repeater {
                     .item {
