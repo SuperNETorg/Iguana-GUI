@@ -22,12 +22,20 @@ angular.module('IguanaGUIApp')
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
 
-    if (util.isMobile() && $state.current.name === 'dashboard.main') {
-      $state.go('dashboard.mobileCoins');
+    function switchLayoutMode() {
+      if (util.isMobile() && $state.current.name === 'dashboard.main' && $state.current.name !== 'dashboard.mobileTransactions') {
+        $state.go('dashboard.mobileCoins');
+      }
+      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
+        $state.go('dashboard.main');
+      }
     }
-    if (!util.isMobile() && !$state.current.name === 'dashboard.main') {
-      $state.go('dashboard.main');
-    }
+
+    switchLayoutMode();
+
+    angular.element($window).on('resize', function() {
+      switchLayoutMode();
+    });
 
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
