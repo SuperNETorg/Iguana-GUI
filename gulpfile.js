@@ -154,8 +154,8 @@ gulp.task('default', function() {
 });
 
 gulp.task('watch:dev', function() {
-  gulp.watch(paths.partials, ['index']);
-  gulp.watch(paths.js.default, ['copyCoreJS']);
+  gulp.watch([paths.partials, 'index.html'], ['devStyle', 'indexDev']);
+  gulp.watch([paths.js.default, 'jsIncludes.js'], ['copyCoreJS']);
   gulp.watch(paths.styles.default, ['scss']);
 });
 

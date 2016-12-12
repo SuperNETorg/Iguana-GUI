@@ -103,10 +103,10 @@ $dropdown-button-style-color: #5A606C;
     width: 100%;
   }
   .error-msg {
-    color: red;
+    color: $color-red;
   }
   .error-field {
-    border: 1px solid red;
+    border: 1px solid $color-red;
   }
   .login-input-directions-msg {
     margin: 0 auto;
