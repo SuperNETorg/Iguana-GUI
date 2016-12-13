@@ -27,7 +27,11 @@ exports.indexHTML = function(buildMode, buildModeModifier) {
     prodInsertCSS = '<link rel="stylesheet" href="style.css">\n' +
                     '<link rel="stylesheet" href="css/responsive/auth.css">\n' +
                     '<link rel="stylesheet" href="css/responsive/dashboard.css">\n';
-    if (buildModeModifier === 'electron') prodInsertJS = prodInsertJS + '<!-- partial:electron-patch.js --><!-- partial -->';
+    if (buildModeModifier === 'electron') // electron patch
+      prodInsertJS =  '<script>window.angular = require(\'angular\');</script>' +
+                      '<script>if (typeof module === \'object\') { window.module = module; module = undefined; }</script>' +
+                      prodInsertJS +
+                      '<script>if (window.module) module = window.module;</script>';
   }
 
   return gulp
