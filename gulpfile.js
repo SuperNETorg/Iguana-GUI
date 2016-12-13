@@ -200,6 +200,29 @@ gulp.task('prod', function(cb) {
   );
 });
 
+gulp.task('electron', function(cb) {
+  buildMode = 'prod';
+  buildModeModifier = 'electron';
+
+  runSequence(
+    'cleanAllProd',
+    'copyImages',
+    'copyBowerJS',
+    'copyCoreJS',
+    'compressJS',
+    'copyFonts',
+    'scss:css',
+    'cssModifyCryptocoins',
+    'cssModifyProxima',
+    'scss',
+    'cleanProdOnEnd',
+    'copyProdConfigurableJS',
+    'copyResponsiveCSS',
+    'index',
+    cb
+  );
+});
+
 gulp.task('zip', function() {
   buildMode = 'prod';
   buildModeModifier = 'compact';

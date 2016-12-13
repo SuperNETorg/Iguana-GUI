@@ -27,6 +27,7 @@ exports.indexHTML = function(buildMode, buildModeModifier) {
     prodInsertCSS = '<link rel="stylesheet" href="style.css">\n' +
                     '<link rel="stylesheet" href="css/responsive/auth.css">\n' +
                     '<link rel="stylesheet" href="css/responsive/dashboard.css">\n';
+    if (buildModeModifier === 'electron') prodInsertJS = prodInsertJS + '<!-- partial:electron-patch.js --><!-- partial -->';
   }
 
   return gulp
