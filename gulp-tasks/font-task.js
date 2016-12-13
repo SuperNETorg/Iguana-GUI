@@ -38,7 +38,7 @@ exports.copySVG = function(buildMode) {
   } else {
     return gulp
            .src(flagsSVGPaths)
-           .pipe(gulp.dest(paths.build[buildMode] + '/fonts/svg'));
+           .pipe(gulp.dest(paths.build[buildMode] + '/svg/flags'));
   }
 }
 

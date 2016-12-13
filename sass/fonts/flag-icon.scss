@@ -22,17 +22,3 @@ $flags-list: au bg br ca ch cn cz dk gb hk hr hu id il in jp kr mx my no nz ph p
   	background-image: url('#{$flags-path}/#{$current-flag}.svg');
   }
 }
-
-/* preload flag svgs */
-body:after {
-  content: url(svg/flags/au.svg) url(svg/flags/bg.svg) url(svg/flags/br.svg) url(svg/flags/ca.svg)
-           url(svg/flags/ch.svg) url(svg/flags/cn.svg) url(svg/flags/cz.svg) url(svg/flags/dk.svg)
-           url(svg/flags/gb.svg) url(svg/flags/hk.svg) url(svg/flags/hr.svg) url(svg/flags/hu.svg)
-           url(svg/flags/id.svg) url(svg/flags/il.svg) url(svg/flags/in.svg) url(svg/flags/jp.svg)
-           url(svg/flags/kr.svg) url(svg/flags/mx.svg) url(svg/flags/my.svg) url(svg/flags/no.svg)
-           url(svg/flags/nz.svg) url(svg/flags/ph.svg) url(svg/flags/pl.svg) url(svg/flags/ro.svg)
-           url(svg/flags/ru.svg) url(svg/flags/se.svg) url(svg/flags/sg.svg) url(svg/flags/th.svg)
-           url(svg/flags/tr.svg) url(svg/flags/za.svg) url(svg/flags/eu.svg) url(svg/flags/us.svg);
-  display: none;
-  font-family: cryptocoins, icomoon;
-}

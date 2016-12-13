@@ -25,8 +25,7 @@ exports.indexHTML = function(buildMode, buildModeModifier) {
     prodInsertCSS = '<link rel="stylesheet" href="style.css">\n';
 
     if (buildModeModifier === 'electron') // electron patch
-      prodInsertJS =  '<script>window.angular = require(\'angular\');</script>' +
-                      '<script>if (typeof module === \'object\') { window.module = module; module = undefined; }</script>' +
+      prodInsertJS =  '<script>if (typeof module === \'object\') { window.module = module; module = undefined; }</script>' +
                       prodInsertJS +
                       '<script>if (window.module) module = window.module;</script>';
   }
