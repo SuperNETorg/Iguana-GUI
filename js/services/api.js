@@ -1275,6 +1275,7 @@ angular.module('IguanaGUIApp')
         function(response) {
           if (response.data) {
             if (
+              typeof response.data == 'string' &&
               response.data.indexOf('Accounting API is deprecated') > -1 ||
               response.data.indexOf('If you want to use accounting API')
             ) {

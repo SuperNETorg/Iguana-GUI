@@ -45,7 +45,16 @@
             </div>
             <div class="pop-detail crncy">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
-              <dropdown is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="dropDown.callback(item)"></dropdown>
+              <segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>
+              <!--<li ng-repeat="item in dropDown.items">
+                <a ng-click="select(item)"><strong>{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMinTime }} {{ 'SEND.MIN' | lang }} - {{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</strong><br/>{{ item.text }}</a>
+              </li>-->
+              <!--<div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary" ng-repeat="item in dropDown.items">
+                  <a  type="radio" name="options" id="option1" autocomplete="off" checked ng-click="select(item)"><strong>{{ item.name }}</strong><br/>{{ item.feeMaxTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</a>
+                </label>
+              </div>-->
+
               <div class="custom-fee-inputs" ng-hide="!(dropDown.item.name =='Custom fee')">
                 <input type="text" min="0" placeholder="0" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
                 <span class="eq-sign">=</span>

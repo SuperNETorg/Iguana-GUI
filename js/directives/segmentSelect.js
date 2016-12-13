@@ -1,5 +1,5 @@
 angular.module('IguanaGUIApp')
-.directive('dropdown', [
+.directive('segmentselect', [
   '$rootScope',
   '$timeout',
   '$filter',
@@ -37,7 +37,7 @@ angular.module('IguanaGUIApp')
           }
         };
       },
-      templateUrl: 'partials/dropdown-template.html'
+      templateUrl: 'partials/segment-select.html'
     };
   }
 ]);

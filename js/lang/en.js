@@ -118,15 +118,15 @@ var lang = {
       'PLEASE_ENTER_AN_AMOUNT': 'Please enter an amount.',
       'NOT_ENOUGH_MONEY': 'Not enough money. Max.',
       'FEE_CANNOT_EXCEED': 'Fee cannot exceed',
-      'FEE_MIN': 'Minimum (Very slow confirmation)',
+      'FEE_MIN': 'Minimal',
       'PLEASE_SELECT_ITEM': 'Please select item',
-      'FEE_LOW': 'Low (Slow confirmation)',
-      'FEE_NORMAL': 'Normal (Average confirmation)',
-      'FEE_HIGH': 'High (Fast confirmation)',
+      'FEE_LOW': 'Low',
+      'FEE_NORMAL': 'Normal',
+      'FEE_HIGH': 'High',
       'FEE_CUSTOM': 'Custom fee',
       'MINIMUM_TIME': 'Min Time',
       'MAXIMUM_TIME': 'Max Time',
-      'MIN': 'Mins'
+      'MIN': 'min'
     },
     'PASSPHRASE_MODAL': {
       'PROVIDE_PASSPHRASE': 'Provide passphrase',
