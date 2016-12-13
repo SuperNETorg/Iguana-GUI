@@ -19,19 +19,6 @@ html {
     top: 0;
     width: 100%; /* override default bootstrap modal css */
 
-    /* preload flag svgs */
-    :after {
-      content: url(fonts/svg/flags/au.svg) url(fonts/svg/flags/bg.svg) url(fonts/svg/flags/br.svg) url(fonts/svg/flags/ca.svg)
-               url(fonts/svg/flags/ch.svg) url(fonts/svg/flags/cn.svg) url(fonts/svg/flags/cz.svg) url(fonts/svg/flags/dk.svg)
-               url(fonts/svg/flags/gb.svg) url(fonts/svg/flags/hk.svg) url(fonts/svg/flags/hr.svg) url(fonts/svg/flags/hu.svg)
-               url(fonts/svg/flags/id.svg) url(fonts/svg/flags/il.svg) url(fonts/svg/flags/in.svg) url(fonts/svg/flags/jp.svg)
-               url(fonts/svg/flags/kr.svg) url(fonts/svg/flags/mx.svg) url(fonts/svg/flags/my.svg) url(fonts/svg/flags/no.svg)
-               url(fonts/svg/flags/nz.svg) url(fonts/svg/flags/ph.svg) url(fonts/svg/flags/pl.svg) url(fonts/svg/flags/ro.svg)
-               url(fonts/svg/flags/ru.svg) url(fonts/svg/flags/se.svg) url(fonts/svg/flags/sg.svg) url(fonts/svg/flags/th.svg)
-               url(fonts/svg/flags/tr.svg) url(fonts/svg/flags/za.svg) url(fonts/svg/flags/eu.svg) url(fonts/svg/flags/us.svg);
-      display: none;
-      font-family: cryptocoins, icomoon;
-    }
     .app-background {
       height: 100%;
       left: 0;

@@ -12,7 +12,7 @@ exports.copyImages = function (buildMode) {
                  pngquant: true,
                  optipng: false,
                  zopflipng: true,
-                 jpegRecompress: false,
+                 jpegRecompress: true,
                  jpegoptim: true,
                  mozjpeg: true,
                  gifsicle: true,
@@ -22,6 +22,6 @@ exports.copyImages = function (buildMode) {
                .pipe(gulp.dest(buildPaths + '/' + paths.image.default));
   } else {
     return gulp.src(paths.image.default + '/*')
-               .pipe(gulp.dest(buildPaths + '/' + paths.image.default));
+               .pipe(gulp.dest(buildPaths + '/css/' + paths.image.default));
   }
 };

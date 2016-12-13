@@ -17,16 +17,13 @@ exports.indexHTML = function(buildMode, buildModeModifier) {
                    '</script>';
     prodInsertCSS = '<style>' +
                       '<!-- partial:' + paths.build[buildMode] + '/style.css --><!-- partial -->' +
-                      '<!-- partial:' + paths.build[buildMode] + '/css/responsive/auth.css --><!-- partial -->' +
-                      '<!-- partial:' + paths.build[buildMode] + '/css/responsive/dashboard.css --><!-- partial -->' +
                     '</style>';
   } else {
     prodInsertJS = '<script type="text/javascript" src="js/settings.js"></script>' +
                    '<script type="text/javascript" src="js/supported-coins-list.js"></script>' +
                    '<script type="text/javascript" src="all.js"></script>';
-    prodInsertCSS = '<link rel="stylesheet" href="style.css">\n' +
-                    '<link rel="stylesheet" href="css/responsive/auth.css">\n' +
-                    '<link rel="stylesheet" href="css/responsive/dashboard.css">\n';
+    prodInsertCSS = '<link rel="stylesheet" href="style.css">\n';
+
     if (buildModeModifier === 'electron') // electron patch
       prodInsertJS =  '<script>window.angular = require(\'angular\');</script>' +
                       '<script>if (typeof module === \'object\') { window.module = module; module = undefined; }</script>' +
