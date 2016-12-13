@@ -22,20 +22,6 @@ angular.module('IguanaGUIApp')
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
 
-    function switchLayoutMode() {
-      if (util.isMobile() && $state.current.name === 'dashboard.main' && $state.current.name !== 'dashboard.mobileTransactions') {
-        $state.go('dashboard.mobileCoins');
-      }
-      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
-        $state.go('dashboard.main');
-      }
-    }
-
-    switchLayoutMode();
-
-    angular.element($window).on('resize', function() {
-      switchLayoutMode();
-    });
 
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
@@ -50,12 +36,11 @@ angular.module('IguanaGUIApp')
     $scope.isIguana = isIguana;
     $rootScope.$state = $state;
     $scope.enabled = $auth.checkSession(true);
-
     // TODO: merge all dashboard data into a single object for caching
     $scope.currency = defaultCurrency;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.totalBalance = 0;
-    $scope.sideBarCoins;
+    $scope.sideBarCoins = [];
     $scope.txUnit = {
       loading: true,
       activeCoinBalance: 0,
@@ -65,8 +50,28 @@ angular.module('IguanaGUIApp')
     $scope.sideBarCoinsUnsorted = {};
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     $scope.addCoinButtonState = true;
-    $scope.disableRemoveCoin = dev.isDev && !isIguana ? false : true; // dev
+    $scope.disableRemoveCoin = dev.isDev && !isIguana; // dev
     $rootScope.background = false;
+    // receive coin updated logic
+    $scope.$receiveCoinInstance = {};
+    // add coin login modal updated logic
+    $scope.passphrase = '';
+    $scope.dev = dev;
+    $scope.coinsSelectedToAdd = [];
+    $scope.$modalInstance = {};
+    $scope.receivedObject = undefined;
+    // send coin updated logic
+    $scope.$sendCoinInstance = {};
+    $scope.openAddCoinModal = openAddCoinModal;
+    $scope.openAddCoinLoginModal = openAddCoinLoginModal;
+    $scope.openReceiveCoinModal = openReceiveCoinModal;
+    $scope.openSendCoinModal = openSendCoinModal;
+    $scope.setActiveCoin = setActiveCoin;
+    $scope.setTxUnitBalance = setTxUnitBalance;
+    $scope.removeCoin = removeCoin;
+    $scope.getActiveCoins = getActiveCoins;
+    $scope.switchLayoutMode = switchLayoutMode;
+    $rootScope.$on("$stateChangeStart", stateChangeStart);
 
     if (!$scope.coinsInfo) {
       constructAccountCoinRepeater(true, true);
@@ -78,35 +83,59 @@ angular.module('IguanaGUIApp')
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
-
       constructAccountCoinRepeater(true);
+      updateDashboardView(settings.dashboardUpdateTimout);
     }
 
-    // add coin login modal updated logic
-    $scope.passphrase = '';
-    $scope.dev = dev;
-    $scope.coinsSelectedToAdd = [];
-    $scope.$modalInstance = {};
-    $scope.receivedObject = undefined;
+    var modalInstance = {},
+        addCoinModal = {
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          size: 'lg',
+          controller: 'loginSelectCoinModalController',
+          templateUrl: 'partials/add-coin.html',
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
+        },
+        addCoinLoginModal = {
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'addCoinLoginModalController',
+          templateUrl: 'partials/add-coin-login.html',
+          appendTo: angular.element(document.querySelector('.add-coin-login-container')),
+          resolve: {
+            receivedObject: function () {
+              return $scope.receivedObject;
+            }
+          }
+        },
+        receiveCoinModal = {
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'receiveCoinModalController',
+          templateUrl: 'partials/receive-coin.html',
+          appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
+        },
+        sendCoinModal = {
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          controller: 'sendCoinModalController',
+          templateUrl: 'partials/send-coin.html',
+          appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
+        };
 
-    $scope.openAddCoinModal = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        size: 'lg',
-        controller: 'loginSelectCoinModalController',
-        templateUrl: 'partials/add-coin.html',
-        appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
-      });
+    // Modals start
+    function openAddCoinModal() {
+      modalInstance = $uibModal.open(addCoinModal);
 
       modalInstance.result.then(resultPromise);
 
-      $rootScope.$on('modal.dismissed', function(event, coins) {
-        resultPromise(coins);
-      });
+      $rootScope.$on('modal.dismissed', resultPromise);
 
-      function resultPromise(data) {
+      function resultPromise(event, coins) {
         $scope.receivedObject = util.getCoinKeys(util.reindexAssocArray($scope.getActiveCoins()));
 
         $auth.login(
@@ -114,28 +143,17 @@ angular.module('IguanaGUIApp')
           null,
           true
         )
-        .then(function(response) {
-          constructAccountCoinRepeater();
-        }, function(reason) {
-          console.log('request failed: ' + reason);
-        });
+          .then(
+            constructAccountCoinRepeater,
+            function(reason) {
+            console.log('request failed: ', reason);
+          });
       }
-    };
+    }
 
-    $scope.openAddCoinLoginModal = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        controller: 'addCoinLoginModalController',
-        templateUrl: 'partials/add-coin-login.html',
-        appendTo: angular.element(document.querySelector('.add-coin-login-container')),
-        resolve: {
-          receivedObject: function() {
-            return $scope.receivedObject;
-          }
-        }
-      });
+    function openAddCoinLoginModal() {
+      modalInstance = $uibModal.open(addCoinLoginModal);
+
       modalInstance.result.then(onDone);
 
       function onDone(receivedObject) {
@@ -143,44 +161,19 @@ angular.module('IguanaGUIApp')
           constructAccountCoinRepeater(); // TODO: fix, not effecient
         }
       }
-    };
+    }
 
-    // receive coin updated logic
-    $scope.$receiveCoinInstance = {};
+    function openReceiveCoinModal() {
+      modalInstance = $uibModal.open(receiveCoinModal);
+    }
 
-    $scope.openReceiveCoinModal = function() {
-      var receiveCoinInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        controller: 'receiveCoinModalController',
-        templateUrl: 'partials/receive-coin.html',
-        appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
-      });
-    };
+    function openSendCoinModal() {
+      modalInstance = $uibModal.open(sendCoinModal);
+    }
+    // Modals end
 
-    $scope.timeAgo = function(element) {
-      $datetime.timeAgo(element);
-    };
-
-    // send coin updated logic
-    $scope.$sendCoinInstance = {};
-
-    $scope.openSendCoinModal = function() {
-      var sendCoinInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        controller: 'sendCoinModalController',
-        templateUrl: 'partials/send-coin.html',
-        appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
-      });
-    };
-
-    updateDashboardView(settings.dashboardUpdateTimout);
-
-    $scope.setActiveCoin = function(item) {
-      $storage['iguana-active-coin'] = { id: item.id };
+    function setActiveCoin(item) {
+      $storage['iguana-active-coin'] = {id: item.id};
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
@@ -188,14 +181,14 @@ angular.module('IguanaGUIApp')
       if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
       }
-    };
+    }
 
-    $scope.setTxUnitBalance = function(item) {
+    function setTxUnitBalance(item) {
       $scope.txUnit.activeCoinBalance = item ? item.coinValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].coinValue;
       $scope.txUnit.activeCoinBalanceCurrency = item ? item.currencyValue : $scope.sideBarCoinsUnsorted[$scope.activeCoin].currencyValue;
-    };
+    }
 
-    $scope.removeCoin = function(coinId) {
+    function removeCoin(coinId) {
       if (confirm($filter('lang')('DASHBOARD.ARE_YOU_SURE_YOU_WANT') + ' ' + $scope.sideBarCoinsUnsorted[coinId].name) === true) {
         $storage['iguana-' + coinId + '-passphrase'] = { 'logged': 'no' };
 
@@ -211,11 +204,11 @@ angular.module('IguanaGUIApp')
         checkAddCoinButton();
         updateTotalBalance();
       }
-    };
+    }
 
-    $scope.getActiveCoins = function() {
+    function getActiveCoins() {
       return $storage['iguana-login-active-coin'];
-    };
+    }
 
     function constructAccountCoinRepeater(isFirstRun, renderNow) {
       var index = 0;
@@ -238,7 +231,7 @@ angular.module('IguanaGUIApp')
 
       coinBalances = [];
 
-      for (var i=0; i < coinsSelectedByUser.length; i++) {
+      for (var i = 0; i < coinsSelectedByUser.length; i++) {
         if (isFirstRun) {
           _sideBarCoins[coinsSelectedByUser[i]] = {
             id: coinsSelectedByUser[i],
@@ -254,11 +247,11 @@ angular.module('IguanaGUIApp')
 
         if (!renderNow) {
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-              .then(function(response) {
-                constructAccountCoinRepeaterCB(response[0], response[1]);
-              }, function(reason) {
-                console.log('request failed: ' + reason);
-              });
+            .then(function(response) {
+              constructAccountCoinRepeaterCB(response[0], response[1]);
+            }, function(reason) {
+              console.log('request failed: ' + reason);
+            });
         }
       }
     }
@@ -311,7 +304,7 @@ angular.module('IguanaGUIApp')
         }
       }
 
-      $scope.addCoinButtonState = _coinsLeftToAdd > 0 ? true : false;
+      $scope.addCoinButtonState = _coinsLeftToAdd > 0;
     }
 
     function updateTotalBalance() {
@@ -335,11 +328,11 @@ angular.module('IguanaGUIApp')
 
       $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
       $api.listTransactions(defaultAccount, $scope.activeCoin)
-        .then(function(response) {
-          constructTransactionUnitRepeaterCB(response);
-        }, function(reason) {
-          console.log('request failed: ' + reason);
-        });
+        .then(
+          constructTransactionUnitRepeaterCB,
+          function(reason) {
+            console.log('request failed: ' + reason);
+          });
     }
 
     // new tx will appear at the top of the list
@@ -354,7 +347,7 @@ angular.module('IguanaGUIApp')
           $scope.txUnit.loading = false;
         }
 
-        for (var i=0; i < transactionsList.length; i++) {
+        for (var i = 0; i < transactionsList.length; i++) {
           $scope.txUnit.transactions[i] = {};
 
           if (transactionsList[i].txid) {
@@ -399,10 +392,9 @@ angular.module('IguanaGUIApp')
                   txStatus = $filter('lang')('DASHBOARD.RECEIVED');
                 }
               }
-            }
 
-            if (transactionDetails) {
-              if (Number(transactionDetails.confirmations) && Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
+              if (Number(transactionDetails.confirmations) &&
+                  Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
                 txStatus = $filter('lang')('DASHBOARD.IN_PROCESS');
                 txCategory = 'process';
               }
@@ -422,7 +414,7 @@ angular.module('IguanaGUIApp')
 
               if (txAmount) {
                 // mobile only
-                $scope.txUnit.transactions[i].switchStyle = txAmount.toString().length > 8 ? true : false;
+                $scope.txUnit.transactions[i].switchStyle = txAmount.toString().length > 8;
               }
 
               $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
@@ -451,8 +443,18 @@ angular.module('IguanaGUIApp')
       }, timeout * 1000);
     }
 
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    function stateChangeStart() {
       $interval.cancel(vars.dashboardUpdateRef);
-    });
+    }
+
+    function switchLayoutMode() {
+      if (util.isMobile() && $state.current.name === 'dashboard.main' &&
+          $state.current.name !== 'dashboard.mobileTransactions') {
+        $state.go('dashboard.mobileCoins');
+      }
+      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
+        $state.go('dashboard.main');
+      }
+    }
   }
 ]);

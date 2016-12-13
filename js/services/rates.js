@@ -19,11 +19,11 @@ angular.module('IguanaGUIApp')
       } else {
         return false;
       }
-    }
+    };
 
     this.getRate = function(coin) {
       this.updateRates(coin);
-    }
+    };
 
     this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
       var allDashboardCoins = [],
@@ -32,10 +32,11 @@ angular.module('IguanaGUIApp')
           defaultCoin = '',
           defaultCurrency = this.getCurrency() ? this.getCurrency().name : null || settings.defaultCurrency,
           self = this,
-          deferred = $q.defer();
+          deferred = $q.defer(),
+          storageKey;
 
       for (var key in vars.coinsInfo) {
-        var storageKey = 'iguana-' + key + '-passphrase';
+        storageKey = 'iguana-' + key + '-passphrase';
 
         if ($storage[storageKey] && $storage[storageKey].logged === 'yes') {
           totalCoins++;
@@ -50,7 +51,7 @@ angular.module('IguanaGUIApp')
         var isUpdateTriggered = false;
 
         for (var key in vars.coinsInfo) {
-          var storageKey = 'iguana-' + key + '-passphrase';
+          storageKey = 'iguana-' + key + '-passphrase';
 
           if (this.ratesUpdateElapsedTime(key.toUpperCase()) >= ratesUpdateTimeout || !$storage['iguana-rates-' + key]) {
             if ($storage[storageKey] && $storage[storageKey].logged === 'yes') {
@@ -131,10 +132,10 @@ angular.module('IguanaGUIApp')
           'forceUpdate': true
         }; // force currency update
       }
-    }
+    };
 
     this.getCurrency = function() {
       return $storage['iguana-currency'];
-    }
+    };
   }
 ]);

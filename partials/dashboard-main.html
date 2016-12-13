@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="partials/dashboard-main.html">
-  <div class="main-content container-fluid" ng-hide="!enabled">
+  <div class="main-content container-fluid" ng-hide="!enabled" resize="switchLayoutMode()">
     <!-- temp out of sync notice -->
     <div id="temp-out-of-sync" class="hidden" style="color:red;text-aling:center;font-weight:bold;font-size:1.2em"></div>
     <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
@@ -10,7 +10,8 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <aside class="coins unselectable col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
+    <aside class="coins unselectable col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left"
+           ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="row">
         <div class="account-coins-repeater">
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
@@ -18,7 +19,8 @@
                ng-class="{ 'active': (activeCoin === item.id || activeCoin === $index) && !util.isMobile() }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'">
             <spinner visibility="item.loading"></spinner>
-            <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)" ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
+            <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
+                 ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
             <div class="clickable-area" ng-click="util.isMobile() ? setActiveCoin(item) : (activeCoin !== item.id ? setActiveCoin(item) : null)">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
@@ -74,10 +76,9 @@
               </div>
               <div class="hash">{{ item.hash }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-              <div class="timestamp unselectable time-ago two-lines"
-                ng-init="item.txId ? timeAgo('.' + item.txId + ' .time-ago') : null">
-                <div class="timestamp-date time-ago-date">{{ item.timestampDate }}</div>
-                <div class="timestamp-time time-ago-time">{{ item.timestampTime }}</div>
+              <div class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
+                <div timeago-date="item.timestampDate" class="timestamp-date time-ago-date"></div>
+                <div timeago-time="item.timestampTime" class="timestamp-time time-ago-time"></div>
               </div>
             </div>
           </div>
