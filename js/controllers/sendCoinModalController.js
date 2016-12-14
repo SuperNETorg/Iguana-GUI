@@ -16,32 +16,16 @@ angular.module('IguanaGUIApp')
   '$http',
   function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message, $http) {
     $scope.isIguana = $storage['isIguana'];
-    $scope.close = close;
     $scope.util = util;
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
-
-    util.bodyBlurOn();
-
+    $scope.checkModel = {};
+    $scope.radioModel = true;
     $scope.dropDown = {};
-
-    function checkFeeCount(fee) {
-      var coin = fee * 1024 / 100000000, // satoshi per kb
-          amount = $scope.sendCoin.currencyRate * coin;
-
-      return {
-        'coin': coin,
-        'amount': amount
-      };
-    }
-
-    // directive callback function
-    $scope.dropDown.callback = function(item) {
-      if ($scope.dropDown.item) { // TODO: use ng-class
-        $scope.sendCoin.fee = $scope.dropDown.item.coin;
-        angular.element(document.querySelectorAll('.dropdown-button-style')).removeClass('validation-field-error');
+    $scope.change = function () {
+      if (Object.keys($scope.checkModel).length) {
+        $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin + $scope.sendCoin.coinId;
+        $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount + $scope.sendCoin.currency;
       }
-
-      $scope.dropDown.fromCallback = 'callback received ' + angular.toJson(item);
     };
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
@@ -101,16 +85,15 @@ angular.module('IguanaGUIApp')
       initSendCoinModal(response[0], response[1]);
       // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
       $api.bitcoinFees().then(function (response) {
-        $api.bitcoinFeesAll().then(function(responseAll){
-
+        $api.bitcoinFeesAll().then(function(responseAll) {
           var coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
               currencyName = $storage['iguana-currency']['name'];
 
           $api.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
-            var coinCurrencyRate = currency[0][coinName][currencyName],
-                fastestFee = checkFeeCount(response.data.fastestFee),
+            var fastestFee = checkFeeCount(response.data.fastestFee),
                 halfHourFee = checkFeeCount(response.data.halfHourFee),
-                hourFee = checkFeeCount(response.data.hourFee);
+                hourFee = checkFeeCount(response.data.hourFee),
+                coinCurrencyRate = currency[0][coinName][currencyName];
 
             if ($scope.activeCoin === 'btc') {
               var feeLowTimeMin = '', feeLowTimeMax = '', feeNormalTimeMin = '',
@@ -139,47 +122,43 @@ angular.module('IguanaGUIApp')
               $scope.dropDown.items = [{
                 id: 0,
                 name: $filter('lang')('SEND.FEE_MIN'),
-                coin: $scope.sendCoin.minFee.toFixed(15),
-                amount: $scope.sendCoin.minFee.toFixed(15),
+                coin: $scope.sendCoin.minFee.toFixed(7),
+                amount: (coinCurrencyRate * $scope.sendCoin.minFee).toFixed(12),
                 feeMinTime: minimalFeeMin,
-                feeMaxTime: minimalFeeMax
+                feeMaxTime: minimalFeeMax,
               }, {
                 id: 1,
                 name: $filter('lang')('SEND.FEE_LOW'),
-                coin: hourFee.coin,
-                amount: hourFee.amount.toFixed(15),
+                coin: hourFee.coin.toFixed(7),
+                amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
                 feeMinTime: feeLowTimeMin,
                 feeMaxTime: feeLowTimeMax
               }, {
                 id: 2,
                 name: $filter('lang')('SEND.FEE_NORMAL'),
-                coin: halfHourFee.coin.toFixed(15),
-                amount: halfHourFee.amount.toFixed(15),
+                coin: halfHourFee.coin.toFixed(7),
+                amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
                 feeMinTime: feeNormalTimeMin,
                 feeMaxTime: feeNormalTimeMax
               }, {
                 id: 3,
                 name: $filter('lang')('SEND.FEE_HIGH'),
-                coin: fastestFee.coin.toFixed(15),
-                amount: fastestFee.amount.toFixed(15),
+                coin: fastestFee.coin.toFixed(7),
+                amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
                 feeMinTime: feeHighTimeMin,
                 feeMaxTime: feeHighTimeMax
               }];
-
-              $scope.dropDown.item = $scope.dropDown.items[0];
             } else {
               $scope.dropDown.items = [{
                 id: 0,
                 name: $filter('lang')('SEND.FEE_MIN'),
-                text: $scope.sendCoin.minFee + ' ' + $scope.sendCoin.coinId + ' = $' + $filter('decimalPlacesFormat')($scope.sendCoin.minFee, 'currency'),
-                coin: $scope.sendCoin.minFee.toFixed(15),
-                amount: $scope.sendCoin.minFee.toFixed(15),
+                coin: $scope.sendCoin.minFee.toFixed(7),
+                amount: $scope.sendCoin.minFee.toFixed(7),
                 feeMinTime: '',
                 feeMaxTime: ''
               }, {
                 id: 1,
                 name: $filter('lang')('SEND.FEE_CUSTOM'),
-                text: '',
                 coin: '',
                 amount: '',
                 feeMinTime: '',
@@ -188,7 +167,7 @@ angular.module('IguanaGUIApp')
 
               $scope.dropDown.item = $scope.dropDown.items[0];
             }
-          });
+          }.bind(this));
         }.bind(this));
       }.bind(this));
 
@@ -297,6 +276,16 @@ angular.module('IguanaGUIApp')
       }
     };
 
+    function checkFeeCount(fee) {
+      var coin = fee * 1024 / 100000000, // satoshi per kb
+        amount = $scope.sendCoin.currencyRate * coin;
+
+      return {
+        'coin': coin,
+        'amount': amount
+      };
+    }
+
     function execSendCoinCall() {
       var setTxFeeResult = false,
           txDataToSend = {
@@ -351,7 +340,7 @@ angular.module('IguanaGUIApp')
 
     $scope.close = function() {
       $uibModalInstance.dismiss();
-    }
+    };
 
     $scope.$on('$destroy', function() {
       util.bodyBlurOff();

@@ -45,27 +45,29 @@
             </div>
             <div class="pop-detail crncy">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
-              <segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>
-              <!--<li ng-repeat="item in dropDown.items">
-                <a ng-click="select(item)"><strong>{{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMinTime }} {{ 'SEND.MIN' | lang }} - {{ 'SEND.MINIMUM_TIME' | lang }} {{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</strong><br/>{{ item.text }}</a>
-              </li>-->
-              <!--<div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-primary" ng-repeat="item in dropDown.items">
-                  <a  type="radio" name="options" id="option1" autocomplete="off" checked ng-click="select(item)"><strong>{{ item.name }}</strong><br/>{{ item.feeMaxTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</a>
+              <!--<segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>-->
+              <div class="btn-group segment-select">
+                <label class="btn btn-success item-segment-select"
+                       ng-repeat="item in dropDown.items"
+                       ng-model="checkModel.type"
+                       ng-click="change()"
+                       uib-btn-radio="'{{ item }}'" >
+                  <strong>{{ item.name }}</strong>
+                  <br/>
+                  <span class="second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
-              </div>-->
-
-              <div class="custom-fee-inputs" ng-hide="!(dropDown.item.name =='Custom fee')">
-                <input type="text" min="0" placeholder="0" class="tx-fee" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" ng-model="sendCoin.fee" ng-keyup="sendCoinKeyingFee()" number-only />
+              </div>
+              <div class="custom-fee-inputs" ng-hide="!checkModel.type">
+                <input class="tx-fee" value="{{$eval(checkModel.type).coin}}{{sendCoin.coinId}}" disabled type="text" ng-model="sendCoin.fee"  />
                 <span class="eq-sign">=</span>
-                <input type="text" min="0" class="tx-fee-currency" ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }" placeholder="0 {{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" ng-keyup="sendCoinKeyingFeeCurrency()" number-only />
+                <input class="tx-fee-currency" value="{{$eval(checkModel.type).amount}}{{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" disabled type="text"/>
               </div>
             </div>
             <div class="pop-detail">
               <h4>{{ 'SEND.NOTE_OPTIONAL' | lang }}:</h4>
               <textarea class="tx-note" ng-model="sendCoin.note"></textarea>
             </div>
-              <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+            <button class="btn-next orange-gradient" ng-click="validateSendCoinForm()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
           </div>
         </div>
       </div>

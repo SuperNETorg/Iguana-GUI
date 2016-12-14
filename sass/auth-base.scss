@@ -375,6 +375,11 @@ $dropdown-button-style-color: #5A606C;
   }
 }
 .custom-fee-inputs {
+  input {
+    background: white;
+  }
+}
+.custom-fee-inputs {
   margin-top: 15px;
 }
 .pay-dtl h3 {
@@ -391,5 +396,16 @@ $dropdown-button-style-color: #5A606C;
   color:#fe4f09;
 }
 .item-segment-select .second-fee-text {
-  font-size:15px;
+  font-size:14px;
+}
+.segment-select .active ,.segment-select .active:hover {
+  background-color: #fe4f09;
+  color: white;
+  border:1px solid #fe4f09;
+}
+.segment-select .item-segment-select:active,
+.segment-select .item-segment-select:focus {
+  background-color: white;
+  border:1px solid #fe4f09;
+  color:#fe4f09;
 }
