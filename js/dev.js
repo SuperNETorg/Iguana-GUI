@@ -3,11 +3,12 @@
  * info: debug purposes
  */
 
-  dev = new Array();
+  dev = [];
   dev.isDev = true; // set to true if you want to disable passphrase verification in iguana env
   dev.showSyncDebug = false;
   dev.showConsoleMessages = true;
   dev.showAllCoindCoins = false;
+  dev.clearConsoleErrors = true;
 
   // add your coind passphrases her one per each coin
   // on a login step they will be used as as source for walletpassphrase sequence

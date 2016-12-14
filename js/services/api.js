@@ -452,6 +452,11 @@ angular.module('IguanaGUIApp')
           }
         }
 
+        if ((response.status == -1 || response.status == 502) &&
+              dev.isDev && dev.clearConsoleErrors) {
+          console.clear();
+        }
+
         if (coinsKeys.length == _index) {
           self.checkLoopEnd(_index);
           deferred.resolve(self.coinsInfo);

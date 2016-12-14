@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('IguanaGUIApp')
-.controller('loginSelectCoinModalController', [
+.controller('selectCoinModalController', [
   '$scope',
   '$state',
   '$uibModalInstance',
@@ -11,11 +11,9 @@ angular.module('IguanaGUIApp')
   '$rootScope',
   '$timeout',
   'vars',
-  '$filter',
-  '$message',
-  '$q',
+  'type',
   function($scope, $state, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars) {
+            $rootScope, $timeout, vars, type) {
 
     $scope.isIguana = $storage['isIguana'];
     $scope.coinSearchModel = undefined;
@@ -27,10 +25,10 @@ angular.module('IguanaGUIApp')
     ];
     $storage['iguana-login-active-coin'] = {};
 
-    $scope.open = open;
     $scope.close = close;
-    $scope.next = next;
     $scope.clickOnCoin = clickOnCoin;
+    $scope.getType = getType;
+    $scope.type = type;
 
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
@@ -66,6 +64,10 @@ angular.module('IguanaGUIApp')
       return result;
     }
 
+    function getType() {
+      return $scope.type;
+    }
+
     function constructCoinRepeater() {
       var index = 0,
           coinsArray = [],
@@ -83,7 +85,13 @@ angular.module('IguanaGUIApp')
           ) {
             if (
               ($storage['isIguana'] && coinsInfo[key].iguana === true) ||
-              (!$storage['isIguana'] && (coinsInfo[key].connection === true || (dev && dev.isDev && dev.showAllCoindCoins)))
+              (
+                !$storage['isIguana'] &&
+                (
+                  coinsInfo[key].connection === true ||
+                  (dev && dev.isDev && dev.showAllCoindCoins)
+                )
+              )
             ) {
               coinsArray.push({
                 'id': key.toUpperCase(),
@@ -127,16 +135,11 @@ angular.module('IguanaGUIApp')
       }
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
-      $state.go('login.step2');
       $uibModalInstance.close(constructCoinRepeater());
     }
 
     function close() {
       $uibModalInstance.dismiss(constructCoinRepeater());
-    }
-
-    function next() {
-      $uibModalInstance.close(constructCoinRepeater());
     }
 
     function getPassphrase(coinId) {
