@@ -92,7 +92,6 @@ angular.module('IguanaGUIApp')
       }
 
     function openLoginCoinModal() {
-      debugger
       selectCoinModal.resolve = {
         'type': function () { return 'login'; }
       };
