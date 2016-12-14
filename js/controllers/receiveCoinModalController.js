@@ -71,4 +71,5 @@ angular.module('IguanaGUIApp')
     $scope.$on('$destroy', function() {
       util.bodyBlurOff();
     });
-  }]);
+  }
+]);

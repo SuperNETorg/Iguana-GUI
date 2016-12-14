@@ -84,16 +84,18 @@ angular.module('IguanaGUIApp')
     }
 
     function stateChangeStart() {
-        if ($state.current.name === 'login') {
-          $rootScope.background = false;
-        } else if ($state.current.name === 'login.step2') {
-          $rootScope.background = true;
-        }
+      if ($state.current.name === 'login') {
+        $rootScope.background = false;
+      } else if ($state.current.name === 'login.step2') {
+        $rootScope.background = true;
       }
+    }
 
     function openLoginCoinModal() {
       selectCoinModal.resolve = {
-        'type': function () { return 'login'; }
+        'type': function() {
+          return 'login';
+        }
       };
       var modalInstance = $uibModal.open(selectCoinModal);
 
@@ -101,6 +103,7 @@ angular.module('IguanaGUIApp')
 
       function resultPromise(event, data) {
         var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
         $scope.coins = data;
         $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
         $state.go('login.step2');
@@ -111,7 +114,9 @@ angular.module('IguanaGUIApp')
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
       selectCoinModal.resolve = {
-        'type': function () { return 'signup'; }
+        'type': function() {
+          return 'signup';
+        }
       };
       var modalInstance = $uibModal.open(selectCoinModal);
 
@@ -145,8 +150,7 @@ angular.module('IguanaGUIApp')
     }
 
     function isChanged() {
-      $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT')
-        .replace('{{ count }}', $scope.isIguana ? '24' : '12');
+      $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
       $scope.isChanged = true;
     }
   }

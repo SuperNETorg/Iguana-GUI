@@ -21,7 +21,8 @@ angular.module('IguanaGUIApp')
     $scope.checkModel = {};
     $scope.radioModel = true;
     $scope.dropDown = {};
-    $scope.change = function () {
+
+    $scope.change = function() {
       if (Object.keys($scope.checkModel).length) {
         $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin + $scope.sendCoin.coinId;
         $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount + $scope.sendCoin.currency;
@@ -84,7 +85,7 @@ angular.module('IguanaGUIApp')
     $api.getBalance(defaultAccount, $scope.activeCoin).then(function(response) {
       initSendCoinModal(response[0], response[1]);
       // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
-      $api.bitcoinFees().then(function (response) {
+      $api.bitcoinFees().then(function(response) {
         $api.bitcoinFeesAll().then(function(responseAll) {
           var coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
               currencyName = $storage['iguana-currency']['name'];
@@ -100,22 +101,22 @@ angular.module('IguanaGUIApp')
                   feeNormalTimeMax = '', feeHighTimeMin = '', feeHighTimeMax = '',
                   minimalFeeMin = '', minimalFeeMax = '';
 
-              responseAll.data.fees.forEach(function (el) {
-                if(el.maxFee == 0) {
+              responseAll.data.fees.forEach(function(el) {
+                if (el.maxFee === 0) {
                   minimalFeeMin = el.minMinutes;
                   minimalFeeMax = el.maxMinutes;
                 }
-                if (el.maxFee == response.data.fastestFee) {
-                  feeHighTimeMin=el.minMinutes;
-                  feeHighTimeMax=el.maxMinutes;
+                if (el.maxFee === response.data.fastestFee) {
+                  feeHighTimeMin = el.minMinutes;
+                  feeHighTimeMax = el.maxMinutes;
                 }
-                if(el.maxFee == response.data.halfHourFee) {
-                  feeNormalTimeMin=el.minMinutes;
-                  feeNormalTimeMax=el.maxMinutes;
+                if (el.maxFee === response.data.halfHourFee) {
+                  feeNormalTimeMin = el.minMinutes;
+                  feeNormalTimeMax = el.maxMinutes;
                 }
-                if(el.maxFee == response.data.hourFee) {
-                  feeLowTimeMin=el.minMinutes;
-                  feeLowTimeMax=el.maxMinutes;
+                if (el.maxFee === response.data.hourFee) {
+                  feeLowTimeMin = el.minMinutes;
+                  feeLowTimeMax = el.maxMinutes;
                 }
               });
 
@@ -125,7 +126,7 @@ angular.module('IguanaGUIApp')
                 coin: $scope.sendCoin.minFee.toFixed(7),
                 amount: (coinCurrencyRate * $scope.sendCoin.minFee).toFixed(12),
                 feeMinTime: minimalFeeMin,
-                feeMaxTime: minimalFeeMax,
+                feeMaxTime: minimalFeeMax
               }, {
                 id: 1,
                 name: $filter('lang')('SEND.FEE_LOW'),
@@ -250,7 +251,7 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.valid.fee.empty = false;
         $scope.sendCoin.valid.fee.notEnoughMoney = false;
       }
-      if ( $scope.dropDown.item === null ) { // TODO: ng-class
+      if ($scope.dropDown.item === null) { // TODO: ng-class
         angular.element(document.querySelectorAll('.dropdown-button-style')).addClass('validation-field-error');
       }
       // final check

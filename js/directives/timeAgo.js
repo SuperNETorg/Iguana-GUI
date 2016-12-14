@@ -1,16 +1,15 @@
 angular.module('IguanaGUIApp')
-.directive('timeago', function ($window, $document, $filter) {
-
-  return function (scope, element) {
+.directive('timeago', function($window, $document, $filter) {
+  return function(scope, element) {
     var children = element[0].children,
         threshold = settings.thresholdTimeAgo,
-        displayText = '';
-    var date = scope.$eval(children[0].getAttribute('timeago-date')),
-        time = scope.$eval(children[1].getAttribute('timeago-time'));
-    var dateTime = date + ' ' + time;
-    var original = new Date(dateTime),
-        current = new Date();
-    var dayTemplate = 24 * 60 * 60 * 1000,
+        displayText = '',
+        date = scope.$eval(children[0].getAttribute('timeago-date')),
+        time = scope.$eval(children[1].getAttribute('timeago-time')),
+        dateTime = date + ' ' + time,
+        original = new Date(dateTime),
+        current = new Date(),
+        dayTemplate = 24 * 60 * 60 * 1000,
         timeTemplate = 60 * 60 * 1000,
         minuteTemplate = 60 * 1000,
         difference = current - original;

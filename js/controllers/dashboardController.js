@@ -22,7 +22,6 @@ angular.module('IguanaGUIApp')
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
 
-
     var isIguana = $storage['isIguana'],
         coinsInfo = [],
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
@@ -105,7 +104,7 @@ angular.module('IguanaGUIApp')
           templateUrl: 'partials/add-coin-login.html',
           appendTo: angular.element(document.querySelector('.add-coin-login-container')),
           resolve: {
-            receivedObject: function () {
+            receivedObject: function() {
               return $scope.receivedObject;
             }
           }
@@ -143,9 +142,9 @@ angular.module('IguanaGUIApp')
           null,
           true
         )
-          .then(
-            constructAccountCoinRepeater,
-            function(reason) {
+        .then(
+          constructAccountCoinRepeater,
+          function(reason) {
             console.log('request failed: ', reason);
           });
       }
@@ -173,7 +172,7 @@ angular.module('IguanaGUIApp')
     // Modals end
 
     function setActiveCoin(item) {
-      $storage['iguana-active-coin'] = {id: item.id};
+      $storage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
@@ -247,11 +246,11 @@ angular.module('IguanaGUIApp')
 
         if (!renderNow) {
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-            .then(function(response) {
-              constructAccountCoinRepeaterCB(response[0], response[1]);
-            }, function(reason) {
-              console.log('request failed: ' + reason);
-            });
+              .then(function(response) {
+                constructAccountCoinRepeaterCB(response[0], response[1]);
+              }, function(reason) {
+                console.log('request failed: ' + reason);
+              });
         }
       }
     }
@@ -328,11 +327,11 @@ angular.module('IguanaGUIApp')
 
       $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
       $api.listTransactions(defaultAccount, $scope.activeCoin)
-        .then(
-          constructTransactionUnitRepeaterCB,
-          function(reason) {
-            console.log('request failed: ' + reason);
-          });
+          .then(
+            constructTransactionUnitRepeaterCB,
+            function(reason) {
+              console.log('request failed: ' + reason);
+            });
     }
 
     // new tx will appear at the top of the list
