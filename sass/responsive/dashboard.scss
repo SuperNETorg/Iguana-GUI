@@ -6,15 +6,12 @@
 
 body {
   @media screen and (max-width: 1366px) {
-    .dashboard .coins {
-      min-width: 210px;
-    }
     .dashboard .transactions-list-repeater .item {
       .hash {
         max-width: 338px;
         overflow: hidden;
         position: relative;
-        top: 6px;
+        top: 0.4em;
       }
       .hash:before {
         content: '';
@@ -146,9 +143,6 @@ body {
                       margin-left: -0.36em;
                       @include margin-top-bottom(0.2em);
 
-                      .icon {
-
-                      }
                       .name {
                         font-size: 0.72em;
                         margin-top: 1.1em;
@@ -253,23 +247,115 @@ body {
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
-    .dashboard {
-      .top-menu {
-        padding: 0 0 19px;
+    .navbar {
+      padding-left: 1em;
+      padding-right: 1em;
 
-        .item {
-          margin: 0 15px;
-          top: 20px;
+      .clearfix {
+        padding-top: 4px;
 
-          .text {
-            margin-top: 0;
-            position: relative;
-            top: -8px;
+        .navbar-header {
+          .navbar-brand {
+            color: $dashboard-navbar-color;
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-left: 3px;
+          }
+          .lnk-logout {
+            color: #AFB0B5;
+          }
+        }
+        .top {
+          border-top: 2px solid $dashboard-top-border-color;
+
+          .navbar-nav {
+            margin-bottom: 0.52em;
+
+            .item {
+              @include margin-left-right(0px);
+              font-size: 1.35em;
+
+              .text {
+                height: 2.35em;
+                line-height: 2em;
+                padding: 0 0.9em;
+              }
+              .border {
+                width: 103%;
+
+                margin-left: 0;
+              }
+            }
+            .item:not(.active) {
+              .text {
+                color: #AFB0B5;
+                font-weight: 400;
+              }
+            }
           }
         }
       }
-      .top {
-        border-top: 2px solid $dashboard-top-border-color;
+    }
+    .dashboard {
+      .main-content {
+        margin: auto 2px;
+
+        .balance-block {
+          .label {
+            font-size: 1.02em;
+          }
+          .balance {
+            line-height: 1em;
+          }
+        }
+      }
+      /** Left Sidebar */
+      .coins {
+        .account-coins-repeater {
+          .item {
+            padding: 1.54em;
+
+            .coin {
+              font-size: 1.3em;
+              margin-left: -0.36em;
+              @include margin-top-bottom(0.4em);
+
+              .icon {
+                font-size: 2.8em;
+              }
+              .name {
+                font-size: 0.72em;
+                margin-top: 1.4em;
+                margin-left: 0.4em;
+              }
+            }
+            .balance {
+              font-weight: 900;
+              margin-top: 1.3em;
+              margin-bottom: 0.8em;
+              margin-right: 0.3em;
+
+              .coin-value {
+                font-size: 1.5em;
+              }
+              .currency-value {
+                color: #6B6B6D;
+                font-size: 1.065em;
+              }
+            }
+          }
+        }
+      }
+      /** Transaction Bar */
+      .transactions-unit {
+        .top-bar {
+          padding: 2.4em 2.6em 1.4em 2.6em;
+
+          .action-buttons {
+            margin-left: 0.3em;
+            margin-top: 1.6em;
+          }
+        }
       }
     }
     .account-coins-repeater .item .coin .name:before {
@@ -279,9 +365,6 @@ body {
       .app-container-inner {
         .dashboard-main {
           .dashboard {
-            .navbar {
-
-            }
             .main-content {
               /*  dashboard transactions bar */
               .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
@@ -345,7 +428,8 @@ body {
     }
     .dashboard-main .dashboard .balance-block,
     .dashboard .currency-content {
-      margin-top: 120px;
+      margin-top: 10em;
+      @include margin-left-right(auto);
     }
     .account-coins-repeater .item.active:after {
       display: none;

@@ -8,7 +8,7 @@
     </header>
     <div class="form-content">
       <div class="coins-title">
-        {{ 'ADD_COIN.SELECT_CREATED_WALLET_TYPE' | lang }}
+        {{ ( getType() == 'login' ? 'ADD_COIN.SELECT_LOGIN_WALLET' : 'ADD_COIN.SELECT_CREATED_WALLET' ) | lang }}
       </div>
       <div class="quick-search col-xs-12">
           <i class="icon bi_tool-magnifier"></i>

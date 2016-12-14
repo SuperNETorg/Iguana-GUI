@@ -122,6 +122,10 @@
   margin-top: $size;
   margin-bottom: $size;
 }
+@mixin margin-left-right($size) {
+  margin-left: $size;
+  margin-right: $size;
+}
 
 @mixin absolute-horizontal-center {
   left: 15px;

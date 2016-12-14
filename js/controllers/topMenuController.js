@@ -14,14 +14,13 @@ angular.module('IguanaGUIApp')
 
     var topMenu = document.getElementById('top-menu'),
         element,
-        isMobile = util.isMobile(),
         item,
         bundClRect,
         itemsParent = topMenu.querySelector('.top-menu'),
         items = topMenu.querySelectorAll('.item');
 
     angular.element(document.body).bind("scroll", function() {
-      if (isMobile) {
+      if ($scope.isMobile) {
         element = document.querySelectorAll('.main-content, .currency-content');
         if (util.getElementOffset(element[0]).top  < -270) {
           angular.element(topMenu).addClass('hidden');
@@ -30,12 +29,8 @@ angular.module('IguanaGUIApp')
         }
       }
     });
-    angular.element($window).on('resize', function() {
-      isMobile = util.isMobile();
-    });
-
     $scope.clickLeft = function() {
-      if (isMobile) {
+      if ($scope.isMobile) {
         if (window.innerWidth < itemsParent.offsetWidth) {
           for (var i = 0; items.length > i; i++) {
             bundClRect = items[i].getBoundingClientRect();
@@ -52,7 +47,7 @@ angular.module('IguanaGUIApp')
     };
 
     $scope.clickRight = function() {
-      if (isMobile) {
+      if ($scope.isMobile) {
         if (window.innerWidth < itemsParent.offsetWidth) {
           for (var i = items.length - 1; 0 <= i; i--) {
             bundClRect = items[i].getBoundingClientRect();

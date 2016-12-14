@@ -37,7 +37,9 @@
         <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
       </div>
     </aside>
-    <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right" ng-hide="$state.current.name === 'dashboard.mobileCoins'">
+    <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right"
+         ng-hide="$state.current.name === 'dashboard.mobileCoins'"
+         ng-style="!isMobile ? ({'width': (windowWidth - 460) + 'px'}) : {}">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>

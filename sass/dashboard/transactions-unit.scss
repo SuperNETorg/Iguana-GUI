@@ -6,7 +6,7 @@
 @import '../dev.scss';
 
 $txunit-item-receive-amount-color: #27C26F;
-$txunit-item-progress-icon-color: #CBCFD3;
+$txunit-item-progress-icon-color: #BCBEC4;
 $txunit-item-progress-amount-color: #0082FF;
 $txunit-item-progress-icon-before-color: #2092FE;
 $transactions-list-repeater-item: #F6FAFF;
@@ -25,7 +25,8 @@ $transactions-list-repeater-item: #F6FAFF;
     .loader {
       display: block;
       height: 95px;
-      left: -10px;
+      left: 0.5em;
+      top: 0;
       position: absolute;
       transform: scale(0.8);
       z-index: 10;
@@ -85,8 +86,8 @@ $transactions-list-repeater-item: #F6FAFF;
     background: $transactions-list-repeater-item;
     border-radius: $border-radius-smaller;
     font-size: 1.2em;
-    margin-bottom: 25px;
-    padding: 1.3em 2.4em 1.82em 2.4em;
+    margin-bottom: 1.2em;
+    padding: 1.3em 2.4em 1.62em 2.4em;
     position: relative;
     transition: all $transition-length;
 
@@ -99,11 +100,14 @@ $transactions-list-repeater-item: #F6FAFF;
       font-size: 0.96em;
       font-weight: normal;
       text-transform: capitalize;
-      width: 100px;
+      width: 5.2em;
     }
     .amount {
+      font-size: 1.2em;
+      position: relative;
       text-align: right;
-      width: 22%;
+      top: 0.1em;
+      width: 23%;
       white-space: nowrap;
     }
     .hash {
@@ -115,44 +119,47 @@ $transactions-list-repeater-item: #F6FAFF;
       position: relative;
       top: 1px;
     }
-    .coin-name {
-      padding-left: 5px;
-    }
     .timestamp {
       background: $transactions-list-repeater-item;
       color: $color-dark-gray;
       float: right;
-      font-size: 0.86em;
+      font-size: 0.9em;
       font-weight: normal;
       padding-top: 6px;
+      position: absolute;
       text-align: right;
 
       .timestamp-date {
         display: block;
         font-size: 0.9em;
       }
-    }
-    .timestamp {
-      position: absolute;
+
       right: 2.74em;
       top: 1.6em;
-      padding-top: 0;
     }
     .timestamp.two-lines {
+      padding-top: 0;
+
+      .timestamp-date {
+        font-size: 0.86em;
+      }
       .timestamp-time {
-        font-size: 1.14em;
-        line-height: 1.14em;
+        font-size: 1.1em;
+        line-height: 1.1em;
       }
     }
-    .progress-status .icon:before {
-      @include budicon;
-      display: block;
-      font-size: 1.2em;
-      font-style: normal;
-      font-weight: normal;
-      height: 20px;
-      position: relative;
-      top: 2px;
+    .progress-status {
+      @include margin-left-right(1.1em);
+
+      .icon:before {
+        display: block;
+        font-size: 1.2em;
+        font-style: normal;
+        font-weight: normal;
+        height: 20px;
+        position: relative;
+        top: 2px;
+      }
     }
   }
   .item:last-child {

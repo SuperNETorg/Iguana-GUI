@@ -178,7 +178,7 @@ angular.module('IguanaGUIApp')
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
 
-      if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
+      if ($scope.isMobile && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
       }
     }
@@ -448,11 +448,11 @@ angular.module('IguanaGUIApp')
     }
 
     function switchLayoutMode() {
-      if (util.isMobile() && $state.current.name === 'dashboard.main' &&
+      if ($scope.isMobile && $state.current.name === 'dashboard.main' &&
           $state.current.name !== 'dashboard.mobileTransactions') {
         $state.go('dashboard.mobileCoins');
       }
-      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
+      if (!$scope.isMobile && $state.current.name !== 'dashboard.main') {
         $state.go('dashboard.main');
       }
     }
