@@ -7,14 +7,14 @@ exports.copyImages = function (buildMode) {
   buildPaths = paths.build[buildMode ? buildMode : 'dev'];
 
   if (buildMode === 'prod') {
-    return gulp.src(paths.image.default + '/*')
+    return gulp.src(paths.image.default + '/bg.jpg')
                .pipe(image({
                  pngquant: true,
                  optipng: false,
                  zopflipng: true,
-                 jpegRecompress: true,
+                 jpegRecompress: false,
                  jpegoptim: true,
-                 mozjpeg: true,
+                 mozjpeg: false,
                  gifsicle: true,
                  svgo: true,
                  concurrent: 10
