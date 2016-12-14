@@ -30,7 +30,6 @@
     "cryptocoins": "https://github.com/allienworks/cryptocoins.git",
     "proxima-nova": "https://gist.github.com/haggen/2624063.git",
     "flag-icon-css": "https://github.com/lipis/flag-icon-css.git#^2.7.0",
-    "IguanaGUI-font": "https://github.com/SuperNETorg/IguanaGUI-font.git#0.01",
     "bootstrap3-trimmed": "https://github.com/SuperNETorg/bootstrap3-trimmed.git#0.02",
     "Iguana-GUI-font": "https://github.com/SuperNETorg/Iguana-GUI-font.git#0.02"
   }
