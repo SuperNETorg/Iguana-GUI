@@ -22,10 +22,15 @@ angular.module('IguanaGUIApp')
     $scope.radioModel = true;
     $scope.dropDown = {};
 
+    $scope.close = function() {
+      $uibModalInstance.dismiss();
+    };
+
     $scope.change = function() {
       if (Object.keys($scope.checkModel).length) {
-        $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin + $scope.sendCoin.coinId;
-        $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount + $scope.sendCoin.currency;
+        $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
+        $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
+        $scope.sendCoin.feeCurrency = $scope.sendCoin.feeCurrency.toFixed(12);
       }
     };
 
@@ -155,15 +160,15 @@ angular.module('IguanaGUIApp')
                 name: $filter('lang')('SEND.FEE_MIN'),
                 coin: $scope.sendCoin.minFee.toFixed(7),
                 amount: $scope.sendCoin.minFee.toFixed(7),
-                feeMinTime: '',
-                feeMaxTime: ''
+                feeMinTime: 10,
+                feeMaxTime: 25
               }, {
                 id: 1,
                 name: $filter('lang')('SEND.FEE_CUSTOM'),
-                coin: '',
-                amount: '',
-                feeMinTime: '',
-                feeMaxTime: ''
+                coin: 0.00001,
+                amount: 0.00001,
+                feeMinTime: 0,
+                feeMaxTime: 10
               }];
 
               $scope.dropDown.item = $scope.dropDown.items[0];
@@ -209,7 +214,7 @@ angular.module('IguanaGUIApp')
 
     $scope.sendCoinKeyingFee = function() {
       if ($scope.sendCoin.fee)
-        $scope.sendCoin.feeCurrency = $filter('decimalPlacesFormat')($scope.sendCoin.fee * $scope.sendCoin.currencyRate, 'currency');
+        $scope.sendCoin.feeCurrency = $filter('decimalPlacesFormat')($scope.sendCoin.fee * $scope.sendCoin.currencyRate, 'currency').toFixed(12);
     };
 
     $scope.sendCoinKeyingFeeCurrency = function() {
@@ -220,7 +225,7 @@ angular.module('IguanaGUIApp')
     $scope.validateSendCoinForm = function() {
       if (_validateSendCoinForm()) {
         $scope.sendCoin.amountCurrency = $scope.sendCoin.currencyRate * $scope.sendCoin.amount;
-        $scope.sendCoin.feeCurrency = $scope.sendCoin.currencyRate * $scope.sendCoin.fee;
+        $scope.sendCoin.feeCurrency = ($scope.sendCoin.currencyRate * $scope.sendCoin.fee).toFixed(12);
         $scope.sendCoin.initStep = false;
       }
     };
@@ -230,6 +235,7 @@ angular.module('IguanaGUIApp')
     function _validateSendCoinForm() {
       // address
       $scope.sendCoin.valid.address = $scope.sendCoin.address.length !== 34 ? false : true;
+      $scope.sendCoin.valid.feeType = $scope.sendCoin.fee ? true : false;
       // coin amount
       if (Number($scope.sendCoin.amount) === 0 || !$scope.sendCoin.amount.length || Number($scope.sendCoin.amount) > Number($scope.sendCoin.coinValue)) {
         $scope.sendCoin.valid.amount.empty = (Number($scope.sendCoin.amount) === 0 || !$scope.sendCoin.amount.length) ? true : false;

@@ -392,16 +392,43 @@ $segment-select-color: #FE4F09;
 }
 .segment-select .item-segment-select {
   height: 55px;
+  background:$color-white;
+  border:1px solid $dashboard-send-currency-orange;
+  color:$dashboard-send-currency-orange;
 }
 .item-segment-select .second-fee-text {
-  font-size: 14px;
+  font-size:10px;
+  margin-top: 0;
+  color: $dashboard-send-currency-orange;
 }
-.segment-select .active,
-.segment-select .active:hover,
-.segment-select .item-segment-select,
+
+.segment-select .active ,.segment-select .active:hover {
+  background-color: $dashboard-send-currency-orange;
+  color: $color-white;
+  border:1px solid $dashboard-send-currency-orange;
+}
 .segment-select .item-segment-select:active,
 .segment-select .item-segment-select:focus {
-  background-color: $segment-select-color;
-  color: $color-absolute-white;
-  border: 1px solid $segment-select-color;
+  background-color: $color-white;
+  border:1px solid $dashboard-send-currency-orange;
+  color:$dashboard-send-currency-orange;
+}
+.segment-select .tem-segment-select {
+  min-width: 25%;
+}
+.item-segment-select {
+  width: 90px;
+}
+.item-segment-select span {
+  font-weight: 400;
+}
+.item-segment-select {
+  span:first-child {
+    font-size: 15px;
+  }
+}
+.pop-detail {
+  p{
+    color:$dashboard-send-popup-err;
+  }
 }

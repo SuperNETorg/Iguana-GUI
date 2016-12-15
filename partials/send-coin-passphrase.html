@@ -1,13 +1,13 @@
 <script type="text/ng-template" id="partials/send-coin-passphrase.html">
   <section class="form-container login-form-modal send-coin-confirm-passphrase unselectable">
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
-      <i class="bi_interface-arrow-left cursor-pointer btn-close" ng-click="$parent.close()"></i>
+      <i class="bi_interface-arrow-left cursor-pointer btn-close" ng-click="close()"></i>
       <div class="title text-shadow">{{ 'PASSPHRASE_MODAL.PROVIDE_PASSPHRASE' | lang }}</div>
     </header>
     <div class="form-content">
       <div class="login-input-directions center offset-bottom-sm unselectable">{{ 'PASSPHRASE_MODAL.PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION' | lang }}</div>
-      <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm center" ng-model="$parent.passphrase"></textarea>
-      <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-add-wallet" ng-class="{ 'disabled': !$parent.passphrase.length }" ng-click="$parent.confirmSendCoinPassphrase()">{{ 'PASSPHRASE_MODAL.CONFIRM' | lang }}</button>
+      <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm center" ng-model="passphrase"></textarea>
+      <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-add-wallet" ng-class="{ 'disabled': !passphrase.length }" ng-click="confirmSendCoinPassphrase()">{{ 'PASSPHRASE_MODAL.CONFIRM' | lang }}</button>
     </div>
   </section>
 </script>

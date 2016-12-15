@@ -13,24 +13,20 @@ angular.module('IguanaGUIApp')
   '$message',
   '$auth',
   function($scope, $uibModalInstance, util, $storage, $api, $uibModal, receivedObject, $filter, $message, $auth) {
+    $scope.loggedinCoins = $storage['dashboard-logged-in-coins'];
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     // dev only
     if (dev && dev.isDev && dev.coinPW && dev.coinPW.coind[$scope.activeCoin]) $scope.passphrase = dev.coinPW.coind[$scope.activeCoin];
 
     $scope.confirmSendCoinPassphrase = function() {
-      var authActiveCoinArray = [],
-          authActiveCoinObj = [];
+      var authActiveCoinObj = {};
 
-      authActiveCoinArray[0] = $scope.activeCoin;
-      authActiveCoinObj[0] = {
-        id: $scope.activeCoin.toUpperCase(),
-        coinId: $scope.activeCoin
-      };
+      authActiveCoinObj[$scope.activeCoin]= $scope.loggedinCoins[$scope.activeCoin];
 
       $auth.login(
-        authActiveCoinArray,
         authActiveCoinObj,
-        $scope.passphrase
+        $scope.passphrase,
+        true
       )
       .then(function(response) {
         $uibModalInstance.close(true);
