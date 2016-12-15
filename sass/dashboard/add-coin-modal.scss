@@ -204,9 +204,9 @@ body .add-coin-login-form .modal-add-coin-login-form,
   }
 }
 /* dgc icon fix */
-i.cc.DGC:before {
+.DGC:before {
   content: '\e977';
 }
-i.cc.DGC-alt:before {
+DGC-alt:before {
   content: '\e978';
 }

@@ -102,18 +102,18 @@ body {
       }
       .form-container.login-form {
         .form-content {
-          vertical-align: top;
           display: block;
+          vertical-align: top;
         }
       }
       .form-container.terms-conditionals-form {
         .form-content{
           .form-content-inner {
             .login-input-directions {
-              @include text-left;
-              @include bold;
               font-size: 1.2em;
+              @include bold;
               line-height: 1.25em;
+              @include text-left;
             }
           }
         }

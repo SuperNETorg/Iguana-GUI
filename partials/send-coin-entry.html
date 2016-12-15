@@ -58,9 +58,9 @@
                 </label>
               </div>
               <div class="custom-fee-inputs" ng-hide="!checkModel.type">
-                <input class="tx-fee" value="{{$eval(checkModel.type).coin}}{{sendCoin.coinId}}" disabled type="text" ng-model="sendCoin.fee"  />
+                <input class="tx-fee" value="{{ $eval(checkModel.type).coin }}{{ sendCoin.coinId }}" disabled type="text" ng-model="sendCoin.fee"  />
                 <span class="eq-sign">=</span>
-                <input class="tx-fee-currency" value="{{$eval(checkModel.type).amount}}{{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" disabled type="text"/>
+                <input class="tx-fee-currency" value="{{ $eval(checkModel.type).amount }}{{ sendCoin.currency }}" ng-model="sendCoin.feeCurrency" disabled type="text"/>
               </div>
             </div>
             <div class="pop-detail">
