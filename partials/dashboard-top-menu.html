@@ -2,12 +2,15 @@
   <nav class="navbar top unselectable navbar-inverse" ng-hide="!enabled" resize>
     <div class="clearfix">
       <div class="navbar-header">
-        <div class="navbar-brand">{{ 'IGUANA.APP_TITLE' | lang }}</div>
+        <div class="navbar-brand cursor-pointer" ng-click="$state.go('dashboard.main')">{{ 'IGUANA.APP_TITLE' | lang }}</div>
         <div class="cursor-pointer lnk-logout" ng-click="$auth.logout()">{{ 'DASHBOARD.LOGOUT' | lang }}</div>
       </div>
-      <div class="top" id="top-menu">
+      <div class="top" id="top-menu" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
         <ul class="nav navbar-nav top-menu" ng-style="getNavbarStyle()">
-          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')" ng-class="{ 'active': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.mobileCoins' || $state.current.name === 'dashboard.mobileTransactions' }">
+          <li class="item cursor-pointer text-center" ng-click="$state.go('dashboard.main')"
+              ng-class="{ 'active': $state.current.name === 'dashboard.main' ||
+                                    $state.current.name === 'dashboard.mobileCoins' ||
+                                    $state.current.name === 'dashboard.mobileTransactions' }">
             <div class="text">{{ 'PAGE.DASHBOARD' | lang }}</div>
             <div class="border"></div>
           </li>

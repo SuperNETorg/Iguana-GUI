@@ -5,12 +5,6 @@
 
 @import '../dev.scss';
 
-$txunit-item-receive-amount-color: #27C26F;
-$txunit-item-progress-icon-color: #BCBEC4;
-$txunit-item-progress-amount-color: #0082FF;
-$txunit-item-progress-icon-before-color: #2092FE;
-$transactions-list-repeater-item: #F6FAFF;
-
 .transactions-unit {
   border-radius: $border-radius-smaller;
 
@@ -105,11 +99,14 @@ $transactions-list-repeater-item: #F6FAFF;
       position: relative;
       text-align: right;
       top: 0.1em;
-      width: 23%;
+      width: 9em;
       white-space: nowrap;
     }
     .hash {
-      width: 41%;
+      overflow: hidden;
+      position: relative;
+      top: 0.5em;
+      width: 50%;
     }
     .in-out {
       font-size: 0.8em;
@@ -174,20 +171,22 @@ $transactions-list-repeater-item: #F6FAFF;
       top: 4px;
     }
   }
-  .item.send .progress-status .icon:before {
-    color: $txunit-item-progress-icon-color;
-    content: '\eb4b';
-    font-size: 1.4em;
-    left: 1px;
-    top: 4px;
+  .item.send {
+    .progress-status .icon:before {
+      color: $txunit-item-progress-icon-color;
+      content: '\eb4b';
+      font-size: 1.4em;
+      left: 1px;
+      top: 4px;
+    }
   }
   .item.process {
     .amount {
       color: $txunit-item-progress-amount-color;
     }
     .progress-status {
-      .icon:before {
-        color: $color-medium-gray;
+      .bi_interface-arrow-right {
+        display: none;
       }
       .icon:after {
         background: $color-modal-bg;
@@ -200,6 +199,46 @@ $transactions-list-repeater-item: #F6FAFF;
         top: -15px;
         width: 14px;
         z-index: 40;
+      }
+
+      $circumference: 43.982297149;
+      $bit: 1;
+      $duration: 2s;
+
+      .progress-indeterminate {
+        display: block!important;
+        position: relative;
+        top: 0.5em;
+      }
+      .progress-indeterminate > circle {
+        fill: none;
+        stroke: $txunit-item-progress-icon-color;
+        stroke-width: 2;
+        stroke-linecap: round;
+        transform-origin: center;
+        animation:
+          $duration ease-in-out infinite flow,
+          $duration/.75 linear infinite rotation;
+      }
+
+      @keyframes flow {
+        0% {
+          stroke-dasharray: $bit ($circumference - $bit);
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 0.75*$circumference 0.25*$circumference;
+          stroke-dashoffset: -0.25*$circumference;
+        }
+        100% {
+          stroke-dasharray: $bit ($circumference - $bit);
+          stroke-dashoffset: -$circumference;
+        }
+      }
+
+      @keyframes rotation {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     }
   }

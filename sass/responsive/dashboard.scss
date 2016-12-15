@@ -4,61 +4,66 @@
  */
 @import '../dev.scss';
 
-$dashboard-link-logout-color: #AFB0B5;
-$dashboard-coins-sidebar-currency-color: #6B6B6D;
-
 body {
-  @media screen and (max-width: 1366px) {
-    .dashboard .transactions-list-repeater .item {
-      .hash {
-        max-width: 338px;
-        overflow: hidden;
-        position: relative;
-        top: 0.4em;
-      }
-      .hash:before {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
-        background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(245, 248, 251, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  @media screen and (max-width: 1100px) {
+    .dashboard {
+      .transactions-list {
+        padding: 25px 1.86em;
 
-        content: '';
-        display: block;
-        height: 25px;
-        margin-top: -2px;
-        position: absolute;
-        right: 0;
-        width: 10%;
-        z-index: 100;
+        .transactions-list-repeater{
+          .item {
+            padding: 1.3em 1.4em 1.62em 1.4em;
+
+            .timestamp {
+              right: 1.74em;
+            }
+            .status {
+              display: block;
+              margin-bottom: 1.4em;
+            }
+            .progress-status {
+              @include margin-left-right(0.4em)
+            }
+          }
+        }
       }
     }
-    .dashboard .account-coins-repeater {
-      .item {
-        .coin .name:before {
-          background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-          background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-          background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-
-          content: '';
-          display: block;
-          height: 17px;
-          position: absolute;
-          right: 0;
-          width: 15px;
-          z-index: 100;
-        }
-        .progress-status {
-          max-width: 70px;
-        }
-        .status {
-          width: 76px;
+  }
+  @media screen and (max-width: 1300px) {
+    .dashboard {
+      .transactions-list-repeater{
+        .item {
+          .status {
+            display: block;
+            margin-bottom: 1.4em;
+          }
+          .hash {
+            width: 41%;
+            word-wrap: break-word;
+          }
+          .amount {
+            width: 9em;
+          }
+          .text-vertical-center {
+            @include text-vertical-center(2em, 1em);
+          }
+          .progress-status {
+            .progress-indeterminate {
+              top: 0;
+            }
+          }
         }
       }
-      .item.active .coin .name:before {
-        background: linear-gradient(to right, rgba(254, 91, 13, 0) 0%, rgba(254, 91, 13, 1) 100%);
-        background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-        background: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-
+      .account-coins-repeater {
+        .item {
+          .progress-status {
+            max-width: 70px;
+          }
+          .status {
+            width: 76px;
+          }
+        }
+        .item.active .coin .name:before {
         content: '';
         display: block;
         height: 17px;
@@ -67,25 +72,6 @@ body {
         width: 15px;
         z-index: 100;
       }
-    }
-  }
-
-  @media screen and (max-width: 1280px) {
-    .dashboard .transactions-list-repeater .item {
-      .hash {
-        max-width: 260px;
-      }
-    }
-  }
-
-  @media screen and (max-width: 1140px) {
-    .dashboard .transactions-list-repeater .item {
-      .hash {
-        margin-left: 6%;
-        max-width: 150px;
-      }
-      .amount {
-        margin-right: 6%;
       }
     }
   }
@@ -135,7 +121,7 @@ body {
               /** Left Sidebar */
               .coins {
                 max-width: 21.44em;
-                min-width: 20em;
+                min-width: 18em;
 
                 .account-coins-repeater {
                   .item {
@@ -180,70 +166,28 @@ body {
     }
   }
 
-  @media (min-width: 992px) {
-    .modal-add-coin .modal-dialog {
-      width: 81%;
-    }
-  }
+  @media #{$medium-max-Resolution} {
+    .app-container {
+      .app-container-inner {
+        .dashboard.main {
+          .main-content {
+            padding: 20px;
 
-  @media (max-width: 992px) {
-    .reference-currency-main .currency-content .container-left {
-      padding-top: 35px;
-    }
-    .col-md-7.col-sm-6.currency-parent {
-      width: 100%;
-    }
-    .modal .modal-dialog.modal-lg {
-      width: 90%;
-    }
-    .transactions-unit .transactions-list .transactions-list-repeater .item {
-      padding: 50px 3% 50px 3%;
+            .transactions-list {
+              padding: 25px 0.86em;
 
-      .clearfix {
-        display: block;
-        margin-top: 35px;
-      }
-      .amount {
-        clear: both;
-        float: left;
-        line-height: 44px;
-        margin-right: 14%;
-        position: relative;
-        text-align: left;
-        top: 23px;
-        width: 32%;
-      }
-      .hash {
-        float: right;
-        font-size: 14px;
-        margin-left: 4%;
-        margin-right: 3px;
-        position: relative;
-        text-align: right;
-        top: 23px;
-        width: 50%;
-        word-wrap: break-word;
-      }
-      .hash:before {
-        display: none;
-      }
-      .progress-status {
-        position: relative;
-        top: 23px;
-      }
-      .status {
-        float: left;
-        left: 35px;
-        margin-top: -31px;
-        position: absolute;
-      }
-      .timestamp {
-        margin-top: -38px;
-        position: absolute;
-        right: 32px;
-      }
-      .timestamp.two-lines {
-        margin-top: -65px;
+              .transactions-list-repeater{
+                .item {
+                  padding: 1.3em 0.4em 1.62em 0.4em;
+
+                  .hash {
+                    width: 34%;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -276,7 +220,7 @@ body {
 
             .item {
               font-size: 1.35em;
-              @include margin-left-right(0);
+              @include margin-left-right(0px);
 
               .text {
                 height: 2.35em;
@@ -298,19 +242,7 @@ body {
         }
       }
     }
-    .dashboard {
-      .main-content {
-        margin: auto 2px;
-
-        .balance-block {
-          .label {
-            font-size: 1.02em;
-          }
-          .balance {
-            line-height: 1em;
-          }
-        }
-      }
+    .dashboard.main {
       /** Left Sidebar */
       .coins {
         .account-coins-repeater {
@@ -360,20 +292,28 @@ body {
         }
       }
     }
-    .account-coins-repeater .item .coin .name:before {
-      display: none;
-    }
     .app-container {
       .app-container-inner {
         .dashboard-main {
           .dashboard {
             .main-content {
+              margin: auto 2px;
+              padding: 0 1em;
+
+              .balance-block {
+                .label {
+                  font-size: 1.02em;
+                }
+                .balance {
+                  line-height: 1em;
+                }
+              }
               /*  dashboard transactions bar */
-              .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
+              .transactions-unit {
                 border-radius: 0;
                 margin-left: 0;
                 padding: 0;
-                padding-top: 82px;
+                padding-top: 3em;
 
                 .top-bar {
                   border-radius: 0;
@@ -397,7 +337,6 @@ body {
                       .amount {
                         clear: both;
                         line-height: 44px;
-                        margin-right: 6%;
                         width: 40%;
                       }
                       .amount.smaller {
@@ -408,12 +347,8 @@ body {
                       }
                       .hash {
                         float: right;
-                        font-size: 14px;
-                        margin: 0;
-                        margin-left: 6%;
-                        top: 28px;
-                        width: 43%;
                         word-wrap: break-word;
+                        width: 43%;
                       }
                       .clearfix {
                         display: block;
@@ -498,23 +433,6 @@ body {
     }
   }
 
-  @media #{$large-min-Resolution} {
-    .app-container {
-      .app-container-inner {
-        .dashboard-main,
-        .reference-currency-main {
-          .dashboard {
-            .main-content {
-              .transactions-unit {
-                width: 71.666667%;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   @media only screen and (max-width: 440px) {
     .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
       padding-top: 10px;
@@ -524,47 +442,6 @@ body {
         .dashboard-main {
           .dashboard {
             .main-content {
-              .transactions-unit.col-md-8.col-sm-7.col-xs-12.pull-right {
-                border-radius: 0;
-                padding: 0;
-                padding-top: 82px;
-
-                .top-bar {
-                  border-radius: 0;
-                }
-                .info {
-                  top: 114px;
-                }
-                .transactions-list {
-                  .transactions-list-repeater {
-                    .item {
-                      .timestamp {
-                        margin-top: -46px;
-                        right: 6px;
-                      }
-                      .timestamp.two-lines {
-                        margin-top: -74px;
-                        right: 6px;
-                      }
-                      .status {
-                        left: 16px;
-                        margin-top: -38px;
-                      }
-                      .amount {
-                        margin-right: 3%;
-                        top: 20px;
-                      }
-                      .hash {
-                        margin-left: 3%;
-                        top: 22px;
-                      }
-                      .progress-status {
-                        top: 17px;
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
         }

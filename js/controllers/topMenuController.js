@@ -7,7 +7,7 @@ angular.module('IguanaGUIApp')
   '$auth',
   'util',
   '$window',
-  function($scope, $state, $auth, util, $window) {
+  function($scope, $state, $auth, util) {
     $scope.$state = $state;
     $scope.$auth = $auth;
     $scope.navbarStyle = { 'margin-left': 0 };

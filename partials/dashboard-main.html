@@ -39,7 +39,7 @@
     </aside>
     <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right"
          ng-hide="$state.current.name === 'dashboard.mobileCoins'"
-         ng-style="!isMobile ? ({ 'width': (windowWidth - 460) + 'px'}) : {}">
+         ng-style="!isMobile ? ({'width': (windowWidth - (isTablet ? 360 : 455)) + 'px'}) : {}">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>
@@ -66,21 +66,28 @@
           <div class="transactions-list-repeater">
             <spinner visibility="txUnit.loading"></spinner>
             <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}</div>
-            <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}" ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
+            <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
+                 ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
               <div class="status unselectable">{{ item.status }}</div>
-              <div class="amount unselectable" ng-class="{ 'smaller': item.switchStyle }">
-                <span class="in-out {{ item.inOut }}"></span>
-                <span class="value">{{ item.amount }}</span>
-                <span class="coin-name">{{ item.coin }}</span>
-              </div>
-              <div class="progress-status unselectable">
-                <i class="icon bi_interface-arrow-right"></i>
-              </div>
-              <div class="hash">{{ item.hash }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
               <div class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
                 <div timeago-date="item.timestampDate" class="timestamp-date time-ago-date"></div>
                 <div timeago-time="item.timestampTime" class="timestamp-time time-ago-time"></div>
+              </div>
+              <div class="text-vertical-center">
+                <div class="amount unselectable text-middle" ng-class="{ 'smaller': item.switchStyle }">
+                  <span class="in-out {{ item.inOut }}"></span>
+                  <span class="value">{{ item.amount }}</span>
+                  <span class="coin-name">{{ item.coin }}</span>
+                </div>
+                <div class="progress-status unselectable text-middle">
+                  <i class="icon bi_interface-arrow-right"></i>
+                  <svg class="progress-indeterminate hidden" viewBox="0 0 24 24"
+                       xmlns="http://www.w3.org/2000/svg" height="30" width="30">
+                    <circle  cx="12" cy="12" r="7"></circle>
+                  </svg>
+                </div>
+                <div class="hash text-middle">{{ item.hash }}</div>
               </div>
             </div>
           </div>

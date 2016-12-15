@@ -153,3 +153,13 @@
   max-width: 90%;
   @include absolute-horizontal-center;
 }
+
+@mixin text-vertical-center($parent-line-height, $children-line-height) {
+  line-height: $parent-line-height;
+
+  .text-middle {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: $children-line-height;
+  }
+}
