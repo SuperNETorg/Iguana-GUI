@@ -21,6 +21,8 @@ angular.module('IguanaGUIApp')
     $scope.checkModel = {};
     $scope.radioModel = true;
     $scope.dropDown = {};
+    $scope.feeAllText = '';
+    $scope.feeCurrencyAllText = '';
 
     $scope.close = function() {
       $uibModalInstance.dismiss();
@@ -30,7 +32,8 @@ angular.module('IguanaGUIApp')
       if (Object.keys($scope.checkModel).length) {
         $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
         $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
-        $scope.sendCoin.feeCurrency = $scope.sendCoin.feeCurrency.toFixed(12);
+        $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
+        $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' '+$scope.sendCoin.currency;
       }
     };
 

@@ -139,7 +139,7 @@ $send-coin-dropdown-color: #74767D;
       color: $send-coin-title-color;
       font-size: 1.07em;
       font-weight: 400;
-      margin: 0;
+      margin: 0 0 5px 0;
     }
     p {
       font-size: 13px;
@@ -177,7 +177,7 @@ $send-coin-dropdown-color: #74767D;
     width: 100%;
 
     .eq-sign {
-      color: $send-coin-eq-sign-color;
+      color: $dashboard-send-popup-err;
       float: left;
       font-size: 1.8em;
       font-weight: 500;

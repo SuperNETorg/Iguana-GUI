@@ -391,17 +391,25 @@ $segment-select-color: #FE4F09;
   margin-top: 0;
 }
 .segment-select .item-segment-select {
-  height: 55px;
+  height: 40px;
   background:$color-white;
   border:1px solid $dashboard-send-currency-orange;
   color:$dashboard-send-currency-orange;
+  line-height: 14px;
+}
+.segment-select {
+  width: 100%;
 }
 .item-segment-select .second-fee-text {
   font-size:10px;
   margin-top: 0;
   color: $dashboard-send-currency-orange;
 }
-
+.segment-select .item-segment-select.active {
+  span {
+    color: $dashboard-send-currency-white;
+  }
+}
 .segment-select .active ,.segment-select .active:hover {
   background-color: $dashboard-send-currency-orange;
   color: $color-white;
@@ -417,10 +425,9 @@ $segment-select-color: #FE4F09;
   min-width: 25%;
 }
 .item-segment-select {
-  width: 90px;
-}
-.item-segment-select span {
-  font-weight: 400;
+  span {
+    font-weight: 400;
+  }
 }
 .item-segment-select {
   span:first-child {
