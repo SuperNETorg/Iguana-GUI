@@ -27,6 +27,8 @@ angular.module('IguanaGUIApp')
             var minutes = parseInt(difference / minuteTemplate);
 
             displayText = minutes + ' ' + $filter('lang')(minutes > 1 ? 'TIME_AGO.MINUTES' : 'TIME_AGO.MINUTE');
+          } else {
+            displayText = $filter('lang')('TIME_AGO.MOMENT');
           }
         } else {
           var hours = parseInt(difference / timeTemplate);

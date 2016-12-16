@@ -5,17 +5,6 @@
 
 @import 'dev.scss';
 
-$login-header-color-bg: #FE700D;
-$login-content-color-bg: #363639;
-$login-coin-selection-color: #FF4912;
-$login-button-disabled-color: #B2B4B7;
-$login-boxshadow-color: #F9602F;
-$login-delim-color: #FEFBF9;
-$login-button-hover-color: #FE743D;
-$login-advanced-benefits: #FEFBF9;
-$dropdown-button-style-color: #5A606C;
-$segment-select-color: #FE4F09;
-
 .body-wrapper.auth-main {
   display: table;
   height: 100%;
@@ -405,7 +394,7 @@ $segment-select-color: #FE4F09;
   margin-top: 0;
   color: $dashboard-send-currency-orange;
 }
-.segment-select .item-segment-select.active {
+.pop-detail .segment-select .item-segment-select.active {
   span {
     color: $dashboard-send-currency-white;
   }

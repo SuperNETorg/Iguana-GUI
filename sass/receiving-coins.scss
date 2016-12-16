@@ -5,78 +5,9 @@
 
 @import 'dev.scss';
 
-$receive-coin-text-selection-color: #8C8484;
-$receive-coin-share-title-color: #252528;
-$receive-coin-share-address-color: #2F2E2E;
-$receive-coin-button-bg-color: #FBFDFE;
-$receive-coin-button-color: #FD5630;
-$receive-coin-button-link-color: #FE6542;
-$receive-coin-amount-label-color: #423F3F;
-$receive-coin-unit-color: #83848E;
-$receive-coin-input-color: #2E3746;
-$receive-coin-eq-sign-color: #FE5C0D;
 
 .receiving-coin-content {
-  border-radius: $border-radius-small;
 
-  .form-header {
-    border-radius: $border-radius-smaller $border-radius-smaller 0 0;
-    box-shadow: 0 1px 1px 0 rgba-black(0.2);
-    color: $color-white;
-    height: 60px;
-
-    .btn-close {
-      color: $color-white;
-      font-size: 20px;
-      left: 10px;
-      position: absolute;
-      text-shadow: 1px 1px 3px rgba-black(0.3);
-      top: 19px;
-      z-index: 20;
-    }
-    .title {
-      @include proxima;
-      @include bold;
-      color: $color-white;
-      font-size: 1.25em;
-      position: relative;
-      text-align: center;
-      text-shadow: 0 1px 3px rgba-black(0.25);
-      top: 5px;
-      z-index: 10;
-    }
-  }
-  .close {
-    color: $color-white;
-    float: left;
-    font-size: 32px;
-    font-weight: normal;
-    left: 10px;
-    opacity: 1;
-    position: relative;
-    text-shadow: none;
-    top: 3px;
-    z-index: 9999;
-  }
-  .modal-title {
-    color: $color-white;
-    font-size: 20px;
-    font-weight: 600;
-    position: relative;
-    right: 10px;
-    text-align: center;
-  }
-  .modal-header {
-    /* csslint ignore:start */
-    background-color: #fe5c0d;
-    background: -webkit-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(252, 62, 5, 1)); /* For Safari 5.1 to 6.0 */
-    background: -o-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* For Opera 11.1 to 12.0 */
-    background: -moz-radial-gradient(top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* For Firefox 3.6 to 15 */
-    background: radial-gradient(to top, rgba(254, 92, 13, 0.7), rgba(254, 62, 5, 1)); /* Standard syntax (must be last) */
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    /* csslint ignore:end */
-  }
   .modal-body {
     background-color: $color-modal-bg;
 
@@ -152,9 +83,6 @@ $receive-coin-eq-sign-color: #FE5C0D;
     color: $receive-coin-button-link-color;
     text-decoration: none;
   }
-}
-.modal-backdrop.in {
-  opacity: 0.8;
 }
 .modal-backdrop {
   background-color: $color-white;
