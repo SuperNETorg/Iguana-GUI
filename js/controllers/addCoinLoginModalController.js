@@ -20,8 +20,6 @@ angular.module('IguanaGUIApp')
     $scope.close = close;
     $scope.util = util;
 
-    util.bodyBlurOn();
-
     $scope.$state = $state;
     $scope.passphrase = '';
     $scope.dev = dev;
@@ -90,8 +88,5 @@ angular.module('IguanaGUIApp')
       return $storage['iguana-login-active-coin'];
     };
 
-    $scope.$on('$destroy', function() {
-      util.bodyBlurOff();
-    });
   }
 ]);

@@ -349,8 +349,5 @@ angular.module('IguanaGUIApp')
       $uibModalInstance.dismiss();
     };
 
-    $scope.$on('$destroy', function() {
-      util.bodyBlurOff();
-    });
   }
 ]);
