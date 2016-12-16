@@ -25,7 +25,7 @@ angular.module('IguanaGUIApp')
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isChanged = false;
     $scope.$auth = $auth;
-    $scope.isIguana = $storage['isIguana'];
+    $scope.isIguana = $storage.isIguana;
     $scope.passphraseModel = '';
     $scope.addedCoinsOutput = '';
     $scope.failedCoinsOutput = '';

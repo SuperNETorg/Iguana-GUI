@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp')
   function($scope, $state, $uibModalInstance, $api, $storage,
             $rootScope, $timeout, vars, type) {
 
-    $scope.isIguana = $storage['isIguana'];
+    $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
     $scope.coinColors = [
       'orange',
@@ -84,9 +84,9 @@ angular.module('IguanaGUIApp')
             )
           ) {
             if (
-              ($storage['isIguana'] && coinsInfo[key].iguana === true) ||
+              ($storage.isIguana && coinsInfo[key].iguana === true) ||
               (
-                !$storage['isIguana'] &&
+                !$storage.isIguana &&
                 (
                   coinsInfo[key].connection === true ||
                   (dev && dev.isDev && dev.showAllCoindCoins)

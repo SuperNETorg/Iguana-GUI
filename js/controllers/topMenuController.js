@@ -12,14 +12,14 @@ angular.module('IguanaGUIApp')
     $scope.$auth = $auth;
     $scope.navbarStyle = { 'margin-left': 0 };
 
-    var topMenu = document.getElementById('top-menu'),
-        element,
+    var element,
         item,
         bundClRect,
+        topMenu = document.getElementById('top-menu'),
         itemsParent = topMenu.querySelector('.top-menu'),
         items = topMenu.querySelectorAll('.item');
 
-    angular.element(document.body).bind("scroll", function() {
+    angular.element(document.body).bind('scroll', function() {
       if ($scope.isMobile) {
         element = document.querySelectorAll('.main-content, .currency-content');
         if (util.getElementOffset(element[0]).top  < -270) {
@@ -39,6 +39,7 @@ angular.module('IguanaGUIApp')
               $scope.navbarStyle = {
                 'margin-left': parseInt($scope.navbarStyle['margin-left'].replace('px', '')) - (bundClRect.left) + 'px'
               };
+
               break;
             }
           }
@@ -56,6 +57,7 @@ angular.module('IguanaGUIApp')
               $scope.navbarStyle = {
                 'margin-left': parseInt($scope.navbarStyle['margin-left'].replace('px', '')) - (bundClRect.width) + 'px'
               };
+
               break;
             }
           }

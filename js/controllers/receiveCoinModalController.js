@@ -12,7 +12,7 @@ angular.module('IguanaGUIApp')
   '$message',
   'util',
   function($scope, $uibModalInstance, $storage, $api, $uibModal, $filter, $rates, $message, util) {
-    $scope.isIguana = $storage['isIguana'];
+    $scope.isIguana = $storage.isIguana;
     $scope.open = open;
     $scope.close = close;
     $scope.receiveCoin = {
@@ -65,6 +65,5 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     };
-
   }
 ]);

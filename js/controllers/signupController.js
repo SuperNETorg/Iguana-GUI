@@ -27,7 +27,7 @@ angular.module('IguanaGUIApp')
     $scope.$localStorage = $storage;
     $scope.coins = [];
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
-    $scope.passphraseCount = $storage['isIguana'] ? 24 : 12;
+    $scope.passphraseCount = $storage.isIguana ? 24 : 12;
     $scope.title = setTitle();
     $rootScope.background = false;
 
@@ -62,6 +62,7 @@ angular.module('IguanaGUIApp')
 
     function addAccount() {
       $scope.$localStorage.passphrase = '';
+
       var coinKeys = Object.keys($scope.getActiveCoins()),
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
@@ -126,7 +127,7 @@ angular.module('IguanaGUIApp')
     }
 
     function destroy() {
-      $storage['passphrase'] = '';
+      $storage.passphrase = '';
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
     }

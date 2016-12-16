@@ -6,7 +6,7 @@ angular.module('IguanaGUIApp')
     restrict: 'E',
     replace: true,
     scope: {
-      isVisible: "=visibility"
+      isVisible: '=visibility'
     },
     template:
     '<div class="loader" ng-if="isVisible">' +

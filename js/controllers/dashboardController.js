@@ -26,7 +26,7 @@ angular.module('IguanaGUIApp')
         coinBalances = [],
         _sideBarCoins = {},
         coinsSelectedByUser = [],
-        isIguana = $storage['isIguana'],
+        isIguana = $storage.isIguana,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
         defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
@@ -433,7 +433,7 @@ angular.module('IguanaGUIApp')
     }
 
     function updateDashboardView(timeout) {
-      vars['dashboardUpdateRef'] = $interval(function() {
+      vars.dashboardUpdateRef = $interval(function() {
         // console.clear();
         $auth.checkSession();
         $rates.updateRates(null, null, null, true);

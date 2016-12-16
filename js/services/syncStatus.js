@@ -4,7 +4,8 @@ angular.module('IguanaGUIApp')
 .service('$syncStatus', [
   '$filter',
   '$state',
-  function($filter, $state) {
+  '$storage',
+  function($filter, $state, $storage) {
     this.setPortPollResponse = function() {
       var coinsInfoJSON = [],
           result = false;
@@ -23,8 +24,8 @@ angular.module('IguanaGUIApp')
       localstorage.setVal('iguana-port-poll', {
         'updatedAt': Date.now(),
         'info': coinsInfoJSON,
-        'isIguana': $localStorage['isIguana'],
-        'proxy': $localStorage['isProxy'],
+        'isIguana': $storage.isIguana,
+        'proxy': $storage.isProxy,
         'debugHTML': JSON.stringify($('#debug-sync-info').html())
       });
 
@@ -38,7 +39,7 @@ angular.module('IguanaGUIApp')
           coinsInfo[setPortPollResponseDS.info[i].coin] = [];
           coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
           coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
-          $localStorage['isIguana'] = setPortPollResponseDS.isIguana;
+          $storage.isIguana = setPortPollResponseDS.isIguana;
         }
 
         if (dev.isDev && dev.showSyncDebug) { // debug info
