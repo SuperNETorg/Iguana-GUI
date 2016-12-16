@@ -151,7 +151,7 @@ body {
                   padding: 2.4em 2.6em 1.4em 2.6em;
 
                   .action-buttons {
-                    margin-left: 0.3em;
+                    margin-left: 0.25em;
                     margin-top: 1.6em;
                   }
                 }
@@ -220,7 +220,7 @@ body {
 
             .item {
               font-size: 1.35em;
-              @include margin-left-right(0px);
+              @include margin-left-right(0);
 
               .text {
                 height: 2.35em;
@@ -421,9 +421,6 @@ body {
     }
     .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
       padding-top: 30%;
-    }
-    .receiving-coin-content .form-header .btn-close {
-      margin-left: 0;
     }
     .modal-content {
       height: 100%;

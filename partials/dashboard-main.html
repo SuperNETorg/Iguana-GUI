@@ -55,7 +55,7 @@
             <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat:'currency') : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
-          <div class="action-buttons unselectable offset-top-md">
+          <div class="action-buttons unselectable">
             <button class="btn btn-send offset-right-sm" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ 'DASHBOARD.SEND' | lang }}</button>
             <button class="btn btn-receive coinaddress offset-right-sm" ng-click="openReceiveCoinModal()">{{ 'DASHBOARD.RECEIVE' | lang }}</button>
           </div>

@@ -72,6 +72,16 @@
   .loader {
     margin: 0;
   }
+  .item.process {
+    .timestamp {
+      top: 2em;
+
+      .timestamp-date {
+        display: block;
+        font-size: 0.9em;
+      }
+    }
+  }
   .item {
     @include bold;
     @include cursor-pointer;
@@ -79,7 +89,7 @@
     border-radius: $border-radius-smaller;
     font-size: 1.2em;
     margin-bottom: 1.2em;
-    padding: 1.3em 2.4em 1.62em 2.4em;
+    padding: 1.3em 2.4em 1.3em 2.4em;
     position: relative;
     transition: all $transition-length;
 

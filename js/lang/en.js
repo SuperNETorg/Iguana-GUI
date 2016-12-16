@@ -45,7 +45,7 @@ var lang = {
       'CREATE': 'Create',
       'ADD_ACCOUNT': 'Create {{ coin }} wallet ',
       'WRITE_DOWN_THIS_P1': 'You will need this ',
-      'WRITE_DOWN_THIS_P2': '-word passphrase to login. ',
+      'WRITE_DOWN_THIS_P2': '-word passphrase to log in. ',
       'WRITE_DOWN_THIS_P3': 'Write it down and keep it safe.',
       'WRITE_DOWN_THIS_P4': 'Lost passphrase means lost wallet!',
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
@@ -62,7 +62,7 @@ var lang = {
     'ADD_COIN': {
       'WALLET_TYPE': 'Wallet type',
       'SELECT_CREATED_WALLET': 'Select a wallet type to create',
-      'SELECT_LOGIN_WALLET': 'Select a wallet type to login',
+      'SELECT_LOGIN_WALLET': 'Select a wallet type to log in',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
       'FOR_EXAMPLE': 'For example. "Bitcoin" or "BTN"',

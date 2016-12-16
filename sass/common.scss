@@ -7,6 +7,13 @@
 $color-body-bg: #F5FAFD;
 $color-textarea-border: #CAC9C9;
 
+//@import url('//fonts.googleapis.com/css?family=Nunito');
+
+//@font-face {
+//  font-family: 'Nunito', sans-serif;
+  //TODO: continued
+  //src: url("fonts/Nunito-Regular.ttf") format('truetype');;
+//}
 html {
   body {
     background-color: $color-body-bg;
@@ -71,46 +78,40 @@ html {
       overflow: auto;
     }
     .offset-bottom-sm {
-      margin: 0 auto;
-      margin-bottom: 15px;
+      @include margin('bottom', 15px, true, !important);
     }
     .offset-bottom-md {
-      margin: 0 auto;
-      margin-bottom: 30px;
+      @include margin('bottom', 30px, true, !important);
     }
     .offset-bottom-lg {
-      margin: 0 auto;
-      margin-bottom: 45px;
+      @include margin('bottom', 45px, true, !important);
     }
     .offset-top-sm {
-      margin: 0 auto;
-      margin-top: 15px;
+      @include margin('top', 15px, true, !important);
     }
     .offset-top-md {
-      margin: 0 auto;
-      margin-top: 30px;
+      @include margin('top', 30px, true, !important);
     }
     .offset-top-lg {
-      margin: 0 auto;
-      margin-top: 45px;
+      @include margin('top', 45px, true, !important);
     }
     .offset-left-sm {
-      margin-left: 15px;
+      @include margin('left', 15px, false, !important);
     }
     .offset-left-md {
-      margin-left: 30px;
+      @include margin('left', 30px, false, !important);
     }
     .offset-left-lg {
-      margin-left: 45px;
+      @include margin('left', 45px, false, !important);
     }
     .offset-right-sm {
-      margin-right: 15px;
+      @include margin('right', 15px, false, !important);
     }
     .offset-right-md {
-      margin-right: 30px;
+      @include margin('right', 30px, false, !important);
     }
     .offset-right-lg {
-      margin-right: 45px;
+      @include margin('right', 45px, false, !important);
     }
   }
 }

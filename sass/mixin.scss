@@ -28,13 +28,13 @@
 }
 
 @mixin orange-gradient {
-  background: -moz-linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* FF3.6+ */
-  background: -webkit-gradient(linear, 90deg, color-stop(20%, FE470D), color-stop(100%, FE780D));/* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* Opera 11.10+ */
-  background: -ms-linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* IE10+ */
+  background: -moz-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, 90deg, color-stop(20%, FE450D), color-stop(100%, FE780D)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* IE10+ */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
-  //background: linear-gradient(90deg, #FE470D 20%, #FE780D 100%);/* W3C */
+  //background: linear-gradient(90deg, #FE450D 20%, #FE780D 100%);/* W3C */
   color: $color-white;
 }
 
@@ -45,10 +45,10 @@
 }
 
 @mixin btn-default-shadow {
-  -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=0, Color=#E9ECF0)';/*IE 8*/
-  -moz-box-shadow: 0 6px 10px 4px #E9ECF0;/*FF 3.5+*/
-  -webkit-box-shadow: 0 6px 10px 4px #E9ECF0;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-  box-shadow: 0 6px 10px 4px #E9ECF0;/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=0, Color=#E9ECF0)'; /*IE 8*/
+  -moz-box-shadow: 0 6px 10px 4px #E9ECF0; /*FF 3.5+*/
+  -webkit-box-shadow: 0 6px 10px 4px #E9ECF0; /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  box-shadow: 0 6px 10px 4px #E9ECF0; /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=135, Color=#E9ECF0); /*IE 5.5-7*/
 }
 
@@ -76,7 +76,7 @@
 @mixin blur {
   /* csslint ignore:start */
   -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
-  filter: blur(2px);
+  filter: blur(6px);
   /* csslint ignore:end */
 }
 
@@ -122,9 +122,25 @@
   margin-top: $size;
   margin-bottom: $size;
 }
+
 @mixin margin-left-right($size) {
   margin-left: $size;
   margin-right: $size;
+}
+
+@mixin margin($name, $size, $auto, $important) {
+  @if ($auto) {
+    margin: 0 auto;
+  }
+  @if ($name == 'left') {
+    margin-left: $size $important;
+  } @else if ($name == 'right') {
+    margin-right: $size $important;
+  } @else if ($name == 'top') {
+    margin-top: $size $important;
+  } @else if ($name == 'bottom') {
+    margin-bottom: $size $important;
+  }
 }
 
 @mixin absolute-horizontal-center {

@@ -26,7 +26,7 @@
       @include proxima;
       @include bold;
       color: $color-white;
-      font-size: 1.4em;
+      font-size: 1.44em;
       text-align: center;
     }
   }
@@ -64,7 +64,7 @@
   transition: all $transition-length;
 }
 .modal {
-  background: rgba(251, 252, 253,0.7);
+  background: transparent;
   padding: 0 !important;
   text-align: center;
 
@@ -87,12 +87,19 @@
       }
     }
   }
-  .modal-header {
-    color: $color-white;
-    font-weight: 700;
-  }
-  .modal-content {
+  .modal-content{
     background: $color-modal-bg;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=0, Color=#8F8F8F)";/*IE 8*/
+    -moz-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=135, Color=#8F8F8F); /*IE 5.5-7*/
+
+    .modal-header {
+      color: $color-white;
+      font-weight: 700;
+      padding-top: 18px;
+    }
   }
 }
 .modal:before {
