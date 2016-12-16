@@ -66,13 +66,18 @@
                        ng-click="change()"
                        uib-btn-radio="'{{ item }}'" >
                   <span>{{ item.name }}</span>
-                  <span class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
+                  <span ng-class="{'hidden' : item.feeMinTime==='' && item.feeMaxTime===''}" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
               </div>
-              <div class="custom-fee-inputs" ng-hide="!checkModel.type">
-                <input class="tx-fee"  disabled type="text" ng-model="feeAllText"  />
+              <div ng-if="checkedAmountType !=='Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
+                <input class="tx-fee"  ng-disabled="checkedAmountType!=='Custom'" type="text" ng-model="feeAllText"/>
                 <span class="eq-sign">=</span>
-                <input class="tx-fee-currency" ng-model="feeCurrencyAllText" disabled type="text"/>
+                <input class="tx-fee-currency" ng-disabled=" checkedAmountType!=='Custom'" ng-model="feeCurrencyAllText" type="text"/>
+              </div>
+              <div ng-if="checkedAmountType == 'Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
+                <input class="tx-fee" type="text" ng-model="feeAllTextCustom" number-only ng-change="sendCoinKeyingFee(feeAllTextCustom)" />
+                <span class="eq-sign">=</span>
+                <input class="tx-fee-currency" ng-model="feeCurrencyAllTextCustom" type="text" ng-change="sendCoinKeyingFeeCurrency(feeCurrencyAllTextCustom)" number-only/>
               </div>
             </div>
             <div class="pop-detail">

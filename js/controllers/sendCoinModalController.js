@@ -23,13 +23,16 @@ angular.module('IguanaGUIApp')
     $scope.dropDown = {};
     $scope.feeAllText = '';
     $scope.feeCurrencyAllText = '';
-
+    $scope.checkedAmountType ='';
+    $scope.feeAllTextCustom ='';
+    $scope.feeCurrencyAllTextCustom = '';
     $scope.close = function() {
       $uibModalInstance.dismiss();
     };
 
     $scope.change = function() {
       if (Object.keys($scope.checkModel).length) {
+        $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
         $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
         $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
         $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
@@ -95,8 +98,8 @@ angular.module('IguanaGUIApp')
       // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
       $api.bitcoinFees().then(function(response) {
         $api.bitcoinFeesAll().then(function(responseAll) {
-          var coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
-              currencyName = $storage['iguana-currency']['name'];
+          var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency;
+          var coinName = $storage['iguana-active-coin']['id'].toUpperCase();
 
           $api.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
             var fastestFee = checkFeeCount(response.data.fastestFee),
@@ -162,16 +165,16 @@ angular.module('IguanaGUIApp')
                 id: 0,
                 name: $filter('lang')('SEND.FEE_MIN'),
                 coin: $scope.sendCoin.minFee.toFixed(7),
-                amount: $scope.sendCoin.minFee.toFixed(7),
-                feeMinTime: 10,
-                feeMaxTime: 25
+                amount: (0.00001 * coinCurrencyRate).toFixed(12),
+                feeMinTime: '',
+                feeMaxTime: ''
               }, {
                 id: 1,
                 name: $filter('lang')('SEND.FEE_CUSTOM'),
                 coin: 0.00001,
-                amount: 0.00001,
-                feeMinTime: 0,
-                feeMaxTime: 10
+                amount: 0.00001 * coinCurrencyRate,
+                feeMinTime: '',
+                feeMaxTime: ''
               }];
 
               $scope.dropDown.item = $scope.dropDown.items[0];
@@ -215,14 +218,15 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.amount = $filter('decimalPlacesFormat')($scope.sendCoin.amountCurrency / $scope.sendCoin.currencyRate, 'coin');
     };
 
-    $scope.sendCoinKeyingFee = function() {
-      if ($scope.sendCoin.fee)
-        $scope.sendCoin.feeCurrency = $filter('decimalPlacesFormat')($scope.sendCoin.fee * $scope.sendCoin.currencyRate, 'currency').toFixed(12);
+    $scope.sendCoinKeyingFee = function(feeAllTextCustom) {
+      if (feeAllTextCustom) {
+        $scope.feeCurrencyAllTextCustom = parseInt($filter('decimalPlacesFormat')(parseInt(feeAllTextCustom )* $scope.sendCoin.currencyRate, 'currency')).toFixed(12);
+      }
     };
 
-    $scope.sendCoinKeyingFeeCurrency = function() {
-      if ($scope.sendCoin.feeCurrency && $scope.sendCoin.feeCurrency > 0)
-        $scope.sendCoin.fee = $filter('decimalPlacesFormat')($scope.sendCoin.feeCurrency / $scope.sendCoin.currencyRate, 'coin');
+    $scope.sendCoinKeyingFeeCurrency = function(feeCurrencyAllTextCustom) {
+      if (feeCurrencyAllTextCustom)
+        $scope.feeCurrencyAllTextCustom = $filter('decimalPlacesFormat')(feeCurrencyAllTextCustom/ $scope.sendCoin.currencyRate, 'coin');
     };
 
     $scope.validateSendCoinForm = function() {
