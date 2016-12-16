@@ -7,7 +7,7 @@
   dev.isDev = true; // set to true if you want to disable passphrase verification in iguana env
   dev.showSyncDebug = false;
   dev.showConsoleMessages = true;
-  dev.showAllCoindCoins = false;
+  dev.showAllCoindCoins = false; // to debug coin icons issues
   dev.clearConsoleErrors = true;
 
   // add your coind passphrases her one per each coin

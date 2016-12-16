@@ -14,7 +14,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$rootScope',
   '$auth',
-  function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, receivedObject, $filter, vars, $rootScope, $auth) {
+  function($scope, $uibModalInstance, util, $storage, $state, $api,
+           $uibModal, receivedObject, $filter, vars, $rootScope, $auth) {
+
     $scope.isIguana = $storage['isIguana'];
     $scope.open = open;
     $scope.close = close;
@@ -44,7 +46,7 @@ angular.module('IguanaGUIApp')
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
-          controller: 'addCoinModalController',
+          controller: 'selectCoinModalController',
           templateUrl: 'partials/add-coin.html',
           appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
         });

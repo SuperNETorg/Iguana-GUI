@@ -251,7 +251,7 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.valid.fee.empty = false;
         $scope.sendCoin.valid.fee.notEnoughMoney = true;
       }
-      if (Number($scope.sendCoin.fee) < Number($scope.sendCoin.minFee)) { // TODO: settings
+      if (Number($scope.sendCoin.fee) < Number($scope.sendCoin.minFee)) {
         $scope.sendCoin.valid.fee.empty = true;
         $scope.sendCoin.valid.fee.notEnoughMoney = false;
       }
@@ -288,7 +288,7 @@ angular.module('IguanaGUIApp')
 
     function checkFeeCount(fee) {
       var coin = fee * 1024 / 100000000, // satoshi per kb
-        amount = $scope.sendCoin.currencyRate * coin;
+          amount = $scope.sendCoin.currencyRate * coin;
 
       return {
         'coin': coin,

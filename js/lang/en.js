@@ -128,7 +128,7 @@ var lang = {
       'MINIMUM_TIME': 'Min Time',
       'MAXIMUM_TIME': 'Max Time',
       'MIN': 'min',
-      'SELECT_FEE' :'Please select a fee type',
+      'SELECT_FEE': 'Please Select Fee type'
     },
     'PASSPHRASE_MODAL': {
       'PROVIDE_PASSPHRASE': 'Provide passphrase',
