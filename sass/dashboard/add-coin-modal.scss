@@ -130,7 +130,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
     text-align: center;
 
     .coin {
-      background: $color-white;
+      background: $color-absolute-white;
       border: 2px solid transparent;
       border-radius: $border-radius-smaller;
       box-shadow: 0 3px 2px 1px rgba-black(0.1);
@@ -144,7 +144,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       width: 12.86em;
 
       .icon {
-        background-color: $color-white;
+        background-color: $color-absolute-white;
         border-radius: 50%;
         font-size: 2.2em;
         margin-top: 12px;

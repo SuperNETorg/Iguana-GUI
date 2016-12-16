@@ -8,12 +8,12 @@
     </header>
     <div class="form-content">
       <div class="coins-title">
-        {{ ( getType() == 'login' ? 'ADD_COIN.SELECT_LOGIN_WALLET' : 'ADD_COIN.SELECT_CREATED_WALLET' ) | lang }}
+        {{ ( getType() === 'login' ? 'ADD_COIN.SELECT_LOGIN_WALLET' : 'ADD_COIN.SELECT_CREATED_WALLET' ) | lang }}
       </div>
       <div class="quick-search col-xs-12">
-          <i class="icon bi_tool-magnifier"></i>
-          <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
-                 ng-model="coinSearchModel"/>
+        <i class="icon bi_tool-magnifier"></i>
+        <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
+               ng-model="coinSearchModel"/>
       </div>
       <div class="supported-coins-repeater-container col-xs-12 col-md-10 col-md-offset-1">
         <div class="supported-coins-repeater row">

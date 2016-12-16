@@ -21,14 +21,14 @@ angular.module('IguanaGUIApp')
   '$window',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
-
-    var isIguana = $storage['isIguana'],
-        coinsInfo = [],
-        defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+//$storage['iguana-mzc-passphrase'] = { 'logged': 'yes' };
+    var coinsInfo = [],
         coinBalances = [],
         _sideBarCoins = {},
-        coinsSelectedByUser = [];
+        coinsSelectedByUser = [],
+        isIguana = $storage['isIguana'],
+        defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
+        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
 
     $scope.util = util;
     $scope.$state = $state;
@@ -49,7 +49,7 @@ angular.module('IguanaGUIApp')
     $scope.sideBarCoinsUnsorted = {};
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     $scope.addCoinButtonState = true;
-    $scope.disableRemoveCoin = dev.isDev && !isIguana; // dev
+    $scope.disableRemoveCoin = !dev.isDev || isIguana; // dev
     $rootScope.background = false;
     // receive coin updated logic
     $scope.$receiveCoinInstance = {};
