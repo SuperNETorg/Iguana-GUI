@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="partials/login.html">
-  <section ng-class="{ 'hidden': !($state.current.name === 'login') }" >
+  <section ng-class="{ 'hidden': $state.current.name !== 'login' }">
     <div class="body-wrapper auth-main">
       <div class="container-fluid">
         <div class="row centered">
@@ -41,7 +41,7 @@
       </div>
     </div>
   </section>
-  <section ng-class="{ 'hidden': !($state.current.name === 'login.step2') }">
+  <section ng-class="{ 'hidden': $state.current.name !== 'login.step2' }">
     <div class="body-wrapper auth-main">
       <div class="container-fluid">
         <div class="row centered">

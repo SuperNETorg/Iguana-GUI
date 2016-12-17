@@ -47,7 +47,7 @@
         <!-- // create account form end -->
         <!-- // verify passphrase form start -->
         <section class="form-container verify-passphrase-form"
-                 ng-class="{ 'hidden': !($state.current.name === 'signup.step2') }">
+                 ng-class="{ 'hidden': $state.current.name !== 'signup.step2' }">
           <header class="form-header orange-gradient box-shadow-bottom">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
             <div class="title text-shadow unselectable">{{ title }}</div>
@@ -74,7 +74,7 @@
         <!-- // verify passphrase form end -->
         <!-- // verify passphrase form start -->
         <section class="form-container terms-conditionals-form"
-                 ng-class="{ 'hidden': !($state.current.name === 'signup.step3') }" >
+                 ng-class="{ 'hidden': $state.current.name !== 'signup.step3' }" >
           <header class="form-header orange-gradient box-shadow-bottom">
             <div class="title text-shadow">{{ 'PAGE.CONFIRMATION' | lang }}</div>
           </header>

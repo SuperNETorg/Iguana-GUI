@@ -47,7 +47,7 @@ html {
     .btn.width-gradient:focus,
     .btn.width-gradient:hover {
       @include width-gradient;
-      }
+    }
     .btn:disabled,
     .btn:disabled:hover,
     .btn:disabled:active {

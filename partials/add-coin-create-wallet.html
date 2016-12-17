@@ -7,7 +7,7 @@
         <div class="modal-content">
           <section class="create-account-form" ng-hide="!$parent.addCoinCreateAccount.initStep">
             <header class="modal-header form-header orange-gradient box-shadow-bottom">
-              <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-close"></i>
+              <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-close" ng-click="close()"></i>
               <div class="title text-shadow">{{ 'CREATE_ACCOUNT.ADD_ACCOUNT' | lang }}</div>
             </header>
             <div class="form-content">

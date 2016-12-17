@@ -16,7 +16,7 @@ var cssLintRules = {
   'errors': true,
   'duplicate-background-images': false,
   'duplicate-properties': true,
-  'empty-rules': true,
+  'empty-rules': false,
   'selector-max-approaching': false,
   'gradients': false,
   'fallback-colors': false,

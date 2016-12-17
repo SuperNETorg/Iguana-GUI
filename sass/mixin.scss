@@ -28,6 +28,7 @@
 }
 
 @mixin orange-gradient {
+  /* csslint ignore:start */
   background: -moz-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, 90deg, color-stop(20%, FE450D), color-stop(100%, FE780D)); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Chrome10+,Safari5.1+ */
@@ -36,12 +37,15 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
   //background: linear-gradient(90deg, #FE450D 20%, #FE780D 100%);/* W3C */
   color: $color-white;
+  /* csslint ignore:end */
 }
 
 @mixin width-gradient {
-  background: #FFF;
-  color: #fe470d;
+  /* csslint ignore:start */
+  background: $color-absolute-white;
+  color: #FE470D;
   @include btn-default-shadow;
+  /* csslint ignore:start */
 }
 
 @mixin btn-default-shadow {
@@ -86,14 +90,10 @@
 
 @mixin no-box-shadow {
   box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
 }
 
 @mixin no-border-radius {
   border-radius: 0;
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
 }
 
 @mixin text-left {
@@ -119,8 +119,8 @@
 }
 
 @mixin margin-top-bottom($size) {
-  margin-top: $size;
   margin-bottom: $size;
+  margin-top: $size;
 }
 
 @mixin margin-left-right($size) {
@@ -175,7 +175,7 @@
 
   .text-middle {
     display: inline-block;
-    vertical-align: middle;
     line-height: $children-line-height;
+    vertical-align: middle;
   }
 }

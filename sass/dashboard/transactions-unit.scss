@@ -19,8 +19,8 @@
       display: block;
       height: 95px;
       left: 0.5em;
-      top: 0;
       position: absolute;
+      top: 0;
       transform: scale(0.8);
       z-index: 10;
 
@@ -109,8 +109,8 @@
       position: relative;
       text-align: right;
       top: 0.1em;
-      width: 9em;
       white-space: nowrap;
+      width: 9em;
     }
     .hash {
       overflow: hidden;
@@ -221,14 +221,14 @@
         top: 0.5em;
       }
       .progress-indeterminate > circle {
-        fill: none;
-        stroke: $txunit-item-progress-icon-color;
-        stroke-width: 2;
-        stroke-linecap: round;
-        transform-origin: center;
         animation:
           $duration ease-in-out infinite flow,
           $duration/.75 linear infinite rotation;
+        fill: none;
+        stroke: $txunit-item-progress-icon-color;
+        stroke-linecap: round;
+        stroke-width: 2;
+        transform-origin: center;
       }
 
       @keyframes flow {

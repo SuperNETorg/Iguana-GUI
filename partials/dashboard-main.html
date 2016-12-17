@@ -5,7 +5,7 @@
     <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
-        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat:'currency') : 0 }}</span>
+        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency') : 0 }}</span>
         <span class="currency">{{ currency }}</span>
       </div>
     </div>
@@ -16,19 +16,20 @@
         <div class="account-coins-repeater">
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
-               ng-class="{ 'active': (activeCoin === item.id || activeCoin === $index) && !util.isMobile() }"
-               ng-repeat="item in sideBarCoins | orderBy: 'id'">
+               ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile() }"
+               ng-repeat="item in sideBarCoins | orderBy: 'id'"
+               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
                  ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
-            <div class="clickable-area" ng-click="util.isMobile() ? setActiveCoin(item) : (activeCoin !== item.id ? setActiveCoin(item) : null)">
+            <div class="clickable-area">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
                 <div class="name pull-left">{{ item.name }}</div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }">
-                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat:'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
-                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat:'currency') : 0 }}</span> {{ item.currencyName }}</div>
+                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
+                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency') : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
@@ -39,7 +40,7 @@
     </aside>
     <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right"
          ng-hide="$state.current.name === 'dashboard.mobileCoins'"
-         ng-style="!isMobile ? ({'width': (windowWidth - (isTablet ? 360 : 455)) + 'px'}) : {}">
+         ng-style="!isMobile ? ({ 'width': (windowWidth - (isTablet ? 360 : 455)) + 'px' }) : {}">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>
@@ -48,11 +49,11 @@
             <span>{{ 'DASHBOARD.INFORMATION' | lang }}</span>
           </div>
           <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat:'coin') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat: 'coin') : 0 }}</span>
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
           </div>
           <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat:'currency') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency') : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
           <div class="action-buttons unselectable">

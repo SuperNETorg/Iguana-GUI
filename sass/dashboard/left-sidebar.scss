@@ -42,9 +42,9 @@ $account-coins-repeater-coin-color: #D3D3D4;
         line-height: 0.8em;
       }
       .currency-value {
+        @include bold;
         font-size: 0.96em;
         line-height: 1.8em;
-        @include bold;
       }
       .currency-value,
       .coin-value {
@@ -89,14 +89,10 @@ $account-coins-repeater-coin-color: #D3D3D4;
     text-shadow: 0 1px 3px rgba-black(0.25);
     @include orange-gradient;
 
-    .remove-coin:before {
-      color: $color-absolute-white;
-    }
-    .loader .path4 {
-      stroke: $color-absolute-white;
-    }
     .coin i,
-    .coin .name {
+    .coin .name,
+    .loader .path4,
+    .remove-coin:before {
       color: $color-absolute-white;
     }
   }
@@ -104,13 +100,13 @@ $account-coins-repeater-coin-color: #D3D3D4;
     display: none;
   }
   .item.active .active-arrow {
-    color: #c4c7cb;
+    color: #C4C7CB;
     font-size: 2.1em;
     font-weight: 900;
     position: absolute;
+    right: -1.8em;
     text-shadow: none;
     top: 1em;
-    right: -1.8em;
   }
 }
 .btn-add-coin {

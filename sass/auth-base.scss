@@ -45,9 +45,9 @@
           font-weight: bold;
           position: relative;
           text-align: center;
+          @include no-text-shadow;
           top: 18px;
           z-index: 10;
-          @include no-text-shadow;
         }
       }
       .form-content-inner-login-state {
@@ -351,12 +351,12 @@
       width: 100%;
 
       button:first-child {
-        width: 92%;
         max-width: none;
+        width: 92%;
       }
       button:nth-child(2) {
-        width: 8%;
         max-width: none;
+        width: 8%;
       }
       ul {
         width: 100%;
@@ -373,26 +373,26 @@
   margin-top: 15px;
 }
 .pay-dtl h3 {
-  margin-top: 0;
   margin-bottom: 0;
+  margin-top: 0;
 }
 .pay-dtl h5 {
   margin-top: 0;
 }
 .segment-select .item-segment-select {
-  height: 40px;
   background:$color-white;
   border:1px solid $dashboard-send-currency-orange;
   color:$dashboard-send-currency-orange;
+  height: 40px;
   line-height: 14px;
 }
 .segment-select {
   width: 100%;
 }
 .item-segment-select .second-fee-text {
+  color: $dashboard-send-currency-orange;
   font-size:10px;
   margin-top: 0;
-  color: $dashboard-send-currency-orange;
 }
 .pop-detail .segment-select .item-segment-select.active {
   span {
@@ -401,8 +401,8 @@
 }
 .segment-select .active ,.segment-select .active:hover {
   background-color: $dashboard-send-currency-orange;
-  color: $color-white;
   border:1px solid $dashboard-send-currency-orange;
+  color: $color-white;
 }
 .segment-select .item-segment-select:active,
 .segment-select .item-segment-select:focus {

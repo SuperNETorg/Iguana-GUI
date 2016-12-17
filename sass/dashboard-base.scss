@@ -69,9 +69,9 @@ $dashboard-balance-block-label-color: #95969F;
         background: transparent;
         border-radius: $border-radius-smaller;
         height: 3px;
+        margin-left: 3%;
         padding: 0 22px;
         width: 96%;
-        margin-left: 3%;
       }
     }
     .item.active {
@@ -116,10 +116,9 @@ $dashboard-balance-block-label-color: #95969F;
       padding: 0;
     }
     .balance {
-      font-size: 2em;
-      font-weight: 600;
-      line-height: 1.2em;
       @include bold;
+      font-size: 2em;
+      line-height: 1.2em;
 
       .value {
         padding-right: 5px;
