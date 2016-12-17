@@ -387,7 +387,7 @@
   line-height: 14px;
 }
 .segment-select .active,
-.segment-select .active:hover {
+.segment-select .active:hover,
 .segment-select .item-segment-select:active,
 .segment-select .item-segment-select:focus {
   background-color: $dashboard-send-currency-orange;
@@ -424,5 +424,4 @@
   p{
     color:$dashboard-send-popup-err;
   }
-}
 }

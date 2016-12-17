@@ -4,7 +4,8 @@
   "description": "Iguana GUI",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start karma.conf.js",
+    "test-single": "karma start karma.conf.js --single-run"
   },
   "dependencies": {
     "csslint-stylish-custom": "git://github.com/SuperNETorg/csslint-stylish-custom.git#master",
@@ -24,9 +25,20 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.8",
+    "karma-junit-reporter": "^0.4.1",
+    "karma-spec-reporter": "0.0.26",
     "run-sequence": "^1.2.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "angular": "^1.6.0",
+    "angular-mocks": "^1.6.0",
+    "angular-ui-router": "^0.3.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/SuperNETorg/Iguana-GUI"
