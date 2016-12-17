@@ -9,18 +9,14 @@ if (!dev) var dev = { // prod
   sessions: null
 };
 
-angular.module('IguanaGUIApp.controllers', [
-  'ngAnimate',
-  'ngSanitize',
-  'ngStorage',
-  'ui.bootstrap'
-])
-.value('vars', {});
 angular.module('IguanaGUIApp', [
   'ui.router',
   'ngSanitize',
-  'IguanaGUIApp.controllers'
+  'ngAnimate',
+  'ngStorage',
+  'ui.bootstrap'
 ])
+.value('vars', {})
 .config(function($stateProvider, $urlRouterProvider) {
   //ToDo history provider
   /*--historyProvider

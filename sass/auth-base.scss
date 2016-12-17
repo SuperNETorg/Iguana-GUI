@@ -380,35 +380,32 @@
   margin-top: 0;
 }
 .segment-select .item-segment-select {
-  background:$color-white;
-  border:1px solid $dashboard-send-currency-orange;
-  color:$dashboard-send-currency-orange;
+  background: $color-white;
+  border: solid 1px $dashboard-send-currency-orange;
+  color: $dashboard-send-currency-orange;
   height: 40px;
   line-height: 14px;
+}
+.segment-select .active,
+.segment-select .active:hover {
+.segment-select .item-segment-select:active,
+.segment-select .item-segment-select:focus {
+  background-color: $dashboard-send-currency-orange;
+  border: solid 1px $dashboard-send-currency-orange;
+  color: $color-white;
 }
 .segment-select {
   width: 100%;
 }
 .item-segment-select .second-fee-text {
   color: $dashboard-send-currency-orange;
-  font-size:10px;
+  font-size: 10px;
   margin-top: 0;
 }
 .pop-detail .segment-select .item-segment-select.active {
   span {
     color: $dashboard-send-currency-white;
   }
-}
-.segment-select .active ,.segment-select .active:hover {
-  background-color: $dashboard-send-currency-orange;
-  border:1px solid $dashboard-send-currency-orange;
-  color: $color-white;
-}
-.segment-select .item-segment-select:active,
-.segment-select .item-segment-select:focus {
-  background-color: $color-white;
-  border:1px solid $dashboard-send-currency-orange;
-  color:$dashboard-send-currency-orange;
 }
 .segment-select .tem-segment-select {
   min-width: 25%;
@@ -427,4 +424,5 @@
   p{
     color:$dashboard-send-popup-err;
   }
+}
 }
