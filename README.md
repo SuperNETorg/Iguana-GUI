@@ -1,10 +1,13 @@
-#Iguana is an app helping people and companies to have new age financial tools, based on crypto- and blockchain-technologies.
+###Iguana###
+ 
+Iguana helps people and companies to benefit with top-notch cryptocurrency- and blockchain-based technologies.
 
-The application works on the unique Iguana core, which functions as a simple daemon, but provides a wide platform for all cryptocurrencies, peer-to-peer financial tools and desentralised applications (DAPPs). 
+The application works on the unique Iguana engine, which functions as a simple daemon, but provides an extremely wide platform for all existing and future cryptocurrecnies, classic financial assets and desentralised applications (DAPPs). 
 
-The app also may serve as a monocoin-wallet (Non-Iguana mode) with well-designed graphic interface and give a better experience then command line wallets for many altcoins or bitcoin wallets popular in the market. Though running a Non-Iguana monocoin wallet requires the following depences to be met:
+The app also may serve as a monocoin-wallet (Non-Iguana mode) giving a better user experience then command line wallets for many altcoins or most popular in the market bitcoin-wallets. Though running a Non-Iguana monocoin wallet requires the following depencies to be met:
 
 ###Dependencies for Non-Iguana mode###
+
 1) Needed daemons are downloaded, synced and run,
 2) Daemons has the minimum configuration with the params:
 >server=1
