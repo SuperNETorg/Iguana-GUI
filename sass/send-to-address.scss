@@ -1,0 +1,442 @@
+/*!
+ * Iguana dashboard/send-to-address
+ *
+ */
+
+@import 'dev.scss';
+
+$send-coin-head-color: #E8CEC6;
+$send-coin-title-color: #282828;
+$send-coin-text-color: #90929B;
+$send-coin-input-color: #333333;
+$send-coin-input-error-bg-color: #FFF5F5;
+$send-coin-input-error-border-color: #FD2F2F;
+$send-coin-p-color: #37373A;
+$send-coin-small-title-color: #A2A3AC;
+$send-coin-eq-sign-color: #FC6538;
+$send-coin-dropdown-color: #74767D;
+
+.send-modal {
+  .dropdown-fee .btn.btn-primary.dropdown-button-style {
+    border: 1px solid $color-medium-gray;
+    border-radius: 4px;
+    box-shadow: none;
+    color: $send-coin-dropdown-color;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-top: 5px;
+    outline: none;
+    padding: 5px 20px;
+    text-align: left;
+    width: 100%;
+
+    strong {
+      color: $color-black;
+      font-size: 1.05em;
+      font-weight: 500;
+    }
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style:before {
+    @include budicon;
+    transform: rotate(180deg);
+    display: inline-block;
+    content: '\eb24';
+    position: absolute;
+    right: 17px;
+    top: 19px;
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style.open:before {
+    right: 15px;
+    transform: rotate(0deg);
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style:focus {
+    border: 1px solid $color-medium-gray;
+    box-shadow: none;
+    outline: none;
+  }
+  .dropdown-fee .btn.btn-primary.dropdown-button-style.open {
+    border: solid 1px $color-orange;
+    box-shadow: 0 0 2px 3px rgba(254, 69, 13, 0.25);
+    outline: none;
+  }
+  .dropdown-fee {
+    text-align: left;
+
+    .dropdown-menu {
+      max-height: 196px;
+      overflow-y: auto;
+      padding: 0;
+    }
+    .dropdown-menu a {
+      color: $send-coin-dropdown-color;
+      @include cursor-pointer;
+      font-size: 1.1em;
+      font-weight: 500;
+      padding: 10px 20px;
+
+      strong {
+        color: $color-black;
+        font-size: 1.05em;
+        font-weight: 500;
+      }
+    }
+    .dropdown-menu a:hover {
+      @include cursor-pointer;
+    }
+  }
+  .headd {
+    border-radius: $border-radius-smaller;
+    box-shadow: 0 0 7px 4px $send-coin-head-color;
+    color: $color-white;
+    margin-top: 0.5em;
+    padding: 23px 21px 20px;
+    position: relative;
+  }
+  .headd::before {
+    color: $color-form-arrow;
+    content: '\eac5';
+    @include budicon;
+    font-size: 2.0em;
+    height: 40px;
+    left: 18px;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 100px;
+    width: 40px;
+  }
+  .modal-content {
+    .modal-header {
+      border-bottom: medium none;
+      border-radius: $border-radius-smaller $border-radius-smaller 0 0;
+      color: $color-white;
+      padding: 16px 40px;
+      position: relative;
+      text-align: center;
+    }
+    .modal-body {
+      background: $color-modal-bg none repeat scroll 0 0;
+      padding: 50px 0;
+    }
+  }
+  .main-popup {
+    margin: 0 auto;
+    max-width: 360px;
+  }
+  .hd-right > span {
+    @include bold;
+    display: block;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .pop-form {
+    margin-top: 40px;
+  }
+  .pop-detail {
+    margin-bottom: 20px;
+
+    h4 {
+      color: $send-coin-title-color;
+      font-size: 1.07em;
+      font-weight: 400;
+      margin: 0 0 5px 0;
+    }
+    p {
+      font-size: 13px;
+      margin: 4px 0;
+    }
+    input[type='text'] {
+      border: 1px solid $color-medium-gray;
+      border-radius: $border-radius-smaller;
+      color: $send-coin-input-color;
+      font-weight: 500;
+      height: 34px;
+      padding: 1px 6px;
+      width: 100%;
+    }
+    .tx-note {
+      border: 1px solid $color-medium-gray;
+      border-radius: $border-radius-smaller;
+      font-weight: normal;
+      height: 34px;
+      margin-top: 4px;
+      padding: 4px 12px;
+      resize: none;
+      width: 100%;
+    }
+  }
+  .modal {
+    padding-left: 0;
+  }
+  .hd-right {
+    font-size: 12px;
+    text-align: right;
+  }
+  .pop-detail.crncy {
+    display: inline-block;
+    width: 100%;
+
+    .eq-sign {
+      color: $dashboard-send-popup-err;
+      float: left;
+      font-size: 1.8em;
+      font-weight: 500;
+      padding: 0 1.3%;
+    }
+    input[type='text'] {
+      float: left;
+      width: 46%;
+    }
+  }
+  .pop-form .btn-next,
+  .pop-form .btn-confirm-tx {
+    border: 0 none;
+    border-radius: $border-radius-smaller;
+    box-shadow: 0 0 2px 1px rgba-black(0.2);
+    color: $color-white;
+    @include proxima;
+    font-size: 1.075em;
+    @include bold;
+    height: 34px;
+    margin-top: 10px;
+    padding-top: 3px;
+    width: 100%;
+  }
+  .pop-detail.send {
+    .tx-address-icon {
+      height: 20px;
+      position: absolute;
+      right: 3px;
+      top: -3px;
+      width: 20px;
+    }
+    .tx-address {
+      padding-right: 32px;
+      resize: both;
+    }
+    .tx-address-icon:before {
+      color: $color-orange;
+      content: '\ea16';
+      display: block;
+      @include budicon;
+      font-size: 1.2em;
+      position: absolute;
+      right: 6px;
+    }
+  }
+  .chk-crncy {
+    h3 {
+      font-size: 21px;
+      font-weight: 500;
+      margin: 0;
+    }
+    h4 {
+      color: $send-coin-small-title-color;
+      margin-bottom: 5px;
+    }
+    h5 {
+      font-size: 16px;
+      margin-top: -1px;
+    }
+  }
+  .pop-detail.pay-dtl p {
+    color: $send-coin-p-color;
+    font-size: 1.1em;
+  }
+  .pop-detail.crncy.chk-crncy {
+    margin: 30px 0;
+  }
+  .rs {
+    margin: 0;
+    position: relative;
+    top: -3px;
+  }
+  .modal-dialog {
+    margin: 20px auto;
+    width: 800px;
+  }
+  .pop-detail.send.check {
+    h4 {
+      color: $send-coin-small-title-color;
+    }
+    p {
+      color: $color-black;
+      font-size: 1em;
+      letter-spacing: 1px;
+      margin-top: 7px;
+    }
+  }
+  .pop-detail.pay-dtl h4 {
+    color: $send-coin-small-title-color;
+  }
+  .chk-crncy.crncy-rs h5 {
+    margin-top: -1px;
+  }
+  .pop-detail.crncy.chk-crncy.crncy-rs {
+    margin: 0 0 10px;
+  }
+  .pop-detail.crncy.chk-crncy.crncy-fee {
+    margin: 0 0 13px;
+  }
+  .col-red {
+    color: $color-red;
+  }
+  .pop-detail .validation-field-error {
+    background: $send-coin-input-error-bg-color;
+    border-color: $send-coin-input-error-border-color;
+  }
+}
+.modal .modal-content {
+  border-radius: $border-radius-small;
+  overflow: hidden;
+}
+.modal-header .modal-title {
+  font-size: 19px;
+  font-weight: 400;
+}
+
+/*
+  ! not going to work in IE,
+    TODO: gracefull fallback(?) !
+*/
+.send-modal.blur {
+  @include blur;
+}
+.send-coin-progress-overlay,
+.send-coin-success-overlay {
+  background: rgba(255, 255, 255, 0.9);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+}
+.send-coin-progress-overlay .send-coin-status,
+.send-coin-success-overlay .send-coin-status {
+  font-size: 1.1em;
+  padding-top: 50%;
+  text-align: center;
+}
+.send-coin-progress-overlay .btn-next {
+  margin-top: 25%;
+}
+.send-coin-success-overlay .btn-confirmed,
+.send-coin-success-overlay .btn-confirmed:focus {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
+  background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%,rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  bottom: 12.1%;
+  /* csslint ignore:start */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760',GradientType=1); /* IE6-9 fallback on horizontal gradient */
+  /* csslint ignore:end */
+  font-size: 1.3em;
+  left: 20%;
+  max-width: 359px;
+  position: absolute;
+  text-shadow: 0 3px 5px rgba-black(0.25);
+}
+.modal-send-coin {
+  background: none;
+  border-radius: $border-radius-smaller;
+  display: block;
+
+  .bi_interface-arrow-left {
+    font-size: 26px;
+    margin-left: -2px;
+    margin-top: 7px;
+  }
+  .coin {
+    float: left;
+
+    .icon {
+      height: 35px;
+      width: 35px;
+    }
+    i {
+      color: $color-white;
+      display: inline-block;
+      font-size: 3.5em;
+      margin-left: -6px;
+      text-shadow: 0 1px 3px rgba-black(0.25);
+    }
+    .name {
+      color: $color-absolute-white;
+      font-weight: normal;
+      left: 19px;
+      position: relative;
+      text-shadow: 0 1px 3px rgba-black(0.25);
+      top: -15px;
+    }
+  }
+  .col-sm-6.hd-right.col-xs-6.balance {
+    padding-right: 11px;
+  }
+  .balance {
+    text-shadow: 0 1px 3px rgba-black(0.25);
+  }
+  .hd-right.balance {
+    .balance-coin {
+      font-size: 1.7em;
+    }
+    .balance-currency {
+      font-size: 1.2em;
+    }
+  }
+  .modal-header {
+    .bi_interface-cross {
+      margin-top: 6px;
+    }
+    .title {
+      padding-top: 3px;
+    }
+  }
+
+  /*
+    TODO: drop svg, switch to css based animation
+    circular progress indicator
+    ref: http://stackoverflow.com/questions/5230148/create-svg-progress-circle
+  */
+  .progress-indicator {
+    height: 20px;
+    margin: 0 auto;
+    position: relative;
+    top: -2px;
+    width: 20px;
+  }
+  .over {
+    -webkit-animation: rotator 1.5s ease-in-out infinite;
+    stroke-dasharray: 107,38;
+  }
+  .modal-dialog .modal-content .modal-header{
+    i {
+      margin-left: 6px;
+    }
+    .title {
+      padding-top: 0;
+    }
+  }
+  .bag {
+    position: absolute;
+  }
+}
+.modal-send-coin.entry {
+  max-height: 770px;
+}
+.modal-send-coin .bi_interface-arrow-left,
+.modal-add-coin-login .bi_interface-arrow-left {
+  color: $color-white;
+  font-size: 26px;
+  margin-left: 10px;
+  margin-top: -1px;
+  position: absolute;
+  text-shadow: 1px 1px 3px rgba-black(0.3);
+  z-index: 100;
+}
+@-webkit-keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

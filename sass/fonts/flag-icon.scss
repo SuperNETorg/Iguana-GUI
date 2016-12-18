@@ -1,0 +1,24 @@
+$flags-path: 'svg/flags';
+
+.flag-icon,
+.flag-icon-background {
+  background-position: 50%;
+  background-repeat: no-repeat;
+	background-size: contain;
+}
+.flag-icon {
+  display: inline-block;
+  line-height: 1.9em;
+	position: relative;
+	width: 1.8em;
+}
+.flag-icon:before {
+	content: '\00a0';
+}
+
+$flags-list: au bg br ca ch cn cz dk gb hk hr hu id il in jp kr mx my no nz ph pl ro ru se sg th tr za eu us;
+@each $current-flag in $flags-list {
+  .flag-icon-#{$current-flag} {
+  	background-image: url('#{$flags-path}/#{$current-flag}.svg');
+  }
+}

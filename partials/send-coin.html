@@ -1,0 +1,6 @@
+<script type="text/ng-template" id="partials/send-coin.html">
+  <section class="form-container send-coin-form unselectable">
+    <div class="modal-send-coin" ng-include="'partials/send-coin-entry.html'" ng-hide="!sendCoin.initStep"></div>
+    <div class="modal-send-coin" ng-include="'partials/send-coin-confirmation.html'" ng-hide="sendCoin.initStep"></div>
+  </section>
+</script>

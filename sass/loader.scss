@@ -1,0 +1,101 @@
+/*!
+* Iguana common/loader
+*
+*/
+
+@import 'dev.scss';
+
+.dashboard.main.blur .loader .circle,
+.dashboard.main.blur .loader .path,
+.dashboard.main.blur .loader .path2,
+.dashboard.main.blur .loader .path3,
+.dashboard.main.blur .loader .path4,
+.dashboard-page.modal-open .loader .circle,
+.dashboard-page.modal-open .loader .path,
+.dashboard-page.modal-open .loader .path2,
+.dashboard-page.modal-open .loader .path3,
+.dashboard-page.modal-open .loader .path4 {
+  animation: none;
+}
+.app-loader {
+  margin-top: 20px;
+}
+.loader {
+  height: 100px;
+  margin: 0 auto;
+  position: relative;
+  width: 100px;
+
+  .circle {
+    animation: rotate 2s linear infinite;
+    height: 100px;
+    position: relative;
+    width: 100px;
+  }
+  @mixin loader-path($color, $num) {
+    animation: dash#{$num} 1.5s ease-in-out infinite;
+    stroke: #{$color};
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+  }
+  .path {
+    @include loader-path(#FFB8A2, '');
+  }
+  .path2 {
+    @include loader-path(#FF9372, 2);
+  }
+  .path3 {
+    @include loader-path(#FF7C53, 3);
+  }
+  .path4 {
+    @include loader-path($color-orange, 4);
+  }
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@mixin loader-keyframes-dash($offset1, $offset2, $offset3) {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: #{$offset1};
+  }
+  50% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: #{$offset2};
+  }
+  100% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: #{$offset3};
+  }
+}
+@keyframes dash {
+  @include loader-keyframes-dash(0, -35, -124);
+}
+@keyframes dash2 {
+  @include loader-keyframes-dash(0, -50, -124);
+}
+@keyframes dash3 {
+  @include loader-keyframes-dash(0, -75, -124);
+}
+@keyframes dash4 {
+  @include loader-keyframes-dash(0, -100, -124);
+}
+@keyframes color {
+  100%,
+  0% {
+    stroke: #FF8D6A;
+  }
+  40% {
+    stroke: $color-orange;
+  }
+  66% {
+    stroke: #FF683A;
+  }
+  80%,
+  90% {
+    stroke: #FF7D56;
+  }
+}

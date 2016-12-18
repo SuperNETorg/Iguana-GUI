@@ -1,0 +1,36 @@
+/*!
+ * Iguana css import file
+ *
+ */
+
+/*
+ *  Common styling
+ */
+
+@import 'bootstrap';
+/* fonts */
+@import 'cryptocoins';
+@import 'iguana-font-coins';
+@import 'proxima-nova';
+@import 'fonts/budicon.min';
+@import 'fonts/flag-icon';
+/* fonts end */
+@import 'common';
+@import 'message-modal';
+@import 'loader';
+@import 'modal';
+
+/*
+ *  Page specific styling
+ */
+@import 'auth-base'; /* order matters */
+@import 'dashboard/left-sidebar';
+@import 'dashboard/transactions-unit';
+@import 'dashboard/add-coin-modal';
+@import 'dashboard/passphrase-modal';
+@import 'dashboard-base';
+@import 'receiving-coins';
+@import 'send-to-address';
+@import 'reference-currency';
+@import 'responsive/auth';
+@import 'responsive/dashboard';

@@ -1,0 +1,286 @@
+/*!
+ * Iguana authentication responsive
+ *
+ */
+@import '../dev.scss';
+
+body {
+  /* for width resolution */
+  @media #{$small-min-Resolution} {
+    .mobile-hidden {
+      display: inherit;
+    }
+    .auth-main {
+      .create-account-form,
+      .terms-conditionals-form,
+      .login-account-form,
+      .verify-passphrase-form {
+        .form-content {
+          .form-content-inner {
+            margin: 0 auto;
+            max-width: 600px;
+
+            .form-title {
+              color: $color-dark-gray;
+              font-size: 1.1em;
+            }
+            .passphrase-word-count {
+              strong {
+                @include bold
+              }
+            }
+            .btn.row {
+              font-size: 1em;
+              font-weight: 700;
+              height: 34px;
+              @include left-right-auto;
+              max-width: none;
+              width: 100%;
+            }
+          }
+        }
+        .login-input-directions {
+          font-size: 1.09em;
+          line-height: 1.26em;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .generated-passhprase {
+          line-height: 1.3em;
+          padding: 0 35px;
+        }
+        .login-or-delim {
+          padding: 12px 0;
+        }
+      }
+      .login-buttons-container {
+        margin-top: 40px;
+      }
+    }
+    .form-container.mdl .form-header,
+    .modal-content,
+    .modal-dialog.modal-popup,
+    .modal-dialog .modal-body,
+    .modal .modal-content.receiving-coin-content {
+      border-radius: 0;
+    }
+    .form-container .form-content {
+      padding: 3.6em 10px;
+    }
+    .auth-add-coin-modal {
+      .modal-full {
+        .add-new-coin-form-login-state {
+          .form-header {
+            .btn-close {
+              margin-top: 0.2em;
+            }
+          }
+          .form-content {
+            .quick-search .input {
+              width: 300px;
+            }
+          }
+        }
+      }
+    }
+  }
+  /* for mobile resolution */
+  @media #{$small-max-Resolution} {
+    .mobile-hidden {
+      display: none;
+    }
+    .form-container.mdl .form-header,
+    .form-container.mdl .modal-content,
+    .modal-dialog.modal-popup,
+    .modal-dialog .modal-body,
+    .modal .modal-content.receiving-coin-content {
+      border-radius: 0;
+    }
+    .body-wrapper.auth-main {
+      .btn.row {
+        font-size: 1.2em;
+      }
+      .form-container.login-form {
+        .form-content {
+          display: block;
+          vertical-align: top;
+        }
+      }
+      .form-container.terms-conditionals-form {
+        .form-content{
+          .form-content-inner {
+            .login-input-directions {
+              font-size: 1.2em;
+              @include bold;
+              line-height: 1.25em;
+              @include text-left;
+            }
+          }
+        }
+      }
+      .form-container.terms-conditionals-form,
+      .form-container.create-account-form,
+      .form-container.login-account-form,
+      .form-container.verify-passphrase-form {
+        .form-header {
+          border: none;
+          border-radius: 0;
+          height: 4em;
+          padding: 1em 0.5em;
+
+          .btn-back {
+            font-size: 2.4em;
+            left: 8px;
+            line-height: 0.4em;
+          }
+        }
+        .form-content{
+          .form-content-inner {
+            .form-title {
+              color: $color-dark-gray;
+              font-size: 1.15em;
+              line-height: 1.1em;
+              max-width: 14em;
+              top: 5.4em;
+              @include absolute-horizontal-center;
+            }
+            .login-input-directions{
+              @include center;
+            }
+            .login-passphrase-textarea {
+              font-size: 1.2em;
+              height: 133px;
+              padding: 15px 10px;
+            }
+            .btn.row:last-child {
+              @include btn-bottom(15px);
+            }
+            .btn.row.btn-terms-conditions-accept {
+              @include btn-bottom(15px);
+            }
+            .btn.row.btn-terms-conditions-decline {
+              @include btn-bottom(45px);
+            }
+          }
+        }
+      }
+      .form-container {
+        .form-content {
+          padding: 0 18px;
+
+          .page-form-header {
+            margin: 1em 1.3em;
+            max-width: 220px;
+
+            .page-title {
+              font-size: 3em;
+              line-height: 1em;
+              text-align: left;
+            }
+          }
+          .form-content-inner,
+          .form-content-inner-login-state {
+            .login-input-directions-login-state {
+              margin: 2.7em 1.1em;
+              max-width: 23em;
+              text-align: left;
+            }
+            .login-input-directions {
+              text-align: left;
+            }
+            .advanced-benefits {
+              font-size: 1.17em;
+              font-weight: bold;
+              line-height: 1em;
+            }
+            .login-buttons-container {
+              margin-bottom: 20%;
+              margin-top: 20%;
+
+              .btn.row {
+                height: 47px;
+                max-width: 340px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .coins-title {
+      margin-top: 30px;
+      padding-top: 0;
+    }
+    .form-container.mdl .bi_interface-cross {
+      margin-top: 3px;
+    }
+    .btn-signin-account {
+      bottom: 0;
+      position: absolute;
+    }
+    .middle-sheet {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .txt-massage {
+      margin-bottom:0;
+    }
+    .btn-signin-account {
+      bottom: 15px;
+    }
+    .auth-add-coin-modal {
+      .modal-full {
+        .form-container {
+          .form-header {
+            height: 4em;
+            padding: 1.2em 0.8em;
+
+            .btn-close {
+              font-size: 1.5em;
+              margin-left: auto;
+            }
+            .title {
+              font-size: 1.4em;
+              margin-left: 0.5em;
+              margin-top: 0.1em;
+            }
+          }
+        }
+        .add-new-coin-form-login-state {
+          .form-content {
+            margin: 0 auto;
+            max-width: 30em;
+
+            .coins-title {
+              font-size: 1.18em;
+            }
+            .quick-search {
+              padding-bottom: 1em;
+              padding-top: 1em;
+
+              .input.text {
+                height: 42px
+              }
+              .icon {
+                margin-left: 0.5em;
+                margin-top: 0.6em;
+              }
+            }
+            .supported-coins-repeater-container {
+              margin-top: auto;
+
+              .coin {
+                margin: 0.6em;
+                opacity: 1;
+                padding: 1em 2em;
+
+                .icon {
+                  font-size: 2.6em;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

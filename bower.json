@@ -1,0 +1,36 @@
+{
+  "name": "Iguana-GUI",
+  "description": "Iguana GUI",
+  "main": "gulpfile.js",
+  "authors": [
+    "supernet"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "iguana",
+    "crypto"
+  ],
+  "homepage": "https://github.com/SuperNETorg/Iguana-GUI",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-animate": "1.5.0-rc.2",
+    "angular-ui-router": "0.3.1",
+    "angular-sanitize": "1.5.0-rc.2",
+    "angular": "1.5.0-rc.2",
+    "angular-bootstrap": "https://github.com/angular-ui/bootstrap-bower.git#^2.2.0",
+    "jquery": "2.1.1",
+    "kjua": "lrsjng/kjua#^0.1.1",
+    "ngstorage": "0.3.10",
+    "cryptocoins": "https://github.com/allienworks/cryptocoins.git",
+    "proxima-nova": "https://gist.github.com/haggen/2624063.git",
+    "flag-icon-css": "https://github.com/lipis/flag-icon-css.git#^2.7.0",
+    "bootstrap3-trimmed": "https://github.com/SuperNETorg/bootstrap3-trimmed.git#0.02",
+    "Iguana-GUI-font": "https://github.com/SuperNETorg/Iguana-GUI-font.git#0.02"
+  }
+}

@@ -1,0 +1,259 @@
+/*!
+ * Iguana dashboard/transactions-unit
+ *
+ */
+
+@import '../dev.scss';
+
+.transactions-unit {
+  border-radius: $border-radius-smaller;
+
+  .top-bar {
+    @include bold;
+    @include orange-gradient;
+    border-radius: $border-radius-smaller $border-radius-smaller 0 0;
+    box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
+    min-height: 150px;
+
+    .loader {
+      display: block;
+      height: 95px;
+      left: 0.5em;
+      position: absolute;
+      top: 0;
+      transform: scale(0.8);
+      z-index: 10;
+
+      circle {
+        stroke-width: 3px;
+      }
+      .path4 {
+        stroke: $color-absolute-white;
+      }
+    }
+    .info {
+      font-size: 0.93em;
+      margin: 0.2em 0.28em 0.28em 0.28em;
+
+      i {
+        font-size: 1.2em;
+      }
+    }
+  }
+  .action-buttons {
+    .btn {
+      @include bold;
+      background: $color-absolute-white;
+      border-radius: $border-radius-smaller;
+      box-shadow: 0 2px 3px 1px rgba-black(0.1);
+      color: $color-orange;
+      font-size: 1.12em;
+      padding: 6px 2.52em 4px 2.52em;
+    }
+    .btn:hover {
+      color: $color-orange;
+    }
+  }
+}
+.transactions-list {
+  background: $color-absolute-white;
+  border-radius: 0 0 $border-radius-smaller $border-radius-smaller;
+  box-shadow: 0 2px 3px 1px rgba-black(0.1);
+  padding: 25px 2.86em;
+
+  .title {
+    color: $color-medium-gray;
+    font-size: 1.4em;
+    padding-bottom: 1.2em;
+    padding-left: 0.1em;
+  }
+}
+.transactions-list-repeater {
+  .loader {
+    margin: 0;
+  }
+  .item.process {
+    .timestamp {
+      top: 2em;
+
+      .timestamp-date {
+        display: block;
+        font-size: 0.9em;
+      }
+    }
+  }
+  .item {
+    @include bold;
+    @include cursor-pointer;
+    background: $transactions-list-repeater-item;
+    border-radius: $border-radius-smaller;
+    font-size: 1.2em;
+    margin-bottom: 1.2em;
+    padding: 1.3em 2.4em 1.3em 2.4em;
+    position: relative;
+    transition: all $transition-length;
+
+    div {
+      @include cursor-pointer;
+      display: inline-block;
+    }
+    .status {
+      color: $color-dark-gray;
+      font-size: 0.96em;
+      font-weight: normal;
+      text-transform: capitalize;
+      width: 5.2em;
+    }
+    .amount {
+      font-size: 1.2em;
+      position: relative;
+      text-align: right;
+      top: 0.1em;
+      white-space: nowrap;
+      width: 9em;
+    }
+    .hash {
+      overflow: hidden;
+      position: relative;
+      top: 0.5em;
+      width: 50%;
+    }
+    .in-out {
+      font-size: 0.8em;
+      margin-right: 2px;
+      position: relative;
+      top: 1px;
+    }
+    .timestamp {
+      background: $transactions-list-repeater-item;
+      color: $color-dark-gray;
+      float: right;
+      font-size: 0.9em;
+      font-weight: normal;
+      padding-top: 6px;
+      position: absolute;
+      right: 2.74em;
+      text-align: right;
+      top: 1.6em;
+
+      .timestamp-date {
+        display: block;
+        font-size: 0.9em;
+      }
+    }
+    .timestamp.two-lines {
+      padding-top: 0;
+
+      .timestamp-date {
+        font-size: 0.86em;
+      }
+      .timestamp-time {
+        font-size: 1.1em;
+        line-height: 1.1em;
+      }
+    }
+    .progress-status {
+      @include margin-left-right(1.1em);
+
+      .icon:before {
+        display: block;
+        font-size: 1.2em;
+        font-style: normal;
+        font-weight: normal;
+        height: 20px;
+        position: relative;
+        top: 2px;
+      }
+    }
+  }
+  .item:last-child {
+    margin-bottom: 0;
+  }
+  .item.receive {
+    .amount {
+      color: $txunit-item-receive-amount-color;
+    }
+    .progress-status .icon:before {
+      color: $txunit-item-progress-icon-color;
+      content: '\eb47';
+      font-size: 1.4em;
+      left: 1px;
+      top: 4px;
+    }
+  }
+  .item.send {
+    .progress-status .icon:before {
+      color: $txunit-item-progress-icon-color;
+      content: '\eb4b';
+      font-size: 1.4em;
+      left: 1px;
+      top: 4px;
+    }
+  }
+  .item.process {
+    .amount {
+      color: $txunit-item-progress-amount-color;
+    }
+    .progress-status {
+      .bi_interface-arrow-right {
+        display: none;
+      }
+      .icon:after {
+        background: $color-modal-bg;
+        content: '';
+        display: block;
+        float: right;
+        height: 11px;
+        position: relative;
+        right: 10px;
+        top: -15px;
+        width: 14px;
+        z-index: 40;
+      }
+
+      $circumference: 43.982297149;
+      $bit: 1;
+      $duration: 2s;
+
+      .progress-indeterminate {
+        display: block!important;
+        position: relative;
+        top: 0.5em;
+      }
+      .progress-indeterminate > circle {
+        animation:
+          $duration ease-in-out infinite flow,
+          $duration/.75 linear infinite rotation;
+        fill: none;
+        stroke: $txunit-item-progress-icon-color;
+        stroke-linecap: round;
+        stroke-width: 2;
+        transform-origin: center;
+      }
+
+      @keyframes flow {
+        0% {
+          stroke-dasharray: $bit ($circumference - $bit);
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 0.75*$circumference 0.25*$circumference;
+          stroke-dashoffset: -0.25*$circumference;
+        }
+        100% {
+          stroke-dasharray: $bit ($circumference - $bit);
+          stroke-dashoffset: -$circumference;
+        }
+      }
+
+      @keyframes rotation {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    }
+  }
+  .item:hover {
+    box-shadow: 0 2px 3px 1px rgba-black(0.1);
+    transition: all $transition-length;
+  }
+}

@@ -1,0 +1,18 @@
+$transition-length: 0.25s;
+
+$border-radius-smaller: 4px;
+$border-radius-small: 6px;
+
+$smallWidth: 768px;
+$mediumWidth: 970px;
+$largeWidth: 1170px;
+$exLargeWidth: 1170px;
+
+$ex-large-min-Resolution: "all and (min-width: " $exLargeWidth ")";
+$large-min-Resolution: "all and (min-width: " $largeWidth ")";
+$medium-min-Resolution: "all and (min-width: " $mediumWidth ")";
+$small-min-Resolution: "all and (min-width: " $smallWidth ")";
+$ex-large-max-Resolution: "screen and (max-width: " $exLargeWidth ")";
+$large-max-Resolution: "screen and (max-width: " $largeWidth ")";
+$medium-max-Resolution: "screen and (max-width: " $mediumWidth ")";
+$small-max-Resolution: "screen and (max-width: " $smallWidth ")";

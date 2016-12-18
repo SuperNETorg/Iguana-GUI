@@ -1,0 +1,123 @@
+/*!
+ * Iguana dashboard/reference-currency
+ *
+ */
+
+@import 'dev.scss';
+
+$reference-currency-tile-color: #FD5624;
+$reference-currency-tile-span-color: #D3D4D6;
+$reference-currency-txamount: #898A94;
+
+.reference-currency-main {
+  padding-bottom: 40px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  .currency-content {
+    ul {
+      /* csslint ignore:start */
+      list-style-type: none;
+      -moz-margin-before: 0;
+      -moz-margin-after: 0;
+      -moz-margin-start: 0;
+      -moz-margin-end: 0;
+      -moz-padding-start: 0;
+      -webkit-margin-before: 0;
+      -webkit-margin-after: 0;
+      -webkit-margin-start: 0;
+      -webkit-margin-end: 0;
+      -webkit-padding-start: 0;
+      /* csslint ignore:end */
+    }
+    .flag-icon {
+      background-size: 100%;
+      box-shadow: 0 1px 4px 0 $color-default-gray;
+      height: 32px;
+      width: 43px;
+    }
+    .container {
+      @include proxima;
+      margin: 0 auto;
+    }
+    .container-left {
+      padding-top: 75px;
+
+      .choose-currency {
+        font-size: 20px;
+        font-weight: 700;
+        padding-bottom: 5px;
+      }
+      .transaction-amount {
+        color: $reference-currency-txamount;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .currency-parent {
+      margin-top: 30px;
+    }
+    .country-li.country-li.active {
+      border: 2px solid $reference-currency-tile-color;
+      box-shadow: none;
+      color: $reference-currency-tile-color;
+    }
+    .currency-loop {
+      font-size: 0.95em;
+      padding-left: 0;
+      text-align: center;
+
+      .active .full-name {
+        @include bold;
+        color: $reference-currency-tile-color;
+      }
+      .country-li {
+        background-color: $color-absolute-white;
+        border: 2px solid transparent;
+        border-radius: $border-radius-small;
+        box-shadow: 0 2px 3px 1px rgba-black(0.12);
+        display: table-cell;
+        float: left;
+        height: 132px;
+        list-style-type: none;
+        margin: 10px;
+        max-width: 180px;
+        min-width: 166px;
+        padding-top: 20px;
+        text-align: center;
+        vertical-align: middle;
+
+        span {
+          @include bold;
+          color: $reference-currency-tile-span-color;
+        }
+      }
+    }
+    .label  {
+      background-color: transparent;
+    }
+    .country-li {
+      .flag-head {
+        padding: 7px;
+      }
+      .short-name {
+        @include bold;
+        display: block;
+        padding-top: 2px;
+        width: 100%;
+      }
+      .full-name {
+        position: relative;
+        top: -2px;
+      }
+    }
+  }
+}

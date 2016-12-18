@@ -1,0 +1,6 @@
+/js/supported-coins-list.js
+/js/dev.js
+.idea/
+node_modules/
+bower_components/
+compiled/

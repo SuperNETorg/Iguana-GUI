@@ -1,0 +1,123 @@
+/*!
+ * Iguana dashboard/left-sidebar
+ *
+ */
+
+@import '../dev.scss';
+
+$account-coins-repeater-coin-color: #D3D3D4;
+
+.account-coins-repeater {
+  .item {
+    @include bold;
+    @include cursor-pointer;
+    background: $color-absolute-white;
+    border-radius: $border-radius-smaller;
+    box-shadow: 0 2px 2px 1px rgba-black(0.125);
+    height: 94px;
+    margin-bottom: 20px;
+    position: relative;
+
+    .clickable-area {
+      height: 100%;
+      width: 100%;
+    }
+    .remove-coin:before {
+      @include budicon;
+      color: $color-dark-gray;
+      content: '\ead7';
+      display: block;
+      font-size: 1.2em;
+      height: 20px;
+      position: absolute;
+      right: 0;
+      width: 20px;
+      z-index: 200;
+    }
+    .balance {
+      float: right;
+
+      .coin-value {
+        font-size: 1.4em;
+        line-height: 0.8em;
+      }
+      .currency-value {
+        @include bold;
+        font-size: 0.96em;
+        line-height: 1.8em;
+      }
+      .currency-value,
+      .coin-value {
+        text-align: right;
+      }
+    }
+    .coin {
+      float: left;
+
+      i {
+        color: $account-coins-repeater-coin-color;
+        font-size: 2.5em;
+      }
+      .name {
+        color: $color-dark-gray;
+        font-weight: normal;
+      }
+    }
+    .loader {
+      display: block;
+      height: 50px;
+      position: absolute;
+      right: 38px;
+      top: -3px;
+      transform: scale(0.8);
+      width: 50px;
+      z-index: 10;
+
+      circle {
+        stroke-width: 3px;
+      }
+    }
+  }
+  .item.disabled {
+    cursor: default;
+    opacity: 0.65;
+  }
+  .item.active {
+    box-shadow: 0 1px 6px 1px rgba(254, 69, 13, 0.5);
+    color: $color-absolute-white;
+    cursor: default;
+    text-shadow: 0 1px 3px rgba-black(0.25);
+    @include orange-gradient;
+
+    .coin i,
+    .coin .name,
+    .loader .path4,
+    .remove-coin:before {
+      color: $color-absolute-white;
+    }
+  }
+  .item:not(.active) .active-arrow {
+    display: none;
+  }
+  .item.active .active-arrow {
+    color: #C4C7CB;
+    font-size: 2.1em;
+    font-weight: 900;
+    position: absolute;
+    right: -1.8em;
+    text-shadow: none;
+    top: 1em;
+  }
+}
+.btn-add-coin {
+  @include bold;
+  background: $color-absolute-white;
+  border-radius: $border-radius-smaller;
+  box-shadow: 0 2px 2px 1px rgba-black(0.125);
+  color: $color-orange;
+  padding: 7px 0;
+  width: 100%;
+}
+.btn-add-coin:hover {
+  color: $color-orange;
+}

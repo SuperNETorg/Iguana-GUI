@@ -1,0 +1,181 @@
+@mixin proxima {
+  /* csslint ignore:start */
+  font-family: 'Proxima Nova', sans-serif;
+  /* csslint ignore:end */
+}
+
+@mixin cursor-pointer {
+  /* csslint ignore:start */
+  cursor: pointer;
+  cursor: hand;
+  /* csslint ignore:end */
+}
+
+@mixin unselectable {
+  /* csslint ignore:start */
+  cursor: default;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  /* csslint ignore:end */
+}
+
+@mixin unclickable {
+  /* csslint ignore:start */
+  pointer-events: none;
+  /* csslint ignore:end */
+}
+
+@mixin orange-gradient {
+  /* csslint ignore:start */
+  background: -moz-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, 90deg, color-stop(20%, FE450D), color-stop(100%, FE780D)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
+  //background: linear-gradient(90deg, #FE450D 20%, #FE780D 100%);/* W3C */
+  color: $color-white;
+  /* csslint ignore:end */
+}
+
+@mixin width-gradient {
+  /* csslint ignore:start */
+  background: $color-absolute-white;
+  color: #FE470D;
+  @include btn-default-shadow;
+  /* csslint ignore:start */
+}
+
+@mixin btn-default-shadow {
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=0, Color=#E9ECF0)'; /*IE 8*/
+  -moz-box-shadow: 0 6px 10px 4px #E9ECF0; /*FF 3.5+*/
+  -webkit-box-shadow: 0 6px 10px 4px #E9ECF0; /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  box-shadow: 0 6px 10px 4px #E9ECF0; /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=135, Color=#E9ECF0); /*IE 5.5-7*/
+}
+
+@mixin login-orange-image {
+  background: url('images/bg.jpg') fixed no-repeat center;
+  background-size: cover;
+}
+
+@function rgba-black($opacity) {
+  @return rgba(0, 0, 0, $opacity);
+}
+
+@mixin bold {
+  /* csslint ignore:start */
+  font-weight: 600;
+  /* csslint ignore:end */
+}
+
+@mixin budicon {
+  /* csslint ignore:start */
+  font-family: 'budicon';
+  /* csslint ignore:end */
+}
+
+@mixin blur {
+  /* csslint ignore:start */
+  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  filter: blur(6px);
+  /* csslint ignore:end */
+}
+
+@mixin no-text-shadow {
+  text-shadow: none;
+}
+
+@mixin no-box-shadow {
+  box-shadow: none;
+}
+
+@mixin no-border-radius {
+  border-radius: 0;
+}
+
+@mixin text-left {
+  @media #{$small-min-Resolution} {
+    text-align: left;
+  }
+
+  /** on mobile resolution required important */
+  @media #{$small-max-Resolution} {
+    text-align: left !important;
+  }
+}
+
+@mixin no-padding-left-right {
+  /** on include required important */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@mixin left-right-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin margin-top-bottom($size) {
+  margin-bottom: $size;
+  margin-top: $size;
+}
+
+@mixin margin-left-right($size) {
+  margin-left: $size;
+  margin-right: $size;
+}
+
+@mixin margin($name, $size, $auto, $important) {
+  @if ($auto) {
+    margin: 0 auto;
+  }
+  @if ($name == 'left') {
+    margin-left: $size $important;
+  } @else if ($name == 'right') {
+    margin-right: $size $important;
+  } @else if ($name == 'top') {
+    margin-top: $size $important;
+  } @else if ($name == 'bottom') {
+    margin-bottom: $size $important;
+  }
+}
+
+@mixin absolute-horizontal-center {
+  left: 15px;
+  position: absolute;
+  right: 15px;
+}
+
+@mixin disabled {
+  background: $login-button-disabled-color;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+@mixin hover {
+  box-shadow: 0 0 2px 1px rgba-black(0.2);
+  color: $color-white;
+}
+
+@mixin center {
+  text-align: center;
+}
+
+@mixin btn-bottom($bottom) {
+  bottom: $bottom;
+  max-width: 90%;
+  @include absolute-horizontal-center;
+}
+
+@mixin text-vertical-center($parent-line-height, $children-line-height) {
+  line-height: $parent-line-height;
+
+  .text-middle {
+    display: inline-block;
+    line-height: $children-line-height;
+    vertical-align: middle;
+  }
+}

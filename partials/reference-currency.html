@@ -1,0 +1,23 @@
+<script type="text/ng-template" id="partials/reference-currency.html">
+  <div class="currency-content">
+    <div class="col-md-3 col-md-offset-1 col-sm-5 container-left">
+      <h3 class="choose-currency">{{ 'SETTINGS.REFERENCE_CURRENCY' | lang }}:</h3>
+      <h4 class="transaction-amount">{{ 'SETTINGS.CHOOSE_YOUR_CURRENCY' | lang }}</h4>
+      <h4 class="transaction-amount">{{ 'SETTINGS.AMOUNT_OF_TRANSACTIONS' | lang }}</h4>
+    </div>
+    <div class="col-md-7 col-sm-6 currency-parent">
+      <ul class="currency-loop clearfix">
+        <li class="country-li cursor-pointer" data-id="{{ item.index }}" ng-repeat="item in currencyArr" ng-class="{ 'active': activeCurrency === item.shortName }" ng-click="setCurrency(item)">
+          <h1 class="flag-head">
+            <span class="label label-default">
+              <span class="flag-icon flag-icon-{{ item.flagId }}"></span>
+            </span>
+          </h1>
+          <strong class="short-name">{{ item.shortName }}</strong>
+          <span class="full-name">{{ item.fullName | lang }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</script>
