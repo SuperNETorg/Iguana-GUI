@@ -35,9 +35,7 @@
     "run-sequence": "^1.2.2"
   },
   "devDependencies": {
-    "angular": "^1.6.0",
     "angular-mocks": "^1.6.0",
-    "angular-ui-router": "^0.3.2"
   },
   "repository": {
     "type": "git",
