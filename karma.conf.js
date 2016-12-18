@@ -27,7 +27,7 @@ module.exports = function(config) {
       'js/dev.js',
       'js/lang/en.js',
       'js/iguana-add-coin-list.js',
-      'js/app.js',
+      'js/app_tests.js',
       'js/services/storage.js',
       'js/services/rates.js',
       'js/services/auth.js',
@@ -56,7 +56,7 @@ module.exports = function(config) {
       'js/controllers/sendCoinModalController.js',
       'js/controllers/sendCoinPassphraseModalController.js',
       'js/controllers/messageController.js',
-      'tests/passPhraseGeneratorService.spec.js'
+      'tests/apiService.spec.js'
     ]
   });
 };

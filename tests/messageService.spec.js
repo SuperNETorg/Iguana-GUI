@@ -4,11 +4,9 @@ describe('message service test', function() {
 
     it('shoud exist', inject(function($message) {
       expect($message).toBeDefined();
-      expect($message.ngPrepMessageModal(null, 'red', 'noDaemon')).toEqual(jasmine.any(Object));
     }));
 
     it('shoud return uibootstrap object', inject(function($message) {
-      expect($message).toBeDefined();
       expect($message.ngPrepMessageModal(null, 'red', 'noDaemon')).toEqual(jasmine.any(Object));
       expect($message.ngPrepMessageModal(null, 'red', 'noDaemon').opened).toEqual(jasmine.any(Object));
       expect($message.ngPrepMessageModal(null, 'red', 'noDaemon').closed).toEqual(jasmine.any(Object));

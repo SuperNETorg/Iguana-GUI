@@ -140,14 +140,14 @@ angular.module('IguanaGUIApp', [
     });
 
   $urlRouterProvider.otherwise(function($injector) {
-    var $state = $injector.get("$state");
+    var $state = $injector.get('$state');
 
-    $state.go("login");
+    $state.go('login');
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
 
-  $rootScope.$on("$stateChangeStart",
+  $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
       $auth.toParams = toParams;
