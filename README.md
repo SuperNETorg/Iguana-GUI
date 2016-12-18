@@ -2,7 +2,7 @@
  
 Iguana helps people and companies to benefit with top-notch cryptocurrency- and blockchain-based technologies.
 
-The application works on the unique Iguana engine, which functions as a simple daemon, but provides an extremely wide platform for all existing and future cryptocurrecnies, classic financial assets and desentralised applications (DAPPs). 
+It is an open-source application working on the unique Iguana engine, which functions as a simple daemon, but provides an extremely wide platform for all existing and future cryptocurrecnies, classic financial assets and desentralised applications (DAPPs). 
 
 The app also may serve as a monocoin-wallet (Non-Iguana mode) giving a better user experience then command line wallets for many altcoins or most popular in the market bitcoin-wallets. Though running a Non-Iguana monocoin wallet requires the following depencies to be met:
 
@@ -16,4 +16,6 @@ The app also may serve as a monocoin-wallet (Non-Iguana mode) giving a better us
 >rpcpassword=yourverylongandsecurepassword
 >rpcport=altcoinport
 3) Proxy server is set up,
-(optionally) 4)  Supported coins script is modified accordingly to respective blockchain RPC-credentials.
+(optionally) 4)  Supported coins script is modified accordingly to respective blockchain RPC-credentials
+
+Full feature narrative and development environment setup guides may be found in the wiki https://github.com/SuperNETorg/Iguana-application/wiki
