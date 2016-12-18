@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp')
           min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(),
           sec = a.getSeconds();
 
-      if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year + ' ';
+      if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year;
       if (format === 'HHMM') return hour + ':' + min;
     };
 
