@@ -34,7 +34,7 @@ angular.module('IguanaGUIApp')
     $scope.change = function() {
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
-        if($scope.checkedAmountType !=='Custom') {
+        if ($scope.checkedAmountType != 'Custom') {
           $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
           $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
         } else {
@@ -248,7 +248,7 @@ angular.module('IguanaGUIApp')
 
     $scope.sendFee = function() {
       if ($scope.sendCoin.fee) {
-        $scope.sendCoin.feeCurrency = parseFloat($filter('decimalPlacesFormat')(parseFloat($scope.sendCoin.fee )* $scope.sendCoin.currencyRate, 'currency')).toFixed(7);
+        $scope.sendCoin.feeCurrency = parseFloat($filter('decimalPlacesFormat')(parseFloat($scope.sendCoin.fee) * $scope.sendCoin.currencyRate, 'currency')).toFixed(7);
         if (isNaN($scope.sendCoin.feeCurrency)) {
           $scope.sendCoin.feeCurrency = '';
         }
@@ -260,7 +260,6 @@ angular.module('IguanaGUIApp')
     $scope.sendFeeCurrency = function() {
       if ($scope.sendCoin.feeCurrency) {
         $scope.sendCoin.fee = ($scope.sendCoin.feeCurrency / $scope.sendCoin.currencyRate);
-        debugger;
         if (isNaN($scope.sendCoin.fee)) {
           $scope.sendCoin.fee = '';
         }

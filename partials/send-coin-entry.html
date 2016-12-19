@@ -54,9 +54,13 @@
             <div class="pop-detail crncy">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <p class="tx-address-validation"
-                 ng-class="{'col-red': !sendCoin.valid.address, 'hidden': sendCoin.valid.address}"
+                 ng-class="{'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty}"
               >
                 {{ sendCoin.fee ? '' : 'SEND.SELECT_FEE' | lang }}
+              </p>
+              <p class="tx-address-validation"
+                 ng-class="{'col-red': sendCoin.valid.fee.notEnoughMoney , 'hidden': !sendCoin.valid.fee.notEnoughMoney}">
+                {{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}
               </p>
               <!--<segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>-->
               <div class="btn-group segment-select clearfix">
