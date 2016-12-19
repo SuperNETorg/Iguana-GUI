@@ -72,18 +72,31 @@
     height: 100%;
     margin: 0;
     padding: 0;
+
+    .modal-content {
+      border-radius: 0;
+      height: 100%;
+      min-height: 100%;
+    }
+  }
+  .modal-full,
+  .modal-lg {
     width: 100%;
 
-    .modal-content{
-      border-radius: 0;
-      height: auto;
-      min-height: 100%;
+    .modal-content {
 
-      .modal-header{
+      overflow-y: auto;
+
+      .modal-header {
         border-bottom: none;
         border-radius: 0;
-        height: 4.12em;
+        height: 4.3em;
         padding-top: 18px;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)";/*IE 8*/
+        -moz-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*FF 3.5+*/
+        -webkit-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+        box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
       }
     }
   }
@@ -121,4 +134,7 @@
   .modal-body{
     padding: 15px 1em 3.2em 1em;
   }
+}
+.modal-backdrop {
+  background-color: $color-white;
 }

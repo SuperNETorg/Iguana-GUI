@@ -179,3 +179,9 @@
     vertical-align: middle;
   }
 }
+
+@mixin quick-search-placeholder {
+  color: $color-form-arrow;
+  font-size: 1.07em;
+  padding-top: 1px;
+}

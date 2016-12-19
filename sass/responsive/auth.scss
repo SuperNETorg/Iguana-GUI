@@ -65,10 +65,11 @@ body {
       border-radius: 0;
     }
     .form-container .form-content {
-      padding: 3.6em 10px;
+      padding: 3.4em 10px;
     }
     .auth-add-coin-modal {
-      .modal-full {
+      .modal-full,
+      .modal-lg {
         .add-new-coin-form-login-state {
           .form-header {
             .btn-close {

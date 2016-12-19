@@ -61,11 +61,11 @@ var lang = {
     },
     'ADD_COIN': {
       'WALLET_TYPE': 'Wallet type',
-      'SELECT_CREATED_WALLET': 'Select a wallet type to create',
+      'SELECT_CREATED_WALLET': 'Select a wallet type to create it',
       'SELECT_LOGIN_WALLET': 'Select a wallet type to log in',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
-      'FOR_EXAMPLE': 'For example. "Bitcoin" or "BTN"',
+      'FOR_EXAMPLE': 'For example, "Bitcoin" or "BTN"',
       'SELECT_A_COIN_TO_ADD': 'Select a coin to add',
       'A_COIN': 'a coin',
       'A_WALLET': 'a wallet'
@@ -93,7 +93,7 @@ var lang = {
       'COPY': 'Copy',
       'SHARE': 'Share',
       'AMOUNT': 'Amount',
-      'ENTER_IN': 'Enter in'
+      'ENTER_IN': 'Enter in any currency'
     },
     'SETTINGS': {
       'REFERENCE_CURRENCY': 'Reference currency',

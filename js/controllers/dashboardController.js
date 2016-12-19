@@ -91,10 +91,10 @@ angular.module('IguanaGUIApp')
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
-          size: 'lg',
-          controller: 'loginSelectCoinModalController',
+          size: 'full',
+          controller: 'selectCoinModalController',
           templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
+          appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
         },
         addCoinLoginModal = {
           animation: true,
@@ -129,6 +129,12 @@ angular.module('IguanaGUIApp')
 
     // Modals start
     function openAddCoinModal() {
+      addCoinModal.resolve = {
+        'type': function() {
+          return 'signup';
+        }
+      };
+
       modalInstance = $uibModal.open(addCoinModal);
 
       modalInstance.result.then(resultPromise);
