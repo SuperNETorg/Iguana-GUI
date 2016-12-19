@@ -690,14 +690,19 @@ angular.module('IguanaGUIApp')
           result = false;
         }
 
+        deferred.resolve(result);
+
         // if (cb) cb.call(this, result);
         // deferred.resolve(result);
       }.bind(this), function(response) {
-        if (response.data && response.data instanceof String && response.responseText.indexOf(':-10') === -1) {
+        console.log(response.data.responseText);
+        if (response.data && response.data.responseText.indexOf(':-10') === -1) {
           result = true;
         } else {
           result = false;
         }
+
+        deferred.resolve(result);
 
         deferred.reject(result);
       });
@@ -841,7 +846,7 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.getIguanaRate = function(quote) {
+    this.getIguanaRate = function(quote) { // deprecated, !DON'T REMOVE!
       var result = false,
           deferred = $q.defer(),
           quoteComponents = quote.split('/'),
@@ -1120,7 +1125,9 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.getCoinCurrentHeight = function(coin) {
+    // temp deprecated
+    // !DON'T DELETE!
+    /*this.getCoinCurrentHeight = function(coin) {
       var result = false,
           deferred = $q.defer();
 
@@ -1164,7 +1171,7 @@ angular.module('IguanaGUIApp')
       deferred.resolve(result);
 
       return deferred.promise;
-    };
+    };*/
 
     this.listTransactions = function(account, coin, update) {
       var result = false,
@@ -1258,6 +1265,7 @@ angular.module('IguanaGUIApp')
               console.log(response);
             }
 
+            console.log(response.data);
             // iguana
             if (response.data && response.data.error) {
               // do something
