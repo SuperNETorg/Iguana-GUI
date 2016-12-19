@@ -1,8 +1,13 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'fixture'],
     preprocessors: {
+      '**/*.html': ['html2js'],
+      '**/*.json': ['json_fixtures']
+    },
+    jsonFixturesPreprocessor: {
+      variableName: '__json__'
     },
     reporters: ['spec'],
     port: 65009,
@@ -13,8 +18,8 @@ module.exports = function(config) {
     singleRun: false,
     concurrency: Infinity,
     files: [
-      'bower_components/angular/angular.js',                             // angular
-      'bower_components/angular-ui-router/release/angular-ui-router.js', // ui-router
+      'bower_components/angular/angular.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
@@ -56,7 +61,8 @@ module.exports = function(config) {
       'js/controllers/sendCoinModalController.js',
       'js/controllers/sendCoinPassphraseModalController.js',
       'js/controllers/messageController.js',
-      'tests/apiService.spec.js'
+      'spec/fixtures/*.json',
+      'spec/apiService.spec.js'
     ]
   });
 };
