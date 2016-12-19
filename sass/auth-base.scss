@@ -384,7 +384,6 @@
   border: solid 1px $dashboard-send-currency-orange;
   color: $dashboard-send-currency-orange;
   height: 40px;
-  line-height: 14px;
 }
 .segment-select .active,
 .segment-select .active:hover,
@@ -424,4 +423,7 @@
   p{
     color:$dashboard-send-popup-err;
   }
+}
+.send-coin-line-height {
+  line-height: 14px;
 }

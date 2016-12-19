@@ -34,8 +34,13 @@ angular.module('IguanaGUIApp')
     $scope.change = function() {
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
-        $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
-        $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
+        if($scope.checkedAmountType !=='Custom') {
+          $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
+          $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
+        } else {
+          $scope.sendCoin.fee = '';
+          $scope.sendCoin.feeCurrency = '';
+        }
         $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
         $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' ' + $scope.sendCoin.currency;
       }
@@ -223,7 +228,6 @@ angular.module('IguanaGUIApp')
       if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
         $scope.sendCoin.address = sendDataTest[coin].address;
         $scope.sendCoin.amount = sendDataTest[coin].val;
-        $scope.sendCoin.fee = 0.00001;
         $scope.sendCoin.note = sendDataTest[coin].note;
       }
     }
@@ -242,15 +246,27 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.amount = $filter('decimalPlacesFormat')($scope.sendCoin.amountCurrency / $scope.sendCoin.currencyRate, 'coin');
     };
 
-    $scope.sendCoinKeyingFee = function(feeAllTextCustom) {
-      if (feeAllTextCustom) {
-        $scope.feeCurrencyAllTextCustom = parseInt($filter('decimalPlacesFormat')(parseInt(feeAllTextCustom) * $scope.sendCoin.currencyRate, 'currency')).toFixed(12);
+    $scope.sendFee = function() {
+      if ($scope.sendCoin.fee) {
+        $scope.sendCoin.feeCurrency = parseFloat($filter('decimalPlacesFormat')(parseFloat($scope.sendCoin.fee )* $scope.sendCoin.currencyRate, 'currency')).toFixed(7);
+        if (isNaN($scope.sendCoin.feeCurrency)) {
+          $scope.sendCoin.feeCurrency = '';
+        }
+      } else {
+        $scope.sendCoin.feeCurrency = '';
       }
     };
 
-    $scope.sendCoinKeyingFeeCurrency = function(feeCurrencyAllTextCustom) {
-      if (feeCurrencyAllTextCustom)
-        $scope.feeCurrencyAllTextCustom = $filter('decimalPlacesFormat')(feeCurrencyAllTextCustom / $scope.sendCoin.currencyRate, 'coin');
+    $scope.sendFeeCurrency = function() {
+      if ($scope.sendCoin.feeCurrency) {
+        $scope.sendCoin.fee = ($scope.sendCoin.feeCurrency / $scope.sendCoin.currencyRate);
+        debugger;
+        if (isNaN($scope.sendCoin.fee)) {
+          $scope.sendCoin.fee = '';
+        }
+      } else {
+        $scope.sendCoin.fee = '';
+      }
     };
 
     $scope.validateSendCoinForm = function() {

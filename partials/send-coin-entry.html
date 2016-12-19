@@ -61,6 +61,7 @@
               <!--<segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>-->
               <div class="btn-group segment-select clearfix">
                 <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-3 col-lg-3"
+                       ng-class="{'send-coin-line-height':activeCoin === 'btc'}"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
                        ng-click="change()"
@@ -70,14 +71,31 @@
                 </label>
               </div>
               <div ng-if="checkedAmountType !=='Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
-                <input class="tx-fee"  ng-disabled="checkedAmountType!=='Custom'" type="text" ng-model="feeAllText"/>
+                <input class="tx-fee"
+                       ng-disabled="checkedAmountType!=='Custom'"
+                       type="text"
+                       ng-model="feeAllText"
+                 />
                 <span class="eq-sign">=</span>
                 <input class="tx-fee-currency" ng-disabled=" checkedAmountType!=='Custom'" ng-model="feeCurrencyAllText" type="text"/>
               </div>
               <div ng-if="checkedAmountType == 'Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
-                <input class="tx-fee" type="text" ng-model="feeAllTextCustom" number-only ng-change="sendCoinKeyingFee(feeAllTextCustom)" />
+                <input placeholder="0 {{ sendCoin.coinId }}"
+                       class="tx-fee"
+                       type="text"
+                       ng-model="sendCoin.fee"
+                       number-only
+                       ng-change="sendFee()"
+                />
                 <span class="eq-sign">=</span>
-                <input class="tx-fee-currency" ng-model="feeCurrencyAllTextCustom" type="text" ng-change="sendCoinKeyingFeeCurrency(feeCurrencyAllTextCustom)" number-only/>
+                <input placeholder="0
+                       {{ sendCoin.currency }}"
+                       class="tx-fee-currency"
+                       ng-model="sendCoin.feeCurrency"
+                       type="text"
+                       ng-change="sendFeeCurrency()"
+                       number-only
+                />
               </div>
             </div>
             <div class="pop-detail">
