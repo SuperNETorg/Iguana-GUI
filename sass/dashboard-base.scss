@@ -234,6 +234,7 @@ $dashboard-balance-block-label-color: #95969F;
 
   .navbar-brand {
     color: $color-absolute-white;
+    //font-family: 'Nunito', sans-serif; TODO: not completed
     font-size: 1.6em;
     @include bold;
   }

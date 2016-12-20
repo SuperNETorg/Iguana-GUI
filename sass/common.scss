@@ -11,7 +11,7 @@ $color-textarea-border: #CAC9C9;
 
 //@font-face {
 //  font-family: 'Nunito', sans-serif;
-  //TODO: continued
+  //TODO: not completed
   //src: url("fonts/Nunito-Regular.ttf") format('truetype');;
 //}
 html {
@@ -61,9 +61,6 @@ html {
     .col-white {
       color: $color-white;
     }
-    .modal .modal-dialog.modal-lg {
-      width: 800px;
-    }
     .dashboard-page .app-container,
     .dashboard-page .app-container-inner {
       background: inherit;
@@ -112,6 +109,9 @@ html {
     }
     .offset-right-lg {
       @include margin('right', 45px, false, !important);
+    }
+    .orange-shadow {
+      @include orange-shadow;
     }
   }
 }

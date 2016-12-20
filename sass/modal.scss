@@ -35,7 +35,7 @@
     font-size: 1.15em;
     margin-left: 0.8em;
     position: absolute;
-    text-shadow: 1px 2px 2px rgba(35, 35, 35, 0.3);
+    text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.3);
   }
   .bi_interface-cross:before {
     font-weight: 900;
@@ -55,6 +55,7 @@
   }
 }
 .modal,
+.send-coin-modal-container,
 .add-coin-create-wallet-form .create-account-form,
 .add-coin-create-wallet-form .verify-passphrase-form {
   background-color: $color-modal-bg-inner;
@@ -77,6 +78,10 @@
       border-radius: 0;
       height: 100%;
       min-height: 100%;
+
+      .modal-header {
+        border-radius: 0;
+      }
     }
   }
   .modal-full,
@@ -89,25 +94,25 @@
 
       .modal-header {
         border-bottom: none;
-        border-radius: 0;
+        box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
         height: 4.3em;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
         padding-top: 18px;
         -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)";/*IE 8*/
         -moz-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*FF 3.5+*/
         -webkit-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-        box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
-        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
       }
     }
   }
   .modal-content{
     /* csslint ignore:start */
     background: $color-modal-bg;
+    border-radius: 4px;
+    box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=135, Color=#8F8F8F); /*IE 5.5-7*/
     -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=0, Color=#8F8F8F)';/*IE 8*/
     -moz-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*FF 3.5+*/
     -webkit-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-    box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
-    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=135, Color=#8F8F8F); /*IE 5.5-7*/
     /* csslint ignore:end */
 
     .modal-header {

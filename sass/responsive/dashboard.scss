@@ -164,6 +164,9 @@ body {
     .reference-currency-main .currency-content .currency-loop .country-li {
       min-width: 168px;
     }
+    .modal .modal-dialog.modal-lg {
+      width: 800px;
+    }
   }
 
   @media #{$medium-max-Resolution} {
@@ -312,8 +315,8 @@ body {
               .transactions-unit {
                 border-radius: 0;
                 margin-left: 0;
+                margin-top: 4em;
                 padding: 0;
-                padding-top: 3em;
 
                 .top-bar {
                   border-radius: 0;

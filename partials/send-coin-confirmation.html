@@ -22,7 +22,7 @@
   </div>
   <header class="modal-header form-header orange-gradient box-shadow-bottom">
     <i class="bi_interface-arrow-left cursor-pointer btn-back" ng-click="sendCoin.initStep = true"></i>
-    <div class="title text-shadow">{{ 'SEND.CONFIRMATION' | lang }}</div>
+    <div class="title">{{ 'SEND.CONFIRMATION' | lang }}</div>
   </header>
   <div class="form-content send-modal">
     <div class="modal-body">
@@ -31,8 +31,8 @@
           <div class="headd orange-gradient">
             <div class="row">
               <div class="col-sm-6 hd-left col-xs-6 coin">
-                <i class="icon cc {{ sendCoin.coinId }}-alt"></i>
-                <span class="name">{{ sendCoin.coinName }}</span>
+                <i class="icon cc {{ sendCoin.coinId }}-alt pull-left"></i>
+                <span class="name pull-left">{{ sendCoin.coinName }}</span>
               </div>
               <div class="col-sm-6 hd-right col-xs-6 balance">
                 <span class="balance-coin">
@@ -45,21 +45,24 @@
             </div>
           </div>
           <div class="pop-form">
-            <div class="pop-detail send check">
+            <div class="pop-detail send check offset-bottom-lg">
               <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
               <p>{{ sendCoin.address }}</p>
             </div>
-            <div class="pop-detail crncy chk-crncy crncy-rs">
+            <div class="pop-detail crncy chk-crncy crncy-rs offset-bottom-md">
               <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
                 <h3>{{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</h3>
                 <h5>or {{ sendCoin.amountCurrency | decimalPlacesFormat:'currency' }} {{ sendCoin.currency }}</h5>
               </div>
-              <div class="pop-detail pay-dtl">
+              <div class="pop-detail pay-dtl offset-bottom-md">
                 <h4>{{ 'SEND.FEE' | lang }}: </h4>
                 <h3>{{ sendCoin.fee + sendCoin.coinId }}</h3>
                 <h5>{{ 'or ' + sendCoin.feeCurrency + sendCoin.currency }}</h5>
               </div>
-              <h4>{{ 'SEND.THE_FINAL_AMOUNT' | lang }}.</h4>
+              <div class="pop-detail pay-dtl offset-bottom-md">
+                <h4>Note</h4>
+                <p>{{ 'SEND.THE_FINAL_AMOUNT_NEW' | lang }}.</p>
+              </div>
               <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat:'coin' }} {{ sendCoin.coinId }}</button>
             </div>
           </div>

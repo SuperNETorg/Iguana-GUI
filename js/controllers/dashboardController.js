@@ -122,6 +122,7 @@ angular.module('IguanaGUIApp')
           animation: true,
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
+          size: 'lg',
           controller: 'sendCoinModalController',
           templateUrl: 'partials/send-coin.html',
           appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
