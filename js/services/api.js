@@ -1311,5 +1311,30 @@ angular.module('IguanaGUIApp')
     this.bitcoinFeesAll = function() {
       return $http.get('https://bitcoinfees.21.co/api/v1/fees/list');
     };
+
+    this.feeCoins = function(activeCoin,defaultAccount,currencyName,coinName) {
+      var deferred = $q.defer(),
+          result = {};
+      this.getBalance(defaultAccount, activeCoin).then(function(response) {
+
+        result['getBalance'] = response;
+        // initSendCoinModal(response[0], response[1]);
+        this.bitcoinFees().then(function(bitcoinFees) {
+
+          result['bitcoinFees'] = bitcoinFees;
+          this.bitcoinFeesAll().then(function(responseAll) {
+
+            result['bitcoinFeesAll'] = responseAll;
+            this.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
+
+              result['getExternalRate'] = currency;
+              deferred.resolve(result);
+            }.bind(this));
+          }.bind(this));
+        }.bind(this));
+      }.bind(this));
+
+      return deferred.promise;
+    }
   }
 ]);

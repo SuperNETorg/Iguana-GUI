@@ -53,7 +53,7 @@
                      ng-model="sendCoin.amountCurrency" ng-keyup="sendCoinKeyingAmountCurrency()"
                      placeholder="0 {{ sendCoin.currency }}" number-only />
             </div>
-            <div class="pop-detail crncy segment">
+            <div class="pop-detail crncy segment" ng-if="sendCoin.checkedAmountType == ''">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <p class="tx-address-validation"
                  ng-class="{ 'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty }">
