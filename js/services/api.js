@@ -390,6 +390,10 @@ angular.module('IguanaGUIApp')
         if (response.data && response.data.result && response.data.result.relayfee) {
           self.coinsInfo[index].relayFee = response.data.result.relayfee;
         }
+        /*if (response.data && response.data.result && response.data.result.txfee) {
+          console.log(response.data.result);
+          self.coinsInfo[index].relayFee = response.data.result.txfee;
+        }*/
         if (response.data && (
             response.data.result && response.data.result.walletversion ||
             response.data.result && response.data.result.difficulty ||
@@ -604,6 +608,7 @@ angular.module('IguanaGUIApp')
           }
         }
       }
+
       function onReject(response) {
         defer.reject(response);
       }
@@ -696,7 +701,7 @@ angular.module('IguanaGUIApp')
         // deferred.resolve(result);
       }.bind(this), function(response) {
         console.log(response.data.responseText);
-        if (response.data && response.data.responseText.indexOf(':-10') === -1) {
+        if (response.data && response.data.responseText && response.data.responseText.indexOf(':-10') === -1) {
           result = true;
         } else {
           result = false;
