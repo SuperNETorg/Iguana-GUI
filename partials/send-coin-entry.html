@@ -15,11 +15,11 @@
               </div>
               <div class="col-sm-6 hd-right col-xs-6 balance">
                 <span class="balance-coin">
-                  <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat:'coin' }}</span>
+                  <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat: 'coin' }}</span>
                   <span class="name">{{ sendCoin.coinId }}</span>
                 </span>
                 <p class="rs balance-currency">
-                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat:'currency' }}</span>
+                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat: 'currency' }}</span>
                   <span class="name">{{ sendCoin.currency }}</span>
                 </p>
               </div>
@@ -28,7 +28,7 @@
           <div class="pop-form">
             <div class="pop-detail send">
               <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
-              <p class="tx-address-validation" ng-class="{'col-red': !sendCoin.valid.address}">
+              <p class="tx-address-validation" ng-class="{ 'col-red': !sendCoin.valid.address }">
                 {{ sendCoin.valid.address ? 'SEND.ENTER_A_WALLET_ADDRESS' : 'SEND.INCORRECT_ADDRESS' | lang }}
               </p>
               <div class="inner-addon right-addon">
@@ -39,10 +39,10 @@
             <div class="pop-detail crncy">
               <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
               <p class="tx-amount-validation"
-                 ng-class="{'col-red': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney}">
+                 ng-class="{ 'col-red': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }">
                 <span ng-if="sendCoin.valid.amount.empty">{{ 'SEND.PLEASE_ENTER_AN_AMOUNT' | lang }}</span>
                 <span ng-if="sendCoin.valid.amount.notEnoughMoney">{{ 'SEND.NOT_ENOUGH_MONEY' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
-                <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }} {{ sendCoin.coinId }} or {{ sendCoin.currency }}</span>
+                <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }} {{ sendCoin.coinId }} {{ 'LOGIN.OR' | lang }} {{ sendCoin.currency }}</span>
               </p>
               <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}"
                      class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }"
@@ -56,33 +56,32 @@
             <div class="pop-detail crncy segment">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <p class="tx-address-validation"
-                 ng-class="{'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty}">
+                 ng-class="{ 'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty }">
                 {{ sendCoin.fee ? '' : 'SEND.SELECT_FEE' | lang }}
               </p>
               <p class="tx-address-validation"
-                 ng-class="{'col-red': sendCoin.valid.fee.notEnoughMoney , 'hidden': !sendCoin.valid.fee.notEnoughMoney}">
+                 ng-class="{ 'col-red': sendCoin.valid.fee.notEnoughMoney , 'hidden': !sendCoin.valid.fee.notEnoughMoney }">
                 {{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}
               </p>
               <!--<segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>-->
               <div class="btn-group segment-select clearfix">
                 <label class="btn btn-success item-segment-select"
-                       ng-class="{'send-coin-line-height':activeCoin === 'btc'}"
+                       ng-class="{ 'send-coin-line-height': activeCoin === 'btc' }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
                        ng-click="change()"
                        uib-btn-radio="'{{ item }}'" >
                   <span>{{ item.name }}</span>
-                  <span ng-class="{'hidden' : item.feeMinTime==='' && item.feeMaxTime===''}" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
+                  <span ng-class="{ 'hidden': item.feeMinTime === '' && item.feeMaxTime === '' }" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
               </div>
-              <div ng-if="checkedAmountType !=='Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
+              <div ng-if="checkedAmountType !== 'Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
                 <input class="tx-fee"
-                       ng-disabled="checkedAmountType!=='Custom'"
+                       ng-disabled="checkedAmountType !== 'Custom'"
                        type="text"
-                       ng-model="feeAllText"
-                 />
+                       ng-model="feeAllText"/>
                 <span class="eq-sign">=</span>
-                <input class="tx-fee-currency" ng-disabled=" checkedAmountType!=='Custom'" ng-model="feeCurrencyAllText" type="text"/>
+                <input class="tx-fee-currency" ng-disabled="checkedAmountType !== 'Custom'" ng-model="feeCurrencyAllText" type="text"/>
               </div>
               <div ng-if="checkedAmountType == 'Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
                 <input placeholder="0 {{ sendCoin.coinId }}"
@@ -90,8 +89,7 @@
                        type="text"
                        ng-model="sendCoin.fee"
                        number-only
-                       ng-change="sendFee()"
-                />
+                       ng-change="sendFee()"/>
                 <span class="eq-sign">=</span>
                 <input placeholder="0
                        {{ sendCoin.currency }}"
