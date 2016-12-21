@@ -12,7 +12,7 @@
 
   .form-container {
     display: table;
-    height: 90%;
+    height: 100%;
     left: 0;
     margin: 0;
     padding: 0;
@@ -146,8 +146,9 @@
   .login-or-delim {
     color: $login-delim-color;
     font-family: sans-serif;
+    font-size: 1.12em;
     letter-spacing: 1px;
-    padding: 20px 0;
+    padding: 23px 0;
 
   }
   .login-add-coin-selection {

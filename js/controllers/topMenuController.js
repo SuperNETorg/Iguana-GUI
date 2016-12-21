@@ -29,6 +29,7 @@ angular.module('IguanaGUIApp')
         }
       }
     });
+
     $scope.clickLeft = function() {
       if ($scope.isMobile) {
         if (window.innerWidth < itemsParent.offsetWidth) {

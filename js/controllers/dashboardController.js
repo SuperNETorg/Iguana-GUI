@@ -442,11 +442,11 @@ angular.module('IguanaGUIApp')
     function updateDashboardView(timeout) {
       vars.dashboardUpdateRef = $interval(function() {
         // console.clear();
-        $auth.checkSession();
+        /*$auth.checkSession();
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
 
-        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
+        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');*/
       }, timeout * 1000);
     }
 

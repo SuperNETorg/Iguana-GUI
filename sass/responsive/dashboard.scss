@@ -95,7 +95,6 @@ body {
                   .navbar-brand {
                     color: $dashboard-navbar-color;
                     font-size: 1.9em;
-                    @include bold;
                   }
                 }
                 .top {
@@ -115,7 +114,8 @@ body {
                 }
               }
             }
-            .main-content {
+            .main-content,
+            .currency-content {
               padding: 40px;
 
               /** Left Sidebar **/
@@ -148,7 +148,7 @@ body {
               /** Transaction Bar */
               .transactions-unit {
                 .top-bar {
-                  padding: 2.4em 2.6em 1.4em 2.6em;
+                  padding: 2em 2.6em 1.4em 2.6em;
 
                   .action-buttons {
                     margin-left: 0.25em;
@@ -160,9 +160,6 @@ body {
           }
         }
       }
-    }
-    .reference-currency-main .currency-content .currency-loop .country-li {
-      min-width: 168px;
     }
     .modal .modal-dialog.modal-lg {
       width: 800px;
@@ -177,14 +174,32 @@ body {
             padding: 20px;
 
             .transactions-list {
-              padding: 25px 0.86em;
+              padding: 25px 1.2em;
+              position: relative;
+              top: 12.2em;
 
-              .transactions-list-repeater{
+              .title {
+                font-size: 1.26em;
+                padding-bottom: 0.4em;
+              }
+
+              .transactions-list-repeater {
                 .item {
-                  padding: 1.3em 0.4em 1.62em 0.4em;
+                  padding: 1.1em 0.8em 1.62em 0.8em;
 
+                  .status {
+                    display: block;
+                    margin-bottom: 1.4em;
+                    margin-left: 0.7em;
+                  }
                   .hash {
                     width: 34%;
+                  }
+                  .timestamp {
+                    font-size: 1.04em;
+                    padding-top: 0;
+                    top: 1em;
+                    right: 1.3em;
                   }
                 }
               }
@@ -208,7 +223,6 @@ body {
           .navbar-brand {
             color: $dashboard-navbar-color;
             font-size: 1.6em;
-            @include bold;
             margin-left: 3px;
           }
           .lnk-logout {
@@ -286,7 +300,7 @@ body {
       /** Transaction Bar */
       .transactions-unit {
         .top-bar {
-          padding: 2.4em 2.6em 1.4em 2.6em;
+          padding: 2.1em 0.6em 1.6em 0.6em;
 
           .action-buttons {
             margin-left: 0.3em;
@@ -320,18 +334,40 @@ body {
 
                 .top-bar {
                   border-radius: 0;
+                  position: fixed;
+                  z-index: 1;
+                  width: 100%;
+
+                  .active-coin-balance {
+                    font-size: 1.8em;
+                  }
 
                   .active-coin-balance,
                   .active-coin-balance-currency {
-                    padding-left: 15px;
+                    padding-left: 5px;
                   }
                   .info {
-                    right: 15px;
+                    margin-right: 11px;
                     top: 114px;
+
+                    i {
+                      font-size: 1.34em;
+                      margin-right: 3px;
+                    }
+                    span {
+                      font-size: 1.34em;
+                    }
                   }
                   .action-buttons {
+                    margin-left: 0;
+                    margin-top: 2.2em;
                     padding-left: 0;
                     text-align: center;
+                    .btn {
+                      font-size: 1.4em;
+                      height: 48px;
+                      width: 45%;
+                    }
                   }
                 }
                 .transactions-list {
@@ -341,6 +377,7 @@ body {
                         clear: both;
                         line-height: 44px;
                         width: 40%;
+                        text-align: left;
                       }
                       .amount.smaller {
                         font-size: 85%;
@@ -350,8 +387,11 @@ body {
                       }
                       .hash {
                         float: right;
-                        width: 43%;
+                        width: 46%;
                         word-wrap: break-word;
+                      }
+                      .text-vertical-center {
+                        padding-left: 6px;
                       }
                       .clearfix {
                         display: block;
@@ -409,7 +449,7 @@ body {
         padding-right: 5px;
       }
       .currency-loop .country-li {
-        min-width: 162px;
+
       }
     }
     /* send coin modal */

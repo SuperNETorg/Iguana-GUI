@@ -6,11 +6,11 @@
 @import 'dev.scss';
 
 $reference-currency-tile-color: #FD5624;
-$reference-currency-tile-span-color: #D3D4D6;
+$reference-currency-tile-span-color: #9f9fa0;
 $reference-currency-txamount: #898A94;
 
 .reference-currency-main {
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 
   h1,
   h2,
@@ -19,8 +19,7 @@ $reference-currency-txamount: #898A94;
   h5,
   h6 {
     line-height: 20px;
-    margin: 0;
-    padding: 0;
+    @include margin-top-bottom(auto);
   }
   .currency-content {
     ul {
@@ -41,8 +40,8 @@ $reference-currency-txamount: #898A94;
     .flag-icon {
       background-size: 100%;
       box-shadow: 0 1px 4px 0 $color-default-gray;
-      height: 32px;
-      width: 43px;
+      height: 26px;
+      width: 36px;
     }
     .container {
       @include proxima;
@@ -86,14 +85,66 @@ $reference-currency-txamount: #898A94;
         box-shadow: 0 2px 3px 1px rgba-black(0.12);
         display: table-cell;
         float: left;
-        height: 132px;
+        height: 90px;
         list-style-type: none;
         margin: 10px;
-        max-width: 180px;
-        min-width: 166px;
-        padding-top: 20px;
+        width: 180px;
         text-align: center;
         vertical-align: middle;
+
+        .display-table::after {
+          background: -moz-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* FF3.6+ */
+          background: -webkit-gradient(linear, 180deg, color-stop(20%, 99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
+          background: -webkit-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* Chrome10+,Safari5.1+ */
+          background: -o-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* Opera 11.10+ */
+          background: -ms-linear-gradient(180deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* IE10+ */
+          background: linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* W3C */
+          content: "";
+          height: 100%;
+          right: 0;
+          position: absolute;
+          z-index: 1;
+          width: 60px;
+        }
+        .display-table {
+          display:table;
+          position: relative;
+          height: 100%;
+          width: 100%;
+
+          .vertical-center {
+            display:table-cell;
+            vertical-align:middle;
+
+            .flag-head {
+              margin-left: 2%;
+              margin-right: 4%;
+              margin-top: 3%;
+              text-align: right;
+              width: 35%;
+            }
+            .flag-value {
+              margin-left: 3%;
+              overflow: hidden;
+              position: relative;
+              text-align: left;
+              width: 56%;
+
+              .short-name {
+                @include bold;
+                font-size: 1.2em;
+                display: block;
+                padding-top: 2px;
+                width: 100%;
+              }
+              .full-name {
+                position: relative;
+                top: -2px;
+                white-space: pre;
+              }
+            }
+          }
+        }
 
         span {
           @include bold;
@@ -103,21 +154,10 @@ $reference-currency-txamount: #898A94;
     }
     .label  {
       background-color: transparent;
+      padding: 0;
     }
     .country-li {
-      .flag-head {
-        padding: 7px;
-      }
-      .short-name {
-        @include bold;
-        display: block;
-        padding-top: 2px;
-        width: 100%;
-      }
-      .full-name {
-        position: relative;
-        top: -2px;
-      }
+
     }
   }
 }
