@@ -3,6 +3,7 @@
 describe('api service test', function() {
   describe('api', function() {
     var $storage, vars, $httpBackend;
+    $storage = [];
 
     beforeEach(module('IguanaGUIApp'));
     beforeEach(module('templates'));
