@@ -15,9 +15,9 @@ angular.module('IguanaGUIApp')
     $scope.$state = $state;
     $rootScope.$state = $state;
     $scope.coinsInfo = vars.coinsInfo;
+    $scope.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType :'';
     $scope.enabled = $auth.checkSession(true);
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
-
     $scope.currencyArr = [];
     $scope.activeCurrency = [];
     $scope.sendCoin = {};
@@ -82,8 +82,6 @@ angular.module('IguanaGUIApp')
             halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
             hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
             coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
-        if ($scope.activeCoin === 'btc') {
-        //   if(true) {
           var feeTime = {
             default: {
               min: '',
@@ -158,25 +156,7 @@ angular.module('IguanaGUIApp')
             feeMinTime: feeTime.high.min,
             feeMaxTime: feeTime.high.max
           }];
-        } else {
-          $scope.items = [{
-            id: 0,
-            name: $filter('lang')('SEND.FEE_MIN'),
-            coin: $scope.sendCoin.minFee.toFixed(7),
-            amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }, {
-            id: 1,
-            name: $filter('lang')('SEND.FEE_CUSTOM'),
-            coin: $scope.sendCoin.minFee.toFixed(7),
-            amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }];
 
-          $scope.item = $scope.items[0];
-        }
       }, function (data) {
         console.log(data);
       });
@@ -186,13 +166,8 @@ angular.module('IguanaGUIApp')
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
         $storage.checkedAmountType = $scope.checkedAmountType;
-        if ($scope.checkedAmountType != 'Custom') {
-          $scope.fee = $scope.$eval($scope.checkModel.type).coin;
-          $scope.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
-        } else {
-          $scope.fee = '';
-          $scope.feeCurrency = '';
-        }
+        $scope.fee = $scope.$eval($scope.checkModel.type).coin;
+        $scope.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
         $scope.feeAllText = $scope.fee + ' ' + $scope.coinId;
         $scope.feeCurrencyAllText = $scope.feeCurrency + ' ' + $scope.currency;
       }

@@ -159,5 +159,53 @@ $reference-currency-txamount: #898A94;
     .country-li {
 
     }
+    .segment-select {
+      width: 100%;
+      margin-top: 6px;
+
+      .item-segment-select {
+        background: #F5F8FB;
+        border: solid 1px $dashboard-send-currency-orange;
+        color: $dashboard-send-currency-orange;
+        height: 42px;
+        padding: 8px;
+        width: 24.24%;
+        @include no-box-shadow;
+      }
+      .item-segment-select.active,
+      .item-segment-select.active:hover {
+        background-color: $dashboard-send-currency-orange;
+        border: solid 1px $dashboard-send-currency-orange;
+        color: $color-white;
+
+        span {
+          font-weight: 600;
+          margin-top: 2px;
+        }
+      }
+      .item-segment-select {
+        min-width: 25%;
+      }
+    }
+    .item-segment-select .second-fee-text {
+      color: $dashboard-send-currency-orange;
+      font-size: 10px;
+      margin-top: 0;
+    }
+    .pop-detail .segment-select .item-segment-select.active {
+      span {
+        color: $dashboard-send-currency-white;
+      }
+    }
+    .item-segment-select {
+      span {
+        font-weight: 400;
+      }
+    }
+    .item-segment-select {
+      span:first-child {
+        font-size: 15px;
+      }
+    }
   }
 }

@@ -31,9 +31,13 @@ angular.module('IguanaGUIApp')
       $uibModalInstance.dismiss();
     };
 
-    $scope.change = function() {
+    $scope.change = onChange;
+
+    function onChange() {
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
+        $storage.checkedAmountType = $scope.checkedAmountType;
+        // if($storage.checkedAmountType)
         if ($scope.checkedAmountType != 'Custom') {
           $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
           $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
@@ -44,7 +48,19 @@ angular.module('IguanaGUIApp')
         $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
         $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' ' + $scope.sendCoin.currency;
       }
-    };
+    }
+
+    function defaultChange(itemName) {
+      $scope.dropDown.items.forEach(function(el) {
+        if(el.name==itemName){
+          $scope.sendCoin.fee = el.coin;
+          $scope.sendCoin.feeCurrency = el.amount;
+
+          $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
+          $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' ' + $scope.sendCoin.currency;
+        }
+      });
+    }
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
@@ -74,6 +90,7 @@ angular.module('IguanaGUIApp')
       },
       entryFormIsValid: false
     };
+    $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : '';
 
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
@@ -99,121 +116,120 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    $api.getBalance(defaultAccount, $scope.activeCoin).then(function(response) {
-      initSendCoinModal(response[0], response[1]);
-      // TODO: add time estimates based on https://bitcoinfees.21.co/api/v1/fees/list
-      $api.bitcoinFees().then(function(response) {
-        $api.bitcoinFeesAll().then(function(responseAll) {
-          var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
-              coinName = $storage['iguana-active-coin']['id'].toUpperCase();
+    var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
+        coinName = $storage['iguana-active-coin']['id'].toUpperCase();
 
-          $api.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
-            var fastestFee = checkFeeCount(response.data.fastestFee),
-                halfHourFee = checkFeeCount(response.data.halfHourFee),
-                hourFee = checkFeeCount(response.data.hourFee),
-                coinCurrencyRate = currency[0][coinName][currencyName];
+    $api.feeCoins(
+      $scope.activeCoin,
+      defaultAccount,
+      currencyName,
+      coinName
+    ).then(function (result) {
+      var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
+          halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
+          hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
+          coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
-            if ($scope.activeCoin === 'btc') {
-              var feeTime = {
-                    default: {
-                      min: '',
-                      max: ''
-                    },
-                    low: {
-                      min: '',
-                      max: ''
-                    },
-                    normal: {
-                      min: '',
-                      max: ''
-                    },
-                    high: {
-                      min: '',
-                      max: ''
-                    }
-                  };
+      initSendCoinModal(result.getBalance[0], result.getBalance[1]);
 
-              responseAll.data.fees.forEach(function(el) {
-                if (el.maxFee === 0) {
-                  feeTime.default = {
-                    min: el.minMinutes,
-                    max: el.maxMinutes
-                  };
-                }
-                if (el.maxFee === response.data.fastestFee) {
-                  feeTime.high = {
-                    min: el.minMinutes,
-                    max: el.maxMinutes
-                  };
-                }
-                if (el.maxFee === response.data.halfHourFee) {
-                  feeTime.normal = {
-                    min: el.minMinutes,
-                    max: el.maxMinutes
-                  };
-                }
-                if (el.maxFee === response.data.hourFee) {
-                  feeTime.low = {
-                    min: el.minMinutes,
-                    max: el.maxMinutes
-                  };
-                }
-              });
+      if ($scope.activeCoin === 'btc') {
+        var feeTime = {
+          default: {
+            min: '',
+            max: ''
+          },
+          low: {
+            min: '',
+            max: ''
+          },
+          normal: {
+            min: '',
+            max: ''
+          },
+          high: {
+            min: '',
+            max: ''
+          }
+        };
 
-              $scope.dropDown.items = [{
-                id: 0,
-                name: $filter('lang')('SEND.FEE_MIN'),
-                coin: $scope.sendCoin.minFee.toFixed(7),
-                amount: (coinCurrencyRate * $scope.sendCoin.minFee).toFixed(12),
-                feeMinTime: feeTime.default.min,
-                feeMaxTime: feeTime.default.max
-              }, {
-                id: 1,
-                name: $filter('lang')('SEND.FEE_LOW'),
-                coin: hourFee.coin.toFixed(7),
-                amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
-                feeMinTime: feeTime.low.min,
-                feeMaxTime: feeTime.low.max
-              }, {
-                id: 2,
-                name: $filter('lang')('SEND.FEE_NORMAL'),
-                coin: halfHourFee.coin.toFixed(7),
-                amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
-                feeMinTime: feeTime.normal.min,
-                feeMaxTime: feeTime.normal.max
-              }, {
-                id: 3,
-                name: $filter('lang')('SEND.FEE_HIGH'),
-                coin: fastestFee.coin.toFixed(7),
-                amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
-                feeMinTime: feeTime.high.min,
-                feeMaxTime: feeTime.high.max
-              }];
-            } else {
-              $scope.dropDown.items = [{
-                id: 0,
-                name: $filter('lang')('SEND.FEE_MIN'),
-                coin: $scope.sendCoin.minFee.toFixed(7),
-                amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
-                feeMinTime: '',
-                feeMaxTime: ''
-              }, {
-                id: 1,
-                name: $filter('lang')('SEND.FEE_CUSTOM'),
-                coin: $scope.sendCoin.minFee.toFixed(7),
-                amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
-                feeMinTime: '',
-                feeMaxTime: ''
-              }];
+        result.bitcoinFeesAll.data.fees.forEach(function(el) {
+          if (el.maxFee === 0) {
+            feeTime.default = {
+              min: el.minMinutes,
+              max: el.maxMinutes
+            };
+          }
+          if (el.maxFee === result.bitcoinFees.data.fastestFee) {
+            feeTime.high = {
+              min: el.minMinutes,
+              max: el.maxMinutes
+            };
+          }
+          if (el.maxFee === result.bitcoinFees.data.halfHourFee) {
+            feeTime.normal = {
+              min: el.minMinutes,
+              max: el.maxMinutes
+            };
+          }
+          if (el.maxFee === result.bitcoinFees.data.hourFee) {
+            feeTime.low = {
+              min: el.minMinutes,
+              max: el.maxMinutes
+            };
+          }
+        });
 
-              $scope.dropDown.item = $scope.dropDown.items[0];
-            }
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
+        $scope.dropDown.items = [{
+          id: 0,
+          name: $filter('lang')('SEND.FEE_MIN'),
+          coin: $scope.sendCoin.minFee.toFixed(7),
+          amount: (coinCurrencyRate * $scope.sendCoin.minFee).toFixed(12),
+          feeMinTime: feeTime.default.min,
+          feeMaxTime: feeTime.default.max
+        }, {
+          id: 1,
+          name: $filter('lang')('SEND.FEE_LOW'),
+          coin: hourFee.coin.toFixed(7),
+          amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
+          feeMinTime: feeTime.low.min,
+          feeMaxTime: feeTime.low.max
+        }, {
+          id: 2,
+          name: $filter('lang')('SEND.FEE_NORMAL'),
+          coin: halfHourFee.coin.toFixed(7),
+          amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
+          feeMinTime: feeTime.normal.min,
+          feeMaxTime: feeTime.normal.max
+        }, {
+          id: 3,
+          name: $filter('lang')('SEND.FEE_HIGH'),
+          coin: fastestFee.coin.toFixed(7),
+          amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
+          feeMinTime: feeTime.high.min,
+          feeMaxTime: feeTime.high.max
+        }];
+      } else {
+        $scope.dropDown.items = [{
+          id: 0,
+          name: $filter('lang')('SEND.FEE_MIN'),
+          coin: $scope.sendCoin.minFee.toFixed(7),
+          amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
+          feeMinTime: '',
+          feeMaxTime: ''
+        }, {
+          id: 1,
+          name: $filter('lang')('SEND.FEE_CUSTOM'),
+          coin: $scope.sendCoin.minFee.toFixed(7),
+          amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
+          feeMinTime: '',
+          feeMaxTime: ''
+        }];
 
-    }, function(reason) {
-      console.log('request failed: ' + reason);
+        $scope.item = $scope.dropDown.items[0];
+      }
+      if($scope.sendCoin.checkedAmountType) {
+        defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
+      }
     });
 
     function initSendCoinModal(balance, coin) {
