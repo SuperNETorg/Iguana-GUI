@@ -57,6 +57,7 @@ angular.module('IguanaGUIApp')
           timeout: 500
         })
         .then(function(response) {
+          console.log(response);
           if (dev.isDev) {
             if (dev.sessions) { // dev only
               for (var key in dev.sessions) {
@@ -390,6 +391,7 @@ angular.module('IguanaGUIApp')
         if (response.data && response.data.result && response.data.result.relayfee) {
           self.coinsInfo[index].relayFee = response.data.result.relayfee;
         }
+        // TODO: add getinfo call
         /*if (response.data && response.data.result && response.data.result.txfee) {
           console.log(response.data.result);
           self.coinsInfo[index].relayFee = response.data.result.txfee;

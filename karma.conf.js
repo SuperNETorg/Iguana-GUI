@@ -3,11 +3,14 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine', 'fixture'],
     preprocessors: {
-      '**/*.html': ['html2js'],
+      '**/*.html': ['ng-html2js'],
       '**/*.json': ['json_fixtures']
     },
     jsonFixturesPreprocessor: {
       variableName: '__json__'
+    },
+    ngHtml2JsPreprocessor: {
+      moduleName: 'templates'
     },
     reporters: ['spec'],
     port: 65009,
@@ -61,6 +64,7 @@ module.exports = function(config) {
       'js/controllers/sendCoinModalController.js',
       'js/controllers/sendCoinPassphraseModalController.js',
       'js/controllers/messageController.js',
+      'partials/*.html',
       'spec/fixtures/*.json',
       'spec/apiService.spec.js'
     ]

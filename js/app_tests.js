@@ -1,7 +1,6 @@
 'use strict';
 
-// TODO: 1) html2js preprocessor, gulp task
-//       2) edge case scenarios
+// TODO: edge case scenarios
 
 if (!dev) var dev = { // prod
   isDev: false,
@@ -20,7 +19,7 @@ angular.module('IguanaGUIApp', [
   'ui.bootstrap'
 ])
 .value('vars', {})
-/*.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
       url: '/login',
@@ -149,8 +148,7 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  $api.testConnection().then(function(coins) {
+  /*$api.testConnection().then(function(coins) {
     $rootScope.$broadcast('coinsInfo', coins);
-  }); // switch with Api service once it's finished
+  }); // switch with Api service once it's finished*/
 });
-*/

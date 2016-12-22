@@ -3,6 +3,7 @@ describe('api service test', function() {
     var $storage, vars, $httpBackend;
 
     beforeEach(module('IguanaGUIApp'));
+    beforeEach(module('templates'));
 
     beforeEach(inject(function(_$storage_, _vars_, _$httpBackend_){
       $storage = _$storage_;
@@ -479,16 +480,125 @@ describe('api service test', function() {
       $storage.isIguana = false;
       var coins = $api.getConf().coins;
           btcGetinfoMock = fixture.load('btc_getinfo.json');
+
       for (var i in coins) {
-        $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[i].coindPort ? coins[i].coindPort : coins[i].portp2p)).respond(function(method, url, data) {
-          //expect(JSON.parse(data).method).toEqual('getinfo');
-          return [200, { result: btcGetinfoMock }];
-        });
+        (function(x) {
+          $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[x].coindPort ? coins[x].coindPort : coins[x].portp2p)).respond(function(method, url, data) {
+            return [200, { result: btcGetinfoMock }];
+          });
+        })(i);
       }
 
       $api.testCoinPorts().then(function(data) {
-        //console.log(data);
         expect(data).toBeDefined();
+      });
+
+      $httpBackend.flush();
+    }));
+
+    it('shoud fail to test any coind ports (coind)', inject(function($api) {
+      $storage.isIguana = false;
+
+      var coins = $api.getConf().coins;
+          btcGetinfoMock = fixture.load('btc_getinfo.json');
+
+      for (var i in coins) {
+        (function(x) {
+          $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[x].coindPort ? coins[x].coindPort : coins[x].portp2p)).respond(function(method, url, data) {
+            return [401, { result: '', error: '' }];
+          });
+        })(i);
+      }
+
+      $api.testCoinPorts().then(function(data) {
+        expect(data).toBeDefined();
+      });
+
+      $httpBackend.flush();
+    }));
+
+    it('shoud error w/ 3 types of server errors (coind)', inject(function($api) {
+      $storage.isIguana = false;
+
+      var coins = $api.getConf().coins,
+          errors = { 8332: 'Bad Gateway', 14632: 'Verifying blocks...' };
+
+      for (var i in coins) {
+        (function(x) {
+          $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[x].coindPort ? coins[x].coindPort : coins[x].portp2p)).respond(function(method, url, data) {
+            return [401, { result: '', error: errors[coins[x].portp2p] ? errors[coins[x].portp2p] : '' }];
+          });
+        })(i);
+      }
+
+      $api.testCoinPorts().then(function(data) {
+        expect(data).toBeDefined();
+      });
+
+      $httpBackend.flush();
+    }));
+
+    it('shoud get a list of all supported coins (coind)', inject(function($api) {
+      $storage.isIguana = false;
+
+      var globalCoinsLength = Object.keys(supportedCoinsList).length,
+          localCoinsLength = Object.keys($api.getConf().coins).length;
+
+      expect(localCoinsLength).toEqual(globalCoinsLength);
+    }));
+
+    it('shoud return 10 on errorHandler exec', inject(function($api) {
+      var errorHandler = $api.errorHandler({ data: { error: { message: 'need to unlock wallet' } } }, 'btc');
+      expect(errorHandler).toEqual(10);
+    }));
+
+    it('shoud return 10 on errorHandler exec #2', inject(function($api) {
+      var errorHandler = $api.errorHandler({ data: { error: 'iguana jsonstr expired' } }, 'btc');
+      expect(errorHandler).toEqual(10);
+    }));
+
+    it('shoud return 10 on errorHandler exec #3', inject(function($api) {
+      var errorHandler = $api.errorHandler({ data: { error: 'coin is busy processing' } }, 'btc');
+      expect(errorHandler).toEqual(10);
+    }));
+
+    it('shoud return 10 on errorHandler exec #4', inject(function($api) {
+      var errorHandler = $api.errorHandler({ data: { error: 'null return from iguana_bitcoinRPC' } }, 'btc');
+      expect(errorHandler).toEqual(10);
+    }));
+
+    it('shoud detect iguana', inject(function($api) {
+      $storage.isIguana = true;
+
+      $httpBackend.whenGET('http://localhost:7778/api/iguana/getconnectioncount').respond(function(method, url, data) {
+        return [200, 10];
+      });
+
+      $api.testConnection().then(function(data) {
+      });
+
+      $httpBackend.flush();
+    }));
+
+    it('shoud detect coind', inject(function($api) {
+      $storage.isIguana = false;
+
+      $httpBackend.whenGET('http://localhost:7778/api/iguana/getconnectioncount').respond(function(method, url, data) {
+        return [200, ''];
+      });
+
+      var coins = $api.getConf().coins;
+          btcGetinfoMock = fixture.load('btc_getinfo.json');
+
+      for (var i in coins) {
+        (function(x) {
+          $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[x].coindPort ? coins[x].coindPort : coins[x].portp2p)).respond(function(method, url, data) {
+            return [200, { result: btcGetinfoMock }];
+          });
+        })(i);
+      }
+
+      $api.testConnection().then(function(data) {
       });
 
       $httpBackend.flush();
