@@ -5,7 +5,7 @@
 
 @import '../dev.scss';
 
-$coin-repeater-coin-name-color: #2C2D2F;
+$coin-repeater-coin-name-color: #2E3746;
 $add-coin-modal-active-tile-color: #FF6D36;
 $add-coin-modal-help-block-color: #92939C;
 
@@ -60,7 +60,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 20%;
+  height: 40%;
   background: linear-gradient(to top, rgb(245, 248, 251) 20%, rgba(255,255,255, 0) 80% );
   pointer-events: none;
   z-index: 1;
@@ -69,27 +69,28 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .auth-add-coin-modal,
 .auth-add-coin-modal-container {
   .coins-title {
-    font-size: 1.14em;
+    font-size: 1.146em;
+    padding-left: 0.1em;
     text-align: center;
   }
   .quick-search {
     font-size: 15px;
     padding-bottom: 20px;
-    padding-top: 2em;
+    padding-top: 1.9em;
     text-align: center;
 
     .input.text {
       border: none;
       border-radius: $border-radius-smaller;
       height: 34px;
-      padding-left: 2.4em;
+      padding-left: 2.56em;
       width: 100%;
     }
     i.icon {
       color: $color-medium-gray;
       font-size: 1.1em;
-      margin-left: 0.48em;
-      margin-top: 0.4em;
+      margin-left: 0.52em;
+      margin-top: 0.42em;
       position: absolute;
     }
   }
@@ -136,15 +137,16 @@ body .add-coin-login-form .modal-add-coin-login-form,
       .name {
         color: $coin-repeater-coin-name-color;
         font-size: 1.05em;
-        padding: 1em 0.56em 10px 0.56em;
+        padding: 1em 0.56em 10px 0.76em;
         width: 70%;
 
         .help-block {
+          color: $coin-repeater-coin-name-color;
           font-size: 16px;
           margin: 0;
         }
         .help-block:first-child {
-          @include bold;
+          font-weight: 400;
           line-height: 1.1;
         }
         .help-block:last-child {
