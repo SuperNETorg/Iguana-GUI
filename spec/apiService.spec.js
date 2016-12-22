@@ -1,3 +1,5 @@
+// TODO: add more iguana mode test coverage
+
 describe('api service test', function() {
   describe('api', function() {
     var $storage, vars, $httpBackend;
@@ -54,32 +56,32 @@ describe('api service test', function() {
     }));
 
     it('shoud get recommended btc fees', inject(function($api) {
+      var recommendedFeesFixture = fixture.load('btc_recommended_fees.json');
+
       $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/recommended');
       $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/recommended').respond({
-        success: {
-         'fastestFee': 80, 'halfHourFee': 80, 'hourFee': 70
-        }
+        success: recommendedFeesFixture
       });
 
       $api.bitcoinFees().then(function(data) {
         expect(data).toBeDefined();
-        expect(data.data.success).toEqual({ 'fastestFee': 80, 'halfHourFee': 80, 'hourFee': 70 });
+        expect(data.data.success).toEqual(recommendedFeesFixture);
       });
 
       $httpBackend.flush();
     }));
 
     it('shoud get recommended btc fees all', inject(function($api) {
+      var allFeesFixture = fixture.load('btc_fees_all.json');
+
       $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/list');
       $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/list').respond({
-        success: {
-          'fees': [{ 'minFee': 0, 'maxFee': 0, 'dayCount': 2045, 'memCount': 1943, 'minDelay': 13, 'maxDelay': 10000, 'minMinutes': 110, 'maxMinutes': 10000 }]
-        }
+        success: allFeesFixture
       });
 
       $api.bitcoinFeesAll().then(function(data) {
         expect(data).toBeDefined();
-        expect(data.data.success).toEqual({ 'fees': [{ 'minFee': 0, 'maxFee': 0, 'dayCount': 2045, 'memCount': 1943, 'minDelay': 13, 'maxDelay': 10000, 'minMinutes': 110, 'maxMinutes': 10000 }] });
+        expect(data.data.success).toEqual(allFeesFixture);
       });
 
       $httpBackend.flush();

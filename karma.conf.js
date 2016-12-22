@@ -66,7 +66,7 @@ module.exports = function(config) {
       'js/controllers/messageController.js',
       'partials/*.html',
       'spec/fixtures/*.json',
-      'spec/apiService.spec.js'
+      'spec/ratesService.spec.js'
     ]
   });
 };

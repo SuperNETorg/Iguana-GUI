@@ -1,6 +1,7 @@
 describe('datetime service test', function() {
   describe('datetime', function() {
     beforeEach(module('IguanaGUIApp'));
+    beforeEach(module('templates'));
 
     it('shoud exist', inject(function($datetime) {
       expect($datetime).toBeDefined();

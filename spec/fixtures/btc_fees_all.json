@@ -1,0 +1,12 @@
+{ "fees":
+  [{
+    "minFee": 0,
+    "maxFee": 0,
+    "dayCount": 2045,
+    "memCount": 1943,
+    "minDelay": 13,
+    "maxDelay": 10000,
+    "minMinutes": 110,
+    "maxMinutes": 10000
+  }]
+}

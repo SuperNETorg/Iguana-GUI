@@ -1,6 +1,7 @@
 describe('message service test', function() {
   describe('message', function() {
     beforeEach(module('IguanaGUIApp'));
+    beforeEach(module('templates'));
 
     it('shoud exist', inject(function($message) {
       expect($message).toBeDefined();

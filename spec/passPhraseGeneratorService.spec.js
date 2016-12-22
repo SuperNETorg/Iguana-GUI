@@ -22,6 +22,7 @@ describe('passPhraseGenerator service test', function() {
     });
 
     beforeEach(module('IguanaGUIApp'));
+    beforeEach(module('templates'));
 
     it('shoud exist', inject(function($passPhraseGenerator) {
       expect($passPhraseGenerator).toBeDefined();
