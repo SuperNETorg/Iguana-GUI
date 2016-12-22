@@ -18,18 +18,16 @@
                 <header class="page-form-header">
                   <div class="page-title text-shadow">{{ 'LOGIN.WELCOME' | lang }}</div>
                 </header>
-                <div class="login-input-directions-login-state center unselectable">
+                <div class="login-input-directions-login-state unselectable">
                   <span class="advanced-benefits">{{ 'LOGIN.PROVIDING_ADVANCED_BENEFITS' | lang }}</span>
                 </div>
                 <div class="login-buttons-container col-xs-12">
                   <div class="row">
-                    <button class="btn btn-block btn-hover-orange orange-gradient text-shadow row btn-signin"
-                            ng-click="openLoginCoinModal()">
+                    <button class="btn row btn-signin" ng-click="openLoginCoinModal()">
                       {{ 'LOGIN.LOGIN' | lang }}
                     </button>
-                    <div class="login-or-delim center unselectable">{{ 'LOGIN.OR' | lang }}</div>
-                    <button class="btn btn-block btn-hover-orange orange-gradient text-shadow row btn-signup"
-                            ng-click="openSignupCoinModal()">
+                    <div class="login-or-delim unselectable">{{ 'LOGIN.OR' | lang }}</div>
+                    <button class="btn row btn-signup" ng-click="openSignupCoinModal()">
                       {{ 'LOGIN.CREATE_ACCOUNT' | lang }}
                     </button>
                   </div>
@@ -46,23 +44,22 @@
       <div class="container-fluid">
         <div class="row centered">
           <div class="form-container login-account-form">
-            <header class="form-header orange-gradient box-shadow-bottom">
-              <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
+            <header class="form-header box-shadow-bottom">
+              <i class="bi_interface-arrow-left btn-back" ng-click="$state.go('login')"></i>
               <div class="title text-shadow">{{ title() }}</div>
             </header>
             <div class="form-content">
               <div class="form-content-inner">
-                <div class="login-input-directions center offset-bottom-md unselectable">
+                <div class="login-input-directions unselectable">
                   <span ng-if="!isChanged || passphraseModel.length">{{ 'LOGIN.TYPE_OR_PASTE_THE_PASSPHRASE' | lang }}</span>
                   <span ng-if="isChanged && !passphraseModel.length" class="error-msg">{{ messages }}</span>
                 </div>
                 <textarea name="loginPassphrase" id="passphrase"
-                          class="login-passphrase-textarea row center"
-                          ng-model="passphraseModel"
+                          class="login-passphrase-textarea row" ng-model="passphraseModel"
                           ng-class="{ 'error-field': isChanged && !passphraseModel.length }"
                           ng-change="setIsChanged(true)">
                 </textarea>
-                <button class="btn btn-block orange-gradient text-shadow row btn-signin-account form-control"
+                <button class="btn btn-block row btn-signin-account form-control"
                         ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
                     {{ 'LOGIN.LOGIN' | lang }}
                 </button>

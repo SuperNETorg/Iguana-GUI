@@ -4,25 +4,6 @@
 */
 @import 'dev';
 
-$color-body-bg: #F5FAFD;
-$color-textarea-border: #CAC9C9;
-
-/* vietnamese */
-@font-face {
-  font-family: 'FuturaPTDemi';
-  font-style: normal;
-  font-weight: 400;
-  src: local('FuturaPTDemi Regular'), local('FuturaPTDemi-Regular'), url(fonts/FuturaPTDemi.woff2) format('woff2');
-  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
-}
-/* latin-ext */
-@font-face {
-  font-family: 'FuturaPTDemi';
-  font-style: normal;
-  font-weight: 400;
-  src: local('FuturaPTDemi Regular'), local('FuturaPTDemi-Regular'), url(fonts/FuturaPTDemi.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
 /* latin */
 @font-face {
   font-family: 'FuturaPTDemi';
@@ -93,43 +74,46 @@ html {
       overflow: auto;
     }
     .offset-bottom-sm {
-      @include margin('bottom', 15px, true, !important);
+      @include offset-bottom-sm;
     }
     .offset-bottom-md {
-      @include margin('bottom', 30px, true, !important);
+      @include offset-bottom-md;
     }
     .offset-bottom-lg {
-      @include margin('bottom', 45px, true, !important);
+      @include offset-bottom-lg;
     }
     .offset-top-sm {
-      @include margin('top', 15px, true, !important);
+      @include offset-top-sm;
     }
     .offset-top-md {
-      @include margin('top', 30px, true, !important);
+      @include offset-top-md;
     }
     .offset-top-lg {
-      @include margin('top', 45px, true, !important);
+      @include offset-top-lg;
     }
     .offset-left-sm {
-      @include margin('left', 15px, false, !important);
+      @include offset-left-sm;
     }
     .offset-left-md {
-      @include margin('left', 30px, false, !important);
+      @include offset-left-md;
     }
     .offset-left-lg {
-      @include margin('left', 45px, false, !important);
+      @include offset-left-lg;
     }
     .offset-right-sm {
-      @include margin('right', 15px, false, !important);
+      @include offset-right-sm;
     }
     .offset-right-md {
-      @include margin('right', 30px, false, !important);
+      @include offset-right-md;
     }
     .offset-right-lg {
-      @include margin('right', 45px, false, !important);
+      @include offset-right-lg;
     }
     .orange-shadow {
       @include orange-shadow;
+    }
+    [class *= "btn-"] {
+      @include cursor-pointer;
     }
   }
 }

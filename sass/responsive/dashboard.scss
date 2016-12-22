@@ -80,10 +80,10 @@ body {
   @media #{$small-min-Resolution} {
     .app-container {
       .app-container-inner {
+        .auth-main,
         .dashboard-main,
         .reference-currency-main {
-          .dashboard {
-            /** top nav bar */
+          /** top nav bar */
             .navbar {
               padding-left: 1em;
               padding-right: 1em;
@@ -157,7 +157,6 @@ body {
                 }
               }
             }
-          }
         }
       }
     }
@@ -448,9 +447,6 @@ body {
         padding-left: 5px;
         padding-right: 5px;
       }
-      .currency-loop .country-li {
-
-      }
     }
     /* send coin modal */
     .modal-send-coin .modal-dialog .modal-content .send-modal,
@@ -474,16 +470,6 @@ body {
     .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
       padding-top: 10px;
     }
-    /*.app-container {
-      .app-container-inner {
-        .dashboard-main {
-          .dashboard {
-            .main-content {
-            }
-          }
-        }
-      }
-    }*/
   }
 
   @media only screen and (max-width: 380px) {

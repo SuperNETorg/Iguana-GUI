@@ -226,7 +226,7 @@ $dashboard-balance-block-label-color: #95969F;
   margin-left: 0.2em;
   text-shadow: 0 1px 3px rgba-black(0.25);
 }
-.navbar-inverse {
+.navbar {
   position: fixed;
   top: 0;
   width: 100%;
@@ -234,7 +234,7 @@ $dashboard-balance-block-label-color: #95969F;
 
   .navbar-brand {
     color: $color-absolute-white;
-    font-family: 'FuturaPTDemi', sans-serif; // TODO: not completed
+    font-family: 'FuturaPTDemi', sans-serif;
     font-size: 1.6em;
     font-weight: 400;
   }

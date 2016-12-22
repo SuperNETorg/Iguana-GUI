@@ -86,11 +86,14 @@
     padding: 15px 50px;
     resize: none;
     width: 100%;
+    @include center;
   }
   .btn-signin-account {
     margin-top: 50px;
     max-width: none;
+    text-shadow: 0 1px 3px rgba-black(0.25);
     width: 100%;
+    @include orange-gradient;
   }
   .error-msg {
     color: $color-red;
@@ -105,14 +108,6 @@
   .advanced-benefits {
     font-size: 1.1em;
     font-weight: bold;
-  }
-  .navbar {
-    .navbar-header {
-      .navbar-brand {
-        font-size: 22px;
-        @include bold;
-      }
-    }
   }
 }
 .auth-orange-gradient {
@@ -146,10 +141,10 @@
   .login-or-delim {
     color: $login-delim-color;
     font-family: sans-serif;
-    font-size: 1.12em;
+    font-size: 1em;
     letter-spacing: 1px;
-    padding: 23px 0;
-
+    padding: 1.32em 0;
+    @include center;
   }
   .login-add-coin-selection {
     text-align: center;
@@ -221,6 +216,8 @@
       font-size: 1.05em;
       margin-bottom: 0;
       margin-top: 4em;
+      @include center;
+      @include offset-bottom-md;
       word-wrap: break-word;
     }
   }
@@ -237,6 +234,7 @@
   }
   .form-header {
     height: 50px;
+    @include orange-gradient;
 
     .title {
       font-size: 1.15em;
@@ -256,12 +254,26 @@
     color: $color-white;
   }
   .btn.btn-hover-orange:not([disabled]):hover,
-  .btn.btn-hover-orange:not([disabled]):focus {
+  .btn.btn-hover-orange:not([disabled]):focus,
+  .btn.row.btn-signin:not([disabled]):hover,
+  .btn.row.btn-signup:not([disabled]):focus{
     background: $login-button-hover-color;
   }
+  .btn.row.btn-signin,
+  .btn.row.btn-signup {
+    @include orange-gradient;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#FE470D)";/*IE 8*/
+    -moz-box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#FE470D); /*IE 5.5-7*/
+    text-shadow: 0 1px 3px rgba-black(0.25);
+  }
   .btn.row {
+    display: block;
     font-size: 1.02em;
     height: 34px;
+    width: 100%;
     max-width: 300px;
   }
   .checkbox {

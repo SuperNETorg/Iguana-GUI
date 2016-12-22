@@ -29,14 +29,12 @@
 
 @mixin orange-gradient {
   /* csslint ignore:start */
-  background: -moz-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, 90deg, color-stop(20%, FE450D), color-stop(100%, FE780D)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* IE10+ */
+  background: -moz-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* FF3.6+ */
+  background: -webkit-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Opera 11.10+ */
+  background: -ms-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* IE10+ */
+  background: radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* W3C */
   color: $color-white;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
-  //background: linear-gradient(90deg, #FE450D 20%, #FE780D 100%);/* W3C */
   /* csslint ignore:end */
 }
 
@@ -192,4 +190,41 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=14, Direction=0, Color=#FE470D)";/*IE 8*/
   -moz-box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/*FF 3.5+*/
   -webkit-box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+}
+
+@mixin offset-bottom-sm {
+  @include margin('bottom', 15px, true, !important);
+}
+@mixin offset-bottom-md {
+  @include margin('bottom', 30px, true, !important);
+}
+@mixin offset-bottom-lg {
+  @include margin('bottom', 45px, true, !important);
+}
+@mixin offset-top-sm {
+  @include margin('top', 15px, true, !important);
+}
+@mixin offset-top-md {
+  @include margin('top', 30px, true, !important);
+}
+@mixin offset-top-lg {
+  @include margin('top', 45px, true, !important);
+}
+@mixin offset-left-sm {
+  @include margin('left', 15px, false, !important);
+}
+@mixin offset-left-md {
+  @include margin('left', 30px, false, !important);
+}
+@mixin offset-left-lg {
+  @include margin('left', 45px, false, !important);
+}
+@mixin offset-right-sm {
+  @include margin('right', 15px, false, !important);
+}
+@mixin offset-right-md {
+  @include margin('right', 30px, false, !important);
+}
+@mixin offset-right-lg {
+  @include margin('right', 45px, false, !important);
 }
