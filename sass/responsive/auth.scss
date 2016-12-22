@@ -30,9 +30,9 @@ body {
               }
             }
             .btn.row {
-              font-size: 1em;
-              font-weight: 700;
+              font-size: 1.014em;
               height: 34px;
+              @include bold;
               @include left-right-auto;
               max-width: none;
               width: 100%;
