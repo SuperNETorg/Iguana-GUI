@@ -61,7 +61,7 @@ var lang = {
     },
     'ADD_COIN': {
       'WALLET_TYPE': 'Wallet type',
-      'SELECT_CREATED_WALLET': 'Select a wallefvt type to create',
+      'SELECT_CREATED_WALLET': 'Select a wallet type to create',
       'SELECT_LOGIN_WALLET': 'Select a wallet type to log in',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
