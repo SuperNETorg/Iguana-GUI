@@ -1,6 +1,6 @@
 {
   "name": "Iguana",
-  "description": "It is an internal test version and not meant to be used by the public yet.",
+  "description": "Iguana multi-cryptocurrency & blockchain app",
   "version": "0.3",
   "manifest_version": 2,
   "permissions": [
@@ -11,5 +11,5 @@
       "scripts": ["background.js"]
     }
   },
-  "icons": { "16": "Logo.png", "128": "Logo.png" }
+  "icons": { "16": "icon16.png", "128": "icon128.png" }
 }
