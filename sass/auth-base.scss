@@ -259,7 +259,7 @@
   .btn.btn-hover-orange:not([disabled]):hover,
   .btn.btn-hover-orange:not([disabled]):focus,
   .btn.row.btn-signin:not([disabled]):hover,
-  .btn.row.btn-signup:not([disabled]):focus{
+  .btn.row.btn-signup:not([disabled]):hover {
     background: $login-button-hover-color;
   }
   .btn.row.btn-signin,

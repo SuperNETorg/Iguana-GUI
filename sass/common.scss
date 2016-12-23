@@ -49,10 +49,15 @@ html {
     }
     .btn:disabled,
     .btn:disabled:hover,
+    .btn:disabled:focus,
     .btn:disabled:active {
       background: $background-for-page;
       @include no-box-shadow;
       @include no-text-shadow;
+    }
+    .btn.disabled,
+    .btn.disabled:focus {
+      @include unclickable;
     }
     .col-red {
       color: $color-red;

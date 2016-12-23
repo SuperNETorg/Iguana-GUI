@@ -193,6 +193,15 @@
   -webkit-box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
 }
 
+@mixin nav-buttons($position) {
+  #{$position}: 0;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  z-index: 10000;
+  width: 10px;
+}
+
 @mixin offset-bottom-sm {
   @include margin('bottom', 15px, true, !important);
 }
