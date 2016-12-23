@@ -71,7 +71,8 @@
                 <label class="btn btn-success item-segment-select"
                        ng-class="{
                          'send-coin-line-height': activeCoin === 'btc',
-                         'active': sendCoin.checkedAmountType==item.name
+                         'active': sendCoin.checkedAmountType==item.name,
+                         'disabled' : sendCoin.checkedAmountType!=item.name
                        }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
@@ -81,21 +82,7 @@
                   <span ng-class="{ 'hidden': item.feeMinTime === '' && item.feeMaxTime === '' }" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
               </div>
-              <div
-                ng-if="checkedAmountType !== 'Custom'"
-                class="custom-fee-inputs"
-                ng-hide="!checkModel.type && !sendCoin.checkedAmountType">
-                <input class="tx-fee"
-                       ng-disabled="checkedAmountType !== 'Custom'"
-                       type="text"
-                       ng-model="feeAllText"/>
-                <span class="eq-sign">=</span>
-                <input class="tx-fee-currency"
-                       ng-disabled="checkedAmountType !== 'Custom'"
-                       ng-model="feeCurrencyAllText"
-                       type="text"/>
-              </div>
-              <div ng-if="checkedAmountType == 'Custom'" class="custom-fee-inputs" ng-hide="!checkModel.type">
+              <div class="custom-fee-inputs" >
                 <input placeholder="0 {{ sendCoin.coinId }}"
                        class="tx-fee"
                        type="text"

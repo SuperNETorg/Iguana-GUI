@@ -309,6 +309,13 @@ $item-segment-color: #f5f8fb;
       width: 24.24%;
       @include no-box-shadow;
     }
+    .item-segment-select.disabled {
+      border: solid 1px $dashboard-coins-sidebar-currency-color;
+      color: $dashboard-coins-sidebar-currency-color;
+      .second-fee-text {
+        color: $dashboard-coins-sidebar-currency-color;
+      }
+    }
     .item-segment-select.active,
     .item-segment-select.active:hover {
       background-color: $dashboard-send-currency-orange;

@@ -36,8 +36,6 @@ angular.module('IguanaGUIApp')
     function onChange() {
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
-        $storage.checkedAmountType = $scope.checkedAmountType;
-        // if($storage.checkedAmountType)
         if ($scope.checkedAmountType != 'Custom') {
           $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
           $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
@@ -90,7 +88,7 @@ angular.module('IguanaGUIApp')
       },
       entryFormIsValid: false
     };
-    $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : '';
+    $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN');
 
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
@@ -224,12 +222,10 @@ angular.module('IguanaGUIApp')
           feeMinTime: '',
           feeMaxTime: ''
         }];
+      }
+      $scope.item = $scope.dropDown.items[0];
+      defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
 
-        $scope.item = $scope.dropDown.items[0];
-      }
-      if($scope.sendCoin.checkedAmountType) {
-        defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
-      }
     });
 
     function initSendCoinModal(balance, coin) {

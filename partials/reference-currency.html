@@ -23,19 +23,23 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="col-md-3 col-md-offset-1 col-sm-5 container-left container-second">
+      <h3 class="choose-currency">{{ 'SETTINGS.FEE_OPTIONS' | lang }}:</h3>
+      <h4 class="transaction-amount">{{ 'SETTINGS.FEE_DESCRIPTION' | lang }}</h4>
+    </div>
+    <div class="col-md-7 col-sm-6 currency-parent">
       <div class="btn-group segment-select">
-        <div class="row">
-          <label class="btn btn-success item-segment-select col-xs-2 col-md-2 col-lg-2 col-sm-2"
-                 ng-class="{
-                 'send-coin-line-height':activeCoin === 'btc',
-                 'active': checkedAmountType==item.name }"
-                 ng-repeat="item in items"
-                 ng-model="checkModel.type"
-                 ng-click="change()"
-                 uib-btn-radio="'{{ item }}'">
-            <span>{{ item.name }}</span>
-          </label>
-        </div>
+        <label class="btn btn-success item-segment-select col-xs-2 col-md-2 col-lg-2 col-sm-2"
+               ng-class="{
+               'send-coin-line-height':activeCoin === 'btc',
+               'active': checkedAmountType==item.name }"
+               ng-repeat="item in items"
+               ng-model="checkModel.type"
+               ng-click="change()"
+               uib-btn-radio="'{{ item }}'">
+          <span>{{ item.name }}</span>
+        </label>
       </div>
     </div>
     <div class="clearfix"></div>
