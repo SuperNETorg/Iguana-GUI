@@ -3,20 +3,10 @@
 angular.module('IguanaGUIApp')
 .service('util', [
   '$storage',
-  '$uibModal',
-  '$rootScope',
-  '$timeout',
-  '$interval',
-  '$http',
-  '$q',
-  '$document',
   '$window',
-  '$state',
   '$filter',
   '$message',
-  '$localStorage',
-  function($storage, $uibModal, $rootScope, $timeout, $interval,
-           $http, $q, $document, $window, $state, $filter, $message) {
+  function($storage, $window, $filter, $message) {
 
     var self = this;
 
