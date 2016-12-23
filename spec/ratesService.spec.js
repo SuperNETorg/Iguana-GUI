@@ -55,7 +55,7 @@ describe('rates service test', function() {
     }));
 
     it('shoud skip to update BTC/USD rate from an external website', inject(function($rates) {
-      $storage['iguana-rates-btc'] = { shortName: 'USD', value: 787.52, updatedAt: new Date().setHours(new Date().getHours() + 10) };
+      $storage['iguana-rates-btc'] = { shortName: 'USD', value: 787.52, updatedAt: new Date().setHours(new Date().getHours() + 1) };
       $rates.updateRates('btc'); // should use localstorage rate
 
       expect($storage['iguana-rates-btc'].shortName).toEqual('USD');
@@ -109,5 +109,35 @@ describe('rates service test', function() {
       $httpBackend.flush();
     }));
 
+    it('shoud update local LTC/EUR rate', inject(function($rates) {
+      var ltcRate = { 'LTC': { 'EUR': 800 } };
+      $storage['iguana-currency'] = { 'name': 'EUR' };
+      $storage['iguana-ltc-passphrase'] = { logged: 'yes' };
+      $storage['iguana-btc-passphrase'] = { logged: 'no' };
+      vars.coinsInfo = {
+        'ltc': {
+          connection: true
+        }
+      };
+      $rates.updateRateCB('ltc', ltcRate); // should use localstorage rate
+
+      expect($storage['iguana-rates-ltc'].shortName).toEqual('EUR');
+      expect($storage['iguana-rates-ltc'].value).toEqual(800);
+    }));
+
+    it('shoud change currency to GBP and flag forced rates update', inject(function($rates) {
+      $rates.setCurrency('GBP');
+
+      expect($storage['iguana-rates-btc'].shortName).toEqual(null);
+      expect($storage['iguana-rates-btc'].value).toEqual(null);
+      expect($storage['iguana-rates-btc'].updatedAt).toEqual(1471620867);
+      expect($storage['iguana-rates-btc'].forceUpdate).toEqual(true);
+    }));
+
+    it('shoud get active currency', inject(function($rates) {
+      $rates.setCurrency('GBP');
+
+      expect($rates.getCurrency().name).toEqual('GBP');
+    }));
   });
 });
