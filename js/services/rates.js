@@ -21,8 +21,11 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.getRate = function(coin) {
-      this.updateRates(coin);
+    this.getRate = function(coin, returnValue) {
+      if (returnValue)
+        return this.updateRates(coin, null, true);
+      else
+        this.updateRates(coin);
     };
 
     this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
