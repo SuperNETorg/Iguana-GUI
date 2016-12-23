@@ -45,10 +45,6 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length == 0;
     };
 
-    $scope.$on('modal.dismissing', function() {
-      $rootScope.$broadcast('modal.dismissed', constructCoinRepeater());
-    });
-
     function getSelectedCoins() {
       var result = {},
           coins = constructCoinRepeater();

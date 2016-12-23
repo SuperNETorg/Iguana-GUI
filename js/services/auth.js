@@ -28,12 +28,37 @@ angular.module('IguanaGUIApp')
     this.passphraseModel = '';
 
     this.checkSession = function(returnVal) {
-      var inAuth = (self.toState.name.indexOf('login') != -1 ||
-                    self.toState.name.indexOf('signup') != -1),
+      var inLogin = self.toState.name.indexOf('login') != -1,
+          inSignup = self.toState.name.indexOf('signup') != -1;
+      var inAuth = (inLogin || inSignup),
           inDashboard = (self.toState.name.indexOf('dashboard') != -1);
 
+      if (
+        inLogin &&
+        $storage['dashboard-pending-coins'] &&
+        (
+          $storage['iguana-login-active-coin'] &&
+          Object.keys($storage['iguana-login-active-coin']).length
+        )
+      ) {
+        $state.go('signup.step1');
+        return;
+      }
+
+      returnVal = (
+        returnVal ?
+          returnVal :
+          (
+            $storage['dashboard-pending-coins'] && !! (
+              $storage['iguana-login-active-coin'] ?
+                Object.keys($storage['iguana-login-active-coin']).length :
+                0
+            )
+          )
+      );
+
       if (returnVal) {
-        return this._userIdentify();
+        return self._userIdentify();
       } else {
         if (!$storage['iguana-auth']) {
           self.logout();
@@ -57,12 +82,12 @@ angular.module('IguanaGUIApp')
             Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
                 $storage['iguana-auth'].timestamp : 1000) / 1000);
 
-      return Math.floor(secondsElapsedSinceLastAuth) <
+      return (!$storage['dashboard-pending-coins'] ? Math.floor(secondsElapsedSinceLastAuth) <
         Number(
           $storage['isIguana'] ?
             settings.defaultSessionLifetimeIguana :
             settings.defaultSessionLifetimeCoind
-        );
+        ) : true)
     };
 
     this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
@@ -82,9 +107,15 @@ angular.module('IguanaGUIApp')
       }
 
       if ($storage.isIguana) {
-        var deferred = $q.defer();
+        var deferred = $q.defer(),
+            suppressAddCoin =
+              $storage['dashboard-pending-coins'] ?
+                $storage['dashboard-pending-coins'] :
+                false;
 
-        checkIguanaCoinsSelection(false, addCoinOnly)
+        delete $storage['dashboard-pending-coins'];
+
+        checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
         .then(function(data) {
           self.coinResponses = data;
 
@@ -153,7 +184,8 @@ angular.module('IguanaGUIApp')
         }
 
         for (var key in supportedCoinsList) {
-          if ($storage['iguana-' + key + '-passphrase']) {
+          if ($storage['iguana-' + key + '-passphrase'] &&
+              !$storage['dashboard-pending-coins']) {
             $storage['iguana-' + key + '-passphrase'].logged = 'no';
           }
         }
@@ -213,12 +245,9 @@ angular.module('IguanaGUIApp')
             $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
           }
         }
-
-        if (coinsSelectedToAdd.length) {
-          $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
-        } else {
-          defer.resolve(true);
-        }
+      }
+      if (coinsSelectedToAdd.length) {
+        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
       } else {
         defer.resolve(true);
       }

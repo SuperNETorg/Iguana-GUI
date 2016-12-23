@@ -84,6 +84,7 @@ angular.module('IguanaGUIApp')
       checkAddCoinButton();
       constructAccountCoinRepeater(true);
       updateDashboardView(settings.dashboardUpdateTimout);
+      delete $storage['dashboard-pending-coins'];
     }
 
     var modalInstance = {},
@@ -132,7 +133,7 @@ angular.module('IguanaGUIApp')
     function openAddCoinModal() {
       addCoinModal.resolve = {
         'type': function() {
-          return 'signup';
+          return 'login';
         }
       };
 
@@ -140,21 +141,18 @@ angular.module('IguanaGUIApp')
 
       modalInstance.result.then(resultPromise);
 
-      $rootScope.$on('modal.dismissed', resultPromise);
-
-      function resultPromise(event, coins) {
+      function resultPromise(data) {
         $scope.receivedObject = util.getCoinKeys(util.reindexAssocArray($scope.getActiveCoins()));
 
-        $auth.login(
-          $scope.getActiveCoins(),
-          null,
-          true
-        )
-        .then(
-          constructAccountCoinRepeater,
-          function(reason) {
-            console.log('request failed: ', reason);
-          });
+        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
+        $storage['dashboard-pending-coins'] = !!coinKeys;
+        $scope.coins = data;
+        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+
+        modalInstance.closed.then(function() {
+          $state.go('signup.step1');
+        })
       }
     }
 

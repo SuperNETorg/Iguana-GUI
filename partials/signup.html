@@ -61,10 +61,10 @@
               </div>
               <textarea name="verifyPassphrase" id="passphrase"
                         class="login-passphrase-textarea offset-bottom-sm row center"
-                        ng-model="passPhraseText"></textarea>
+                        ng-model="passphrase"></textarea>
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
-              <button ng-disabled="!passPhraseText.length"
+              <button ng-disabled="!passphrase.length"
                       class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="$state.go('signup.step3')">
                 {{ 'CREATE_ACCOUNT.CREATE' | lang }}
               </button>

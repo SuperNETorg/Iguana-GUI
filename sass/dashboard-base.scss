@@ -5,9 +5,6 @@
 
 @import 'dev.scss';
 
-$dashboard-topbar-bg-color: #0E101C;
-$dashboard-topbar-item-color: #8A8B93;
-$dashboard-balance-block-label-color: #95969F;
 
 body {
 
@@ -39,6 +36,15 @@ body {
             font-size: 1.6em;
             font-weight: 400;
           }
+          .navbar-edex {
+            color: $dashboard-navbar-edex-color;
+            font-size: 1.8em;
+            font-weight: 600;
+            position: absolute;
+            text-transform: uppercase;
+            top: 0.45em;
+            left: 5.64em;
+          }
           .lnk-logout {
             color: #FFF;
             font-size: 0.94em;
@@ -51,7 +57,11 @@ body {
         }
         .top {
           border-radius: 0;
-          box-shadow: 0 4px 4px 0 rgba-black(0.4);
+          -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)";/*IE 8*/
+          -moz-box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/*FF 3.5+*/
+          -webkit-box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+          box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+          filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
           color: $color-absolute-white;
           margin-bottom: 0;
           text-align: center;

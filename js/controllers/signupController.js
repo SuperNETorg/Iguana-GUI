@@ -14,9 +14,9 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
-  '$rates',
+  '$auth',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
-           $api, $rootScope, $uibModal, $filter, $message, vars) {
+           $api, $rootScope, $uibModal, $filter, $message, vars, $auth) {
 
     var pageTitle;
 
@@ -26,6 +26,7 @@ angular.module('IguanaGUIApp')
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
     $scope.coins = [];
+    $scope.passphrase = '';
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $scope.passphraseCount = $storage.isIguana ? 24 : 12;
     $scope.title = setTitle();
@@ -61,13 +62,13 @@ angular.module('IguanaGUIApp')
     }
 
     function addAccount() {
-      $scope.$localStorage.passphrase = '';
+      $storage['passphrase'] = '';
 
       var coinKeys = Object.keys($scope.getActiveCoins()),
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
-      if ($scope.passPhraseText.length) {
-        $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt)
+      if ($scope.passphrase.length) {
+        $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
         .then(onResolve, onReject);
       } else {
         $message.ngPrepMessageModal(
@@ -77,12 +78,22 @@ angular.module('IguanaGUIApp')
       }
 
       function onResolve() {
-        $message.ngPrepMessageModal(
+        var msg = $message.ngPrepMessageModal(
           selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
           'green'
         );
 
-        $state.go('login');
+        if ($storage['dashboard-pending-coins']) {
+          msg.closed.then(function () {
+            $auth.login(
+              $scope.getActiveCoins(),
+              $scope.passphrase,
+              false
+            );
+          });
+        } else {
+          $state.go('login');
+        }
       }
       function onReject(response) {
         if (response === -15) {
