@@ -2,15 +2,13 @@
 
 angular.module('IguanaGUIApp')
 .service('util', [
-  '$storage',
   '$window',
   '$filter',
   '$message',
-  function($storage, $window, $filter, $message) {
+  function($window, $filter, $message) {
 
     var self = this;
 
-    this.isIguana = $storage['isIguana'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
     this.coindWalletLockResults = [];
@@ -47,7 +45,8 @@ angular.module('IguanaGUIApp')
       var result = [];
 
       for (var i = 0; coins.length > i; i++) {
-        result.push(coins[i].coinId);
+        if (coins[i].coinId)
+          result.push(coins[i].coinId);
       }
 
       return result;
