@@ -5,7 +5,7 @@ describe('util service test', function() {
     beforeEach(module('IguanaGUIApp'));
     beforeEach(module('templates'));
 
-    beforeEach(inject(function(_$window_, _$filter_, _$message_){
+    beforeEach(inject(function(_$window_, _$filter_, _$message_) {
       $window = _$window_;
       $filter = _$filter_;
       $message = _$message_;

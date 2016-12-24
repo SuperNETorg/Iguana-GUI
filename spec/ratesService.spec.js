@@ -6,7 +6,7 @@ describe('rates service test', function() {
     beforeEach(module('IguanaGUIApp'));
     beforeEach(module('templates'));
 
-    beforeEach(inject(function(_$storage_, _vars_, _$httpBackend_, _$rates_){
+    beforeEach(inject(function(_$storage_, _vars_, _$httpBackend_, _$rates_) {
       $storage = _$storage_;
       vars = _vars_;
       $httpBackend = _$httpBackend_;
