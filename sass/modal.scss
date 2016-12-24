@@ -89,18 +89,17 @@
     width: 100%;
 
     .modal-content {
-
       overflow-y: auto;
 
       .modal-header {
         border-bottom: none;
-        box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+        box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
         height: 4.3em;
         filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
         padding-top: 18px;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)";/*IE 8*/
-        -moz-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*FF 3.5+*/
-        -webkit-box-shadow: 0 -8px 11px 11px rgba(202,205,209,0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)';/*IE 8*/
+        -moz-box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/*FF 3.5+*/
+        -webkit-box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
       }
     }
   }
@@ -108,11 +107,11 @@
     /* csslint ignore:start */
     background: $color-modal-bg;
     border-radius: 4px;
-    box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=135, Color=#8F8F8F); /*IE 5.5-7*/
     -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=0, Color=#8F8F8F)';/*IE 8*/
-    -moz-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*FF 3.5+*/
-    -webkit-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    -moz-box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
     /* csslint ignore:end */
 
     .modal-header {

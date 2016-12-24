@@ -46,7 +46,7 @@ body {
             left: 5.64em;
           }
           .lnk-logout {
-            color: #FFF;
+            color: $color-absolute-white;
             font-size: 0.94em;
             @include bold;
             top: 1.7em;
@@ -57,10 +57,10 @@ body {
         }
         .top {
           border-radius: 0;
-          -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)";/*IE 8*/
-          -moz-box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/*FF 3.5+*/
-          -webkit-box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-          box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)';/*IE 8*/
+          -moz-box-shadow: 0 0 5px 5px rgba-black(0.3);/*FF 3.5+*/
+          -webkit-box-shadow: 0 0 5px 5px rgba-black(0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+          box-shadow: 0 0 5px 5px rgba-black(0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
           filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
           color: $color-absolute-white;
           margin-bottom: 0;
@@ -70,9 +70,9 @@ body {
             /* csslint ignore:start */
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,222539+0 */
             background: #000000; /* Old browsers */
-            background: -moz-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* FF3.6-15 */
-            background: -webkit-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* Chrome10-25,Safari5.1-6 */
-            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            background: -moz-radial-gradient(top, ellipse cover, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* FF3.6-15 */
+            background: -webkit-radial-gradient(top, ellipse cover, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* Chrome10-25,Safari5.1-6 */
+            background: radial-gradient(ellipse at center, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             border-radius: 25%;
             content: '';
             height: 100%;
@@ -180,7 +180,7 @@ body {
               font-weight: 600;
               line-height: 1.4em;
               margin-left: 0.4em;
-              text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+              text-shadow: 0 1px 3px rgba-black(0.25);
             }
           }
         }
@@ -192,11 +192,9 @@ body {
   .block {
     display: block;
   }
-
   .inline-block {
     display: inline-block;
   }
-
   /* enable absolute positioning */
   .inner-addon {
     position: relative;
@@ -207,7 +205,6 @@ body {
       position: absolute;
     }
   }
-
   .right-addon {
     .glyphicon {
       right: 0;
@@ -216,7 +213,6 @@ body {
       padding-right: 30px;
     }
   }
-
   .left-addon {
     .glyphicon {
       left: 0;

@@ -14,7 +14,7 @@ $send-coin-p-color: #37373A;
 $send-coin-small-title-color: #A2A3AC;
 $send-coin-eq-sign-color: #FC6538;
 $send-coin-dropdown-color: #74767D;
-$item-segment-color: #f5f8fb;
+$item-segment-color: #F5F8FB;
 
 .send-coin-modal-container {
   .modal-content {
@@ -312,6 +312,7 @@ $item-segment-color: #f5f8fb;
     .item-segment-select.disabled {
       border: solid 1px $dashboard-coins-sidebar-currency-color;
       color: $dashboard-coins-sidebar-currency-color;
+
       .second-fee-text {
         color: $dashboard-coins-sidebar-currency-color;
       }

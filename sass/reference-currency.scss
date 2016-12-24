@@ -6,8 +6,9 @@
 @import 'dev.scss';
 
 $reference-currency-tile-color: #FD5624;
-$reference-currency-tile-span-color: #9f9fa0;
+$reference-currency-tile-span-color: #9F9FA0;
 $reference-currency-txamount: #898A94;
+$segment-select-bg-color: #F5F8FB;
 
 .reference-currency-main {
   padding-bottom: 20px;
@@ -96,12 +97,12 @@ $reference-currency-txamount: #898A94;
         vertical-align: middle;
 
         .display-table::after {
-          background: -moz-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* FF3.6+ */
+          background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* FF3.6+ */
           background: -webkit-gradient(linear, 180deg, color-stop(20%, 99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
-          background: -webkit-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* Chrome10+,Safari5.1+ */
-          background: -o-linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* Opera 11.10+ */
-          background: -ms-linear-gradient(180deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* IE10+ */
-          background: linear-gradient(90deg, rgba(255,255,255,0.4) 20%, #ffffff 100%);/* W3C */
+          background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Chrome10+,Safari5.1+ */
+          background: -o-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Opera 11.10+ */
+          background: -ms-linear-gradient(180deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* IE10+ */
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* W3C */
           content: '';
           height: 100%;
           right: 0;
@@ -110,14 +111,14 @@ $reference-currency-txamount: #898A94;
           width: 60px;
         }
         .display-table {
-          display:table;
+          display: table;
           position: relative;
           height: 100%;
           width: 100%;
 
           .vertical-center {
-            display:table-cell;
-            vertical-align:middle;
+            display: table-cell;
+            vertical-align: middle;
 
             .flag-head {
               margin-left: 2%;
@@ -159,15 +160,12 @@ $reference-currency-txamount: #898A94;
       background-color: transparent;
       padding: 0;
     }
-    .country-li {
-
-    }
     .segment-select {
       width: 100%;
       margin-top: 35px;
 
       .item-segment-select {
-        background: #F5F8FB;
+        background: $segment-select-bg-color;
         border: solid 1px $dashboard-send-currency-orange;
         color: $dashboard-send-currency-orange;
         height: 42px;

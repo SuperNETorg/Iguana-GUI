@@ -196,7 +196,7 @@
     color: $color-white;
     font-size: 2.26em;
     position: absolute;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 3px rgba-black(0.3);
     top: 0.38em;
     left: 0.3em;
 
@@ -265,10 +265,10 @@
   .btn.row.btn-signin,
   .btn.row.btn-signup {
     @include orange-gradient;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#FE470D)";/*IE 8*/
-    -moz-box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/*FF 3.5+*/
-    -webkit-box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-    box-shadow: 0 0 5px 2px rgba(254,71,13,0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#FE470D)';/*IE 8*/
+    -moz-box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#FE470D); /*IE 5.5-7*/
     text-shadow: 0 1px 3px rgba-black(0.25);
   }
