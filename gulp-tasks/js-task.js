@@ -28,7 +28,8 @@ function initJSIncludesArray(buildMode) {
                                  .replace('" omit="true', '');
       if (isBower && buildMode !== 'dev') {
         splitData[i] = paths.build[buildMode] + '/' + splitData[i];
-        splitData[i] = splitData[i].replace('.js', '.min.js');
+        if (splitData[i].indexOf('kjua') === -1)
+          splitData[i] = splitData[i].replace('.js', '.min.js');
       } else {
         splitData[i] = paths.build[buildMode] + '/' + splitData[i];
       }
