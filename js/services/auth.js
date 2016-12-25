@@ -6,14 +6,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$api',
   '$state',
-  '$rootScope',
   'util',
-  '$message',
-  '$filter',
-  '$timeout',
   '$q',
-  function($storage, vars, $api, $state, $rootScope, util, $message, $filter,
-            $timeout, $q) {
+  function($storage, vars, $api, $state, util, $q) {
 
     var self = this;
 
@@ -26,11 +21,12 @@ angular.module('IguanaGUIApp')
     this.addedCoinsOutput = '';
     this.failedCoinsOutput = '';
     this.passphraseModel = '';
+    this.minEpochTimestamp = 1471620867; // Jan 01 1970
 
     this.checkSession = function(returnVal) {
       var inLogin = self.toState.name.indexOf('login') != -1,
-          inSignup = self.toState.name.indexOf('signup') != -1;
-      var inAuth = (inLogin || inSignup),
+          inSignup = self.toState.name.indexOf('signup') != -1,
+          inAuth = (inLogin || inSignup),
           inDashboard = (self.toState.name.indexOf('dashboard') != -1);
 
       if (
@@ -49,7 +45,7 @@ angular.module('IguanaGUIApp')
         returnVal ?
           returnVal :
           (
-            $storage['dashboard-pending-coins'] && !! (
+            $storage['dashboard-pending-coins'] && !!(
               $storage['iguana-login-active-coin'] ?
                 Object.keys($storage['iguana-login-active-coin']).length :
                 0
@@ -115,7 +111,7 @@ angular.module('IguanaGUIApp')
 
         delete $storage['dashboard-pending-coins'];
 
-        checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
+        this.checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
         .then(function(data) {
           self.coinResponses = data;
 
@@ -148,6 +144,7 @@ angular.module('IguanaGUIApp')
           if (!$storage.isIguana) {
             $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
           }
+
           $state.go('dashboard.main');
           $storage['iguana-login-active-coin'] = {};
 
@@ -165,7 +162,6 @@ angular.module('IguanaGUIApp')
           }
 
           result.push(message);
-
           deferred.reject(result);
         }
 
@@ -195,7 +191,7 @@ angular.module('IguanaGUIApp')
       } else {
         this.coindWalletLockCount = 0;
 
-        if (vars.coinsInfo != undefined) {
+        if (vars.coinsInfo !== undefined) {
           for (var key in vars.coinsInfo) {
             if ($storage['iguana-' + key + '-passphrase'] &&
               $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
@@ -211,15 +207,16 @@ angular.module('IguanaGUIApp')
 
         this.logoutCoind();
       }
+
       $storage['dashboard-logged-in-coins'] = {};
     };
 
     this.logoutCoind = function() {
-      if (vars.coinsInfo != undefined) {
+      if (vars.coinsInfo !== undefined) {
         for (var key in vars.coinsInfo) {
           if ($storage['iguana-' + key + '-passphrase'] &&
             $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
-            $api.walletLock(key, this.logoutCoindCB(key));
+            $api.walletLock(key, this.logoutCoindCB(key)); // TODO: promise
           }
         }
       }
@@ -230,12 +227,12 @@ angular.module('IguanaGUIApp')
       $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
       if (Object.keys(this.coindWalletLockResults).length === this.coindWalletLockCount) {
-        $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp }; // Jan 01 1970
+        $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
         $state.go('login');
       }
     };
 
-    function checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly) {
+    this.checkIguanaCoinsSelection = function(suppressAddCoin, addCoinOnly) {
       var defer = $q.defer(),
           coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
 
@@ -246,6 +243,7 @@ angular.module('IguanaGUIApp')
           }
         }
       }
+
       if (coinsSelectedToAdd.length) {
         $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
       } else {
@@ -271,7 +269,7 @@ angular.module('IguanaGUIApp')
             self.addedCoinsOutput += coin.toUpperCase() + ', ';
             $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'yes' };
           } else {
-            self.failedCoinsOutput += coin + ', ';
+            self.failedCoinsOutput += coin.toUpperCase() + ', ';
           }
         }
 
