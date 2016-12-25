@@ -1,6 +1,6 @@
 describe('syncStatus service test', function() {
   describe('syncStatus', function() {
-    var $window, $filer, $message, vars;
+    var $window, $filter, $message, vars;
 
     beforeEach(module('IguanaGUIApp'));
     beforeEach(module('templates'));
