@@ -3,7 +3,7 @@
 angular.module('IguanaGUIApp')
 .filter('lang', function() {
   return function(langID) {
-    if (langID) {
+    if (langID && langID.indexOf('.') > -1) {
       var langIDComponents = langID.split('.');
 
       if (lang && langIDComponents && lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]])
@@ -11,6 +11,9 @@ angular.module('IguanaGUIApp')
       else
         if (dev.showConsoleMessages && dev.isDev) console.log('Missing translation in js/' +  settings.defaultLang.toLowerCase() + '.js ' + langID);
         return '{{ ' + langID + ' }}';
+    } else {
+      if (dev.showConsoleMessages && dev.isDev) console.log('Missing translation in js/' +  settings.defaultLang.toLowerCase() + '.js ' + langID);
+      return '{{ ' + langID + ' }}';
     }
   };
 });
