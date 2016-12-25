@@ -84,7 +84,7 @@ angular.module('IguanaGUIApp')
         );
 
         if ($storage['dashboard-pending-coins']) {
-          msg.closed.then(function () {
+          msg.closed.then(function() {
             $auth.login(
               $scope.getActiveCoins(),
               $scope.passphrase,
@@ -131,6 +131,7 @@ angular.module('IguanaGUIApp')
         !Object.keys($storage['iguana-login-active-coin']).length
       ) {
         $state.go('login');
+
         return false;
       } else {
         return Object.keys($storage['iguana-login-active-coin']).length === 0;

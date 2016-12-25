@@ -36,13 +36,15 @@ angular.module('IguanaGUIApp')
     function onChange() {
       if (Object.keys($scope.checkModel).length) {
         $scope.checkedAmountType = $scope.$eval($scope.checkModel.type).name;
-        if ($scope.checkedAmountType != 'Custom') {
+
+        if ($scope.checkedAmountType !== 'Custom') {
           $scope.sendCoin.fee = $scope.$eval($scope.checkModel.type).coin;
           $scope.sendCoin.feeCurrency = $scope.$eval($scope.checkModel.type).amount;
         } else {
           $scope.sendCoin.fee = '';
           $scope.sendCoin.feeCurrency = '';
         }
+
         $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
         $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' ' + $scope.sendCoin.currency;
       }
@@ -50,7 +52,7 @@ angular.module('IguanaGUIApp')
 
     function defaultChange(itemName) {
       $scope.dropDown.items.forEach(function(el) {
-        if(el.name==itemName){
+        if (el.name === itemName) {
           $scope.sendCoin.fee = el.coin;
           $scope.sendCoin.feeCurrency = el.amount;
 
@@ -122,7 +124,7 @@ angular.module('IguanaGUIApp')
       defaultAccount,
       currencyName,
       coinName
-    ).then(function (result) {
+    ).then(function(result) {
       var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
           halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
           hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),

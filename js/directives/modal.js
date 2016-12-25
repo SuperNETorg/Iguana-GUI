@@ -1,60 +1,60 @@
 angular.module('IguanaGUIApp')
-.directive('uimodal', function($document, $window, $uibModal, $uibModalStack) {
-  var activeModal = 0;
-  function bodyBlurOn() {
-    angular.element(document.body).addClass('modal-open');
-  }
-  function bodyBlurOff() {
-    angular.element(document.body).removeClass('modal-open');
-  }
+.directive('uimodal', [
+  '$uibModal',
+  '$uibModalStack',
+  'util',
+  function($uibModal, $uibModalStack, util) {
+    var activeModal = 0;
 
-  return {
-    scope: true,
-    link: function(scope, element, attr) {
-      var open = $uibModalStack.open,
-          close = $uibModalStack.close,
-          dismiss = $uibModalStack.dismiss;
-      $uibModalStack.open = function(modalInstance, modal) {
-        modalInstance.rendered.then(function () {
-          if (activeModal === 0 && $window.innerWidth > 768) {
-            bodyBlurOn();
-          }
+    return {
+      scope: true,
+      link: function(scope, element, attr) {
+        var open = $uibModalStack.open,
+            close = $uibModalStack.close,
+            dismiss = $uibModalStack.dismiss;
 
-          if (activeModal >= 0) {
-            ++activeModal;
-          }
-        });
+        $uibModalStack.open = function(modalInstance, modal) {
+          modalInstance.rendered.then(function() {
+            if (activeModal === 0 && !util.isMobile) {
+              util.bodyBlurOn();
+            }
 
-        open.apply(open, arguments);
-      };
+            if (activeModal >= 0) {
+              ++activeModal;
+            }
+          });
 
-      $uibModalStack.close = function(modalInstance, modal) {
-        modalInstance.closed.then(function () {
-          if (activeModal > 0) {
-            --activeModal;
-          }
+          open.apply(open, arguments);
+        };
 
-          if (activeModal === 0) {
-            bodyBlurOff();
-          }
-        });
+        $uibModalStack.close = function(modalInstance, modal) {
+          modalInstance.closed.then(function() {
+            if (activeModal > 0) {
+              --activeModal;
+            }
 
-        close.apply(close, arguments);
-      };
+            if (activeModal === 0) {
+              util.bodyBlurOff();
+            }
+          });
 
-      $uibModalStack.dismiss = function(modalInstance, modal) {
-        modalInstance.closed.then(function () {
-          if (activeModal > 0) {
-            --activeModal;
-          }
+          close.apply(close, arguments);
+        };
 
-          if (activeModal === 0) {
-            bodyBlurOff();
-          }
-        });
+        $uibModalStack.dismiss = function(modalInstance, modal) {
+          modalInstance.closed.then(function() {
+            if (activeModal > 0) {
+              --activeModal;
+            }
 
-        dismiss.apply(dismiss, arguments);
-      };
+            if (activeModal === 0) {
+              util.bodyBlurOff();
+            }
+          });
+
+          dismiss.apply(dismiss, arguments);
+        };
+      }
     }
   }
-});
+]);

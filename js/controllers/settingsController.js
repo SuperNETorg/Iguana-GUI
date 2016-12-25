@@ -11,7 +11,7 @@ angular.module('IguanaGUIApp')
   '$api',
   'vars',
   '$filter',
-  function($scope, $state, $rates, $auth, $rootScope,$storage,$api,vars,$filter) {
+  function($scope, $state, $rates, $auth, $rootScope, $storage, $api, vars, $filter) {
     $scope.$state = $state;
     $rootScope.$state = $state;
     $scope.coinsInfo = vars.coinsInfo;
@@ -40,7 +40,6 @@ angular.module('IguanaGUIApp')
     }
 
     function onInit() {
-
       $scope.sendCoin = {
         initStep: true,
         success: false,
@@ -77,11 +76,12 @@ angular.module('IguanaGUIApp')
         currencyName,
         coinName
       )
-        .then(function (result) {
+      .then(function(result) {
         var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
             halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
             hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
             coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
+
           if ($scope.activeCoin === 'btc') {
             var feeTime = {
               default: {
@@ -102,7 +102,7 @@ angular.module('IguanaGUIApp')
               }
             };
 
-            result.bitcoinFeesAll.data.fees.forEach(function (el) {
+            result.bitcoinFeesAll.data.fees.forEach(function(el) {
               if (el.maxFee === 0) {
                 feeTime.default = {
                   min: el.minMinutes,
@@ -168,7 +168,7 @@ angular.module('IguanaGUIApp')
             }];
             $scope.item = $scope.dropDown.items[0];
           }
-      }, function (data) {
+      }, function(data) {
         console.log(data);
       });
     }
