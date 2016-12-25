@@ -27,8 +27,6 @@ angular.module('IguanaGUIApp')
 
     getReceiveCoinAddress();
 
-    // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
-
     $scope.coinAmountKeying = function() {
       if ($scope.receiveCoin.coinAmount)
         $scope.receiveCoin.currencyAmount = coinRate * $scope.receiveCoin.coinAmount;

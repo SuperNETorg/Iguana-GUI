@@ -146,7 +146,6 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
-
   $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
@@ -159,5 +158,5 @@ angular.module('IguanaGUIApp', [
 
   $api.testConnection().then(function(coins) {
     $rootScope.$broadcast('coinsInfo', coins);
-  }); // switch with Api service once it's finished
+  });
 });

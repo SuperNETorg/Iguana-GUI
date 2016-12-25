@@ -31,7 +31,11 @@ describe('rates service test', function() {
     }));
 
     it('shoud return difference between now and rate timestamp', inject(function($rates) {
-      $storage['iguana-rates-btc'] = { shortName: 'USD', value: 787.52, updatedAt: 0 };
+      $storage['iguana-rates-btc'] = {
+        shortName: 'USD',
+        value: 787.52,
+        updatedAt: 0
+      };
       var currentDate = new Date();
 
       currentDate.setHours(currentDate.getHours() - 1);
@@ -43,7 +47,13 @@ describe('rates service test', function() {
     it('shoud update BTC/USD rate from an external website', inject(function($rates) {
       $httpBackend.expect('GET', 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD');
       $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond(function(method, url, data) {
-        return [200, { 'BTC': { 'USD': 787.52 } } ];
+        return [200,
+          {
+            'BTC': {
+              'USD': 787.52
+            }
+          }
+        ];
       });
 
       $rates.updateRates(null, null, null, true);
@@ -55,7 +65,11 @@ describe('rates service test', function() {
     }));
 
     it('shoud skip to update BTC/USD rate from an external website', inject(function($rates) {
-      $storage['iguana-rates-btc'] = { shortName: 'USD', value: 787.52, updatedAt: new Date().setHours(new Date().getHours() + 1) };
+      $storage['iguana-rates-btc'] = {
+        shortName: 'USD',
+        value: 787.52,
+        updatedAt: new Date().setHours(new Date().getHours() + 1)
+      };
       $rates.updateRates('btc'); // should use localstorage rate
 
       expect($storage['iguana-rates-btc'].shortName).toEqual('USD');
@@ -67,7 +81,13 @@ describe('rates service test', function() {
       beforeEach(function (done) {
         $httpBackend.expect('GET', 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD');
         $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond(function(method, url, data) {
-          return [200, { 'BTC': { 'USD': 787.52 } } ];
+          return [200,
+            {
+              'BTC': {
+                'USD': 787.52
+              }
+            }
+          ];
         });
 
         rates.updateRates(null, null, null, true);
@@ -110,7 +130,11 @@ describe('rates service test', function() {
     }));
 
     it('shoud update local LTC/EUR rate', inject(function($rates) {
-      var ltcRate = { 'LTC': { 'EUR': 800 } };
+      var ltcRate = {
+        'LTC': {
+          'EUR': 800
+        }
+      };
       $storage['iguana-currency'] = { 'name': 'EUR' };
       $storage['iguana-ltc-passphrase'] = { logged: 'yes' };
       $storage['iguana-btc-passphrase'] = { logged: 'no' };

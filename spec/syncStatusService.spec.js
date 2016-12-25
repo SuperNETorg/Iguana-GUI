@@ -46,7 +46,13 @@ describe('syncStatus service test', function() {
       $syncStatus.getPortPollResponse($storage['iguana-port-poll']);
       expect($storage.isIguana).toEqual(false);
       expect($storage.isProxy).toEqual(true);
-      expect(vars.coinsInfo).toEqual({ 'btc': { connection: true, RT: true, relayFee: 0.00001 } });
+      expect(vars.coinsInfo).toEqual({
+        'btc': {
+          connection: true,
+          RT: true,
+          relayFee: 0.00001
+        }
+      });
     }));
   });
 });

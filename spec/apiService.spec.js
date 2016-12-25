@@ -29,13 +29,19 @@ describe('api service test', function() {
       $httpBackend.expectGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD');
       $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond({
         success: {
-          'BTC': { 'USD': 787.52 }
+          'BTC': {
+            'USD': 787.52
+          }
         }
       });
 
       $api.getExternalRate('BTC/USD').then(function(data) {
         expect(data).toBeDefined();
-        expect(data[0].success).toEqual({ 'BTC': { 'USD': 787.52 } });
+        expect(data[0].success).toEqual({
+          'BTC': {
+            'USD': 787.52
+          }
+        });
       });
 
       $httpBackend.flush();
@@ -217,12 +223,21 @@ describe('api service test', function() {
     it('shoud sendtoaddress 0.1 btc (coind)', inject(function($api) {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
-        expect(JSON.parse(data).params).toEqual([ 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d', 0.1, 'test note' ]);
+        expect(JSON.parse(data).params).toEqual([
+          'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d',
+          0.1,
+          'test note'
+        ]);
         expect(JSON.parse(data).method).toEqual('sendtoaddress');
         return [200, { result: '99c07b2177f6f13b221d47d2b263e39dbe9ed90fed5d3b80aa71fcefd87bd9c2' }];
       });
 
-      $api.sendToAddress('btc', { address: 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d', amount: 0.1, note: 'test note' }).then(function(data) {
+      $api.sendToAddress('btc', {
+        address: 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d',
+        amount: 0.1,
+        note: 'test note'
+      })
+      .then(function(data) {
         expect(data).toBeDefined();
         expect(data).toEqual('99c07b2177f6f13b221d47d2b263e39dbe9ed90fed5d3b80aa71fcefd87bd9c2');
       });
@@ -283,8 +298,12 @@ describe('api service test', function() {
         return [200, { result: 'coin added' }];
       });
 
-      $api.addCoins([{ coinId: 'sys', id: 'SYS', name: 'Syscoin' }], 0).then(function(data) {
-        //console.log(data[0][1].config.data);
+      $api.addCoins([{
+        coinId: 'sys',
+        id: 'SYS',
+        name: 'Syscoin'
+      }], 0)
+      .then(function(data) {
         expect(data[0][1].data.result).toEqual('coin added');
         expect(data[0][0]).toEqual('sys');
         expect(data[0][1].config.headers['Content-Type']).toEqual('application/x-www-form-urlencoded');
@@ -301,7 +320,12 @@ describe('api service test', function() {
         return [200, { result: 'server is busy' }];
       });
 
-      $api.addCoins([{ coinId: 'sys', id: 'SYS', name: 'Syscoin' }], 0).then(function(data) {
+      $api.addCoins([{
+        coinId: 'sys',
+        id: 'SYS',
+        name: 'Syscoin'
+      }], 0)
+      .then(function(data) {
         expect(data[0][1].data.result).toEqual('server is busy');
         expect(data[0][0]).toEqual(false);
       });
@@ -361,7 +385,10 @@ describe('api service test', function() {
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('getblocktemplate');
         // code -10 can correspond to a number of "out of sync" states
-        return [502, { result: 'someresult', responseText: 'code:-10' }];
+        return [502, {
+          result: 'someresult',
+          responseText: 'code:-10'
+        }];
       });
 
       $api.coindCheckRT('btc').then(function(data) {
@@ -376,7 +403,10 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletpassphrase');
-        return [200, { result: '', error: '' }];
+        return [200, {
+          result: '',
+          error: ''
+        }];
       });
 
       $api.walletLogin('test test', 3600, 'btc').then(function(data) {
@@ -392,7 +422,11 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletpassphrase');
-        return [401, { error: { message: 'Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.' } }];
+        return [401, {
+          error: {
+            message: 'Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.'
+          }
+        }];
       });
 
       $api.walletLogin('test test', 3600, 'btc').then(function(data) {
@@ -408,7 +442,11 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletpassphrase');
-        return [401, { error: { message: 'Error: The wallet passphrase entered was incorrect' } }];
+        return [401, {
+          error: {
+            message: 'Error: The wallet passphrase entered was incorrect'
+          }
+        }];
       });
 
       $api.walletLogin('test test', 3600, 'btc').then(function(data) {
@@ -424,7 +462,11 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletpassphrase');
-        return [401, { error: { message: 'Error: running with an unencrypted wallet, but walletpassphrase was called' } }];
+        return [401, {
+          error: {
+            message: 'Error: running with an unencrypted wallet, but walletpassphrase was called'
+          }
+        }];
       });
 
       $api.walletLogin('test test', 3600, 'btc').then(function(data) {
@@ -440,7 +482,10 @@ describe('api service test', function() {
       $storage.isIguana = true;
       $httpBackend.whenPOST('http://localhost:7778/api/bitcoinrpc/walletpassphrase').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletpassphrase');
-        return [200, { result: '', error: '' }];
+        return [200, {
+          result: '',
+          error: ''
+        }];
       });
 
       $api.walletLogin('test test', 3600, 'btc').then(function(data) {
@@ -455,7 +500,10 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('walletlock');
-        return [200, { result: '', error: '' }];
+        return [200, {
+          result: '',
+          error: ''
+        }];
       });
 
       $api.walletLock('btc').then(function(data) {
@@ -469,7 +517,10 @@ describe('api service test', function() {
       $storage.isIguana = false;
       $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
         expect(JSON.parse(data).method).toEqual('encryptwallet');
-        return [200, { result: '', error: '' }];
+        return [200, {
+          result: '',
+          error: ''
+        }];
       });
 
       $api.walletEncrypt('test test', 'btc').then(function(data) {
@@ -508,7 +559,10 @@ describe('api service test', function() {
       for (var i in coins) {
         (function(x) {
           $httpBackend.whenPOST('http://localhost:1337/localhost:' + (coins[x].coindPort ? coins[x].coindPort : coins[x].portp2p)).respond(function(method, url, data) {
-            return [401, { result: '', error: '' }];
+            return [401, {
+              result: '',
+              error: ''
+            }];
           });
         })(i);
       }
@@ -524,7 +578,10 @@ describe('api service test', function() {
       $storage.isIguana = false;
 
       var coins = $api.getConf().coins,
-          errors = { 8332: 'Bad Gateway', 14632: 'Verifying blocks...' };
+          errors = {
+            8332: 'Bad Gateway',
+            14632: 'Verifying blocks...'
+          };
 
       for (var i in coins) {
         (function(x) {
@@ -551,22 +608,40 @@ describe('api service test', function() {
     }));
 
     it('shoud return 10 on errorHandler exec', inject(function($api) {
-      var errorHandler = $api.errorHandler({ data: { error: { message: 'need to unlock wallet' } } }, 'btc');
+      var errorHandler = $api.errorHandler({
+        data: {
+          error: {
+            message: 'need to unlock wallet'
+          }
+        }
+      }, 'btc');
       expect(errorHandler).toEqual(10);
     }));
 
     it('shoud return 10 on errorHandler exec #2', inject(function($api) {
-      var errorHandler = $api.errorHandler({ data: { error: 'iguana jsonstr expired' } }, 'btc');
+      var errorHandler = $api.errorHandler({
+        data: {
+          error: 'iguana jsonstr expired'
+        }
+      }, 'btc');
       expect(errorHandler).toEqual(10);
     }));
 
     it('shoud return 10 on errorHandler exec #3', inject(function($api) {
-      var errorHandler = $api.errorHandler({ data: { error: 'coin is busy processing' } }, 'btc');
+      var errorHandler = $api.errorHandler({
+        data: {
+          error: 'coin is busy processing'
+        }
+      }, 'btc');
       expect(errorHandler).toEqual(10);
     }));
 
     it('shoud return 10 on errorHandler exec #4', inject(function($api) {
-      var errorHandler = $api.errorHandler({ data: { error: 'null return from iguana_bitcoinRPC' } }, 'btc');
+      var errorHandler = $api.errorHandler({
+        data: {
+          error: 'null return from iguana_bitcoinRPC'
+        }
+      }, 'btc');
       expect(errorHandler).toEqual(10);
     }));
 

@@ -805,7 +805,7 @@ angular.module('IguanaGUIApp')
             response.data.result === 'coin already there') {
             result.push([coin.coinId, response]);
           } else {
-            result.push([false, response]);
+            result.push([coin.coinId, response]);
           }
           deferred.resolve([result, ++_index]);
         },

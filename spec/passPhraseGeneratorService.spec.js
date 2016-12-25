@@ -11,7 +11,7 @@ describe('passPhraseGenerator service test', function() {
                   };
 
               if (_passphrase.length !== bits * 3) {
-                result.message =  'Expected passphrase to consist of ' + (bits * 3) + ' words';
+                result.message = 'Expected passphrase to consist of ' + (bits * 3) + ' words';
               }
 
               return result;
