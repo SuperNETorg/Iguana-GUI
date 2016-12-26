@@ -2,9 +2,7 @@
 
 angular.module('IguanaGUIApp')
 .directive('numberOnly', [
-  '$document',
-  '$filter',
-  function($document, $filter) {
+  function() {
     return {
       restrict: 'A',
       require: '?ngModel',
