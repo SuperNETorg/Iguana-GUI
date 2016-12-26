@@ -30,7 +30,7 @@
     </div>
     <div class="col-md-7 col-sm-6 currency-parent">
       <div class="btn-group segment-select">
-        <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-2 col-lg-2 "
+        <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-2 col-lg-2"
                ng-class="{
                'send-coin-line-height':activeCoin === 'btc',
                'active': checkedAmountType==item.name }"
@@ -40,6 +40,11 @@
                uib-btn-radio="'{{ item }}'">
           <span>{{ item.name }}</span>
         </label>
+      </div>
+      <div class="row">
+        <div class="fee-notice col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <span>{{ 'SETTINGS.FEE_OPTIONS_NOTIFICATION' | lang }}</span>
+        </div>
       </div>
     </div>
     <div class="clearfix"></div>

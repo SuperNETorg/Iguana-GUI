@@ -67,6 +67,10 @@ $segment-select-bg-color: #F5F8FB;
     }
     .currency-parent {
       margin-top: 30px;
+      .fee-notice {
+        margin: 10px 10px;
+        color: $reference-currency-txamount;
+      }
       .segment-select {
         left:10px;
         .item-segment-select {
