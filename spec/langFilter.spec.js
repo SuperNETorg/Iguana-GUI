@@ -31,7 +31,6 @@ describe('lang filter test', function() {
       var renderHtml = $compile('<div>{{ \'PAGE.LOGIN\' | lang }}</div>')($rootScope);
       $rootScope.$digest();
       expect(renderHtml['0'].outerHTML).toEqual('<div class="ng-binding ng-scope">Login</div>');
-      $rootScope.$$watchers = [];
     });
 
     it('shoud fail to render html w/ translation placeholder', function() {
