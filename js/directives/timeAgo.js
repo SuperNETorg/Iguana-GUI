@@ -1,5 +1,5 @@
 angular.module('IguanaGUIApp')
-.directive('timeago', function($window, $document, $filter) {
+.directive('timeago', function($filter) {
   return function(scope, element) {
     var children = element[0].children,
         threshold = settings.thresholdTimeAgo,
