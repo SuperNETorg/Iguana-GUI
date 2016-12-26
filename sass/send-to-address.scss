@@ -11,7 +11,7 @@ $send-coin-input-color: #333333;
 $send-coin-input-error-bg-color: #FFF5F5;
 $send-coin-input-error-border-color: #FD2F2F;
 $send-coin-p-color: #37373A;
-$send-coin-small-title-color: #A2A3AC;
+$send-coin-small-title-color: #808188;
 $send-coin-eq-sign-color: #FC6538;
 $send-coin-dropdown-color: #74767D;
 $item-segment-color: #F5F8FB;
@@ -108,8 +108,14 @@ $item-segment-color: #F5F8FB;
   .pop-form {
     margin-top: 3.78em;
   }
+  .pop-detail.send {
+    margin-bottom: 2.86em;
+  }
+  .pop-detail.pay-dtl {
+    margin-bottom: 3.48em;
+  }
   .pop-detail {
-    margin-bottom: 18px;
+    margin-bottom: 2em;
 
     h4 {
       color: $send-coin-title-color;
@@ -150,8 +156,8 @@ $item-segment-color: #F5F8FB;
   }
   .pop-detail.crncy {
     display: inline-block;
-    margin-top: 24px;
     width: 100%;
+    margin-bottom: 1.6em;
 
     .eq-sign {
       color: $dashboard-send-popup-err;
@@ -162,7 +168,7 @@ $item-segment-color: #F5F8FB;
     }
     input[type='text'] {
       float: left;
-      font-size: 1.1em;
+      font-size: 1.14em;
       width: 47%;
     }
   }
@@ -173,7 +179,6 @@ $item-segment-color: #F5F8FB;
     color: $color-white;
     font-size: 1.075em;
     height: 34px;
-    margin-top: 20px;
     padding-top: 3px;
     width: 100%;
     @include proxima;
@@ -213,15 +218,13 @@ $item-segment-color: #F5F8FB;
     }
     h5 {
       font-size: 16px;
-      margin-top: -1px;
+      margin-top: 0;
     }
   }
   .pop-detail.pay-dtl p {
     color: $send-coin-p-color;
-    font-size: 1.1em;
-  }
-  .pop-detail.crncy.chk-crncy {
-    margin: 30px 0;
+    font-size: 1.14em;
+    margin: 5px 0 4px 0;
   }
   .rs {
     margin: 0;
@@ -241,17 +244,11 @@ $item-segment-color: #F5F8FB;
   .pop-detail.pay-dtl h4 {
     color: $send-coin-small-title-color;
   }
-  .chk-crncy.crncy-rs h5 {
-    margin-top: -1px;
-  }
-  .pop-detail.crncy.chk-crncy.crncy-rs {
-    margin: 0 0 10px;
-  }
   .pop-detail.crncy.chk-crncy.crncy-fee {
     margin: 0 0 13px;
   }
   .pop-detail.crncy.segment {
-    margin: 13px 0 32px;
+    margin: 10px 0 32px;
   }
   .col-red {
     color: $color-red;
@@ -289,12 +286,13 @@ $item-segment-color: #F5F8FB;
     }
   }
   .pay-dtl h3 {
-    font-size: 1.4em;
     margin-bottom: 0;
-    margin-top: 0;
+    margin-top: 4px;
+    font-size: 1.46em;
   }
   .pay-dtl h5 {
     margin-top: 0;
+    font-size: 1.2em;
   }
   .segment-select {
     width: 100%;
@@ -306,7 +304,7 @@ $item-segment-color: #F5F8FB;
       color: $dashboard-send-currency-orange;
       height: 42px;
       padding: 8px;
-      width: 24.24%;
+      width: 25.25%;
       @include no-box-shadow;
     }
     .item-segment-select.disabled {
@@ -328,9 +326,6 @@ $item-segment-color: #F5F8FB;
         margin-top: 2px;
       }
     }
-    .item-segment-select {
-        min-width: 25%;
-      }
   }
   .item-segment-select .second-fee-text {
     color: $dashboard-send-currency-orange;
@@ -363,40 +358,56 @@ $item-segment-color: #F5F8FB;
   ! not going to work in IE,
     TODO: gracefull fallback(?) !
 */
-.send-modal.blur {
+.form-content.blur ,
+.form-header.blur {
   @include blur;
 }
+
 .send-coin-progress-overlay,
 .send-coin-success-overlay {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.4);
   height: 100%;
   position: absolute;
   width: 100%;
-  z-index: 100;
+  z-index: 10000;
 }
+
 .send-coin-progress-overlay .send-coin-status,
 .send-coin-success-overlay .send-coin-status {
-  font-size: 1.1em;
-  padding-top: 50%;
+  font-size: 1.44em;
+  line-height: 1.2em;
+  padding-top: 35%;
   text-align: center;
+
+  .help-block {
+    color: $color-black;
+    @include no-margin;
+    @include no-padding;
+  }
 }
-.send-coin-progress-overlay .btn-next {
-  margin-top: 25%;
+
+.send-coin-success-overlay {
+  .send-coin-background {
+    @include blur;
+  }
+  .btn-confirmed,
+  .btn-confirmed:focus {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
+    background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    bottom: 12.1%;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    font-size: 1.3em;
+    left: 20%;
+    right: 20%;
+    bottom: 25px;
+    max-width: 300px;
+    position: absolute;
+    text-shadow: 0 3px 5px rgba-black(0.25);
+  }
 }
-.send-coin-success-overlay .btn-confirmed,
-.send-coin-success-overlay .btn-confirmed:focus {
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
-  background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  bottom: 12.1%;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760', GradientType=1); /* IE6-9 fallback on horizontal gradient */
-  font-size: 1.3em;
-  left: 20%;
-  max-width: 359px;
-  position: absolute;
-  text-shadow: 0 3px 5px rgba-black(0.25);
-}
+
 .modal-send-coin {
   background: none;
   border-radius: $border-radius-smaller;
@@ -447,6 +458,7 @@ $item-segment-color: #F5F8FB;
   .modal-header {
     .bi_interface-cross {
       margin-top: 2px;
+      margin-left: 0.7em;
     }
   }
 
@@ -478,19 +490,21 @@ $item-segment-color: #F5F8FB;
     position: absolute;
   }
 }
+
 .modal-send-coin.entry {
   max-height: 770px;
 }
+
 .modal-send-coin .bi_interface-arrow-left,
 .modal-add-coin-login .bi_interface-arrow-left {
   color: $color-white;
-  font-size: 26px;
-  margin-left: 10px;
-  margin-top: -1px;
+  font-size: 2.2em;
   position: absolute;
   text-shadow: 1px 1px 3px rgba-black(0.3);
+  top: 0.5em;
   z-index: 100;
 }
+
 @-webkit-keyframes rotator {
   0% {
     transform: rotate(0deg);

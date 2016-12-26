@@ -5,7 +5,7 @@
     <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
-        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency') : 0 }}</span>
+        <span class="value">{{ totalBalance > 0 ? (totalBalance.toFixed(8) | decimalPlacesFormat: 'currency') : 0 }}</span>
         <span class="currency">{{ currency }}</span>
       </div>
     </div>
@@ -28,8 +28,8 @@
                 <div class="name pull-left">{{ item.name }}</div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }">
-                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
-                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency') : 0 }}</span> {{ item.currencyName }}</div>
+                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue.toFixed(8) | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
+                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue.toFixed(8) | decimalPlacesFormat: 'currency') : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
@@ -53,7 +53,7 @@
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
           </div>
           <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency.toFixed(8) | decimalPlacesFormat: 'currency') : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
           <div class="action-buttons unselectable">

@@ -27,7 +27,11 @@ angular.module('IguanaGUIApp')
         decimalPlaces.coin = decimalPlaces.currency = 0;
       }
 
-      return Number(value).toFixed(decimalPlaces[type]);
     }
+    return decimalPlaces ?
+      Number(value).toFixed(
+        (decimalPlaces[type] < 20 ? decimalPlaces[type] : 19)
+      ) :
+      '';
   };
 });

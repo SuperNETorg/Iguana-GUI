@@ -36,7 +36,7 @@ angular.module('IguanaGUIApp')
     };
 
     $scope.close = function() {
-      $uibModalInstance.dismiss();
+      $uibModalInstance.close();
     }
   }
 ]);

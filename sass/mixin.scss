@@ -38,6 +38,17 @@
   /* csslint ignore:end */
 }
 
+@mixin green-gradient {
+  /* csslint ignore:start */
+  background: -moz-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* FF3.6+ */
+  background: -webkit-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* Opera 11.10+ */
+  background: -ms-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* IE10+ */
+  background: radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* W3C */
+  color: $color-white;
+  /* csslint ignore:end */
+}
+
 @mixin width-gradient {
   /* csslint ignore:start */
   background: $color-absolute-white;
@@ -77,7 +88,7 @@
 
 @mixin blur {
   /* csslint ignore:start */
-  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  -webkit-filter: blur(6px); /* Chrome, Safari, Opera */
   filter: blur(6px);
   /* csslint ignore:end */
 }
@@ -138,6 +149,21 @@
     margin-top: $size $important;
   } @else if ($name == 'bottom') {
     margin-bottom: $size $important;
+  }
+}
+
+@mixin padding($name, $size, $auto, $important) {
+  @if ($auto) {
+    padding: 0 auto;
+  }
+  @if ($name == 'left') {
+    padding-left: $size $important;
+  } @else if ($name == 'right') {
+    padding-right: $size $important;
+  } @else if ($name == 'top') {
+    padding-top: $size $important;
+  } @else if ($name == 'bottom') {
+    padding-bottom: $size $important;
   }
 }
 
@@ -237,4 +263,12 @@
 }
 @mixin offset-right-lg {
   @include margin('right', 45px, false, !important);
+}
+@mixin no-margin {
+  @include margin('top', 0, true, !important);
+  @include margin('bottom', 0, true, !important);
+}
+@mixin no-padding {
+  @include padding('top', 0, true, !important);
+  @include padding('bottom', 0, true, !important);
 }

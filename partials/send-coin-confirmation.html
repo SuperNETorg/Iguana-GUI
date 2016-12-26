@@ -15,16 +15,20 @@
     </button>
   </div-->
   <div class="send-coin-success-overlay" ng-class="{ 'hidden': !sendCoin.success }">
-    <div class="send-coin-status">{{ 'SEND.TRANSACTION_IS_SENT' | lang }}.<br/>{{ 'SEND.CHECK_THE_STATUS' | lang }}.</div>
-    <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-confirmed" ng-click="close()">
+    <div class="send-coin-status">
+      <div class="help-block no-padding">{{ 'SEND.TRANSACTION_IS_SENT' | lang }}.</div>
+      <div class="help-block no-padding">{{ 'SEND.CHECK_THE_STATUS' | lang }}.</div>
+    </div>
+    <button class="btn btn-block green-gradient box-shadow-all text-shadow row btn-confirmed" ng-click="close()">
       <i class="bi_interface-tick cursor-pointer"></i>
     </button>
   </div>
-  <header class="modal-header form-header orange-gradient box-shadow-bottom">
+  <header class="modal-header form-header orange-gradient box-shadow-bottom"
+          ng-class="{'blur': sendCoin.success}">
     <i class="bi_interface-arrow-left cursor-pointer btn-back" ng-click="sendCoin.initStep = true"></i>
     <div class="title">{{ 'SEND.CONFIRMATION' | lang }}</div>
   </header>
-  <div class="form-content send-modal">
+  <div class="form-content send-modal" ng-class="{'blur': sendCoin.success}">
     <div class="modal-body">
       <div class="main-popup">
         <div class="popup-head">
@@ -36,20 +40,20 @@
               </div>
               <div class="col-sm-6 hd-right col-xs-6 balance">
                 <span class="balance-coin">
-                  <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat: 'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
+                  <span class="value">{{ sendCoin.coinValue.toFixed(8) | decimalPlacesFormat: 'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
                 </span>
                 <p class="rs balance-currency">
-                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat: 'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+                  <span class="value">{{ sendCoin.currencyValue.toFixed(8) | decimalPlacesFormat: 'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
                 </p>
               </div>
             </div>
           </div>
           <div class="pop-form">
-            <div class="pop-detail send check offset-bottom-lg">
+            <div class="pop-detail send check">
               <h4>{{ 'SEND.SEND_TO' | lang }}:</h4>
               <p>{{ sendCoin.address }}</p>
             </div>
-            <div class="pop-detail crncy chk-crncy crncy-rs offset-bottom-md">
+            <div class="pop-detail crncy chk-crncy crncy-rs">
               <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
                 <h3>{{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}</h3>
                 <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.amountCurrency | decimalPlacesFormat: 'currency' }} {{ sendCoin.currency }}</h5>
@@ -59,11 +63,14 @@
                 <h3>{{ sendCoin.fee + sendCoin.coinId }}</h3>
                 <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency + sendCoin.currency }}</h5>
               </div>
-              <div class="pop-detail pay-dtl offset-bottom-md">
-                <h4>{{ 'SEND.NOTE' | lang }}</h4>
+              <div class="pop-detail pay-dtl">
+                <h4>{{ 'SEND.NOTE' | lang }}:</h4>
                 <p> {{ sendCoin.note }}</p>
               </div>
-              <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}</button>
+              <button class="btn-confirm-tx orange-gradient orange-shadow " ng-class="{'hidden': sendCoin.success}"
+                      ng-click="sendCoinFormConfirm()">
+                {{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}
+              </button>
             </div>
           </div>
         </div>

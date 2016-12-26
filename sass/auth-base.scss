@@ -10,6 +10,14 @@
   height: 100%;
   width: 100%;
 
+  .navbar-header {
+    .navbar-brand {
+      color: $color-absolute-white;
+      font-family: 'FuturaPTDemi', sans-serif;
+      font-size: 1.6em;
+      font-weight: 400;
+    }
+  }
   .form-container {
     display: table;
     height: 90%;

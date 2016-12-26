@@ -96,6 +96,8 @@ angular.module('IguanaGUIApp')
     $scope.receivedObject = undefined;
 
     $scope.openSendCoinPassphraseModal = function() {
+      angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).addClass('hidden');
+      angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).addClass('hidden');
       var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -111,7 +113,13 @@ angular.module('IguanaGUIApp')
           });
       modalInstance.result.then(onDone);
 
+      modalInstance.closed.then(function () {
+        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
+        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
+      });
       function onDone(receivedObject) {
+        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
+        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
         if (receivedObject) execSendCoinCall();
       }
     };

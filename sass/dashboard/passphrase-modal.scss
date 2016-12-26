@@ -2,79 +2,60 @@
  * Iguana dashboard/passphrase-modal
  *
  */
-
 @import '../dev.scss';
 
-.send-coin-passphrase-modal-container .modal-dialog {
-  width: 400px;
-}
-.login-form-modal {
-  textarea {
-    @include bold;
-    @include proxima;
-    width: 100%;
-    height: 120px;
-    border-radius: $border-radius-smaller;
-    border: solid 1px $color-medium-gray;
-    padding: 10px 12px;
-    margin: 20px 0;
-    font-size: 1.24em;
-    text-align: center;
-    resize: none;
-  }
-  .modal-add-coin-login {
-    border-radius: $border-radius-smaller;
-    box-shadow: 0 0 1px 1px rgba-black(0.1);
-    display: block;
-  }
-  .error {
-    border: solid 1px $color-red;
-  }
-  .offset-bottom-md {
-    margin: 0 auto;
-    margin-bottom: 30px;
-  }
-}
-.login-form-modal.center {
-  text-align: center;
-}
-.login-form .offset-bottom-sm {
-  display: block;
-  margin: 0 auto;
-}
-.modal-add-coin-login .form-content {
-  padding: 25px;
+body {
+  .send-coin-passphrase-modal-container {
+    .modal-dialog {
+      .modal-content {
+        .send-coin-confirm-passphrase {
+          .login-passphrase-textarea {
+            @include bold;
+            @include proxima;
+            @include center;
+            width: 100%;
+            height: 160px;
+            border-radius: $border-radius-smaller;
+            border: solid 1px $color-medium-gray;
+            padding: 10px 12px;
+            margin: 6px 0 24px 0;
+            font-size: 1.24em;
+            text-align: center;
+            resize: none;
+          }
+          .modal-add-coin-login {
+            border-radius: $border-radius-smaller;
+            box-shadow: 0 0 1px 1px rgba-black(0.1);
+            display: block;
+          }
+          .error {
+            border: solid 1px $color-red;
+          }
+          .login-input-directions {
+            font-size: 1.145em;
+            margin-bottom: 22px;
+            @include center;
+          }
+          .form-header i {
+            color: #FEFBF9;
+            font-size: 2.2em;
+            left: 0.3em;
+            position: absolute;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            top: 0.4em;
+            z-index: 100;
+          }
+          .form-content {
+            padding: 2.1em 7.14em 2.8em 7.14em;
 
-  .row {
-    margin-left: 0;
-    margin-right: 0;
-    width: 99%;
-  }
-}
-.send-coin-confirm-passphrase {
-  .modal {
-    .modal-dialog.modal-lg {
-      width: 400px;
+            .btn-add-wallet {
+              max-width: 300px;
+              font-size: 1.08em;
+              line-height: 1.6em;
+            }
+          }
+        }
+      }
     }
-    .modal-content {
-      box-shadow: 0 2px 40px rgba(125, 125, 125, 0.3);
-    }
-  }
-  .modal-add-coin-login textarea {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    text-align: center;
-  }
-  .login-input-directions {
-    font-size: 1.07em;
-    text-align: center;
-  }
-  .form-header i {
-    color: $color-white;
-    font-size: 26px;
-    margin-top: -4px;
-    position: absolute;
-    text-shadow: 1px 1px 3px rgba-black(0.3);
-    z-index: 100;
   }
 }

@@ -43,6 +43,12 @@ html {
     .btn.orange-gradient:hover {
       @include orange-gradient;
     }
+    .green-gradient,
+    .btn.green-gradient,
+    .btn.green-gradient:focus,
+    .btn.green-gradient:hover {
+      @include green-gradient;
+    }
     .width-gradient,
     .btn.width-gradient,
     .btn.width-gradient:focus,

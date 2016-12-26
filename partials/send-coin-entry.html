@@ -19,7 +19,7 @@
                   <span class="name">{{ sendCoin.coinId }}</span>
                 </span>
                 <p class="rs balance-currency">
-                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat: 'currency' }}</span>
+                  <span class="value">{{ sendCoin.currencyValue.toFixed(8) | decimalPlacesFormat: 'currency' }}</span>
                   <span class="name">{{ sendCoin.currency }}</span>
                 </p>
               </div>
@@ -42,10 +42,10 @@
                  ng-class="{ 'col-red': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }">
                 <span ng-if="sendCoin.valid.amount.empty">{{ 'SEND.PLEASE_ENTER_AN_AMOUNT' | lang }}</span>
                 <span ng-if="sendCoin.valid.amount.notEnoughMoney">{{ 'SEND.NOT_ENOUGH_MONEY' | lang }} {{ sendCoin.coinValue }} {{ sendCoin.coinId }}</span>
-                <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }} {{ sendCoin.coinId }} {{ 'LOGIN.OR' | lang }} {{ sendCoin.currency }}</span>
+                <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }}</span>
               </p>
               <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}"
-                     class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }"
+                    class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }"
                      ng-model="sendCoin.amount" ng-keyup="sendCoinKeyingAmount()" number-only />
               <span class="eq-sign">=</span>
               <input type="text" min="0" class="tx-amount-currency"
@@ -66,7 +66,6 @@
                  }">
                 {{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}
               </p>
-              <!--<segmentselect is-button class="dropdown-fee" ng-model="dropDown.item" items="dropDown.items" callback="segmentselect.callback(item)"></segmentselect>-->
               <div class="btn-group segment-select clearfix">
                 <label class="btn btn-success item-segment-select"
                        ng-class="{
