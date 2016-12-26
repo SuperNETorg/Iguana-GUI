@@ -28,6 +28,15 @@ body {
         }
       }
     }
+    .reference-currency-main {
+      .currency-content {
+        .currency-parent {
+          .segment-select {
+            margin-top: 0;
+          }
+        }
+      }
+    }
   }
   @media screen and (max-width: 1300px) {
     .dashboard {

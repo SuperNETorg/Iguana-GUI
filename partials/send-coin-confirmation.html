@@ -61,7 +61,7 @@
               </div>
               <div class="pop-detail pay-dtl offset-bottom-md">
                 <h4>{{ 'SEND.NOTE' | lang }}</h4>
-                <p>{{ 'SEND.THE_FINAL_AMOUNT_NEW' | lang }}.</p>
+                <p> {{ sendCoin.note }}</p>
               </div>
               <button class="btn-confirm-tx orange-gradient" ng-click="sendCoinFormConfirm()">{{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}</button>
             </div>

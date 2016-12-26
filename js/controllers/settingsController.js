@@ -80,10 +80,8 @@ angular.module('IguanaGUIApp')
         var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
             halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
             hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
-            coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
-
-          if ($scope.activeCoin === 'btc') {
-            var feeTime = {
+            coinCurrencyRate = result.getExternalRate[0][coinName][currencyName],
+            feeTime = {
               default: {
                 min: '',
                 max: ''
@@ -157,18 +155,7 @@ angular.module('IguanaGUIApp')
               feeMinTime: feeTime.high.min,
               feeMaxTime: feeTime.high.max
             }];
-          } else {
-            $scope.items = [{
-              id: 0,
-              name: $filter('lang')('SEND.FEE_MIN'),
-              coin: $scope.sendCoin.minFee.toFixed(7),
-              amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
-              feeMinTime: '',
-              feeMaxTime: ''
-            }];
-            $scope.item = $scope.dropDown.items[0];
-          }
-      }, function(data) {
+      }, function (data) {
         console.log(data);
       });
     }

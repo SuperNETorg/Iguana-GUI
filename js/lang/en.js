@@ -100,7 +100,7 @@ var lang = {
       'CHOOSE_YOUR_CURRENCY': 'Choose your currency to see equivalent',
       'AMOUNT_OF_TRANSACTIONS': 'amount of transactions',
       'FEE_OPTIONS':'Fee options',
-      'FEE_DESCRIPTION':'The higher the fee, the faster the transaction.Chosen fee option will be applied, to all sending transactions. The final fee size depends on a currency itself and its network load.'
+      'FEE_DESCRIPTION':'The higher the fee, the faster a transaction. Chosen fee option will be applied to all sending transactions. The final fee size depends on a currency itself and its network load.'
     },
     'SEND': {
       'TRANSACTION_IS_SENT': 'Transaction is sent',
@@ -111,7 +111,6 @@ var lang = {
       'FEE': 'Fee',
       'NOTE': 'Note',
       'THE_FINAL_AMOUNT': 'The final amount may be slightly more because of network fees',
-      'THE_FINAL_AMOUNT_NEW': 'This is my payment. Have nice day :)',
       'SEND': 'Send',
       'SENDING': 'Sending',
       'ENTER_A_WALLET_ADDRESS': 'Enter a wallet address or select a contact',

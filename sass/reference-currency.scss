@@ -67,6 +67,13 @@ $segment-select-bg-color: #F5F8FB;
     }
     .currency-parent {
       margin-top: 30px;
+      .segment-select {
+        left:10px;
+        .item-segment-select {
+          line-height: normal;
+          height: 35px;
+        }
+      }
     }
     .country-li.country-li.active {
       border: 2px solid $reference-currency-tile-color;
@@ -161,7 +168,7 @@ $segment-select-bg-color: #F5F8FB;
       padding: 0;
     }
     .segment-select {
-      width: 100%;
+      width: 95%;
       margin-top: 35px;
 
       .item-segment-select {

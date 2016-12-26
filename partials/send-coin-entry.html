@@ -72,8 +72,8 @@
                        ng-class="{
                          'send-coin-line-height': activeCoin === 'btc',
                          'active': sendCoin.checkedAmountType==item.name,
-                         'disabled' : sendCoin.checkedAmountType!=item.name
-                       }"
+                         'disabled' : sendCoin.checkedAmountType!=item.name && activeCoin == 'btc'
+                        }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
                        ng-click="change()"
@@ -88,7 +88,9 @@
                        type="text"
                        ng-model="sendCoin.fee"
                        number-only
-                       ng-change="sendFee()"/>
+                       ng-change="sendFee()"
+                       ng-disabled="activeCoin !== 'btc' && checkedAmountType!=='Custom'"
+                />
                 <span class="eq-sign">=</span>
                 <input placeholder="0
                        {{ sendCoin.currency }}"
@@ -97,6 +99,7 @@
                        type="text"
                        ng-change="sendFeeCurrency()"
                        number-only
+                       ng-disabled="activeCoin !== 'btc' && checkedAmountType!=='Custom'"
                 />
               </div>
             </div>

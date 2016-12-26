@@ -209,6 +209,8 @@ angular.module('IguanaGUIApp')
           feeMaxTime: feeTime.high.max
         }];
       } else {
+        $scope.sendCoin.checkedAmountType = $scope.sendCoin.checkedAmountType!='Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
+        $scope.checkedAmountType = $scope.sendCoin.checkedAmountType;
         $scope.dropDown.items = [{
           id: 0,
           name: $filter('lang')('SEND.FEE_MIN'),
@@ -224,11 +226,12 @@ angular.module('IguanaGUIApp')
           feeMinTime: '',
           feeMaxTime: ''
         }];
+
+        defaultChange('Minimum');
       }
       $scope.item = $scope.dropDown.items[0];
       defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
-
-    });
+    }.bind(this));
 
     function initSendCoinModal(balance, coin) {
       $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
