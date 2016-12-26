@@ -3,7 +3,7 @@
 angular.module('IguanaGUIApp')
 .filter('lang', function() {
   return function(langID) {
-    if (langID && langID.indexOf('.') > -1) {
+    if (langID && langID.length && langID.indexOf('.') > -1) {
       var langIDComponents = langID.split('.');
 
       if (lang && langIDComponents && lang[settings.defaultLang][langIDComponents[0]][langIDComponents[1]])
