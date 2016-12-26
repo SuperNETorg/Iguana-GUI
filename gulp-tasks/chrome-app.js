@@ -27,8 +27,10 @@ exports.copyAllFiles = function(buildMode, paths) {
         .src(__dirname + '/../' + buildMode)
         .pipe(gulp.dest(__dirname + '/../' + paths.chrome.path));
   stream.on('end', function() {
-    exports.changeBackgroundAddress(paths);
-    exports.zipChromeApps('chrome-app', 'chrome-app');
+    var backgroundAddress = exports.changeBackgroundAddress(paths);
+    backgroundAddress.on('end',function() {
+      exports.zipChromeApps('chrome-app', 'chrome-app');
+    })
   });
 };
 
