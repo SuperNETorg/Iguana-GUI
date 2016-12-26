@@ -1,0 +1,4 @@
+{
+  "visible": "<div class=\"ng-scope\"><!-- ngIf: isVisible --><div class=\"loader ng-scope\" ng-if=\"isVisible\" visibility=\"true\"><svg class=\"circle\"><circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"5\" stroke-miterlimit=\"10\"></circle><circle class=\"path2\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"5\" stroke-miterlimit=\"10\"></circle><circle class=\"path3\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"5\" stroke-miterlimit=\"10\"></circle><circle class=\"path4\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"5\" stroke-miterlimit=\"10\"></circle></svg></div><!-- end ngIf: isVisible --></div>",
+  "invisible": "<div class=\"ng-scope\"><!-- ngIf: isVisible --></div>"
+}

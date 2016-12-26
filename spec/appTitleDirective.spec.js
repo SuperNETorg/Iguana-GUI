@@ -27,7 +27,7 @@ describe('appTitle directive test', function() {
           pageTitle: 'PAGE.DASHBOARD'
         }
       };
-      var renderHtml = $compile('<div app-title></div>')($rootScope);
+      renderHtml = $compile('<div app-title></div>')($rootScope);
       $rootScope.$broadcast('$stateChangeStart');
       $rootScope.$digest();
       expect(renderHtml['0'].outerHTML).toEqual('<div app-title="" class="ng-scope">Iguana / Dashboard</div>');
