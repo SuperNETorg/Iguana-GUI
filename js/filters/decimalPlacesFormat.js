@@ -11,9 +11,9 @@ angular.module('IguanaGUIApp')
           };
 
       if (value < 1 && value > 0) {
-        for (var i=0; i < valueComponents[1].length; i++) {
+        for (var i=valueComponents[1].length; i > -1; i--) {
           if (Number(valueComponents[1][i]) !== 0) {
-            decimalPlaces.coin = i + 2;
+            decimalPlaces.coin = i; //i + 2;
             decimalPlaces.currency = decimalPlaces.coin;
             break;
           }
