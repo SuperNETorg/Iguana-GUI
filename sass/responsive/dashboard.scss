@@ -466,6 +466,11 @@ body {
         padding: 0 0.8em 3.2em 0.8em;
       }
     }
+    .modal .modal-dialog.modal-lg ,
+    .modal .modal-content,
+    .modal .form-container {
+      height: 100%;
+    }
     .modal .modal-dialog.modal-lg {
       width: 100%;
     }
@@ -498,6 +503,76 @@ body {
     }
     .dashboard .form-container .form-content {
       padding: 40px 1.6em;
+    }
+    .modal-dialog {
+      .modal-content {
+        .form-container {
+          .modal-header.form-header {
+            height: 4em;
+            padding: 1.2em 0.8em;
+
+            .btn-close {
+              font-size: 1.5em;
+              margin-left: auto;
+              margin-top: auto;
+            }
+            .title {
+              font-size: 1.36em;
+              margin-left: 0.5em;
+              margin-top: 0.1em;
+            }
+          }
+          .form-content {
+            .my-address {
+              padding: 18px 0 4px 0;
+              font-size: 1.24em;
+            }
+          }
+        }
+      }
+    }
+    .receive-coin-modal-container {
+      .modal-dialog {
+        .modal-content {
+          .receiving-coin-content {
+            .form-content {
+              .share-address-section {
+                h4 {
+                  font-size: 1.5em;
+                }
+                .btn {
+                  height: 50px;
+                  font-size: 1.38em;
+                  line-height: 34px;
+                  min-width : 48%;
+                  max-width : 178px;
+                }
+              }
+              .amount-label {
+                .amount-label-span {
+                  font-size: 17px;
+                }
+              }
+              .qr-code {
+                top: 2.2em;
+                width: 220px;
+              }
+              .input {
+                .currency-input {
+                  input[type = "text"] {
+                    height: 45px;
+                    min-width : 142px;
+                    max-width : 178px;
+                  }
+                  .unit {
+                    top: 5px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 

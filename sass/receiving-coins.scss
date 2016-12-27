@@ -45,7 +45,8 @@
 .share-address-section {
   margin: 0 auto;
   position: relative;
-  width: 300px;
+  min-width: 300px;
+  max-width: 370px;
 
   h4 {
     @include bold;

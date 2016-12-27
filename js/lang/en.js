@@ -89,7 +89,7 @@ var lang = {
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',
-      'MY_ADDRESS': 'My address',
+      'MY_ADDRESS': 'Send to',
       'COPY': 'Copy',
       'SHARE': 'Share',
       'AMOUNT': 'Amount',
