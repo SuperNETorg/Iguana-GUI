@@ -24,53 +24,6 @@ $item-segment-color: #F5F8FB;
       .modal-body {
         padding: 0.7em 0;
 
-        .dropdown-fee {
-          text-align: left;
-
-          .btn.btn-primary.dropdown-button-style {
-            border: 1px solid $color-medium-gray;
-            border-radius: 4px;
-            box-shadow: none;
-            color: $send-coin-dropdown-color;
-            font-size: 1.1em;
-            font-weight: 500;
-            margin-top: 5px;
-            outline: none;
-            padding: 5px 20px;
-            text-align: left;
-            width: 100%;
-
-            strong {
-              color: $color-black;
-              font-size: 1.05em;
-              font-weight: 500;
-            }
-          }
-          .btn.btn-primary.dropdown-button-style:before {
-            @include budicon;
-            transform: rotate(180deg);
-            display: inline-block;
-            content: '\eb24';
-            position: absolute;
-            right: 17px;
-            top: 19px;
-          }
-          .btn.btn-primary.dropdown-button-style.open:before {
-            right: 15px;
-            transform: rotate(0deg);
-          }
-          .btn.btn-primary.dropdown-button-style:focus {
-            border: 1px solid $color-medium-gray;
-            box-shadow: none;
-            outline: none;
-          }
-          .btn.btn-primary.dropdown-button-style.open {
-            border: solid 1px $color-orange;
-            box-shadow: 0 0 2px 3px rgba(254, 69, 13, 0.25);
-            outline: none;
-          }
-        }
-
         .headd {
           border-radius: $border-radius-smaller;
           box-shadow: 0 0 7px 4px $send-coin-head-color;
@@ -128,6 +81,9 @@ $item-segment-color: #F5F8FB;
       font-size: 13px;
       margin: 2px 0 4px 0;
     }
+    p.col-red {
+      color: $color-red;
+    }
     input[type='text'] {
       border: 1px solid $color-medium-gray;
       border-radius: $border-radius-smaller;
@@ -145,6 +101,10 @@ $item-segment-color: #F5F8FB;
       margin-top: 6px;
       padding: 4px 12px;
       width: 100%;
+    }
+    .validation-field-error {
+      background: $send-coin-input-error-bg-color;
+      border-color: $send-coin-input-error-border-color;
     }
   }
   .modal {
@@ -249,13 +209,6 @@ $item-segment-color: #F5F8FB;
   }
   .pop-detail.crncy.segment {
     margin: 10px 0 32px;
-  }
-  .col-red {
-    color: $color-red;
-  }
-  .pop-detail .validation-field-error {
-    background: $send-coin-input-error-bg-color;
-    border-color: $send-coin-input-error-border-color;
   }
   .crncy {
     .dropdown-fee {
@@ -396,7 +349,6 @@ $item-segment-color: #F5F8FB;
     background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
     background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
     background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    bottom: 12.1%;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760', GradientType=1); /* IE6-9 fallback on horizontal gradient */
     font-size: 1.3em;
     left: 20%;

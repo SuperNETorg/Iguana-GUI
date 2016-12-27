@@ -40,11 +40,11 @@
 
 @mixin green-gradient {
   /* csslint ignore:start */
-  background: -moz-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* FF3.6+ */
-  background: -webkit-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* Chrome10+,Safari5.1+ */
-  background: -o-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* Opera 11.10+ */
-  background: -ms-radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* IE10+ */
-  background: radial-gradient(50% 0%, ellipse cover, #17e173 0, #14d86d 60%, #0fcb65 82%, #08b959 100%);/* W3C */
+  background: -moz-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* FF3.6+ */
+  background: -webkit-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* Opera 11.10+ */
+  background: -ms-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* IE10+ */
+  background: radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* W3C */
   color: $color-white;
   /* csslint ignore:end */
 }
@@ -209,6 +209,12 @@
   font-size: 1.07em;
   position: relative;
   top: .08em;
+}
+@mixin quick-search-placeholder-mobile {
+  color: $color-form-arrow;
+  font-size: 0.95em;
+  position: relative;
+  top: 0;
 }
 
 @mixin orange-shadow  {

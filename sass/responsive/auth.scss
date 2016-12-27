@@ -154,11 +154,15 @@ body {
             }
             .login-input-directions{
               @include center;
+              font-size: 1.1em;
+              font-weight: 600;
+              @include offset-bottom-sm;
             }
             .login-passphrase-textarea {
               font-size: 1.2em;
               height: 133px;
               padding: 15px 10px;
+              margin: 20px auto;
             }
             .btn.row:last-child {
               @include btn-bottom(15px);
@@ -215,7 +219,7 @@ body {
       }
     }
     .coins-title {
-      margin-top: 30px;
+      margin-top: 34px;
       padding-top: 0;
     }
     .form-container.mdl .bi_interface-cross {
@@ -247,7 +251,7 @@ body {
               margin-left: auto;
             }
             .title {
-              font-size: 1.4em;
+              font-size: 1.36em;
               margin-left: 0.5em;
               margin-top: 0.1em;
             }
@@ -259,18 +263,34 @@ body {
             max-width: 30em;
 
             .coins-title {
-              font-size: 1.18em;
+              font-size: 1.16em;
+              font-weight: 600;
             }
             .quick-search {
-              padding-bottom: 1em;
-              padding-top: 1em;
+              padding-bottom: 1.4em;
+              padding-top: 1.4em;
+              padding-left: 1.4em;
+              padding-right: 1.4em;
 
               .input.text {
-                height: 42px
+                height: 48px
               }
               .icon {
-                margin-left: 0.5em;
-                margin-top: 0.6em;
+                font-size: 1.16em;
+                margin-left: 0.38em;
+                margin-top: 0.74em;
+              }
+              .input.text::-webkit-input-placeholder {
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text:-moz-placeholder { /* Firefox 18- */
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text::-moz-placeholder {  /* Firefox 19+ */
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text:-ms-input-placeholder {
+                @include quick-search-placeholder-mobile;
               }
             }
             .supported-coins-repeater-container {

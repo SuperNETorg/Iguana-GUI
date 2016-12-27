@@ -40,9 +40,14 @@ body {
             font-size: 1.8em;
             font-weight: 600;
             position: absolute;
-            text-transform: uppercase;
-            top: 0.45em;
+            top: 0.24em;
             left: 5.64em;
+
+            span {
+              font-family: 'FuturaPTDemi', sans-serif;
+              font-weight: 400;
+              font-size: 1.1em;
+            }
           }
           .lnk-logout {
             color: $color-absolute-white;
@@ -83,7 +88,7 @@ body {
             z-index: 50;
             /* csslint ignore:end */
           }
-          .top-menu.nav.navbar-nav {
+          .top-menu {
             display: inline-block;
             float: none;
             margin: 0 auto;
