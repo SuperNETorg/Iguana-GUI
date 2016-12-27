@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp')
 
         $uibModalStack.open = function(modalInstance, modal) {
           modalInstance.rendered.then(function() {
-            if (activeModal === 0 && !util.isMobile()) {
+            if (activeModal === 0) {
               util.bodyBlurOn();
             }
 
