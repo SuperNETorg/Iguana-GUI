@@ -20,7 +20,6 @@ body {
             padding: 10px 12px;
             margin: 6px 0 24px 0;
             font-size: 1.24em;
-            text-align: center;
             resize: none;
           }
           .modal-add-coin-login {
@@ -49,9 +48,9 @@ body {
             padding: 2.1em 7.14em 2.8em 7.14em;
 
             .btn-add-wallet {
-              max-width: 300px;
               font-size: 1.08em;
               line-height: 1.6em;
+              max-width: 300px;
             }
           }
         }

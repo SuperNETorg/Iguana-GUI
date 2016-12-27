@@ -32,10 +32,10 @@ body {
             .btn.row {
               font-size: 1.014em;
               height: 34px;
-              @include bold;
-              @include left-right-auto;
               max-width: none;
               width: 100%;
+              @include bold;
+              @include left-right-auto;
             }
           }
         }
@@ -118,9 +118,11 @@ body {
           .form-content-inner {
             .login-input-directions {
               font-size: 1.2em;
-              @include bold;
               line-height: 1.25em;
+              /* csslint ignore:start */
+              @include bold;
               @include text-left;
+              /* csslint ignore:end */
             }
           }
         }
@@ -150,28 +152,38 @@ body {
               line-height: 1.1em;
               max-width: 14em;
               top: 5.4em;
+              /* csslint ignore:start */
               @include absolute-horizontal-center;
+              /* csslint ignore:end */
             }
             .login-input-directions{
-              @include center;
               font-size: 1.1em;
               font-weight: 600;
+              /* csslint ignore:start */
+              @include center;
               @include offset-bottom-sm;
+              /* csslint ignore:end */
             }
             .login-passphrase-textarea {
               font-size: 1.2em;
               height: 133px;
-              padding: 15px 10px;
               margin: 20px auto;
+              padding: 15px 10px;
             }
             .btn.row:last-child {
+              /* csslint ignore:start */
               @include btn-bottom(15px);
+              /* csslint ignore:end */
             }
             .btn.row.btn-terms-conditions-accept {
+              /* csslint ignore:start */
               @include btn-bottom(15px);
+              /* csslint ignore:end */
             }
             .btn.row.btn-terms-conditions-decline {
+              /* csslint ignore:start */
               @include btn-bottom(45px);
+              /* csslint ignore:end */
             }
           }
         }
@@ -267,10 +279,7 @@ body {
               font-weight: 600;
             }
             .quick-search {
-              padding-bottom: 1.4em;
-              padding-top: 1.4em;
-              padding-left: 1.4em;
-              padding-right: 1.4em;
+              padding: 1.4em;
 
               .input.text {
                 height: 48px

@@ -107,7 +107,7 @@ $segment-select-bg-color: #F5F8FB;
         text-align: center;
         vertical-align: middle;
 
-        .display-table::after {
+        .display-table:after {
           background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* FF3.6+ */
           background: -webkit-gradient(linear, 180deg, color-stop(20%, 99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
           background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Chrome10+,Safari5.1+ */

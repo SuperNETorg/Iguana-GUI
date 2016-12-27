@@ -101,9 +101,9 @@ body {
                   .navbar-brand {
                     color: $dashboard-navbar-color;
                     font-size: 1.9em;
+                    left: 0.54em;
                     position: relative;
                     top: -2px;
-                    left: 0.54em;
                   }
                 }
                 .top {
@@ -208,8 +208,8 @@ body {
                   .timestamp {
                     font-size: 1.04em;
                     padding-top: 0;
-                    top: 1.2em;
                     right: 1.56em;
+                    top: 1.2em;
                   }
                 }
               }
@@ -234,22 +234,22 @@ body {
               .navbar-brand {
                 color: $dashboard-navbar-color;
                 font-size: 1.64em;
-                margin-left: 1px;
                 margin-bottom: 5px;
+                margin-left: 1px;
                 padding-top: 14px;
               }
               .navbar-edex {
                 font-size: 1.54em;
-                top: 0.5em;
                 left: 4.82em;
+                top: 0.5em;
               }
               .lnk-logout {
                 color: $dashboard-link-logout-color;
                 font-size: 1.018em;
                 font-weight: 600;
-                top: 1.4em;
                 position: absolute;
                 right: 1.3em;
+                top: 1.4em;
               }
             }
             .top {
@@ -290,8 +290,8 @@ body {
 
               .account-coins-repeater {
                 .item {
-                  padding: 1.54em;
                   height: 106px;
+                  padding: 1.54em;
 
                   .coin {
                     font-size: 1.3em;
@@ -363,10 +363,10 @@ body {
 
                 .top-bar {
                   border-radius: 0;
-                  position: fixed;
                   left: 0;
-                  z-index: 1;
+                  position: fixed;
                   width: 100%;
+                  z-index: 1;
 
                   .active-coin-balance {
                     font-size: 1.8em;
@@ -410,8 +410,8 @@ body {
                       .amount {
                         clear: both;
                         line-height: 44px;
-                        width: 40%;
                         text-align: left;
+                        width: 40%;
                       }
                       .amount.smaller {
                         font-size: 85%;
@@ -524,8 +524,8 @@ body {
           }
           .form-content {
             .my-address {
-              padding: 18px 0 4px 0;
               font-size: 1.24em;
+              padding: 18px 0 4px 0;
             }
           }
         }
@@ -537,18 +537,19 @@ body {
           .receiving-coin-content {
             .form-content {
               .share-address-section {
-                min-width: 300px;
                 max-width: 370px;
+                min-width: 300px;
                 width: auto;
+
                 h4 {
                   font-size: 1.5em;
                 }
                 .btn {
-                  height: 50px;
                   font-size: 1.38em;
+                  height: 50px;
                   line-height: 34px;
-                  min-width : 48%;
                   max-width : 178px;
+                  min-width : 48%;
                 }
               }
               .amount-label {
@@ -564,8 +565,8 @@ body {
                 .currency-input {
                   input[type = "text"] {
                     height: 45px;
-                    min-width : 142px;
                     max-width : 178px;
+                    min-width : 142px;
                   }
                   .unit {
                     top: 5px;
