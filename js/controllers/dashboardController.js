@@ -438,14 +438,176 @@ angular.module('IguanaGUIApp')
     }
 
     function updateDashboardView(timeout) {
+      updateFeeParams();
       vars.dashboardUpdateRef = $interval(function() {
-        // console.clear();
-        /*$auth.checkSession();
+        $auth.checkSession();
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
-
-        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');*/
+        updateFeeParams();
+        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
       }, timeout * 1000);
+    }
+
+    function updateFeeParams() {
+      var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
+          defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+          currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
+          coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
+          defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
+      $storage['feeSettings']['activeCoin'] = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
+
+      $api.feeCoins(
+        activeCoin,
+        defaultAccount,
+        currencyName,
+        coinName
+      ).then(function(result) {
+
+        $storage['feeSettings']['currencyRate'] = $rates.updateRates(result.getBalance[1], defaultAccount, true);
+
+        $api.initSendCoinModal(result.getBalance[0], result.getBalance[1], defaultAccount,defaultCurrency,activeCoin);
+
+        var fastestFee = $api.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage['feeSettings']['currencyRate']),
+            halfHourFee = $api.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage['feeSettings']['currencyRate']),
+            hourFee = $api.checkFeeCount(result.bitcoinFees.data.hourFee, $storage['feeSettings']['currencyRate']),
+            coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
+
+        $storage['feeSettings']['sendCoin'] = {
+          initStep: true,
+          success: false,
+          address: '',
+          amount: '',
+          amountCurrency: '',
+          fee: '',
+          minFee: coinsInfo[activeCoin].relayFee || 0.00001,
+          feeCurrency: '',
+          note: '',
+          passphrase: '',
+          valid: {
+            address: true,
+            amount: {
+              empty: false,
+              notEnoughMoney: false
+            },
+            fee: {
+              empty: false,
+              notEnoughMoney: false
+            }
+          },
+          entryFormIsValid: false
+        };
+
+        if ($storage['feeSettings']['activeCoin'] === 'btc') {
+          var feeTime = {
+            default: {
+              min: '',
+              max: ''
+            },
+            low: {
+              min: '',
+              max: ''
+            },
+            normal: {
+              min: '',
+              max: ''
+            },
+            high: {
+              min: '',
+              max: ''
+            }
+          };
+
+          result.bitcoinFeesAll.data.fees.forEach(function(el) {
+            if (el.maxFee === 0) {
+              feeTime.default = {
+                min: el.minMinutes,
+                max: el.maxMinutes
+              };
+            }
+            if (el.maxFee === result.bitcoinFees.data.fastestFee) {
+              feeTime.high = {
+                min: el.minMinutes,
+                max: el.maxMinutes
+              };
+            }
+            if (el.maxFee === result.bitcoinFees.data.halfHourFee) {
+              feeTime.normal = {
+                min: el.minMinutes,
+                max: el.maxMinutes
+              };
+            }
+            if (el.maxFee === result.bitcoinFees.data.hourFee) {
+              feeTime.low = {
+                min: el.minMinutes,
+                max: el.maxMinutes
+              };
+            }
+          });
+
+          $storage['feeSettings']['items'] = [{
+            id: 0,
+            name: $filter('lang')('SEND.FEE_MIN'),
+            coin: $storage['feeSettings']['sendCoin'].minFee.toFixed(7),
+            amount: (coinCurrencyRate * $storage['feeSettings']['sendCoin'].minFee).toFixed(12),
+            feeMinTime: feeTime.default.min,
+            feeMaxTime: feeTime.default.max
+          }, {
+            id: 1,
+            name: $filter('lang')('SEND.FEE_LOW'),
+            coin: hourFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
+            feeMinTime: feeTime.low.min,
+            feeMaxTime: feeTime.low.max
+          }, {
+            id: 2,
+            name: $filter('lang')('SEND.FEE_NORMAL'),
+            coin: halfHourFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
+            feeMinTime: feeTime.normal.min,
+            feeMaxTime: feeTime.normal.max
+          }, {
+            id: 3,
+            name: $filter('lang')('SEND.FEE_HIGH'),
+            coin: fastestFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
+            feeMinTime: feeTime.high.min,
+            feeMaxTime: feeTime.high.max
+          }];
+        } else {
+          $storage['feeSettings']['items'] = [{
+            id: 0,
+            name: $filter('lang')('SEND.FEE_MIN'),
+            coin: $storage['feeSettings']['sendCoin'].minFee.toFixed(7),
+            amount: ($storage['feeSettings']['sendCoin'].minFee * coinCurrencyRate).toFixed(12),
+            feeMinTime: '',
+            feeMaxTime: ''
+          }, {
+            id: 1,
+            name: $filter('lang')('SEND.FEE_LOW'),
+            coin: hourFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
+            feeMinTime: '',
+            feeMaxTime: ''
+          }, {
+            id: 2,
+            name: $filter('lang')('SEND.FEE_NORMAL'),
+            coin: halfHourFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
+            feeMinTime: '',
+            feeMaxTime: ''
+          }, {
+            id: 3,
+            name: $filter('lang')('SEND.FEE_HIGH'),
+            coin: fastestFee.coin.toFixed(7),
+            amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
+            feeMinTime: '',
+            feeMaxTime: ''
+          }];
+
+          $api.defaultChange('Minimum');
+        }
+        $api.defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
+      }.bind(this));
     }
 
     function stateChangeStart() {

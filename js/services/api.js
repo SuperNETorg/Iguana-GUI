@@ -1342,6 +1342,43 @@ angular.module('IguanaGUIApp')
       }.bind(this));
 
       return deferred.promise;
-    }
+    };
+
+    this.checkFeeCount = function(fee, currencyRate) {
+      var coin = fee * 1024 / 100000000, // satoshi per kb
+        amount = currencyRate * coin;
+
+      return {
+        'coin': coin,
+        'amount': amount
+      };
+    };
+
+    this.initSendCoinModal = function(balance, coin, defaultAccount,defaultCurrency, activeCoin) {
+
+      $storage['feeSettings']['currency'] = defaultCurrency;
+      $storage['feeSettings']['coinName'] = supportedCoinsList[coin].name;
+      $storage['feeSettings']['coinId'] = activeCoin.toUpperCase();
+      $storage['feeSettings']['coinValue'] = balance;
+      $storage['feeSettings']['currencyValue'] = balance * $storage['feeSettings']['currencyRate'];
+
+      if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
+        $scope.sendCoin.address = sendDataTest[coin].address;
+        $scope.sendCoin.amount = sendDataTest[coin].val;
+        $scope.sendCoin.note = sendDataTest[coin].note;
+      }
+    };
+
+    this.defaultChange = function(itemName) {
+      $storage['feeSettings']['items'].forEach(function(el) {
+        if (el.name === itemName) {
+          $storage['feeSettings']['fee'] = el.coin;
+          $storage['feeSettings']['feeCurrency'] = el.amount;
+
+          $storage['feeSettings']['feeAllText'] = $storage['feeSettings']['fee'] + ' ' + $storage['feeSettings']['coinId'];
+          $storage['feeSettings']['feeCurrencyAllText'] = $storage['feeSettings']['feeCurrency'] + ' ' + $storage['feeSettings']['currency'];
+        }
+      });
+    };
   }
 ]);

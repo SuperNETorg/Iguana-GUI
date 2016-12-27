@@ -71,7 +71,7 @@
                        ng-class="{
                          'send-coin-line-height': activeCoin === 'btc',
                          'active': sendCoin.checkedAmountType==item.name,
-                         'disabled' : sendCoin.checkedAmountType!=item.name && activeCoin == 'btc'
+                         'disabled' : sendCoin.checkedAmountType!=item.name && activeCoin !== 'btc'
                         }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
