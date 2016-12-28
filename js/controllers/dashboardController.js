@@ -449,11 +449,14 @@ angular.module('IguanaGUIApp')
     }
 
     function updateFeeParams() {
+      $storage['feeSettings']={};
       var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
           currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
           coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
           defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
+
+
       $storage['feeSettings']['activeCoin'] = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
 
       $api.feeCoins(
@@ -543,7 +546,6 @@ angular.module('IguanaGUIApp')
               };
             }
           });
-
           $storage['feeSettings']['items'] = [{
             id: 0,
             name: $filter('lang')('SEND.FEE_MIN'),
@@ -574,35 +576,7 @@ angular.module('IguanaGUIApp')
             feeMaxTime: feeTime.high.max
           }];
         } else {
-          $storage['feeSettings']['items'] = [{
-            id: 0,
-            name: $filter('lang')('SEND.FEE_MIN'),
-            coin: $storage['feeSettings']['sendCoin'].minFee.toFixed(7),
-            amount: ($storage['feeSettings']['sendCoin'].minFee * coinCurrencyRate).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }, {
-            id: 1,
-            name: $filter('lang')('SEND.FEE_LOW'),
-            coin: hourFee.coin.toFixed(7),
-            amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }, {
-            id: 2,
-            name: $filter('lang')('SEND.FEE_NORMAL'),
-            coin: halfHourFee.coin.toFixed(7),
-            amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }, {
-            id: 3,
-            name: $filter('lang')('SEND.FEE_HIGH'),
-            coin: fastestFee.coin.toFixed(7),
-            amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
-            feeMinTime: '',
-            feeMaxTime: ''
-          }];
+
 
           $api.defaultChange('Minimum');
         }

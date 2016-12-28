@@ -89,6 +89,7 @@ angular.module('IguanaGUIApp')
       },
       entryFormIsValid: false
     };
+
     $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN');
 
     $scope.$modalInstance = {};
@@ -138,12 +139,53 @@ angular.module('IguanaGUIApp')
           coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
       initSendCoinModal(result.getBalance[0], result.getBalance[1]);
-      $scope.dropDown.items = $storage['feeSettings']['items'];
-      $scope.sendCoin.checkedAmountType = $storage.checkedAmountType;
+debugger;
+      if (
+        $storage['feeSettings'] &&
+        $storage['feeSettings']['items'] &&
+        Object.keys($storage['feeSettings']['items']).length
+      ) {
+        $scope.dropDown.items = $storage['feeSettings']['items'];
+      } else {
+        $scope.dropDown.emptyItems = true;
+        $scope.dropDown.items = [{
+          id: 0,
+          name: $filter('lang')('SEND.FEE_MIN'),
+          coin: $scope.sendCoin.minFee.toFixed(7),
+          amount: ($scope.sendCoin.minFee * coinCurrencyRate).toFixed(12),
+          feeMinTime: '',
+          feeMaxTime: ''
+        }, {
+          id: 1,
+          name: $filter('lang')('SEND.FEE_LOW'),
+          coin: '',
+          amount: '',
+          feeMinTime: '',
+          feeMaxTime: ''
+        }, {
+          id: 2,
+          name: $filter('lang')('SEND.FEE_NORMAL'),
+          coin: '',
+          amount: '',
+          feeMinTime: '',
+          feeMaxTime: ''
+        }, {
+          id: 3,
+          name: $filter('lang')('SEND.FEE_HIGH'),
+          coin: '',
+          amount: '',
+          feeMinTime: '',
+          feeMaxTime: ''
+        }];
+      }
+
+
+      $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : 'Minimum';
       $scope.activeCoin = $storage['feeSettings']['activeCoin'];
-      $scope.sendCoin.checkedAmountType = $scope.sendCoin.checkedAmountType!='Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
+      $scope.sendCoin.checkedAmountType = $storage['feeSettings']['activeCoin'] !== 'btc' && $scope.sendCoin.checkedAmountType != 'Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
 
       if($storage['feeSettings']['activeCoin'] !=='btc') {
+
         defaultChange('Minimum');
       }else{
         defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
@@ -154,6 +196,7 @@ angular.module('IguanaGUIApp')
       $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
+      debugger;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
       $scope.sendCoin.coinId = $scope.activeCoin.toUpperCase();
       $scope.sendCoin.coinValue = balance;

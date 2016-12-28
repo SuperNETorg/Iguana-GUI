@@ -84,6 +84,12 @@ $item-segment-color: #F5F8FB;
     p.col-red {
       color: $color-red;
     }
+    input[type='text']::-webkit-input-placeholder ,
+    input[type='text']:-ms-input-placeholder ,
+    input[type='text']::-moz-placeholder {
+      display: block!important;
+      color: red;
+    }
     input[type='text'] {
       border: 1px solid $color-medium-gray;
       border-radius: $border-radius-smaller;

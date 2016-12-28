@@ -371,6 +371,17 @@
   background-color: $color-absolute-white;
   color: $dropdown-button-style-color;
 }
-.send-coin-line-height {
-  line-height: 14px;
+.pop-form {
+  .segment {
+    .segment-select {
+      .send-coin-line-height {
+        line-height: 14px;
+      }
+      .line-height-empty {
+        height: inherit;
+      }
+    }
+  }
 }
+
+
