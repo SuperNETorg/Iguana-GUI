@@ -196,7 +196,6 @@ debugger;
       $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
-      debugger;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
       $scope.sendCoin.coinId = $scope.activeCoin.toUpperCase();
       $scope.sendCoin.coinValue = balance;

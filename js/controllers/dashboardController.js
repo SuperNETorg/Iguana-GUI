@@ -575,12 +575,7 @@ angular.module('IguanaGUIApp')
             feeMinTime: feeTime.high.min,
             feeMaxTime: feeTime.high.max
           }];
-        } else {
-
-
-          $api.defaultChange('Minimum');
         }
-        $api.defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
       }.bind(this));
     }
 

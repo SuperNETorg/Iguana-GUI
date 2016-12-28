@@ -1368,17 +1368,5 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.note = sendDataTest[coin].note;
       }
     };
-
-    this.defaultChange = function(itemName) {
-      $storage['feeSettings']['items'].forEach(function(el) {
-        if (el.name === itemName) {
-          $storage['feeSettings']['fee'] = el.coin;
-          $storage['feeSettings']['feeCurrency'] = el.amount;
-
-          $storage['feeSettings']['feeAllText'] = $storage['feeSettings']['fee'] + ' ' + $storage['feeSettings']['coinId'];
-          $storage['feeSettings']['feeCurrencyAllText'] = $storage['feeSettings']['feeCurrency'] + ' ' + $storage['feeSettings']['currency'];
-        }
-      });
-    };
   }
 ]);
