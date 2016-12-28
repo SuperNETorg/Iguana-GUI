@@ -15,7 +15,8 @@ exports.copyFonts = function(buildMode) {
     return gulp
            .src(extendFont)
            .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts'))
-           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts'));
+           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts'))
+           .pipe(gulp.dest(paths.build[buildMode] + '/fonts'));
   } else {
     return gulp
            .src(extendFont)

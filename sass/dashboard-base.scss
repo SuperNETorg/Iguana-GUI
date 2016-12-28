@@ -11,16 +11,15 @@ body.modal-open .dashboard {
   @include blur;
 }
 
-html, body {
+html,
+body {
   overflow-y: auto;
 }
 
 body {
-
   .dashboard-page {
     background: $color-modal-bg;
   }
-
   .app-container {
     .dashboard {
       font-size: inherit;
@@ -196,7 +195,6 @@ body {
       }
     }
   }
-
   /* csslint ignore:end */
   .block {
     display: block;
