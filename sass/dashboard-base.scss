@@ -10,6 +10,11 @@ body .dashboard.blur,
 body.modal-open .dashboard {
   @include blur;
 }
+
+html, body {
+  overflow-y: auto;
+}
+
 body {
 
   .dashboard-page {

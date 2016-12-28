@@ -1,7 +1,7 @@
 {
   "name": "Iguana",
   "description": "Iguana multi-cryptocurrency & blockchain app",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "manifest_version": 2,
   "permissions": [
     "storage"
