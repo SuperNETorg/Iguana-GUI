@@ -95,6 +95,18 @@ var lang = {
       'AMOUNT': 'Amount',
       'ENTER_IN': 'Enter in any currency'
     },
+    'FLOW': {
+      'HEADER': 'Getting started',
+      'TITLE': 'To use Iguana application as a full node you need to take these steps:',
+      'DOWNLOAD': 'Download, sync and run daemons of coins you want to use',
+      'MAKE': 'Make sure daemon conf file has these params:',
+      'MAKES': '- server=1',
+      'MAKED': '- daemon=1',
+      'MAKERPCU': '- rpcuser=yousername',
+      'MAKERPCP': '- rpcpassword=yousrverylongandsecurepassword',
+      'MAKERPCPT': '- rpcport=altcoinport',
+      'SETUP': 'Setup a proxy server',
+    },
     'SETTINGS': {
       'REFERENCE_CURRENCY': 'Reference currency',
       'CHOOSE_YOUR_CURRENCY': 'Choose your currency to see equivalent',

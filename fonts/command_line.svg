@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="155px" height="139px" viewBox="0 0 155 139" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>command_line</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.996078431   0 0 0 0 0.270588235   0 0 0 0 0.0509803922  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="100%"></stop>
+        </linearGradient>
+        <path d="M94,62.1410256 L94,3.79920806 C94,1.70096339 92.4854113,0 90.6128794,0 L3.3871206,0 C1.51646555,0 0,1.70728422 0,3.79920806 L0,62.1410256 L0,69.9957201 C0,72.2072228 1.79383779,74 4.0089921,74 L89.9910079,74 C92.2051131,74 94,72.2066274 94,69.9957201 L94,62.1410256 Z" id="path-3"></path>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="94" height="74" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="97.8296397%"></stop>
+        </linearGradient>
+        <path d="M29.6427037,34 L44.6427037,34 C45.4711309,34 46.1427037,33.3284271 46.1427037,32.5 C46.1427037,31.6715729 45.4711309,31 44.6427037,31 L29.6427037,31 C28.8142766,31 28.1427037,31.6715729 28.1427037,32.5 C28.1427037,33.3284271 28.8142766,34 29.6427037,34 Z M13.2931096,31.8715855 C12.7413829,32.4895573 12.7950851,33.4377853 13.4130569,33.989512 C14.0310287,34.5412387 14.9792567,34.4875365 15.5309834,33.8695647 L23.5309834,24.9090159 C24.0390676,24.3399268 24.0390676,23.4801258 23.5309834,22.9110367 L15.5309834,13.9504879 C14.9792567,13.3325161 14.0310287,13.2788139 13.4130569,13.8305406 C12.7950851,14.3822673 12.7413829,15.3304953 13.2931096,15.9484671 L20.4012093,23.9100263 L13.2931096,31.8715855 Z" id="path-6"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="command_line">
+            <g filter="url(#filter-1)" transform="translate(31.000000, 33.000000)">
+                <use id="bg" stroke="url(#linearGradient-2)" mask="url(#mask-4)" stroke-width="10" fill="#FFFFFF" xlink:href="#path-3"></use>
+                <g id="command">
+                    <use fill="url(#linearGradient-5)" xlink:href="#path-6"></use>
+                    <use fill-opacity="0.5" fill="#FFFFFF" xlink:href="#path-6"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

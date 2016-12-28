@@ -35,6 +35,7 @@
 <script type="text/javascript" src="js/services/util.js"></script>
 <script type="text/javascript" src="js/services/api.js"></script>
 <!-- controllers -->
+<script type="text/javascript" src="js/controllers/flowModalController.js"></script>
 <script type="text/javascript" src="js/controllers/loginController.js"></script>
 <script type="text/javascript" src="js/controllers/signupController.js"></script>
 <script type="text/javascript" src="js/controllers/dashboardController.js"></script>
