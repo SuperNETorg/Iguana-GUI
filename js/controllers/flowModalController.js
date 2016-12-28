@@ -16,6 +16,7 @@ angular.module('IguanaGUIApp')
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
     $scope.next = next;
+    $scope.close = close;
     $scope.type = type;
 
     var selectCoinModal = {
@@ -37,6 +38,10 @@ angular.module('IguanaGUIApp')
           openSignupCoinModal();
         }
       });
+    }
+
+    function close() {
+      $uibModalInstance.close();
     }
 
     function openLoginCoinModal() {
