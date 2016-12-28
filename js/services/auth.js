@@ -8,7 +8,9 @@ angular.module('IguanaGUIApp')
   '$state',
   'util',
   '$q',
-  function($storage, vars, $api, $state, util, $q) {
+  '$filter',
+  '$message',
+  function($storage, vars, $api, $state, util, $q, $filter, $message) {
 
     var self = this;
 
@@ -104,28 +106,34 @@ angular.module('IguanaGUIApp')
 
       if ($storage.isIguana) {
         var deferred = $q.defer(),
-            suppressAddCoin =
-              $storage['dashboard-pending-coins'] ?
-                $storage['dashboard-pending-coins'] :
-                false;
+          suppressAddCoin =
+            $storage['dashboard-pending-coins'] ?
+              $storage['dashboard-pending-coins'] :
+              false;
 
         delete $storage['dashboard-pending-coins'];
 
         this.checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
-        .then(function(data) {
-          self.coinResponses = data;
+          .then(function (data) {
+            self.coinResponses = data;
 
-          if (!addCoinOnly) {
-            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[coinKeys[0]].coinId)
+            if (!addCoinOnly) {
+              $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[coinKeys[0]].coinId)
                 .then(walletLogin);
-          } else {
-            deferred.resolve(data);
-          }
-        });
+            } else {
+              deferred.resolve(data);
+            }
+          });
 
         return deferred.promise;
       } else {
-        return walletLogin();
+        return walletLogin().then(
+          function(messages) {
+          }, function(messages) {
+            var message = messages[2];
+            $message.ngPrepMessageModal($filter('lang')(message), 'red');
+          }
+        );
       }
 
       function walletLogin() {
@@ -161,6 +169,7 @@ angular.module('IguanaGUIApp')
             message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
           }
 
+          debugger;
           result.push(message);
           deferred.reject(result);
         }

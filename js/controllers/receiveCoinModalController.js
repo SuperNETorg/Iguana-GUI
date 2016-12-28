@@ -19,6 +19,7 @@ angular.module('IguanaGUIApp')
       coinAmount: '',
       currencyAmount: ''
     };
+    $scope.activeCoin = $storage['dashboard-logged-in-coins'][$storage['iguana-active-coin'].id];
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,

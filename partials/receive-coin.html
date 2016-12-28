@@ -6,12 +6,12 @@
     </header>
     <div class="form-content modal-body">
       <div class="share-address-section">
-        <!--div>
-          <span class="text-section text-something">Something 2</span>
-        </div-->
         <div class="my-label my-address">{{ 'RECEIVE.MY_ADDRESS' | lang }}:</div>
         <h4 id="address">{{ receiveCoin.addressFormatted }}</h4>
-        <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="invisible" />
+        <div>
+          <span class="text-section text-something">{{ activeCoin.name }}</span>
+        </div>
+        <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="hidden" />
         <div class="buttons text-center">
           <button class="btn copy-btn margin-bottom pull-left" ng-click="copyAddressToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
           <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ 'RECEIVE.SHARE' | lang }}</a>

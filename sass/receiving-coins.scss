@@ -2,7 +2,6 @@
  * Iguana dashboard/receive-coin
  *
  */
-
 @import 'dev.scss';
 
 .receive-coin-modal-container {
@@ -20,24 +19,32 @@
           background-color: $color-modal-bg;
           padding: 1.2em 10px;
 
-          .share-address-section .btn {
-            display: inline-block;
-            height: 36px;
-            line-height: 26px;
-            width: 142px;
-            font-size: 1.08em;
+          .share-address-section {
+            .buttons {
+              margin-top: 0.5em;
+
+              .btn {
+                display: inline-block;
+                height: 36px;
+                line-height: 26px;
+                width: 142px;
+                font-size: 1.08em;
+              }
+            }
           }
         }
       }
     }
   }
 }
+
 .text-section {
   color: $receive-coin-text-selection-color;
   font-family: inherit;
   font-size: 0.92em;
   font-weight: 500;
 }
+
 .text-something {
   font-size: 16px;
 }
@@ -70,6 +77,7 @@
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
 }
+
 .buttons {
   .copy-btn,
   .share-btn {
@@ -90,6 +98,7 @@
     text-decoration: none;
   }
 }
+
 .qr-code {
   background-color: $color-white;
   clear: both;
@@ -105,6 +114,7 @@
     width: 100%;
   }
 }
+
 .amount-label {
   margin-top: 4.2em;
 
@@ -114,6 +124,7 @@
     font-size: 16px;
   }
 }
+
 .currency-input {
   float: left;
   margin-top: 4px;
@@ -148,28 +159,37 @@
     padding-top: 8px;
   }
 }
+
 .currency-input.input-addon {
   width: 17px;
 }
+
 .crypto-currency.currency-coin {
   padding-right: 52px;
 }
+
 .unit.coin-unit {
   right: 0;
   top: 0;
   width: 44px;
 }
-.currency-input input[type='text']::-webkit-input-placeholder {
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']:-moz-placeholder { /* Firefox 18- */
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']::-moz-placeholder {  /* Firefox 19+ */
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']:-ms-input-placeholder {
-  color: $receive-coin-input-color;
+
+.currency-input {
+  input[type='text']::-webkit-input-placeholder {
+    color: $receive-coin-input-color;
+  }
+
+  input[type='text']:-moz-placeholder { /* Firefox 18- */
+    color: $receive-coin-input-color;
+  }
+
+  input[type='text']::-moz-placeholder { /* Firefox 19+ */
+    color: $receive-coin-input-color;
+  }
+
+  input[type='text']:-ms-input-placeholder {
+    color: $receive-coin-input-color;
+  }
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,
