@@ -7,7 +7,7 @@ angular.module('IguanaGUIApp')
   '$auth',
   'util',
   '$window',
-  function($scope, $state, $auth, util) {
+  function($scope, $state, $auth, util, $window) {
     $scope.$state = $state;
     $scope.$auth = $auth;
     $scope.navbarStyle = { 'margin-left': 0 };
@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp')
     var element,
         item,
         bundClRect,
-        topMenu = document.getElementById('top-menu'),
+        topMenu = document.querySelector('#top-menu'),
         itemsParent = topMenu.querySelector('.top-menu'),
         items = topMenu.querySelectorAll('.item');
 
