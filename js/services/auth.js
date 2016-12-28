@@ -169,7 +169,6 @@ angular.module('IguanaGUIApp')
             message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
           }
 
-          debugger;
           result.push(message);
           deferred.reject(result);
         }
