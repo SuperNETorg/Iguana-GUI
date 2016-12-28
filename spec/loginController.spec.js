@@ -3,7 +3,7 @@ describe('login controller test', function() {
   beforeEach(module('templates'));
 
   var $controller, $state, $auth, util, $window, $templateCache,
-      $compile, $rootScope, $storage, $httpBackend, vars, dashboardTemplate, compiledTemplate;
+      $compile, $rootScope, $storage, $httpBackend, vars, dashboardTemplate, compiledTemplate, pristineTemplate = {};
 
   beforeEach(inject(function(_$controller_, _$state_, _$auth_, _util_, _$window_, _$uibModal_,
                              _$templateCache_, _$compile_, _$rootScope_, _$storage_, _$httpBackend_, _vars_) {
@@ -34,6 +34,17 @@ describe('login controller test', function() {
     angular.element(document.body).prepend('<div id="templatePreCompile">' + dashboardTemplate + '</div>');
     compiledTemplate = $compile(document.getElementsByTagName('script')[0].innerHTML)($rootScope);
 
+    // "lock" object from changes
+    for (var i=0; i < Object.keys(compiledTemplate).length; i++) {
+      var templateToHtml = angular.element(compiledTemplate[i]).html();
+      if (templateToHtml) {
+        Object.defineProperty(pristineTemplate, 'template' + i, {
+          value: templateToHtml,
+          writable: false
+        });
+      }
+    }
+
     var fakeModal = {
       result: {
         then: function(confirmCallback, cancelCallback) {
@@ -52,26 +63,29 @@ describe('login controller test', function() {
     spyOn($uibModal, 'open').and.returnValue(fakeModal);
   }));
 
-  // TODO: continue placeholder check
-  /*
-  it('should verify login template placeholders', function() {
+  // this should verify that placeholders are set in lang file and rendered correctly
+  it('should verify login template placeholders rendered correctly', function() {
     $storage.isIguana = false;
-    var preDigest = {}; // lock
-    Object.defineProperty(preDigest, 'template', {
-      value: compiledTemplate,
-      writable: false
-    });
 
-    var $scope = $rootScope.$new();
-    var controller = $controller('loginController', { $scope: $scope });
+    var $scope = $rootScope.$new(),
+        controller = $controller('loginController', { $scope: $scope });
     $rootScope.$digest();
-    var concatTemplate = '';
-    for (var i=0; i < Object.keys(compiledTemplate).length; i++) {
-      var templateToHtml = angular.element(compiledTemplate[i]).html();
-      if (templateToHtml) concatTemplate = concatTemplate + templateToHtml;
+    for (var i=0; i < 1/*compiledTemplate.length*/; i++) {
+      if (pristineTemplate['template' + i])
+        var langPlaceholders = pristineTemplate['template' + i].match(/{{ (.*) }}/g),
+            placeholder2match = [];
+        for (var j=0; j < langPlaceholders.length; j++) {
+          var renderedPlaceholder = $compile('<div>' + langPlaceholders[j] + '</div>')($rootScope);
+          $rootScope.$digest();
+          if (langPlaceholders[j].indexOf(' | lang') > -1)
+            var placeholder = langPlaceholders[j].match(/'(.*)'/g);
+            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            var langObjSplit = placeholder2match[j].plain.split('.');
+            expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
+            expect(placeholder2match[j].rendered.innerHTML).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]]);
+        }
     }
-    console.log(concatTemplate);
-  });*/
+  });
 
   it('should get active coin', function() {
     var $scope = $rootScope.$new(),
@@ -205,7 +219,7 @@ describe('login controller test', function() {
         pass: '1234'
       }
     };
-    $scope.karma.modal.close('123');
+    $scope.karma.modal.close();
     expect($scope.passphraseModel).toEqual('1234');
   });
 
