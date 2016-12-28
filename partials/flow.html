@@ -15,47 +15,53 @@
         <div class="row">
           <div class="left-side">
             <div class="hard-drive">
-              <img src="/css/fonts/hard_drive.svg" alt="Hard drive">
+              <img src="fonts/hard_drive.svg" alt="{{ 'FLOW.HDD' | lang }}">
             </div>
           </div>
           <div class="right-side">
-            <h2><strong>1</strong></h2>
-            <div class="text-info-block">{{'FLOW.DOWNLOAD' | lang}}</div>
+            <h2>
+              <strong>1</strong>
+            </h2>
+            <div class="text-info-block">{{ 'FLOW.DOWNLOAD' | lang }}</div>
           </div>
         </div>
         <div class="row">
           <div class="left-side">
             <div class="command-line">
-              <img src="/css/fonts/command_line.svg" alt="Command line">
+              <img src="fonts/command_line.svg" alt="{{ 'FLOW.CMD_LINE' | lang }}">
             </div>
           </div>
           <div class="right-side">
-            <h2><strong>2</strong></h2>
-            <div class="text-info-block">{{'FLOW.MAKE' | lang}}</div>
-            <span class="help-block no-margin">{{'FLOW.MAKES' | lang}}</span>
-            <span class="help-block no-margin">{{'FLOW.MAKED' | lang}}</span>
-            <span class="help-block no-margin">{{'FLOW.MAKERPCU' | lang}}</span>
-            <span class="help-block no-margin">{{'FLOW.MAKERPCP' | lang}}</span>
-            <span class="help-block no-margin">{{'FLOW.MAKERPCPT' | lang}}</span>
+            <h2>
+              <strong>2</strong>
+            </h2>
+            <div class="text-info-block">{{ 'FLOW.MAKE' | lang }}</div>
+            <span class="help-block no-margin">{{  'FLOW.MAKES' | lang }}</span>
+            <span class="help-block no-margin">{{ 'FLOW.MAKED' | lang }}</span>
+            <span class="help-block no-margin">{{ 'FLOW.MAKERPCU' | lang }}</span>
+            <span class="help-block no-margin">{{ 'FLOW.MAKERPCP' | lang }}</span>
+            <span class="help-block no-margin">{{ 'FLOW.MAKERPCPT' | lang }}</span>
           </div>
         </div>
         <div class="row">
           <div class="left-side">
             <div class="proxy">
-              <img src="/css/fonts/proxy.svg" alt="Proxy">
+              <img src="fonts/proxy.svg" alt="{{ 'FLOW.PROXY' | lang }}">
             </div>
           </div>
           <div class="right-side">
-            <h2><strong>3</strong></h2>
-            <div class="text-info-block">{{'FLOW.SETUP' | lang}}</div>
+            <h2>
+              <strong>3</strong>
+            </h2>
+            <div class="text-info-block">{{ 'FLOW.SETUP' | lang }}</div>
           </div>
         </div>
       </div>
       <div class="clearfix center">
-        <a class="need-help">Need help?</a>
+        <a class="need-help">{{ 'FLOW.NEED_HELP' | lang }}</a>
         <button
           class="btn btn-block orange-gradient text-shadow row after-flow-btn"
-          ng-click="next()">Next</button>
+          ng-click="next()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
       </div>
       <div class="clearfix"></div>
     </div>

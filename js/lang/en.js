@@ -106,6 +106,10 @@ var lang = {
       'MAKERPCP': '- rpcpassword=yousrverylongandsecurepassword',
       'MAKERPCPT': '- rpcport=altcoinport',
       'SETUP': 'Setup a proxy server',
+      'CMD_LINE': 'Command line',
+      'HDD': 'Hard drive',
+      'PROXY': 'Proxy',
+      'NEED_HELP': 'Need help?'
     },
     'SETTINGS': {
       'REFERENCE_CURRENCY': 'Reference currency',
