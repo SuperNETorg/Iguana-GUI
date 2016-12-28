@@ -8,14 +8,22 @@ The app also may serve as a monocoin-wallet (Non-Iguana mode) giving a better us
 ###Dependencies for Non-Iguana mode###
 
 1) Needed daemons are downloaded, synced and run,
+
 2) Daemons has the minimum configuration with the params:
+
 >server=1
+
 >daemon=1
+
 >rpcuser=yourusername
+
 >rpcpassword=yourverylongandsecurepassword
+
 >rpcport=altcoinport
-3) Proxy server is set up,
-(optionally) 4)  Supported coins script is modified accordingly to respective blockchain RPC-credentials
+
+3) Proxy server is set up,(optionally)
+
+4)  Supported coins script is modified accordingly to respective blockchain RPC-credentials
 
 You can specify your passphrases in js/dev.js. In this case those passphrases are going to be pre-loaded on a login step.
 **Alert: it's unsafe, exercise caution!**
