@@ -17,6 +17,8 @@ angular.module('IguanaGUIApp')
             $interval, $q, vars, $filter, $storage,
             $syncStatus, $message) {
 
+    // bitcoin rpc error code ref: https://github.com/bitcoin/bitcoin/blob/62f2d769e45043c1f262ed45babb70fe237ad2bb/src/rpc/protocol.h#L30
+
     this.coinsInfo = [];
     this.isRT = false;
     $storage.isProxy = true;

@@ -59,26 +59,30 @@ describe('topMenu controller test', function() {
   }));
 
   // this should verify that placeholders are set in lang file and rendered correctly
-  it('should verify login template placeholders rendered correctly', function() {
+  it('should verify top menu template placeholders rendered correctly', function() {
     $storage.isIguana = false;
 
     var $scope = $rootScope.$new(),
         controller = $controller('topMenuController', { $scope: $scope });
     $rootScope.$digest();
     for (var i=0; i < 1; i++) {
-      if (pristineTemplate['template' + i])
+      if (pristineTemplate['template' + i]) {
         var langPlaceholders = pristineTemplate['template' + i].match(/{{ (.*) }}/g),
-            placeholder2match = [];
+            placeholder2match = [],
+            index = 0;
         for (var j=0; j < langPlaceholders.length; j++) {
           var renderedPlaceholder = $compile('<div>' + langPlaceholders[j] + '</div>')($rootScope);
           $rootScope.$digest();
-          if (langPlaceholders[j].indexOf(' | lang') > -1)
+          if (langPlaceholders[j].indexOf(' | lang') > -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
             placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
-            var langObjSplit = placeholder2match[j].plain.split('.');
+            var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
-            expect(placeholder2match[j].rendered.innerHTML).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]]);
+            expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());
+            index++;
+          }
         }
+      }
     }
   });
 

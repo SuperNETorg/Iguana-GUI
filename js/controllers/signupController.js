@@ -37,6 +37,12 @@ angular.module('IguanaGUIApp')
     $scope.verifyPass = verifyPass;
     $scope.getActiveCoins = getActiveCoins;
     $scope.$on('$destroy', destroy);
+    $scope.karma = { // tests
+      onInit: onInit,
+      isCoinSelected: isCoinSelected,
+      setTitle: setTitle,
+      destroy: destroy
+    };
 
     isCoinSelected();
 
@@ -95,6 +101,7 @@ angular.module('IguanaGUIApp')
           $state.go('login');
         }
       }
+
       function onReject(response) {
         if (response === -15) {
           $message.ngPrepMessageModal(

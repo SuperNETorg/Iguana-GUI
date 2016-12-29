@@ -2,11 +2,11 @@ describe('login controller test', function() {
   beforeEach(module('IguanaGUIApp'));
   beforeEach(module('templates'));
 
-  var $controller, $state, $auth, util, $window, $templateCache,
+  var $controller, $state, $auth, util, $window, $templateCache, $api,
       $compile, $rootScope, $storage, $httpBackend, vars, dashboardTemplate, compiledTemplate, pristineTemplate = {};
 
   beforeEach(inject(function(_$controller_, _$state_, _$auth_, _util_, _$window_, _$uibModal_,
-                             _$templateCache_, _$compile_, _$rootScope_, _$storage_, _$httpBackend_, _vars_) {
+                             _$templateCache_, _$compile_, _$rootScope_, _$storage_, _$httpBackend_, _vars_, $api) {
 
     $controller = _$controller_;
     $state = _$state_;
@@ -70,20 +70,24 @@ describe('login controller test', function() {
     var $scope = $rootScope.$new(),
         controller = $controller('loginController', { $scope: $scope });
     $rootScope.$digest();
-    for (var i=0; i < 1/*compiledTemplate.length*/; i++) {
-      if (pristineTemplate['template' + i])
+    for (var i=0; i < 1; i++) {
+      if (pristineTemplate['template' + i]) {
         var langPlaceholders = pristineTemplate['template' + i].match(/{{ (.*) }}/g),
-            placeholder2match = [];
+            placeholder2match = [],
+            index = 0;
         for (var j=0; j < langPlaceholders.length; j++) {
           var renderedPlaceholder = $compile('<div>' + langPlaceholders[j] + '</div>')($rootScope);
           $rootScope.$digest();
-          if (langPlaceholders[j].indexOf(' | lang') > -1)
+          if (langPlaceholders[j].indexOf(' | lang') > -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
             placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
-            var langObjSplit = placeholder2match[j].plain.split('.');
+            var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
-            expect(placeholder2match[j].rendered.innerHTML).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]]);
+            expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());
+            index++;
+          }
         }
+      }
     }
   });
 
