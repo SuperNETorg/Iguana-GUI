@@ -155,7 +155,7 @@ angular.module('IguanaGUIApp')
               feeMinTime: feeTime.high.min,
               feeMaxTime: feeTime.high.max
             }];
-      }, function (data) {
+      }, function(data) {
         console.log(data);
       });
     }
@@ -187,7 +187,6 @@ angular.module('IguanaGUIApp')
 
     // note: current implementation doesn't permit too often updates
     //       due to possibility of ban for abuse
-
     $scope.setCurrency = function(item) {
       $scope.activeCurrency = item.shortName;
       $rates.setCurrency($scope.activeCurrency);

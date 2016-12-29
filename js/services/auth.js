@@ -114,7 +114,7 @@ angular.module('IguanaGUIApp')
         delete $storage['dashboard-pending-coins'];
 
         this.checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
-          .then(function (data) {
+          .then(function(data) {
             self.coinResponses = data;
 
             if (!addCoinOnly) {

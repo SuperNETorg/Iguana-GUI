@@ -98,6 +98,7 @@ angular.module('IguanaGUIApp')
     $scope.openSendCoinPassphraseModal = function() {
       angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).addClass('hidden');
       angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).addClass('hidden');
+
       var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -113,7 +114,7 @@ angular.module('IguanaGUIApp')
           });
       modalInstance.result.then(onDone);
 
-      modalInstance.closed.then(function () {
+      modalInstance.closed.then(function() {
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
       });
@@ -139,7 +140,7 @@ angular.module('IguanaGUIApp')
           coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
       initSendCoinModal(result.getBalance[0], result.getBalance[1]);
-debugger;
+
       if (
         $storage['feeSettings'] &&
         $storage['feeSettings']['items'] &&
@@ -181,13 +182,12 @@ debugger;
 
 
       $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : 'Minimum';
-      $scope.activeCoin = $storage['feeSettings']['activeCoin'];
-      $scope.sendCoin.checkedAmountType = $storage['feeSettings']['activeCoin'] !== 'btc' && $scope.sendCoin.checkedAmountType != 'Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
+      $scope.activeCoin = $storage.feeSettings.activeCoin;
+      $scope.sendCoin.checkedAmountType = $storage.feeSettings.activeCoin !== 'btc' && $scope.sendCoin.checkedAmountType !== 'Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
 
-      if($storage['feeSettings']['activeCoin'] !=='btc') {
-
+      if ($storage.feeSettings.activeCoin !== 'btc') {
         defaultChange('Minimum');
-      }else{
+      } else {
         defaultChange($storage.checkedAmountType ? $storage.checkedAmountType : $filter('lang')('SEND.FEE_MIN'));
       }
     }.bind(this));

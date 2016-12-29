@@ -6,18 +6,14 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   '$uibModalInstance',
   'type',
-  function ($scope,
-            $state,
-            $storage,
-            $uibModal,
-            $uibModalInstance,
-            type) {
+  function($scope, $state, $storage, $uibModal, $uibModalInstance, type) {
 
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
     $scope.next = next;
     $scope.close = close;
     $scope.type = type;
+    $scope.karma = {}; // tests
 
     var selectCoinModal = {
       animation: true,
@@ -31,10 +27,10 @@ angular.module('IguanaGUIApp')
 
     function next() {
       $uibModalInstance.close();
-      $uibModalInstance.closed.then(function () {
-        if ($scope.type == 'signin') {
+      $uibModalInstance.closed.then(function() {
+        if ($scope.type === 'signin') {
           openLoginCoinModal();
-        } else if ($scope.type = 'signup') {
+        } else if ($scope.type === 'signup') {
           openSignupCoinModal();
         }
       });
@@ -63,7 +59,7 @@ angular.module('IguanaGUIApp')
         $state.go('login.step2');
       }
 
-      // $scope.karma.modal = modalInstance; // tests
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function openSignupCoinModal() {
@@ -83,7 +79,7 @@ angular.module('IguanaGUIApp')
         $state.go('signup.step1');
       }
 
-      // $scope.karma.modal = modalInstance; // tests
+      $scope.karma.modal = modalInstance; // tests
     }
   }
 ]);

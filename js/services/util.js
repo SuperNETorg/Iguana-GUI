@@ -74,7 +74,7 @@ angular.module('IguanaGUIApp')
           message = elementDisplayName + ' ' +
                       $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
           color = 'blue';
-        } catch(e) {
+        } catch (e) {
           this.isExecCopyFailed = true;
           message = $filter('lang')('MESSAGE.COPY_PASTE_IS_NOT_SUPPORTED');
           color = 'red';

@@ -21,7 +21,7 @@ angular.module('IguanaGUIApp')
   '$window',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
            $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
-//$storage['iguana-mzc-passphrase'] = { 'logged': 'yes' };
+
     var coinsInfo = [],
         coinBalances = [],
         _sideBarCoins = {},
@@ -152,7 +152,7 @@ angular.module('IguanaGUIApp')
 
         modalInstance.closed.then(function() {
           $state.go('signup.step1');
-        })
+        });
       }
     }
 
@@ -449,15 +449,14 @@ angular.module('IguanaGUIApp')
     }
 
     function updateFeeParams() {
-      $storage['feeSettings']={};
+      $storage.feeSettings = {};
       var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
           currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
           coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
           defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
-
-      $storage['feeSettings']['activeCoin'] = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
+      $storage.feeSettings.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
 
       $api.feeCoins(
         activeCoin,
@@ -465,17 +464,15 @@ angular.module('IguanaGUIApp')
         currencyName,
         coinName
       ).then(function(result) {
-
-        $storage['feeSettings']['currencyRate'] = $rates.updateRates(result.getBalance[1], defaultAccount, true);
-
+        $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
         $api.initSendCoinModal(result.getBalance[0], result.getBalance[1], defaultAccount,defaultCurrency,activeCoin);
 
-        var fastestFee = $api.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage['feeSettings']['currencyRate']),
-            halfHourFee = $api.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage['feeSettings']['currencyRate']),
-            hourFee = $api.checkFeeCount(result.bitcoinFees.data.hourFee, $storage['feeSettings']['currencyRate']),
+        var fastestFee = $api.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
+            halfHourFee = $api.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
+            hourFee = $api.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
             coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
-        $storage['feeSettings']['sendCoin'] = {
+        $storage.feeSettings.sendCoin = {
           initStep: true,
           success: false,
           address: '',
@@ -500,7 +497,7 @@ angular.module('IguanaGUIApp')
           entryFormIsValid: false
         };
 
-        if ($storage['feeSettings']['activeCoin'] === 'btc') {
+        if ($storage.feeSettings.activeCoin === 'btc') {
           var feeTime = {
             default: {
               min: '',
@@ -546,11 +543,11 @@ angular.module('IguanaGUIApp')
               };
             }
           });
-          $storage['feeSettings']['items'] = [{
+          $storage.feeSettings.items = [{
             id: 0,
             name: $filter('lang')('SEND.FEE_MIN'),
-            coin: $storage['feeSettings']['sendCoin'].minFee.toFixed(7),
-            amount: (coinCurrencyRate * $storage['feeSettings']['sendCoin'].minFee).toFixed(12),
+            coin: $storage.feeSettings.sendCoin.minFee.toFixed(7),
+            amount: (coinCurrencyRate * $storage.feeSettings.sendCoin.minFee).toFixed(12),
             feeMinTime: feeTime.default.min,
             feeMaxTime: feeTime.default.max
           }, {
