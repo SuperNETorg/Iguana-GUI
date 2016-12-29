@@ -42,7 +42,7 @@ body {
           .navbar-edex {
             color: $dashboard-navbar-edex-color;
             font-size: 1.8em;
-            font-weight: 600;
+            @include bold;
             position: absolute;
             top: 0.24em;
             left: 5.64em;
@@ -185,7 +185,6 @@ body {
             .active-coin-balance-currency {
               font-size: 1.14em;
               @include bold;
-              font-weight: 600;
               line-height: 1.4em;
               margin-left: 0.4em;
               text-shadow: 0 1px 3px rgba-black(0.25);

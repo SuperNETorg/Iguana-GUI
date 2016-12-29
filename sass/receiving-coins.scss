@@ -163,17 +163,14 @@
 .currency-input.input-addon {
   width: 17px;
 }
-
 .crypto-currency.currency-coin {
   padding-right: 52px;
 }
-
 .unit.coin-unit {
   right: 0;
   top: 0;
   width: 44px;
 }
-
 .currency-input {
   input[type='text']::-webkit-input-placeholder {
     color: $receive-coin-input-color;

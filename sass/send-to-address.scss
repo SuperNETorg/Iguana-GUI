@@ -4,18 +4,6 @@
  */
 @import 'dev.scss';
 
-$send-coin-head-color: #E8CEC6;
-$send-coin-title-color: #282828;
-$send-coin-text-color: #90929B;
-$send-coin-input-color: #333333;
-$send-coin-input-error-bg-color: #FFF5F5;
-$send-coin-input-error-border-color: #FD2F2F;
-$send-coin-p-color: #37373A;
-$send-coin-small-title-color: #808188;
-$send-coin-eq-sign-color: #FC6538;
-$send-coin-dropdown-color: #74767D;
-$item-segment-color: #F5F8FB;
-
 .send-coin-modal-container {
   .modal-content {
     .form-content.send-modal {
@@ -84,8 +72,8 @@ $item-segment-color: #F5F8FB;
     p.col-red {
       color: $color-red;
     }
-    input[type='text']::-webkit-input-placeholder ,
-    input[type='text']:-ms-input-placeholder ,
+    input[type='text']::-webkit-input-placeholder,
+    input[type='text']:-ms-input-placeholder,
     input[type='text']::-moz-placeholder {
       display: block!important;
       color: red;
@@ -175,7 +163,7 @@ $item-segment-color: #F5F8FB;
   .chk-crncy {
     h3 {
       font-size: 1.4em;
-      font-weight: 600;
+      @include bold;
       margin: 0;
     }
     h4 {
@@ -281,7 +269,7 @@ $item-segment-color: #F5F8FB;
       color: $color-white;
 
       span {
-        font-weight: 600;
+        @include bold;
         margin-top: 2px;
       }
     }
@@ -293,7 +281,7 @@ $item-segment-color: #F5F8FB;
   }
   .pop-detail .segment-select .item-segment-select.active {
     span {
-      color: $dashboard-send-currency-white;
+      color: $color-absolute-white;
     }
   }
   .item-segment-select {
@@ -317,7 +305,7 @@ $item-segment-color: #F5F8FB;
   ! not going to work in IE,
     TODO: gracefull fallback(?) !
 */
-.form-content.blur ,
+.form-content.blur,
 .form-header.blur {
   @include blur;
 }
@@ -409,7 +397,7 @@ $item-segment-color: #F5F8FB;
     }
     .balance-currency {
       font-size: 1.1em;
-      font-weight: 600;
+      @include bold;
       line-height: 1.6em;
     }
   }

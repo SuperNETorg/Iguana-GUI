@@ -64,7 +64,7 @@
         border-radius: 4px;
         display: block;
         font-size: 1.344em;
-        font-weight: 600;
+        @include bold;
         height: 112px;
         line-height: 1.224em;
         margin: 28px auto;
@@ -87,7 +87,7 @@
   .login-passphrase-textarea {
     display: block;
     font-size: 1.24em;
-    font-weight: 600;
+    @include bold;
     height: 85px;
     margin-left: auto;
     margin-right: auto;
@@ -149,7 +149,7 @@
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
   .login-or-delim {
-    color: $login-delim-color;
+    color: $color-white;
     font-family: sans-serif;
     font-size: 1em;
     letter-spacing: 1px;
@@ -219,7 +219,7 @@
     text-align: center;
   }
   .advanced-benefits {
-    color: $login-advanced-benefits;
+    color: $color-white;
   }
   .create-account-form,
   .login-account-form,
@@ -383,5 +383,3 @@
     }
   }
 }
-
-

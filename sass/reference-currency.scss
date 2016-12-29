@@ -5,11 +5,6 @@
 
 @import 'dev.scss';
 
-$reference-currency-tile-color: #FD5624;
-$reference-currency-tile-span-color: #9F9FA0;
-$reference-currency-txamount: #898A94;
-$segment-select-bg-color: #F5F8FB;
-
 .reference-currency-main {
   padding-bottom: 20px;
 
@@ -67,12 +62,14 @@ $segment-select-bg-color: #F5F8FB;
     }
     .currency-parent {
       margin-top: 30px;
+
       .fee-notice {
         margin: 10px 10px;
         color: $reference-currency-txamount;
       }
       .segment-select {
-        left:10px;
+        left: 10px;
+
         .item-segment-select {
           line-height: normal;
           height: 35px;
@@ -194,7 +191,7 @@ $segment-select-bg-color: #F5F8FB;
         color: $color-white;
 
         span {
-          font-weight: 600;
+          @include bold;
           margin-top: 2px;
         }
       }
@@ -206,7 +203,7 @@ $segment-select-bg-color: #F5F8FB;
     }
     .pop-detail .segment-select .item-segment-select.active {
       span {
-        color: $dashboard-send-currency-white;
+        color: $color-absolute-white;
       }
     }
     .item-segment-select {

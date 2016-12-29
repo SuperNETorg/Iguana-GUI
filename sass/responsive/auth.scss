@@ -99,7 +99,7 @@ body {
         width: 786px;
         margin: 3.67em auto 1.8em auto;
         padding: 6em;
-        background-color: #fff;
+        background-color: $color-absolute-white;
         -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)"; /*IE 8*/
         -moz-box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1); /*FF 3.5+*/
         -webkit-box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1); /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
@@ -126,6 +126,7 @@ body {
           float: left;
           margin-left: 1.6em;
           width: 60%;
+
           .text-info-block {
             font-size: 1.2em;
           }
@@ -137,14 +138,13 @@ body {
         display: block;
         text-align: center;
         width: 200px;
-        text-decoration: underline;;
+        text-decoration: underline;
       }
       .after-flow-btn {
         width: 600px;
         max-width: 600px;
       }
     }
-
     .no-margin {
       margin: 0;
     }
@@ -216,7 +216,7 @@ body {
             }
             .login-input-directions {
               font-size: 1.1em;
-              font-weight: 600;
+              @include bold;
               /* csslint ignore:start */
               @include center;
               @include offset-bottom-sm;
@@ -296,7 +296,7 @@ body {
           width: 95%;
           margin: 3.67em auto 1.8em auto;
           padding: 6em;
-          background-color: #fff;
+          background-color: $color-absolute-white;
           -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)"; /*IE 8*/
           -moz-box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1); /*FF 3.5+*/
           -webkit-box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1); /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
@@ -388,7 +388,7 @@ body {
 
             .coins-title {
               font-size: 1.16em;
-              font-weight: 600;
+              @include bold;
             }
             .quick-search {
               padding: 1.4em;

@@ -36,11 +36,11 @@ body {
             @include center;
           }
           .form-header i {
-            color: #FEFBF9;
+            color: $color-white;
             font-size: 2.2em;
             left: 0.3em;
             position: absolute;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 3px rgba-black(0.3);
             top: 0.4em;
             z-index: 100;
           }
