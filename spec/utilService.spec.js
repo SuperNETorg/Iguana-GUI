@@ -90,6 +90,11 @@ describe('util service test', function() {
     it('shoud copy to clipboard', inject(function(util) {
       var inputElement = angular.element('<input value="test test">');
 
+      $message.ngPrepMessageModal = function(text, color) {
+        expect(text).toEqual('test copied to clipboard </br>"" ');
+        expect(color).toEqual('blue');
+      };
+
       expect(util.isExecCopyFailed).toEqual(false);
       util.execCommandCopy(inputElement, 'test');
       expect(util.isExecCopyFailed).toEqual(false);
@@ -98,7 +103,6 @@ describe('util service test', function() {
     it('shoud fail copy to clipboard', inject(function(util) {
       var inputElement = angular.element('<input value="test test">');
       util.isExecCopyFailed = true;
-
       util.execCommandCopy(inputElement, 'test');
       expect(util.isExecCopyFailed).toEqual(true);
     }));

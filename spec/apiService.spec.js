@@ -2,16 +2,17 @@
 
 describe('api service test', function() {
   describe('api', function() {
-    var $storage, vars, $httpBackend;
+    var $storage, vars, $httpBackend, $message;
     $storage = [];
 
     beforeEach(module('IguanaGUIApp'));
     beforeEach(module('templates'));
 
-    beforeEach(inject(function(_$storage_, _vars_, _$httpBackend_) {
+    beforeEach(inject(function(_$storage_, _vars_, _$httpBackend_, _$message_) {
       $storage = _$storage_;
       vars = _vars_;
       $httpBackend = _$httpBackend_;
+      $message = _$message_;
       // prep test env
       $storage['iguana-btc-passphrase'] = { logged: 'yes' };
       vars.coinsInfo = {
@@ -317,7 +318,7 @@ describe('api service test', function() {
     it('shoud fail to add sys coin (iguana)', inject(function($api) {
       $storage.isIguana = true;
       $httpBackend.whenPOST('http://localhost:7778').respond(function(method, url, data) {
-        return [200, { result: 'server is busy' }];
+        return [500, { result: 'server is busy' }];
       });
 
       $api.addCoins([{
@@ -608,6 +609,10 @@ describe('api service test', function() {
     }));
 
     it('shoud return 10 on errorHandler exec', inject(function($api) {
+      $message.ngPrepMessageModal = function(text, color) {
+        expect(text).toEqual('We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...');
+        expect(color).toEqual('red');
+      };
       var errorHandler = $api.errorHandler({
         data: {
           error: {
@@ -637,6 +642,11 @@ describe('api service test', function() {
     }));
 
     it('shoud return 10 on errorHandler exec #4', inject(function($api) {
+      $storage.activeCoin = 9999;
+      $message.ngPrepMessageModal = function(text, color) {
+        expect(text).toEqual('We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...');
+        expect(color).toEqual('red');
+      };
       var errorHandler = $api.errorHandler({
         data: {
           error: 'null return from iguana_bitcoinRPC'
