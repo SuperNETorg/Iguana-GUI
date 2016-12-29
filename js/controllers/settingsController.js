@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp')
   '$api',
   'vars',
   '$filter',
-  function($scope, $state, $rates, $auth, $rootScope, $storage, $api, vars, $filter) {
+  'util',
+  function($scope, $state, $rates, $auth, $rootScope, $storage, $api, vars, $filter, util) {
     $scope.$state = $state;
     $rootScope.$state = $state;
     $scope.coinsInfo = vars.coinsInfo;
@@ -47,7 +48,7 @@ angular.module('IguanaGUIApp')
         amount: '',
         amountCurrency: '',
         fee: '',
-        minFee: vars.coinsInfo[$scope.activeCoin].relayFee || 0.00001,
+        minFee: vars.coinsInfo[$scope.activeCoin].relayFee || settings.defaultRelayFee,
         feeCurrency: '',
         note: '',
         passphrase: '',
@@ -210,13 +211,7 @@ angular.module('IguanaGUIApp')
     }
 
     function checkFeeCount(fee) {
-      var coin = fee * 1024 / 100000000, // satoshi per kb
-        amount = $scope.currencyRate * coin;
-
-      return {
-        'coin': coin,
-        'amount': amount
-      };
+      util.checkFeeCount(fee, $scope.currencyRate);
     }
   }
 ]);

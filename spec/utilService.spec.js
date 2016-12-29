@@ -106,5 +106,11 @@ describe('util service test', function() {
       util.execCommandCopy(inputElement, 'test');
       expect(util.isExecCopyFailed).toEqual(true);
     }));
+
+    it('shoud test checkFeeCount', inject(function(util) {
+      var checkFeeCount = util.checkFeeCount(1000, 700);
+      expect(checkFeeCount.coin).toEqual(0.01024);
+      expect(checkFeeCount.amount).toEqual(7.168);
+    }));
   });
 });

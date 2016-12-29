@@ -110,5 +110,15 @@ angular.module('IguanaGUIApp')
         left: boundClientRect.left + window.pageXOffset - docEl.clientLeft
       };
     };
+
+    this.checkFeeCount = function(fee, currencyRate) {
+      var coin = fee * 1024 / 100000000, // satoshi per kb
+          amount = currencyRate * coin;
+
+      return {
+        'coin': coin,
+        'amount': amount
+      };
+    };
   }
 ]);

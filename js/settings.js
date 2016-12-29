@@ -25,7 +25,8 @@ var _settings = {
   addCoinTimeout: 2, // sec
   thresholdTimeAgo: {
     day: 10
-  }
+  },
+  defaultRelayFee: 0.00001
 };
 
 // create a new object with non-writable values

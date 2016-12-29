@@ -72,7 +72,7 @@ angular.module('IguanaGUIApp')
       amount: '',
       amountCurrency: '',
       fee: '',
-      minFee: coinsInfo[$scope.activeCoin].relayFee || 0.00001,
+      minFee: coinsInfo[$scope.activeCoin].relayFee || settings.defaultRelayFee,
       feeCurrency: '',
       note: '',
       passphrase: '',
@@ -118,9 +118,11 @@ angular.module('IguanaGUIApp')
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
       });
+
       function onDone(receivedObject) {
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
+
         if (receivedObject) execSendCoinCall();
       }
     };
@@ -142,11 +144,11 @@ angular.module('IguanaGUIApp')
       initSendCoinModal(result.getBalance[0], result.getBalance[1]);
 
       if (
-        $storage['feeSettings'] &&
-        $storage['feeSettings']['items'] &&
-        Object.keys($storage['feeSettings']['items']).length
+        $storage.feeSettings &&
+        $storage.feeSettings.items &&
+        Object.keys($storage.feeSettings.items).length
       ) {
-        $scope.dropDown.items = $storage['feeSettings']['items'];
+        $scope.dropDown.items = $storage.feeSettings.items;
       } else {
         $scope.dropDown.emptyItems = true;
         $scope.dropDown.items = [{
@@ -225,6 +227,7 @@ angular.module('IguanaGUIApp')
     $scope.sendFee = function() {
       if ($scope.sendCoin.fee) {
         $scope.sendCoin.feeCurrency = parseFloat($filter('decimalPlacesFormat')(parseFloat($scope.sendCoin.fee) * $scope.sendCoin.currencyRate, 'currency')).toFixed(7);
+
         if (isNaN($scope.sendCoin.feeCurrency)) {
           $scope.sendCoin.feeCurrency = '';
         }
@@ -236,6 +239,7 @@ angular.module('IguanaGUIApp')
     $scope.sendFeeCurrency = function() {
       if ($scope.sendCoin.feeCurrency) {
         $scope.sendCoin.fee = ($scope.sendCoin.feeCurrency / $scope.sendCoin.currencyRate);
+
         if (isNaN($scope.sendCoin.fee)) {
           $scope.sendCoin.fee = '';
         }
@@ -306,13 +310,7 @@ angular.module('IguanaGUIApp')
     };
 
     function checkFeeCount(fee) {
-      var coin = fee * 1024 / 100000000, // satoshi per kb
-          amount = $scope.sendCoin.currencyRate * coin;
-
-      return {
-        'coin': coin,
-        'amount': amount
-      };
+      util.checkFeeCount(fee, $scope.sendCoin.currencyRate);
     }
 
     function execSendCoinCall() {
