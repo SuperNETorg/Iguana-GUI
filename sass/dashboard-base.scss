@@ -43,27 +43,27 @@ body {
             color: $dashboard-navbar-edex-color;
             font-size: 1.8em;
             @include bold;
+            left: 5.64em;
             position: absolute;
             top: 0.24em;
-            left: 5.64em;
 
             span {
               font-family: 'FuturaPTDemi', sans-serif;
-              font-weight: 400;
               font-size: 1.1em;
+              font-weight: 400;
             }
           }
           .lnk-logout {
             color: $color-absolute-white;
             font-size: 0.94em;
             @include bold;
-            top: 1.7em;
             position: absolute;
             right: 2.2em;
+            top: 1.7em;
           }
-
         }
         .top {
+          /* csslint ignore:start */
           border-radius: 0;
           -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)';/*IE 8*/
           -moz-box-shadow: 0 0 5px 5px rgba-black(0.3);/*FF 3.5+*/
@@ -73,6 +73,7 @@ body {
           color: $color-absolute-white;
           margin-bottom: 0;
           text-align: center;
+          /* csslint ignore:end */
 
           .top-menu:before {
             /* csslint ignore:start */
@@ -101,10 +102,10 @@ body {
             white-space: nowrap;
 
             .item {
-              @include bold;
               color: $dashboard-topbar-item-color;
               display: inline-block;
               font-size: 1.05em;
+              @include bold;
               margin: 0 5px;
               text-shadow: 0 0 0 $dashboard-topbar-item-color;
               top: 8px;
@@ -121,8 +122,8 @@ body {
               }
             }
             .item.active {
-              @include bold;
               color: $color-absolute-white;
+              @include bold;
               text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
 
               .border {
@@ -157,8 +158,8 @@ body {
             padding: 0;
           }
           .balance {
-            @include bold;
             font-size: 2em;
+            @include bold;
             line-height: 1.2em;
 
             .value {

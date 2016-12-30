@@ -7,8 +7,8 @@
 
 .flow-modal-login-state {
   .flow-title {
-    @include center;
     font-size: 1.14em;
+    @include center;
   }
   .flow-content {
     background-color: $color-absolute-white;
@@ -18,7 +18,9 @@
     -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)'; /*IE 8*/
     -moz-box-shadow: 0 2px 2px 2px rgba-black(0.1); /*FF 3.5+*/
     -webkit-box-shadow: 0 2px 2px 2px rgba-black(0.1); /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    /* csslint ignore:start */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
+    /* csslint ignore:end */
 
     .hard-drive,
     .command-line,

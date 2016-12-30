@@ -93,8 +93,8 @@
     margin-right: auto;
     padding: 15px 50px;
     resize: none;
-    width: 100%;
     @include center;
+    width: 100%;
   }
   .btn-signin-account:not([disabled='disabled']) {
     @include orange-gradient;
@@ -228,11 +228,11 @@
       font-size: 1.05em;
       margin-bottom: 0;
       margin-top: 4em;
-      word-wrap: break-word;
       /* csslint ignore:start */
-      @include center;
       @include offset-bottom-md;
+      @include center;
       /* csslint ignore:end */
+      word-wrap: break-word;
     }
   }
   .header {

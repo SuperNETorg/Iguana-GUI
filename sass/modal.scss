@@ -95,7 +95,9 @@
         border-bottom: none;
         box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
         height: 4.3em;
+        /* csslint ignore:start */
         filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
+        /* csslint ignore:end */
         padding-top: 18px;
         -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)';/*IE 8*/
         -moz-box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/*FF 3.5+*/

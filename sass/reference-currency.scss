@@ -64,15 +64,15 @@
       margin-top: 30px;
 
       .fee-notice {
-        margin: 10px 10px;
         color: $reference-currency-txamount;
+        margin: 10px 10px;
       }
       .segment-select {
         left: 10px;
 
         .item-segment-select {
-          line-height: normal;
           height: 35px;
+          line-height: normal;
         }
       }
     }
@@ -100,28 +100,28 @@
         height: 90px;
         list-style-type: none;
         margin: 10px;
-        width: 180px;
         text-align: center;
         vertical-align: middle;
+        width: 180px;
 
         .display-table:after {
           background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* FF3.6+ */
-          background: -webkit-gradient(linear, 180deg, color-stop(20%, 99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
+          background: -webkit-gradient(linear, 180deg, color-stop(20%, #99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
           background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Chrome10+,Safari5.1+ */
           background: -o-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Opera 11.10+ */
           background: -ms-linear-gradient(180deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* IE10+ */
           background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* W3C */
           content: '';
           height: 100%;
-          right: 0;
           position: absolute;
-          z-index: 1;
+          right: 0;
           width: 60px;
+          z-index: 1;
         }
         .display-table {
           display: table;
-          position: relative;
           height: 100%;
+          position: relative;
           width: 100%;
 
           .vertical-center {
@@ -143,9 +143,9 @@
               width: 56%;
 
               .short-name {
-                @include bold;
-                font-size: 1.2em;
                 display: block;
+                font-size: 1.2em;
+                @include bold;
                 padding-top: 2px;
                 width: 100%;
               }
@@ -159,8 +159,8 @@
         }
 
         span {
-          @include bold;
           color: $reference-currency-tile-span-color;
+          @include bold;
         }
       }
     }
@@ -169,16 +169,16 @@
       padding: 0;
     }
     .segment-select {
-      width: 95%;
       margin-top: 35px;
+      width: 95%;
 
       .item-segment-select {
         background: $color-modal-bg;
         border: solid 1px $dashboard-send-currency-orange;
+        @include no-box-shadow;
         color: $dashboard-send-currency-orange;
         height: 42px;
         padding: 8px;
-        @include no-box-shadow;
       }
       .disabled {
         border: solid 1px $dashboard-send-currency-orange;

@@ -26,16 +26,16 @@ body {
             }
             .passphrase-word-count {
               strong {
-                @include bold
+                @include bold;
               }
             }
             .btn.row {
               font-size: 1.014em;
+              @include bold;
               height: 34px;
+              @include left-right-auto;
               max-width: none;
               width: 100%;
-              @include bold;
-              @include left-right-auto;
             }
           }
         }
@@ -133,9 +133,9 @@ body {
           .form-content-inner {
             .login-input-directions {
               font-size: 1.2em;
+              @include bold;
               line-height: 1.25em;
               /* csslint ignore:start */
-              @include bold;
               @include text-left;
               /* csslint ignore:end */
             }
