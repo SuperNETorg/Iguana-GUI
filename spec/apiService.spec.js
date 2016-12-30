@@ -691,5 +691,51 @@ describe('api service test', function() {
 
       $httpBackend.flush();
     }));
+
+    it('shoud get coin fees (coind)', inject(function($api) {
+      $storage.isIguana = false;
+      $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
+        expect(JSON.parse(data).method).toEqual('getbalance');
+        return [200, 10];
+      });
+
+      var recommendedFeesFixture = fixture.load('btc_recommended_fees.json');
+      $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/recommended');
+      $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/recommended').respond({
+        success: recommendedFeesFixture
+      });
+
+      var allFeesFixture = fixture.load('btc_fees_all.json');
+      $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/list');
+      $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/list').respond({
+        success: allFeesFixture
+      });
+
+      $httpBackend.expectGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD');
+      $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond({
+        success: {
+          'BTC': {
+            'USD': 787.52
+          }
+        }
+      });
+
+      $api.feeCoins('btc', '', 'USD', 'BTC').then(function(data) {
+        expect(data.getBalance).toBeDefined();
+        expect(data.getBalance).toEqual([10, 'btc']);
+        expect(data.getExternalRate).toBeDefined();
+        expect(data.getExternalRate[0].success).toEqual({
+          'BTC': {
+            'USD': 787.52
+          }
+        });
+        expect(data.bitcoinFees).toBeDefined();
+        expect(data.bitcoinFees.data.success).toEqual(recommendedFeesFixture);
+        expect(data.bitcoinFeesAll).toBeDefined();
+        expect(data.bitcoinFeesAll.data.success).toEqual(allFeesFixture);
+      });
+
+      $httpBackend.flush();
+    }));
   });
 });

@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# https://developer.chrome.com/extensions/crx
+# ref: https://developer.chrome.com/extensions/crx
 # Purpose: Pack a Chromium extension directory into crx format
 
 if test $# -ne 2; then

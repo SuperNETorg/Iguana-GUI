@@ -60,10 +60,11 @@ exports.cleanChromeApp = function() {
 
 exports.createCRX = function(paths) {
   exec('./create_crx.sh compiled/chrome-app chrome-app-dev.pem', function(error, stdout, stderr) {
-    console.log('stdout: ' + stdout)
-    console.log('stderr: ' + stderr)
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+
     if (error !== null) {
-      console.log('exec error: ' + error)
+      console.log('exec error: ' + error);
     }
   });
 };

@@ -1325,16 +1325,16 @@ angular.module('IguanaGUIApp')
           result = {};
       this.getBalance(defaultAccount, activeCoin).then(function(response) {
 
-        result['getBalance'] = response;
+        result.getBalance = response;
         this.bitcoinFees().then(function(bitcoinFees) {
 
-          result['bitcoinFees'] = bitcoinFees;
+          result.bitcoinFees = bitcoinFees;
           this.bitcoinFeesAll().then(function(responseAll) {
 
-            result['bitcoinFeesAll'] = responseAll;
+            result.bitcoinFeesAll = responseAll;
             this.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
 
-              result['getExternalRate'] = currency;
+              result.getExternalRate = currency;
               deferred.resolve(result);
             }.bind(this));
           }.bind(this));
