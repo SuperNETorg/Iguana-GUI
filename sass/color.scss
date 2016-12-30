@@ -20,7 +20,6 @@ $color-form-arrow: #C8CCD0;
 
 $background-for-page: #AEB3B7;
 
-$dashboard-navbar-color: #FEFBF9;
 $dashboard-top-border-color: #1E2136;
 
 $txunit-item-receive-amount-color: #27C26F;
@@ -29,11 +28,10 @@ $txunit-item-progress-amount-color: #0082FF;
 $txunit-item-progress-icon-before-color: #2092FE;
 $transactions-list-repeater-item: #F6FAFF;
 
-$dashboard-link-logout-color: #96969a;
+$dashboard-link-logout-color: #96969A;
 $dashboard-coins-sidebar-currency-color: #6B6B6D;
 
 $dashboard-send-currency-orange: #FE4F09;
-$dashboard-send-currency-white: $color-absolute-white;
 $dashboard-send-popup-err: #888990;
 
 $receive-coin-text-selection-color: #8C8484;
@@ -52,20 +50,36 @@ $login-content-color-bg: #363639;
 $login-coin-selection-color: #FF4912;
 $login-button-disabled-color: #B2B4B7;
 $login-boxshadow-color: #F9602F;
-$login-delim-color: #FEFBF9;
 $login-button-hover-color: #FE743D;
-$login-advanced-benefits: #FEFBF9;
 $dropdown-button-style-color: #5A606C;
-$segment-select-color: #FE4F09;
-
-$dashboard-topbar-bg-color: #0E101C;
-$dashboard-topbar-item-color: #8A8B93;
-$dashboard-balance-block-label-color: #95969F;
-
-$color-body-bg: #F5FAFD;
-$color-textarea-border: #CAC9C9;
 
 $dashboard-topbar-bg-color: #0E101C;
 $dashboard-topbar-item-color: #8A8B93;
 $dashboard-balance-block-label-color: #95969F;
 $dashboard-navbar-edex-color: #56575F;
+
+$color-body-bg: #F5FAFD;
+$color-textarea-border: #CAC9C9;
+
+$send-coin-head-color: #E8CEC6;
+$send-coin-title-color: #282828;
+$send-coin-text-color: #90929B;
+$send-coin-input-color: #333333;
+$send-coin-input-error-bg-color: #FFF5F5;
+$send-coin-input-error-border-color: #FD2F2F;
+$send-coin-p-color: #37373A;
+$send-coin-small-title-color: #808188;
+$send-coin-eq-sign-color: #FC6538;
+$send-coin-dropdown-color: #74767D;
+
+$reference-currency-tile-color: #FD5624;
+$reference-currency-tile-span-color: #9F9FA0;
+$reference-currency-txamount: #898A94;
+
+$iguana-modal-boxshadow: #DEA5AB;
+
+$account-coins-repeater-coin-color: #D3D3D4;
+$account-coins-repeater-active-coin-color: #C4C7CB;
+
+$add-coin-modal-active-tile-color: #FF6D36;
+$add-coin-modal-help-block-color: #92939C;

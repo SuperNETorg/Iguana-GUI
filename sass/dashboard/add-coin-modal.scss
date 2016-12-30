@@ -5,10 +5,6 @@
 
 @import '../dev.scss';
 
-$coin-repeater-coin-name-color: #2E3746;
-$add-coin-modal-active-tile-color: #FF6D36;
-$add-coin-modal-help-block-color: #92939C;
-
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
   background: none;
@@ -135,13 +131,13 @@ body .add-coin-login-form .modal-add-coin-login-form,
         width: 30%;
       }
       .name {
-        color: $coin-repeater-coin-name-color;
+        color: $receive-coin-input-color;
         font-size: 1.05em;
         padding: 1em 0.56em 10px 0.76em;
         width: 70%;
 
         .help-block {
-          color: $coin-repeater-coin-name-color;
+          color: $receive-coin-input-color;
           font-size: 16px;
           margin: 0;
         }

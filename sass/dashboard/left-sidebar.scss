@@ -5,9 +5,6 @@
 
 @import '../dev.scss';
 
-$account-coins-repeater-coin-color: #D3D3D4;
-$account-coins-repeater-active-coin-color: #C4C7CB;
-
 .account-coins-repeater {
   .item {
     @include bold;
