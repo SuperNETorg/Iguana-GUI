@@ -3,7 +3,9 @@
  *  Usage: gulp dev to build dev only verion
  *         gulp prod to build production version
  *         gulp zip to build prod and compress it into latest.zip
- *         gulp chromeApp to build chrome app version
+ *         gulp chromeApp to build chrome app version and zip chrome app folder
+ *         gulp crx to pack chrome app as crx extension; see create_crx.sh for details
+ *         note: create_crx.sh requires permission to execute as a program
  */
 
  // TODO: add prod size evaluation print out
@@ -138,6 +140,11 @@ gulp.task('cleanProdCompact', function() {
 gulp.task('chromeApp', function() {
   buildMode = 'chrome';
   _exports.chrome.createChromeApp(paths.chrome.prodPath, paths);
+});
+
+gulp.task('crx', function() {
+  buildMode = 'chrome';
+  _exports.chrome.createChromeApp(paths.chrome.prodPath, paths, true);
 });
 
 gulp.task('cleanChromeApp', function() {
