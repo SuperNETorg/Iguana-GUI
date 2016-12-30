@@ -310,7 +310,7 @@ angular.module('IguanaGUIApp')
     };
 
     function checkFeeCount(fee) {
-      util.checkFeeCount(fee, $scope.sendCoin.currencyRate);
+      return util.checkFeeCount(fee, $scope.sendCoin.currencyRate);
     }
 
     function execSendCoinCall() {

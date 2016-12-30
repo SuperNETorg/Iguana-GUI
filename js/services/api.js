@@ -1274,7 +1274,6 @@ angular.module('IguanaGUIApp')
               console.log(response);
             }
 
-            console.log(response.data);
             // iguana
             if (response.data && response.data.error) {
               // do something
@@ -1321,13 +1320,12 @@ angular.module('IguanaGUIApp')
       return $http.get('https://bitcoinfees.21.co/api/v1/fees/list');
     };
 
-    this.feeCoins = function(activeCoin,defaultAccount,currencyName,coinName) {
+    this.feeCoins = function(activeCoin, defaultAccount, currencyName, coinName) {
       var deferred = $q.defer(),
           result = {};
       this.getBalance(defaultAccount, activeCoin).then(function(response) {
 
         result['getBalance'] = response;
-        // initSendCoinModal(response[0], response[1]);
         this.bitcoinFees().then(function(bitcoinFees) {
 
           result['bitcoinFees'] = bitcoinFees;
@@ -1344,31 +1342,6 @@ angular.module('IguanaGUIApp')
       }.bind(this));
 
       return deferred.promise;
-    };
-
-    this.checkFeeCount = function(fee, currencyRate) {
-      var coin = fee * 1024 / 100000000, // satoshi per kb
-        amount = currencyRate * coin;
-
-      return {
-        'coin': coin,
-        'amount': amount
-      };
-    };
-
-    this.initSendCoinModal = function(balance, coin, defaultAccount,defaultCurrency, activeCoin) {
-
-      $storage['feeSettings']['currency'] = defaultCurrency;
-      $storage['feeSettings']['coinName'] = supportedCoinsList[coin].name;
-      $storage['feeSettings']['coinId'] = activeCoin.toUpperCase();
-      $storage['feeSettings']['coinValue'] = balance;
-      $storage['feeSettings']['currencyValue'] = balance * $storage['feeSettings']['currencyRate'];
-
-      if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
-        $scope.sendCoin.address = sendDataTest[coin].address;
-        $scope.sendCoin.amount = sendDataTest[coin].val;
-        $scope.sendCoin.note = sendDataTest[coin].note;
-      }
     };
   }
 ]);

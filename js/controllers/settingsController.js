@@ -34,6 +34,9 @@ angular.module('IguanaGUIApp')
       defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
       defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
+    $scope.currencyArr = initCurrencyArray();
+    $scope.activeCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
+
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {
@@ -65,8 +68,6 @@ angular.module('IguanaGUIApp')
         },
         entryFormIsValid: false
       };
-      $scope.currencyArr = initCurrencyArray();
-      $scope.activeCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
       var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
         coinName = $storage['iguana-active-coin']['id'].toUpperCase();
@@ -194,24 +195,8 @@ angular.module('IguanaGUIApp')
       $rates.updateRates(null, null, null, true);
     };
 
-    function initSendCoinModal(balance, coin) {
-      $scope.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
-      // $scope.initStep = -$scope.initStep;
-      $scope.currency = defaultCurrency;
-      $scope.coinName = supportedCoinsList[coin].name;
-      $scope.coinId = $scope.activeCoin.toUpperCase();
-      $scope.coinValue = balance;
-      $scope.currencyValue = balance * $scope.currencyRate;
-
-      if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
-        $scope.sendCoin.address = sendDataTest[coin].address;
-        $scope.sendCoin.amount = sendDataTest[coin].val;
-        $scope.sendCoin.note = sendDataTest[coin].note;
-      }
-    }
-
     function checkFeeCount(fee) {
-      util.checkFeeCount(fee, $scope.currencyRate);
+      return util.checkFeeCount(fee, $scope.currencyRate);
     }
   }
 ]);

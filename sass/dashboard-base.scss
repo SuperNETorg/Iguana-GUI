@@ -11,9 +11,14 @@ body.modal-open .dashboard {
   @include blur;
 }
 
-html,
-body {
+/*  temp solution to chrome app scrolling issue
+ *  this causes scrollbar flickering side effects
+ */
+html {
   overflow-y: auto;
+}
+html.modal-open {
+  overflow-y: hidden;
 }
 
 body {

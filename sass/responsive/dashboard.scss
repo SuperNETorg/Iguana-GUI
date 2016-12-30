@@ -185,7 +185,6 @@ body {
             .transactions-list {
               padding: 25px 0.2em;
               position: relative;
-              top: 12.2em;
 
               .title {
                 font-size: 1.26em;
@@ -222,6 +221,9 @@ body {
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .reference-currency-main .currency-content .container-left {
+      padding-top: 134px;
+    }
     .app-container {
       .app-container-inner {
         .navbar {
@@ -338,6 +340,9 @@ body {
                   margin-left: 0.3em;
                   margin-top: 1.6em;
                 }
+              }
+              .transactions-list {
+                top: 12.2em;
               }
             }
           }

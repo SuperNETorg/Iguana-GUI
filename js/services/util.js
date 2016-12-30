@@ -18,10 +18,12 @@ angular.module('IguanaGUIApp')
 
     this.bodyBlurOn = function() {
       angular.element(document.body).addClass('modal-open');
+      angular.element(document.querySelector('html')).addClass('modal-open');
     };
 
     this.bodyBlurOff = function() {
       angular.element(document.body).removeClass('modal-open');
+      angular.element(document.querySelector('html')).removeClass('modal-open');
     };
 
     this.reindexAssocArray = function(object) {
