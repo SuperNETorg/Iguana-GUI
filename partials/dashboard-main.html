@@ -40,7 +40,7 @@
     </aside>
     <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right"
          ng-hide="$state.current.name === 'dashboard.mobileCoins'"
-         ng-style="!isMobile ? ({ 'width': (windowWidth - (isTablet ? 360 : 455)) + 'px' }) : {}">
+         ng-style="!isMobile ? { 'width': (windowWidth - (isTablet ? 360 : 455)) + 'px', 'max-width': '1060px' } : {}">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>

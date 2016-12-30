@@ -70,7 +70,8 @@ angular.module('IguanaGUIApp')
     $scope.removeCoin = removeCoin;
     $scope.getActiveCoins = getActiveCoins;
     $scope.switchLayoutMode = switchLayoutMode;
-    $rootScope.$on("$stateChangeStart", stateChangeStart);
+    $scope.sendCoin = {};
+    $rootScope.$on('$stateChangeStart', stateChangeStart);
 
     if (!$scope.coinsInfo) {
       constructAccountCoinRepeater(true, true);
@@ -83,6 +84,7 @@ angular.module('IguanaGUIApp')
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
       constructAccountCoinRepeater(true);
+      updateFeeParams();
       updateDashboardView(settings.dashboardUpdateTimout);
       delete $storage['dashboard-pending-coins'];
     }
@@ -183,7 +185,7 @@ angular.module('IguanaGUIApp')
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
 
-      if ($scope.isMobile && $state.current.name === 'dashboard.mobileCoins') {
+      if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
       }
     }
@@ -303,8 +305,8 @@ angular.module('IguanaGUIApp')
           $storage['iguana-' + key + '-passphrase'] &&
           $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
           if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) ||
-            (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
-            _coinsLeftToAdd++;
+              (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
+                _coinsLeftToAdd++;
           }
         }
       }
@@ -423,14 +425,14 @@ angular.module('IguanaGUIApp')
               }
 
               $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time;
+                                                                 transactionDetails.timestamp ||
+                                                                 transactionDetails.time;
               $scope.txUnit.transactions[i].timestampDate = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time, 'DDMMMYYYY');
+                                                                                      transactionDetails.timestamp ||
+                                                                                      transactionDetails.time, 'DDMMMYYYY');
               $scope.txUnit.transactions[i].timestampTime = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time, 'HHMM');
+                                                                                      transactionDetails.timestamp ||
+                                                                                      transactionDetails.time, 'HHMM');
             }
           }
         }
@@ -438,7 +440,6 @@ angular.module('IguanaGUIApp')
     }
 
     function updateDashboardView(timeout) {
-      updateFeeParams();
       vars.dashboardUpdateRef = $interval(function() {
         $auth.checkSession();
         $rates.updateRates(null, null, null, true);
@@ -449,13 +450,13 @@ angular.module('IguanaGUIApp')
     }
 
     function updateFeeParams() {
-      $storage.feeSettings = {};
       var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
           currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
           coinName = $storage['iguana-active-coin']['id'].toUpperCase(),
           defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
+      $storage.feeSettings = {};
       $storage.feeSettings.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
 
       $api.feeCoins(
@@ -465,11 +466,23 @@ angular.module('IguanaGUIApp')
         coinName
       ).then(function(result) {
         $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
-        $api.initSendCoinModal(result.getBalance[0], result.getBalance[1], defaultAccount,defaultCurrency,activeCoin);
 
-        var fastestFee = $api.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
-            halfHourFee = $api.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
-            hourFee = $api.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
+        var coin = result.getBalance[1];
+        $storage.feeSettings.currency = defaultCurrency;
+        $storage.feeSettings.coinName = supportedCoinsList[coin].name;
+        $storage.feeSettings.coinId = activeCoin.toUpperCase();
+        $storage.feeSettings.coinValue = result.getBalance[0];
+        $storage.feeSettings.currencyValue = result.getBalance[0] * $storage.feeSettings.currencyRate;
+
+        if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
+          $scope.sendCoin.address = sendDataTest[coin].address;
+          $scope.sendCoin.amount = sendDataTest[coin].val;
+          $scope.sendCoin.note = sendDataTest[coin].note;
+        }
+
+        var fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
+            halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
+            hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
             coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
         $storage.feeSettings.sendCoin = {
@@ -581,11 +594,11 @@ angular.module('IguanaGUIApp')
     }
 
     function switchLayoutMode() {
-      if ($scope.isMobile && $state.current.name === 'dashboard.main' &&
+      if (util.isMobile() && $state.current.name === 'dashboard.main' &&
           $state.current.name !== 'dashboard.mobileTransactions') {
         $state.go('dashboard.mobileCoins');
       }
-      if (!$scope.isMobile && $state.current.name !== 'dashboard.main') {
+      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
         $state.go('dashboard.main');
       }
     }
