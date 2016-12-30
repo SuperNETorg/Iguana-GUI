@@ -37,6 +37,12 @@ angular.module('IguanaGUIApp')
     $scope.currencyArr = initCurrencyArray();
     $scope.activeCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
+    $scope.karma = { // tests
+      onInit: onInit,
+      initCurrencyArray: initCurrencyArray,
+      currencyArr: currencyArr
+    };
+
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
     } else {

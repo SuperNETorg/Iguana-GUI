@@ -32,8 +32,8 @@
       <div class="btn-group segment-select">
         <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-2 col-lg-2"
                ng-class="{
-               'send-coin-line-height':activeCoin === 'btc',
-               'active': checkedAmountType==item.name }"
+               'send-coin-line-height': activeCoin === 'btc',
+               'active': checkedAmountType === item.name }"
                ng-repeat="item in items"
                ng-model="checkModel.type"
                ng-click="change()"

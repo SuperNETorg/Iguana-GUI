@@ -195,8 +195,6 @@ describe('signup controller test', function() {
     $message.ngPrepMessageModal = function(text, color) {
       expect(text).toEqual('Passphrases are not matching. Please repeat previous step one more time.');
       expect(color).toEqual('red');
-      console.log(text);
-      console.log(color);
     };
     $scope.passphrase = '';
     $storage['iguana-login-active-coin'] = {
