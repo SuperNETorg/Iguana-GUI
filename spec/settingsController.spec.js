@@ -81,23 +81,22 @@ describe('settings controller test', function() {
 
     var recommendedFeesFixture = fixture.load('btc_recommended_fees.json');
     $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/recommended');
-    $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/recommended').respond({
-      success: recommendedFeesFixture
+    $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/recommended').respond(function(method, url, data) {
+      return [200, recommendedFeesFixture]
     });
 
     var allFeesFixture = fixture.load('btc_fees_all.json');
     $httpBackend.expectGET('https://bitcoinfees.21.co/api/v1/fees/list');
-    $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/list').respond({
-      success: allFeesFixture
+    $httpBackend.whenGET('https://bitcoinfees.21.co/api/v1/fees/list').respond(function(method, url, data) {
+      return [200, allFeesFixture]
     });
 
     $httpBackend.expectGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD');
-    $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond({
-      success: {
-        'BTC': {
-          'USD': 787.52
-        }
-      }
+    $httpBackend.whenGET('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD').respond(function(method, url, data) {
+      return [200, { 'BTC': {
+                        'USD': 787.52
+                      }
+                    }]
     });
   }));
 
@@ -181,5 +180,19 @@ describe('settings controller test', function() {
     expect($scope.feeCurrency).toEqual($scope.items.amount);
     expect($scope.feeAllText).toEqual($scope.items.coin + ' ' + $scope.coinId);
     expect($scope.feeCurrencyAllText).toEqual($scope.items.amount + ' ' + $scope.currency);
+  });
+
+  it('should test onInit()', function() {
+    var $scope = $rootScope.$new(),
+        controller = $controller('settingsController', { $scope: $scope });
+    $rootScope.$digest();
+    $storage['iguana-currency'] = { 'name': 'USD' };
+
+    $httpBackend.flush();
+
+    $scope.karma.onInit();
+
+    expect($scope.items).toBeDefined();
+    expect($scope.items.length).toEqual(4);
   });
 });

@@ -51,28 +51,7 @@ angular.module('IguanaGUIApp')
 
     function onInit() {
       $scope.sendCoin = {
-        initStep: true,
-        success: false,
-        address: '',
-        amount: '',
-        amountCurrency: '',
-        fee: '',
-        minFee: vars.coinsInfo[$scope.activeCoin].relayFee || settings.defaultRelayFee,
-        feeCurrency: '',
-        note: '',
-        passphrase: '',
-        valid: {
-          address: true,
-          amount: {
-            empty: false,
-            notEnoughMoney: false
-          },
-          fee: {
-            empty: false,
-            notEnoughMoney: false
-          }
-        },
-        entryFormIsValid: false
+        minFee: vars.coinsInfo[$scope.activeCoin].relayFee || settings.defaultRelayFee
       };
 
       var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
