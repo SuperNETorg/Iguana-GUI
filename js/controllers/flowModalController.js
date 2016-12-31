@@ -13,7 +13,12 @@ angular.module('IguanaGUIApp')
     $scope.next = next;
     $scope.close = close;
     $scope.type = type;
-    $scope.karma = {}; // tests
+    $scope.karma = { // tests
+      next: next,
+      close: close,
+      openLoginCoinModal: openLoginCoinModal,
+      openSignupCoinModal: openSignupCoinModal
+    };
 
     var selectCoinModal = {
       animation: true,
@@ -34,6 +39,8 @@ angular.module('IguanaGUIApp')
           openSignupCoinModal();
         }
       });
+
+      $scope.karma.modal = $uibModalInstance; // tests
     }
 
     function close() {

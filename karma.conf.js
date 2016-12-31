@@ -1,3 +1,5 @@
+// TODO: 1) add $state.go mock to tests
+//       2) add extended coind/iguana fixture responses
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -63,10 +65,11 @@ module.exports = function(config) {
       'js/controllers/receiveCoinModalController.js',
       'js/controllers/sendCoinModalController.js',
       'js/controllers/sendCoinPassphraseModalController.js',
+      'js/controllers/flowModalController.js',
       'js/controllers/messageController.js',
       'partials/*.html',
       'spec/fixtures/*.json',
-      'spec/ratesService.spec.js'
+      'spec/flowModalController.spec.js'
     ]
   });
 };
