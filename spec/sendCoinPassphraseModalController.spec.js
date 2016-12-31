@@ -113,7 +113,7 @@ describe('sendCoinPassphraseModal controller test', function() {
     }
   });
 
-  it('should verify send coin passphrase modal template placeholders rendered correctly', function() {
+  it('should verify $scope variables', function() {
     $storage.isIguana = false;
 
     var $scope = $rootScope.$new(),

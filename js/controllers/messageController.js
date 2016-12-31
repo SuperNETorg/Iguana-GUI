@@ -11,6 +11,7 @@ angular.module('IguanaGUIApp')
     $scope.$state = $state;
     $scope.$auth = $auth;
     $scope.enabled = $auth.checkSession(true);
+    $scope.karma = { switchMessageBoxColor: switchMessageBoxColor }; // tests
 
     $scope.requirementsInfo = function() {
       // "No required daemon is running" message always stays active on top of any ui
