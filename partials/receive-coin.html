@@ -14,7 +14,9 @@
         <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="hidden" />
         <div class="buttons text-center">
           <button class="btn copy-btn margin-bottom pull-left" ng-click="copyAddressToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
-          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ 'RECEIVE.SHARE' | lang }}</a>
+          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">
+          {{ 'RECEIVE.SHARE' | lang }}
+          </a>
         </div>
         <div class="qr-code" id="qrcode">
           <img ng-src="{{ receiveCoin.qrCode }}" />
