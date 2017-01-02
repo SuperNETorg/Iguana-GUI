@@ -33,6 +33,12 @@ angular.module('IguanaGUIApp')
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
 
+    $scope.karma = { // tests
+      getPassphrase: getPassphrase,
+      getSelectedCoins: getSelectedCoins,
+      constructCoinRepeater: constructCoinRepeater
+    };
+
     $scope.isActive = function(item) {
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = {};
@@ -69,7 +75,7 @@ angular.module('IguanaGUIApp')
           coinsArray = [],
           coinsInfo = vars.coinsInfo;
 
-      if (undefined !== coinsInfo) {
+      if (coinsInfo) {
         for (var key in supportedCoinsList) {
           if (
             (!$storage['iguana-' + key + '-passphrase'] ||
@@ -80,10 +86,10 @@ angular.module('IguanaGUIApp')
             )
           ) {
             if (
-              ($storage.isIguana && coinsInfo[key].iguana === true) ||
+              ($storage.isIguana && coinsInfo[key] && coinsInfo[key].iguana === true) ||
               (
                 !$storage.isIguana &&
-                (
+                (coinsInfo[key] &&
                   coinsInfo[key].connection === true ||
                   (dev && dev.isDev && dev.showAllCoindCoins)
                 )
