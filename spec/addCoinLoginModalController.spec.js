@@ -87,7 +87,7 @@ describe('addCoinLoginModal controller test', function() {
   }));
 
   // this should verify that placeholders are set in lang file and rendered correctly
-  it('should verify login template placeholders rendered correctly', function() {
+  it('should verify add coin modal template placeholders rendered correctly', function() {
     $storage.isIguana = false;
 
     var $scope = $rootScope.$new(),

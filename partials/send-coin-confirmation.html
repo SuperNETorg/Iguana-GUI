@@ -24,11 +24,11 @@
     </button>
   </div>
   <header class="modal-header form-header orange-gradient box-shadow-bottom"
-          ng-class="{'blur': sendCoin.success}">
+          ng-class="{ 'blur': sendCoin.success }">
     <i class="bi_interface-arrow-left cursor-pointer btn-back" ng-click="sendCoin.initStep = true"></i>
     <div class="title">{{ 'SEND.CONFIRMATION' | lang }}</div>
   </header>
-  <div class="form-content send-modal" ng-class="{'blur': sendCoin.success}">
+  <div class="form-content send-modal" ng-class="{ 'blur': sendCoin.success }">
     <div class="modal-body">
       <div class="main-popup">
         <div class="popup-head">
@@ -67,7 +67,7 @@
                 <h4>{{ 'SEND.NOTE' | lang }}:</h4>
                 <p> {{ sendCoin.note }}</p>
               </div>
-              <button class="btn-confirm-tx orange-gradient orange-shadow " ng-class="{'hidden': sendCoin.success}"
+              <button class="btn-confirm-tx orange-gradient orange-shadow " ng-class="{ 'hidden': sendCoin.success }"
                       ng-click="sendCoinFormConfirm()">
                 {{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}
               </button>

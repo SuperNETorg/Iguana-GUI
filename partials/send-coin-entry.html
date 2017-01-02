@@ -77,30 +77,25 @@
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
                        ng-click="change()"
-                       uib-btn-radio="'{{ item }}'" >
+                       uib-btn-radio="'{{ item }}'">
                   <span>{{ item.name }}</span>
                   <span ng-class="{ 'hidden': item.feeMinTime === '' && item.feeMaxTime === '' }" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
               </div>
               <div class="custom-fee-inputs" >
-                <div style="">
-
-                </div>
                 <input placeholder="0 {{ sendCoin.coinId }}"
                        class="tx-fee"
                        type="text"
                        ng-model="sendCoin.fee"
                        number-only
-                       ng-change="sendFee()"
-                />
+                       ng-change="sendFee()" />
                 <span class="eq-sign">=</span>
                 <input placeholder="0 {{ sendCoin.currency }}"
                        class="tx-fee-currency"
                        ng-model="sendCoin.feeCurrency"
                        type="text"
                        ng-change="sendFeeCurrency()"
-                       number-only
-                />
+                       number-only />
               </div>
             </div>
             <div class="pop-detail">

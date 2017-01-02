@@ -1,0 +1,54 @@
+{
+  "feeSettings": {
+    "activeCoin": "btc",
+    "currencyRate": 904.88,
+    "currency": "USD",
+    "coinName": "Bitcoin",
+    "coinId": "BTC",
+    "coinValue": 0.00118229,
+    "currencyValue": 1.0698305752,
+    "sendCoin": {
+      "activeCoin": "btc",
+      "currencyRate": 904.88,
+      "currency": "USD",
+      "coinName": "Bitcoin",
+      "coinId": "BTC",
+      "coinValue": 0.00118229,
+      "currencyValue": 1.0698305752
+    },
+    "items": [
+      {
+        "id": 0,
+        "name": "Minimum",
+        "coin": "0.0000100",
+        "amount": "0.010234300000",
+        "feeMinTime": 120,
+        "feeMaxTime": 10000
+      },
+      {
+        "id": 1,
+        "name": "Low",
+        "coin": "0.0008192",
+        "amount": "0.838623232000",
+        "feeMinTime": 0,
+        "feeMaxTime": 55
+      },
+      {
+        "id": 2,
+        "name": "Normal",
+        "coin": "0.0010240",
+        "amount": "1.048279040000",
+        "feeMinTime": 0,
+        "feeMaxTime": 35
+      },
+      {
+        "id": 3,
+        "name": "High",
+        "coin": "0.0010240",
+        "amount": "1.048279040000",
+        "feeMinTime": 0,
+        "feeMaxTime": 35
+      }
+    ]
+  }
+}

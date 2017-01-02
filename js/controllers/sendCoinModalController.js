@@ -26,6 +26,10 @@ angular.module('IguanaGUIApp')
     $scope.checkedAmountType ='';
     $scope.feeAllTextCustom ='';
     $scope.feeCurrencyAllTextCustom = '';
+    $scope.karma = { // tests
+      defaultChange: defaultChange,
+      initSendCoinModal: initSendCoinModal
+    };
 
     $scope.close = function() {
       $uibModalInstance.dismiss();
@@ -142,7 +146,6 @@ angular.module('IguanaGUIApp')
           coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
       initSendCoinModal(result.getBalance[0], result.getBalance[1]);
-
       if (
         $storage.feeSettings &&
         $storage.feeSettings.items &&
@@ -182,7 +185,6 @@ angular.module('IguanaGUIApp')
         }];
       }
 
-
       $scope.sendCoin.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : 'Minimum';
       $scope.activeCoin = $storage.feeSettings.activeCoin;
       $scope.sendCoin.checkedAmountType = $storage.feeSettings.activeCoin !== 'btc' && $scope.sendCoin.checkedAmountType !== 'Minimum' ? 'Minimum' : $scope.sendCoin.checkedAmountType;
@@ -209,10 +211,6 @@ angular.module('IguanaGUIApp')
         $scope.sendCoin.note = sendDataTest[coin].note;
       }
     }
-
-    $scope.toggleSendCoinModal = function() {
-      toggleSendCoinModal();
-    };
 
     $scope.sendCoinKeyingAmount = function() {
       if ($scope.sendCoin.amount)
