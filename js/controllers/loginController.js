@@ -105,6 +105,7 @@ angular.module('IguanaGUIApp')
       modalInstance.result.then(resultPromise);
 
       function resultPromise(event, data) {
+
       }
     }
 

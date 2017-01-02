@@ -43,6 +43,9 @@ angular.module('IguanaGUIApp')
     $scope.getActiveCoins = getActiveCoins;
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
+    $scope.karma = { // test
+      setTitle: setTitle
+    };
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -95,6 +98,8 @@ angular.module('IguanaGUIApp')
         $scope.step = 'login.step2';
         //$state.go('login.step2');
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function openSignupCoinModal() {
@@ -113,6 +118,8 @@ angular.module('IguanaGUIApp')
         $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
         //$state.go('signup.step1');
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function login() {
