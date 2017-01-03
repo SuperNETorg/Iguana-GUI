@@ -244,6 +244,7 @@
   .segment-select {
     margin-top: 6px;
     width: 100%;
+    cursor: default;
 
     .item-segment-select {
       background: $color-modal-bg;
