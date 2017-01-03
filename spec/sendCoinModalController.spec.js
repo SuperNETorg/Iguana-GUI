@@ -5,6 +5,12 @@ describe('sendCoinModal controller test', function() {
   var $controller, $state, $auth, util, $window, $templateCache, $message, $api, $q, $rates, $uibModalInstance = {}, receivedObject,
       $compile, $rootScope, $storage, $httpBackend, vars, dashboardTemplate, compiledTemplate, pristineTemplate = {}, type;
 
+  function testAsync(done) {
+    setTimeout(function () {
+      done();
+    }, 100);
+  }
+
   beforeEach(inject(function(_$controller_, _$state_, _$auth_, _util_, _$window_, _$uibModal_, _$message_, _$api_,
                              _$templateCache_, _$compile_, _$rootScope_, _$storage_, _$httpBackend_, _vars_, _$q_, _$rates_, _$rates_) {
 
@@ -21,6 +27,7 @@ describe('sendCoinModal controller test', function() {
     vars = _vars_;
     $uibModal = _$uibModal_;
     $rates = _$rates_;
+    $message = _$message_;
 
     vars.coinsInfo = {
       'btc': {
@@ -101,8 +108,8 @@ describe('sendCoinModal controller test', function() {
     $storage.isIguana = false;
     $storage.feeSettings = fixture.load('btc_fee_settings.json').feeSettings;
     $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
-      expect(JSON.parse(data).method).toEqual('getbalance');
-      return [200, 10];
+      //expect(JSON.parse(data).method).toEqual('getbalance');
+      return [200, { result: '99c07b2177f6f13b221d47d2b263e39dbe9ed90fed5d3b80aa71fcefd87bd9c2' }];
     });
 
     var recommendedFeesFixture = fixture.load('btc_recommended_fees.json');
@@ -395,11 +402,11 @@ describe('sendCoinModal controller test', function() {
           type: type
         });
     $scope.sendCoin = {
-      amountCurrency: 700,
+      amountCurrency: 1,
       currencyRate: 700
     };
     $scope.sendCoinKeyingAmountCurrency();
-    expect($scope.sendCoin.amount).toEqual('1');
+    expect($scope.sendCoin.amount).toEqual('0.0014285714285714286');
     $scope.sendCoin = {
       amountCurrency: 0.07,
       currencyRate: 700
@@ -412,5 +419,166 @@ describe('sendCoinModal controller test', function() {
     };
     $scope.sendCoinKeyingAmountCurrency();
     expect($scope.sendCoin.amount).toEqual('0.000001');
+  });
+
+  it('should test sendFee()', function() {
+    $storage.isIguana = false;
+
+    var $scope = $rootScope.$new(),
+        controller = $controller('sendCoinModalController', {
+          $scope: $scope,
+          $uibModalInstance: $uibModalInstance,
+          receivedObject: receivedObject,
+          type: type
+        });
+
+    $scope.sendCoin = {
+      fee: 'a',
+      currencyRate: 'b'
+    };
+    $scope.sendFee();
+    expect($scope.sendCoin.feeCurrency).toEqual('');
+    $scope.sendCoin = {
+      fee: 1,
+      currencyRate: 700
+    };
+    $scope.sendFee();
+    expect($scope.sendCoin.feeCurrency).toEqual('700.0000000');
+  });
+
+  it('should test sendFeeCurrency()', function() {
+    $storage.isIguana = false;
+
+    var $scope = $rootScope.$new(),
+        controller = $controller('sendCoinModalController', {
+          $scope: $scope,
+          $uibModalInstance: $uibModalInstance,
+          receivedObject: receivedObject,
+          type: type
+        });
+
+    $scope.sendCoin = {
+      feeCurrency: 'a',
+      currencyRate: 'b'
+    };
+    $scope.sendFeeCurrency();
+    expect($scope.sendCoin.fee).toEqual('');
+    $scope.sendCoin = {
+      feeCurrency: 1,
+      currencyRate: 700
+    };
+    $scope.sendFeeCurrency();
+    expect($scope.sendCoin.fee).toEqual(0.0014285714285714286);
+  });
+
+  it('should test validateSendCoinForm()', function() {
+    $storage.isIguana = false;
+
+    var $scope = $rootScope.$new(),
+        controller = $controller('sendCoinModalController', {
+          $scope: $scope,
+          $uibModalInstance: $uibModalInstance,
+          receivedObject: receivedObject,
+          type: type
+        });
+    $scope.sendCoin.initStep = true;
+    // #1
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.initStep).toEqual(true);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #2
+    $scope.sendCoin.address = '';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.address).toEqual(false);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #2.1
+    $scope.sendCoin.address = 'as21fsdfwef';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.address).toEqual(false);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #2.2
+    $scope.sendCoin.address = 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.address).toEqual(true);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #3
+    $scope.sendCoin.coinValue = 0.5;
+    $scope.sendCoin.amount = 1;
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.amount.empty).toEqual(true);
+    expect($scope.sendCoin.valid.amount.notEnoughMoney).toEqual(false);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #3.1
+    $scope.sendCoin.coinValue = '2';
+    $scope.sendCoin.amount = '1';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.amount.empty).toEqual(false);
+    expect($scope.sendCoin.valid.amount.notEnoughMoney).toEqual(false);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #4
+    $scope.sendCoin.fee = '2';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.fee.empty).toEqual(false);
+    expect($scope.sendCoin.valid.fee.notEnoughMoney).toEqual(true);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #4.1
+    $scope.sendCoin.minFee = '0.001';
+    $scope.sendCoin.fee = '0.000001';
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.fee.notEnoughMoney).toEqual(false);
+    expect($scope.sendCoin.valid.fee.empty).toEqual(true);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(false);
+    // #4.2
+    $scope.sendCoin.minFee = '0.001';
+    $scope.sendCoin.fee = '0.02';
+    $scope.sendCoin.currencyRate = 700;
+    $scope.validateSendCoinForm();
+    expect($scope.sendCoin.valid.fee.notEnoughMoney).toEqual(false);
+    expect($scope.sendCoin.valid.fee.empty).toEqual(false);
+    expect($scope.sendCoin.entryFormIsValid).toEqual(true);
+    expect($scope.sendCoin.amountCurrency).toEqual(700);
+    expect($scope.sendCoin.feeCurrency).toEqual('14.000000000000');
+    expect($scope.sendCoin.initStep).toEqual(false);
+  });
+
+  it('should test execSendCoinCall() and add transaction fee', function() {
+    $storage.isIguana = false;
+
+    var $scope = $rootScope.$new(),
+        controller = $controller('sendCoinModalController', {
+          $scope: $scope,
+          $uibModalInstance: $uibModalInstance,
+          receivedObject: receivedObject,
+          type: type
+        });
+    $scope.sendCoin.fee = 1;
+    $scope.sendCoin.initStep = true;
+    $scope.sendCoin.address = 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d';
+    $scope.sendCoin.amount = 1;
+    $scope.sendCoin.note = 'karma test';
+
+    $scope.karma.execSendCoinCall();
+    $httpBackend.flush();
+    expect($scope.sendCoin.success).toEqual(true);
+  });
+
+  it('should test execSendCoinCall() w/ default transation fee', function() {
+    $storage.isIguana = false;
+
+    var $scope = $rootScope.$new(),
+        controller = $controller('sendCoinModalController', {
+          $scope: $scope,
+          $uibModalInstance: $uibModalInstance,
+          receivedObject: receivedObject,
+          type: type
+        });
+    $scope.sendCoin.initStep = true;
+    $scope.sendCoin.address = 'mn7QivjhhDqdfDbchHFXdTiHj9ownGd15d';
+    $scope.sendCoin.amount = 1;
+    $scope.sendCoin.note = 'karma test';
+
+    $scope.karma.execSendCoinCall();
+    $httpBackend.flush();
+    expect($scope.sendCoin.success).toEqual(true);
   });
 });

@@ -28,7 +28,8 @@ angular.module('IguanaGUIApp')
     $scope.feeCurrencyAllTextCustom = '';
     $scope.karma = { // tests
       defaultChange: defaultChange,
-      initSendCoinModal: initSendCoinModal
+      initSendCoinModal: initSendCoinModal,
+      execSendCoinCall: execSendCoinCall
     };
 
     $scope.close = function() {
@@ -318,7 +319,6 @@ angular.module('IguanaGUIApp')
             amount: $scope.sendCoin.amount,
             note: $scope.sendCoin.note
           };
-
       if (Number($scope.sendCoin.fee) !== Number(coinsInfo[$scope.activeCoin].relayFee) /*&& Number($scope.sendCoin.fee) !== 0.00001*/ && Number($scope.sendCoin.fee) !== 0) {
         $api.setTxFee($scope.activeCoin, $scope.sendCoin.fee)
         .then(function(response) {
@@ -355,6 +355,8 @@ angular.module('IguanaGUIApp')
         .then(function(response) {
           if (response.length === 64) {
             $scope.sendCoin.success = true;
+          } else {
+            $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
           }
         }, function(reason) {
           $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
