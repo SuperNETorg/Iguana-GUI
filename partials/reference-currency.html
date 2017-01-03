@@ -33,7 +33,8 @@
         <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-2 col-lg-2"
                ng-class="{
                'send-coin-line-height': activeCoin === 'btc',
-               'active': checkedAmountType === item.name }"
+               'active': checkedAmountType === item.name,
+               'disabled': item.state === 'disabled' }"
                ng-repeat="item in items"
                ng-model="checkModel.type"
                ng-click="change()"
