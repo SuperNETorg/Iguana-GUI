@@ -51,15 +51,12 @@ angular.module('IguanaGUIApp')
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = !dev.isDev || isIguana; // dev
     $rootScope.background = false;
-    // receive coin updated logic
     $scope.$receiveCoinInstance = {};
-    // add coin login modal updated logic
     $scope.passphrase = '';
     $scope.dev = dev;
     $scope.coinsSelectedToAdd = [];
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
-    // send coin updated logic
     $scope.$sendCoinInstance = {};
     $scope.openAddCoinModal = openAddCoinModal;
     $scope.openAddCoinLoginModal = openAddCoinLoginModal;
