@@ -120,7 +120,10 @@ describe('selectCoinModal controller test', function() {
           $rootScope.$digest();
           if (langPlaceholders[j].indexOf(' | lang') > -1 && langPlaceholders[j].indexOf(' : ') === -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
-            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            placeholder2match.push({
+              rendered: renderedPlaceholder[0],
+              plain: placeholder[0].replace(/'/g, '')
+            });
             var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
             expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());

@@ -83,7 +83,10 @@ describe('signup controller test', function() {
           $rootScope.$digest();
           if (langPlaceholders[j].indexOf(' | lang') > -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
-            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            placeholder2match.push({
+              rendered: renderedPlaceholder[0],
+              plain: placeholder[0].replace(/'/g, '')
+            });
             var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
             expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());
@@ -158,7 +161,10 @@ describe('signup controller test', function() {
     $storage['iguana-login-active-coin'] = {};
     isCoinSelected = $scope.karma.isCoinSelected();
     expect(isCoinSelected).toEqual(false);
-    $storage['iguana-login-active-coin'] = { 'btc': {}, 'sys': {} };
+    $storage['iguana-login-active-coin'] = {
+      'btc': {},
+      'sys': {}
+    };
     isCoinSelected = $scope.karma.isCoinSelected();
     expect(isCoinSelected).toEqual(false);
   });
@@ -167,7 +173,6 @@ describe('signup controller test', function() {
     var $scope = $rootScope.$new(),
         controller = $controller('signupController', { $scope: $scope });
     $storage.isIguana = false;
-    expect($scope.passphrase).toEqual('');
     expect($scope.passphrase).toEqual('');
     $state.current.name = 'signup.step1';
     $scope.karma.onInit();
@@ -180,7 +185,6 @@ describe('signup controller test', function() {
     var $scope = $rootScope.$new(),
         controller = $controller('signupController', { $scope: $scope });
     $storage.isIguana = true;
-    expect($scope.passphrase).toEqual('');
     expect($scope.passphrase).toEqual('');
     $state.current.name = 'signup.step1';
     $scope.karma.onInit();
@@ -210,7 +214,14 @@ describe('signup controller test', function() {
   it('should test addAccount() and fail (coind)', function() {
     $storage.isIguana = false;
     $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
-      return [500, {'result': null, 'error': { 'code':-15, 'message': 'Error: running with an encrypted wallet, but encryptwallet was called.'}, 'id': null }];
+      return [500, {
+        'result': null,
+        'error': {
+          'code':-15,
+          'message': 'Error: running with an encrypted wallet, but encryptwallet was called.'
+        },
+        'id': null
+      }];
     });
 
     var $scope = $rootScope.$new(),

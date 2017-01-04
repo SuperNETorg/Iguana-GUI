@@ -108,7 +108,10 @@ describe('addCoinLoginModal controller test', function() {
           $rootScope.$digest();
           if (langPlaceholders[j].indexOf(' | lang') > -1 && langPlaceholders[j].indexOf(' : ') === -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
-            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            placeholder2match.push({
+              rendered: renderedPlaceholder[0],
+              plain: placeholder[0].replace(/'/g, '')
+            });
             var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
             expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());
@@ -183,7 +186,7 @@ describe('addCoinLoginModal controller test', function() {
         });
     $rootScope.$digest();
     $scope.setIsChanged();
-    expect($scope.messages).toEqual('Incorrect input. Passphrase must consist of 12 words. Try one more time')
+    expect($scope.messages).toEqual('Incorrect input. Passphrase must consist of 12 words. Try one more time');
     expect($scope.isChanged).toEqual(true);
   });
 
@@ -199,7 +202,7 @@ describe('addCoinLoginModal controller test', function() {
         });
     $rootScope.$digest();
     $scope.setIsChanged();
-    expect($scope.messages).toEqual('Incorrect input. Passphrase must consist of 24 words. Try one more time')
+    expect($scope.messages).toEqual('Incorrect input. Passphrase must consist of 24 words. Try one more time');
     expect($scope.isChanged).toEqual(true);
   });
 
@@ -325,7 +328,10 @@ describe('addCoinLoginModal controller test', function() {
     $storage['iguana-login-active-coin'] = {};
     isCoinSelected = $scope.isCoinSelected();
     expect(isCoinSelected).toEqual(true);
-    $storage['iguana-login-active-coin'] = { 'btc': {}, 'sys': {} };
+    $storage['iguana-login-active-coin'] = {
+      'btc': {},
+      'sys': {}
+    };
     isCoinSelected = $scope.isCoinSelected();
     expect(isCoinSelected).toEqual(false);
   });

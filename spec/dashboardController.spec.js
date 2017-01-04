@@ -45,24 +45,6 @@ describe('dashboard controller test', function() {
     $auth.fromState = { name: 'login' };
     $auth.fromParams = '';
 
-    $uibModalInstance = {
-      close: function() {
-        console.log('close()');
-      },
-      open: function() {
-        console.log('open()');
-      },
-      dismiss: function() {
-        console.log('dismiss()');
-      },
-      closed: {
-        then: function(confirmCallback, cancelCallback) {
-          console.log('modal closed.then');
-          confirmCallback();
-        }
-      }
-    };
-
     // load and render template
     dashboardTemplate = $templateCache.get('partials/dashboard-main.html');
     angular.element(document.body).prepend('<div id="templatePreCompile">' + dashboardTemplate + '</div>');
@@ -129,7 +111,6 @@ describe('dashboard controller test', function() {
     $storage.isIguana = false;
 
     $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
-      //expect(JSON.parse(data).method).toEqual('getbalance');
       return [200, { result: fixture.load('btc_listtransactions_2.json') }];
     });
 
@@ -155,7 +136,7 @@ describe('dashboard controller test', function() {
   }));
 
   // this should verify that placeholders are set in lang file and rendered correctly
-  /*it('should verify dashboard template placeholders rendered correctly', function() {
+  it('should verify dashboard template placeholders rendered correctly', function() {
     $storage.isIguana = false;
 
     var $scope = $rootScope.$new(),
@@ -176,7 +157,10 @@ describe('dashboard controller test', function() {
           $rootScope.$digest();
           if (langPlaceholders[j].indexOf(' | lang') > -1 && langPlaceholders[j].indexOf(' : ') === -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
-            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            placeholder2match.push({
+              rendered: renderedPlaceholder[0],
+              plain: placeholder[0].replace(/'/g, '')
+            });
             var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
             expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());
@@ -231,7 +215,7 @@ describe('dashboard controller test', function() {
         });
 
     $scope.openAddCoinLoginModal();
-  });*/
+  });
 
   it('should test setActiveCoin()', function() {
     $storage.isIguana = false;
@@ -347,7 +331,11 @@ describe('dashboard controller test', function() {
       currencyValue: 10
     }];
     $scope.removeCoin('btc');
-    expect($scope.sideBarCoinsUnsorted).toEqual({ 'btcd': { 'coinId': 'btcd' } });
+    expect($scope.sideBarCoinsUnsorted).toEqual({
+      'btcd': {
+        'coinId': 'btcd'
+      }
+    });
     expect($scope.sideBarCoins).toEqual([{ coinId: 'btcd' }]);
   });
 
@@ -363,7 +351,12 @@ describe('dashboard controller test', function() {
     $httpBackend.flush();
     $scope.sideBarCoins = [];
     $scope.karma.constructAccountCoinRepeater(true, true);
-    expect($scope.sideBarCoins).toEqual([{ id: 'btc', coinIdUc: 'BTC', name: 'Bitcoin', loading: true }]);
+    expect($scope.sideBarCoins).toEqual([{
+      id: 'btc',
+      coinIdUc: 'BTC',
+      name: 'Bitcoin',
+      loading: true
+    }]);
     // #2
     $scope.karma.constructAccountCoinRepeater(true, false);
     $httpBackend.flush();
@@ -383,7 +376,16 @@ describe('dashboard controller test', function() {
     $httpBackend.flush();
     $scope.sideBarCoins = [];
     $scope.karma.constructAccountCoinRepeaterCB(10, 'btc');
-    expect($scope.sideBarCoins).toEqual([{ id: 'btc', name: 'Bitcoin', coinBalanceUnformatted: 10, coinValue: 10, coinIdUc: 'BTC', currencyValue: 7875.2, currencyName: 'USD', loading: false }]);
+    expect($scope.sideBarCoins).toEqual([{
+      id: 'btc',
+      name: 'Bitcoin',
+      coinBalanceUnformatted: 10,
+      coinValue: 10,
+      coinIdUc: 'BTC',
+      currencyValue: 7875.2,
+      currencyName: 'USD',
+      loading: false
+    }]);
   });
 
   it('should test checkAddCoinButton()', function() {
@@ -491,10 +493,11 @@ describe('dashboard controller test', function() {
     $scope.karma.updateFeeParams();
     expect($storage.feeSettings).toEqual({ activeCoin: 'btc' });
     $httpBackend.flush();
-    expect($storage.feeSettings.items[0]).toEqual({ id: 0, name: 'Minimum', coin: '0.0000100', amount: '0.007875200000', feeMinTime: 110, feeMaxTime: 10000 });
-    expect($storage.feeSettings.items[1]).toEqual({ id: 1, name: 'Low', coin: '0.0007168', amount: '0.564494336000', feeMinTime: '', feeMaxTime: '' });
-    expect($storage.feeSettings.items[2]).toEqual({ id: 2, name: 'Normal', coin: '0.0008192', amount: '0.645136384000', feeMinTime: '', feeMaxTime: '' });
-    expect($storage.feeSettings.items[3]).toEqual({ id: 3, name: 'High', coin: '0.0008192', amount: '0.645136384000', feeMinTime: '', feeMaxTime: '' })
+    var dashboardFeeSettingsMock = fixture.load('dashboard_fee_settings.json');
+    expect($storage.feeSettings.items[0]).toEqual(dashboardFeeSettingsMock[0]);
+    expect($storage.feeSettings.items[1]).toEqual(dashboardFeeSettingsMock[1]);
+    expect($storage.feeSettings.items[2]).toEqual(dashboardFeeSettingsMock[2]);
+    expect($storage.feeSettings.items[3]).toEqual(dashboardFeeSettingsMock[3])
   });
 
   it('should test switchLayoutMode()', function() {

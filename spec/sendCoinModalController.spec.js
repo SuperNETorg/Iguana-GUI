@@ -101,7 +101,6 @@ describe('sendCoinModal controller test', function() {
     $storage.isIguana = false;
     $storage.feeSettings = fixture.load('btc_fee_settings.json').feeSettings;
     $httpBackend.whenPOST('http://localhost:1337/localhost:8332').respond(function(method, url, data) {
-      //expect(JSON.parse(data).method).toEqual('getbalance');
       return [200, { result: '99c07b2177f6f13b221d47d2b263e39dbe9ed90fed5d3b80aa71fcefd87bd9c2' }];
     });
 
@@ -148,7 +147,10 @@ describe('sendCoinModal controller test', function() {
           $rootScope.$digest();
           if (langPlaceholders[j].indexOf(' | lang') > -1 && langPlaceholders[j].indexOf(' : ') === -1) {
             var placeholder = langPlaceholders[j].match(/'(.*)'/g);
-            placeholder2match.push({ rendered: renderedPlaceholder[0], plain: placeholder[0].replace(/'/g, '') });
+            placeholder2match.push({
+              rendered: renderedPlaceholder[0],
+              plain: placeholder[0].replace(/'/g, '')
+            });
             var langObjSplit = placeholder2match[index].plain.split('.');
             expect(lang.EN[langObjSplit[0]][langObjSplit[1]]).toBeDefined();
             expect(placeholder2match[index].rendered.innerHTML.trim()).toEqual(lang.EN[langObjSplit[0]][langObjSplit[1]].trim());

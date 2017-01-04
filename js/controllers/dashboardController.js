@@ -192,7 +192,6 @@ angular.module('IguanaGUIApp')
     // Modals end
 
     function setActiveCoin(item) {
-      console.log(item);
       $storage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
@@ -218,7 +217,6 @@ angular.module('IguanaGUIApp')
         });
 
         if ($scope.activeCoin === coinId) {
-          console.log($scope.sideBarCoins);
           $scope.setActiveCoin($scope.sideBarCoins[0]);
         }
 
