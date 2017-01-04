@@ -5,12 +5,6 @@ describe('sendCoinModal controller test', function() {
   var $controller, $state, $auth, util, $window, $templateCache, $message, $api, $q, $rates, $uibModalInstance = {}, receivedObject,
       $compile, $rootScope, $storage, $httpBackend, vars, dashboardTemplate, compiledTemplate, pristineTemplate = {}, type;
 
-  function testAsync(done) {
-    setTimeout(function () {
-      done();
-    }, 100);
-  }
-
   beforeEach(inject(function(_$controller_, _$state_, _$auth_, _util_, _$window_, _$uibModal_, _$message_, _$api_,
                              _$templateCache_, _$compile_, _$rootScope_, _$storage_, _$httpBackend_, _vars_, _$q_, _$rates_, _$rates_) {
 
@@ -27,7 +21,6 @@ describe('sendCoinModal controller test', function() {
     vars = _vars_;
     $uibModal = _$uibModal_;
     $rates = _$rates_;
-    $message = _$message_;
 
     vars.coinsInfo = {
       'btc': {

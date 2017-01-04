@@ -70,7 +70,17 @@ angular.module('IguanaGUIApp')
     $scope.removeCoin = removeCoin;
     $scope.getActiveCoins = getActiveCoins;
     $scope.switchLayoutMode = switchLayoutMode;
-    $scope.sendCoin = {};
+    $scope.karma = {
+      constructAccountCoinRepeater: constructAccountCoinRepeater,
+      constructAccountCoinRepeaterCB: constructAccountCoinRepeaterCB,
+      removeCoin: removeCoin,
+      checkAddCoinButton: checkAddCoinButton,
+      updateTotalBalance: updateTotalBalance,
+      constructTransactionUnitRepeater: constructTransactionUnitRepeater,
+      constructTransactionUnitRepeaterCB: constructTransactionUnitRepeaterCB,
+      updateFeeParams: updateFeeParams,
+      switchLayoutMode: switchLayoutMode
+    }; // tests
     $rootScope.$on('$stateChangeStart', stateChangeStart);
 
     if (!$scope.coinsInfo) {
@@ -156,6 +166,8 @@ angular.module('IguanaGUIApp')
           $state.go('signup.step1');
         });
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function openAddCoinLoginModal() {
@@ -180,6 +192,7 @@ angular.module('IguanaGUIApp')
     // Modals end
 
     function setActiveCoin(item) {
+      console.log(item);
       $storage['iguana-active-coin'] = { id: item.id };
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
@@ -205,6 +218,7 @@ angular.module('IguanaGUIApp')
         });
 
         if ($scope.activeCoin === coinId) {
+          console.log($scope.sideBarCoins);
           $scope.setActiveCoin($scope.sideBarCoins[0]);
         }
 
@@ -473,12 +487,6 @@ angular.module('IguanaGUIApp')
         $storage.feeSettings.coinId = activeCoin.toUpperCase();
         $storage.feeSettings.coinValue = result.getBalance[0];
         $storage.feeSettings.currencyValue = result.getBalance[0] * $storage.feeSettings.currencyRate;
-
-        if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
-          $scope.sendCoin.address = sendDataTest[coin].address;
-          $scope.sendCoin.amount = sendDataTest[coin].val;
-          $scope.sendCoin.note = sendDataTest[coin].note;
-        }
 
         var fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
             halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
