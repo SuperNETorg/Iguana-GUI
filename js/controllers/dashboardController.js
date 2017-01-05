@@ -160,7 +160,8 @@ angular.module('IguanaGUIApp')
         $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
 
         modalInstance.closed.then(function() {
-          $state.go('signup.step1');
+          $rootScope.allowLoginStateChange = true;
+          $state.go('login.step2');
         });
       }
 

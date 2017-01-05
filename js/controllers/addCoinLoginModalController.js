@@ -14,8 +14,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$rootScope',
   '$auth',
+  'type',
   function($scope, $uibModalInstance, util, $storage, $state, $api,
-           $uibModal, receivedObject, $filter, vars, $rootScope, $auth) {
+           $uibModal, receivedObject, $filter, vars, $rootScope, $auth, type) {
 
     var pageTitle;
 
@@ -37,6 +38,7 @@ angular.module('IguanaGUIApp')
     $scope.messages = '';
     $scope.loginActiveCoin = '';
     $scope.title = setTitle;
+    $scope.type = type;
     $scope.login = login;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;

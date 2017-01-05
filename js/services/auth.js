@@ -10,7 +10,8 @@ angular.module('IguanaGUIApp')
   '$q',
   '$filter',
   '$message',
-  function($storage, vars, $api, $state, util, $q, $filter, $message) {
+  '$rootScope',
+  function($storage, vars, $api, $state, util, $q, $filter, $message, $rootScope) {
 
     var self = this;
 
@@ -39,7 +40,8 @@ angular.module('IguanaGUIApp')
           Object.keys($storage['iguana-login-active-coin']).length
         )
       ) {
-        $state.go('signup.step1');
+        if (!$rootScope.allowLoginStateChange && !self._userIdentify()) // temp(?)
+          $state.go('signup.step1');
         return;
       }
 
@@ -66,7 +68,7 @@ angular.module('IguanaGUIApp')
               $state.go('login');
             }
           } else {
-            if (!inDashboard) {
+            if (!inDashboard && !$rootScope.allowLoginStateChange) {
               $state.go('dashboard.main');
             }
           }
