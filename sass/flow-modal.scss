@@ -76,6 +76,7 @@
       @include cursor-pointer;
       color: $txunit-item-progress-amount-color;
       text-decoration: underline;
+      outline: none;
     }
   }
   .help-block {
