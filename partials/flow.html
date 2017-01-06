@@ -12,7 +12,7 @@
         {{ 'FLOW.TITLE' | lang }}
       </div>
       <div class="flow-content center">
-        <div class="row">
+        <div class="row hdd-block">
           <div class="left-side">
             <div class="hard-drive">
               <img src="fonts/hard_drive.svg" alt="{{ 'FLOW.HDD' | lang }}">
@@ -25,7 +25,7 @@
             <div class="text-info-block">{{ 'FLOW.DOWNLOAD' | lang }}</div>
           </div>
         </div>
-        <div class="row">
+        <div class="row cmd-block">
           <div class="left-side">
             <div class="command-line">
               <img src="fonts/command_line.svg" alt="{{ 'FLOW.CMD_LINE' | lang }}">
@@ -36,14 +36,14 @@
               <strong>2</strong>
             </h2>
             <div class="text-info-block">{{ 'FLOW.MAKE' | lang }}</div>
-            <span class="help-block no-margin">{{  'FLOW.MAKES' | lang }}</span>
+            <span class="help-block no-margin">{{ 'FLOW.MAKES' | lang }}</span>
             <span class="help-block no-margin">{{ 'FLOW.MAKED' | lang }}</span>
             <span class="help-block no-margin">{{ 'FLOW.MAKERPCU' | lang }}</span>
             <span class="help-block no-margin">{{ 'FLOW.MAKERPCP' | lang }}</span>
             <span class="help-block no-margin">{{ 'FLOW.MAKERPCPT' | lang }}</span>
           </div>
         </div>
-        <div class="row">
+        <div class="row proxy-block">
           <div class="left-side">
             <div class="proxy">
               <img src="fonts/proxy.svg" alt="{{ 'FLOW.PROXY' | lang }}">
@@ -58,10 +58,11 @@
         </div>
       </div>
       <div class="clearfix center">
-        <a class="need-help">{{ 'FLOW.NEED_HELP' | lang }}</a>
-        <button
-          class="btn btn-block orange-gradient text-shadow row after-flow-btn"
-          ng-click="next()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+        <div class="need-help">
+          <a class="link">{{ 'FLOW.NEED_HELP' | lang }}</a>
+        </div>
+        <button class="btn btn-block orange-gradient text-shadow row after-flow-btn"
+                ng-click="next()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
       </div>
       <div class="clearfix"></div>
     </div>

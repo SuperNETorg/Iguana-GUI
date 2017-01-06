@@ -6,6 +6,9 @@
 @import 'dev.scss';
 
 .flow-modal-login-state {
+  h2 {
+    margin-bottom: 3px;
+  }
   .flow-title {
     font-size: 1.14em;
     @include center;
@@ -22,6 +25,25 @@
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
     /* csslint ignore:end */
 
+    .proxy-block {
+      padding-top: 15px;
+
+      .right-side {
+        padding-top: 20px;
+      }
+    }
+    .hdd-block {
+      .right-side {
+        padding-top: 7px;
+      }
+    }
+    .cmd-block {
+      padding-top: 15px;
+
+      .left-side {
+        padding-top: 30px;
+      }
+    }
     .hard-drive,
     .command-line,
     .proxy {
@@ -33,9 +55,6 @@
       float: left;
       margin-left: 4.2em;
 
-      .hard-drive {}
-      .command-line {}
-      .proxy {}
     }
     .right-side {
       float: left;
@@ -51,8 +70,16 @@
     font-size: 1.12em;
     margin: 1.8em auto;
     text-align: center;
-    text-decoration: underline;
     width: 200px;
+
+    .link {
+      @include cursor-pointer;
+      color: $txunit-item-progress-amount-color;
+      text-decoration: underline;
+    }
+  }
+  .help-block {
+    font-size: 1.07em;
   }
   .after-flow-btn {
     max-width: 600px;
