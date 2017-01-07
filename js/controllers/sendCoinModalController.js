@@ -312,6 +312,7 @@ angular.module('IguanaGUIApp')
       return util.checkFeeCount(fee, $scope.sendCoin.currencyRate);
     }
 
+    // TODO: add sendcoin code:-5 case, wrong coin address
     function execSendCoinCall() {
       var setTxFeeResult = false,
           txDataToSend = {
@@ -351,6 +352,7 @@ angular.module('IguanaGUIApp')
           console.log('request failed: ' + reason);
         });
       } else {
+        console.log('alt');
         $api.sendToAddress($scope.activeCoin, txDataToSend)
         .then(function(response) {
           if (response.length === 64) {

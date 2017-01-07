@@ -60,12 +60,12 @@
               </div>
               <div class="pop-detail pay-dtl offset-bottom-md">
                 <h4>{{ 'SEND.FEE' | lang }}: </h4>
-                <h3>{{ sendCoin.fee + sendCoin.coinId }}</h3>
-                <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency + sendCoin.currency }}</h5>
+                <h3>{{ sendCoin.fee }} {{ sendCoin.coinId }}</h3>
+                <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency }} {{ sendCoin.currency }}</h5>
               </div>
               <div class="pop-detail pay-dtl">
                 <h4>{{ 'SEND.NOTE' | lang }}:</h4>
-                <p> {{ sendCoin.note }}</p>
+                <p>{{ sendCoin.note }}</p>
               </div>
               <button class="btn-confirm-tx orange-gradient orange-shadow " ng-class="{ 'hidden': sendCoin.success }"
                       ng-click="sendCoinFormConfirm()">
