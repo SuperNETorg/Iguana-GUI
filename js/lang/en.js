@@ -148,7 +148,7 @@ var lang = {
       'MAXIMUM_TIME': 'Max Time',
       'MIN': 'min',
       'SELECT_FEE': 'Select an option or enter a value for the fee.',
-      'SELECT_FEE_ENOUGH_MONEY':'Please enter a correct amount'
+      'PLEASE_ENTER_A_CORRECT_AMOUNT': 'Please enter a correct amount'
     },
     'PASSPHRASE_MODAL': {
       'PROVIDE_PASSPHRASE': 'Provide passphrase',

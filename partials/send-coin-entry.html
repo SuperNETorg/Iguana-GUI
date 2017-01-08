@@ -59,7 +59,7 @@
                  ng-class="{ 'col-red': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney, 'hidden': !sendCoin.valid.fee.empty && !sendCoin.valid.fee.notEnoughMoney }">
                 <span ng-if="!sendCoin.fee.length">{{ 'SEND.SELECT_FEE' | lang }}</span>
                 <span ng-if="sendCoin.valid.fee.empty && sendCoin.fee.length">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
-                <span ng-if="sendCoin.valid.fee.notEnoughMoney">{{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.notEnoughMoney && sendCoin.fee.length">{{ 'SEND.PLEASE_ENTER_A_CORRECT_AMOUNT' | lang }}</span>
               </p>
               <div class="btn-group segment-select clearfix">
                 <label class="btn btn-success item-segment-select"
