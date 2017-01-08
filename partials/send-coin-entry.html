@@ -56,16 +56,10 @@
             <div class="pop-detail crncy segment">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <p class="tx-fee-validation"
-                 ng-class="{ 'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty }">
-                <span ng-if="!sendCoin.fee">{{ 'SEND.SELECT_FEE' | lang }}</span>
-                <span ng-if="sendCoin.valid.fee.empty">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
-              </p>
-              <p class="tx-fee-validation"
-                 ng-class="{
-                   'col-red': sendCoin.valid.fee.notEnoughMoney ,
-                   'hidden': !sendCoin.valid.fee.notEnoughMoney
-                 }">
-                {{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}
+                 ng-class="{ 'col-red': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney, 'hidden': !sendCoin.valid.fee.empty && !sendCoin.valid.fee.notEnoughMoney }">
+                <span ng-if="!sendCoin.fee.length">{{ 'SEND.SELECT_FEE' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.empty && sendCoin.fee.length">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.notEnoughMoney">{{ 'SEND.SELECT_FEE_ENOUGH_MONEY' | lang }}</span>
               </p>
               <div class="btn-group segment-select clearfix">
                 <label class="btn btn-success item-segment-select"
@@ -73,7 +67,7 @@
                          'send-coin-line-height': activeCoin === 'btc',
                          'line-height-empty': dropDown.emptyItems,
                          'active': sendCoin.checkedAmountType == item.name,
-                         'disabled' : sendCoin.checkedAmountType != item.name && (activeCoin !== 'btc' || dropDown.emptyItems)
+                         'disabled': sendCoin.checkedAmountType !== item.name && (activeCoin !== 'btc' || dropDown.emptyItems)
                         }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
@@ -83,9 +77,10 @@
                   <span ng-class="{ 'hidden': item.feeMinTime === '' && item.feeMaxTime === '' }" class="no-padding help-block second-fee-text">{{ item.feeMinTime }}-{{ item.feeMaxTime }}{{ 'SEND.MIN' | lang }}</span>
                 </label>
               </div>
-              <div class="custom-fee-inputs" >
+              <div class="custom-fee-inputs">
                 <input placeholder="0 {{ sendCoin.coinId }}"
                        class="tx-fee"
+                       ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }"
                        type="text"
                        ng-model="sendCoin.fee"
                        number-only
@@ -93,6 +88,7 @@
                 <span class="eq-sign">=</span>
                 <input placeholder="0 {{ sendCoin.currency }}"
                        class="tx-fee-currency"
+                       ng-class="{ 'validation-field-error': sendCoin.valid.fee.empty || sendCoin.valid.fee.notEnoughMoney }"
                        ng-model="sendCoin.feeCurrency"
                        type="text"
                        ng-change="sendFeeCurrency()"
