@@ -60,14 +60,15 @@ angular.module('IguanaGUIApp')
         })
         .then(function(response) {
           console.log(response);
-          if (dev.isDev) {
-            if (dev.sessions) { // dev only
-              for (var key in dev.sessions) {
-                if (navigator.userAgent.indexOf(key) > -1) {
-                  $storage.isIguana = dev.sessions[key];
-                }
+          if (dev.isDev && dev.sessions) {
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                $storage.isIguana = dev.sessions[key];
               }
             }
+
+          } else {
+            $storage.isIguana = true;
 
             if (dev.showConsoleMessages) {
               if (!$storage.isIguana) {
@@ -76,8 +77,6 @@ angular.module('IguanaGUIApp')
                 console.log('running iguana env');
               }
             }
-          } else {
-            $storage.isIguana = true;
           }
 
           this.errorHandler(response);
@@ -87,20 +86,20 @@ angular.module('IguanaGUIApp')
               });
         }.bind(this), function(response) {
           // non-iguana env
-          if (dev.isDev) {
-            if (dev.sessions) { // dev only
-              for (var key in dev.sessions) {
-                if (navigator.userAgent.indexOf(key) > -1) {
-                  $storage.isIguana = dev.sessions[key];
+          if (dev.isDev && dev.sessions) {
+            for (var key in dev.sessions) {
+              if (navigator.userAgent.indexOf(key) > -1) {
+                $storage.isIguana = dev.sessions[key];
 
-                  /*if (dev.sessions[key]){
-                    $timeout(function () {
-                      $message.ngPrepMessageNoDaemonModal();
-                    }, 300);
-                  }*/
-                }
+                /*if (dev.sessions[key]){
+                  $timeout(function () {
+                    $message.ngPrepMessageNoDaemonModal();
+                  }, 300);
+                }*/
               }
             }
+          } else {
+            $storage.isIguana = false;
 
             if (dev.showConsoleMessages) {
               if (!$storage.isIguana) {
@@ -109,8 +108,6 @@ angular.module('IguanaGUIApp')
                 console.log('running iguana env');
               }
             }
-          } else {
-            $storage.isIguana = false;
           }
 
           this.errorHandler(response);
