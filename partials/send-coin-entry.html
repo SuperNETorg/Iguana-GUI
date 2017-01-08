@@ -55,11 +55,11 @@
             </div>
             <div class="pop-detail crncy segment">
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
-              <p class="tx-address-validation"
+              <p class="tx-fee-validation"
                  ng-class="{ 'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty }">
                 {{ sendCoin.fee ? '' : 'SEND.SELECT_FEE' | lang }}
               </p>
-              <p class="tx-address-validation"
+              <p class="tx-fee-validation"
                  ng-class="{
                    'col-red': sendCoin.valid.fee.notEnoughMoney ,
                    'hidden': !sendCoin.valid.fee.notEnoughMoney
