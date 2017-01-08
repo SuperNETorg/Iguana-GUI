@@ -57,7 +57,8 @@
               <h4>{{ 'SEND.FEE' | lang }}:</h4>
               <p class="tx-fee-validation"
                  ng-class="{ 'col-red': sendCoin.valid.fee.empty , 'hidden': !sendCoin.valid.fee.empty }">
-                {{ sendCoin.fee ? '' : 'SEND.SELECT_FEE' | lang }}
+                <span ng-if="!sendCoin.fee">{{ 'SEND.SELECT_FEE' | lang }}</span>
+                <span ng-if="sendCoin.valid.fee.empty">{{ sendCoin.minFee }} {{ sendCoin.coinId }} {{ 'SEND.IS_A_MIN_REQUIRED_FEE' | lang }}</span>
               </p>
               <p class="tx-fee-validation"
                  ng-class="{
