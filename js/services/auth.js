@@ -146,6 +146,8 @@ angular.module('IguanaGUIApp')
         $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
             self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
+        }, function () {
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.SOMETHING_WRONG'), 'red');
         });
 
         function onResolve(data) {

@@ -110,6 +110,11 @@ angular.module('IguanaGUIApp')
           );
 
           $state.go('login');
+        }else if(response.statusText=='Bad Gateway') {
+          $message.ngPrepMessageModal(
+            $filter('lang')('MESSAGE.SOMETHING_WRONG'),
+            'red'
+          );
         }
       }
     }
