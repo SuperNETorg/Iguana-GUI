@@ -171,7 +171,7 @@ var lang = {
       'PASSPHRASES_DONT_MATCH': 'Passphrases do not match!',
       'PLEASE_SELECT_A_WALLET': 'Please select a wallet',
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
-      'SOMETHING_WRONG':'Something wrong',
+      'NO_DAEMON_IS_RUNNING':'No daemon is running',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
       'X_WALLET_IS_CREATED': ' wallet is created. Login to access it.',
       'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',

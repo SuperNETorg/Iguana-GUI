@@ -147,7 +147,7 @@ angular.module('IguanaGUIApp')
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
             self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
         }, function () {
-          $message.ngPrepMessageModal($filter('lang')('MESSAGE.SOMETHING_WRONG'), 'red');
+          $message.ngPrepMessageModal($filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING'), 'red');
         });
 
         function onResolve(data) {

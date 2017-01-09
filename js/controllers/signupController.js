@@ -113,7 +113,7 @@ angular.module('IguanaGUIApp')
           $state.go('login');
         }else if(response.statusText=='Bad Gateway') {
           $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.SOMETHING_WRONG'),
+            $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING'),
             'red'
           );
         }
