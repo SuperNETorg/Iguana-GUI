@@ -284,10 +284,10 @@ angular.module('IguanaGUIApp')
       _sideBarCoins[coin] = {
         id: coin,
         name: supportedCoinsList[coin].name,
-        coinBalanceUnformatted: balance,
-        coinValue: coinBalanceVal,
+        coinBalanceUnformatted: Number(balance),
+        coinValue: Number(coinBalanceVal),
         coinIdUc: coin.toUpperCase(),
-        currencyValue: coinBalanceCurrencyVal,
+        currencyValue: Number(coinBalanceCurrencyVal),
         currencyName: defaultCurrency,
         loading: false
       };
@@ -303,6 +303,8 @@ angular.module('IguanaGUIApp')
         $scope.setTxUnitBalance();
         constructTransactionUnitRepeater();
       }
+
+      console.log($scope.sideBarCoinsUnsorted);
     }
 
     function checkAddCoinButton() {
