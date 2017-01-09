@@ -34,6 +34,7 @@ angular.module('IguanaGUIApp')
 
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.addAccount = addAccount;
+    $scope.goBack = goBack;
     $scope.verifyPass = verifyPass;
     $scope.getActiveCoins = getActiveCoins;
     $scope.$on('$destroy', destroy);
@@ -148,6 +149,35 @@ angular.module('IguanaGUIApp')
       } else {
         return Object.keys($storage['iguana-login-active-coin']).length === 0;
       }
+    }
+
+    function openSignupCoinModal() {
+      $storage['iguana-login-active-coin'] = {};
+      $storage['iguana-active-coin'] = {};
+      $scope.modal.coinModal.appendTo = angular.element(document.querySelector('.auth-add-coin-modal'));
+      $scope.modal.coinModal.resolve = {
+        'type': function() {
+          return 'signup';
+        },
+        'modal': function () {
+          return $scope.modal;
+        }
+      };
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+      modalInstance.result.then(resultPromise);
+
+      function resultPromise() {
+        $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
+        $state.go('signup.step1');
+      }
+
+      $scope.karma.modal = modalInstance; // tests
+    }
+
+    function goBack() {
+      $storage['iguana-login-active-coin'] = {};
+      $state.go('login').then(openSignupCoinModal);
     }
 
     function destroy() {

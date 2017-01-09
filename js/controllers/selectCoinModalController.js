@@ -5,6 +5,7 @@ angular.module('IguanaGUIApp')
 .controller('selectCoinModalController', [
   '$scope',
   '$state',
+  '$uibModal',
   '$uibModalInstance',
   '$api',
   '$storage',
@@ -12,8 +13,9 @@ angular.module('IguanaGUIApp')
   '$timeout',
   'vars',
   'type',
-  function($scope, $state, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars, type) {
+  'modal',
+  function($scope, $state, $uibModal, $uibModalInstance, $api, $storage,
+            $rootScope, $timeout, vars, type, modal) {
 
     $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
@@ -25,10 +27,12 @@ angular.module('IguanaGUIApp')
     ];
     $storage['iguana-login-active-coin'] = {};
 
+    $scope.back = back;
     $scope.close = close;
     $scope.clickOnCoin = clickOnCoin;
     $scope.getType = getType;
     $scope.type = type;
+    $scope.modal = modal;
 
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
@@ -140,6 +144,11 @@ angular.module('IguanaGUIApp')
       $uibModalInstance.close(constructCoinRepeater());
     }
 
+    function back() {
+      openFlowModal(getType());
+      close();
+    }
+
     function close() {
       $uibModalInstance.dismiss(constructCoinRepeater());
     }
@@ -150,6 +159,25 @@ angular.module('IguanaGUIApp')
           (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
       } else {
         return '';
+      }
+    }
+
+    function openFlowModal(type) {
+      $scope.modal.flowModal.appendTo = angular.element(document.querySelector('.flow-modal'));
+      $scope.modal.flowModal.resolve = {
+        'type': function() {
+          return type;
+        },
+        'modal': function () {
+          return $scope.modal;
+        }
+      };
+      var modalInstance = $uibModal.open($scope.modal.flowModal);
+
+      modalInstance.result.then(resultPromise);
+
+      function resultPromise(event, data) {
+
       }
     }
 

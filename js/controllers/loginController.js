@@ -20,6 +20,7 @@ angular.module('IguanaGUIApp')
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
+    $storage['iguana-login-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isChanged = false;
@@ -39,6 +40,7 @@ angular.module('IguanaGUIApp')
     $rootScope.background = true;
     $scope.title = setTitle;
     $scope.login = login;
+    $scope.goBack = goBack;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;
     $scope.getActiveCoins = getActiveCoins;
@@ -64,16 +66,6 @@ angular.module('IguanaGUIApp')
       $scope.coins = [];
     }
 
-    var openFlowModal = {
-      animation: true,
-      ariaLabelledBy: 'modal-title',
-      size: 'full',
-      ariaDescribedBy: 'modal-body',
-      controller: 'flowModalController',
-      templateUrl: 'partials/flow.html',
-      appendTo: angular.element(document.querySelector('.flow-modal'))
-    };
-
     function getActiveCoins() {
       return $storage['iguana-login-active-coin'];
     }
@@ -95,18 +87,47 @@ angular.module('IguanaGUIApp')
     }
 
     function openFlowModal(type) {
-      openFlowModal.resolve = {
+      $scope.modal.flowModal.animation = type ? true : false;
+      $scope.modal.flowModal.resolve = {
         'type': function() {
-          return type;
+          return type ? type : 'signin';
+        },
+        'modal': function () {
+          return $scope.modal;
         }
       };
-      var modalInstance = $uibModal.open(openFlowModal);
 
+      var modalInstance = $uibModal.open($scope.modal.flowModal);
       modalInstance.result.then(resultPromise);
 
       function resultPromise(event, data) {
 
       }
+    }
+
+    function openLoginCoinModal() {
+      $scope.modal.coinModal.resolve = {
+        'type': function() {
+          return 'signin';
+        },
+        'modal': function () {
+          return $scope.modal;
+        }
+      };
+
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+      modalInstance.result.then(resultPromise);
+
+      function resultPromise(event, data) {
+        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
+        $scope.coins = data;
+        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+        $state.go('login.step2');
+      }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function login() {
@@ -133,6 +154,12 @@ angular.module('IguanaGUIApp')
     function isChanged() {
       $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
       $scope.isChanged = true;
+    }
+
+    function goBack() {
+      $storage['iguana-login-active-coin'] = {};
+      $state.go('login');
+      openLoginCoinModal();
     }
   }
 ]);

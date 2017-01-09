@@ -6,28 +6,19 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   '$uibModalInstance',
   'type',
-  function($scope, $state, $storage, $uibModal, $uibModalInstance, type) {
-
+  'modal',
+  function($scope, $state, $storage, $uibModal, $uibModalInstance, type, modal) {
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
     $scope.next = next;
     $scope.close = close;
     $scope.type = type;
+    $scope.modal = modal;
     $scope.karma = { // tests
       next: next,
       close: close,
       openLoginCoinModal: openLoginCoinModal,
       openSignupCoinModal: openSignupCoinModal
-    };
-
-    var selectCoinModal = {
-      animation: true,
-      ariaLabelledBy: 'modal-title',
-      size: 'full',
-      ariaDescribedBy: 'modal-body',
-      controller: 'selectCoinModalController',
-      templateUrl: 'partials/add-coin.html',
-      appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
     };
 
     function next() {
@@ -48,13 +39,16 @@ angular.module('IguanaGUIApp')
     }
 
     function openLoginCoinModal() {
-      selectCoinModal.resolve = {
+      $scope.modal.coinModal.resolve = {
         'type': function() {
           return 'signin';
+        },
+        'modal': function () {
+          return $scope.modal;
         }
       };
 
-      var modalInstance = $uibModal.open(selectCoinModal);
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
 
@@ -72,12 +66,15 @@ angular.module('IguanaGUIApp')
     function openSignupCoinModal() {
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
-      selectCoinModal.resolve = {
+      $scope.modal.coinModal.resolve = {
         'type': function() {
           return 'signup';
+        },
+        'modal': function () {
+          return $scope.modal;
         }
       };
-      var modalInstance = $uibModal.open(selectCoinModal);
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
 

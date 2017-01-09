@@ -6,7 +6,7 @@
         <section class="form-container create-account-form"
                  ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
           <header class="form-header orange-gradient box-shadow-bottom unselectable">
-            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
+            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="goBack()"></i>
             <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content">

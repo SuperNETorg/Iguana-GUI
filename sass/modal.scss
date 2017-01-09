@@ -30,7 +30,19 @@
       text-align: center;
     }
   }
-  .bi_interface-cross {
+  .bi_interface-arrow-left {
+    color: $color-white;
+    font-size: 2.26em;
+    left: 0.36em;
+    position: absolute;
+    text-shadow: 1px 1px 3px rgba-black(0.3);
+    top: 0.38em;
+
+    ::before {
+      font-weight: 900;
+    }
+  }
+  .bi_interface-cross{
     color: $color-white;
     font-size: 1.17em;
     margin-left: 0.8em;
