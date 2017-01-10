@@ -164,7 +164,6 @@ angular.module('IguanaGUIApp')
 
     function setTitle() {
       pageTitle = $filter('lang')('LOGIN.LOGIN_TO_WALLET');
-      console.log($storage['iguana-login-active-coin']);
 
       if (
         $storage['iguana-login-active-coin'] &&

@@ -136,12 +136,12 @@ angular.module('IguanaGUIApp')
     function clickOnCoin(item, $event) {
       var coinElement = angular.element($event.currentTarget);
 
-      if (!coinElement.hasClass('active')) {
+      if (!coinElement.hasClass('active') && !$storage.isIguana) {
         $scope.selectedCoins = [];
         $storage['iguana-login-active-coin'] = {};
       }
 
-      if (!$storage['iguana-login-active-coin']) {
+      if (!$storage['iguana-login-active-coin'] && !$storage.isIguana) {
         $storage['iguana-login-active-coin'] = {};
       }
 
@@ -155,7 +155,9 @@ angular.module('IguanaGUIApp')
       }
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
-      $uibModalInstance.close(constructCoinRepeater());
+
+      if (!$storage.isIguana)
+        $uibModalInstance.close(constructCoinRepeater());
     }
 
     function back() {
