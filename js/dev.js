@@ -33,10 +33,13 @@
     }
   };
 
+  dev.mod = 'iguana'; // coind iguana
+
   // for simultaneous dev in iguana and non-iguana modes
   dev.sessions = {
-    'Chrome': false, // true - iguana, false - coind
-    'Firefox': false
+    'Chrome': true, // true - iguana, false - coind
+    'Firefox': true,
+    'Safari': true,
   };
 
 // dev
