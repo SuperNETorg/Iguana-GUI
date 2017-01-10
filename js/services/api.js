@@ -96,10 +96,10 @@ angular.module('IguanaGUIApp')
               }
 
               this.errorHandler(response);
-              /*this.testCoinPorts()
+              this.testCoinPorts()
                 .then(function(coins) {
                   deferred.resolve(coins);
-                });*/
+                });
             }.bind(this),
             function(response) {
               // non-iguana env
@@ -128,10 +128,10 @@ angular.module('IguanaGUIApp')
               }
 
               this.errorHandler(response);
-              /*this.testCoinPorts()
+              this.testCoinPorts()
                 .then(function (coins) {
                   deferred.resolve(coins);
-                });*/
+                });
             }.bind(this)
           );
         /*} else if (dev.mod === 'coind') {

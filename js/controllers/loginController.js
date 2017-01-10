@@ -20,7 +20,7 @@ angular.module('IguanaGUIApp')
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
-    $storage['iguana-login-active-coin'] = {};
+    if (!$rootScope.allowLoginStateChange) $storage['iguana-login-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isCoinsConnected = isCoinsConnected;
@@ -99,6 +99,7 @@ angular.module('IguanaGUIApp')
       } else if ($state.current.name === 'login.step2') {
         $rootScope.background = true;
       }
+      $rootScope.allowLoginStateChange = false;
     }
 
     function openFlowModal(type) {
@@ -163,6 +164,7 @@ angular.module('IguanaGUIApp')
 
     function setTitle() {
       pageTitle = $filter('lang')('LOGIN.LOGIN_TO_WALLET');
+      console.log($storage['iguana-login-active-coin']);
 
       if (
         $storage['iguana-login-active-coin'] &&
