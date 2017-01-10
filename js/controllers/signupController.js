@@ -56,7 +56,7 @@ angular.module('IguanaGUIApp')
 
     function onInit() {
       if ($state.current.name === 'signup.step1') {
-        $scope.passphrase = $passPhraseGenerator.generatePassPhrase($storage['isIguana'] ? 8 : 4);
+        $scope.passphrase = $passPhraseGenerator.generatePassPhrase($storage.isIguana ? 8 : 4);
         $storage.passphrase = $scope.passphrase;
       }
     }
@@ -116,10 +116,10 @@ angular.module('IguanaGUIApp')
           response.message &&
           response.message.indexOf('connect ECONNREFUSED') !== -1
         ) {
-          message =  $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
+          message = $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
           color = 'red';
         } else if (response === -1) {
-          message =  $filter('lang')($scope.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
+          message = $filter('lang')($scope.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
           color = 'red';
         }
         $message.ngPrepMessageModal(
@@ -168,7 +168,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return 'signup';
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };

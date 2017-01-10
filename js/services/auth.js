@@ -125,7 +125,7 @@ angular.module('IguanaGUIApp')
             } else {
               deferred.resolve(data);
             }
-          }, function (response) {
+          }, function(response) {
             //TODO: Iguana connection error messages are here
           });
 
@@ -148,11 +148,11 @@ angular.module('IguanaGUIApp')
         $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
             self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
-        }, function (response) {
+        }, function(response) {
           var message = '',
-            color = '';
+              color = '';
 
-          if(response.data.error.code == -15) {
+          if (response.data.error.code === -15) {
             message =  $filter('lang')('MESSAGE.NO_WALLET_IS_ENCRYPTED');
             color = 'red';
           } else if (

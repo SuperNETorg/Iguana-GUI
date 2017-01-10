@@ -69,7 +69,6 @@ angular.module('IguanaGUIApp')
       return $storage.isAppSetuped && isCoinsConnected();
     }
 
-
     function getSelectedCoins() {
       var result = {},
           coins = constructCoinRepeater();
@@ -188,7 +187,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return type;
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };

@@ -27,7 +27,8 @@ angular.module('IguanaGUIApp')
       if (isCoinsConnected()) {
         $storage.isAppSetuped = true;
         $uibModalInstance.close();
-        $uibModalInstance.closed.then(function () {
+
+        $uibModalInstance.closed.then(function() {
           if ($scope.type === 'signin') {
             openLoginCoinModal();
           } else if ($scope.type === 'signup') {
@@ -48,7 +49,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return 'signin';
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };
@@ -75,7 +76,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return 'signup';
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };

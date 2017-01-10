@@ -107,7 +107,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return type ? type : 'signin';
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };
@@ -130,7 +130,7 @@ angular.module('IguanaGUIApp')
         'type': function() {
           return type;
         },
-        'modal': function () {
+        'modal': function() {
           return $scope.modal;
         }
       };
