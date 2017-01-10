@@ -150,9 +150,12 @@ angular.module('IguanaGUIApp')
             self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
         }, function (response) {
           var message = '',
-              color = '';
+            color = '';
 
-          if (
+          if(response.data.error.code == -15) {
+            message =  $filter('lang')('MESSAGE.NO_WALLET_IS_ENCRYPTED');
+            color = 'red';
+          } else if (
             response.data &&
             response.data.message &&
             response.data.message.indexOf('connect ECONNREFUSED') !== -1
