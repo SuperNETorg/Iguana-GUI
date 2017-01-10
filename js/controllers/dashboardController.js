@@ -67,7 +67,7 @@ angular.module('IguanaGUIApp')
     $scope.removeCoin = removeCoin;
     $scope.getActiveCoins = getActiveCoins;
     $scope.switchLayoutMode = switchLayoutMode;
-    $scope.karma = {
+    $scope.karma = { // tests
       constructAccountCoinRepeater: constructAccountCoinRepeater,
       constructAccountCoinRepeaterCB: constructAccountCoinRepeaterCB,
       removeCoin: removeCoin,
@@ -77,7 +77,7 @@ angular.module('IguanaGUIApp')
       constructTransactionUnitRepeaterCB: constructTransactionUnitRepeaterCB,
       updateFeeParams: updateFeeParams,
       switchLayoutMode: switchLayoutMode
-    }; // tests
+    };
     $rootScope.$on('$stateChangeStart', stateChangeStart);
 
     if (!$scope.coinsInfo) {
@@ -140,13 +140,16 @@ angular.module('IguanaGUIApp')
 
     // Modals start
     function openAddCoinModal() {
-      addCoinModal.resolve = {
+      $scope.modal.coinModal.resolve = {
         'type': function() {
-          return 'login';
+          return 'signin';
+        },
+        'modal': function() {
+          return $scope.modal;
         }
       };
 
-      modalInstance = $uibModal.open(addCoinModal);
+      modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
 
@@ -303,8 +306,6 @@ angular.module('IguanaGUIApp')
         $scope.setTxUnitBalance();
         constructTransactionUnitRepeater();
       }
-
-      console.log($scope.sideBarCoinsUnsorted);
     }
 
     function checkAddCoinButton() {
@@ -462,6 +463,7 @@ angular.module('IguanaGUIApp')
     }
 
     function updateFeeParams() {
+      if (!$storage['iguana-active-coin']) $storage['iguana-active-coin'] = '';
       var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
           currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
