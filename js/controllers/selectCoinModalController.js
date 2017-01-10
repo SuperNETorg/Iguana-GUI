@@ -30,6 +30,8 @@ angular.module('IguanaGUIApp')
     $scope.back = back;
     $scope.close = close;
     $scope.clickOnCoin = clickOnCoin;
+    $scope.isCoinsConnected = isCoinsConnected;
+    $scope.isAppSetuped = isAppSetuped;
     $scope.getType = getType;
     $scope.type = type;
     $scope.modal = modal;
@@ -54,6 +56,19 @@ angular.module('IguanaGUIApp')
     $scope.isDisabled = function() {
       return Object.keys($storage['iguana-login-active-coin']).length == 0;
     };
+
+    function getCCoins() {
+      return $storage['connected-coins'];
+    }
+
+    function isCoinsConnected() {
+      return Object.keys(getCCoins()).length > 0;
+    }
+
+    function isAppSetuped() {
+      return $storage.isAppSetuped && isCoinsConnected();
+    }
+
 
     function getSelectedCoins() {
       var result = {},
@@ -145,7 +160,12 @@ angular.module('IguanaGUIApp')
     }
 
     function back() {
-      openFlowModal(getType());
+      if (isAppSetuped()) {
+        $state.go('login');
+      } else {
+        openFlowModal(getType());
+      }
+
       close();
     }
 

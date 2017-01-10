@@ -61,8 +61,12 @@
         <div class="need-help">
           <a class="link" href="https://github.com/SuperNETorg/Iguana-application/wiki/Full-Node-Setup-Guide" target="_blank">{{ 'FLOW.NEED_HELP' | lang }}</a>
         </div>
-        <button class="btn btn-block orange-gradient text-shadow row after-flow-btn"
-                ng-click="next()">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+        <button
+          ng-disabled="!isCoinsConnected()"
+          class="btn btn-block orange-gradient text-shadow row after-flow-btn"
+          ng-click="next()">
+          {{ 'CREATE_ACCOUNT.NEXT' | lang }}
+        </button>
       </div>
       <div class="clearfix"></div>
     </div>

@@ -23,6 +23,8 @@ angular.module('IguanaGUIApp')
     $storage['iguana-login-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
+    $scope.isCoinsConnected = isCoinsConnected;
+    $scope.isAppSetuped = isAppSetuped;
     $scope.isChanged = false;
     $scope.$auth = $auth;
     $scope.$state = $state;
@@ -69,6 +71,18 @@ angular.module('IguanaGUIApp')
 
     function getActiveCoins() {
       return $storage['iguana-login-active-coin'];
+    }
+
+    function getCCoins() {
+      return $storage['connected-coins'];
+    }
+
+    function isCoinsConnected() {
+      return Object.keys(getCCoins()).length > 0;
+    }
+
+    function isAppSetuped() {
+      return $storage.isAppSetuped && isCoinsConnected();
     }
 
     function isCoinSelected() {

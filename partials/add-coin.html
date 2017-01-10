@@ -2,7 +2,10 @@
   <section class="form-container add-new-coin-form-login-state unselectable">
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
       <i class="text-shadow cursor-pointer btn-back"
-         ng-class="{'bi_interface-arrow-left': !isIguana, 'bi_interface-cross': isIguana}"
+         ng-class="{
+           'bi_interface-arrow-left': !isIguana,
+           'bi_interface-cross': isIguana
+         }"
          ng-click="!isIguana ? back() : close()"></i>
       <div class="title">
         {{ 'ADD_COIN.WALLET_TYPE' | lang }}
@@ -14,7 +17,8 @@
       </div>
       <div class="quick-search col-xs-12">
         <i class="icon bi_tool-magnifier"></i>
-        <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
+        <input type="text" class="input text"
+               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
                ng-model="coinSearchModel"/>
       </div>
       <div class="supported-coins-repeater-container col-xs-12 col-md-10 col-md-offset-1">

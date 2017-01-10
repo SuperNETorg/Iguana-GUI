@@ -54,68 +54,96 @@ angular.module('IguanaGUIApp')
                                      ':' +
                                      this.getConf().server.iguanaPort;
 
-        $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
-          cache: false,
-          timeout: 500
-        })
-        .then(function(response) {
-          console.log(response);
-          if (dev.isDev && dev.sessions) {
-            for (var key in dev.sessions) {
-              if (navigator.userAgent.indexOf(key) > -1) {
-                $storage.isIguana = dev.sessions[key];
-              }
+
+        if (dev.mod == 'iguana') {
+          var coins = this.getConf().coins;
+          for (var i in coins) {
+            if (!this.coinsInfo[i]) {
+              this.coinsInfo[i] = [];
             }
 
-          } else {
-            $storage.isIguana = true;
-
-            if (dev.showConsoleMessages) {
-              if (!$storage.isIguana) {
-                console.log('running non-iguana env');
-              } else {
-                console.log('running iguana env');
-              }
-            }
+            this.coinsInfo[i].connection = false;
+            this.coinsInfo[i].RT = false;
+            this.coinsInfo[i].iguana = iguanaAddCoinParams[i] ? true : false;
+            this.coinsInfo[i].relayFee = iguanaMinFeeOverride[i];
           }
 
-          this.errorHandler(response);
+          this.checkLoopEnd(Object.keys(coins).length);
+
+          $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
+            cache: false,
+            timeout: 500
+          })
+            .then(
+              function(response) {
+                console.log(response);
+                if (dev.isDev && dev.sessions) {
+                  for (var key in dev.sessions) {
+                    if (navigator.userAgent.indexOf(key) > -1) {
+                      $storage.isIguana = dev.sessions[key];
+                    }
+                  }
+
+                } else {
+                  $storage.isIguana = true;
+
+                  if (dev.showConsoleMessages) {
+                    if (!$storage.isIguana) {
+                      console.log('running non-iguana env');
+                    } else {
+                      console.log('running iguana env');
+                    }
+                  }
+                }
+
+                this.errorHandler(response);
+                /*this.testCoinPorts()
+                  .then(function(coins) {
+                    deferred.resolve(coins);
+                  });*/
+              }.bind(this),
+              function (response) {
+                // non-iguana env
+                if (dev.isDev && dev.sessions) {
+                  for (var key in dev.sessions) {
+                    if (navigator.userAgent.indexOf(key) > -1) {
+                      $storage.isIguana = dev.sessions[key];
+
+                      /*if (dev.sessions[key]){
+                       $timeout(function () {
+                       $message.ngPrepMessageNoDaemonModal();
+                       }, 300);
+                       }*/
+                    }
+                  }
+                } else {
+                  $storage.isIguana = false;
+
+                  if (dev.showConsoleMessages) {
+                    if (!$storage.isIguana) {
+                      console.log('running non-iguana env');
+                    } else {
+                      console.log('running iguana env');
+                    }
+                  }
+                }
+
+                this.errorHandler(response);
+                /*this.testCoinPorts()
+                  .then(function (coins) {
+                    deferred.resolve(coins);
+                  });*/
+              }.bind(this)
+            );
+        }
+        else if (dev.mod == 'coind') {
+          $storage.isIguana = false;
+          $storage['connected-coins'] = {};
           this.testCoinPorts()
-              .then(function(coins) {
-                deferred.resolve(coins);
-              });
-        }.bind(this), function(response) {
-          // non-iguana env
-          if (dev.isDev && dev.sessions) {
-            for (var key in dev.sessions) {
-              if (navigator.userAgent.indexOf(key) > -1) {
-                $storage.isIguana = dev.sessions[key];
-
-                /*if (dev.sessions[key]){
-                  $timeout(function () {
-                    $message.ngPrepMessageNoDaemonModal();
-                  }, 300);
-                }*/
-              }
-            }
-          } else {
-            $storage.isIguana = false;
-
-            if (dev.showConsoleMessages) {
-              if (!$storage.isIguana) {
-                console.log('running non-iguana env');
-              } else {
-                console.log('running iguana env');
-              }
-            }
-          }
-
-          this.errorHandler(response);
-          this.testCoinPorts()
-              .then(function(coins) {
-                deferred.resolve(coins);
-              });
-        }.bind(this));
+            .then(function(coins) {
+              deferred.resolve(coins);
+            });
+        }
 
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
@@ -204,7 +232,10 @@ angular.module('IguanaGUIApp')
             );
           }
 
-          if (response.data.result.blocks === networkCurrentHeight || coindCheckRTResponse) {
+          if (
+            response.data.result.blocks === networkCurrentHeight ||
+            coindCheckRTResponse
+          ) {
             this.isRT = true;
             this.coinsInfo[index].RT = true;
           } else {
@@ -401,9 +432,20 @@ angular.module('IguanaGUIApp')
             response.data.result && response.data.result.difficulty ||
             response.data.result === 'success'
           )) {
-          if (dev.showConsoleMessages && dev.isDev) console.log('portp2p con test passed');
-          if (dev.showConsoleMessages && dev.isDev) console.log(index + ' daemon is detected');
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('portp2p con test passed');
+          }
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log(index + ' daemon is detected');
+          }
+
           self.coinsInfo[index].connection = true;
+
+          if (!$storage['connected-coins']) {
+            $storage['connected-coins'] = {};
+          }
+
+          $storage['connected-coins'][index] = self.getConf().coins[index];
 
           self.testCoinIsNotIguanaMode(response, index);
         } else {
