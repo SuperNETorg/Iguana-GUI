@@ -16,6 +16,7 @@ body.modal-open .dashboard {
  */
 html {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 html.modal-open {
   overflow-y: hidden;
