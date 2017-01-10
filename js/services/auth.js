@@ -125,6 +125,8 @@ angular.module('IguanaGUIApp')
             } else {
               deferred.resolve(data);
             }
+          }, function (response) {
+            //TODO: Iguana connection error messages are here
           });
 
         return deferred.promise;
@@ -146,8 +148,26 @@ angular.module('IguanaGUIApp')
         $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
           $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
             self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
-        }, function () {
-          $message.ngPrepMessageModal($filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING'), 'red');
+        }, function (response) {
+          var message = '',
+              color = '';
+
+          if (
+            response.data &&
+            response.data.message &&
+            response.data.message.indexOf('connect ECONNREFUSED') !== -1
+          ) {
+            message =  $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
+            color = 'red';
+          } else if (response.status === -1) {
+            message =  $filter('lang')($storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
+            color = 'red';
+          }
+
+          $message.ngPrepMessageModal(
+            message,
+            color
+          );
         });
 
         function onResolve(data) {
@@ -257,7 +277,7 @@ angular.module('IguanaGUIApp')
       }
 
       if (coinsSelectedToAdd.length) {
-        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
+        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve, onReject);
       } else {
         defer.resolve(true);
       }
@@ -289,6 +309,10 @@ angular.module('IguanaGUIApp')
         self.failedCoinsOutput = util.trimComma(self.failedCoinsOutput);
 
         defer.resolve(coinResponses);
+      }
+
+      function onReject(response) {
+        defer.reject(response);
       }
 
       return defer.promise;
