@@ -1042,18 +1042,43 @@ angular.module('IguanaGUIApp')
     };
 
     this.getFullApiRoute = function(method, conf, coin) {
-      if (conf) {
-        return $storage.isIguana ? (this.getConf().server.protocol +
-          this.getConf().server.ip + ':' +
-          conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
-          this.getConf().server.ip + ':' +
-          (conf.coindPort ? conf.coindPort : conf.portp2p));
+      if (dev && dev.isTest) {
+        var reroute = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'listtransactions' || method === 'sendtoaddress') ? settings.proxy : this.getConf().server.protocol;
+        var reroutePort = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee' || method === 'listtransactions' || method === 'sendtoaddress') ? this.getConf(false, coin).server.port : this.getConf(true).server.port + '/api/bitcoinrpc/' + method;
+
+        if (coin === 'sys' && (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee' || method === 'listtransactions' || method === 'sendtoaddress')) reroutePort = 8368;
+        console.log(reroutePort);
+        console.log(reroute + ' ' + method);
+
+        if (conf) {
+          var reroutePorfConf = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee') ? (conf.coindPort ? conf.coindPort : conf.portp2p) : conf.portp2p;
+
+          return $storage['isIguana'] ? (reroute +
+            this.getConf().server.ip + ':' +
+            reroutePorfConf + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            this.getConf().server.ip + ':' +
+            (conf.coindPort ? conf.coindPort : conf.portp2p));
+        } else {
+          return $storage['isIguana'] ? (reroute +
+            this.getConf().server.ip + ':' +
+            reroutePort) : (settings.proxy +
+            this.getConf().server.ip + ':' +
+            this.getConf(false, coin).server.port);
+        }
       } else {
-        return $storage.isIguana ? (this.getConf().server.protocol +
-          this.getConf().server.ip + ':' +
-          this.getConf(true).server.port /*getConf(false, coin).server.port*/ + '/api/bitcoinrpc/' + method) : (settings.proxy +
-          this.getConf().server.ip + ':' +
-          this.getConf(false, coin).server.port);
+        if (conf) {
+          return $storage.isIguana ? (this.getConf().server.protocol +
+            this.getConf().server.ip + ':' +
+            conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            this.getConf().server.ip + ':' +
+            (conf.coindPort ? conf.coindPort : conf.portp2p));
+        } else {
+          return $storage.isIguana ? (this.getConf().server.protocol +
+            this.getConf().server.ip + ':' +
+            this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            this.getConf().server.ip + ':' +
+            this.getConf(false, coin).server.port);
+        }
       }
     };
 
