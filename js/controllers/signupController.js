@@ -26,6 +26,7 @@ angular.module('IguanaGUIApp')
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
     $scope.coins = [];
+    $scope.isIguana = $storage.isIguana;
     $scope.passphrase = '';
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $scope.passphraseCount = $storage.isIguana ? 24 : 12;
@@ -118,7 +119,7 @@ angular.module('IguanaGUIApp')
           message =  $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
           color = 'red';
         } else if (response === -1) {
-          message =  $filter('lang')('MESSAGE.PROXY_IS_NOT_SET_UP');
+          message =  $filter('lang')($scope.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
           color = 'red';
         }
         $message.ngPrepMessageModal(

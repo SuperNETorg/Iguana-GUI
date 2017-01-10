@@ -173,6 +173,7 @@ var lang = {
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
       'NO_DAEMON_IS_RUNNING':'No daemon is running',
       'PROXY_IS_NOT_SET_UP':' proxy is not set up',
+      'IGUANA_IS_NOT_SET_UP':' Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
       'X_WALLET_IS_CREATED': ' wallet is created. Login to access it.',
       'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',
