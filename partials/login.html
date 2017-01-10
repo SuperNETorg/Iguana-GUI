@@ -23,11 +23,11 @@
                 </div>
                 <div class="login-buttons-container col-xs-12">
                   <div class="row">
-                    <button class="btn row btn-signin" ng-click="openFlowModal('signin')">
+                    <button class="btn row btn-signin" ng-click="(!isIguana ? openFlowModal('signin') : openCoinModal('signin'))">
                       {{ 'LOGIN.LOGIN' | lang }}
                     </button>
                     <div class="login-or-delim unselectable">{{ 'LOGIN.OR' | lang }}</div>
-                    <button class="btn row btn-signup" ng-click="openFlowModal('signup')">
+                    <button class="btn row btn-signup" ng-click="(!isIguana ? openFlowModal('signup') : openCoinModal('signup'))">
                       {{ 'LOGIN.CREATE_ACCOUNT' | lang }}
                     </button>
                   </div>

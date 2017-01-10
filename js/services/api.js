@@ -487,10 +487,10 @@ angular.module('IguanaGUIApp')
       /*if (totalCoinsRunning === 0 && $state.current.name !== 'login') {
         tempOutOfSync.html($filter('lang')('EXPERIMENTAL.SOMETHING_WENT_WRONG'));
         tempOutOfSync.removeClass('hidden');
-      }*/
+      }
       if (totalCoinsRunning === 0) {
         $message.ngPrepMessageNoDaemonModal();
-      }
+      }*/
 
       // out of sync message
       var outOfSyncCoinsList = '',
@@ -561,16 +561,22 @@ angular.module('IguanaGUIApp')
           }
         }
       }.bind(this), function(response) {
-        if (response.data && response.data.error.code) {
+        if (response.data) {
+          if (response.data.error.code) {
             deferred.reject(response.data.error.code);
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log(response.statusText);
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response.statusText);
+            }
+          } else {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response);
+            }
+            deferred.reject(response.data);
           }
         } else {
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log(response);
+          if (response.status === -1) {
+            deferred.reject(response.status);
           }
-          deferred.reject(response);
         }
       }.bind(this));
 

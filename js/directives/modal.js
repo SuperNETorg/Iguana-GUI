@@ -24,7 +24,7 @@ angular.module('IguanaGUIApp')
             appendTo: angular.element(document.querySelector('.flow-modal'))
           },
           coinModal: {
-            animation: false,
+            animation: scope.isIguana ? true :false,
             ariaLabelledBy: 'modal-title',
             size: 'full',
             ariaDescribedBy: 'modal-body',

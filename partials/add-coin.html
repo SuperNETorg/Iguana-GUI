@@ -1,7 +1,9 @@
 <script type="text/ng-template" id="partials/add-coin.html">
   <section class="form-container add-new-coin-form-login-state unselectable">
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
-      <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="back()"></i>
+      <i class="text-shadow cursor-pointer btn-back"
+         ng-class="{'bi_interface-arrow-left': !isIguana, 'bi_interface-cross': isIguana}"
+         ng-click="!isIguana ? back() : close()"></i>
       <div class="title">
         {{ 'ADD_COIN.WALLET_TYPE' | lang }}
       </div>

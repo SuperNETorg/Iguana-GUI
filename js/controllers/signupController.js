@@ -104,19 +104,27 @@ angular.module('IguanaGUIApp')
       }
 
       function onReject(response) {
+        var message = '',
+            color = '';
         if (response === -15) {
-          $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'),
-            'red'
-          );
+          message = $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED');
+          color = 'red';
 
           $state.go('login');
-        }else if(response.statusText=='Bad Gateway') {
-          $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING'),
-            'red'
-          );
+        } else if (
+          response.message &&
+          response.message.indexOf('connect ECONNREFUSED') !== -1
+        ) {
+          message =  $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
+          color = 'red';
+        } else if (response === -1) {
+          message =  $filter('lang')('MESSAGE.PROXY_IS_NOT_SET_UP');
+          color = 'red';
         }
+        $message.ngPrepMessageModal(
+          message,
+          color
+        );
       }
     }
 
@@ -151,7 +159,7 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function openSignupCoinModal() {
+    function openCoinModal() {
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
       $scope.modal.coinModal.appendTo = angular.element(document.querySelector('.auth-add-coin-modal'));
@@ -176,8 +184,9 @@ angular.module('IguanaGUIApp')
     }
 
     function goBack() {
+      $scope.modal.coinModal.animation = false;
       $storage['iguana-login-active-coin'] = {};
-      $state.go('login').then(openSignupCoinModal);
+      $state.go('login').then(openCoinModal);
     }
 
     function destroy() {

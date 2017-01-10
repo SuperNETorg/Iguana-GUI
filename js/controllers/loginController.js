@@ -45,6 +45,7 @@ angular.module('IguanaGUIApp')
     $scope.isCoinSelected = isCoinSelected;
     $scope.getActiveCoins = getActiveCoins;
     $scope.openFlowModal = openFlowModal;
+    $scope.openCoinModal = openCoinModal;
     $scope.karma = { // tests
       setTitle: setTitle,
       stateChangeStart: stateChangeStart
@@ -105,10 +106,15 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function openLoginCoinModal() {
+    function openCoinModal(type) {
+      if (type === 'signin') {
+        $storage['iguana-login-active-coin'] = {};
+        $storage['iguana-active-coin'] = {};
+      }
+
       $scope.modal.coinModal.resolve = {
         'type': function() {
-          return 'signin';
+          return type;
         },
         'modal': function () {
           return $scope.modal;
@@ -119,12 +125,16 @@ angular.module('IguanaGUIApp')
 
       modalInstance.result.then(resultPromise);
 
-      function resultPromise(event, data) {
-        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
-
-        $scope.coins = data;
-        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
-        $state.go('login.step2');
+      function resultPromise(data) {
+        if (type === 'signin') {
+          var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+          $scope.coins = data;
+          $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+          $state.go('login.step2');
+        } else {
+          $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
+          $state.go('signup.step1');
+        }
       }
 
       $scope.karma.modal = modalInstance; // tests
@@ -159,7 +169,7 @@ angular.module('IguanaGUIApp')
     function goBack() {
       $storage['iguana-login-active-coin'] = {};
       $state.go('login');
-      openLoginCoinModal();
+      openCoinModal('signin');
     }
   }
 ]);

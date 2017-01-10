@@ -114,8 +114,7 @@ angular.module('IguanaGUIApp')
          messageModal.modal('hide');
          }, 250);*/
 
-        var messageModal = angular.element('.iguana-modal');
-
+        var messageModal = angular.element('.iguana-modal'),
         iguanaNullReturnCount = 0;
         messageModal.removeClass('in');
 
