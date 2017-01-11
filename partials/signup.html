@@ -71,7 +71,7 @@
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
               <button ng-disabled="!passphrase.length"
-                      class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="$state.go('signup.step3')">
+                      class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="validateStep3()">
                 {{ 'CREATE_ACCOUNT.CREATE' | lang }}
               </button>
             </div>

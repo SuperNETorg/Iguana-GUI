@@ -38,6 +38,7 @@ angular.module('IguanaGUIApp')
     $scope.goBack = goBack;
     $scope.verifyPass = verifyPass;
     $scope.getActiveCoins = getActiveCoins;
+    $scope.validateStep3 = validateStep3;
     $scope.$on('$destroy', destroy);
     $scope.karma = { // tests
       onInit: onInit,
@@ -194,6 +195,20 @@ angular.module('IguanaGUIApp')
       $storage.passphrase = '';
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
+    }
+
+    function validateStep3() {
+      if ($scope.passphrase != $storage.passphrase) {
+        var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3');
+        var color = 'red';
+
+        $message.ngPrepMessageModal(
+          message,
+          color
+        );
+      } else {
+        $state.go('signup.step3');
+      }
     }
   }
 ]);

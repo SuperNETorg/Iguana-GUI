@@ -24,7 +24,7 @@ angular.module('IguanaGUIApp')
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isCoinsConnected = isCoinsConnected;
-    $scope.isAppSetuped = isAppSetuped;
+    $scope.isAppSetup = isAppSetup;
     $scope.isChanged = false;
     $scope.$auth = $auth;
     $scope.$state = $state;
@@ -73,16 +73,16 @@ angular.module('IguanaGUIApp')
       return $storage['iguana-login-active-coin'];
     }
 
-    function getCCoins() {
+    function getConnectedCoins() {
       return $storage['connected-coins'];
     }
 
     function isCoinsConnected() {
-      return Object.keys(getCCoins()).length > 0;
+      return Object.keys(getConnectedCoins()).length > 0;
     }
 
-    function isAppSetuped() {
-      return $storage.isAppSetuped && isCoinsConnected();
+    function isAppSetup() {
+      return $storage.isAppSetup && isCoinsConnected();
     }
 
     function isCoinSelected() {
@@ -176,7 +176,7 @@ angular.module('IguanaGUIApp')
       return pageTitle;
     }
 
-    function isChanged() {
+     function isChanged() {
       $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
       $scope.isChanged = true;
     }

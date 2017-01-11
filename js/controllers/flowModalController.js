@@ -11,7 +11,7 @@ angular.module('IguanaGUIApp')
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
     $scope.next = next;
-    $scope.getCCoins = getCCoins;
+    $scope.getConnectedCoins = getConnectedCoins;
     $scope.isCoinsConnected = isCoinsConnected;
     $scope.close = close;
     $scope.type = type;
@@ -25,7 +25,7 @@ angular.module('IguanaGUIApp')
 
     function next() {
       if (isCoinsConnected()) {
-        $storage.isAppSetuped = true;
+        $storage.isAppSetup = true;
         $uibModalInstance.close();
 
         $uibModalInstance.closed.then(function() {
@@ -92,12 +92,12 @@ angular.module('IguanaGUIApp')
       $scope.karma.modal = modalInstance; // tests
     }
 
-    function getCCoins() {
+    function getConnectedCoins() {
       return $storage['connected-coins'];
     }
 
     function isCoinsConnected() {
-      return Object.keys(getCCoins()).length > 0;
+      return Object.keys(getConnectedCoins()).length > 0;
     }
   }
 ]);
