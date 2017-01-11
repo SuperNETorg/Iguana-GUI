@@ -342,6 +342,20 @@ body {
                   font-size: 2.6em;
                 }
               }
+              /* DEM tile fix */
+              .coin.dem {
+                padding: 24px 0 10px 0;
+
+                .icon {
+                  position: relative;
+                  top: -11px;
+                }
+                .name {
+                  padding: 0;
+                  position: relative;
+                  top: 2px;
+                }
+              }
             }
           }
         }
