@@ -121,7 +121,7 @@ angular.module('IguanaGUIApp')
 
               this.errorHandler(response);
               this.testCoinPorts()
-                .then(function (coins) {
+                .then(function(coins) {
                   deferred.resolve(coins);
                 });
             }.bind(this)

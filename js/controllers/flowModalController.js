@@ -97,7 +97,9 @@ angular.module('IguanaGUIApp')
     }
 
     function isCoinsConnected() {
-      return Object.keys(getConnectedCoins()).length > 0;
+      var coins = getConnectedCoins();
+
+      return coins && Object.keys(coins).length > 0;
     }
   }
 ]);
