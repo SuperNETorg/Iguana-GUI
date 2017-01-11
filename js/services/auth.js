@@ -66,6 +66,7 @@ angular.module('IguanaGUIApp')
           if (!self._userIdentify()) {
             if (!inAuth) {
               $state.go('login');
+              $storage['dashboard-logged-in-coins'] = {};
             }
           } else {
             if (!inDashboard && !$rootScope.allowLoginStateChange) {
