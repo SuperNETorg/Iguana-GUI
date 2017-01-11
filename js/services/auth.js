@@ -88,7 +88,7 @@ angular.module('IguanaGUIApp')
           $storage['isIguana'] ?
             settings.defaultSessionLifetimeIguana :
             settings.defaultSessionLifetimeCoind
-        ) : true)
+        ) : true);
     };
 
     this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
@@ -161,10 +161,10 @@ angular.module('IguanaGUIApp')
             response.data.message &&
             response.data.message.indexOf('connect ECONNREFUSED') !== -1
           ) {
-            message =  $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
+            message = $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
             color = 'red';
           } else if (response.status === -1) {
-            message =  $filter('lang')($storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
+            message = $filter('lang')($storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
             color = 'red';
           }
 
