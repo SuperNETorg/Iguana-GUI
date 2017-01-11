@@ -14,8 +14,9 @@ angular.module('IguanaGUIApp')
   'vars',
   'type',
   'modal',
+  '$window',
   function($scope, $state, $uibModal, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars, type, modal) {
+            $rootScope, $timeout, vars, type, modal, $window) {
 
     $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
@@ -156,7 +157,7 @@ angular.module('IguanaGUIApp')
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
 
-      if (!$storage.isIguana)
+      //if (!$storage.isIguana)
         $uibModalInstance.close(constructCoinRepeater());
     }
 
@@ -203,7 +204,22 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.$on('$destroy', function() {
+      angular.element(document.querySelector('.auth-add-coin-modal .modal-content')).unbind('scroll');
       delete $rootScope.$$listeners['modal.dismissed'];
     });
+
+    // reveal/hide bottom gradient
+    $timeout(function() {
+      var modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
+      angular.element(modalContainer).bind('scroll', function(event) {
+        var gradientElement = angular.element(document.querySelector('.auth-add-coin-modal .container-arrow'));
+
+        if (modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
+          gradientElement.css({ 'opacity': 0 });
+        } else {
+          gradientElement.css({ 'opacity': 1 });
+        }
+      });
+    }, 500);
   }
 ]);

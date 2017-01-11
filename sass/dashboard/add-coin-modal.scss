@@ -56,8 +56,10 @@ body .add-coin-login-form .modal-add-coin-login-form,
   bottom: 0;
   height: 40%;
   left: 0;
+  opacity: 1;
   pointer-events: none;
   position: fixed;
+  transition: opacity 0.25s;
   width: 100%;
   z-index: 1;
 }
