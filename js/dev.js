@@ -21,7 +21,8 @@
       'doge': 'guide blossom jaguar final cushion lottery copy average guitar empower slam code before hockey park tilt differ flee century trick finish decide remember bone',
       'ltc': 'area march pause step law shrug curve dinosaur gown deny inspire matter chest maximum often usual lion purse wave squirrel easy favorite mutual width',
       'nmc': 'table fall scissors hammer champion inmate exhibit below fault post lock spatial early frown reveal balcony toward dirt ginger enable mobile scrub budget embrace',
-      'kmd': 'radar hint palm taste guess sweet exhaust start concert aspect burger first'
+      'kmd': 'radar hint palm taste guess sweet exhaust start concert aspect burger first',
+      'mzc': 'almost lecture live tongue dial fluid duty power axis dizzy example social'
     },
     'iguana': 'lime lime'
   };
@@ -34,17 +35,15 @@
     }
   };
 
-  dev.mod = 'iguana'; // coind iguana
-
   // for simultaneous dev in iguana and non-iguana modes
   dev.sessions = {
     'Chrome': true, // true - iguana, false - coind
     'Firefox': true,
-    'Safari': true,
+    'Safari': true
   };
 
 // dev
-var sendDataTest = { 'btcd' : { address: 'R9XTAMpr2Sm4xxUQA1g1brxPZGaTvj9xqp', val: '0.00001', note: 'gui test send to kashi\'s addr' },
+var sendDataTest = { 'btcd': { address: 'R9XTAMpr2Sm4xxUQA1g1brxPZGaTvj9xqp', val: '0.00001', note: 'gui test send to kashi\'s addr' },
                      'sys': { address: '127a42hPqaUy6zBbgfo5HHh7G9WGBQYQR4', val: '0.00001', note: 'gui test send to ed888 addr' } };
 
 function loadTestSendData(coin) {

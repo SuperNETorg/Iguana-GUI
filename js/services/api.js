@@ -54,7 +54,6 @@ angular.module('IguanaGUIApp')
                                      ':' +
                                      this.getConf().server.iguanaPort;
 
-        //if (dev.mod === 'iguana') {
           var coins = this.getConf().coins;
           for (var i in coins) {
             if (!this.coinsInfo[i]) {
@@ -75,7 +74,6 @@ angular.module('IguanaGUIApp')
           })
           .then(
             function(response) {
-              console.log(response);
               if (dev.isDev && dev.sessions) {
                 for (var key in dev.sessions) {
                   if (navigator.userAgent.indexOf(key) > -1) {
@@ -107,12 +105,6 @@ angular.module('IguanaGUIApp')
                 for (var key in dev.sessions) {
                   if (navigator.userAgent.indexOf(key) > -1) {
                     $storage.isIguana = dev.sessions[key];
-
-                    /*if (dev.sessions[key]){
-                     $timeout(function () {
-                     $message.ngPrepMessageNoDaemonModal();
-                     }, 300);
-                     }*/
                   }
                 }
               } else {
@@ -134,15 +126,6 @@ angular.module('IguanaGUIApp')
                 });
             }.bind(this)
           );
-        /*} else if (dev.mod === 'coind') {
-          $storage.isIguana = false;
-          $storage['connected-coins'] = {};
-          this.testCoinPorts()
-            .then(function(coins) {
-              deferred.resolve(coins);
-            });
-        }*/
-
       } else {
         if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
         deferred.resolve(null);
