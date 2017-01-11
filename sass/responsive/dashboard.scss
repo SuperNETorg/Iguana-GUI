@@ -167,6 +167,9 @@ body {
               }
             }
           }
+          .currency-content {
+            padding-top: 100px;
+          }
         }
       }
     }
@@ -222,7 +225,7 @@ body {
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
     .reference-currency-main .currency-content .container-left {
-      padding-top: 134px;
+      padding-top: 10px;
     }
     .app-container {
       .app-container-inner {
@@ -593,13 +596,6 @@ body {
         max-width: 380px;
         min-width: 90%;
       }
-    }
-
-  }
-
-  @media only screen and (max-width: 440px) {
-    .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
-      padding-top: 10px;
     }
   }
 
