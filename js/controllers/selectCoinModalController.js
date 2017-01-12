@@ -15,8 +15,9 @@ angular.module('IguanaGUIApp')
   'type',
   'modal',
   '$window',
+  '$auth',
   function($scope, $state, $uibModal, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars, type, modal, $window) {
+            $rootScope, $timeout, vars, type, modal, $window, $auth) {
 
     $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
@@ -157,8 +158,7 @@ angular.module('IguanaGUIApp')
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
 
-      //if (!$storage.isIguana)
-        $uibModalInstance.close(constructCoinRepeater());
+      $uibModalInstance.close(constructCoinRepeater());
     }
 
     function back() {
@@ -205,6 +205,7 @@ angular.module('IguanaGUIApp')
 
     $scope.$on('$destroy', function() {
       angular.element(document.querySelector('.auth-add-coin-modal .modal-content')).unbind('scroll');
+      angular.element($window).unbind('resize');
       delete $rootScope.$$listeners['modal.dismissed'];
     });
 
@@ -214,8 +215,8 @@ angular.module('IguanaGUIApp')
           modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
 
       function applyGradient() {
-        if (document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
-            modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
+        if (document.querySelector('.auth-add-coin-modal .form-content') && document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
+            modalContainer && modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
           gradientElement.css({ 'opacity': 0 });
         } else {
           gradientElement.css({ 'opacity': 1 });

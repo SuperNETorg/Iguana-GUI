@@ -122,7 +122,18 @@ angular.module('IguanaGUIApp')
 
         modalInstance.closed.then(function() {
           $rootScope.allowLoginStateChange = true;
-          $state.go('login.step2');
+
+          if ($storage.isIguana) {
+            $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
+            $auth.checkIguanaCoinsSelection(true)
+              .then(function(response) {
+                constructAccountCoinRepeater();
+              }, function(reason) {
+                console.log('request failed: ' + reason);
+              });
+          } else {
+            $state.go('login.step2');
+          }
         });
       }
 

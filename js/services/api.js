@@ -749,7 +749,7 @@ angular.module('IguanaGUIApp')
         return conf;
       }
 
-      if ($storage.activeCoin && !discardCoinSpecificPort) {
+      if ($storage.activeCoin && $storage.activeCoin.length > 1 && !discardCoinSpecificPort) {
         conf.server.port = conf.coins[$storage.activeCoin].portp2p;
 
         if (!$storage.isIguana)

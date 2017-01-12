@@ -99,7 +99,6 @@ angular.module('IguanaGUIApp')
       } else if ($state.current.name === 'login.step2') {
         $rootScope.background = true;
       }
-      $rootScope.allowLoginStateChange = false;
     }
 
     function openFlowModal(type) {
