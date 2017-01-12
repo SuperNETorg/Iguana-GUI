@@ -210,10 +210,24 @@ angular.module('IguanaGUIApp')
 
     // reveal/hide bottom gradient
     $timeout(function() {
-      var modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
-      angular.element(modalContainer).bind('scroll', function(event) {
-        var gradientElement = angular.element(document.querySelector('.auth-add-coin-modal .container-arrow'));
+      var gradientElement = angular.element(document.querySelector('.auth-add-coin-modal .container-arrow')),
+          modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
 
+      function applyGradient() {
+        if (document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight) {
+          gradientElement.css({ 'opacity': 0 });
+        } else {
+          gradientElement.css({ 'opacity': 1 });
+        }
+      }
+
+      applyGradient();
+
+      angular.element($window).bind('resize', function(event) {
+        applyGradient();
+      });
+
+      angular.element(modalContainer).bind('scroll', function(event) {
         if (modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
           gradientElement.css({ 'opacity': 0 });
         } else {
