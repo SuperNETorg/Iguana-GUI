@@ -93,7 +93,7 @@ angular.module('IguanaGUIApp')
     }
 
     function getConnectedCoins() {
-      return $storage['connected-coins'];
+      return $storage['connected-coins'] || {};
     }
 
     function isCoinsConnected() {
