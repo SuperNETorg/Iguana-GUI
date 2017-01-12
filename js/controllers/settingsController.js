@@ -114,7 +114,7 @@ angular.module('IguanaGUIApp')
               }
             });
             // default to min fee if altcoin is used
-            if (coinName !== 'btc') $scope.checkedAmountType = $filter('lang')('SEND.FEE_MIN');
+            if (coinName !== 'BTC') $scope.checkedAmountType = $filter('lang')('SEND.FEE_MIN');
 
             $scope.items = [{
               id: 0,
@@ -131,7 +131,7 @@ angular.module('IguanaGUIApp')
               amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
               feeMinTime: feeTime.low.min,
               feeMaxTime: feeTime.low.max,
-              state: coinName === 'btc' ? 'enabled' : 'disabled'
+              state: coinName === 'BTC' ? 'enabled' : 'disabled'
             }, {
               id: 2,
               name: $filter('lang')('SEND.FEE_NORMAL'),
@@ -139,7 +139,7 @@ angular.module('IguanaGUIApp')
               amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
               feeMinTime: feeTime.normal.min,
               feeMaxTime: feeTime.normal.max,
-              state: coinName === 'btc' ? 'enabled' : 'disabled'
+              state: coinName === 'BTC' ? 'enabled' : 'disabled'
             }, {
               id: 3,
               name: $filter('lang')('SEND.FEE_HIGH'),
@@ -147,7 +147,7 @@ angular.module('IguanaGUIApp')
               amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
               feeMinTime: feeTime.high.min,
               feeMaxTime: feeTime.high.max,
-              state: coinName === 'btc' ? 'enabled' : 'disabled'
+              state: coinName === 'BTC' ? 'enabled' : 'disabled'
             }];
       }, function(data) {
         console.log(data);
