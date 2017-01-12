@@ -54,24 +54,10 @@ angular.module('IguanaGUIApp')
                                      ':' +
                                      this.getConf().server.iguanaPort;
 
-          var coins = this.getConf().coins;
-          for (var i in coins) {
-            if (!this.coinsInfo[i]) {
-              this.coinsInfo[i] = [];
-            }
-
-            this.coinsInfo[i].connection = false;
-            this.coinsInfo[i].RT = false;
-            this.coinsInfo[i].iguana = iguanaAddCoinParams[i] ? true : false;
-            this.coinsInfo[i].relayFee = iguanaMinFeeOverride[i];
-          }
-
-          this.checkLoopEnd(Object.keys(coins).length);
-
-          $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
-            cache: false,
-            timeout: 500
-          })
+        $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
+          cache: false,
+          timeout: 500
+        })
           .then(
             function(response) {
               if (dev.isDev && dev.sessions) {

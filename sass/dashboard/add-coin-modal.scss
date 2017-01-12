@@ -60,7 +60,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
   pointer-events: none;
   position: fixed;
   transition: opacity 0.25s;
-  width: 100%;
+  width: 99%;
   z-index: 1;
 }
 .coin-select-modal,
@@ -146,6 +146,19 @@ body .add-coin-login-form .modal-add-coin-login-form,
         .help-block:first-child {
           font-weight: 400;
           line-height: 1.1;
+          overflow: hidden;
+          position: relative;
+          white-space: pre;
+
+          &::after {
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, rgb(245, 248, 251) 100%);
+            content: '';
+            height: 100%;
+            position: absolute;
+            right: -10%;
+            top: 0;
+            width: 40%;
+          }
         }
         .help-block:last-child {
           color: $add-coin-modal-help-block-color;
