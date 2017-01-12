@@ -15,9 +15,8 @@ angular.module('IguanaGUIApp')
   'type',
   'modal',
   '$window',
-  '$auth',
   function($scope, $state, $uibModal, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars, type, modal, $window, $auth) {
+            $rootScope, $timeout, vars, type, modal, $window) {
 
     $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
