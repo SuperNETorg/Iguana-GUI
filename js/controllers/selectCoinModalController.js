@@ -214,7 +214,8 @@ angular.module('IguanaGUIApp')
           modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
 
       function applyGradient() {
-        if (document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight) {
+        if (document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
+            modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
           gradientElement.css({ 'opacity': 0 });
         } else {
           gradientElement.css({ 'opacity': 1 });
