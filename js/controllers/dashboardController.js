@@ -59,7 +59,6 @@ angular.module('IguanaGUIApp')
     $scope.receivedObject = undefined;
     $scope.$sendCoinInstance = {};
     $scope.openAddCoinModal = openAddCoinModal;
-    $scope.openAddCoinLoginModal = openAddCoinLoginModal;
     $scope.openReceiveCoinModal = openReceiveCoinModal;
     $scope.openSendCoinModal = openSendCoinModal;
     $scope.setActiveCoin = setActiveCoin;
@@ -96,48 +95,7 @@ angular.module('IguanaGUIApp')
       delete $storage['dashboard-pending-coins'];
     }
 
-    var modalInstance = {},
-        addCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          size: 'full',
-          controller: 'selectCoinModalController',
-          templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
-        },
-        addCoinLoginModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          controller: 'addCoinLoginModalController',
-          templateUrl: 'partials/add-coin-login.html',
-          appendTo: angular.element(document.querySelector('.add-coin-login-container')),
-          resolve: {
-            receivedObject: function() {
-              return $scope.receivedObject;
-            }
-          }
-        },
-        receiveCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          size: 'lg',
-          controller: 'receiveCoinModalController',
-          templateUrl: 'partials/receive-coin.html',
-          appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
-        },
-        sendCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          size: 'lg',
-          controller: 'sendCoinModalController',
-          templateUrl: 'partials/send-coin.html',
-          appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
-        };
-
+    var modalInstance = {};
     // Modals start
     function openAddCoinModal() {
       $scope.modal.coinModal.resolve = {
@@ -171,24 +129,24 @@ angular.module('IguanaGUIApp')
       $scope.karma.modal = modalInstance; // tests
     }
 
-    function openAddCoinLoginModal() {
-      modalInstance = $uibModal.open(addCoinLoginModal);
-
-      modalInstance.result.then(onDone);
-
-      function onDone(receivedObject) {
-        if (receivedObject) {
-          constructAccountCoinRepeater(); // TODO: fix, not effecient
-        }
-      }
-    }
-
     function openReceiveCoinModal() {
-      modalInstance = $uibModal.open(receiveCoinModal);
+      $scope.modal.receiveCoinModal.resolve = {
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      modalInstance = $uibModal.open($scope.modal.receiveCoinModal);
     }
 
     function openSendCoinModal() {
-      modalInstance = $uibModal.open(sendCoinModal);
+      $scope.modal.sendCoinModal.resolve = {
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      modalInstance = $uibModal.open($scope.modal.sendCoinModal);
     }
     // Modals end
 

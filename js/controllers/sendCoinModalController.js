@@ -14,9 +14,12 @@ angular.module('IguanaGUIApp')
   'vars',
   '$message',
   '$http',
-  function($scope, $uibModalInstance, util, $storage, $state, $api, $uibModal, $filter, $rates, vars, $message, $http) {
+  'modal',
+  function($scope, $uibModalInstance, util, $storage, $state, $api,
+           $uibModal, $filter, $rates, vars, $message, $http, modal) {
     $scope.isIguana = $storage.isIguana;
     $scope.util = util;
+    $scope.modal = modal;
     $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     $scope.checkModel = {};
     $scope.radioModel = true;
@@ -103,20 +106,14 @@ angular.module('IguanaGUIApp')
     $scope.openSendCoinPassphraseModal = function() {
       angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).addClass('hidden');
       angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).addClass('hidden');
+      $scope.modal.sendCoinPassphraseModal.resolve = {
+        receivedObject: function() {
+          return $scope.receivedObject;
+        }
+      };
 
-      var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            controller: 'sendCoinPassphraseModalController',
-            templateUrl: 'partials/send-coin-passphrase.html',
-            appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
-            resolve: {
-              receivedObject: function() {
-                return $scope.receivedObject;
-              }
-            }
-          });
+      var modalInstance = $uibModal.open($scope.modal.sendCoinPassphraseModal);
+
       modalInstance.result.then(onDone);
 
       modalInstance.closed.then(function() {
@@ -128,7 +125,9 @@ angular.module('IguanaGUIApp')
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
         angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
 
-        if (receivedObject) execSendCoinCall();
+        if (receivedObject) {
+          execSendCoinCall();
+        }
       }
     };
 
@@ -315,8 +314,7 @@ angular.module('IguanaGUIApp')
     // TODO: add sendcoin code:-5 case, wrong coin address
     //                    code:-6, insufficient funds
     function execSendCoinCall() {
-      var setTxFeeResult = false,
-          txDataToSend = {
+      var txDataToSend = {
             address: $scope.sendCoin.address,
             amount: $scope.sendCoin.amount,
             note: $scope.sendCoin.note

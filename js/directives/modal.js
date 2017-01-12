@@ -31,7 +31,38 @@ angular.module('IguanaGUIApp')
             controller: 'selectCoinModalController',
             templateUrl: 'partials/add-coin.html',
             appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
-          }
+          },
+          sendCoinModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            size: 'lg',
+            controller: 'sendCoinModalController',
+            templateUrl: 'partials/send-coin.html',
+            appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
+          },
+          receiveCoinModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            size: 'lg',
+            controller: 'receiveCoinModalController',
+            templateUrl: 'partials/receive-coin.html',
+            appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
+          },
+          sendCoinPassphraseModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            controller: 'sendCoinPassphraseModalController',
+            templateUrl: 'partials/send-coin-passphrase.html',
+            appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
+            resolve: {
+              receivedObject: function () {
+                return $scope.receivedObject;
+              }
+            }
+          },
         };
 
         $uibModalStack.open = function(modalInstance, modal) {
