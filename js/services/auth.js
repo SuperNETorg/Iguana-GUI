@@ -119,7 +119,8 @@ angular.module('IguanaGUIApp')
                   var presponse = JSON.stringify(response[0].data);
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
-                  window.location.replace('/EasyDEX-GUI/');
+                  history.pushState(null, null, '/EasyDEX-GUI/');
+                  location.reload(true);
                 });
           }
         )

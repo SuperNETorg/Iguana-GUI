@@ -156,7 +156,13 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  $api.testConnection().then(function(coins) {
+  $api.testConnection().then(onResolve, onReject);
+
+  function onResolve(coins) {
     $rootScope.$broadcast('coinsInfo', coins);
-  });
+  }
+
+  function onReject() {
+    $api.testConnection().then(onResolve, onReject);
+  }
 });

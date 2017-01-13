@@ -93,6 +93,10 @@ angular.module('IguanaGUIApp')
                     $storage.isIguana = dev.sessions[key];
                   }
                 }
+
+                if (response.status === -1 && $storage.isIguana) {
+                  deferred.reject(-1);
+                }
               } else {
                 $storage.isIguana = false;
 

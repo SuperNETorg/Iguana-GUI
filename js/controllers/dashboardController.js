@@ -20,7 +20,7 @@ angular.module('IguanaGUIApp')
   '$datetime',
   '$window',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
+           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime) {
 
     var coinsInfo = [],
         coinBalances = [],
