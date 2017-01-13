@@ -15,6 +15,7 @@
 <script type="text/javascript" src="js/kjua.min.js" omit="true"></script>
 <script type="text/javascript" src="js/app.js"></script>
 <!-- directives -->
+<script type="text/javascript" src="js/directives/scroll.js"></script>
 <script type="text/javascript" src="js/directives/modal.js"></script>
 <script type="text/javascript" src="js/directives/spinner.js"></script>
 <script type="text/javascript" src="js/directives/resize.js"></script>

@@ -52,6 +52,7 @@ module.exports = function(config) {
       'js/directives/resize.js',
       'js/directives/timeAgo.js',
       'js/directives/numberOnly.js',
+      'js/directives/scroll.js',
       'js/directives/appTitle.js',
       'js/filters/decimalPlacesFormat.js',
       'js/filters/lang.js',
