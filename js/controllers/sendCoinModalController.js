@@ -140,10 +140,7 @@ angular.module('IguanaGUIApp')
       currencyName,
       coinName
     ).then(function(result) {
-      var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
-          halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
-          hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
-          coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
+      var coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
 
       initSendCoinModal(result.getBalance[0], result.getBalance[1]);
       if (
