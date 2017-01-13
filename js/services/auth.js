@@ -108,14 +108,14 @@ angular.module('IguanaGUIApp')
       return this.commonLogin(addCoinOnly);
     };
 
-    this.loginEasyDEX = function () {
+    this.loginEasyDEX = function() {
       self
         .commonLogin(true)
         .then(
-          function () {
+          function() {
             walletLogin()
               .then(
-                function (response) {
+                function(response) {
                   var presponse = JSON.stringify(response[0].data);
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
@@ -124,8 +124,8 @@ angular.module('IguanaGUIApp')
           }
         )
     };
-    
-    this.commonLogin = function (addCoinOnly) {
+
+    this.commonLogin = function(addCoinOnly) {
       if (!Object.keys(self.coinsSelectedToAdd).length) {
         self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
       }

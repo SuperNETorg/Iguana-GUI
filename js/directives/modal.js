@@ -58,11 +58,11 @@ angular.module('IguanaGUIApp')
             templateUrl: 'partials/send-coin-passphrase.html',
             appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
             resolve: {
-              receivedObject: function () {
+              receivedObject: function() {
                 return $scope.receivedObject;
               }
             }
-          },
+          }
         };
 
         $uibModalStack.open = function(modalInstance, modal) {
