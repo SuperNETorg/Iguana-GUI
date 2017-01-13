@@ -156,6 +156,8 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
+  var count = 0;
+
   $api.testConnection().then(onResolve, onReject);
 
   function onResolve(coins) {
@@ -163,6 +165,9 @@ angular.module('IguanaGUIApp', [
   }
 
   function onReject() {
-    $api.testConnection().then(onResolve, onReject);
+    if (count < 100) {
+      $api.testConnection().then(onResolve, onReject);
+      count++
+    }
   }
 });
