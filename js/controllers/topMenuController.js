@@ -70,6 +70,8 @@ angular.module('IguanaGUIApp')
       return $scope.navbarStyle;
     };
 
+    $scope.clickOnEasyDEX = $auth.loginEasyDEX;
+
     $scope.enabled = $auth.checkSession(true);
   }
 ]);
