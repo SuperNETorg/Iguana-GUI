@@ -1,5 +1,5 @@
 {
-  "name": "Iguana-GUI",
+  "name": "iguana-gui",
   "description": "Iguana GUI",
   "main": "gulpfile.js",
   "authors": [
@@ -26,7 +26,7 @@
     "angular-bootstrap": "https://github.com/angular-ui/bootstrap-bower.git#^2.2.0",
     "jquery": "2.1.1",
     "kjua": "lrsjng/kjua#^0.1.1",
-    "ngstorage": "0.3.10",
+    "ngstorage": "https://github.com/SuperNETorg/ngstorage-chrome.git#0.3.10-chrome",
     "cryptocoins": "https://github.com/allienworks/cryptocoins.git",
     "proxima-nova": "https://gist.github.com/haggen/2624063.git",
     "flag-icon-css": "https://github.com/lipis/flag-icon-css.git#^2.7.0",

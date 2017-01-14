@@ -25,7 +25,7 @@
                   <div class="row">
                     <button class="btn row btn-signin" ng-click="
                     (
-                      !isIguana ?
+                      !$storage.isIguana ?
                       (
                         !isAppSetup() ?
                           openFlowModal('signin') :
@@ -38,7 +38,7 @@
                     <div class="login-or-delim unselectable">{{ 'LOGIN.OR' | lang }}</div>
                     <button class="btn row btn-signup" ng-click="
                     (
-                      !isIguana ?
+                      !$storage.isIguana ?
                       (
                         !isAppSetup() ?
                           openFlowModal('signup') :
