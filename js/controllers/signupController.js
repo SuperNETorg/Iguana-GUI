@@ -77,8 +77,19 @@ angular.module('IguanaGUIApp')
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
       if ($scope.passphrase.length) {
-        $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
-        .then(onResolve, onReject);
+        if ($storage.isIguana) {
+          $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
+          $auth.checkIguanaCoinsSelection(true)
+            .then(function(response) {
+              $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+              .then(onResolve, onReject);
+            }, function(reason) {
+              console.log('request failed: ' + reason);
+            });
+        } else {
+          $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+          .then(onResolve, onReject);
+        }
       } else {
         $message.ngPrepMessageModal(
           $filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'),
@@ -199,8 +210,8 @@ angular.module('IguanaGUIApp')
 
     function validateStep3() {
       if ($scope.passphrase != $storage.passphrase) {
-        var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3');
-        var color = 'red';
+        var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3'),
+            color = 'red';
 
         $message.ngPrepMessageModal(
           message,
