@@ -4,10 +4,10 @@ angular.module('IguanaGUIApp')
 .controller('sendCoinPassphraseModalController', [
   '$scope',
   '$uibModalInstance',
-  '$storage',
   '$auth',
   'util',
-  function($scope, $uibModalInstance, $storage, $filter, $auth, util) {
+  '$storage',
+  function($scope, $uibModalInstance, $auth, util, $storage) {
     $scope.loggedinCoins = $storage['dashboard-logged-in-coins'];
     $scope.activeCoin = util.getActiveCoin();
     // dev only
