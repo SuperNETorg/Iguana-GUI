@@ -1013,16 +1013,37 @@ angular.module('IguanaGUIApp')
     };
 
     this.getFullApiRoute = function(method, conf, coin) {
-      if (dev && dev.isTest) {
-        var reroute = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'listtransactions' || method === 'sendtoaddress') ? settings.proxy : this.getConf().server.protocol;
-        var reroutePort = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee' || method === 'listtransactions' || method === 'sendtoaddress') ? this.getConf(false, coin).server.port : this.getConf(true).server.port + '/api/bitcoinrpc/' + method;
+      if (dev && dev.isTest) { // wip, UAT
+        var reroute = (
+          method === 'settxfee' ||
+          method === 'getaccountaddress' ||
+          method === 'getbalance' ||
+          method === 'listtransactions' ||
+          method === 'sendtoaddress') ? settings.proxy : this.getConf().server.protocol;
+        var reroutePort = (
+          method === 'settxfee' ||
+          method === 'getaccountaddress' ||
+          method === 'getbalance' ||
+          method === 'settxfee' ||
+          method === 'listtransactions' ||
+          method === 'sendtoaddress') ? this.getConf(false, coin).server.port : this.getConf(true).server.port + '/api/bitcoinrpc/' + method;
 
-        if (coin === 'sys' && (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee' || method === 'listtransactions' || method === 'sendtoaddress')) reroutePort = 8368;
+        if (coin === 'sys' && (
+          method === 'settxfee' ||
+          method === 'getaccountaddress' ||
+          method === 'getbalance' ||
+          method === 'settxfee' ||
+          method === 'listtransactions' ||
+          method === 'sendtoaddress')) reroutePort = 8368;
         console.log(reroutePort);
         console.log(reroute + ' ' + method);
 
         if (conf) {
-          var reroutePorfConf = (method === 'settxfee' || method === 'getaccountaddress' || method === 'getbalance' || method === 'settxfee') ? (conf.coindPort ? conf.coindPort : conf.portp2p) : conf.portp2p;
+          var reroutePorfConf = (
+            method === 'settxfee' ||
+            method === 'getaccountaddress' ||
+            method === 'getbalance' ||
+            method === 'settxfee') ? (conf.coindPort ? conf.coindPort : conf.portp2p) : conf.portp2p;
 
           return $storage['isIguana'] ? (reroute +
             this.getConf().server.ip + ':' +
