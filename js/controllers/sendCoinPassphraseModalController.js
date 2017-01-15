@@ -4,17 +4,12 @@ angular.module('IguanaGUIApp')
 .controller('sendCoinPassphraseModalController', [
   '$scope',
   '$uibModalInstance',
-  'util',
   '$storage',
-  '$api',
-  '$uibModal',
-  'receivedObject',
-  '$filter',
-  '$message',
   '$auth',
-  function($scope, $uibModalInstance, util, $storage, $api, $uibModal, receivedObject, $filter, $message, $auth) {
+  'util',
+  function($scope, $uibModalInstance, $storage, $filter, $auth, util) {
     $scope.loggedinCoins = $storage['dashboard-logged-in-coins'];
-    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    $scope.activeCoin = util.getActiveCoin();
     // dev only
     if (dev && dev.isDev && dev.coinPW && dev.coinPW.coind[$scope.activeCoin]) $scope.passphrase = dev.coinPW.coind[$scope.activeCoin];
 

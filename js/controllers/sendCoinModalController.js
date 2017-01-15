@@ -13,14 +13,13 @@ angular.module('IguanaGUIApp')
   '$rates',
   'vars',
   '$message',
-  '$http',
   'modal',
   function($scope, $uibModalInstance, util, $storage, $state, $api,
-           $uibModal, $filter, $rates, vars, $message, $http, modal) {
+           $uibModal, $filter, $rates, vars, $message, modal) {
     $scope.isIguana = $storage.isIguana;
     $scope.util = util;
     $scope.modal = modal;
-    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    $scope.activeCoin = util.getActiveCoin();
     $scope.checkModel = {};
     $scope.radioModel = true;
     $scope.dropDown = {};
@@ -104,8 +103,11 @@ angular.module('IguanaGUIApp')
     $scope.receivedObject = undefined;
 
     $scope.openSendCoinPassphraseModal = function() {
-      angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).addClass('hidden');
-      angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).addClass('hidden');
+      var formHeaderEl = document.querySelectorAll('.send-coin-form .modal-send-coin .form-header'),
+          formContentEl = document.querySelectorAll('.send-coin-form .modal-send-coin .form-content');
+
+      angular.element(formHeaderEl).addClass('hidden');
+      angular.element(formContentEl).addClass('hidden');
       $scope.modal.sendCoinPassphraseModal.resolve = {
         receivedObject: function() {
           return $scope.receivedObject;
@@ -117,13 +119,13 @@ angular.module('IguanaGUIApp')
       modalInstance.result.then(onDone);
 
       modalInstance.closed.then(function() {
-        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
-        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
+        angular.element(formHeaderEl).removeClass('hidden');
+        angular.element(formContentEl).removeClass('hidden');
       });
 
       function onDone(receivedObject) {
-        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-header')).removeClass('hidden');
-        angular.element(document.querySelectorAll('.send-coin-form .modal-send-coin .form-content')).removeClass('hidden');
+        angular.element(formHeaderEl).removeClass('hidden');
+        angular.element(formContentEl).removeClass('hidden');
 
         if (receivedObject) {
           execSendCoinCall();

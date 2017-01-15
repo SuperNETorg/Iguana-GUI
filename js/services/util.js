@@ -5,7 +5,8 @@ angular.module('IguanaGUIApp')
   '$window',
   '$filter',
   '$message',
-  function($window, $filter, $message) {
+  '$storage',
+  function($window, $filter, $message, $storage) {
 
     var self = this;
 
@@ -121,6 +122,10 @@ angular.module('IguanaGUIApp')
         'coin': coin,
         'amount': amount
       };
+    };
+
+    this.getActiveCoin = function() {
+      return $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     };
   }
 ]);

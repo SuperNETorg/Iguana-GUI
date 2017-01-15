@@ -18,7 +18,7 @@ angular.module('IguanaGUIApp')
     $scope.coinsInfo = vars.coinsInfo;
     $scope.checkedAmountType = $storage.checkedAmountType ? $storage.checkedAmountType : $storage.checkedAmountType = $filter('lang')('SEND.FEE_MIN');
     $scope.enabled = $auth.checkSession(true);
-    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    $scope.activeCoin = util.getActiveCoin();
     $scope.currencyArr = [];
     $scope.activeCurrency = [];
     $scope.sendCoin = {};

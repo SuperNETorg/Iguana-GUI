@@ -7,7 +7,7 @@ angular.module('IguanaGUIApp')
   '$auth',
   'util',
   '$window',
-  function($scope, $state, $auth, util) {
+  function($scope, $state, $auth, util, $window) {
     $scope.$state = $state;
     $scope.$auth = $auth;
     $scope.navbarStyle = { 'margin-left': 0 };
@@ -32,7 +32,7 @@ angular.module('IguanaGUIApp')
 
     $scope.clickLeft = function() {
       if ($scope.isMobile) {
-        if (window.innerWidth < itemsParent.offsetWidth) {
+        if ($window.innerWidth < itemsParent.offsetWidth) {
           for (var i = 0; items.length > i; i++) {
             bundClRect = items[i].getBoundingClientRect();
 
@@ -50,11 +50,11 @@ angular.module('IguanaGUIApp')
 
     $scope.clickRight = function() {
       if ($scope.isMobile) {
-        if (window.innerWidth < itemsParent.offsetWidth) {
+        if ($window.innerWidth < itemsParent.offsetWidth) {
           for (var i = items.length - 1; 0 <= i; i--) {
             bundClRect = items[i].getBoundingClientRect();
 
-            if (bundClRect.right > window.innerWidth) {
+            if (bundClRect.right > $window.innerWidth) {
               $scope.navbarStyle = {
                 'margin-left': parseInt($scope.navbarStyle['margin-left'].replace('px', '')) - (bundClRect.width) + 'px'
               };

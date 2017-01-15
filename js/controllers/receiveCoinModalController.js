@@ -26,7 +26,7 @@ angular.module('IguanaGUIApp')
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        _activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
+        _activeCoin = util.getActiveCoin(),
         coinRate = $rates.updateRates(_activeCoin, defaultCurrency, true);
 
     getReceiveCoinAddress();
