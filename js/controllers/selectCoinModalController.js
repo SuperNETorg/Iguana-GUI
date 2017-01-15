@@ -100,7 +100,9 @@ angular.module('IguanaGUIApp')
             (!$storage['iguana-' + key + '-passphrase'] ||
               (
                 $storage['iguana-' + key + '-passphrase'] &&
-                $storage['iguana-' + key + '-passphrase'].logged !== 'yes'
+                ($storage['iguana-' + key + '-passphrase'].logged !== 'yes' ||
+                  ($storage['iguana-' + key + '-passphrase'].logged === 'yes' &&
+                    ($state.current.name.indexOf('login') > -1 || $state.current.name.indexOf('signup') > -1)))
               )
             )
           ) {
