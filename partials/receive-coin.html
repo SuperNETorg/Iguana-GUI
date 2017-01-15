@@ -14,7 +14,7 @@
         <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="hidden" />
         <div class="buttons text-center">
           <button class="btn copy-btn margin-bottom pull-left" ng-click="copyAddressToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
-          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">
+          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}" target="{{ isChromeApp ? '_blank' : '_self' }}">
           {{ 'RECEIVE.SHARE' | lang }}
           </a>
         </div>

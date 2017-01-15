@@ -1,9 +1,9 @@
 'use strict';
 
 if (!dev) var dev = { // prod
-  isDev: false,
+  isDev: true,
   showSyncDebug: false,
-  showConsoleMessages: false,
+  showConsoleMessages: true,
   coinPW: null,
   coinAccountsDev: null,
   sessions: null
@@ -170,4 +170,8 @@ angular.module('IguanaGUIApp', [
       count++
     }
   }
+
+  try {
+    if (chrome) $rootScope.isChromeApp = true;
+  } catch (e) {}
 });
