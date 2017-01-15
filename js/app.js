@@ -1,9 +1,9 @@
 'use strict';
 
 if (!dev) var dev = { // prod
-  isDev: true,
+  isDev: false,
   showSyncDebug: false,
-  showConsoleMessages: true,
+  showConsoleMessages: false,
   coinPW: null,
   coinAccountsDev: null,
   sessions: null

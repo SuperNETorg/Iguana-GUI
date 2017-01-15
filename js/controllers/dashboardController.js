@@ -166,6 +166,7 @@ angular.module('IguanaGUIApp')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
+      updateFeeParams();
 
       if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
@@ -438,7 +439,7 @@ angular.module('IguanaGUIApp')
           coinName = activeCoin ? activeCoin.toUpperCase() : '',
           defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
-      if (activeCoin)
+      if (activeCoin) {
         $storage.feeSettings = {};
         $storage.feeSettings.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
 
@@ -487,7 +488,7 @@ angular.module('IguanaGUIApp')
             entryFormIsValid: false
           };
 
-          if ($storage.feeSettings.activeCoin === 'btc') {
+          if ($scope.activeCoin === 'btc') {
             var feeTime = {
               default: {
                 min: '',
@@ -564,6 +565,7 @@ angular.module('IguanaGUIApp')
             }];
           }
         }.bind(this));
+      }
     }
 
     function stateChangeStart() {

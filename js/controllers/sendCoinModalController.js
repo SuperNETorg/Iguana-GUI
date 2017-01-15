@@ -16,6 +16,7 @@ angular.module('IguanaGUIApp')
   'modal',
   function($scope, $uibModalInstance, util, $storage, $state, $api,
            $uibModal, $filter, $rates, vars, $message, modal) {
+
     $scope.isIguana = $storage.isIguana;
     $scope.util = util;
     $scope.modal = modal;
@@ -204,11 +205,13 @@ angular.module('IguanaGUIApp')
       $scope.sendCoin.coinValue = balance;
       $scope.sendCoin.currencyValue = balance * $scope.sendCoin.currencyRate;
 
-      if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
-        $scope.sendCoin.address = sendDataTest[coin].address;
-        $scope.sendCoin.amount = sendDataTest[coin].val;
-        $scope.sendCoin.note = sendDataTest[coin].note;
-      }
+      try {
+        if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {
+          $scope.sendCoin.address = sendDataTest[coin].address;
+          $scope.sendCoin.amount = sendDataTest[coin].val;
+          $scope.sendCoin.note = sendDataTest[coin].note;
+        }
+      } catch (e) {}
     }
 
     $scope.sendCoinKeyingAmount = function() {
