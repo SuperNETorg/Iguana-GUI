@@ -111,7 +111,7 @@ angular.module('IguanaGUIApp')
 
     this.loginEasyDEX = function() {
       self
-        .commonLogin(true)
+        .commonLogin(true, true)
         .then(
           function() {
             walletLogin(true)
@@ -121,16 +121,22 @@ angular.module('IguanaGUIApp')
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
 
-                  var locationSplit = $window.location.href.split('index.html');
-                  if (locationSplit[0])
-                    $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+                  if ($window.location.href.indexOf('localhost:') > -1) {
+                    var locationSplit = $window.location.href.split('#');
+                    if (locationSplit[0])
+                      $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+                  } else {
+                    var locationSplit = $window.location.href.split('index.html');
+                    if (locationSplit[0])
+                      $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+                  }
                 }
               );
           }
         )
     };
 
-    this.commonLogin = function(addCoinOnly) {
+    this.commonLogin = function(addCoinOnly, edexRedirect) {
       if (!Object.keys(self.coinsSelectedToAdd).length) {
         self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
       }
@@ -160,7 +166,9 @@ angular.module('IguanaGUIApp')
                   .walletEncrypt(
                     self.passphraseModel,
                     self.coinsSelectedToAdd[coinKeys[0]].coinId)
-                  .then(walletLogin);
+                  .then(function() {
+                    walletLogin(edexRedirect);
+                  });
               } else {
                 deferred.resolve(data);
               }

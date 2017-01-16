@@ -7,9 +7,11 @@ angular.module('IguanaGUIApp')
   '$auth',
   'util',
   '$window',
-  function($scope, $state, $auth, util, $window) {
+  '$storage',
+  function($scope, $state, $auth, util, $window, $storage) {
     $scope.$state = $state;
     $scope.$auth = $auth;
+    $scope.isIguana = $storage.isIguana;
     $scope.navbarStyle = { 'margin-left': 0 };
 
     var element,
