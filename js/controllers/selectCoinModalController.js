@@ -196,12 +196,6 @@ angular.module('IguanaGUIApp')
         }
       };
       var modalInstance = $uibModal.open($scope.modal.flowModal);
-
-      modalInstance.result.then(resultPromise);
-
-      function resultPromise(event, data) {
-
-      }
     }
 
     $scope.$on('$destroy', function() {

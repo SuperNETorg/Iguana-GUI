@@ -747,7 +747,7 @@ angular.module('IguanaGUIApp')
       var conf = {
         'server': {
           'protocol': 'http://',
-          'ip': 'localhost',
+          'ip': '127.0.0.1',
           'iguanaPort': settings.iguanaPort
         },
         'coins': supportedCoinsList
