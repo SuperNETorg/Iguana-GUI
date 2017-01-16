@@ -736,7 +736,8 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result);
 
-        deferred.reject(result);
+        //TODO: not tested
+        /*deferred.reject(result);*/
       });
 
       return deferred.promise;

@@ -117,18 +117,25 @@ angular.module('IguanaGUIApp')
             walletLogin(true)
               .then(
                 function(response) {
-                  var presponse = JSON.stringify(response[0].data);
+                  var presponse = JSON.stringify(response[0].data),
+                    locationSplit;
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
 
-                  if ($window.location.href.indexOf('localhost:') > -1) {
-                    var locationSplit = $window.location.href.split('#');
+                  if (
+                    $window.location.href.indexOf('localhost') > -1 ||
+                    $window.location.href.indexOf('127.0.0.1') > -1
+                  ) {
+                    locationSplit = $window.location.href.split('#');
+
                     if (locationSplit[0])
                       $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
                   } else {
-                    var locationSplit = $window.location.href.split('index.html');
-                    if (locationSplit[0])
+                    locationSplit = $window.location.href.split('index.html');
+
+                    if (locationSplit[0]) {
                       $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+                    }
                   }
                 }
               );
@@ -313,6 +320,8 @@ angular.module('IguanaGUIApp')
 
       if (!self.passphraseModel) {
         self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
+      } else {
+        self.coinsSelectedToAdd[coinKeys[0]].pass = self.passphraseModel;
       }
 
       $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
