@@ -56,7 +56,7 @@ angular.module('IguanaGUIApp')
 
         $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
-          timeout: 500
+          timeout: settings.defaultIguanaConnectionTimeOut
         })
           .then(
             function(response) {
@@ -148,9 +148,11 @@ angular.module('IguanaGUIApp')
           }
           this.coinsInfo[index].connection = true;
 
-          if ($('#debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
-            if ($('#debug-sync-info').html().indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug) {
-              $('#debug-sync-info').append('coin ' + index + ' is busy processing<br/>');
+          if (document.documentElement.getElementById('debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
+            if (document.documentElement.getElementById('debug-sync-info').innerHTML.indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug) {
+              angular
+                .$element(document.documentElement.getElementById('debug-sync-info'))
+                .append('coin ' + index + ' is busy processing<br/>');
             }
           }
 
@@ -446,6 +448,10 @@ angular.module('IguanaGUIApp')
         }
 
         self.errorHandler(response, index);
+
+        if ($storage['connected-coins']) {
+          delete $storage['connected-coins'][index];
+        }
 
         if (response.statusText === 'error' && !$storage.isIguana) {
           $storage.isProxy = false;

@@ -11,7 +11,8 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   '$rootScope',
-  function($storage, vars, $api, $state, util, $q, $filter, $message, $rootScope) {
+  '$window',
+  function($storage, vars, $api, $state, util, $q, $filter, $message, $rootScope, $window) {
 
     var self = this;
 
@@ -119,9 +120,9 @@ angular.module('IguanaGUIApp')
                   var presponse = JSON.stringify(response[0].data);
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
-                  history.pushState(null, null, '/EasyDEX-GUI/');
-                  location.reload(true);
-                });
+                  $window.location.href = '/EasyDEX-GUI/';
+                }
+              );
           }
         )
     };

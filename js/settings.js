@@ -26,7 +26,8 @@ var _settings = {
   thresholdTimeAgo: {
     day: 10
   },
-  defaultRelayFee: 0.00001
+  defaultRelayFee: 0.00001,
+  defaultIguanaConnectionTimeOut: 500
 };
 
 // create a new object with non-writable values
