@@ -33,7 +33,8 @@ angular.module('IguanaGUIApp')
         'debugHTML': JSON.stringify($('#debug-sync-info').html())
       };
 
-      if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
+      if (dev.showConsoleMessages && dev.isDev)
+        console.log('port poll update');
     }
 
     /* retrieve port poll data */

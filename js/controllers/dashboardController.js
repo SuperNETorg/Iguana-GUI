@@ -129,7 +129,8 @@ angular.module('IguanaGUIApp')
               .then(function(response) {
                 constructAccountCoinRepeater();
               }, function(reason) {
-                console.log('request failed: ' + reason);
+                if (dev.showConsoleMessages && dev.isDev)
+                  console.log('request failed: ' + reason);
               });
           } else {
             $state.go('login.step2');
@@ -240,7 +241,8 @@ angular.module('IguanaGUIApp')
               .then(function(response) {
                 constructAccountCoinRepeaterCB(response[0], response[1]);
               }, function(reason) {
-                console.log('request failed: ' + reason);
+                if (dev.showConsoleMessages && dev.isDev)
+                  console.log('request failed: ' + reason);
               });
         }
       }
@@ -321,7 +323,8 @@ angular.module('IguanaGUIApp')
           .then(
             constructTransactionUnitRepeaterCB,
             function(reason) {
-              console.log('request failed: ' + reason);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
             });
     }
 
@@ -428,7 +431,8 @@ angular.module('IguanaGUIApp')
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
         updateFeeParams();
-        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('dashboard updated');
       }, timeout * 1000);
     }
 

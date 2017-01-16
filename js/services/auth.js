@@ -118,7 +118,8 @@ angular.module('IguanaGUIApp')
               .then(
                 function(response) {
                   var presponse = JSON.stringify(response[0].data),
-                    locationSplit;
+                      locationSplit;
+
                   presponse = JSON.stringify(presponse);
                   sessionStorage.setItem('IguanaActiveAccount', presponse);
 
@@ -325,8 +326,11 @@ angular.module('IguanaGUIApp')
       }
 
       $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
-        $api.walletLogin(self.passphraseModel, settings.defaultSessionLifetime,
-          self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
+        $api.walletLogin(
+          self.passphraseModel,
+          settings.defaultSessionLifetime,
+          self.coinsSelectedToAdd[coinKeys[0]].coinId
+        ).then(onResolve, onReject)
       }, function(response) {
         var message = '',
             color = '';

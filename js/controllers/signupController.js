@@ -84,7 +84,8 @@ angular.module('IguanaGUIApp')
               $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
               .then(onResolve, onReject);
             }, function(reason) {
-              console.log('request failed: ' + reason);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
             });
         } else {
           $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)

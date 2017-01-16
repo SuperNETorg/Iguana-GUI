@@ -132,7 +132,8 @@ angular.module('IguanaGUIApp')
       .then(function(response) {
         $uibModalInstance.close(true);
       }, function(reason) {
-        console.log('request failed: ' + reason);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('request failed: ' + reason);
       });
     }
 

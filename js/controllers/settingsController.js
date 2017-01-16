@@ -150,7 +150,8 @@ angular.module('IguanaGUIApp')
               state: coinName === 'BTC' ? 'enabled' : 'disabled'
             }];
       }, function(data) {
-        console.log(data);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log(data);
       });
     }
 

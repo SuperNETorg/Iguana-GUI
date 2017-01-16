@@ -334,7 +334,8 @@ angular.module('IguanaGUIApp')
             .then(function(response) {
               // do nothing
             }, function(reason) {
-              console.log('request failed: ' + reason);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
               // TODO: show error
             });
           }, function(reason) {
@@ -344,13 +345,15 @@ angular.module('IguanaGUIApp')
             .then(function(response) {
               // do nothing
             }, function(reason) {
-              console.log('request failed: ' + reason);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
               // TODO: show error
             });
           });
         }, function(reason) {
           $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
-          console.log('request failed: ' + reason);
+          if (dev.showConsoleMessages && dev.isDev)
+            console.log('request failed: ' + reason);
         });
       } else {
         $api.sendToAddress($scope.activeCoin, txDataToSend)
@@ -362,7 +365,8 @@ angular.module('IguanaGUIApp')
           }
         }, function(reason) {
           $message.ngPrepMessageModal($filter('lang')('MESSAGE.TRANSACTION_ERROR'), 'red');
-          console.log('request failed: ' + reason);
+          if (dev.showConsoleMessages && dev.isDev)
+            console.log('request failed: ' + reason);
         });
       }
     }

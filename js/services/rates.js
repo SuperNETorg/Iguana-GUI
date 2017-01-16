@@ -68,10 +68,12 @@ angular.module('IguanaGUIApp')
           .then(function(response) {
             self.updateRateCB(coin, response[0]);
           }, function(response) {
-            console.log('request failed: ' + response);
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log('request failed: ' + response);
           });
 
-          if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
+          if (dev.showConsoleMessages && dev.isDev)
+            console.log('rates update in progress...');
         }
       } else {
         if (!coin) coin = defaultCoin;
@@ -98,7 +100,8 @@ angular.module('IguanaGUIApp')
               deferred.resolve($storage[coinRates].value);
             }
           }, function(reason) {
-            console.log('request failed: ' + reason);
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log('request failed: ' + reason);
           });
 
           return deferred.promise;

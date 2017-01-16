@@ -53,7 +53,8 @@ angular.module('IguanaGUIApp')
         $scope.receiveCoin.shareUrl = 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address' +
                                       '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address%20' + $scope.receiveCoin.address;
       }, function(reason) {
-        console.log('request failed: ' + reason);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('request failed: ' + reason);
       });
 
       $scope.receiveCoin.coinName = _activeCoin.toUpperCase();

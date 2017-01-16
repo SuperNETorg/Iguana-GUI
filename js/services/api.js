@@ -58,66 +58,67 @@ angular.module('IguanaGUIApp')
           cache: false,
           timeout: settings.defaultIguanaConnectionTimeOut
         })
-          .then(
-            function(response) {
-              if (dev.isDev && dev.sessions) {
-                for (var key in dev.sessions) {
-                  if (navigator.userAgent.indexOf(key) > -1) {
-                    $storage.isIguana = dev.sessions[key];
-                  }
-                }
-
-              } else {
-                $storage.isIguana = true;
-
-                if (dev.showConsoleMessages) {
-                  if (!$storage.isIguana) {
-                    console.log('running non-iguana env');
-                  } else {
-                    console.log('running iguana env');
-                  }
+        .then(
+          function(response) {
+            if (dev.isDev && dev.sessions) {
+              for (var key in dev.sessions) {
+                if (navigator.userAgent.indexOf(key) > -1) {
+                  $storage.isIguana = dev.sessions[key];
                 }
               }
 
-              this.errorHandler(response);
-              this.testCoinPorts()
-                .then(function(coins) {
-                  deferred.resolve(coins);
-                });
-            }.bind(this),
-            function(response) {
-              // non-iguana env
-              if (dev.isDev && dev.sessions) {
-                for (var key in dev.sessions) {
-                  if (navigator.userAgent.indexOf(key) > -1) {
-                    $storage.isIguana = dev.sessions[key];
-                  }
-                }
+            } else {
+              $storage.isIguana = true;
 
-                if (response.status === -1 && $storage.isIguana) {
-                  deferred.reject(-1);
+              if (dev.showConsoleMessages) {
+                if (!$storage.isIguana) {
+                  console.log('running non-iguana env');
+                } else {
+                  console.log('running iguana env');
                 }
-              } else {
-                $storage.isIguana = false;
+              }
+            }
 
-                if (dev.showConsoleMessages) {
-                  if (!$storage.isIguana) {
-                    console.log('running non-iguana env');
-                  } else {
-                    console.log('running iguana env');
-                  }
+            this.errorHandler(response);
+            this.testCoinPorts()
+              .then(function(coins) {
+                deferred.resolve(coins);
+              });
+          }.bind(this),
+          function(response) {
+            // non-iguana env
+            if (dev.isDev && dev.sessions) {
+              for (var key in dev.sessions) {
+                if (navigator.userAgent.indexOf(key) > -1) {
+                  $storage.isIguana = dev.sessions[key];
                 }
               }
 
-              this.errorHandler(response);
-              this.testCoinPorts()
-                .then(function(coins) {
-                  deferred.resolve(coins);
-                });
-            }.bind(this)
-          );
+              if (response.status === -1 && $storage.isIguana) {
+                deferred.reject(-1);
+              }
+            } else {
+              $storage.isIguana = false;
+
+              if (dev.showConsoleMessages) {
+                if (!$storage.isIguana) {
+                  console.log('running non-iguana env');
+                } else {
+                  console.log('running iguana env');
+                }
+              }
+            }
+
+            this.errorHandler(response);
+            this.testCoinPorts()
+              .then(function(coins) {
+                deferred.resolve(coins);
+              });
+          }.bind(this)
+        );
       } else {
-        if (dev.showConsoleMessages && dev.isDev) console.log('port poll done ' + timeDiff + ' s. ago');
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('port poll done ' + timeDiff + ' s. ago');
         deferred.resolve(null);
       }
 
@@ -215,7 +216,8 @@ angular.module('IguanaGUIApp')
             this.isRT = false;
             this.coinsInfo[index].RT = false;
 
-            if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log('RT is not ready yet!');
           }
 
           if (dev.isDev && dev.showSyncDebug) {
@@ -252,7 +254,8 @@ angular.module('IguanaGUIApp')
             this.isRT = false;
             this.coinsInfo[index].RT = false;
 
-            if (dev.showConsoleMessages && dev.isDev) console.log('RT is not ready yet!');
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log('RT is not ready yet!');
           } else {
             this.isRT = true;
             this.coinsInfo[index].RT = true;
@@ -386,8 +389,10 @@ angular.module('IguanaGUIApp')
 
         self.errorHandler(response, index);
 
-        if (dev.showConsoleMessages && dev.isDev) console.log('p2p test ' + index);
-        if (dev.showConsoleMessages && dev.isDev) console.log(response);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('p2p test ' + index);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log(response);
         if (response.data && response.data.error === 'coin is busy processing') {
           self.coinsInfo[index].connection = true;
           self.coinsInfo[index].RT = false;
@@ -546,8 +551,6 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
           deferred = $q.defer();
 
-      // console.log('walletEncrypt', fullUrl, postData, postAuthHeaders);
-
       $http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
@@ -555,7 +558,8 @@ angular.module('IguanaGUIApp')
       .then(function(response) {
         this.errorHandler(response, coin);
 
-        if (dev.showConsoleMessages && dev.isDev) console.log(response);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log(response);
 
         if (response.result) {
           // non-iguana
@@ -568,7 +572,8 @@ angular.module('IguanaGUIApp')
           // iguana
           if (response.data.error) {
             // do something
-            if (dev.showConsoleMessages && dev.isDev) console.log('error: ' + response.data.error);
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log('error: ' + response.data.error);
 
             deferred.resolve(response.data);
           } else {
@@ -626,9 +631,11 @@ angular.module('IguanaGUIApp')
             console.log(response);
           }
 
-          if (response.data.error &&
-            dev.showConsoleMessages && dev.isDev) {
-            console.log('error: ' + response.data.error);
+          if (response.data.error) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('error: ' + response.data.error);
+            }
+
             defer.reject(response);
           } else {
             defer.resolve(response);
@@ -679,7 +686,6 @@ angular.module('IguanaGUIApp')
       }
 
       function onReject(response) {
-        console.log(response);
         // TODO change response structure
         if (response.data) {
           if (response.data.error.message.indexOf('Error: Wallet is already unlocked, use walletlock first if need to change unlock settings.') > -1) {
@@ -689,7 +695,8 @@ angular.module('IguanaGUIApp')
           } else if (response.data.error.message.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) {
             result = -15;
           }
-          // if (dev.showConsoleMessages && dev.isDev) console.log(response.responseText);
+          if (dev.showConsoleMessages && dev.isDev)
+            console.log(response);
         } else {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(response);
@@ -727,7 +734,9 @@ angular.module('IguanaGUIApp')
         // if (cb) cb.call(this, result);
         // deferred.resolve(result);
       }.bind(this), function(response) {
-        console.log(response.data.responseText);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log(response.data.responseText);
+
         if (response.data && response.data.responseText && response.data.responseText.indexOf(':-10') === -1) {
           result = true;
         } else {
@@ -791,7 +800,8 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        console.log(response);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log(response);
         // iguana
         if (response.data.address) {
           deferred.resolve(response.data.address);
@@ -1349,7 +1359,6 @@ angular.module('IguanaGUIApp')
               // do something
               console.log('error: ' + response.data.error);
               result = false;
-
             } else {
               if (response) {
                 result = response.data;
@@ -1393,6 +1402,7 @@ angular.module('IguanaGUIApp')
     this.feeCoins = function(activeCoin, defaultAccount, currencyName, coinName) {
       var deferred = $q.defer(),
           result = {};
+
       this.getBalance(defaultAccount, activeCoin).then(function(response) {
 
         result.getBalance = response;
