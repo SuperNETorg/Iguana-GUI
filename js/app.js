@@ -161,6 +161,6 @@ angular.module('IguanaGUIApp', [
   }
 
   try {
-    if (chrome) $rootScope.isChromeApp = true;
+    if (chrome && chrome.storage) $rootScope.isChromeApp = true;
   } catch (e) {}
 });

@@ -8,7 +8,8 @@ angular.module('IguanaGUIApp')
   'util',
   '$window',
   '$storage',
-  function($scope, $state, $auth, util, $window, $storage) {
+  '$rootScope',
+  function($scope, $state, $auth, util, $window, $storage, $rootScope) {
     $scope.$state = $state;
     $scope.$auth = $auth;
     $scope.isIguana = $storage.isIguana;
