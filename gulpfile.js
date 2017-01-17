@@ -84,6 +84,10 @@ gulp.task('copyCoreJS', function() {
   return _exports.js.copyJS(buildMode);
 });
 
+gulp.task('copyDevTestConfig', function() {
+  return _exports.js.copyDevTestConfig(buildMode);
+});
+
 gulp.task('copyBowerJS', function() {
   return _exports.js.copyBowerJS(buildMode);
 });
@@ -156,6 +160,11 @@ gulp.task('cleanAllDev', function() {
   return _exports.clean.cleanAllDev(buildMode);
 });
 
+gulp.task('cleanAllDev', function() {
+  buildMode = 'dev';
+  return _exports.clean.cleanAllDev(buildMode);
+});
+
 gulp.task('default', function() {
   return gutil.log('Run gulp dev to build dev version or run gulp prod to build production version');
 });
@@ -163,6 +172,12 @@ gulp.task('default', function() {
 gulp.task('watch:dev', function() {
   gulp.watch([paths.partials, 'index.html'], ['devStyle', 'indexDev']);
   gulp.watch([paths.js.default, 'jsIncludes.js'], ['copyCoreJS']);
+  gulp.watch(paths.styles.default, ['scss']);
+});
+
+gulp.task('watch:tests', function() {
+  gulp.watch([paths.partials, 'index.html'], ['devStyle', 'indexDev']);
+  gulp.watch([paths.js.default, 'jsIncludes.js'], ['copyCoreJS', 'copyDevTestConfig']);
   gulp.watch(paths.styles.default, ['scss']);
 });
 
@@ -182,6 +197,26 @@ gulp.task('dev', function() {
     'indexDev',
     'copyFonts',
     'watch:dev'
+  );
+});
+
+gulp.task('tests', function() {
+  buildMode = 'dev';
+
+  runSequence(
+    'cleanAllDev',
+    'copyImages',
+    'copyCoreJS',
+    'copyBowerJS',
+    'scss:css',
+    'cssModifyCryptocoins',
+    'cssModifyProxima',
+    'scss',
+    'devStyle',
+    'indexDev',
+    'copyFonts',
+    'copyDevTestConfig',
+    'watch:tests'
   );
 });
 

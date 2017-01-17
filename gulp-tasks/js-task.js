@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
+    rename = require('gulp-rename'),
     fs = require('fs'),
     jscs = require('gulp-jscs'), // rules ref: http://jscs.info/rules
     pathsExports = require('../gulp-tasks/paths.js');
@@ -90,4 +91,15 @@ exports.copyProdConfigurableJS = function(buildMode) {
   return gulp
          .src(paths.configurable.js)
          .pipe(gulp.dest(paths.build[buildMode] + '/js'));
+}
+
+exports.copyDevTestConfig = function(buildMode) {
+  paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
+
+  return gulp
+         .src('js/dev_tests.js')
+         .pipe(jscs())
+         .pipe(jscs.reporter())
+         .pipe(rename('js/dev.js'))
+         .pipe(gulp.dest(paths.build[buildMode]));
 }

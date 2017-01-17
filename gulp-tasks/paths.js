@@ -42,7 +42,8 @@ exports.getPaths = function(isDev) {
       build: {
         dev: 'compiled/dev',
         prod: 'compiled/prod',
-        chrome: 'compiled/chrome-app/app'
+        chrome: 'compiled/chrome-app/app',
+        tests: 'compiled/tests'
       },
       chrome: {
         buildMode: './**/*',
