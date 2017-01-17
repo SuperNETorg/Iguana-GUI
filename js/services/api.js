@@ -3,6 +3,7 @@
 angular.module('IguanaGUIApp')
 .service('$api', [
   'util',
+  'md5',
   '$http',
   '$state',
   '$timeout',
@@ -11,11 +12,12 @@ angular.module('IguanaGUIApp')
   'vars',
   '$filter',
   '$storage',
+  '$sessionStorage',
   '$syncStatus',
   '$message',
-  function(util, $http, $state, $timeout,
-            $interval, $q, vars, $filter, $storage,
-            $syncStatus, $message) {
+  function(util, md5, $http, $state, $timeout, $interval, $q,
+           vars, $filter, $storage, $sessionStorage, $syncStatus,
+           $message) {
 
     // bitcoin rpc error code ref: https://github.com/bitcoin/bitcoin/blob/62f2d769e45043c1f262ed45babb70fe237ad2bb/src/rpc/protocol.h#L30
 
@@ -149,10 +151,12 @@ angular.module('IguanaGUIApp')
           }
           this.coinsInfo[index].connection = true;
 
-          if (document.documentElement.getElementById('debug-sync-info') && index !== undefined && dev.isDev && dev.showSyncDebug) {
-            if (document.documentElement.getElementById('debug-sync-info').innerHTML.indexOf('coin ' + index) === -1 && dev.isDev && dev.showSyncDebug) {
+          if (document.getElementById('debug-sync-info') &&
+            index !== undefined && dev.isDev && dev.showSyncDebug) {
+            if (document.getElementById('debug-sync-info').innerHTML.indexOf('coin ' + index) === -1 &&
+              dev.isDev && dev.showSyncDebug) {
               angular
-                .$element(document.documentElement.getElementById('debug-sync-info'))
+                .$element(document.getElementById('debug-sync-info'))
                 .append('coin ' + index + ' is busy processing<br/>');
             }
           }
@@ -829,7 +833,12 @@ angular.module('IguanaGUIApp')
                     this.getConf(true).server.port,
           deferred = $q.defer();
 
-      $http.post(fullUrl, iguanaAddCoinParams[coin.coinId], {
+      var params = JSON.parse(iguanaAddCoinParams[coin.coinId]);
+
+      params['userpass'] = this.Iguana_GetRPCAuth();
+      params = JSON.stringify(params);
+
+      $http.post(fullUrl, params, {
         headers: postAuthHeaders
       })
       .then(
@@ -1021,8 +1030,9 @@ angular.module('IguanaGUIApp')
 
     this.getBitcoinRPCPayloadObj = function(method, params, coin) {
       if ($storage.isIguana) {
+        var upass = this.Iguana_GetRPCAuth();
         return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-          '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
+          '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '' ) + ' }';
       } else {
         return '{ \"agent\": \"bitcoinrpc\",' +
           '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
@@ -1422,6 +1432,15 @@ angular.module('IguanaGUIApp')
       }.bind(this));
 
       return deferred.promise;
+    };
+
+    this.Iguana_SetRPCAuth = function(PassPhrase) {
+      var tmpPass = md5.createHash(PassPhrase);
+      $sessionStorage['IguanaRPCAuth'] = tmpPass;
+    };
+
+    this.Iguana_GetRPCAuth = function() {
+      return $sessionStorage['IguanaRPCAuth'];
     };
   }
 ]);

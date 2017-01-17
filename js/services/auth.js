@@ -166,6 +166,8 @@ angular.module('IguanaGUIApp')
 
         delete $storage['dashboard-pending-coins'];
 
+        $api.Iguana_SetRPCAuth(self.passphraseModel);
+
         this
           .checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
           .then(

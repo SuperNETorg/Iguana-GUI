@@ -11,6 +11,7 @@ if (!dev) var dev = { // prod
 
 angular.module('IguanaGUIApp', [
   'ui.router',
+  'angular-md5',
   'ngSanitize',
   'ngAnimate',
   'ngStorage',
