@@ -42,7 +42,7 @@ angular.module('IguanaGUIApp')
     $scope.loginActiveCoin = '';
     $rootScope.background = true;
     $scope.title = setTitle;
-    $scope.login = login;
+    $scope.loginCheck = loginCheck;
     $scope.goBack = goBack;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;
@@ -61,7 +61,7 @@ angular.module('IguanaGUIApp')
       onInit();
     }
 
-    if ($state.current.name === 'login.step2') {
+    if ($state.current.name === 'login.step2' || $state.current.name === 'login.step3') {
       $rootScope.background = false;
     }
 
@@ -98,7 +98,9 @@ angular.module('IguanaGUIApp')
       if ($state.current.name === 'login') {
         $rootScope.background = false;
       } else if ($state.current.name === 'login.step2') {
-        $rootScope.background = true;
+        $rootScope.background = false;
+      } else if ($state.current.name === 'login.step3') {
+        $rootScope.background = false;
       }
       $rootScope.allowLoginStateChange = false;
     }
@@ -151,11 +153,19 @@ angular.module('IguanaGUIApp')
       $scope.karma.modal = modalInstance; // tests
     }
 
-    function login() {
-      $auth.login(
-        $scope.getActiveCoins(),
-        $scope.passphraseModel
-      );
+    function loginCheck() {
+      if($storage['loginTermsAndConditions'] === true) {
+        $auth.login(
+          $scope.getActiveCoins(),
+          $scope.passphraseModel
+        );
+      } else {
+        $auth.loginCheck(
+          $scope.getActiveCoins(),
+          $scope.passphraseModel
+        );
+        $storage['loginTermsAndConditions']=true;
+      }
     }
 
     function setTitle() {

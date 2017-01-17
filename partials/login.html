@@ -77,7 +77,7 @@
                           ng-change="setIsChanged(true)">
                 </textarea>
                 <button class="btn btn-block row btn-signin-account form-control"
-                        ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
+                        ng-click="loginCheck()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
                     {{ 'LOGIN.LOGIN' | lang }}
                 </button>
               </div>
@@ -87,6 +87,35 @@
       </div>
     </div>
   </section>
+  <section ng-class="{ 'hidden': $state.current.name !== 'login.step3' }">
+    <div class="body-wrapper auth-main">
+      <div class="container-fluid">
+        <div class="row centered">
+          <div class="form-container terms-conditionals-form">
+            <header class="form-header orange-gradient box-shadow-bottom unselectable">
+              <div class="title text-shadow">{{ 'PAGE.CONFIRMATION' | lang }}</div>
+            </header>
+            <div class="form-content">
+              <div class="form-content-inner">
+                <div class="center unselectable offset-bottom-lg form-title">{{ 'CREATE_ACCOUNT.TERMS-HEADER' | lang }}</div>
+                <div class="login-input-directions no-padding-left-right unselectable offset-bottom-lg">
+                  {{ 'LOGIN.TERMS-CONDITIONALS_P1' | lang }}
+                  <span class="terms-condition-bold">{{ 'LOGIN.TERMS-CONDITIONALS_P2' | lang }}</span>
+                  {{ 'LOGIN.TERMS-CONDITIONALS_P3' | lang }}
+                </div>
+
+                <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
+                        ng-click="loginCheck()">
+                  {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="auth-add-coin-modal"></div>
   <div class="flow-modal"></div>
 </script>
