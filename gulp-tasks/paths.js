@@ -25,6 +25,7 @@ exports.getPaths = function(isDev) {
           bowerDir + '/angular-animate/angular-animate' + jsExtraExt,
           bowerDir + '/angular-bootstrap/ui-bootstrap-tpls' + jsExtraExt,
           bowerDir + '/angular-sanitize/angular-sanitize' + jsExtraExt,
+          bowerDir + '/angular-md5/angular-md5' + jsExtraExt,
           bowerDir + '/angular-ui-router/release/angular-ui-router' + jsExtraExt,
           bowerDir + '/ngstorage/ngStorage' + jsExtraExt,
           bowerDir + '/jquery/dist/jquery' + jsExtraExt,

@@ -9,6 +9,7 @@
 <script type="text/javascript" src="js/angular-ui-router.js" omit="true"></script>
 <script type="text/javascript" src="js/angular-sanitize.js" omit="true"></script>
 <script type="text/javascript" src="js/angular-animate.js" omit="true"></script>
+<script type="text/javascript" src="js/angular-md5.js" omit="true"></script>
 <script type="text/javascript" src="js/ngStorage.js" omit="true"></script>
 <script type="text/javascript" src="js/jquery.js" omit="true"></script>
 <script type="text/javascript" src="js/ui-bootstrap-tpls.js" omit="true"></script>
