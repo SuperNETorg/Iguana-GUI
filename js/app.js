@@ -1,13 +1,15 @@
 'use strict';
 
-if (!dev) var dev = { // prod
-  isDev: false,
-  showSyncDebug: false,
-  showConsoleMessages: false,
-  coinPW: null,
-  coinAccountsDev: null,
-  sessions: null
-};
+if (!dev) {
+  var dev = { // prod
+    isDev: false,
+    showSyncDebug: false,
+    showConsoleMessages: false,
+    coinPW: null,
+    coinAccountsDev: null,
+    sessions: null
+  };
+}
 
 angular.module('IguanaGUIApp', [
   'ui.router',

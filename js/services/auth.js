@@ -109,7 +109,7 @@ angular.module('IguanaGUIApp')
       return this.commonLogin(addCoinOnly);
     };
 
-    this.loginCheck = function (coinsSelectedToAdd, passphraseModel, addCoinOnly) {
+    this.loginCheck = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
       self.coinsSelectedToAdd = coinsSelectedToAdd;
       self.passphraseModel = passphraseModel;
 
@@ -336,14 +336,14 @@ angular.module('IguanaGUIApp')
 
       $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId)
         .then(
-          function () {
+          function() {
             $api.walletLogin(
                 self.passphraseModel,
                 settings.defaultSessionLifetime,
                 self.coinsSelectedToAdd[coinKeys[0]].coinId
             ).then(onResolve, onReject)
           },
-          function (response) {
+          function(response) {
             var message = '',
                 color = '';
 

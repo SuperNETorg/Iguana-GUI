@@ -154,7 +154,7 @@ angular.module('IguanaGUIApp')
     }
 
     function loginCheck() {
-      if($storage['loginTermsAndConditions'] === true) {
+      if ($storage['loginTermsAndConditions'] === true) {
         $auth.login(
           $scope.getActiveCoins(),
           $scope.passphraseModel

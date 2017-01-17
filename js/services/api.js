@@ -151,12 +151,12 @@ angular.module('IguanaGUIApp')
           }
           this.coinsInfo[index].connection = true;
 
-          if (document.getElementById('debug-sync-info') &&
+          if (angular.element(document.querySelector('#debug-sync-info')) &&
             index !== undefined && dev.isDev && dev.showSyncDebug) {
-            if (document.getElementById('debug-sync-info').innerHTML.indexOf('coin ' + index) === -1 &&
+            if (angular.element(document.querySelector('#debug-sync-info')).innerHTML.indexOf('coin ' + index) === -1 &&
               dev.isDev && dev.showSyncDebug) {
               angular
-                .$element(document.getElementById('debug-sync-info'))
+                .element(document.querySelector('#debug-sync-info'))
                 .append('coin ' + index + ' is busy processing<br/>');
             }
           }
@@ -552,7 +552,7 @@ angular.module('IguanaGUIApp')
     this.walletEncrypt = function(passphrase, coin) {
       var fullUrl = this.getFullApiRoute('encryptwallet', null, coin),
           postData = this.getBitcoinRPCPayloadObj('encryptwallet', '\"' + passphrase + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'encryptwallet'),
           deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
@@ -616,7 +616,7 @@ angular.module('IguanaGUIApp')
           self = this,
           fullUrl = this.getFullApiRoute('walletlock', null, coin),
           postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'walletlock');
 
       $http.post(fullUrl, postData, {
         cache: false,
@@ -673,7 +673,7 @@ angular.module('IguanaGUIApp')
             this.getConf().server.iguanaPort + '/api/bitcoinrpc/walletpassphrase',
           postData = this.getBitcoinRPCPayloadObj('walletpassphrase', '\"' +
             passphrase + '\", ' + timeout, coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'walletpassphrase'),
           deferred = $q.defer();
 
       $http.post($storage.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
@@ -717,7 +717,7 @@ angular.module('IguanaGUIApp')
       var result = false,
           fullUrl = this.getFullApiRoute('getblocktemplate', null, coin),
           postData = this.getBitcoinRPCPayloadObj('getblocktemplate'),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getblocktemplate'),
           deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
@@ -796,7 +796,7 @@ angular.module('IguanaGUIApp')
 
       var fullUrl = this.getFullApiRoute('getaccountaddress', null, coin),
           postData = this.getBitcoinRPCPayloadObj('getaccountaddress', '\"' + account + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getaccountaddress'),
           deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
@@ -1011,31 +1011,74 @@ angular.module('IguanaGUIApp')
         '/api/';
     };
 
-    this.getBasicAuthHeaderObj = function(conf, coin) {
-      if (conf) {
-        return $storage.isIguana ?
-        { 'Content-Type': 'application/x-www-form-urlencoded' } :
-        { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
-      } else if ($storage.activeCoin || coin) {
-        return $storage.isIguana ?
+    this.getBasicAuthHeaderObj = function(conf, coin, method) {
+      if (dev && dev.isTest &&
+          (method === 'settxfee' ||
+          method === 'getaccountaddress' ||
+          method === 'getbalance' ||
+          method === 'settxfee' ||
+          method === 'listtransactions' ||
+          method === 'sendtoaddress')) { // wip, UAT
+        if (conf) {
+            return $storage.isIguana ?
+            {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass)
+            } :
+            { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+          } else if ($storage.activeCoin || coin) {
+            return $storage.isIguana ?
+              {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                  this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+              } :
+              {
+                'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                  this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+              };
+          }
+      } else {
+        if (conf) {
+          return $storage.isIguana ?
           { 'Content-Type': 'application/x-www-form-urlencoded' } :
-          {
-            'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
-                              this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
-          };
+          { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+        } else if ($storage.activeCoin || coin) {
+          return $storage.isIguana ?
+            { 'Content-Type': 'application/x-www-form-urlencoded' } :
+            {
+              'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+            };
+        }
       }
 
       return {};
     };
 
     this.getBitcoinRPCPayloadObj = function(method, params, coin) {
-      if ($storage.isIguana) {
-        var upass = this.Iguana_GetRPCAuth();
-        return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-          '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '' ) + ' }';
+      if (dev && dev.isTest) { // wip, UAT
+        if ($storage.isIguana && method !== 'settxfee' &&
+          method !== 'getaccountaddress' &&
+          method !== 'getbalance' &&
+          method !== 'settxfee' &&
+          method !== 'listtransactions' &&
+          method !== 'sendtoaddress') {
+          return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
+            '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
+        } else {
+          return '{ \"agent\": \"bitcoinrpc\",' +
+            '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+        }
       } else {
-        return '{ \"agent\": \"bitcoinrpc\",' +
-          '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+        if ($storage.isIguana) {
+          var upass = this.Iguana_GetRPCAuth();
+          return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
+            '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+        } else {
+          return '{ \"agent\": \"bitcoinrpc\",' +
+            '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+        }
       }
     };
 
@@ -1062,8 +1105,6 @@ angular.module('IguanaGUIApp')
           method === 'settxfee' ||
           method === 'listtransactions' ||
           method === 'sendtoaddress')) reroutePort = 8368;
-        console.log(reroutePort);
-        console.log(reroute + ' ' + method);
 
         if (conf) {
           var reroutePorfConf = (
@@ -1107,7 +1148,7 @@ angular.module('IguanaGUIApp')
           deferred = $q.defer(),
           fullUrl = this.getFullApiRoute('sendtoaddress', null, coin),
           postData = this.getBitcoinRPCPayloadObj('sendtoaddress', '\"' + sendInfo.address + '\", ' + sendInfo.amount + ', \"' + sendInfo.note + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'sendtoaddress');
 
       $http.post(fullUrl, postData, {
         cache: false,
@@ -1172,7 +1213,7 @@ angular.module('IguanaGUIApp')
       var result = false,
           fullUrl = this.getFullApiRoute('settxfee', null, coin),
           postData = this.getBitcoinRPCPayloadObj('settxfee', '\"' + fee + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'settxfee'),
           deferred = $q.defer();
 
       $http.post(fullUrl,postData,{
@@ -1277,16 +1318,19 @@ angular.module('IguanaGUIApp')
           deferred = $q.defer();
 
       // dev account lookup override
-      if (dev.coinAccountsDev && !$storage.isIguana) {
+      if (dev.coinAccountsDev && !$storage.isIguana && !dev.isTest) {
         if (dev.coinAccountsDev.coind[coin]) {
           account = dev.coinAccountsDev.coind[coin];
         }
+      }
+      if (dev.isTest && $storage.isIguana) {
+        account = '';
       }
 
       var fullUrl = this.getFullApiRoute('listtransactions', null, coin),
           postData = this.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", '
             + settings.defaultTransactionsCount, coin), // last N tx
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin);
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'listtransactions');
 
       $http.post(fullUrl, postData, {
         cache: false,
@@ -1342,11 +1386,14 @@ angular.module('IguanaGUIApp')
           account = dev.coinAccountsDev.coind[coin];
         }
       }
+      if (dev.isTest && $storage.isIguana) {
+        account = '';
+      }
 
       var fullUrl = this.getFullApiRoute('getbalance', null, coin),
           // avoid using account names in bitcoindarkd
           postData = this.getBitcoinRPCPayloadObj('getbalance', coin === 'btcd' && !$storage.isIguana ? null : '\"' + account + '\"', coin),
-          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getbalance'),
           deferred = $q.defer();
 
       $http.post(fullUrl, postData, {
