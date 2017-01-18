@@ -43,6 +43,7 @@ angular.module('IguanaGUIApp')
     $rootScope.background = true;
     $scope.title = setTitle;
     $scope.loginCheck = loginCheck;
+    $scope.login = login;
     $scope.goBack = goBack;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;
@@ -152,6 +153,14 @@ angular.module('IguanaGUIApp')
 
       $scope.karma.modal = modalInstance; // tests
     }
+    function login() {
+      $storage['loginTermsAndConditions']=true;
+      $auth.login(
+        $scope.getActiveCoins(),
+        $scope.passphraseModel
+      );
+      $storage['loginTermsAndConditions']=true;
+    }
 
     function loginCheck() {
       if ($storage['loginTermsAndConditions'] === true) {
@@ -164,7 +173,6 @@ angular.module('IguanaGUIApp')
           $scope.getActiveCoins(),
           $scope.passphraseModel
         );
-        $storage['loginTermsAndConditions']=true;
       }
     }
 

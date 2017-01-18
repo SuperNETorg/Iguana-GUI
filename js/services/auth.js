@@ -186,7 +186,7 @@ angular.module('IguanaGUIApp')
                     self.passphraseModel,
                     self.coinsSelectedToAdd[coinKeys[0]].coinId)
                   .then(function() {
-                    walletLogin(edexRedirect);
+                    walletLogin(edexRedirect, isCheck);
                   });
               } else {
                 deferred.resolve(data);

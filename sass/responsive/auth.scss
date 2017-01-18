@@ -37,6 +37,9 @@ body {
               max-width: none;
               width: 100%;
             }
+            .container-arrow {
+              display: none;
+            }
           }
         }
         .login-input-directions {
@@ -45,7 +48,7 @@ body {
           padding-left: 12px;
           padding-right: 12px;
 
-          .terms-condition-bold{
+          .terms-condition2{
             font-weight: 800;
           }
         }
@@ -143,6 +146,11 @@ body {
               @include text-left;
               /* csslint ignore:end */
             }
+
+            .container-arrow {
+              bottom: 10%;
+              height: 10%;
+            }
           }
         }
       }
@@ -204,6 +212,17 @@ body {
               @include btn-bottom(45px);
               /* csslint ignore:end */
             }
+          }
+        }
+      }
+      .form-container.terms-conditionals-form {
+        .login-input-directions {
+          top: 9em;
+          height: 70%;
+          @include absolute-horizontal-center;
+
+          .directives-text {
+            @include relative-scrolling-container;
           }
         }
       }

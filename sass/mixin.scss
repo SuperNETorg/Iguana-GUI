@@ -173,6 +173,12 @@
   right: 15px;
 }
 
+@mixin relative-horizontal-center {
+  margin-left: 15px;
+  margin-right: 15px;
+  position: relative;
+}
+
 @mixin disabled {
   background: $login-button-disabled-color;
   pointer-events: none;
@@ -277,4 +283,10 @@
 @mixin no-padding {
   @include padding('top', 0, true, !important);
   @include padding('bottom', 0, true, !important);
+}
+
+@mixin relative-scrolling-container {
+  position: relative;
+  height: 98%;
+  overflow-x: hidden;
 }
