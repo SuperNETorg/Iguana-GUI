@@ -127,10 +127,10 @@ angular.module('IguanaGUIApp')
     this.getActiveCoin = function() {
       return $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     };
-    
-    this.removeStorageItems = function (keys) {
+
+    this.removeStorageItems = function(keys) {
       var storageKeys = Object.keys($storage);
-      storageKeys.find(function (el, id) {
+      storageKeys.find(function(el, id) {
 
         if (typeof keys == 'string') {
           if (el.indexOf(keys) !== -1) {
@@ -143,7 +143,7 @@ angular.module('IguanaGUIApp')
             }
           }
         }
-      })
-    }
+      });
+    };
   }
 ]);

@@ -340,20 +340,20 @@ angular.module('IguanaGUIApp')
         .then(
           function() {
             $api.walletLogin(
-                self.passphraseModel,
-                settings.defaultSessionLifetime,
-                self.coinsSelectedToAdd[coinKeys[0]].coinId
+              self.passphraseModel,
+              settings.defaultSessionLifetime,
+              self.coinsSelectedToAdd[coinKeys[0]].coinId
             ).then(onResolve, onReject)
           },
           function(response) {
             var message = '',
-              color = 'red';
+                color = 'red';
 
             if (response.data) {
               if (response.data.error) {
                 if (response.data.error.code === -15) {
                   message = 'MESSAGE.NO_WALLET_IS_ENCRYPTED';
-                } else if (response.data.error === "authentication error"){
+                } else if (response.data.error === 'authentication error') {
                   message = 'MESSAGE.AUTHENTICATION_ERROR';
                 }
               }
@@ -380,10 +380,10 @@ angular.module('IguanaGUIApp')
           isCheck = false;
         }
         if (!isCheck) {
-          $storage['iguana-auth'] = {'timestamp': Date.now()};
+          $storage['iguana-auth'] = { 'timestamp': Date.now() };
 
           if (!$storage.isIguana) {
-            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = {'logged': 'yes'};
+            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
           }
           $storage['iguana-login-active-coin'] = {};
 
