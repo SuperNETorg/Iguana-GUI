@@ -3,6 +3,8 @@
 if (!dev) {
   var dev = { // prod
     isDev: false,
+    isNightwatch: false,
+    isKarma: false,
     showSyncDebug: false,
     showConsoleMessages: false,
     coinPW: null,
@@ -154,18 +156,20 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  var count = 0;
+  if (dev && dev.isDev && !dev.isKarma) {
+    var count = 0;
 
-  $api.testConnection().then(onResolve, onReject);
+    $api.testConnection().then(onResolve, onReject);
 
-  function onResolve(coins) {
-    $rootScope.$broadcast('coinsInfo', coins);
-  }
+    function onResolve(coins) {
+      $rootScope.$broadcast('coinsInfo', coins);
+    }
 
-  function onReject() {
-    if (count < 100) {
-      $api.testConnection().then(onResolve, onReject);
-      count++
+    function onReject() {
+      if (count < 100) {
+        $api.testConnection().then(onResolve, onReject);
+        count++
+      }
     }
   }
 

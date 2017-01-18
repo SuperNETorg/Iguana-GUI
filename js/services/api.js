@@ -1035,7 +1035,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getBasicAuthHeaderObj = function(conf, coin, method) {
-      if (dev && dev.isTest &&
+      if (dev && dev.isNightwatch &&
           (method === 'settxfee' ||
           method === 'getaccountaddress' ||
           method === 'getbalance' ||
@@ -1080,7 +1080,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getBitcoinRPCPayloadObj = function(method, params, coin) {
-      if (dev && dev.isTest) { // wip, UAT
+      if (dev && dev.isNightwatch) { // wip, UAT
         if ($storage.isIguana && method !== 'settxfee' &&
           method !== 'getaccountaddress' &&
           method !== 'getbalance' &&
@@ -1108,7 +1108,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.getFullApiRoute = function(method, conf, coin) {
-      if (dev && dev.isTest) { // wip, UAT
+      if (dev && dev.isNightwatch) { // wip, UAT
         var reroute = (
           method === 'settxfee' ||
           method === 'getaccountaddress' ||
@@ -1343,12 +1343,12 @@ angular.module('IguanaGUIApp')
           deferred = $q.defer();
 
       // dev account lookup override
-      if (dev.coinAccountsDev && !$storage.isIguana && !dev.isTest) {
+      if (dev.coinAccountsDev && !$storage.isIguana && !dev.isNightwatch) {
         if (dev.coinAccountsDev.coind[coin]) {
           account = dev.coinAccountsDev.coind[coin];
         }
       }
-      if (dev.isTest && $storage.isIguana) {
+      if (dev.isNightwatch && $storage.isIguana) {
         account = '';
       }
 
@@ -1411,7 +1411,7 @@ angular.module('IguanaGUIApp')
           account = dev.coinAccountsDev.coind[coin];
         }
       }
-      if (dev.isTest && $storage.isIguana) {
+      if (dev.isNightwatch && $storage.isIguana) {
         account = '';
       }
 
