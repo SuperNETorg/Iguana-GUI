@@ -1,3 +1,5 @@
+'use stric';
+
 /*!
  *  Iguana lang/en
  *  format 'key': 'value'

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('IguanaGUIApp')
 .directive('resize', function($window) {
   return {

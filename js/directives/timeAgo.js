@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('IguanaGUIApp')
 .directive('timeago', function($filter) {
   return function(scope, element) {
