@@ -15,7 +15,7 @@ angular.module('IguanaGUIApp')
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;
     this.coindWalletLockCount = 0;
-    this.minEpochTimestamp = 1471620867; // Jan 01 1970
+    this.minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
     this.bodyBlurOn = function() {
       angular.element(document.body).addClass('modal-open');
@@ -130,9 +130,9 @@ angular.module('IguanaGUIApp')
 
     this.removeStorageItems = function(keys) {
       var storageKeys = Object.keys($storage);
-      storageKeys.find(function(el, id) {
 
-        if (typeof keys == 'string') {
+      storageKeys.find(function(el, id) {
+        if (typeof keys === 'string') {
           if (el.indexOf(keys) !== -1) {
             delete $storage[el];
           }

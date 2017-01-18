@@ -176,14 +176,14 @@ angular.module('IguanaGUIApp')
             $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red'); // TODO Change Bootstrap alert
             $timeout(function() {
               util.removeStorageItems([
-                  'passphrase',
-                  'coin',
-                  'Coin',
-                  'fee',
-                  'pass',
-                  'rate',
-                  'auth'
-                ]);
+                'passphrase',
+                'coin',
+                'Coin',
+                'fee',
+                'pass',
+                'rate',
+                'auth'
+              ]);
               $state.go('login');
 
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -201,7 +201,7 @@ angular.module('IguanaGUIApp')
       if (response.data && response.data instanceof String && response.data.indexOf(':-13') > -1) {
         return -13;
       }
-      if (response.status == -1 && response.statusText == "") {
+      if (response.status === -1 && response.statusText === '') {
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('connection error');
         }
@@ -263,7 +263,7 @@ angular.module('IguanaGUIApp')
       if (response.status && $storage.isIguana) {
         if (
           response.status !== (null || -1) &&
-          response.status instanceof  'string'
+          response.status instanceof 'string'
         ) {
           var iguanaGetInfo = response.status.split(' '),
             totalBundles = iguanaGetInfo[20].split(':'),
