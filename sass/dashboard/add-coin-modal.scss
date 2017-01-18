@@ -32,9 +32,13 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .add-new-coin-form-login-state {
   .btn {
     margin-top: 25px;
+    @include fixed-horizontal-center;
+    bottom: 15px;
+    z-index: 1;
   }
   .supported-coins-repeater-container {
     margin-top: 2.62em;
+    margin-bottom:1.62em;
     position: relative;
   }
 }

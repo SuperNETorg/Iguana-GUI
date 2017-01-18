@@ -201,6 +201,7 @@ body {
               /* csslint ignore:start */
               @include btn-bottom(15px);
               /* csslint ignore:end */
+              height: 47px;
             }
             .btn.row.btn-terms-conditions-accept {
               /* csslint ignore:start */
@@ -256,8 +257,8 @@ body {
               line-height: 1.3em;
             }
             .login-buttons-container {
-              margin-bottom: 20%;
-              margin-top: 20%;
+              margin-bottom: 15%;
+              margin-top: 15%;
 
               .btn.row {
                 height: 47px;
@@ -354,6 +355,7 @@ body {
               }
             }
             .supported-coins-repeater-container {
+              margin-bottom: 10%;
               margin-top: auto;
 
               .coin {
@@ -378,6 +380,10 @@ body {
                   position: relative;
                   top: 2px;
                 }
+              }
+              .btn-block.row {
+                height: 47px;
+                width: 90%;
               }
             }
           }

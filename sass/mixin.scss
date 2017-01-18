@@ -173,6 +173,12 @@
   right: 15px;
 }
 
+@mixin fixed-horizontal-center {
+  left: 15px;
+  position: fixed;
+  right: 15px;
+}
+
 @mixin relative-horizontal-center {
   margin-left: 15px;
   margin-right: 15px;

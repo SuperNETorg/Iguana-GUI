@@ -29,6 +29,7 @@ angular.module('IguanaGUIApp')
     $storage['iguana-login-active-coin'] = {};
 
     $scope.back = back;
+    $scope.next = next;
     $scope.close = close;
     $scope.clickOnCoin = clickOnCoin;
     $scope.isCoinsConnected = isCoinsConnected;
@@ -158,8 +159,6 @@ angular.module('IguanaGUIApp')
       }
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
-
-      $uibModalInstance.close(constructCoinRepeater());
     }
 
     function back() {
@@ -174,6 +173,10 @@ angular.module('IguanaGUIApp')
 
     function close() {
       $uibModalInstance.dismiss(constructCoinRepeater());
+    }
+
+    function next() {
+      $uibModalInstance.close(constructCoinRepeater());
     }
 
     function getPassphrase(coinId) {
