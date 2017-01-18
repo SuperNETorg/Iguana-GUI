@@ -5,6 +5,7 @@
  *         gulp zip to build prod and compress it into latest.zip
  *         gulp chromeApp to build chrome app version and zip chrome app folder
  *         gulp crx to pack chrome app as crx extension; see create_crx.sh for details
+ *         gulp tests to run gui with karma or e2e; see js/dev_tests.js for tests env options
  *         note: create_crx.sh requires permission to execute as a program
  */
 

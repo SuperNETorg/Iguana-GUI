@@ -34,10 +34,10 @@ module.exports = function(config) {
       'node_modules/angular-mocks/angular-mocks.js',
       'js/settings.js',
       'js/supported-coins-list.js',
-      'js/dev.js',
+      'js/dev_tests.js',
       'js/lang/en.js',
       'js/iguana-add-coin-list.js',
-      'js/app_tests.js',
+      'js/app.js',
       'js/services/storage.js',
       'js/services/rates.js',
       'js/services/auth.js',
@@ -70,7 +70,7 @@ module.exports = function(config) {
       'js/controllers/messageController.js',
       'partials/*.html',
       'spec/fixtures/*.json',
-      'spec/flowModalController.spec.js'
+      'spec/dashboardController.spec.js'
     ]
   });
 };
