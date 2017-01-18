@@ -27,7 +27,8 @@ var _settings = {
     day: 10
   },
   defaultRelayFee: 0.00001,
-  defaultIguanaConnectionTimeOut: 500
+  defaultIguanaConnectionTimeOut: 500,
+  minEpochTimestamp: 1471620867
 };
 
 // create a new object with non-writable values

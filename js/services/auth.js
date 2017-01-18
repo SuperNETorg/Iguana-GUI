@@ -25,7 +25,7 @@ angular.module('IguanaGUIApp')
     this.addedCoinsOutput = '';
     this.failedCoinsOutput = '';
     this.passphraseModel = '';
-    this.minEpochTimestamp = 1471620867; // Jan 01 1970
+    this.minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
     this.checkSession = function(returnVal) {
       var inLogin = self.toState.name.indexOf('login') != -1,
@@ -117,38 +117,40 @@ angular.module('IguanaGUIApp')
     };
 
     this.loginEasyDEX = function() {
-      self
-        .commonLogin(true, true)
+      if (!Object.keys(self.coinsSelectedToAdd).length) {
+        self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
+      }
+      var coinKeys = Object.keys(self.coinsSelectedToAdd);
+
+      if (!self.passphraseModel) {
+        self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
+      }
+      walletLogin(true)
         .then(
-          function() {
-            walletLogin(true)
-              .then(
-                function(response) {
-                  var presponse = JSON.stringify(response[0].data),
-                      locationSplit;
+          function(response) {
+            var presponse = JSON.stringify(response[0].data),
+                locationSplit;
 
-                  presponse = JSON.stringify(presponse);
-                  sessionStorage.setItem('IguanaActiveAccount', presponse);
+            presponse = JSON.stringify(presponse);
+            sessionStorage.setItem('IguanaActiveAccount', presponse);
 
-                  if (
-                    $window.location.href.indexOf('localhost') > -1 ||
-                    $window.location.href.indexOf('127.0.0.1') > -1
-                  ) {
-                    locationSplit = $window.location.href.split('#');
+            if (
+              $window.location.href.indexOf('localhost') > -1 ||
+              $window.location.href.indexOf('127.0.0.1') > -1
+            ) {
+              locationSplit = $window.location.href.split('#');
 
-                    if (locationSplit[0])
-                      $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
-                  } else {
-                    locationSplit = $window.location.href.split('index.html');
+              if (locationSplit[0])
+                $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+            } else {
+              locationSplit = $window.location.href.split('index.html');
 
-                    if (locationSplit[0]) {
-                      $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
-                    }
-                  }
-                }
-              );
+              if (locationSplit[0]) {
+                $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+              }
+            }
           }
-        )
+        );
     };
 
     this.commonLogin = function(addCoinOnly, edexRedirect, isCheck) {
@@ -345,25 +347,29 @@ angular.module('IguanaGUIApp')
           },
           function(response) {
             var message = '',
-                color = '';
+              color = 'red';
 
-            if (response.data.error.code === -15) {
-              message = $filter('lang')('MESSAGE.NO_WALLET_IS_ENCRYPTED');
-              color = 'red';
-            } else if (
-                response.data &&
-                response.data.message &&
-                response.data.message.indexOf('connect ECONNREFUSED') !== -1
-            ) {
-              message = $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
-              color = 'red';
-            } else if (response.status === -1) {
-              message = $filter('lang')($storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
-              color = 'red';
+            if (response.data) {
+              if (response.data.error) {
+                if (response.data.error.code === -15) {
+                  message = 'MESSAGE.NO_WALLET_IS_ENCRYPTED';
+                } else if (response.data.error === "authentication error"){
+                  message = 'MESSAGE.AUTHENTICATION_ERROR';
+                }
+              }
+              if (response.data.message) {
+                if (response.data.message.indexOf('connect ECONNREFUSED') !== -1) {
+                  message = 'MESSAGE.NO_DAEMON_IS_RUNNING';
+                }
+              }
+            }
+
+            if (response.status === -1) {
+              message = $storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP';
             }
 
             $message.ngPrepMessageModal(
-                message,
+              $filter('lang')(message),
                 color
             );
           }

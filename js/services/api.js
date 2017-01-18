@@ -175,9 +175,23 @@ angular.module('IguanaGUIApp')
           if ($storage.activeCoin > settings.iguanaNullReturnCountThreshold) {
             $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red'); // TODO Change Bootstrap alert
             $timeout(function() {
-              util.logout();
+              util.removeStorageItems([
+                  'passphrase',
+                  'coin',
+                  'Coin',
+                  'fee',
+                  'pass',
+                  'rate',
+                  'auth'
+                ]);
+              $state.go('login');
+
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            // $interval.clear(dashboardUpdateTimer); //ToDo undefined variable
+            $interval.cancel(vars.dashboardUpdateRef);
+          }
+        } else if (response.data.error === "authentication error") {
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('authentication error');
           }
 
           return 10;
@@ -186,6 +200,11 @@ angular.module('IguanaGUIApp')
 
       if (response.data && response.data instanceof String && response.data.indexOf(':-13') > -1) {
         return -13;
+      }
+      if (response.status == -1 && response.statusText == "") {
+        if (dev.showConsoleMessages && dev.isDev) {
+          console.log('connection error');
+        }
       }
     };
 
@@ -338,11 +357,14 @@ angular.module('IguanaGUIApp')
         cache: false,
         headers: postAuthHeaders
       })
-      .then(function(response) {
-        deferred.resolve([coins, response, ++_index, coinsKeys]);
-      },function(response) {
-        deferred.reject([coins, response, ++_index, coinsKeys]);
-      });
+      .then(
+        function(response) {
+          deferred.resolve([coins, response, ++_index, coinsKeys]);
+        },
+        function(response) {
+          deferred.reject([coins, response, ++_index, coinsKeys]);
+        }
+      );
 
       return deferred.promise;
     };
@@ -409,9 +431,10 @@ angular.module('IguanaGUIApp')
           console.log(response.data.result);
           self.coinsInfo[index].relayFee = response.data.result.txfee;
         }*/
-        if (response.data && (
-            response.data.result && response.data.result.walletversion ||
-            response.data.result && response.data.result.difficulty ||
+        if (
+          response.data && response.data.result  && (
+            response.data.result.walletversion ||
+            response.data.result.difficulty ||
             response.data.result === 'success'
           )) {
           if (dev.showConsoleMessages && dev.isDev) {
@@ -1073,6 +1096,8 @@ angular.module('IguanaGUIApp')
       } else {
         if ($storage.isIguana) {
           var upass = this.Iguana_GetRPCAuth();
+          //for testing
+          // var upass = "wrong md5";
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
             '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {

@@ -127,5 +127,23 @@ angular.module('IguanaGUIApp')
     this.getActiveCoin = function() {
       return $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
     };
+    
+    this.removeStorageItems = function (keys) {
+      var storageKeys = Object.keys($storage);
+      storageKeys.find(function (el, id) {
+
+        if (typeof keys == 'string') {
+          if (el.indexOf(keys) !== -1) {
+            delete $storage[el];
+          }
+        } else if (keys instanceof Array) {
+          for (var i = 0; keys.length > i; i++) {
+            if (el.indexOf(keys[i]) !== -1) {
+              delete $storage[el];
+            }
+          }
+        }
+      })
+    }
   }
 ]);

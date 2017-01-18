@@ -203,7 +203,8 @@ var lang = {
       'TRANSACTION_ERROR': 'Transaction was not send due to an error!',
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
-      'INCORRECT_INPUT_P3': 'Invalid passphrase, please try again'
+      'INCORRECT_INPUT_P3': 'Invalid passphrase, please try again',
+      'AUTHENTICATION_ERROR': 'Authentication error'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',
