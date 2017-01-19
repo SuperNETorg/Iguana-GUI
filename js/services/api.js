@@ -179,7 +179,7 @@ angular.module('IguanaGUIApp')
             $message.viewErrors('MESSAGE.APP_FAILURE_ALT');
             this.forceLogOut();
           }
-        } else if (response.data.error !== "authentication error") {
+        } else if (response.data.error === "authentication error") {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('authentication error');
             $message.viewErrors('MESSAGE.AUTHENTICATION_ERROR');
