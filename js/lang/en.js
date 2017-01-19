@@ -72,7 +72,7 @@ var lang = {
       'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase ',
       'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'to confirm you saved it properly',
       'TERMS-HEADER': 'Accept "Terms and Conditions" to proceed to the wallet',
-      'TERMS_CONDITIONS': 'If you lose access to your copay wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that copay wallet will become inaccessible. ',
+      'TERMS_CONDITIONS': 'If you lose access to your wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that wallet will become inaccessible. ',
       'ACCEPT': 'Accept',
       'DECLINE': 'Decline'
     },
