@@ -15,9 +15,10 @@ angular.module('IguanaGUIApp')
   '$sessionStorage',
   '$syncStatus',
   '$message',
+  '$passPhraseGenerator',
   function(util, md5, $http, $state, $timeout, $interval, $q,
            vars, $filter, $storage, $sessionStorage, $syncStatus,
-           $message) {
+           $message, $passPhraseGenerator) {
 
     // bitcoin rpc error code ref: https://github.com/bitcoin/bitcoin/blob/62f2d769e45043c1f262ed45babb70fe237ad2bb/src/rpc/protocol.h#L30
 
@@ -1506,8 +1507,13 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.Iguana_SetRPCAuth = function(PassPhrase) {
-      var tmpPass = md5.createHash(PassPhrase);
+    this.Iguana_GenerateRPCAuth = function() {
+      var newRPCAuthKey = $passPhraseGenerator.generatePassPhrase($storage.isIguana ? 8 : 4);
+      this.Iguana_SetRPCAuth(newRPCAuthKey);
+    };
+
+    this.Iguana_SetRPCAuth = function(RPCKey) {
+      var tmpPass = md5.createHash(RPCKey);
       $sessionStorage['IguanaRPCAuth'] = tmpPass;
     };
 

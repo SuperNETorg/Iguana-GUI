@@ -160,8 +160,7 @@ angular.module('IguanaGUIApp')
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
 
-      if (!$storage.isIguana)
-      {
+      if (!$storage.isIguana) {
         next();
       }
     }
