@@ -99,7 +99,8 @@ body {
     }
     .flow-modal-login-state {
       .flow-content {
-        width: 786px;
+        width: 90%;
+        max-width: 786px;
 
         .left-side {
           width: 25%;
