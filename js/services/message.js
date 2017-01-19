@@ -4,7 +4,8 @@ angular.module('IguanaGUIApp')
 .service('$message', [
   '$uibModal',
   '$rootScope',
-  function($uibModal, $rootScope) {
+  '$filter',
+  function($uibModal, $rootScope, $filter) {
     this.ngPrepMessageModal = function(message, color, messageType) {
       $rootScope.messageType = messageType; // TODO: rewrite
       $rootScope.message = message;
@@ -25,5 +26,9 @@ angular.module('IguanaGUIApp')
     this.ngPrepMessageNoDaemonModal = function() {
       this.ngPrepMessageModal(null, 'red', 'noDaemon');
     };
+
+    this.viewErrors = function (message) {
+      this.ngPrepMessageModal($filter('lang')(message), 'red');
+    }
   }
 ]);

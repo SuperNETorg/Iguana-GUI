@@ -55,11 +55,15 @@ angular.module('IguanaGUIApp')
         var defaultIguanaServerUrl = this.getConf().server.protocol +
                                      this.getConf().server.ip +
                                      ':' +
-                                     this.getConf().server.iguanaPort;
+                                     this.getConf().server.iguanaPort,
+            upass = this.Iguana_GetRPCAuth();
 
         $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
-          timeout: settings.defaultIguanaConnectionTimeOut
+          timeout: settings.defaultIguanaConnectionTimeOut,
+          params: {
+            userpass: upass ? upass : 'null'
+          }
         })
         .then(
           function(response) {
@@ -129,14 +133,12 @@ angular.module('IguanaGUIApp')
     };
 
     this.errorHandler = function(response, index) {
+
       if (response.data && response.data.error) {
         if (response.data.error.message === 'need to unlock wallet') {
           if ($state.current.name !== 'login') {
-            $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE'), 'red');
-            $timeout(function() {
-              util.logout();
-            }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            // $interval.cancel(dashboardUpdateTimer); //ToDo undefined variable
+            $message.viewErrors('MESSAGE.APP_FAILURE');
+            this.forceLogOut();
           }
 
           return 10;
@@ -174,28 +176,15 @@ angular.module('IguanaGUIApp')
           $storage.activeCoin++;
 
           if ($storage.activeCoin > settings.iguanaNullReturnCountThreshold) {
-            $message.ngPrepMessageModal($filter('lang')('MESSAGE.APP_FAILURE_ALT'), 'red'); // TODO Change Bootstrap alert
-            $timeout(function() {
-              util.removeStorageItems([
-                'passphrase',
-                'coin',
-                'Coin',
-                'fee',
-                'pass',
-                'rate',
-                'auth'
-              ]);
-              $state.go('login');
-
-            }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
-            $interval.cancel(vars.dashboardUpdateRef);
+            $message.viewErrors('MESSAGE.APP_FAILURE_ALT');
+            this.forceLogOut();
           }
-        } else if (response.data.error === "authentication error") {
+        } else if (response.data.error !== "authentication error") {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('authentication error');
+            $message.viewErrors('MESSAGE.AUTHENTICATION_ERROR');
+            this.forceLogOut();
           }
-
-          return 10;
         }
       }
 
@@ -207,6 +196,21 @@ angular.module('IguanaGUIApp')
           console.log('connection error');
         }
       }
+    };
+
+    this.forceLogOut = function () {
+        $timeout(function () {
+          util.removeStorageItems([
+            'passphrase',
+            'coin',
+            'Coin',
+            'fee',
+            'pass',
+            'rate',
+            'auth'
+          ]);
+          $state.go('login');
+        }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
     };
 
     this.testCoinIsNotIguanaMode = function(response, index) {
@@ -1427,33 +1431,35 @@ angular.module('IguanaGUIApp')
         dataType: 'json',
         headers: postAuthHeaders
       })
-      .then(function(response) {
-        if (this.errorHandler(response, coin) !== 10) {
-          if (response.data.result > -1 || Number(response) === 0) {
-            // non-iguana
-            result = response.data.result > -1 ? response.data.result : response;
-          } else {
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log(response);
-            }
-
-            // iguana
-            if (response.data && response.data.error) {
-              // do something
-              console.log('error: ' + response.data.error);
-              result = false;
+      .then(
+        function(response) {
+          if (this.errorHandler(response, coin) !== 10) {
+            if (response.data.result > -1 || Number(response) === 0) {
+              // non-iguana
+              result = response.data.result > -1 ? response.data.result : response;
             } else {
-              if (response) {
-                result = response.data;
+              if (dev.showConsoleMessages && dev.isDev) {
+                console.log(response);
+              }
+
+              // iguana
+              if (response.data && response.data.error) {
+                // do something
+                console.log('error: ' + response.data.error);
+                result = response.data.error;
+                deferred.reject([result, coin]);
               } else {
-                result = false;
+                if (response) {
+                  result = response.data;
+                } else {
+                  result = false;
+                }
+                deferred.resolve([result, coin]);
               }
             }
           }
-        }
 
-        deferred.resolve([result, coin]);
-      }.bind(this),
+        }.bind(this),
         function(response) {
           if (response.data) {
             if (
@@ -1486,23 +1492,26 @@ angular.module('IguanaGUIApp')
       var deferred = $q.defer(),
           result = {};
 
-      this.getBalance(defaultAccount, activeCoin).then(function(response) {
+      this
+        .getBalance(defaultAccount, activeCoin)
+        .then(
+          function(response) {
+            result.getBalance = response;
+            this.bitcoinFees().then(function(bitcoinFees) {
 
-        result.getBalance = response;
-        this.bitcoinFees().then(function(bitcoinFees) {
+              result.bitcoinFees = bitcoinFees;
+              this.bitcoinFeesAll().then(function(responseAll) {
 
-          result.bitcoinFees = bitcoinFees;
-          this.bitcoinFeesAll().then(function(responseAll) {
+                result.bitcoinFeesAll = responseAll;
+                this.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
 
-            result.bitcoinFeesAll = responseAll;
-            this.getExternalRate(coinName + '/' + currencyName).then(function(currency) {
-
-              result.getExternalRate = currency;
-              deferred.resolve(result);
+                  result.getExternalRate = currency;
+                  deferred.resolve(result);
+                }.bind(this));
+              }.bind(this));
             }.bind(this));
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
+          }.bind(this)
+        );
 
       return deferred.promise;
     };
