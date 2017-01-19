@@ -22,10 +22,11 @@ angular.module('IguanaGUIApp')
     };
 
     this.getRate = function(coin, returnValue) {
-      if (returnValue)
+      if (returnValue) {
         return this.updateRates(coin, null, true);
-      else
+      } else {
         this.updateRates(coin);
+      }
     };
 
     this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
@@ -64,19 +65,26 @@ angular.module('IguanaGUIApp')
         }
 
         if (isUpdateTriggered) {
-          $api.getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
-          .then(function(response) {
-            self.updateRateCB(coin, response[0]);
-          }, function(response) {
-            if (dev.showConsoleMessages && dev.isDev)
-              console.log('request failed: ' + response);
-          });
+          $api
+            .getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
+            .then(
+              function(response) {
+                self.updateRateCB(coin, response[0]);
+              },
+              function(response) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('request failed: ' + response);
+                }
+              });
 
-          if (dev.showConsoleMessages && dev.isDev)
+          if (dev.showConsoleMessages && dev.isDev) {
             console.log('rates update in progress...');
+          }
         }
       } else {
-        if (!coin) coin = defaultCoin;
+        if (!coin) {
+          coin = defaultCoin;
+        }
 
         // if (!currency) {
         //   currency = defaultCurrency;
@@ -100,8 +108,9 @@ angular.module('IguanaGUIApp')
               deferred.resolve($storage[coinRates].value);
             }
           }, function(reason) {
-            if (dev.showConsoleMessages && dev.isDev)
+            if (dev.showConsoleMessages && dev.isDev) {
               console.log('request failed: ' + reason);
+            }
           });
 
           return deferred.promise;

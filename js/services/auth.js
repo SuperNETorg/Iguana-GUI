@@ -140,8 +140,9 @@ angular.module('IguanaGUIApp')
             ) {
               locationSplit = $window.location.href.split('#');
 
-              if (locationSplit[0])
+              if (locationSplit[0]) {
                 $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+              }
             } else {
               locationSplit = $window.location.href.split('index.html');
 
@@ -193,10 +194,10 @@ angular.module('IguanaGUIApp')
               } else {
                 deferred.resolve(data);
               }
-            },
+            }/*,
             function(response) {
               //TODO: Iguana connection error messages are here
-            });
+            }*/);
 
         return deferred.promise;
       } else {

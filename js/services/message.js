@@ -27,7 +27,7 @@ angular.module('IguanaGUIApp')
       this.ngPrepMessageModal(null, 'red', 'noDaemon');
     };
 
-    this.viewErrors = function (message) {
+    this.viewErrors = function(message) {
       this.ngPrepMessageModal($filter('lang')(message), 'red');
     }
   }

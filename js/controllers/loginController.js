@@ -155,6 +155,7 @@ angular.module('IguanaGUIApp')
 
       $scope.karma.modal = modalInstance; // tests
     }
+
     function login() {
       $storage.loginTermsAndConditions = true;
       $auth.login(

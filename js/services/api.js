@@ -198,8 +198,8 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.forceLogOut = function () {
-        $timeout(function () {
+    this.forceLogOut = function() {
+        $timeout(function() {
           util.removeStorageItems([
             'passphrase',
             'coin',
