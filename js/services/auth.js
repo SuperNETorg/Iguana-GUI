@@ -180,7 +180,7 @@ angular.module('IguanaGUIApp')
               self.coinResponses = data;
 
               if (!addCoinOnly) {
-                if (!self.passphraseModel) {
+                if (!self.passphraseModel && !dev.isDev) {
                   self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
                 }
 
