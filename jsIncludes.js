@@ -27,6 +27,7 @@
 <script type="text/javascript" src="js/filters/decimalPlacesFormat.js"></script>
 <script type="text/javascript" src="js/filters/lang.js"></script>
 <!-- services -->
+<script type="text/javascript" src="js/services/http.js"></script>
 <script type="text/javascript" src="js/services/storage.js"></script>
 <script type="text/javascript" src="js/services/rates.js"></script>
 <script type="text/javascript" src="js/services/auth.js"></script>

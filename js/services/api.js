@@ -4,7 +4,7 @@ angular.module('IguanaGUIApp')
 .service('$api', [
   'util',
   'md5',
-  '$http',
+  'http',
   '$state',
   '$timeout',
   '$interval',
@@ -16,7 +16,7 @@ angular.module('IguanaGUIApp')
   '$syncStatus',
   '$message',
   '$passPhraseGenerator',
-  function(util, md5, $http, $state, $timeout, $interval, $q,
+  function(util, md5, http, $state, $timeout, $interval, $q,
            vars, $filter, $storage, $sessionStorage, $syncStatus,
            $message, $passPhraseGenerator) {
 
@@ -58,7 +58,7 @@ angular.module('IguanaGUIApp')
                                      this.getConf().server.iguanaPort,
             upass = this.Iguana_GetRPCAuth();
 
-        $http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
+        http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
           timeout: settings.defaultIguanaConnectionTimeOut,
           params: {
@@ -358,7 +358,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(conf),
           deferred = $q.defer();
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -583,7 +583,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'encryptwallet'),
           deferred = $q.defer();
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -646,7 +646,7 @@ angular.module('IguanaGUIApp')
           postData = this.getBitcoinRPCPayloadObj('walletlock', null, coin),
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'walletlock');
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -704,7 +704,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'walletpassphrase'),
           deferred = $q.defer();
 
-      $http.post($storage.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
+      http.post($storage.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
         headers: postAuthHeaders
       })
       .then(onResolve, onReject);
@@ -748,7 +748,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getblocktemplate'),
           deferred = $q.defer();
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -827,7 +827,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getaccountaddress'),
           deferred = $q.defer();
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -866,7 +866,7 @@ angular.module('IguanaGUIApp')
       params['userpass'] = this.Iguana_GetRPCAuth();
       params = JSON.stringify(params);
 
-      $http.post(fullUrl, params, {
+      http.post(fullUrl, params, {
         headers: postAuthHeaders
       })
       .then(
@@ -936,7 +936,7 @@ angular.module('IguanaGUIApp')
           '&rel=' +
           quoteComponents[1];
 
-      $http.get(fullUrl, '', {
+      http.get(fullUrl, '', {
         cache: false
       })
       .then(function(_response) {
@@ -966,7 +966,7 @@ angular.module('IguanaGUIApp')
           fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
           deferred = $q.defer();
 
-      $http.get(fullUrl, '', {
+      http.get(fullUrl, '', {
         cache: false
       })
       .then(function(response) {
@@ -985,7 +985,7 @@ angular.module('IguanaGUIApp')
       }, function() {
         console.log('falling back to ext service #2');
 
-        $http.get('http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(), '', {
+        http.get('http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(), '', {
           cache: false
         })
         .then(function(response) {
@@ -995,7 +995,7 @@ angular.module('IguanaGUIApp')
             var btcToCurrency = response.price;
 
             // get btc -> altcoin rate
-            $http.get('https://poloniex.com/public?command=returnTicker', '', {
+            http.get('https://poloniex.com/public?command=returnTicker', '', {
               cache: false
             })
             .then(function(response) {
@@ -1180,7 +1180,7 @@ angular.module('IguanaGUIApp')
           postData = this.getBitcoinRPCPayloadObj('sendtoaddress', '\"' + sendInfo.address + '\", ' + sendInfo.amount + ', \"' + sendInfo.note + '\"', coin),
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'sendtoaddress');
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -1246,7 +1246,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'settxfee'),
           deferred = $q.defer();
 
-      $http.post(fullUrl,postData,{
+      http.post(fullUrl,postData,{
         cache: false,
         headers: postAuthHeaders
       })
@@ -1302,7 +1302,7 @@ angular.module('IguanaGUIApp')
           deferred = $q.defer();
 
       if (this.getConf().coins[coin].currentBlockHeightExtSource !== 'disabled') {
-        $http.get(this.getConf().coins[coin].currentBlockHeightExtSource, '', {
+        http.get(this.getConf().coins[coin].currentBlockHeightExtSource, '', {
           cache: false
         })
         .then(function(response) {
@@ -1362,7 +1362,7 @@ angular.module('IguanaGUIApp')
             + settings.defaultTransactionsCount, coin), // last N tx
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'listtransactions');
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
       })
@@ -1426,7 +1426,7 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getbalance'),
           deferred = $q.defer();
 
-      $http.post(fullUrl, postData, {
+      http.post(fullUrl, postData, {
         cache: false,
         dataType: 'json',
         headers: postAuthHeaders
@@ -1481,11 +1481,11 @@ angular.module('IguanaGUIApp')
     };
 
     this.bitcoinFees = function() {
-      return $http.get('https://bitcoinfees.21.co/api/v1/fees/recommended');
+      return http.get('https://bitcoinfees.21.co/api/v1/fees/recommended');
     };
 
     this.bitcoinFeesAll = function() {
-      return $http.get('https://bitcoinfees.21.co/api/v1/fees/list');
+      return http.get('https://bitcoinfees.21.co/api/v1/fees/list');
     };
 
     this.feeCoins = function(activeCoin, defaultAccount, currencyName, coinName) {
