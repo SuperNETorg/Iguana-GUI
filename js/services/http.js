@@ -3,7 +3,8 @@ angular.module('IguanaGUIApp')
   '$q',
   '$http',
   'vars',
-  function ($q, $http, vars) {
+  'error',
+  function ($q, $http, vars, error) {
 
     return {
       get: get,
@@ -31,17 +32,15 @@ angular.module('IguanaGUIApp')
     }
 
     function onResolve(deferred, response) {
-      loaders();
+      vars['loading'] = false;
+      error.check(response);
       deferred.resolve(response)
     }
 
     function onReject(deferred, response) {
-      loaders();
-      deferred.reject(response)
-    }
-
-    function loaders() {
       vars['loading'] = false;
+      error.check(response);
+      deferred.reject(response)
     }
   }
 ]);

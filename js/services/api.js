@@ -86,7 +86,7 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            this.errorHandler(response);
+            // this.errorHandler(response);
             this.testCoinPorts()
               .then(function(coins) {
                 deferred.resolve(coins);
@@ -116,7 +116,7 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            this.errorHandler(response);
+            // this.errorHandler(response);
             this.testCoinPorts()
               .then(function(coins) {
                 deferred.resolve(coins);
@@ -132,6 +132,7 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
+    //TODO: should be removed
     this.errorHandler = function(response, index) {
 
       if (response.data && response.data.error) {
@@ -156,8 +157,11 @@ angular.module('IguanaGUIApp')
 
           if (angular.element(document.querySelector('#debug-sync-info')) &&
             index !== undefined && dev.isDev && dev.showSyncDebug) {
-            if (angular.element(document.querySelector('#debug-sync-info')).innerHTML.indexOf('coin ' + index) === -1 &&
-              dev.isDev && dev.showSyncDebug) {
+            if (
+              angular.element(document.querySelector('#debug-sync-info'))
+                        .innerHTML.indexOf('coin ' + index) === -1 &&
+              dev.isDev && dev.showSyncDebug
+            ) {
               angular
                 .element(document.querySelector('#debug-sync-info'))
                 .append('coin ' + index + ' is busy processing<br/>');
@@ -198,6 +202,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
+    //TODO: should be removed
     this.forceLogOut = function() {
         $timeout(function() {
           util.removeStorageItems([
@@ -418,12 +423,14 @@ angular.module('IguanaGUIApp')
           self.coinsInfo[index] = [];
         }
 
-        self.errorHandler(response, index);
+        // self.errorHandler(response, index);
 
-        if (dev.showConsoleMessages && dev.isDev)
+        if (dev.showConsoleMessages && dev.isDev) {
           console.log('p2p test ' + index);
-        if (dev.showConsoleMessages && dev.isDev)
+        }
+        if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
+        }
         if (response.data && response.data.error === 'coin is busy processing') {
           self.coinsInfo[index].connection = true;
           self.coinsInfo[index].RT = false;
@@ -484,7 +491,7 @@ angular.module('IguanaGUIApp')
           self.coinsInfo[index] = [];
         }
 
-        self.errorHandler(response, index);
+        // self.errorHandler(response, index);
 
         if ($storage['connected-coins']) {
           delete $storage['connected-coins'][index];
@@ -762,9 +769,6 @@ angular.module('IguanaGUIApp')
         }
 
         deferred.resolve(result);
-
-        // if (cb) cb.call(this, result);
-        // deferred.resolve(result);
       }.bind(this), function(response) {
         if (dev.showConsoleMessages && dev.isDev)
           console.log(response.data.responseText);
@@ -1145,7 +1149,7 @@ angular.module('IguanaGUIApp')
 
           return $storage['isIguana'] ? (reroute +
             this.getConf().server.ip + ':' +
-            reroutePorfConf + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            reroutePorfConf + '/api/iguana/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
@@ -1159,13 +1163,13 @@ angular.module('IguanaGUIApp')
         if (conf) {
           return $storage.isIguana ? (this.getConf().server.protocol +
             this.getConf().server.ip + ':' +
-            conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            conf.portp2p + '/api/iguana/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
           return $storage.isIguana ? (this.getConf().server.protocol +
             this.getConf().server.ip + ':' +
-            this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
+            this.getConf(true).server.port + '/api/iguana/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             this.getConf(false, coin).server.port);
         }
