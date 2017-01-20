@@ -1149,7 +1149,7 @@ angular.module('IguanaGUIApp')
 
           return $storage['isIguana'] ? (reroute +
             this.getConf().server.ip + ':' +
-            reroutePorfConf + '/api/iguana/' + method) : (settings.proxy +
+            reroutePorfConf + '/api/bitcoinrpc/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
@@ -1163,13 +1163,13 @@ angular.module('IguanaGUIApp')
         if (conf) {
           return $storage.isIguana ? (this.getConf().server.protocol +
             this.getConf().server.ip + ':' +
-            conf.portp2p + '/api/iguana/' + method) : (settings.proxy +
+            conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
           return $storage.isIguana ? (this.getConf().server.protocol +
             this.getConf().server.ip + ':' +
-            this.getConf(true).server.port + '/api/iguana/' + method) : (settings.proxy +
+            this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
             this.getConf().server.ip + ':' +
             this.getConf(false, coin).server.port);
         }
@@ -1458,11 +1458,10 @@ angular.module('IguanaGUIApp')
                 } else {
                   result = false;
                 }
-                deferred.resolve([result, coin]);
               }
             }
+            deferred.resolve([result, coin]);
           }
-
         }.bind(this),
         function(response) {
           if (response.data) {
