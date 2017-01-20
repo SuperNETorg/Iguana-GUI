@@ -1,10 +1,13 @@
+//'use strict';
+// TODO: fix Uncaught SyntaxError: Unexpected eval or arguments in strict mode, line 17
+
 angular.module('IguanaGUIApp')
 .service('http', [
   '$q',
   '$http',
   'vars',
   'error',
-  function ($q, $http, vars, error) {
+  function($q, $http, vars, error) {
 
     return {
       get: get,
@@ -12,7 +15,7 @@ angular.module('IguanaGUIApp')
     };
 
     function get(...arguments) {
-      vars['loading'] = true;
+      vars.loading = true;
       var deferred = $q.defer();
       $http
         .get.apply(null, arguments)
@@ -22,7 +25,7 @@ angular.module('IguanaGUIApp')
     }
 
     function post(...arguments) {
-      vars['loading'] = true;
+      vars.loading = true;
       var deferred = $q.defer();
       $http
         .post.apply(null, arguments)
@@ -32,13 +35,13 @@ angular.module('IguanaGUIApp')
     }
 
     function onResolve(deferred, response) {
-      vars['loading'] = false;
+      vars.loading = false;
       error.check(response);
       deferred.resolve(response)
     }
 
     function onReject(deferred, response) {
-      vars['loading'] = false;
+      vars.loading = false;
       error.check(response);
       deferred.reject(response)
     }

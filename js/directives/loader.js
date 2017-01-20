@@ -26,14 +26,14 @@ angular.module('IguanaGUIApp')
     return {
       link: function(...attrs) {
         var scopeAttrs = attrs;
+
         $rootScope.$watchCollection(function() {
-          return vars['loading'];
+          return vars.loading;
         }, function(newVal, oldVal) {
-
-
           var localAttrs = scopeAttrs.splice(0, scopeAttrs.length);
+
           localAttrs.unshift(oldVal);
-            globalLoader.apply(this, localAttrs);
+          globalLoader.apply(this, localAttrs);
         });
       }
     };

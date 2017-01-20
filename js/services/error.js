@@ -9,7 +9,7 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$message',
   '$timeout',
-  function ($q, vars, util, $state, $storage, $message, $timeout) {
+  function($q, vars, util, $state, $storage, $message, $timeout) {
 
     var isIguana = $storage.isIguana,
         response = {},
@@ -20,18 +20,19 @@ angular.module('IguanaGUIApp')
         isViewAndLogOut = false,
         istypeConsole = false,
         isShowConsole = dev.showConsoleMessages && dev.isDev;
-        vars['response'] = {};
+
+    vars.response = {};
 
     return {
-      'check': function (...args) {
-        vars['response']['data'] = args[0];
+      'check': function(...args) {
+        vars.response.data = args[0];
         if (isIguana) {
-          checkIguanaErrors.apply(this, args)
+          checkIguanaErrors.apply(this, args);
         } else {
-          checkNoIguanaErrors.apply(this, args)
+          checkNoIguanaErrors.apply(this, args);
         }
       },
-      'status': status,
+      'status': status
     };
 
     function checkIguanaErrors(...args) {
@@ -58,34 +59,34 @@ angular.module('IguanaGUIApp')
 
     function errorsSwitch() {
       switch (errors) {
-        case 'need to unlock wallet' :
+        case 'need to unlock wallet':
           isViewAndLogOut = true;
           message = 'APP_FAILURE';
           consoleMessage = '';
           status = 10;
           break;
-        case 'null return from iguana_bitcoinRPC' :
+        case 'null return from iguana_bitcoinRPC':
           isViewAndLogOut = true;
           message = 'APP_FAILURE_ALT';
           consoleMessage = 'iguana crashed? attempts: ' + $storage.activeCoin + ' of ' + settings.iguanaNullReturnCountThreshold + ' max';
           status = null;
           break;
-        case 'authentication error' :
+        case 'authentication error':
           isViewAndLogOut = true;
           message = 'AUTHENTICATION_ERROR';
           consoleMessage = 'authentication error';
           status = null;
           break;
-        case 'iguana jsonstr expired' :
+        case 'iguana jsonstr expired':
           consoleMessage = 'server is busy';
           status = 10;
           break;
-        case 'coin is busy processing' :
+        case 'coin is busy processing':
           consoleMessage = 'server is busy';
           status = 10;
           break;
         default :
-          consoleMessage = 'it\'s Okay';
+          consoleMessage = 'default error';
       }
 
       if (isViewAndLogOut) {
@@ -111,7 +112,7 @@ angular.module('IguanaGUIApp')
         $state.go('login');
       }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
     }
-    
+
     /*function applyIntervalChecks() {
 
     }*/
