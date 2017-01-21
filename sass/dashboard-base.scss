@@ -5,251 +5,235 @@
 
 @import 'dev.scss';
 
-$dashboard-topbar-bg-color: #0E101C;
-$dashboard-topbar-item-color: #8A8B93;
-$dashboard-balance-block-label-color: #95969F;
 
-.dashboard.blur,
-.modal-open .dashboard {
+body .dashboard.blur,
+body.modal-open .dashboard {
   @include blur;
 }
-.dashboard-page {
-  background: $color-modal-bg;
+
+/*  temp solution to chrome app scrolling issue
+ *  this causes scrollbar flickering side effects
+ */
+html {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-.dashboard {
-  font-size: inherit;
+html.modal-open {
+  overflow-y: hidden;
+}
 
-  .navbar,
-  .navbar .container-fluid {
-    padding: 0;
+body {
+  .dashboard-page {
+    background: $color-modal-bg;
   }
-  .top {
-    background: $dashboard-topbar-bg-color;
-    border-radius: 0;
-    box-shadow: 0 4px 5px 0 rgba-black(0.2);
-    color: $color-absolute-white;
-    margin-bottom: 0;
-    text-align: center;
+  .app-container {
+    .dashboard {
+      font-size: inherit;
 
-    .left {
-      @include bold;
-      display: inline-block;
-      font-size: 1.6em;
-      left: 30px;
-      position: absolute;
-      top: 15px;
-    }
-    .right {
-      @include bold;
-      font-size: 1em;
-      position: absolute;
-      right: 30px;
-      top: 20px;
+      .navbar {
+        background: $dashboard-topbar-bg-color;
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+
+        .navbar-header {
+          .navbar-brand {
+            color: $color-absolute-white;
+            font-family: 'FuturaPTDemi', sans-serif;
+            font-size: 1.6em;
+            font-weight: 400;
+          }
+          .navbar-edex {
+            color: $dashboard-navbar-edex-color;
+            font-size: 1.8em;
+            @include bold;
+            left: 5.64em;
+            position: absolute;
+            top: 0.24em;
+
+            span {
+              font-family: 'FuturaPTDemi', sans-serif;
+              font-size: 1.1em;
+              font-weight: 400;
+            }
+          }
+          .lnk-logout {
+            color: $color-absolute-white;
+            font-size: 0.94em;
+            @include bold;
+            position: absolute;
+            right: 2.2em;
+            top: 1.7em;
+          }
+        }
+        .top {
+          /* csslint ignore:start */
+          border-radius: 0;
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)';/*IE 8*/
+          -moz-box-shadow: 0 0 5px 5px rgba-black(0.3);/*FF 3.5+*/
+          -webkit-box-shadow: 0 0 5px 5px rgba-black(0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+          box-shadow: 0 0 5px 5px rgba-black(0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+          filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
+          color: $color-absolute-white;
+          margin-bottom: 0;
+          text-align: center;
+          /* csslint ignore:end */
+
+          .top-menu:before {
+            /* csslint ignore:start */
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,222539+0 */
+            background: #000000; /* Old browsers */
+            background: -moz-radial-gradient(top, ellipse cover, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* FF3.6-15 */
+            background: -webkit-radial-gradient(top, ellipse cover, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* Chrome10-25,Safari5.1-6 */
+            background: radial-gradient(ellipse at center, rgba-black(1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            border-radius: 25%;
+            content: '';
+            height: 100%;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#222539', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+            margin-left: -13px;
+            opacity: 0.25;
+            position: absolute;
+            width: 350px;
+            z-index: 50;
+            /* csslint ignore:end */
+          }
+          .top-menu {
+            display: inline-block;
+            float: none;
+            margin: 0 auto;
+            transition: margin 400ms;
+            vertical-align: top;
+            white-space: nowrap;
+
+            .item {
+              color: $dashboard-topbar-item-color;
+              display: inline-block;
+              font-size: 1.05em;
+              @include bold;
+              margin: 0 5px;
+              text-shadow: 0 0 0 $dashboard-topbar-item-color;
+              top: 8px;
+              z-index: 100;
+
+              .border {
+                background: transparent;
+                border-radius: $border-radius-smaller;
+                height: 3px;
+                margin-left: 3%;
+                position: relative;
+                top: 1px;
+                width: 96%;
+              }
+            }
+            .item.active {
+              color: $color-absolute-white;
+              @include bold;
+              text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
+
+              .border {
+                background: $color-orange;
+                box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
+              }
+            }
+          }
+          .nav-buttons {
+            .nav-left {
+              @include nav-buttons(left);
+            }
+            .nav-right {
+              @include nav-buttons(right);
+            }
+          }
+        }
+      }
+      .main-content {
+        margin: 0 auto 20px auto;
+        max-width: 1500px;
+
+        .balance-block,
+        .currency-content {
+          margin-top: 3.4em;
+        }
+        .balance-block {
+          .label {
+            color: $dashboard-balance-block-label-color;
+            font-size: 0.92em;
+            font-weight: normal;
+            padding: 0;
+          }
+          .balance {
+            font-size: 2em;
+            @include bold;
+            line-height: 1.2em;
+
+            .value {
+              padding-right: 5px;
+            }
+          }
+        }
+        .coins,
+        .transactions-unit {
+          margin-top: 1.1em;
+        }
+        /* transactions top bar */
+        .transactions-unit {
+          .top-bar {
+            .active-coin-balance {
+              font-size: 2.14em;
+              font-weight: 700;
+              line-height: 1em;
+              margin-left: 0.12em;
+              text-shadow: 0 1px 3px rgba-black(0.25);
+            }
+            .active-coin-balance-currency {
+              font-size: 1.14em;
+              @include bold;
+              line-height: 1.4em;
+              margin-left: 0.4em;
+              text-shadow: 0 1px 3px rgba-black(0.25);
+            }
+          }
+        }
+      }
     }
   }
-  .top-menu {
+  /* csslint ignore:end */
+  .block {
+    display: block;
+  }
+  .inline-block {
     display: inline-block;
-    float: none;
-    margin: 0 auto;
-    transition: margin 400ms;
-    vertical-align: top;
-    white-space: nowrap;
+  }
+  /* enable absolute positioning */
+  .inner-addon {
+    position: relative;
 
-    .item {
-      @include bold;
-      color: $dashboard-topbar-item-color;
-      display: inline-block;
-      font-size: 1.05em;
-      margin: 0 5px;
-      text-shadow: 0 0 0 $dashboard-topbar-item-color;
-      top: 8px;
-      z-index: 100;
-
-      .border {
-        background: transparent;
-        border-radius: $border-radius-smaller;
-        height: 3px;
-        margin-left: 3%;
-        padding: 0 22px;
-        width: 96%;
-      }
-    }
-    .item.active {
-      @include bold;
-      color: $color-absolute-white;
-      text-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
-
-      .border {
-        background: $color-orange;
-        box-shadow: 0 -1px 1px 0 rgba(254, 69, 13, 0.5); /* orange glow */
-      }
+    .glyphicon {
+      padding: 7px;
+      pointer-events: none;
+      position: absolute;
     }
   }
-  /* radial like highlight effect */
-  .top-menu:before {
-    /* csslint ignore:start */
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,222539+0 */
-    background: #000000; /* Old browsers */
-    background: -moz-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* FF3.6-15 */
-    background: -webkit-radial-gradient(top, ellipse cover, rgba(0, 0, 0, 1) 0%,rgba(34, 37, 57, 1) 0%); /* Chrome10-25,Safari5.1-6 */
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(34, 37, 57, 1) 0%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    border-radius: 25%;
-    content: '';
-    height: 100%;
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#222539', GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    margin-left: -13px;
-    opacity: 0.25;
-    position: absolute;
-    width: 350px;
-    z-index: 50;
-    /* csslint ignore:end */
-  }
-  .main-content {
-    margin: 0 auto 20px auto;
-    max-width: 1500px;
-  }
-  .balance-block {
-    .label {
-      color: $dashboard-balance-block-label-color;
-      font-size: 0.92em;
-      font-weight: normal;
-      padding: 0;
+  .right-addon {
+    .glyphicon {
+      right: 0;
     }
-    .balance {
-      @include bold;
-      font-size: 2em;
-      line-height: 1.2em;
-
-      .value {
-        padding-right: 5px;
-      }
+    input {
+      padding-right: 30px;
     }
   }
-  .coins,
-  .transactions-unit {
-    margin-top: 1.1em;
-  }
-  .active-coin-balance-currency {
-    font-size: 1.1em;
-    @include bold;
-    line-height: 1.6em;
-    margin-left: 0.4em;
-    text-shadow: 0 1px 3px rgba-black(0.25);
-
-    .value {
-      padding-right: 5px;
+  .left-addon {
+    .glyphicon {
+      left: 0;
+    }
+    input {
+      padding-left: 30px;
     }
   }
-  .btn.disabled,
-  .btn.disabled:focus {
-    @include unclickable;
-  }
-  .form-container.add-new-coin-form {
-    background: none;
-  }
-  .balance-block,
-  .currency-content {
-    margin-top: 3.4em;
-  }
-}
-.lnk-logout {
-  font-size: 1em;
-  @include bold;
-  margin-bottom: 10px;
-  margin-top: 16px;
-  position: absolute;
-  right: 15px;
-}
-/* csslint ignore:start */
-@mixin nav-buttons($position) {
-  #{$position}: 0;
-  height: 50%;
-  position: absolute;
-  top: 50%;
-  z-index: 10000;
-  width: 10px;
-}
-.nav-buttons {
-  .nav-left {
-    @include nav-buttons(left);
-  }
-  .nav-right {
-    @include nav-buttons(right);
-  }
-}
-/* csslint ignore:end */
-.block {
-  display: block;
-}
-.inline-block {
-  display: inline-block;
-}
-.margin-right-15 {
-  margin-right: 15px;
-}
-.margin-top-5 {
-  margin-top: 5px;
-}
-.margin-bottom {
-  margin-bottom: 15px;
-}
-/* enable absolute positioning */
-.inner-addon {
-  position: relative;
 
-  .glyphicon {
-    padding: 7px;
-    pointer-events: none;
-    position: absolute;
+  .form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
+    max-width: 400px;
   }
-}
-.right-addon {
-  .glyphicon {
-    right: 0;
-  }
-  input {
-    padding-right: 30px;
-  }
-}
-.left-addon {
-  .glyphicon  {
-    left: 0;
-  }
-  input  {
-    padding-left: 30px;
-  }
-}
-.active-coin-balance {
-  font-size: 2em;
-  font-weight: 700;
-  line-height: 1em;
-  margin-left: 0.2em;
-  text-shadow: 0 1px 3px rgba-black(0.25);
-}
-.navbar-inverse {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-
-  .navbar-brand {
-    color: $color-absolute-white;
-    font-size: 1.6em;
-    @include bold;
-  }
-}
-.add-coin-create-wallet-form {
-  z-index: 2000;
-
-  .modal-content {
-    .bi_interface-arrow-left {
-      margin-top: 0;
-    }
-    .form-header .title {
-      padding-top: 2px;
-    }
-  }
-}
-.form-container.mdl.add-coin-login-form .modal .modal-dialog.modal-lg .form-content {
-  max-width: 400px;
 }

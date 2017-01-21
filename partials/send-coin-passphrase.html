@@ -5,8 +5,8 @@
       <div class="title text-shadow">{{ 'PASSPHRASE_MODAL.PROVIDE_PASSPHRASE' | lang }}</div>
     </header>
     <div class="form-content">
-      <div class="login-input-directions center offset-bottom-sm unselectable">{{ 'PASSPHRASE_MODAL.PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION' | lang }}</div>
-      <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm center" ng-model="passphrase"></textarea>
+      <div class="login-input-directions unselectable">{{ 'PASSPHRASE_MODAL.PROVIDE_PASSPHRASE_TO_CONFIRM_TRANSACTION' | lang }}</div>
+      <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea" ng-model="passphrase"></textarea>
       <button class="btn btn-block orange-gradient box-shadow-all text-shadow btn-add-wallet" ng-class="{ 'disabled': !passphrase.length }" ng-click="confirmSendCoinPassphrase()">{{ 'PASSPHRASE_MODAL.CONFIRM' | lang }}</button>
     </div>
   </section>

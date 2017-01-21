@@ -5,10 +5,6 @@
 
 @import '../dev.scss';
 
-$coin-repeater-coin-name-color: #2C2D2F;
-$add-coin-modal-active-tile-color: #FF6D36;
-$add-coin-modal-help-block-color: #92939C;
-
 body .add-coin-login-form .modal-add-coin-login-form,
 .modal-add-coin-wallet-create-form {
   background: none;
@@ -36,79 +32,69 @@ body .add-coin-login-form .modal-add-coin-login-form,
 .add-new-coin-form-login-state {
   .btn {
     margin-top: 25px;
+    @include fixed-horizontal-center;
+    bottom: 15px;
+    z-index: 1;
   }
   .supported-coins-repeater-container {
     margin-top: 2.62em;
+    margin-bottom: 1.62em;
     position: relative;
   }
 }
 .add-new-coin-form {
-  z-index: 5000;
-
-  .supported-coins-repeater-inner {
-    display: block;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 30px;
+  .supported-coins-repeater-container {
     position: relative;
-  }
-  .modal .modal-content .form-content {
-    .supported-coins-repeater-container {
+
+    .supported-coins-repeater-inner {
+      display: block;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 30px;
       position: relative;
     }
-    @mixin supported-coins-repeater-selector($vpos, $height, $gradient-type) {
-      /* csslint ignore:start */
-      content: '';
-      background: linear-gradient(to #{gradient-type}top, #F5F8FB 20%, rgba(255, 255, 255, 0) 80%);
-      height: #{$height};
-      left: 0;
-      pointer-events: none;
-      position: absolute;
-      #{$vpos}: -1px;
-      width: 100%;
-      z-index: 1;
-      /* csslint ignore:end */
-    }
-    .supported-coins-repeater-container:after {
-      @include supported-coins-repeater-selector(bottom, 20%, top);
-    }
-    .supported-coins-repeater-container:before {
-      @include supported-coins-repeater-selector(top, 10%, bottom);
-    }
   }
+}
+.container-arrow {
+  background: linear-gradient(to top, rgb(245, 248, 251) 20%, rgba(255, 255, 255, 0) 80%);
+  bottom: 0;
+  height: 40%;
+  left: 0;
+  opacity: 1;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 0.25s;
+  width: 99%;
+  z-index: 1;
 }
 .coin-select-modal,
 .auth-add-coin-modal,
 .auth-add-coin-modal-container {
   .coins-title {
-    font-size: 1.14em;
+    font-size: 1.146em;
+    padding-left: 0.1em;
     text-align: center;
   }
   .quick-search {
     font-size: 15px;
     padding-bottom: 20px;
-    padding-top: 2em;
+    padding-top: 1.9em;
     text-align: center;
 
     .input.text {
       border: none;
       border-radius: $border-radius-smaller;
       height: 34px;
-      padding-left: 2.4em;
+      padding-left: 2.56em;
       width: 100%;
     }
     i.icon {
       color: $color-medium-gray;
       font-size: 1.1em;
-      margin-left: 0.44em;
-      margin-top: 0.4em;
+      margin-left: 0.52em;
+      margin-top: 0.42em;
       position: absolute;
     }
-  }
-  @mixin quick-search-placeholder {
-    color: $color-form-arrow;
-    font-size: 1.07em;
-    padding-top: 1px;
   }
   .quick-search .input.text::-webkit-input-placeholder {
     @include quick-search-placeholder;
@@ -123,7 +109,6 @@ body .add-coin-login-form .modal-add-coin-login-form,
     @include quick-search-placeholder;
   }
   .supported-coins-repeater {
-    max-height: 400px;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
@@ -138,7 +123,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       display: inline-block;
       margin: 0.6em 0.72em;
       opacity: 1;
-      padding: 0.9em 1.9em;
+      padding: 0.9em 1.8em;
       text-align: center;
       transition: opacity $transition-length;
       width: 12.86em;
@@ -146,24 +131,38 @@ body .add-coin-login-form .modal-add-coin-login-form,
       .icon {
         background-color: $color-absolute-white;
         border-radius: 50%;
-        font-size: 2.2em;
+        font-size: 2.5em;
         margin-top: 12px;
         padding: 2px;
         width: 30%;
       }
       .name {
-        color: $coin-repeater-coin-name-color;
+        color: $receive-coin-input-color;
         font-size: 1.05em;
-        padding: 1em 0.56em 10px 0.56em;
+        padding: 1em 0.56em 10px 0.76em;
         width: 70%;
 
         .help-block {
+          color: $receive-coin-input-color;
           font-size: 16px;
           margin: 0;
         }
         .help-block:first-child {
-          @include bold;
+          font-weight: 400;
           line-height: 1.1;
+          overflow: hidden;
+          position: relative;
+          white-space: pre;
+
+          &::after {
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, rgb(245, 248, 251) 100%);
+            content: '';
+            height: 100%;
+            position: absolute;
+            right: -10%;
+            top: 0;
+            width: 40%;
+          }
         }
         .help-block:last-child {
           color: $add-coin-modal-help-block-color;
@@ -184,6 +183,20 @@ body .add-coin-login-form .modal-add-coin-login-form,
           color: $add-coin-modal-active-tile-color;
           font-weight: 700;
         }
+      }
+    }
+    /* DEM tile fix */
+    .coin.dem {
+      padding: 24px 0 10px 0;
+
+      .icon {
+        position: relative;
+        top: -11px;
+      }
+      .name {
+        padding: 0;
+        position: relative;
+        top: 2px;
       }
     }
   }

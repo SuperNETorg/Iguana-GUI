@@ -5,12 +5,8 @@
 
 @import 'dev.scss';
 
-$reference-currency-tile-color: #FD5624;
-$reference-currency-tile-span-color: #D3D4D6;
-$reference-currency-txamount: #898A94;
-
 .reference-currency-main {
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 
   h1,
   h2,
@@ -19,8 +15,7 @@ $reference-currency-txamount: #898A94;
   h5,
   h6 {
     line-height: 20px;
-    margin: 0;
-    padding: 0;
+    @include margin-top-bottom(auto);
   }
   .currency-content {
     ul {
@@ -41,15 +36,15 @@ $reference-currency-txamount: #898A94;
     .flag-icon {
       background-size: 100%;
       box-shadow: 0 1px 4px 0 $color-default-gray;
-      height: 32px;
-      width: 43px;
+      height: 26px;
+      width: 36px;
     }
     .container {
       @include proxima;
       margin: 0 auto;
     }
     .container-left {
-      padding-top: 75px;
+      padding-top: 60px;
 
       .choose-currency {
         font-size: 20px;
@@ -62,8 +57,24 @@ $reference-currency-txamount: #898A94;
         font-weight: 500;
       }
     }
+    .container-left.container-second {
+      padding-top: 40px;
+    }
     .currency-parent {
       margin-top: 30px;
+
+      .fee-notice {
+        color: $reference-currency-txamount;
+        margin: 10px 10px;
+      }
+      .segment-select {
+        left: 10px;
+
+        .item-segment-select {
+          height: 35px;
+          line-height: normal;
+        }
+      }
     }
     .country-li.country-li.active {
       border: 2px solid $reference-currency-tile-color;
@@ -86,37 +97,124 @@ $reference-currency-txamount: #898A94;
         box-shadow: 0 2px 3px 1px rgba-black(0.12);
         display: table-cell;
         float: left;
-        height: 132px;
+        height: 90px;
         list-style-type: none;
         margin: 10px;
-        max-width: 180px;
-        min-width: 166px;
-        padding-top: 20px;
         text-align: center;
         vertical-align: middle;
+        width: 180px;
+
+        .display-table:after {
+          background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* FF3.6+ */
+          background: -webkit-gradient(linear, 180deg, color-stop(20%, #99FFBE), color-stop(100%, FF5784));/* Chrome,Safari4+ */
+          background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Chrome10+,Safari5.1+ */
+          background: -o-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* Opera 11.10+ */
+          background: -ms-linear-gradient(180deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* IE10+ */
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 20%, $color-absolute-white 100%);/* W3C */
+          content: '';
+          height: 100%;
+          position: absolute;
+          right: 0;
+          width: 60px;
+          z-index: 1;
+        }
+        .display-table {
+          display: table;
+          height: 100%;
+          position: relative;
+          width: 99%;
+
+          .vertical-center {
+            display: table-cell;
+            vertical-align: middle;
+
+            .flag-head {
+              margin-left: 2%;
+              margin-right: 4%;
+              margin-top: 3%;
+              text-align: right;
+              width: 35%;
+            }
+            .flag-value {
+              margin-left: 3%;
+              overflow: hidden;
+              position: relative;
+              text-align: left;
+              width: 56%;
+
+              .short-name {
+                display: block;
+                font-size: 1.2em;
+                @include bold;
+                padding-top: 2px;
+                width: 100%;
+              }
+              .full-name {
+                position: relative;
+                top: -2px;
+                white-space: pre;
+              }
+            }
+          }
+        }
 
         span {
-          @include bold;
           color: $reference-currency-tile-span-color;
+          @include bold;
         }
       }
     }
     .label  {
       background-color: transparent;
+      padding: 0;
     }
-    .country-li {
-      .flag-head {
-        padding: 7px;
+    .segment-select {
+      cursor: default;
+      margin-top: 35px;
+      width: 95%;
+
+      .item-segment-select {
+        background: $color-modal-bg;
+        border: solid 1px $dashboard-send-currency-orange;
+        @include no-box-shadow;
+        color: $dashboard-send-currency-orange;
+        height: 42px;
+        padding: 8px;
       }
-      .short-name {
-        @include bold;
-        display: block;
-        padding-top: 2px;
-        width: 100%;
+      .disabled {
+        border: solid 1px $dashboard-send-currency-orange;
+        color: $dashboard-send-currency-orange;
       }
-      .full-name {
-        position: relative;
-        top: -2px;
+      .item-segment-select.active,
+      .item-segment-select.active:hover {
+        background-color: $dashboard-send-currency-orange;
+        border: solid 1px $dashboard-send-currency-orange;
+        color: $color-white;
+
+        span {
+          @include bold;
+          margin-top: 2px;
+        }
+      }
+    }
+    .item-segment-select .second-fee-text {
+      color: $dashboard-send-currency-orange;
+      font-size: 10px;
+      margin-top: 0;
+    }
+    .pop-detail .segment-select .item-segment-select.active {
+      span {
+        color: $color-absolute-white;
+      }
+    }
+    .item-segment-select {
+      span {
+        font-weight: 400;
+      }
+    }
+    .item-segment-select {
+      span:first-child {
+        font-size: 15px;
       }
     }
   }

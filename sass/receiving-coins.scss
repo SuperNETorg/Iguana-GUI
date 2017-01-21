@@ -2,30 +2,46 @@
  * Iguana dashboard/receive-coin
  *
  */
-
 @import 'dev.scss';
 
+.receive-coin-modal-container {
+  .modal-dialog {
+    .modal-content {
+      .receiving-coin-content {
+        .modal-header {
+          .btn-close {
+            margin-left: 0.72em;
+            margin-top: 0.2em;
+            text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.3);
+          }
+        }
+        .form-content {
+          background-color: $color-modal-bg;
+          padding: 1.2em 10px;
 
-.receiving-coin-content {
+          .share-address-section {
+            .buttons {
+              margin-top: 0.5em;
 
-  .modal-body {
-    background-color: $color-modal-bg;
-
-    .share-address-section .btn {
-      display: inline-block;
-      height: 36px;
-      line-height: 22px;
-      width: 47%;
+              .btn {
+                display: inline-block;
+                font-size: 1.08em;
+                height: 36px;
+                line-height: 26px;
+                width: 142px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
-.modal-popup {
-  box-shadow: 0 2px 40px rgba(125, 125, 125, 0.3)
-}
+
 .text-section {
   color: $receive-coin-text-selection-color;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.92em;
   font-weight: 500;
 }
 .text-something {
@@ -40,7 +56,7 @@
   h4 {
     @include bold;
     color: $receive-coin-share-title-color;
-    font-size: 18px;
+    font-size: 1.36em;
     margin-bottom: 4px;
     margin-top: 2px;
     /* csslint ignore:start */
@@ -50,8 +66,8 @@
   }
   .my-address {
     color: $receive-coin-share-address-color;
-    font-size: 1.1em;
-    padding: 34px 0 4px 0;
+    font-size: 1.14em;
+    padding: 32px 0 4px 0;
   }
 }
 
@@ -59,12 +75,9 @@
   border: none;
   border-top-left-radius: 11px;
   border-top-right-radius: 11px;
-  //box-shadow: none;
 }
-.buttons {
-  font-size: 16px;
-  padding: 6px 0;
 
+.buttons {
   .copy-btn,
   .share-btn {
     background-color: $receive-coin-button-bg-color;
@@ -84,26 +97,25 @@
     text-decoration: none;
   }
 }
-.modal-backdrop {
-  background-color: $color-white;
-}
+
 .qr-code {
   background-color: $color-white;
   clear: both;
   margin: 0 auto;
   position: relative;
-  top: 16px;
-  width: 210px;
+  top: 2.6em;
+  width: 200px;
 
-  canvas {
+  canvas,
+  img {
     display: block;
     margin: 0 auto;
-    padding: 15px;
-    width: 200px;
+    width: 100%;
   }
 }
+
 .amount-label {
-  margin-top: 46px;
+  margin-top: 4.2em;
 
   .amount-label-span {
     color: $receive-coin-amount-label-color;
@@ -111,11 +123,12 @@
     font-size: 16px;
   }
 }
+
 .currency-input {
   float: left;
   margin-top: 4px;
   position: relative;
-  width: 46%;
+  width: 47%;
 
   .crypto-currency {
     border: 1px solid $color-default-gray;
@@ -133,41 +146,43 @@
   }
   .unit {
     color: $receive-coin-unit-color;
-    font-size: 1.065em;
+    font-size: 1.08em;
   }
   .unit-currency {
-    right: 2px;
     top: 0;
   }
   input[type='text'] {
     color: $receive-coin-input-color;
     font-size: 1.065em;
     padding: 6px;
-    padding-right: 42px;
+    padding-top: 8px;
   }
 }
+
 .currency-input.input-addon {
-  width: 18px;
+  width: 17px;
 }
 .crypto-currency.currency-coin {
   padding-right: 52px;
 }
 .unit.coin-unit {
-  right: 2px;
+  right: 0;
   top: 0;
-  width: 47px;
+  width: 44px;
 }
-.currency-input input[type='text']::-webkit-input-placeholder {
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']:-moz-placeholder { /* Firefox 18- */
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']::-moz-placeholder {  /* Firefox 19+ */
-  color: $receive-coin-input-color;
-}
-.currency-input input[type='text']:-ms-input-placeholder {
-  color: $receive-coin-input-color;
+.currency-input {
+  input[type='text']::-webkit-input-placeholder {
+    color: $receive-coin-input-color;
+  }
+  input[type='text']:-moz-placeholder { /* Firefox 18- */
+    color: $receive-coin-input-color;
+  }
+  input[type='text']::-moz-placeholder { /* Firefox 19+ */
+    color: $receive-coin-input-color;
+  }
+  input[type='text']:-ms-input-placeholder {
+    color: $receive-coin-input-color;
+  }
 }
 .modal-dialog.modal-popup,
 .modal-dialog .modal-body,

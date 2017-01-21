@@ -5,6 +5,7 @@ angular.module('IguanaGUIApp')
 .controller('selectCoinModalController', [
   '$scope',
   '$state',
+  '$uibModal',
   '$uibModalInstance',
   '$api',
   '$storage',
@@ -12,8 +13,10 @@ angular.module('IguanaGUIApp')
   '$timeout',
   'vars',
   'type',
-  function($scope, $state, $uibModalInstance, $api, $storage,
-            $rootScope, $timeout, vars, type) {
+  'modal',
+  '$window',
+  function($scope, $state, $uibModal, $uibModalInstance, $api, $storage,
+            $rootScope, $timeout, vars, type, modal, $window) {
 
     $scope.isIguana = $storage.isIguana;
     $scope.coinSearchModel = undefined;
@@ -25,13 +28,24 @@ angular.module('IguanaGUIApp')
     ];
     $storage['iguana-login-active-coin'] = {};
 
+    $scope.back = back;
+    $scope.next = next;
     $scope.close = close;
     $scope.clickOnCoin = clickOnCoin;
+    $scope.isCoinsConnected = isCoinsConnected;
+    $scope.isAppSetup = isAppSetup;
     $scope.getType = getType;
     $scope.type = type;
+    $scope.modal = modal;
 
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
+
+    $scope.karma = { // tests
+      getPassphrase: getPassphrase,
+      getSelectedCoins: getSelectedCoins,
+      constructCoinRepeater: constructCoinRepeater
+    };
 
     $scope.isActive = function(item) {
       if (!$storage['iguana-login-active-coin']) {
@@ -45,9 +59,17 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length == 0;
     };
 
-    $scope.$on('modal.dismissing', function() {
-      $rootScope.$broadcast('modal.dismissed', constructCoinRepeater());
-    });
+    function getConnectedCoins() {
+      return $storage['connected-coins'] || {};
+    }
+
+    function isCoinsConnected() {
+      return Object.keys(getConnectedCoins()).length > 0;
+    }
+
+    function isAppSetup() {
+      return $storage.isAppSetup && isCoinsConnected();
+    }
 
     function getSelectedCoins() {
       var result = {},
@@ -73,21 +95,23 @@ angular.module('IguanaGUIApp')
           coinsArray = [],
           coinsInfo = vars.coinsInfo;
 
-      if (undefined !== coinsInfo) {
+      if (coinsInfo) {
         for (var key in supportedCoinsList) {
           if (
             (!$storage['iguana-' + key + '-passphrase'] ||
               (
                 $storage['iguana-' + key + '-passphrase'] &&
-                $storage['iguana-' + key + '-passphrase'].logged !== 'yes'
+                ($storage['iguana-' + key + '-passphrase'].logged !== 'yes' ||
+                  ($storage['iguana-' + key + '-passphrase'].logged === 'yes' &&
+                    ($state.current.name.indexOf('login') > -1 || $state.current.name.indexOf('signup') > -1)))
               )
             )
           ) {
             if (
-              ($storage.isIguana && coinsInfo[key].iguana === true) ||
+              ($storage.isIguana && coinsInfo[key] && coinsInfo[key].iguana === true) ||
               (
                 !$storage.isIguana &&
-                (
+                (coinsInfo[key] &&
                   coinsInfo[key].connection === true ||
                   (dev && dev.isDev && dev.showAllCoindCoins)
                 )
@@ -116,12 +140,12 @@ angular.module('IguanaGUIApp')
     function clickOnCoin(item, $event) {
       var coinElement = angular.element($event.currentTarget);
 
-      if (!coinElement.hasClass('active')) {
+      if (!coinElement.hasClass('active') && !$storage.isIguana) {
         $scope.selectedCoins = [];
         $storage['iguana-login-active-coin'] = {};
       }
 
-      if (!$storage['iguana-login-active-coin']) {
+      if (!$storage['iguana-login-active-coin'] && !$storage.isIguana) {
         $storage['iguana-login-active-coin'] = {};
       }
 
@@ -135,11 +159,28 @@ angular.module('IguanaGUIApp')
       }
 
       $scope.selectedCoins = $storage['iguana-login-active-coin'];
-      $uibModalInstance.close(constructCoinRepeater());
+
+      if (!$storage.isIguana) {
+        next();
+      }
+    }
+
+    function back() {
+      if (isAppSetup()) {
+        $state.go('login');
+      } else {
+        openFlowModal(getType());
+      }
+
+      close();
     }
 
     function close() {
       $uibModalInstance.dismiss(constructCoinRepeater());
+    }
+
+    function next() {
+      $uibModalInstance.close(constructCoinRepeater());
     }
 
     function getPassphrase(coinId) {
@@ -151,8 +192,52 @@ angular.module('IguanaGUIApp')
       }
     }
 
+    function openFlowModal(type) {
+      $scope.modal.flowModal.appendTo = angular.element(document.querySelector('.flow-modal'));
+      $scope.modal.flowModal.resolve = {
+        'type': function() {
+          return type;
+        },
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+      var modalInstance = $uibModal.open($scope.modal.flowModal);
+    }
+
     $scope.$on('$destroy', function() {
+      angular.element(document.querySelector('.auth-add-coin-modal .modal-content')).unbind('scroll');
+      angular.element($window).unbind('resize');
       delete $rootScope.$$listeners['modal.dismissed'];
     });
+
+    // reveal/hide bottom gradient
+    $timeout(function() {
+      var gradientElement = angular.element(document.querySelector('.auth-add-coin-modal .container-arrow')),
+          modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
+
+      function applyGradient() {
+        if (document.querySelector('.auth-add-coin-modal .form-content') && document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
+            modalContainer && modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
+          gradientElement.css({ 'opacity': 0 });
+        } else {
+          gradientElement.css({ 'opacity': 1 });
+        }
+      }
+
+      applyGradient();
+
+      angular.element($window).bind('resize', function(event) {
+        applyGradient();
+      });
+
+      angular.element(modalContainer).bind('scroll', function(event) {
+        if (modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
+          gradientElement.css({ 'opacity': 0 });
+        } else {
+          gradientElement.css({ 'opacity': 1 });
+        }
+      });
+    }, 500);
   }
 ]);

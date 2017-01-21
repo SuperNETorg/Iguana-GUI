@@ -1,56 +1,112 @@
 angular.module('IguanaGUIApp')
-.directive('uimodal', function($document, $uibModal, $uibModalStack) {
-  var activeModal = 0;
+.directive('uimodal', [
+  '$uibModal',
+  '$uibModalStack',
+  'util',
+  function($uibModal, $uibModalStack, util) {
+    var activeModal = 0;
 
-  function bodyBlurOn() {
-    angular.element(document.body).addClass('modal-open');
-  }
+    return {
+      scope: true,
+      link: function(scope, element, attr) {
+        var open = $uibModalStack.open,
+            close = $uibModalStack.close,
+            dismiss = $uibModalStack.dismiss;
 
-  function bodyBlurOff() {
-    angular.element(document.body).removeClass('modal-open');
-  }
+        scope.modal = {
+          flowModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            size: 'full',
+            ariaDescribedBy: 'modal-body',
+            controller: 'flowModalController',
+            templateUrl: 'partials/flow.html',
+            appendTo: angular.element(document.querySelector('.flow-modal'))
+          },
+          coinModal: {
+            animation: scope.isIguana ? true : false,
+            ariaLabelledBy: 'modal-title',
+            size: 'full',
+            ariaDescribedBy: 'modal-body',
+            controller: 'selectCoinModalController',
+            templateUrl: 'partials/add-coin.html',
+            appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
+          },
+          sendCoinModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            size: 'lg',
+            controller: 'sendCoinModalController',
+            templateUrl: 'partials/send-coin.html',
+            appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
+          },
+          receiveCoinModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            size: 'lg',
+            controller: 'receiveCoinModalController',
+            templateUrl: 'partials/receive-coin.html',
+            appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
+          },
+          sendCoinPassphraseModal: {
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            controller: 'sendCoinPassphraseModalController',
+            templateUrl: 'partials/send-coin-passphrase.html',
+            appendTo: angular.element(document.querySelector('.send-coin-passphrase-modal-container')),
+            resolve: {
+              receivedObject: function() {
+                return $scope.receivedObject;
+              }
+            }
+          }
+        };
 
-  return {
-    link: function() {
-      var open = $uibModalStack.open,
-          close = $uibModalStack.close,
-          dismiss = $uibModalStack.dismiss;
+        $uibModalStack.open = function(modalInstance, modal) {
+          modalInstance.rendered.then(function() {
+            if (activeModal === 0) {
+              util.bodyBlurOn();
+            }
 
-      $uibModalStack.open = function(...arguments) {
-        if (activeModal === 0) {
-          bodyBlurOn();
-        }
+            if (activeModal >= 0) {
+              ++activeModal;
+            }
+          });
 
-        if (activeModal >= 0) {
-          ++activeModal;
-        }
+          open.apply(open, arguments);
+        };
 
-        open.apply(open, arguments);
-      };
+        $uibModalStack.close = function(modalInstance, modal) {
+          modalInstance.closed.then(function() {
+            if (activeModal > 0) {
+              --activeModal;
+            }
 
-      $uibModalStack.close = function(...arguments) {
-        if (activeModal > 0) {
-          --activeModal;
-        }
+            if (activeModal === 0) {
+              util.bodyBlurOff();
+            }
+          });
 
-        if (activeModal === 0) {
-          bodyBlurOff();
-        }
+          close.apply(close, arguments);
+        };
 
-        close.apply(close, arguments);
-      };
+        $uibModalStack.dismiss = function(modalInstance, modal) {
+          modalInstance.closed.then(function() {
+            if (activeModal > 0) {
+              --activeModal;
+            }
 
-      $uibModalStack.dismiss = function(...arguments) {
-        if (activeModal > 0) {
-          --activeModal;
-        }
+            if (activeModal === 0) {
+              util.bodyBlurOff();
+            }
+          });
 
-        if (activeModal === 0) {
-          bodyBlurOff();
-        }
-
-        dismiss.apply(dismiss, arguments);
-      };
+          dismiss.apply(dismiss, arguments);
+        };
+      }
     }
   }
-});
+]);

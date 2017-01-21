@@ -19,15 +19,17 @@ angular.module('IguanaGUIApp')
       coinAmount: '',
       currencyAmount: ''
     };
+    $scope.activeCoin = $storage['dashboard-logged-in-coins'][$storage['iguana-active-coin'].id];
+    $scope.karma = { // tests
+      getReceiveCoinAddress: getReceiveCoinAddress
+    };
 
     var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        _activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
+        _activeCoin = util.getActiveCoin(),
         coinRate = $rates.updateRates(_activeCoin, defaultCurrency, true);
 
     getReceiveCoinAddress();
-
-    // TODO(?): add syscoin:coinaddresshere?amount=0.10000000&label=123&message=123
 
     $scope.coinAmountKeying = function() {
       if ($scope.receiveCoin.coinAmount)
@@ -51,7 +53,8 @@ angular.module('IguanaGUIApp')
         $scope.receiveCoin.shareUrl = 'mailto:?subject=Here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address' +
                                       '&body=Hello,%20here%20is%20my%20' + supportedCoinsList[_activeCoin].name + '%20address%20' + $scope.receiveCoin.address;
       }, function(reason) {
-        console.log('request failed: ' + reason);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('request failed: ' + reason);
       });
 
       $scope.receiveCoin.coinName = _activeCoin.toUpperCase();

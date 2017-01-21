@@ -22,8 +22,17 @@ body {
               margin-bottom: 1.4em;
             }
             .progress-status {
-              @include margin-left-right(0.4em)
+              @include margin-left-right(0.4em);
             }
+          }
+        }
+      }
+    }
+    .reference-currency-main {
+      .currency-content {
+        .currency-parent {
+          .segment-select {
+            margin-top: 0;
           }
         }
       }
@@ -80,89 +89,92 @@ body {
   @media #{$small-min-Resolution} {
     .app-container {
       .app-container-inner {
+        .auth-main,
         .dashboard-main,
         .reference-currency-main {
-          .dashboard {
-            /** top nav bar */
-            .navbar {
-              padding-left: 1em;
-              padding-right: 1em;
+          /** top nav bar */
+          .navbar {
+            .clearfix {
+              padding-top: 4px;
 
-              .clearfix {
-                padding-top: 4px;
-
-                .navbar-header {
-                  .navbar-brand {
-                    color: $dashboard-navbar-color;
-                    font-size: 1.9em;
-                    @include bold;
-                  }
-                }
-                .top {
-                  .navbar-nav {
-                    margin-bottom: 0.52em;
-
-                    .item {
-                      font-size: 1.15em;
-
-                      .text {
-                        height: 2.68em;
-                        line-height: 2.16em;
-                        padding: 0 1.2em;
-                      }
-                    }
-                  }
+              .navbar-header {
+                .navbar-brand {
+                  color: $color-white;
+                  font-size: 1.9em;
+                  left: 0.54em;
+                  position: relative;
+                  top: -2px;
                 }
               }
-            }
-            .main-content {
-              padding: 40px;
+              .top {
+                .navbar-nav {
+                  margin-bottom: 0.56em;
 
-              /** Left Sidebar **/
-              .coins {
-                max-width: 21.44em;
-                min-width: 18em;
-
-                .account-coins-repeater {
                   .item {
-                    padding: 1.44em;
+                    font-size: 1.15em;
+                    font-weight: 400;
 
-                    .coin {
-                      font-size: 1.3em;
-                      margin-left: -0.36em;
-                      @include margin-top-bottom(0.2em);
-
-                      .name {
-                        font-size: 0.72em;
-                        margin-left: 0.4em;
-                        margin-top: 1.1em;
-                      }
+                    .text {
+                      height: 2.68em;
+                      line-height: 2.16em;
+                      padding: 0 1.2em;
                     }
-                    .balance {
-                      font-weight: 900;
-                      @include margin-top-bottom(0.8em)
-                    }
-                  }
-                }
-              }
-              /** Transaction Bar */
-              .transactions-unit {
-                .top-bar {
-                  padding: 2.4em 2.6em 1.4em 2.6em;
-
-                  .action-buttons {
-                    margin-left: 0.25em;
-                    margin-top: 1.6em;
                   }
                 }
               }
             }
           }
+          .main-content,
+          .currency-content {
+            padding: 40px;
+
+            /** Left Sidebar **/
+            .coins {
+              max-width: 21.44em;
+              min-width: 18em;
+
+              .account-coins-repeater {
+                .item {
+                  padding: 1.44em;
+
+                  .coin {
+                    font-size: 1.3em;
+                    margin-left: -0.36em;
+                    @include margin-top-bottom(0.2em);
+
+                    .name {
+                      font-size: 0.714em;
+                      margin-left: 0.4em;
+                      margin-top: 1.1em;
+                    }
+                  }
+                  .balance {
+                    font-weight: 900;
+                    @include margin-top-bottom(0.739em)
+                  }
+                }
+              }
+            }
+            /** Transaction Bar */
+            .transactions-unit {
+              .top-bar {
+                padding: 2.4em 2.6em 1.48em 2.6em;
+
+                .action-buttons {
+                  margin-left: 0.25em;
+                  margin-top: 1.64em;
+                }
+              }
+            }
+          }
+          .currency-content {
+            padding-top: 100px;
+          }
         }
       }
     }
-    .reference-currency-main .currency-content .currency-loop .country-li {
-      min-width: 168px;
+    .modal .modal-dialog.modal-lg {
+      width: 800px;
     }
   }
 
@@ -174,14 +186,32 @@ body {
             padding: 20px;
 
             .transactions-list {
-              padding: 25px 0.86em;
+              padding: 25px 0.2em;
+              position: relative;
 
-              .transactions-list-repeater{
+              .title {
+                font-size: 1.26em;
+                padding-bottom: 0.4em;
+                padding-left: 12px;
+              }
+
+              .transactions-list-repeater {
                 .item {
-                  padding: 1.3em 0.4em 1.62em 0.4em;
+                  padding: 1.2em 0.8em 1.3em 0.8em;
 
+                  .status {
+                    display: block;
+                    margin-bottom: 1.4em;
+                    margin-left: 0.7em;
+                  }
                   .hash {
                     width: 34%;
+                  }
+                  .timestamp {
+                    font-size: 1.04em;
+                    padding-top: 0;
+                    right: 1.56em;
+                    top: 1.2em;
                   }
                 }
               }
@@ -194,111 +224,135 @@ body {
 
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
-    .navbar {
-      padding-left: 1em;
-      padding-right: 1em;
-
-      .clearfix {
-        padding-top: 4px;
-
-        .navbar-header {
-          .navbar-brand {
-            color: $dashboard-navbar-color;
-            font-size: 1.6em;
-            @include bold;
-            margin-left: 3px;
-          }
-          .lnk-logout {
-            color: $dashboard-link-logout-color;
-          }
-        }
-        .top {
-          border-top: 2px solid $dashboard-top-border-color;
-
-          .navbar-nav {
-            margin-bottom: 0.52em;
-
-            .item {
-              font-size: 1.35em;
-              @include margin-left-right(0);
-
-              .text {
-                height: 2.35em;
-                line-height: 2em;
-                padding: 0 0.9em;
-              }
-              .border {
-                margin-left: 0;
-                width: 103%;
-              }
-            }
-            .item:not(.active) {
-              .text {
-                color: $dashboard-link-logout-color;
-                font-weight: 400;
-              }
-            }
-          }
-        }
-      }
-    }
-    .dashboard.main {
-      /** Left Sidebar */
-      .coins {
-        .account-coins-repeater {
-          .item {
-            padding: 1.54em;
-
-            .coin {
-              font-size: 1.3em;
-              margin-left: -0.36em;
-              @include margin-top-bottom(0.4em);
-
-              .icon {
-                font-size: 2.8em;
-              }
-              .name {
-                font-size: 0.72em;
-                margin-left: 0.4em;
-                margin-top: 1.4em;
-              }
-            }
-            .balance {
-              font-weight: 900;
-              margin-bottom: 0.8em;
-              margin-right: 0.3em;
-              margin-top: 1.3em;
-
-              .coin-value {
-                font-size: 1.5em;
-              }
-              .currency-value {
-                color: $dashboard-coins-sidebar-currency-color;
-                font-size: 1.065em;
-              }
-            }
-          }
-        }
-      }
-      /** Transaction Bar */
-      .transactions-unit {
-        .top-bar {
-          padding: 2.4em 2.6em 1.4em 2.6em;
-
-          .action-buttons {
-            margin-left: 0.3em;
-            margin-top: 1.6em;
-          }
-        }
-      }
+    .reference-currency-main .currency-content .container-left {
+      padding-top: 10px;
     }
     .app-container {
       .app-container-inner {
+        .navbar {
+          padding: 0;
+
+          .clearfix {
+            padding-top: 4px;
+
+            .navbar-header {
+              .navbar-brand {
+                color: $color-white;
+                font-size: 1.64em;
+                margin-bottom: 5px;
+                margin-left: 1px;
+                padding-top: 14px;
+              }
+              .navbar-edex {
+                font-size: 1.54em;
+                left: 4.82em;
+                top: 0.5em;
+              }
+              .lnk-logout {
+                color: $dashboard-link-logout-color;
+                font-size: 1.018em;
+                @include bold;
+                position: absolute;
+                right: 1.3em;
+                top: 1.4em;
+              }
+            }
+            .top {
+              border-top: 1px solid $dashboard-top-border-color;
+
+              .navbar-nav {
+                margin-bottom: 0.52em;
+
+                .item {
+                  font-size: 1.35em;
+                  @include margin-left-right(0);
+
+                  .text {
+                    height: 2.1em;
+                    line-height: 2em;
+                    padding: 0 0.9em;
+                  }
+                  .border {
+                    margin-left: 0;
+                    width: 103%;
+                  }
+                }
+                .item:not(.active) {
+                  .text {
+                    color: $dashboard-link-logout-color;
+                    font-weight: 400;
+                  }
+                }
+              }
+            }
+          }
+        }
         .dashboard-main {
+          .dashboard.main {
+            /** Left Sidebar */
+            .coins {
+              margin-top: 1.2em;
+
+              .account-coins-repeater {
+                .item {
+                  height: 106px;
+                  padding: 1.54em;
+
+                  .coin {
+                    font-size: 1.3em;
+                    margin-left: -0.36em;
+                    @include margin-top-bottom(0.4em);
+
+                    .icon {
+                      font-size: 2.8em;
+                    }
+                    .name {
+                      font-size: 0.8em;
+                      margin-left: 0.26em;
+                      margin-top: 1.2em;
+                    }
+                  }
+                  .balance {
+                    font-weight: 900;
+                    margin-bottom: 0.8em;
+                    margin-right: 0.1em;
+                    margin-top: 1.38em;
+
+                    .coin-value {
+                      font-size: 1.5em;
+                      line-height: 0.6em;
+                    }
+                    .currency-value {
+                      color: $dashboard-coins-sidebar-currency-color;
+                      font-size: 1.065em;
+                    }
+                  }
+                }
+              }
+              .btn-add-coin {
+                font-size: 1.26em;
+                height: 48px;
+              }
+            }
+            /** Transaction Bar */
+            .transactions-unit {
+              .top-bar {
+                padding: 2.1em 0.6em 1.6em 0.6em;
+
+                .action-buttons {
+                  margin-left: 0.3em;
+                  margin-top: 1.6em;
+                }
+              }
+              .transactions-list {
+                top: 12.2em;
+              }
+            }
+          }
           .dashboard {
             .main-content {
               margin: auto 2px;
-              padding: 0 1em;
+              padding: 0 1.18em;
 
               .balance-block {
                 .label {
@@ -312,31 +366,60 @@ body {
               .transactions-unit {
                 border-radius: 0;
                 margin-left: 0;
+                margin-top: 4.2em;
                 padding: 0;
-                padding-top: 3em;
 
                 .top-bar {
                   border-radius: 0;
+                  left: 0;
+                  position: fixed;
+                  width: 100%;
+                  z-index: 1;
 
+                  .active-coin-balance {
+                    font-size: 1.8em;
+                  }
                   .active-coin-balance,
                   .active-coin-balance-currency {
-                    padding-left: 15px;
+                    padding-left: 5px;
                   }
                   .info {
-                    right: 15px;
+                    margin-right: 11px;
                     top: 114px;
+
+                    i {
+                      font-size: 1.34em;
+                      margin-right: 3px;
+                    }
+                    span {
+                      font-size: 1.34em;
+                    }
                   }
                   .action-buttons {
+                    margin-left: 0;
+                    margin-top: 2.2em;
                     padding-left: 0;
                     text-align: center;
+
+                    .btn {
+                      font-size: 1.4em;
+                      height: 48px;
+                      width: 45%;
+                    }
                   }
                 }
                 .transactions-list {
                   .transactions-list-repeater {
+                    margin-top: 10px;
+
                     .item {
+                      margin-left: 10px;
+                      margin-right: 10px;
+
                       .amount {
                         clear: both;
                         line-height: 44px;
+                        text-align: left;
                         width: 40%;
                       }
                       .amount.smaller {
@@ -347,8 +430,11 @@ body {
                       }
                       .hash {
                         float: right;
-                        width: 43%;
+                        width: 45%;
                         word-wrap: break-word;
+                      }
+                      .text-vertical-center {
+                        padding-left: 6px;
                       }
                       .clearfix {
                         display: block;
@@ -360,13 +446,13 @@ body {
               }
             }
           }
+          .dashboard .balance-block,
+          .currency-content {
+            @include margin-left-right(auto);
+            margin-top: 10.2em;
+          }
         }
       }
-    }
-    .dashboard-main .dashboard .balance-block,
-    .dashboard .currency-content {
-      @include margin-left-right(auto);
-      margin-top: 10em;
     }
     .account-coins-repeater .item.active:after {
       display: none;
@@ -378,8 +464,8 @@ body {
       .modal-header {
         min-height: 50px;
 
-        .btn-back {
-          top: 16px;
+        .btn-close {
+          top: 18px;
         }
         .title {
           font-size: 17px;
@@ -388,6 +474,11 @@ body {
       .modal-body {
         padding: 0 0.8em 3.2em 0.8em;
       }
+    }
+    .modal .modal-dialog.modal-lg ,
+    .modal .modal-content,
+    .modal .form-container {
+      height: 100%;
     }
     .modal .modal-dialog.modal-lg {
       width: 100%;
@@ -405,9 +496,6 @@ body {
         padding-left: 5px;
         padding-right: 5px;
       }
-      .currency-loop .country-li {
-        min-width: 162px;
-      }
     }
     /* send coin modal */
     .modal-send-coin .modal-dialog .modal-content .send-modal,
@@ -422,28 +510,93 @@ body {
     .modal-append-container .send-coin-confirm-passphrase .modal-add-coin-login .modal-body {
       padding-top: 30%;
     }
-    .modal-content {
-      height: 100%;
-    }
     .dashboard .form-container .form-content {
       padding: 40px 1.6em;
     }
-  }
+    .modal-dialog {
+      .modal-content {
+        .form-container {
+          .modal-header.form-header {
+            height: 4em;
+            padding: 1.2em 0.8em;
 
-  @media only screen and (max-width: 440px) {
-    .reference-currency-main .currency-content .col-md-3.col-md-offset-1.col-sm-5.container-left {
-      padding-top: 10px;
-    }
-    /*.app-container {
-      .app-container-inner {
-        .dashboard-main {
-          .dashboard {
-            .main-content {
+            .btn-close {
+              font-size: 1.5em;
+              margin-left: auto;
+              margin-top: auto;
+            }
+            .title {
+              font-size: 1.36em;
+              margin-left: 0.5em;
+              margin-top: 0.1em;
+            }
+          }
+          .form-content {
+            .my-address {
+              font-size: 1.24em;
+              padding: 18px 0 4px 0;
             }
           }
         }
       }
-    }*/
+    }
+    .receive-coin-modal-container {
+      .modal-dialog {
+        .modal-content {
+          .receiving-coin-content {
+            .form-content {
+              .share-address-section {
+                max-width: 370px;
+                min-width: 300px;
+                width: auto;
+
+                h4 {
+                  font-size: 1.5em;
+                }
+                .btn {
+                  font-size: 1.38em;
+                  height: 50px;
+                  line-height: 34px;
+                  max-width : 178px;
+                  min-width : 48%;
+                }
+              }
+              .amount-label {
+                .amount-label-span {
+                  font-size: 17px;
+                }
+              }
+              .qr-code {
+                top: 2.2em;
+                width: 220px;
+              }
+              .input {
+                .currency-input {
+                  input[type = "text"] {
+                    height: 45px;
+                    max-width : 178px;
+                    min-width : 142px;
+                  }
+                  .unit {
+                    top: 5px;
+                  }
+                }
+              }
+              .equals-sign {
+                margin: 10px 4px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .send-coin-modal-container{
+      .main-popup {
+        margin: 0 auto;
+        max-width: 380px;
+        min-width: 90%;
+      }
+    }
   }
 
   @media only screen and (max-width: 380px) {

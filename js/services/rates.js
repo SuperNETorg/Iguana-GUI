@@ -8,7 +8,7 @@ angular.module('IguanaGUIApp')
   'util',
   '$q',
   function($storage, vars, $api, util, $q) {
-    var minEpochTimestamp = 1471620867; // Jan 01 1970
+    var minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
     this.ratesUpdateElapsedTime = function(coin) {
       if ($storage['iguana-rates-' + coin.toLowerCase()]) {
@@ -21,8 +21,12 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.getRate = function(coin) {
-      this.updateRates(coin);
+    this.getRate = function(coin, returnValue) {
+      if (returnValue) {
+        return this.updateRates(coin, null, true);
+      } else {
+        this.updateRates(coin);
+      }
     };
 
     this.updateRates = function(coin, currency, returnValue, triggerUpdate) {
@@ -61,17 +65,26 @@ angular.module('IguanaGUIApp')
         }
 
         if (isUpdateTriggered) {
-          $api.getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
-          .then(function(response) {
-            self.updateRateCB(coin, response[0]);
-          }, function(response) {
-            console.log('request failed: ' + response);
-          });
+          $api
+            .getExternalRate(allDashboardCoins.join(',') + '/' + defaultCurrency)
+            .then(
+              function(response) {
+                self.updateRateCB(coin, response[0]);
+              },
+              function(response) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('request failed: ' + response);
+                }
+              });
 
-          if (dev.showConsoleMessages && dev.isDev) console.log('rates update in progress...');
+          if (dev.showConsoleMessages && dev.isDev) {
+            console.log('rates update in progress...');
+          }
         }
       } else {
-        if (!coin) coin = defaultCoin;
+        if (!coin) {
+          coin = defaultCoin;
+        }
 
         // if (!currency) {
         //   currency = defaultCurrency;
@@ -95,7 +108,9 @@ angular.module('IguanaGUIApp')
               deferred.resolve($storage[coinRates].value);
             }
           }, function(reason) {
-            console.log('request failed: ' + reason);
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('request failed: ' + reason);
+            }
           });
 
           return deferred.promise;

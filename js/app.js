@@ -1,16 +1,21 @@
 'use strict';
 
-if (!dev) var dev = { // prod
-  isDev: false,
-  showSyncDebug: false,
-  showConsoleMessages: false,
-  coinPW: null,
-  coinAccountsDev: null,
-  sessions: null
-};
+if (!dev) {
+  var dev = { // prod
+    isDev: false,
+    isNightwatch: false,
+    isKarma: false,
+    showSyncDebug: false,
+    showConsoleMessages: false,
+    coinPW: null,
+    coinAccountsDev: null,
+    sessions: null
+  };
+}
 
 angular.module('IguanaGUIApp', [
   'ui.router',
+  'angular-md5',
   'ngSanitize',
   'ngAnimate',
   'ngStorage',
@@ -18,17 +23,6 @@ angular.module('IguanaGUIApp', [
 ])
 .value('vars', {})
 .config(function($stateProvider, $urlRouterProvider) {
-  //ToDo history provider
-  /*--historyProvider
-  $provider.decorator('$window', function($delegate) {
-    Object.defineProperty($delegate, 'history',
-      {get: function () {
-        return null;
-      }});
-    return $delegate;
-  });
-  endHistoryProvider--*/
-
   $stateProvider
     .state('login', {
       url: '/login',
@@ -44,6 +38,12 @@ angular.module('IguanaGUIApp', [
         pageTitle: 'PAGE.LOGIN'
       }
     })
+      .state('login.step3', {
+        // url: '/step3',
+        data: {
+          pageTitle: 'PAGE.LOGIN'
+        }
+      })
     .state('signup', {
       templateUrl: 'partials/signup.html',
       controller: 'signupController'
@@ -140,14 +140,13 @@ angular.module('IguanaGUIApp', [
     });
 
   $urlRouterProvider.otherwise(function($injector) {
-    var $state = $injector.get("$state");
+    var $state = $injector.get('$state');
 
-    $state.go("login");
+    $state.go('login');
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
-
-  $rootScope.$on("$stateChangeStart",
+  $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
       $auth.toParams = toParams;
@@ -157,7 +156,24 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  $api.testConnection().then(function(coins) {
-    $rootScope.$broadcast('coinsInfo', coins);
-  }); // switch with Api service once it's finished
+  if (dev && dev.isDev && !dev.isKarma) {
+    var count = 0;
+
+    $api.testConnection().then(onResolve, onReject);
+
+    function onResolve(coins) {
+      $rootScope.$broadcast('coinsInfo', coins);
+    }
+
+    function onReject() {
+      if (count < 100) {
+        $api.testConnection().then(onResolve, onReject);
+        count++
+      }
+    }
+  }
+
+  try {
+    if (chrome && chrome.storage) $rootScope.isChromeApp = true;
+  } catch (e) {}
 });

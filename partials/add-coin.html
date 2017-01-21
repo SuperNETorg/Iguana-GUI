@@ -1,8 +1,13 @@
 <script type="text/ng-template" id="partials/add-coin.html">
   <section class="form-container add-new-coin-form-login-state unselectable">
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
-      <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-      <div class="title text-shadow">
+      <i class="text-shadow cursor-pointer"
+         ng-class="{
+           'bi_interface-arrow-left btn-back': !isIguana,
+           'bi_interface-cross btn-close': isIguana
+         }"
+         ng-click="!isIguana ? back() : close()"></i>
+      <div class="title">
         {{ 'ADD_COIN.WALLET_TYPE' | lang }}
       </div>
     </header>
@@ -12,8 +17,9 @@
       </div>
       <div class="quick-search col-xs-12">
         <i class="icon bi_tool-magnifier"></i>
-        <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
-               ng-model="coinSearchModel"/>
+        <input type="text" class="input text"
+               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
+               ng-model="coinSearchModel" />
       </div>
       <div class="supported-coins-repeater-container col-xs-12 col-md-10 col-md-offset-1">
         <div class="supported-coins-repeater row">
@@ -29,7 +35,15 @@
               </div>
             </div>
           </div>
+          <div class="container-arrow"></div>
         </div>
+        <button
+          ng-click="next()"
+          ng-disabled="isDisabled()"
+          ng-if="isIguana"
+          class="btn-next btn btn-block orange-gradient text-shadow row">
+          {{ 'CREATE_ACCOUNT.NEXT' | lang }}
+        </button>
       </div>
       <div class="clearfix"></div>
     </div>

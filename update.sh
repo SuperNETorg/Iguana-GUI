@@ -1,4 +1,4 @@
-git checkout 0.2
+git checkout 0.3
 git pull
 npm install
 bower install

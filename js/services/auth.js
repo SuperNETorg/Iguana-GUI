@@ -6,34 +6,60 @@ angular.module('IguanaGUIApp')
   'vars',
   '$api',
   '$state',
-  '$rootScope',
   'util',
-  '$message',
-  '$filter',
-  '$timeout',
   '$q',
-  function($storage, vars, $api, $state, $rootScope, util, $message, $filter,
-            $timeout, $q) {
+  '$filter',
+  '$message',
+  '$rootScope',
+  '$window',
+  function($storage, vars, $api, $state, util, $q, $filter, $message, $rootScope, $window) {
 
     var self = this;
 
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;
     this.coindWalletLockCount = 0;
-    this.coinsSelectedToAdd = [];
+    this.coinsSelectedToAdd = {};
     this.coinResponses = [];
     this.receivedObject = [];
     this.addedCoinsOutput = '';
     this.failedCoinsOutput = '';
     this.passphraseModel = '';
+    this.minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
     this.checkSession = function(returnVal) {
-      var inAuth = (self.toState.name.indexOf('login') != -1 ||
-                    self.toState.name.indexOf('signup') != -1),
+      var inLogin = self.toState.name.indexOf('login') != -1,
+          inSignup = self.toState.name.indexOf('signup') != -1,
+          inAuth = (inLogin || inSignup),
           inDashboard = (self.toState.name.indexOf('dashboard') != -1);
 
+      if (
+        inLogin &&
+        $storage['dashboard-pending-coins'] &&
+        (
+          $storage['iguana-login-active-coin'] &&
+          Object.keys($storage['iguana-login-active-coin']).length
+        )
+      ) {
+        if (!$rootScope.allowLoginStateChange && !self._userIdentify()) // temp(?)
+          $state.go('signup.step1');
+        return;
+      }
+
+      returnVal = (
+        returnVal ?
+          returnVal :
+          (
+            $storage['dashboard-pending-coins'] && !!(
+              $storage['iguana-login-active-coin'] ?
+                Object.keys($storage['iguana-login-active-coin']).length :
+                0
+            )
+          )
+      );
+
       if (returnVal) {
-        return this._userIdentify();
+        return self._userIdentify();
       } else {
         if (!$storage['iguana-auth']) {
           self.logout();
@@ -41,9 +67,10 @@ angular.module('IguanaGUIApp')
           if (!self._userIdentify()) {
             if (!inAuth) {
               $state.go('login');
+              $storage['dashboard-logged-in-coins'] = {};
             }
           } else {
-            if (!inDashboard) {
+            if (!inDashboard && !$rootScope.allowLoginStateChange) {
               $state.go('dashboard.main');
             }
           }
@@ -57,20 +84,18 @@ angular.module('IguanaGUIApp')
             Number(currentEpochTime) - Number(($storage['iguana-auth'] ?
                 $storage['iguana-auth'].timestamp : 1000) / 1000);
 
-      return Math.floor(secondsElapsedSinceLastAuth) <
+      return (!$storage['dashboard-pending-coins'] ? Math.floor(secondsElapsedSinceLastAuth) <
         Number(
           $storage['isIguana'] ?
             settings.defaultSessionLifetimeIguana :
             settings.defaultSessionLifetimeCoind
-        );
+        ) : true);
     };
 
     this.login = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
       if (!$storage['dashboard-logged-in-coins']) {
         $storage['dashboard-logged-in-coins'] = {};
       }
-
-      var coinKeys = Object.keys(coinsSelectedToAdd);
 
       self.coinsSelectedToAdd = coinsSelectedToAdd;
       self.passphraseModel = passphraseModel;
@@ -81,64 +106,108 @@ angular.module('IguanaGUIApp')
         }
       }
 
-      if ($storage.isIguana) {
-        var deferred = $q.defer();
+      return this.commonLogin(addCoinOnly);
+    };
 
-        checkIguanaCoinsSelection(false, addCoinOnly)
-        .then(function(data) {
-          self.coinResponses = data;
+    this.loginCheck = function(coinsSelectedToAdd, passphraseModel, addCoinOnly) {
+      self.coinsSelectedToAdd = coinsSelectedToAdd;
+      self.passphraseModel = passphraseModel;
 
-          if (!addCoinOnly) {
-            $api.walletEncrypt(passphraseModel, coinsSelectedToAdd[coinKeys[0]].coinId)
-                .then(walletLogin);
-          } else {
-            deferred.resolve(data);
+      return this.commonLogin(addCoinOnly, false, true);
+    };
+
+    this.loginEasyDEX = function() {
+      if (!Object.keys(self.coinsSelectedToAdd).length) {
+        self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
+      }
+      var coinKeys = Object.keys(self.coinsSelectedToAdd);
+
+      if (!self.passphraseModel) {
+        self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
+      }
+      walletLogin(true)
+        .then(
+          function(response) {
+            var presponse = JSON.stringify(response[0].data),
+                locationSplit;
+
+            presponse = JSON.stringify(presponse);
+            sessionStorage.setItem('IguanaActiveAccount', presponse);
+
+            if (
+              $window.location.href.indexOf('localhost') > -1 ||
+              $window.location.href.indexOf('127.0.0.1') > -1
+            ) {
+              locationSplit = $window.location.href.split('#');
+
+              if (locationSplit[0]) {
+                $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+              }
+            } else {
+              locationSplit = $window.location.href.split('index.html');
+
+              if (locationSplit[0]) {
+                $window.location.href = locationSplit[0] + 'EasyDEX-GUI/index.html';
+              }
+            }
           }
-        });
+        );
+    };
+
+    this.commonLogin = function(addCoinOnly, edexRedirect, isCheck) {
+      if (!Object.keys(self.coinsSelectedToAdd).length) {
+        self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
+      }
+      var coinKeys = Object.keys(self.coinsSelectedToAdd);
+
+      if ($storage.isIguana) {
+        var deferred = $q.defer(),
+          suppressAddCoin =
+            $storage['dashboard-pending-coins'] ?
+              $storage['dashboard-pending-coins'] :
+              false;
+
+        delete $storage['dashboard-pending-coins'];
+
+        if (!isCheck) {
+          $api.Iguana_GenerateRPCAuth();
+        }
+
+        this
+          .checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly)
+          .then(
+            function(data) {
+              self.coinResponses = data;
+
+              if (!addCoinOnly) {
+                if (!self.passphraseModel && !dev.isDev) {
+                  self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
+                }
+
+                $api
+                  .walletEncrypt(
+                    self.passphraseModel,
+                    self.coinsSelectedToAdd[coinKeys[0]].coinId)
+                  .then(function() {
+                    walletLogin(edexRedirect, isCheck);
+                  });
+              } else {
+                deferred.resolve(data);
+              }
+            }/*,
+            function(response) {
+              //TODO: Iguana connection error messages are here
+            }*/);
 
         return deferred.promise;
       } else {
-        return walletLogin();
-      }
-
-      function walletLogin() {
-        var deferred = $q.defer(),
-            coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd),
-            coinKeys = util.getCoinKeys(coinsSelectedToAdd);
-
-        $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId).then(function() {
-          $api.walletLogin(passphraseModel, settings.defaultSessionLifetime,
-            self.coinsSelectedToAdd[coinKeys[0]].coinId).then(onResolve, onReject)
-        });
-
-        function onResolve(data) {
-          $storage['iguana-auth'] = { 'timestamp': Date.now() };
-
-          if (!$storage.isIguana) {
-            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
-          }
-          $state.go('dashboard.main');
-          $storage['iguana-login-active-coin'] = {};
-
-          deferred.resolve(data);
-        }
-
-        function onReject(result) {
-          var walletLogin = result[0],
-              message;
-
-          if (walletLogin === -14 || walletLogin === false) {
-            message = 'MESSAGE.INCORRECT_INPUT_P3';
-          } else if (walletLogin === -15) {
-            message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
-          }
-
-          result.push(message);
-
-          deferred.reject(result);
-        }
-
-        return deferred.promise;
+        return walletLogin(false, isCheck)
+                .catch(
+                  function(messages) {
+                    var message = messages[2];
+                    $message.ngPrepMessageModal($filter('lang')(message), 'red');
+                  }
+                );
       }
     };
 
@@ -153,7 +222,8 @@ angular.module('IguanaGUIApp')
         }
 
         for (var key in supportedCoinsList) {
-          if ($storage['iguana-' + key + '-passphrase']) {
+          if ($storage['iguana-' + key + '-passphrase'] &&
+              !$storage['dashboard-pending-coins']) {
             $storage['iguana-' + key + '-passphrase'].logged = 'no';
           }
         }
@@ -163,7 +233,7 @@ angular.module('IguanaGUIApp')
       } else {
         this.coindWalletLockCount = 0;
 
-        if (vars.coinsInfo != undefined) {
+        if (vars.coinsInfo !== undefined) {
           for (var key in vars.coinsInfo) {
             if ($storage['iguana-' + key + '-passphrase'] &&
               $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
@@ -179,15 +249,16 @@ angular.module('IguanaGUIApp')
 
         this.logoutCoind();
       }
+
       $storage['dashboard-logged-in-coins'] = {};
     };
 
     this.logoutCoind = function() {
-      if (vars.coinsInfo != undefined) {
+      if (vars.coinsInfo !== undefined) {
         for (var key in vars.coinsInfo) {
           if ($storage['iguana-' + key + '-passphrase'] &&
             $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
-            $api.walletLock(key, this.logoutCoindCB(key));
+            $api.walletLock(key, this.logoutCoindCB(key)); // TODO: promise
           }
         }
       }
@@ -198,12 +269,12 @@ angular.module('IguanaGUIApp')
       $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
 
       if (Object.keys(this.coindWalletLockResults).length === this.coindWalletLockCount) {
-        $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp }; // Jan 01 1970
+        $storage['iguana-auth'] = { 'timestamp': this.minEpochTimestamp };
         $state.go('login');
       }
     };
 
-    function checkIguanaCoinsSelection(suppressAddCoin, addCoinOnly) {
+    this.checkIguanaCoinsSelection = function(suppressAddCoin, addCoinOnly) {
       var defer = $q.defer(),
           coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd);
 
@@ -213,12 +284,10 @@ angular.module('IguanaGUIApp')
             $storage['iguana-' + key + '-passphrase'] = { 'logged': 'no' };
           }
         }
+      }
 
-        if (coinsSelectedToAdd.length) {
-          $api.addCoins(coinsSelectedToAdd, 0).then(onResolve);
-        } else {
-          defer.resolve(true);
-        }
+      if (coinsSelectedToAdd.length) {
+        $api.addCoins(coinsSelectedToAdd, 0).then(onResolve, onReject);
       } else {
         defer.resolve(true);
       }
@@ -242,7 +311,7 @@ angular.module('IguanaGUIApp')
             self.addedCoinsOutput += coin.toUpperCase() + ', ';
             $storage['iguana-' + coin + '-passphrase'] = { 'logged': 'yes' };
           } else {
-            self.failedCoinsOutput += coin + ', ';
+            self.failedCoinsOutput += coin.toUpperCase() + ', ';
           }
         }
 
@@ -252,7 +321,101 @@ angular.module('IguanaGUIApp')
         defer.resolve(coinResponses);
       }
 
+      function onReject(response) {
+        defer.reject(response);
+      }
+
       return defer.promise;
+    };
+
+    function walletLogin(edexRedirect, isCheck) {
+      var deferred = $q.defer(),
+          coinsSelectedToAdd = util.reindexAssocArray(self.coinsSelectedToAdd),
+          coinKeys = util.getCoinKeys(coinsSelectedToAdd);
+
+      if (!self.passphraseModel) {
+        self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
+      } else {
+        self.coinsSelectedToAdd[coinKeys[0]].pass = self.passphraseModel;
+      }
+
+      $api.walletLock(self.coinsSelectedToAdd[coinKeys[0]].coinId)
+        .then(
+          function() {
+            $api.walletLogin(
+              self.passphraseModel,
+              settings.defaultSessionLifetime,
+              self.coinsSelectedToAdd[coinKeys[0]].coinId
+            ).then(onResolve, onReject)
+          },
+          function(response) {
+            var message = '',
+                color = 'red';
+
+            if (response.data) {
+              if (response.data.error) {
+                if (response.data.error.code === -15) {
+                  message = 'MESSAGE.NO_WALLET_IS_ENCRYPTED';
+                } else if (response.data.error === 'authentication error') {
+                  message = 'MESSAGE.AUTHENTICATION_ERROR';
+                }
+              }
+              if (response.data.message) {
+                if (response.data.message.indexOf('connect ECONNREFUSED') !== -1) {
+                  message = 'MESSAGE.NO_DAEMON_IS_RUNNING';
+                }
+              }
+            }
+
+            if (response.status === -1) {
+              message = $storage.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP';
+            }
+
+            $message.ngPrepMessageModal(
+              $filter('lang')(message),
+                color
+            );
+          }
+        );
+
+      function onResolve(data) {
+        if (typeof isCheck == 'undefined') {
+          isCheck = false;
+        }
+        if (!isCheck) {
+          $storage['iguana-auth'] = { 'timestamp': Date.now() };
+
+          if (!$storage.isIguana) {
+            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
+          }
+          $storage['iguana-login-active-coin'] = {};
+
+          if (!edexRedirect) {
+            $state.go('dashboard.main');
+          }
+        } else {
+          if (!edexRedirect) {
+            $state.go('login.step3');
+          }
+        }
+        deferred.resolve(data);
+      }
+
+      function onReject(result) {
+        var walletLogin = result[0],
+            message;
+
+        if (walletLogin === -14 || walletLogin === false) {
+          message = 'MESSAGE.INCORRECT_INPUT_P3';
+        } else if (walletLogin === -15) {
+          message = 'MESSAGE.PLEASE_ENCRYPT_YOUR_WALLET';
+        }
+
+        result.push(message);
+        deferred.reject(result);
+      }
+
+      return deferred.promise;
     }
   }
 ]);

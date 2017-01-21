@@ -20,11 +20,15 @@ angular.module('IguanaGUIApp')
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
+    if (!$rootScope.allowLoginStateChange) $storage['iguana-login-active-coin'] = {};
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
+    $scope.isCoinsConnected = isCoinsConnected;
+    $scope.isAppSetup = isAppSetup;
     $scope.isChanged = false;
     $scope.$auth = $auth;
     $scope.$state = $state;
+    $scope.$storage = $storage;
     $scope.isIguana = $storage.isIguana;
     $scope.passphraseModel = '';
     $scope.addedCoinsOutput = '';
@@ -38,13 +42,19 @@ angular.module('IguanaGUIApp')
     $scope.loginActiveCoin = '';
     $rootScope.background = true;
     $scope.title = setTitle;
+    $scope.loginCheck = loginCheck;
     $scope.login = login;
+    $scope.goBack = goBack;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;
     $scope.getActiveCoins = getActiveCoins;
-    $scope.openLoginCoinModal = openLoginCoinModal;
-    $scope.openSignupCoinModal = openSignupCoinModal;
-    $scope.$on("$stateChangeStart", stateChangeStart);
+    $scope.openFlowModal = openFlowModal;
+    $scope.openCoinModal = openCoinModal;
+    $scope.karma = { // tests
+      setTitle: setTitle,
+      stateChangeStart: stateChangeStart
+    };
+    $scope.$on('$stateChangeStart', stateChangeStart);
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -52,7 +62,7 @@ angular.module('IguanaGUIApp')
       onInit();
     }
 
-    if ($state.current.name === 'login.step2') {
+    if ($state.current.name === 'login.step2' || $state.current.name === 'login.step3') {
       $rootScope.background = false;
     }
 
@@ -61,18 +71,20 @@ angular.module('IguanaGUIApp')
       $scope.coins = [];
     }
 
-    var selectCoinModal = {
-      animation: true,
-      ariaLabelledBy: 'modal-title',
-      size: 'full',
-      ariaDescribedBy: 'modal-body',
-      controller: 'selectCoinModalController',
-      templateUrl: 'partials/add-coin.html',
-      appendTo: angular.element(document.querySelector('.auth-add-coin-modal'))
-    };
-
     function getActiveCoins() {
       return $storage['iguana-login-active-coin'];
+    }
+
+    function getConnectedCoins() {
+      return $storage['connected-coins'];
+    }
+
+    function isCoinsConnected() {
+      return Object.keys(getConnectedCoins()).length > 0;
+    }
+
+    function isAppSetup() {
+      return $storage.isAppSetup && isCoinsConnected();
     }
 
     function isCoinSelected() {
@@ -83,56 +95,88 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     }
 
-    function stateChangeStart() {
-      if ($state.current.name === 'login') {
-        $rootScope.background = false;
-      } else if ($state.current.name === 'login.step2') {
+    function stateChangeStart(...attrs) {
+      // default attrs (event, toState, toParams, fromState, fromParams, options)
+      var toState = attrs[1];
+      if (toState.name === 'login') {
         $rootScope.background = true;
+      } else if (toState.name === 'login.step2') {
+        $rootScope.background = false;
+      } else if (toState.name === 'login.step3') {
+        $rootScope.background = false;
       }
+      $rootScope.allowLoginStateChange = false;
     }
 
-    function openLoginCoinModal() {
-      selectCoinModal.resolve = {
+    function openFlowModal(type) {
+      $scope.modal.flowModal.animation = type ? true : false;
+      $scope.modal.flowModal.resolve = {
         'type': function() {
-          return 'login';
+          return type ? type : 'signin';
+        },
+        'modal': function() {
+          return $scope.modal;
         }
       };
-      var modalInstance = $uibModal.open(selectCoinModal);
+
+      var modalInstance = $uibModal.open($scope.modal.flowModal);
+    }
+
+    function openCoinModal(type) {
+      if (type === 'signin') {
+        $storage['iguana-login-active-coin'] = {};
+        $storage['iguana-active-coin'] = {};
+      }
+
+      $scope.modal.coinModal.resolve = {
+        'type': function() {
+          return type;
+        },
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
 
-      function resultPromise(event, data) {
-        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
-
-        $scope.coins = data;
-        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
-        $state.go('login.step2');
-      }
-    }
-
-    function openSignupCoinModal() {
-      $storage['iguana-login-active-coin'] = {};
-      $storage['iguana-active-coin'] = {};
-      selectCoinModal.resolve = {
-        'type': function() {
-          return 'signup';
+      function resultPromise(data) {
+        if (type === 'signin') {
+          var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+          $scope.coins = data;
+          $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+          $state.go('login.step2');
+        } else {
+          $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
+          $state.go('signup.step1');
         }
-      };
-      var modalInstance = $uibModal.open(selectCoinModal);
-
-      modalInstance.result.then(resultPromise);
-
-      function resultPromise(event, data) {
-        $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
-        $state.go('signup.step1');
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function login() {
+      $storage.loginTermsAndConditions = true;
       $auth.login(
         $scope.getActiveCoins(),
         $scope.passphraseModel
       );
+      $storage.loginTermsAndConditions = true;
+    }
+
+    function loginCheck() {
+      if ($storage.loginTermsAndConditions === true) {
+        $auth.login(
+          $scope.getActiveCoins(),
+          $scope.passphraseModel
+        );
+      } else {
+        $auth.loginCheck(
+          $scope.getActiveCoins(),
+          $scope.passphraseModel
+        );
+      }
     }
 
     function setTitle() {
@@ -149,9 +193,15 @@ angular.module('IguanaGUIApp')
       return pageTitle;
     }
 
-    function isChanged() {
+     function isChanged() {
       $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
       $scope.isChanged = true;
+    }
+
+    function goBack() {
+      $storage['iguana-login-active-coin'] = {};
+      $state.go('login');
+      openCoinModal('signin');
     }
   }
 ]);

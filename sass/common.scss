@@ -4,17 +4,22 @@
 */
 @import 'dev';
 
-$color-body-bg: #F5FAFD;
-$color-textarea-border: #CAC9C9;
+/* latin */
+@font-face {
+  font-family: 'FuturaPTDemi';
+  font-style: normal;
+  font-weight: 400;
+  src: local('FuturaPTDemi Regular'),
+       local('FuturaPTDemi-Regular'),
+       url(fonts/FuturaPTDemi.woff2) format('woff2');
+  /* csslint ignore:start */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+  /* csslint ignore:end */
+}
 
-//@import url('//fonts.googleapis.com/css?family=Nunito');
-
-//@font-face {
-//  font-family: 'Nunito', sans-serif;
-  //TODO: continued
-  //src: url("fonts/Nunito-Regular.ttf") format('truetype');;
-//}
 html {
+  height: 100%;
+
   body {
     background-color: $color-body-bg;
     @include proxima;
@@ -22,10 +27,11 @@ html {
 
     .app-background {
       height: 100%;
-      left: 0;
+      left: -2px;
       position: fixed;
       top: 0;
       width: 100%;
+      z-index: -1;
     }
     .unselectable {
       @include unselectable;
@@ -42,6 +48,12 @@ html {
     .btn.orange-gradient:hover {
       @include orange-gradient;
     }
+    .green-gradient,
+    .btn.green-gradient,
+    .btn.green-gradient:focus,
+    .btn.green-gradient:hover {
+      @include green-gradient;
+    }
     .width-gradient,
     .btn.width-gradient,
     .btn.width-gradient:focus,
@@ -50,19 +62,21 @@ html {
     }
     .btn:disabled,
     .btn:disabled:hover,
+    .btn:disabled:focus,
     .btn:disabled:active {
       background: $background-for-page;
       @include no-box-shadow;
       @include no-text-shadow;
+    }
+    .btn.disabled,
+    .btn.disabled:focus {
+      @include unclickable;
     }
     .col-red {
       color: $color-red;
     }
     .col-white {
       color: $color-white;
-    }
-    .modal .modal-dialog.modal-lg {
-      width: 800px;
     }
     .dashboard-page .app-container,
     .dashboard-page .app-container-inner {
@@ -78,40 +92,89 @@ html {
       overflow: auto;
     }
     .offset-bottom-sm {
-      @include margin('bottom', 15px, true, !important);
+      @include offset-bottom-sm;
     }
     .offset-bottom-md {
-      @include margin('bottom', 30px, true, !important);
+      @include offset-bottom-md;
     }
     .offset-bottom-lg {
-      @include margin('bottom', 45px, true, !important);
+      @include offset-bottom-lg;
     }
     .offset-top-sm {
-      @include margin('top', 15px, true, !important);
+      @include offset-top-sm;
     }
     .offset-top-md {
-      @include margin('top', 30px, true, !important);
+      @include offset-top-md;
     }
     .offset-top-lg {
-      @include margin('top', 45px, true, !important);
+      @include offset-top-lg;
     }
     .offset-left-sm {
-      @include margin('left', 15px, false, !important);
+      @include offset-left-sm;
     }
     .offset-left-md {
-      @include margin('left', 30px, false, !important);
+      @include offset-left-md;
     }
     .offset-left-lg {
-      @include margin('left', 45px, false, !important);
+      @include offset-left-lg;
     }
     .offset-right-sm {
-      @include margin('right', 15px, false, !important);
+      @include offset-right-sm;
     }
     .offset-right-md {
-      @include margin('right', 30px, false, !important);
+      @include offset-right-md;
     }
     .offset-right-lg {
-      @include margin('right', 45px, false, !important);
+      @include offset-right-lg;
+    }
+    .orange-shadow {
+      @include orange-shadow;
+    }
+    [class *= "btn-"] {
+      @include cursor-pointer;
+    }
+    .global-loader {
+      z-index: 999;
+      top:0;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      opacity: 0.7;
+      background-color: #f3f3f3;
+    }
+    .loader-image-head {
+      position: fixed;
+      top: 50%;
+      bottom: 50%;
+      left: 47%;
+      right: 47%;
+      border: 72px solid #fb5b27;
+      border-radius: 50%;
+    }
+    .loader-image {
+      position: fixed;
+      border: 12px solid #fb5b27;
+      border-radius: 50%;
+      border-top: 12px solid #f3f3f3;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      top: 50%;
+      bottom: 50%;
+      left: 47%;
+      right: 47%;
+    }
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .hide-loader{
+      display: none;
     }
   }
 }

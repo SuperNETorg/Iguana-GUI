@@ -3,7 +3,10 @@
  *  Usage: gulp dev to build dev only verion
  *         gulp prod to build production version
  *         gulp zip to build prod and compress it into latest.zip
- *         gulp chromeApp to build chrome app version
+ *         gulp chromeApp to build chrome app version and zip chrome app folder
+ *         gulp crx to pack chrome app as crx extension; see create_crx.sh for details
+ *         gulp tests to run gui with karma or e2e; see js/dev_tests.js for tests env options
+ *         note: create_crx.sh requires permission to execute as a program
  */
 
  // TODO: add prod size evaluation print out
@@ -82,6 +85,10 @@ gulp.task('copyCoreJS', function() {
   return _exports.js.copyJS(buildMode);
 });
 
+gulp.task('copyDevTestConfig', function() {
+  return _exports.js.copyDevTestConfig(buildMode);
+});
+
 gulp.task('copyBowerJS', function() {
   return _exports.js.copyBowerJS(buildMode);
 });
@@ -140,8 +147,18 @@ gulp.task('chromeApp', function() {
   _exports.chrome.createChromeApp(paths.chrome.prodPath, paths);
 });
 
+gulp.task('crx', function() {
+  buildMode = 'chrome';
+  _exports.chrome.createChromeApp(paths.chrome.prodPath, paths, true);
+});
+
 gulp.task('cleanChromeApp', function() {
   _exports.chrome.cleanChromeApp(paths.chrome.path);
+});
+
+gulp.task('cleanAllDev', function() {
+  buildMode = 'dev';
+  return _exports.clean.cleanAllDev(buildMode);
 });
 
 gulp.task('cleanAllDev', function() {
@@ -156,6 +173,12 @@ gulp.task('default', function() {
 gulp.task('watch:dev', function() {
   gulp.watch([paths.partials, 'index.html'], ['devStyle', 'indexDev']);
   gulp.watch([paths.js.default, 'jsIncludes.js'], ['copyCoreJS']);
+  gulp.watch(paths.styles.default, ['scss']);
+});
+
+gulp.task('watch:tests', function() {
+  gulp.watch([paths.partials, 'index.html'], ['devStyle', 'indexDev']);
+  gulp.watch([paths.js.default, 'jsIncludes.js'], ['copyCoreJS', 'copyDevTestConfig']);
   gulp.watch(paths.styles.default, ['scss']);
 });
 
@@ -175,6 +198,26 @@ gulp.task('dev', function() {
     'indexDev',
     'copyFonts',
     'watch:dev'
+  );
+});
+
+gulp.task('tests', function() {
+  buildMode = 'dev';
+
+  runSequence(
+    'cleanAllDev',
+    'copyImages',
+    'copyCoreJS',
+    'copyBowerJS',
+    'scss:css',
+    'cssModifyCryptocoins',
+    'cssModifyProxima',
+    'scss',
+    'devStyle',
+    'indexDev',
+    'copyFonts',
+    'copyDevTestConfig',
+    'watch:tests'
   );
 });
 

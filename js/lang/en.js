@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  *  Iguana lang/en
  *  format 'key': 'value'
@@ -39,13 +41,28 @@ var lang = {
       'SELECT_A_WALLET_TO_CREATE': 'Select a wallet to create',
       'PASSPHRASE': 'Passphrase',
       'ADD_COIN': 'Add coin',
-      'ADD_WALLET': 'Add wallet'
+      'ADD_WALLET': 'Add wallet',
+      'TERMS_AND_CONDITIONS_P1': 'The software you are about to use functions as a free, open source, and multi-signature digital wallet. ' +
+                                 'You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. ' +
+                                 'You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. ' +
+                                 'All transaction requests are irreversible. ' +
+                                 'The authors of the software cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Iguana network. ' +
+                                 'To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. ' +
+                                 'You assume any and all risks associated with the use of the software. In no event shall the authors of the software be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. ' +
+                                 'We reserve the right to modify this disclaimer from time to time.',
+      'TERMS_AND_CONDITIONS_P2': 'If you lose access to your Iguana wallet, you acknowledge and agree that any valuables you have associated with that Iguana wallet will become inaccessible.',
+      'TERMS_AND_CONDITIONS_P3': 'All transaction requests are irreversible. ' +
+                                 'The authors of the software cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Iguana network. ' +
+                                 'To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. ' +
+                                 'You assume any and all risks associated with the use of the software. ' +
+                                 'In no event shall the authors of the software be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. ' +
+                                 'We reserve the right to modify this disclaimer from time to time.'
     },
     'CREATE_ACCOUNT': {
       'CREATE': 'Create',
       'ADD_ACCOUNT': 'Create {{ coin }} wallet ',
       'WRITE_DOWN_THIS_P1': 'You will need this ',
-      'WRITE_DOWN_THIS_P2': '-word passphrase to log in. ',
+      'WRITE_DOWN_THIS_P2': '-word passphrase to login. ',
       'WRITE_DOWN_THIS_P3': 'Write it down and keep it safe.',
       'WRITE_DOWN_THIS_P4': 'Lost passphrase means lost wallet!',
       'COPY_PASSPHRASE': 'Passphrase (click on the text below to copy it):',
@@ -55,7 +72,7 @@ var lang = {
       'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase ',
       'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'to confirm you saved it properly',
       'TERMS-HEADER': 'Accept "Terms and Conditions" to proceed to the wallet',
-      'TERMS-CONDITIONALS': 'If you lose access to your wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that copay wallet will become inaccessible. ',
+      'TERMS_CONDITIONS': 'If you lose access to your wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that wallet will become inaccessible. ',
       'ACCEPT': 'Accept',
       'DECLINE': 'Decline'
     },
@@ -65,7 +82,7 @@ var lang = {
       'SELECT_LOGIN_WALLET': 'Select a wallet type to log in',
       'ADDING_A_NEW_COIN': 'Adding a new coin',
       'SELECT_COINS_TO_ADD': 'Select coins to add',
-      'FOR_EXAMPLE': 'For example. "Bitcoin" or "BTN"',
+      'FOR_EXAMPLE': 'For example, "Bitcoin" or "BTN"',
       'SELECT_A_COIN_TO_ADD': 'Select a coin to add',
       'A_COIN': 'a coin',
       'A_WALLET': 'a wallet'
@@ -89,16 +106,35 @@ var lang = {
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',
-      'MY_ADDRESS': 'My address',
+      'MY_ADDRESS': 'Send to',
       'COPY': 'Copy',
       'SHARE': 'Share',
       'AMOUNT': 'Amount',
-      'ENTER_IN': 'Enter in'
+      'ENTER_IN': 'Enter in any currency'
+    },
+    'FLOW': {
+      'HEADER': 'Getting started',
+      'TITLE': 'To use Iguana application as a full node you need to take these steps:',
+      'DOWNLOAD': 'Download, sync and run daemons of coins you want to use',
+      'MAKE': 'Make sure daemon conf file has these params:',
+      'MAKES': '- server=1',
+      'MAKED': '- daemon=1',
+      'MAKERPCU': '- rpcuser=yourusername',
+      'MAKERPCP': '- rpcpassword=yourverylongandsecurepassword',
+      'MAKERPCPT': '- rpcport=altcoinport',
+      'SETUP': 'Setup a proxy server',
+      'CMD_LINE': 'Command line',
+      'HDD': 'Hard drive',
+      'PROXY': 'Proxy',
+      'NEED_HELP': 'Need help?'
     },
     'SETTINGS': {
       'REFERENCE_CURRENCY': 'Reference currency',
       'CHOOSE_YOUR_CURRENCY': 'Choose your currency to see equivalent',
-      'AMOUNT_OF_TRANSACTIONS': 'amount of transactions'
+      'AMOUNT_OF_TRANSACTIONS': 'amount of transactions',
+      'FEE_OPTIONS': 'Fee options',
+      'FEE_DESCRIPTION': 'The higher the fee, the faster a transaction. Chosen fee option will be applied to all sending transactions. The final fee size depends on a currency itself and its network load.',
+      'FEE_OPTIONS_NOTIFICATION': 'Please, mind all four options are available for bitcoins transactions only at the moment.'
     },
     'SEND': {
       'TRANSACTION_IS_SENT': 'Transaction is sent',
@@ -111,7 +147,7 @@ var lang = {
       'THE_FINAL_AMOUNT': 'The final amount may be slightly more because of network fees',
       'SEND': 'Send',
       'SENDING': 'Sending',
-      'ENTER_A_WALLET_ADDRESS': 'Enter a wallet address',
+      'ENTER_A_WALLET_ADDRESS': 'Enter a wallet address or select a contact',
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
       'MINIMUM_FEE': 'Minimum fee. Increase it to speed up transaction.',
       'NOTE_OPTIONAL': 'Note (optional)',
@@ -128,7 +164,8 @@ var lang = {
       'MINIMUM_TIME': 'Min Time',
       'MAXIMUM_TIME': 'Max Time',
       'MIN': 'min',
-      'SELECT_FEE': 'Please Select Fee type'
+      'SELECT_FEE': 'Select an option or enter a value for the fee.',
+      'PLEASE_ENTER_A_CORRECT_AMOUNT': 'Please enter a correct amount'
     },
     'PASSPHRASE_MODAL': {
       'PROVIDE_PASSPHRASE': 'Provide passphrase',
@@ -151,6 +188,10 @@ var lang = {
       'PASSPHRASES_DONT_MATCH': 'Passphrases do not match!',
       'PLEASE_SELECT_A_WALLET': 'Please select a wallet',
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
+      'NO_DAEMON_IS_RUNNING': 'No daemon is running',
+      'NO_WALLET_IS_ENCRYPTED': 'No Wallet is encrypted',
+      'PROXY_IS_NOT_SET_UP': 'Proxy is not set up',
+      'IGUANA_IS_NOT_SET_UP': 'Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
       'X_WALLET_IS_CREATED': ' wallet is created. Login to access it.',
       'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',
@@ -164,7 +205,8 @@ var lang = {
       'TRANSACTION_ERROR': 'Transaction was not send due to an error!',
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
-      'INCORRECT_INPUT_P3': 'Incorrect input. Check it try one more time'
+      'INCORRECT_INPUT_P3': 'Invalid passphrase, please try again',
+      'AUTHENTICATION_ERROR': 'Authentication error'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

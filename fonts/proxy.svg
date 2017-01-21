@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="155px" height="139px" viewBox="0 0 155 139" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>proxy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.996078431   0 0 0 0 0.270588235   0 0 0 0 0.0509803922  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,33.9970047 C0,32.8940894 0.897702336,32 1.99174577,32 L69.0082542,32 C70.108265,32 71,32.8949789 71,33.9970047 L71,56.0029953 C71,57.1059106 70.1022977,58 69.0082542,58 L1.99174577,58 C0.891734954,58 0,57.1050211 0,56.0029953 L0,33.9970047 Z M0,1.99700466 C0,0.89408944 0.897702336,3.40547792e-14 1.99174577,3.35077336e-14 L69.0082542,-1.98332576e-18 C70.108265,-5.5201274e-16 71,0.894978851 71,1.99700466 L71,24.0029953 C71,25.1059106 70.1022977,26 69.0082542,26 L1.99174577,26 C0.891734954,26 0,25.1050211 0,24.0029953 L0,1.99700466 Z" id="path-3"></path>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="71" height="58" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="97.8296397%"></stop>
+        </linearGradient>
+        <path d="M24,48 C25.6568542,48 27,46.6568542 27,45 C27,43.3431458 25.6568542,42 24,42 C22.3431458,42 21,43.3431458 21,45 C21,46.6568542 22.3431458,48 24,48 Z M12,48 C13.6568542,48 15,46.6568542 15,45 C15,43.3431458 13.6568542,42 12,42 C10.3431458,42 9,43.3431458 9,45 C9,46.6568542 10.3431458,48 12,48 Z M24,16 C25.6568542,16 27,14.6568542 27,13 C27,11.3431458 25.6568542,10 24,10 C22.3431458,10 21,11.3431458 21,13 C21,14.6568542 22.3431458,16 24,16 Z M12,16 C13.6568542,16 15,14.6568542 15,13 C15,11.3431458 13.6568542,10 12,10 C10.3431458,10 9,11.3431458 9,13 C9,14.6568542 10.3431458,16 12,16 Z" id="path-6"></path>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-7">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="100%"></stop>
+        </linearGradient>
+        <path d="M123,35 C123,22.2974508 112.702549,12 100,12 C98.8954305,12 98,12.8954305 98,14 C98,15.1045695 98.8954305,16 100,16 C110.49341,16 119,24.5065898 119,35 C119,36.1045695 119.895431,37 121,37 C122.104569,37 123,36.1045695 123,35 Z M135,31 C135,13.8791728 121.120827,8.49854225e-16 104,1.89820254e-15 C102.895431,1.96583791e-15 102,0.8954305 102,2 C102,3.1045695 102.895431,4 104,4 C118.911688,4 131,16.0883118 131,31 C131,32.1045695 131.895431,33 133,33 C134.104569,33 135,32.1045695 135,31 Z M35,12 C22.2974508,12 12,22.2974508 12,35 C12,36.1045695 12.8954305,37 14,37 C15.1045695,37 16,36.1045695 16,35 C16,24.5065898 24.5065898,16 35,16 C36.1045695,16 37,15.1045695 37,14 C37,12.8954305 36.1045695,12 35,12 Z M31,0 C13.8791728,0 0,13.8791728 0,31 C0,32.1045695 0.8954305,33 2,33 C3.1045695,33 4,32.1045695 4,31 C4,16.0883118 16.0883118,4 31,4 C32.1045695,4 33,3.1045695 33,2 C33,0.8954305 32.1045695,0 31,0 Z" id="path-8"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="proxy">
+            <g filter="url(#filter-1)" transform="translate(10.000000, 24.000000)">
+                <g id="proxi" transform="translate(32.000000, 26.000000)">
+                    <use id="Combined-Shape" stroke="url(#linearGradient-2)" mask="url(#mask-4)" stroke-width="10" fill="#FFFFFF" xlink:href="#path-3"></use>
+                    <g id="Combined-Shape">
+                        <use fill="url(#linearGradient-5)" xlink:href="#path-6"></use>
+                        <use fill-opacity="0.5" fill="#FFFFFF" xlink:href="#path-6"></use>
+                    </g>
+                </g>
+                <g id="waves">
+                    <use fill="url(#linearGradient-7)" xlink:href="#path-8"></use>
+                    <use fill-opacity="0.5" fill="#FFFFFF" xlink:href="#path-8"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

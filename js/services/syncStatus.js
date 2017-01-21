@@ -5,41 +5,50 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$state',
   '$storage',
-  function($filter, $state, $storage) {
+  '$timeout',
+  '$interval',
+  '$message',
+  'vars',
+  function($filter, $state, $storage, $timeout, $interval, $message, vars) {
     this.setPortPollResponse = function() {
       var coinsInfoJSON = [],
           result = false;
 
-      for (var key in coinsInfo) {
+      for (var key in vars.coinsInfo) {
         if (key.length > 0 && key !== undefined && key !== 'undefined') {
           coinsInfoJSON.push({
             coin: key,
-            connection: coinsInfo[key].connection || false,
-            RT: coinsInfo[key].RT || false,
-            relayFee: coinsInfo[key].relayFee || 0
+            connection: vars.coinsInfo[key].connection || false,
+            RT: vars.coinsInfo[key].RT || false,
+            relayFee: vars.coinsInfo[key].relayFee || 0
           });
         }
       }
 
-      localstorage.setVal('iguana-port-poll', {
+      $storage['iguana-port-poll'] = {
         'updatedAt': Date.now(),
         'info': coinsInfoJSON,
         'isIguana': $storage.isIguana,
         'proxy': $storage.isProxy,
         'debugHTML': JSON.stringify($('#debug-sync-info').html())
-      });
+      };
 
-      if (dev.showConsoleMessages && dev.isDev) console.log('port poll update');
-    }
+      if (dev.showConsoleMessages && dev.isDev) {
+        console.log('port poll update');
+      }
+    };
 
     /* retrieve port poll data */
     this.getPortPollResponse = function(setPortPollResponseDS) {
       if (setPortPollResponseDS) {
         for (var i=0; i < setPortPollResponseDS.info.length; i++) {
-          coinsInfo[setPortPollResponseDS.info[i].coin] = [];
-          coinsInfo[setPortPollResponseDS.info[i].coin].RT = setPortPollResponseDS.info[i].RT;
-          coinsInfo[setPortPollResponseDS.info[i].coin].connection = setPortPollResponseDS.info[i].connection;
+          vars.coinsInfo[setPortPollResponseDS.info[i].coin] = {
+            RT: setPortPollResponseDS.info[i].RT,
+            connection: setPortPollResponseDS.info[i].connection,
+            relayFee: setPortPollResponseDS.info[i].relayFee
+          };
           $storage.isIguana = setPortPollResponseDS.isIguana;
+          $storage.isProxy = setPortPollResponseDS.proxy;
         }
 
         if (dev.isDev && dev.showSyncDebug) { // debug info
@@ -84,11 +93,11 @@ angular.module('IguanaGUIApp')
         this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
         (this.setPortPollResponseDS.isIguana === false &&
         this.setPortPollResponseDS.proxy === false))) {
-        this.prepNoDaemonModal();
+        $message.ngPrepMessageNoDaemonModal();
 
         // logout
         $timeout(function() {
-          if (this.toState.name === 'dashboard' || this.toState.name === 'settings') {
+          if (this.toState.name === 'dashboard.main' || this.toState.name === 'dashboard.settings') {
             this.logout();
           }
         }, 15000);
@@ -107,8 +116,7 @@ angular.module('IguanaGUIApp')
          messageModal.modal('hide');
          }, 250);*/
 
-        var messageModal = angular.element('#messageModal');
-
+        var messageModal = angular.element('.iguana-modal'),
         iguanaNullReturnCount = 0;
         messageModal.removeClass('in');
 

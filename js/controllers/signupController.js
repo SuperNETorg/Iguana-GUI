@@ -14,9 +14,9 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
-  '$rates',
+  '$auth',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
-           $api, $rootScope, $uibModal, $filter, $message, vars) {
+           $api, $rootScope, $uibModal, $filter, $message, vars, $auth) {
 
     var pageTitle;
 
@@ -26,6 +26,8 @@ angular.module('IguanaGUIApp')
     $scope.buttonCreateAccount = false;
     $scope.$localStorage = $storage;
     $scope.coins = [];
+    $scope.isIguana = $storage.isIguana;
+    $scope.passphrase = '';
     $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $scope.passphraseCount = $storage.isIguana ? 24 : 12;
     $scope.title = setTitle();
@@ -33,9 +35,17 @@ angular.module('IguanaGUIApp')
 
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.addAccount = addAccount;
+    $scope.goBack = goBack;
     $scope.verifyPass = verifyPass;
     $scope.getActiveCoins = getActiveCoins;
+    $scope.validateStep3 = validateStep3;
     $scope.$on('$destroy', destroy);
+    $scope.karma = { // tests
+      onInit: onInit,
+      isCoinSelected: isCoinSelected,
+      setTitle: setTitle,
+      destroy: destroy
+    };
 
     isCoinSelected();
 
@@ -47,7 +57,7 @@ angular.module('IguanaGUIApp')
 
     function onInit() {
       if ($state.current.name === 'signup.step1') {
-        $scope.passphrase = $passPhraseGenerator.generatePassPhrase($storage['isIguana'] ? 8 : 4);
+        $scope.passphrase = $passPhraseGenerator.generatePassPhrase($storage.isIguana ? 8 : 4);
         $storage.passphrase = $scope.passphrase;
       }
     }
@@ -61,14 +71,26 @@ angular.module('IguanaGUIApp')
     }
 
     function addAccount() {
-      $scope.$localStorage.passphrase = '';
+      $storage['passphrase'] = '';
 
       var coinKeys = Object.keys($scope.getActiveCoins()),
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
-      if ($scope.passPhraseText.length) {
-        $api.walletEncrypt($scope.passPhraseText, selectedCoindToEncrypt)
-        .then(onResolve, onReject);
+      if ($scope.passphrase.length) {
+        if ($storage.isIguana) {
+          $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
+          $auth.checkIguanaCoinsSelection(true)
+            .then(function(response) {
+              $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+              .then(onResolve, onReject);
+            }, function(reason) {
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
+            });
+        } else {
+          $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+          .then(onResolve, onReject);
+        }
       } else {
         $message.ngPrepMessageModal(
           $filter('lang')('MESSAGE.PASSPHRASES_DONT_MATCH_ALT'),
@@ -77,22 +99,46 @@ angular.module('IguanaGUIApp')
       }
 
       function onResolve() {
-        $message.ngPrepMessageModal(
+        var msg = $message.ngPrepMessageModal(
           selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
           'green'
         );
 
-        $state.go('login');
-      }
-      function onReject(response) {
-        if (response === -15) {
-          $message.ngPrepMessageModal(
-            $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED'),
-            'red'
-          );
-
+        if ($storage['dashboard-pending-coins']) {
+          msg.closed.then(function() {
+            $auth.login(
+              $scope.getActiveCoins(),
+              $scope.passphrase,
+              false
+            );
+          });
+        } else {
           $state.go('login');
         }
+      }
+
+      function onReject(response) {
+        var message = '',
+            color = '';
+        if (response === -15) {
+          message = $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED');
+          color = 'red';
+
+          $state.go('login');
+        } else if (
+          response.message &&
+          response.message.indexOf('connect ECONNREFUSED') !== -1
+        ) {
+          message = $filter('lang')('MESSAGE.NO_DAEMON_IS_RUNNING');
+          color = 'red';
+        } else if (response === -1) {
+          message = $filter('lang')($scope.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
+          color = 'red';
+        }
+        $message.ngPrepMessageModal(
+          message,
+          color
+        );
       }
     }
 
@@ -120,16 +166,61 @@ angular.module('IguanaGUIApp')
         !Object.keys($storage['iguana-login-active-coin']).length
       ) {
         $state.go('login');
+
         return false;
       } else {
         return Object.keys($storage['iguana-login-active-coin']).length === 0;
       }
     }
 
+    function openCoinModal() {
+      $storage['iguana-login-active-coin'] = {};
+      $storage['iguana-active-coin'] = {};
+      $scope.modal.coinModal.appendTo = angular.element(document.querySelector('.auth-add-coin-modal'));
+      $scope.modal.coinModal.resolve = {
+        'type': function() {
+          return 'signup';
+        },
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+      var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+      modalInstance.result.then(resultPromise);
+
+      function resultPromise() {
+        $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
+        $state.go('signup.step1');
+      }
+
+      $scope.karma.modal = modalInstance; // tests
+    }
+
+    function goBack() {
+      $scope.modal.coinModal.animation = false;
+      $storage['iguana-login-active-coin'] = {};
+      $state.go('login').then(openCoinModal);
+    }
+
     function destroy() {
       $storage.passphrase = '';
       $storage['iguana-login-active-coin'] = {};
       $storage['iguana-active-coin'] = {};
+    }
+
+    function validateStep3() {
+      if ($scope.passphrase != $storage.passphrase) {
+        var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3'),
+            color = 'red';
+
+        $message.ngPrepMessageModal(
+          message,
+          color
+        );
+      } else {
+        $state.go('signup.step3');
+      }
     }
   }
 ]);

@@ -17,7 +17,7 @@
   width: 100%;
 
   .form-header {
-    border-radius: 4px 4px 0 0;
+    //border-radius: 4px 4px 0 0;
     color: $color-white;
     height: 60px;
     width: 100%;
@@ -30,12 +30,25 @@
       text-align: center;
     }
   }
-  .bi_interface-cross {
+  .bi_interface-arrow-left {
     color: $color-white;
-    font-size: 1.15em;
+    font-size: 2.26em;
+    left: 0.36em;
+    position: absolute;
+    text-shadow: 1px 1px 3px rgba-black(0.3);
+    top: 0.38em;
+
+    ::before {
+      font-weight: 900;
+    }
+  }
+  .bi_interface-cross{
+    color: $color-white;
+    font-size: 1.17em;
     margin-left: 0.8em;
     position: absolute;
-    text-shadow: 1px 2px 2px rgba(35, 35, 35, 0.3);
+    text-shadow: 1px 1px 10px rgba-black(0.2);
+    top: 21px;
   }
   .bi_interface-cross:before {
     font-weight: 900;
@@ -48,13 +61,14 @@
     font-size: 1.20em;
     height: 34px;
     margin: 0 auto;
-    max-width: 312px;
+    max-width: 600px;
   }
   .text-shadow {
     text-shadow: 0 1px 3px rgba-black(0.25);
   }
 }
 .modal,
+.send-coin-modal-container,
 .add-coin-create-wallet-form .create-account-form,
 .add-coin-create-wallet-form .verify-passphrase-form {
   background-color: $color-modal-bg-inner;
@@ -72,29 +86,47 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
 
-    .modal-content{
+    .modal-content {
       border-radius: 0;
-      height: auto;
+      height: 100%;
       min-height: 100%;
 
-      .modal-header{
-        border-bottom: none;
+      .modal-header {
         border-radius: 0;
-        height: 4.12em;
+      }
+    }
+  }
+  .modal-full,
+  .modal-lg {
+    width: 100%;
+
+    .modal-content {
+      overflow-y: auto;
+
+      .modal-header {
+        border-bottom: none;
+        box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+        height: 4.3em;
+        /* csslint ignore:start */
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=135, Color=#CACDD1); /*IE 5.5-7*/
+        /* csslint ignore:end */
         padding-top: 18px;
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=11, Direction=0, Color=#CACDD1)';/*IE 8*/
+        -moz-box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/*FF 3.5+*/
+        -webkit-box-shadow: 0 -8px 11px 11px rgba(202, 205, 209, 0.5);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
       }
     }
   }
   .modal-content{
     /* csslint ignore:start */
     background: $color-modal-bg;
-    -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=0, Color=#8F8F8F)';/*IE 8*/
-    -moz-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*FF 3.5+*/
-    -webkit-box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-    box-shadow: 0 0 50px 30px rgba(143,143,143,0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    border-radius: 4px;
+    box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=135, Color=#8F8F8F); /*IE 5.5-7*/
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=50, Direction=0, Color=#8F8F8F)';/*IE 8*/
+    -moz-box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 50px 30px rgba(143, 143, 143, 0.1);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
     /* csslint ignore:end */
 
     .modal-header {
@@ -121,4 +153,7 @@
   .modal-body{
     padding: 15px 1em 3.2em 1em;
   }
+}
+.modal-backdrop {
+  background-color: $color-white;
 }

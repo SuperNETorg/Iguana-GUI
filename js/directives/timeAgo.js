@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('IguanaGUIApp')
-.directive('timeago', function($window, $document, $filter) {
+.directive('timeago', function($filter) {
   return function(scope, element) {
     var children = element[0].children,
         threshold = settings.thresholdTimeAgo,
@@ -14,9 +16,11 @@ angular.module('IguanaGUIApp')
         minuteTemplate = 60 * 1000,
         difference = current - original;
 
-    if ((threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
+    if (
+      (threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
       (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
-      (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)) {
+      (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)
+    ) {
       children[0].innerText = date;
       children[1].innerText = time;
       scope.timeAgoClass = 'two-lines';

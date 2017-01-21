@@ -1,8 +1,9 @@
 <script type="text/ng-template" id="partials/dashboard-top-menu.html">
-  <nav class="navbar top unselectable navbar-inverse" ng-hide="!enabled" resize>
+  <nav class="navbar unselectable navbar-inverse" ng-hide="!enabled" resize>
     <div class="clearfix">
       <div class="navbar-header">
         <div class="navbar-brand cursor-pointer" ng-click="$state.go('dashboard.main')">{{ 'IGUANA.APP_TITLE' | lang }}</div>
+        <a class="cursor-pointer" ng-click="clickOnEasyDEX()" ng-if="isIguana && !isChromeApp"><span class="navbar-edex"><span>Easy</span>DEX</span></a>
         <div class="cursor-pointer lnk-logout" ng-click="$auth.logout()">{{ 'DASHBOARD.LOGOUT' | lang }}</div>
       </div>
       <div class="top" id="top-menu" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
