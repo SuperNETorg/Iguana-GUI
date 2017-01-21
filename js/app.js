@@ -146,6 +146,9 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
+  if (dev && dev.isDev && dev.isNightwatch) // temp
+    $rootScope.dev = dev;
+
   $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
