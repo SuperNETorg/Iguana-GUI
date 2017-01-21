@@ -45,7 +45,7 @@
                 <span ng-if="!sendCoin.valid.amount.empty && !sendCoin.valid.amount.notEnoughMoney">{{ 'RECEIVE.ENTER_IN' | lang }}</span>
               </p>
               <input type="text" min="0" placeholder="0 {{ sendCoin.coinId }}"
-                    class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }"
+                     class="tx-amount" ng-class="{ 'validation-field-error': sendCoin.valid.amount.empty || sendCoin.valid.amount.notEnoughMoney }"
                      ng-model="sendCoin.amount" ng-keyup="sendCoinKeyingAmount()" number-only />
               <span class="eq-sign">=</span>
               <input type="text" min="0" class="tx-amount-currency"

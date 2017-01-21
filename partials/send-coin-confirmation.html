@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="partials/send-coin-confirmation.html">
   <!--div class="send-coin-progress-overlay hidden">
-    <div class="send-coin-status">Sending...</div>
+    <div class="send-coin-status">{{ 'SEND.SENDING' | lang }}...</div>
     <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-next">
       <div class="progress-indicator">
         <svg class="bag" height="24" width="24">
@@ -55,23 +55,22 @@
             </div>
             <div class="pop-detail crncy chk-crncy crncy-rs">
               <h4>{{ 'RECEIVE.AMOUNT' | lang }}:</h4>
-                <h3>{{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}</h3>
-                <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.amountCurrency | decimalPlacesFormat: 'currency' }} {{ sendCoin.currency }}</h5>
-              </div>
-              <div class="pop-detail pay-dtl offset-bottom-md">
-                <h4>{{ 'SEND.FEE' | lang }}: </h4>
-                <h3>{{ sendCoin.fee }} {{ sendCoin.coinId }}</h3>
-                <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency }} {{ sendCoin.currency }}</h5>
-              </div>
-              <div class="pop-detail pay-dtl">
-                <h4>{{ 'SEND.NOTE' | lang }}:</h4>
-                <p>{{ sendCoin.note }}</p>
-              </div>
-              <button class="btn-confirm-tx orange-gradient orange-shadow " ng-class="{ 'hidden': sendCoin.success }"
-                      ng-click="sendCoinFormConfirm()">
-                {{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}
-              </button>
+              <h3>{{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}</h3>
+              <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.amountCurrency | decimalPlacesFormat: 'currency' }} {{ sendCoin.currency }}</h5>
             </div>
+            <div class="pop-detail pay-dtl offset-bottom-md">
+              <h4>{{ 'SEND.FEE' | lang }}:</h4>
+              <h3>{{ sendCoin.fee }} {{ sendCoin.coinId }}</h3>
+              <h5>{{ 'LOGIN.OR' | lang }} {{ sendCoin.feeCurrency }} {{ sendCoin.currency }}</h5>
+            </div>
+            <div class="pop-detail pay-dtl">
+              <h4>{{ 'SEND.NOTE' | lang }}:</h4>
+              <p>{{ sendCoin.note }}</p>
+            </div>
+            <button class="btn-confirm-tx orange-gradient orange-shadow" ng-class="{ 'hidden': sendCoin.success }"
+                    ng-click="sendCoinFormConfirm()">
+              {{ 'SEND.SEND' | lang }} {{ sendCoin.amount | decimalPlacesFormat: 'coin' }} {{ sendCoin.coinId }}
+            </button>
           </div>
         </div>
       </div>
