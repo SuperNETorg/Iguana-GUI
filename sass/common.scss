@@ -23,7 +23,6 @@ html {
   body {
     background-color: $color-body-bg;
     @include proxima;
-    //overflow: auto !important; /* prevent scrolling when modal is visible */
 
     .app-background {
       height: 100%;

@@ -17,7 +17,6 @@
   width: 100%;
 
   .form-header {
-    //border-radius: 4px 4px 0 0;
     color: $color-white;
     height: 60px;
     width: 100%;
@@ -97,8 +96,8 @@
       }
     }
   }
-  .modal-full,
-  .modal-lg {
+  .modal-lg,
+  .modal-full {
     width: 100%;
 
     .modal-content {

@@ -5,7 +5,6 @@
 
 @import 'dev.scss';
 
-
 body .dashboard.blur,
 body.modal-open .dashboard {
   @include blur;
