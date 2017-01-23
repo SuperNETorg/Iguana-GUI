@@ -18,7 +18,7 @@ angular.module('IguanaGUIApp')
     };
 
     function get(...arguments) {
-      loader();
+      loader(true);
 
       var deferred = $q.defer();
       $http
@@ -29,7 +29,7 @@ angular.module('IguanaGUIApp')
     }
 
     function post(...arguments) {
-      loader();
+      loader(true);
 
       var deferred = $q.defer();
       $http
@@ -42,6 +42,7 @@ angular.module('IguanaGUIApp')
     function onResolve(deferred, response) {
       $timeout.cancel(intervalUpdate);
       vars.loading = false;
+      loader(false);
       error.check(response);
       deferred.resolve(response)
     }
@@ -49,14 +50,14 @@ angular.module('IguanaGUIApp')
     function onReject(deferred, response) {
       $timeout.cancel(intervalUpdate);
       vars.loading = false;
+      loader(false);
       error.check(response);
       deferred.reject(response)
     }
 
-    function loader() {
-      intervalUpdate = $timeout(function() {
-        vars.loading = true;
-      }, 1000);
+    function loader(status) {
+      vars.loading = status ? true : false;
+      // vars.effect = status ? false : true;
     }
   }
 ]);

@@ -7,8 +7,9 @@ angular.module('IguanaGUIApp')
   '$window',
   '$http',
   '$state',
+  '$timeout',
   'vars',
-  function($rootScope, $filter, $window, $http, $state, vars) {
+  function($rootScope, $filter, $window, $http, $state, $timeout, vars) {
     var attrs = [
       'global-loader',
       'content-loader'
@@ -19,23 +20,24 @@ angular.module('IguanaGUIApp')
         document.querySelector('[' + attrs[0] + ']');
         angular.element(document.querySelector('.global-loader')).addClass("hide-loader");
       } else {
+        vars.effect = false;
         angular.element(document.querySelector('.global-loader')).removeClass("hide-loader");
       }
     }
 
     return {
+      scope: true,
       link: function(...attrs) {
-        var scopeAttrs = attrs;
         attrs[0].vars = vars;
+        $timeout(function(){
+          angular.element(document.querySelector('.loader-image')).css('display','none');
+          vars.effect = true;
+        }, 1000);
 
-        $rootScope.$watchCollection(function() {
-          return vars.loading;
-        }, function(newVal, oldVal) {
-          var localAttrs = scopeAttrs.splice(0, scopeAttrs.length);
-
-          localAttrs.unshift(oldVal);
-          globalLoader.apply(this, localAttrs);
-        });
+        $timeout(function(){
+          angular.element(document.querySelector('.loader-image')).css('display','block');
+          vars.effect = false;
+        },1500);
       }
     };
   }

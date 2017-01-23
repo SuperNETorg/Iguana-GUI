@@ -45,8 +45,10 @@
     <div class="app-background" ng-class="{ 'auth-orange-gradient': background }"></div>
     <div class="app-container" loader>
       <div class="app-container-inner" ui-view uimodal scroll></div>
-      <div class="global-loader" global-loader ng-if="!dev.isNightwatch && !vars.loading">
-        <div class="loader-image-head">
+      <div class="global-loader" global-loader
+           ng-if="!dev.isNightwatch"
+           ng-class="{'hide-loader' : !vars.loading}">
+        <div class="loader-image-head" ng-class="{'loader-image-effect' : vars.effect }">
           <div class="loader-image"></div>
         </div>
       </div>
