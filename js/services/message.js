@@ -5,7 +5,11 @@ angular.module('IguanaGUIApp')
   '$uibModal',
   '$rootScope',
   '$filter',
-  function($uibModal, $rootScope, $filter) {
+  '$sessionStorage',
+  'vars',
+  function($uibModal, $rootScope, $filter, $sessionStorage, vars) {
+    vars.$message = this;
+
     this.ngPrepMessageModal = function(message, color, messageType) {
       $rootScope.messageType = messageType; // TODO: rewrite
       $rootScope.message = message;
@@ -28,7 +32,21 @@ angular.module('IguanaGUIApp')
     };
 
     this.viewErrors = function(message) {
-      this.ngPrepMessageModal($filter('lang')(message), 'red');
+      if (!$sessionStorage.$message) {
+        $sessionStorage.$message = {}
+      }
+
+      if (!$sessionStorage.$message.active) {
+        $sessionStorage.$message.active = {};
+      }
+
+      if (!$sessionStorage.$message.active[message]) {
+        $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red');
+      }
+
+      $sessionStorage.$message.active[message].closed.then(function() {
+        delete $sessionStorage.$message.active[message];
+      })
     }
   }
 ]);

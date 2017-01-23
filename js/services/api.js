@@ -22,6 +22,7 @@ angular.module('IguanaGUIApp')
 
     // bitcoin rpc error code ref: https://github.com/bitcoin/bitcoin/blob/62f2d769e45043c1f262ed45babb70fe237ad2bb/src/rpc/protocol.h#L30
 
+    vars.$api = this;
     this.coinsInfo = [];
     this.isRT = false;
     $storage.isProxy = true;
@@ -595,10 +596,11 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
 
-        if (dev.showConsoleMessages && dev.isDev)
+        if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
+        }
 
         if (response.result) {
           // non-iguana
@@ -611,8 +613,9 @@ angular.module('IguanaGUIApp')
           // iguana
           if (response.data.error) {
             // do something
-            if (dev.showConsoleMessages && dev.isDev)
+            if (dev.showConsoleMessages && dev.isDev) {
               console.log('error: ' + response.data.error);
+            }
 
             deferred.resolve(response.data);
           } else {
@@ -660,7 +663,7 @@ angular.module('IguanaGUIApp')
       .then(onResolve, onReject);
 
       function onResolve(response) {
-        self.errorHandler(response, coin);
+        // self.errorHandler(response, coin);
 
         if (response.data.result) {
           defer.resolve(response.data.result);
@@ -760,7 +763,7 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
 
         if (response.data.result.bits) {
           result = true;
@@ -770,8 +773,9 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result);
       }.bind(this), function(response) {
-        if (dev.showConsoleMessages && dev.isDev)
+        if (dev.showConsoleMessages && dev.isDev) {
           console.log(response.data.responseText);
+        }
 
         if (response.data && response.data.responseText && response.data.responseText.indexOf(':-10') === -1) {
           result = true;
@@ -846,7 +850,7 @@ angular.module('IguanaGUIApp')
         }
       }, function(response) {
         deferred.reject(response);
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
 
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
@@ -1189,7 +1193,7 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(_response) {
-        if (this.errorHandler(_response, coin) !== 10) {
+        if (vars.error.status !== 10) {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(_response);
           }
@@ -1227,9 +1231,9 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result);
       }.bind(this), function(response) {
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
 
-        if (this.errorHandler(response, coin) === -13) {
+        if (vars.error.status === -13) {
           result = false;
 
           if (dev.showConsoleMessages && dev.isDev) {
@@ -1255,7 +1259,7 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(_response) {
-        if (this.errorHandler(_response, coin) !== 10) {
+        if (vars.error.status !== 10) {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(_response);
           }
@@ -1291,7 +1295,7 @@ angular.module('IguanaGUIApp')
         deferred.resolve(result);
       }.bind(this),
       function(response) {
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
 
         deferred.resolve(false);
       }.bind(this));
@@ -1371,7 +1375,7 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        if (this.errorHandler(response, coin) !== 10) {
+        if (vars.error.status !== 10) {
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(response);
           }
@@ -1403,7 +1407,7 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result, update);
       }.bind(this), function(response) {
-        this.errorHandler(response, coin);
+        // this.errorHandler(response, coin);
         deferred.reject(result, update);
 
       }.bind(this));
@@ -1437,7 +1441,7 @@ angular.module('IguanaGUIApp')
       })
       .then(
         function(response) {
-          if (this.errorHandler(response, coin) !== 10) {
+          if (vars.error.status !== 10) {
             if (response.data.result > -1 || Number(response) === 0) {
               // non-iguana
               result = response.data.result > -1 ? response.data.result : response;
@@ -1461,12 +1465,21 @@ angular.module('IguanaGUIApp')
               }
             }
             deferred.resolve([result, coin]);
+          } else {
+            if (
+              response.data &&
+              response.data.error === 'coin is busy processing'
+            ) {
+              if (!this.coinsInfo[coin]) {
+                this.coinsInfo[coin] = [];
+              }
+              this.coinsInfo[coin].connection = true;
+            }
           }
         }.bind(this),
         function(response) {
-          if (response.data) {
+          if (response.data && typeof response.data === 'string') {
             if (
-              typeof response.data === 'string' &&
               response.data.indexOf('Accounting API is deprecated') > -1 ||
               response.data.indexOf('If you want to use accounting API')
             ) {
@@ -1476,7 +1489,7 @@ angular.module('IguanaGUIApp')
             }
           }
 
-          deferred.resolve(false, coin);
+          deferred.reject(false, coin);
         }.bind(this)
       );
 

@@ -238,12 +238,16 @@ angular.module('IguanaGUIApp')
 
         if (!renderNow) {
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-              .then(function(response) {
+            .then(
+              function(response) {
                 constructAccountCoinRepeaterCB(response[0], response[1]);
-              }, function(reason) {
-                if (dev.showConsoleMessages && dev.isDev)
-                  console.log('request failed: ' + reason);
-              });
+              },
+              function(response) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('request failed: ', response);
+                }
+              }
+            );
         }
       }
     }

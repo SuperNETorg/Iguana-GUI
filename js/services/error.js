@@ -9,7 +9,10 @@ angular.module('IguanaGUIApp')
   '$storage',
   '$message',
   '$timeout',
-  function($q, vars, util, $state, $storage, $message, $timeout) {
+  '$rootScope',
+  function($q, vars, util, $state, $storage, $message, $timeout, $rootScope) {
+
+    vars.error = this;
 
     var isIguana = $storage.isIguana,
         response = {},
@@ -18,10 +21,16 @@ angular.module('IguanaGUIApp')
         message = null,
         consoleMessage = null,
         isViewAndLogOut = false,
-        istypeConsole = false,
         isShowConsole = dev.showConsoleMessages && dev.isDev;
 
     vars.response = {};
+
+    $rootScope.$on('connectionFiled', function () {
+      isViewAndLogOut = isShowConsole = true;
+      message = 'APP_FAILURE';
+      consoleMessage = '';
+      iguanaErrorsSwitch();
+    });
 
     return {
       'check': function(...args) {
@@ -32,6 +41,7 @@ angular.module('IguanaGUIApp')
           checkNoIguanaErrors.apply(this, args);
         }
       },
+      'message': message,
       'status': status
     };
 
@@ -41,7 +51,7 @@ angular.module('IguanaGUIApp')
       if (response.data) {
         if (response.data.error) {
           errors = response.data.error;
-          errorsSwitch();
+          iguanaErrorsSwitch();
         }
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
@@ -55,9 +65,34 @@ angular.module('IguanaGUIApp')
 
     function checkNoIguanaErrors(...args) {
       response = args[0];
+
+      if (response.data) {
+        if (response.data.error) {
+          errors = response.data;
+          noIguanaErrorSwich();
+        } else {
+          noIguanaErrorSwich(false);
+        }
+      }
     }
 
-    function errorsSwitch() {
+    function noIguanaErrorSwich(statusSwich) {
+      $timeout.cancel(vars.noIguanaTimeOut);
+
+      if (
+          errors.message &&
+          errors.message.indexOf('connect ECONNREFUSED') !== -1 &&
+          (!$storage['connected-coins'] || vars.$auth._userIdentify())
+      ) {
+        vars.noIguanaTimeOut = $timeout(function () {
+          message = 'DAEMONS_ERROR';
+          viewOrHide();
+          console.log(consoleMessage);
+        }, settings.iguanaNullReturnCountLogoutTimeout * 1000 )
+      }
+    }
+
+    function iguanaErrorsSwitch() {
       switch (errors) {
         case 'need to unlock wallet':
           isViewAndLogOut = true;
@@ -85,36 +120,25 @@ angular.module('IguanaGUIApp')
           consoleMessage = 'server is busy';
           status = 10;
           break;
+        case 'getconnectioncount needs coin':
+          isShowConsole = isViewAndLogOut = false;
+          break;
         default :
           consoleMessage = 'default error';
       }
 
       if (isViewAndLogOut) {
-        viewAndLogOut();
+        viewOrHide();
       }
       if (isShowConsole) {
         console.log(consoleMessage);
       }
     }
 
-    function viewAndLogOut() {
-      $timeout(function() {
-        $message.viewErrors('MESSAGE.' + message);
-        util.removeStorageItems([
-          'passphrase',
-          'coin',
-          'Coin',
-          'fee',
-          'pass',
-          'rate',
-          'auth'
-        ]);
-        $state.go('login');
-      }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
+    function viewOrHide() {
+      if ($state.current.name !== 'login') {
+          $message.viewErrors('MESSAGE.' + message);
+      }
     }
-
-    /*function applyIntervalChecks() {
-
-    }*/
   }
 ]);

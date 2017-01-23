@@ -38,7 +38,7 @@ angular.module('IguanaGUIApp', [
         pageTitle: 'PAGE.LOGIN'
       }
     })
-      .state('login.step3', {
+    .state('login.step3', {
         // url: '/step3',
         data: {
           pageTitle: 'PAGE.LOGIN'
@@ -146,8 +146,9 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
-  if (dev && dev.isDev && dev.isNightwatch) // temp
+  if (dev && dev.isDev && dev.isNightwatch) /* temp */{
     $rootScope.dev = dev;
+  }
 
   $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
@@ -172,6 +173,8 @@ angular.module('IguanaGUIApp', [
       if (count < 100) {
         $api.testConnection().then(onResolve, onReject);
         count++
+      } else {
+        $rootScope.$broadcast('connectionFiled', count);
       }
     }
   }

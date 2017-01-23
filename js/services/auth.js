@@ -15,6 +15,7 @@ angular.module('IguanaGUIApp')
   function($storage, vars, $api, $state, util, $q, $filter, $message, $rootScope, $window) {
 
     var self = this;
+    vars.$auth = this;
 
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;

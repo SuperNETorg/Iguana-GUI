@@ -173,6 +173,7 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
+      'DAEMONS_ERROR': 'Looks like no relevant daemon is running on your machine. Please, verify you have it active with the right configuration',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. Redirecting...',
       'APP_FAILURE_ALT': 'We\'re sorry but it seems that Iguana has crashed. Please login again. Redirecting...',
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
