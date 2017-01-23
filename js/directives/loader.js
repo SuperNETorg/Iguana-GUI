@@ -26,6 +26,7 @@ angular.module('IguanaGUIApp')
     return {
       link: function(...attrs) {
         var scopeAttrs = attrs;
+        attrs[0].vars = vars;
 
         $rootScope.$watchCollection(function() {
           return vars.loading;

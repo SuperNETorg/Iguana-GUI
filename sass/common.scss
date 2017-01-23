@@ -151,7 +151,7 @@ html {
       border-radius: 50%;
     }
     .loader-image {
-      position: fixed;
+      position: absolute;
       border: 12px solid #fb5b27;
       border-radius: 50%;
       border-top: 12px solid #f3f3f3;
@@ -159,9 +159,9 @@ html {
       height: 120px;
       -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
-      top: 50%;
+      top: -60px;
       bottom: 50%;
-      left: 47%;
+      left: -60px;
       right: 47%;
     }
     @-webkit-keyframes spin {

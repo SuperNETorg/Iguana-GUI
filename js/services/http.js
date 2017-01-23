@@ -7,7 +7,10 @@ angular.module('IguanaGUIApp')
   '$http',
   'vars',
   'error',
-  function($q, $http, vars, error) {
+  '$timeout',
+  function($q, $http, vars, error, $timeout) {
+
+    var intervalUpdate;
 
     return {
       get: get,
@@ -15,7 +18,8 @@ angular.module('IguanaGUIApp')
     };
 
     function get(...arguments) {
-      vars.loading = true;
+      loader();
+
       var deferred = $q.defer();
       $http
         .get.apply(null, arguments)
@@ -25,7 +29,8 @@ angular.module('IguanaGUIApp')
     }
 
     function post(...arguments) {
-      vars.loading = true;
+      loader();
+
       var deferred = $q.defer();
       $http
         .post.apply(null, arguments)
@@ -35,15 +40,23 @@ angular.module('IguanaGUIApp')
     }
 
     function onResolve(deferred, response) {
+      $timeout.cancel(intervalUpdate);
       vars.loading = false;
       error.check(response);
       deferred.resolve(response)
     }
 
     function onReject(deferred, response) {
+      $timeout.cancel(intervalUpdate);
       vars.loading = false;
       error.check(response);
       deferred.reject(response)
+    }
+
+    function loader() {
+      intervalUpdate = $timeout(function() {
+        vars.loading = true;
+      }, 1000);
     }
   }
 ]);
