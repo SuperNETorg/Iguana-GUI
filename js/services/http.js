@@ -56,7 +56,7 @@ angular.module('IguanaGUIApp')
     }
 
     function loader(status) {
-      intervalUpdate = $timeout(function () {
+      intervalUpdate = $timeout(function() {
         vars.loading = status;
         // vars.effect = !status;
       });

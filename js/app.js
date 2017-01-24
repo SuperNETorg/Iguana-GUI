@@ -161,21 +161,20 @@ angular.module('IguanaGUIApp', [
   });
 
   if (dev && dev.isDev && !dev.isKarma) {
-    var count = 0;
 
     $api.testConnection().then(onResolve, onReject);
 
     function onResolve(coins) {
       $rootScope.$broadcast('coinsInfo', coins);
+      $timeout(function() {
+        $api.testConnection().then(onResolve, onReject);
+      }, settings.apiCheckTimeout)
     }
 
     function onReject() {
-      if (count < 100) {
+      $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-        count++
-      } else {
-        $rootScope.$broadcast('connectionFiled', count);
-      }
+      }, settings.apiCheckTimeout)
     }
   }
 

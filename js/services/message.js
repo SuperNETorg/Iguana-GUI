@@ -31,7 +31,7 @@ angular.module('IguanaGUIApp')
       this.ngPrepMessageModal(null, 'red', 'noDaemon');
     };
 
-    this.viewErrors = function(message) {
+    this.viewErrors = function(message, type) {
       if (!$sessionStorage.$message) {
         $sessionStorage.$message = {}
       }
@@ -41,7 +41,7 @@ angular.module('IguanaGUIApp')
       }
 
       if (!$sessionStorage.$message.active[message]) {
-        $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red', true);
+        $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red', type);
       }
 
       $sessionStorage.$message.active[message].closed.then(function() {

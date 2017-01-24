@@ -95,9 +95,9 @@ angular.module('IguanaGUIApp')
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
     }
 
-    function stateChangeStart(...attrs) {
+    function stateChangeStart() {
       // default attrs (event, toState, toParams, fromState, fromParams, options)
-      var toState = attrs[1];
+      var toState = arguments[1];
       if (toState.name === 'login') {
         $rootScope.background = true;
       } else if (toState.name === 'login.step2') {

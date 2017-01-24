@@ -12,61 +12,75 @@ angular.module('IguanaGUIApp')
   '$timeout',
   '$rootScope',
   function($q, vars, util, $state, $storage, $sessionStorage,
-           $message, $timeout, $rootScope) {
+           $message, $timeout) {
 
     vars.error = this;
 
-    var isIguana = $storage.isIguana,
-        response = {},
+    var response = {},
         errors = undefined,
         status,
         message = null,
+        messageType = true,
         consoleMessage = null,
         isViewAndLogOut = false,
         isShowConsole = dev.showConsoleMessages && dev.isDev;
 
     vars.response = {};
 
-    $rootScope.$on('connectionFiled', function () {
-      isViewAndLogOut = isShowConsole = true;
-      message = 'APP_FAILURE';
-      consoleMessage = '';
-      iguanaErrorsSwitch();
-    });
-
     return {
-      'check': function(...args) {
-        vars.response.data = args[0];
-        if (isIguana) {
-          checkIguanaErrors.apply(this, args);
+      'check': function() {
+        vars.response.data = arguments[0];
+        status = arguments[0].status;
+        if ($storage.isIguana) {
+          checkIguanaErrors.apply(this, arguments);
         } else {
-          checkNoIguanaErrors.apply(this, args);
+          checkNoIguanaErrors.apply(this, arguments);
         }
       },
       'message': message,
       'status': status
     };
 
-    function checkIguanaErrors(...args) {
-      response = args[0];
+    function checkIguanaErrors() {
+      response = arguments[0];
 
       if (response.data) {
         if (response.data.error) {
           errors = response.data.error;
           iguanaErrorsSwitch();
+        } else {
+          hideErrors();
         }
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
+          // if (vars.$auth._userIdentify()) {
+            $timeout.cancel(vars.noIguanaTimeOut);
+            vars.noIguanaTimeOut = $timeout(function() {
+              message = 'DAEMONS_ERROR';
+              viewErrors();
+            }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
+          // }
           if (isShowConsole) {
             console.log('connection error');
           }
+        }
+      } else {
+        if (
+          $sessionStorage.$message &&
+          $sessionStorage.$message.active &&
+          $sessionStorage.$message.active.hasOwnProperty('MESSAGE.DAEMONS_ERROR')
+        ) {
+          if ($sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']) {
+            $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'].close();
+          }
+          delete $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'];
         }
       }
 
     }
 
-    function checkNoIguanaErrors(...args) {
-      response = args[0];
+    function checkNoIguanaErrors() {
+      response = arguments[0];
 
       if (response.data) {
         errors = response.data;
@@ -89,14 +103,14 @@ angular.module('IguanaGUIApp')
           errors.message.indexOf('connect ECONNREFUSED') !== -1 &&
           (!$storage['connected-coins'] || vars.$auth._userIdentify())
         ) {
-          vars.noIguanaTimeOut = $timeout(function () {
+          vars.noIguanaTimeOut = $timeout(function() {
             message = 'DAEMONS_ERROR';
-            viewOrHide();
+            viewErrors();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000)
         } else if (response.status === -1) {
-          vars.noIguanaTimeOut = $timeout(function () {
+          vars.noIguanaTimeOut = $timeout(function() {
             message = 'PROXY_ERROR';
-            viewOrHide();
+            viewErrors();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000)
         }
       } else {
@@ -126,22 +140,39 @@ angular.module('IguanaGUIApp')
     }
 
     function iguanaErrorsSwitch() {
+      $timeout.cancel(vars.iguanaTimeOut);
+
       switch (errors) {
         case 'need to unlock wallet':
           isViewAndLogOut = true;
-          message = 'APP_FAILURE';
+          if (!message) {
+            message = 'APP_FAILURE';
+          }
+          if (messageType === true) {
+            messageType = 'logout';
+          }
           consoleMessage = '';
           status = 10;
           break;
         case 'null return from iguana_bitcoinRPC':
           isViewAndLogOut = true;
-          message = 'APP_FAILURE_ALT';
+          if (!message) {
+            message = 'APP_FAILURE_ALT';
+          }
+          if (messageType === true) {
+            messageType = 'logout';
+          }
           consoleMessage = 'iguana crashed? attempts: ' + $storage.activeCoin + ' of ' + settings.iguanaNullReturnCountThreshold + ' max';
           status = null;
           break;
         case 'authentication error':
           isViewAndLogOut = true;
-          message = 'AUTHENTICATION_ERROR';
+          if (!message) {
+            message = 'AUTHENTICATION_ERROR';
+          }
+          if (messageType === true) {
+            messageType = 'logout';
+          }
           consoleMessage = 'authentication error';
           status = null;
           break;
@@ -157,20 +188,31 @@ angular.module('IguanaGUIApp')
           isShowConsole = isViewAndLogOut = false;
           break;
         default :
-          consoleMessage = 'default error';
+          consoleMessage = 'unknown error';
       }
 
       if (isViewAndLogOut) {
-        viewOrHide();
+        vars.iguanaTimeOut = $timeout(function() {
+          viewErrors();
+        }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
       }
       if (isShowConsole) {
         console.log(consoleMessage);
       }
     }
 
-    function viewOrHide() {
-      if ($state.current.name !== 'login') {
-          $message.viewErrors('MESSAGE.' + message);
+    function viewErrors() {
+      $message.viewErrors('MESSAGE.' + message, messageType);
+    }
+
+    function hideErrors() {
+      var activeMessage;
+      if ($sessionStorage.$message &&
+          $sessionStorage.$message.active) {
+        for (var name in $sessionStorage.$message.active) {
+          activeMessage = $sessionStorage.$message.active[name];
+          activeMessage.close();
+        }
       }
     }
   }

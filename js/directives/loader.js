@@ -19,14 +19,11 @@ angular.module('IguanaGUIApp')
       scope: true,
       link: function() {
         arguments[0].vars = vars;
-        $timeout(function(){
+        $timeout(function() {
           // angular.element(document.querySelector('.loader-image')).css('display','none');
           if(!vars.effect) {
             vars.effect = true;
-            if(vars.loading ===true){
-
-            }
-          }else {
+          } else {
             angular.element(document.querySelector('.loader-image')).css('display','block');
             vars.effect = false;
           }

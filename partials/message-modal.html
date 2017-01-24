@@ -11,6 +11,9 @@
         </span>
       </span>
       <span ng-bind-html="messageContent"></span>
+      <span ng-if="messageType === 'logout'">
+        <a class="cursor-pointer" ng-click="logout()">{{ 'DASHBOARD.LOGOUT' | lang }}</a>
+      </span>
     </div>
   </div>
 </script>
