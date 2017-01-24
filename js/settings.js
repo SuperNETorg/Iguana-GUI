@@ -20,13 +20,14 @@ var _settings = {
   defaultAccountNameCoind: '',
   txUnitProgressStatusMinConf: 10,
   iguanaNullReturnCountThreshold: 30,
-  iguanaNullReturnCountLogoutTimeout: 10, // sec
+  iguanaNullReturnCountLogoutTimeout: 1, // sec
   addCoinInfoModalTimeout: 5, // sec
   addCoinTimeout: 2, // sec
   thresholdTimeAgo: {
     day: 10
   },
   defaultRelayFee: 0.00001,
+  apiCheckTimeout: 1801000, // 1801000 3 minutes
   defaultIguanaConnectionTimeOut: 500,
   minEpochTimestamp: 1471620867
 };
