@@ -146,7 +146,7 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
-  if (dev && dev.isDev && dev.isNightwatch) /* temp */{
+  if (dev && dev.isDev && dev.isNightwatch) { // temp
     $rootScope.dev = dev;
   }
 
@@ -160,7 +160,7 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  if (dev && dev.isDev && !dev.isKarma) {
+  if ((dev && dev.isDev && !dev.isKarma) || (dev && !dev.isDev)) {
 
     $api.testConnection().then(onResolve, onReject);
 
