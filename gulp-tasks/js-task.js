@@ -67,6 +67,8 @@ exports.copyBowerJS = function(buildMode) {
 }
 
 exports.compressJS = function(buildMode, buildModeModifier) {
+  var gulpUtil = require('gulp-util');
+
   paths = pathsExports.getPaths(buildMode === 'dev' ? true : false);
 
   var jsIncludesArray = initJSIncludesArray(buildMode);
@@ -76,8 +78,8 @@ exports.compressJS = function(buildMode, buildModeModifier) {
            .src(jsIncludesArray)
            .pipe(concat('all.js'))
            .pipe(uglify({
-             mangle: false
-           }))
+             mangle: false,
+           }).on('error', gulpUtil.log))
            .pipe(gulp.dest(paths.build[buildMode]));
   } else {
     return gulp
