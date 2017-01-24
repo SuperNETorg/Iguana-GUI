@@ -41,7 +41,7 @@ angular.module('IguanaGUIApp')
       }
 
       if (!$sessionStorage.$message.active[message]) {
-        $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red');
+        $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red', true);
       }
 
       $sessionStorage.$message.active[message].closed.then(function() {

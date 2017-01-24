@@ -7,10 +7,12 @@ angular.module('IguanaGUIApp')
   'util',
   '$state',
   '$storage',
+  '$sessionStorage',
   '$message',
   '$timeout',
   '$rootScope',
-  function($q, vars, util, $state, $storage, $message, $timeout, $rootScope) {
+  function($q, vars, util, $state, $storage, $sessionStorage,
+           $message, $timeout, $rootScope) {
 
     vars.error = this;
 
@@ -67,28 +69,59 @@ angular.module('IguanaGUIApp')
       response = args[0];
 
       if (response.data) {
+        errors = response.data;
         if (response.data.error) {
-          errors = response.data;
           noIguanaErrorSwich();
         } else {
-          noIguanaErrorSwich(false);
+          noIguanaErrorSwich(!!response.data);
         }
+      } else {
+        noIguanaErrorSwich(!!response.data);
       }
     }
 
     function noIguanaErrorSwich(statusSwich) {
       $timeout.cancel(vars.noIguanaTimeOut);
 
-      if (
-          errors.message &&
+      if (!statusSwich) {
+        if (
+          errors && errors.message &&
           errors.message.indexOf('connect ECONNREFUSED') !== -1 &&
           (!$storage['connected-coins'] || vars.$auth._userIdentify())
-      ) {
-        vars.noIguanaTimeOut = $timeout(function () {
-          message = 'DAEMONS_ERROR';
-          viewOrHide();
-          console.log(consoleMessage);
-        }, settings.iguanaNullReturnCountLogoutTimeout * 1000 )
+        ) {
+          vars.noIguanaTimeOut = $timeout(function () {
+            message = 'DAEMONS_ERROR';
+            viewOrHide();
+          }, settings.iguanaNullReturnCountLogoutTimeout * 1000)
+        } else if (response.status === -1) {
+          vars.noIguanaTimeOut = $timeout(function () {
+            message = 'PROXY_ERROR';
+            viewOrHide();
+          }, settings.iguanaNullReturnCountLogoutTimeout * 1000)
+        }
+      } else {
+        if (
+          $sessionStorage.$message &&
+          $sessionStorage.$message.active
+        ) {
+          if (
+            (
+              $sessionStorage.$message.active.hasOwnProperty('MESSAGE.PROXY_ERROR') ||
+              $sessionStorage.$message.active.hasOwnProperty('MESSAGE.DAEMONS_ERROR')
+            ) &&
+            response.status !== -1 && response.config.url.indexOf(':1337') !== -1
+          ) {
+            if ($sessionStorage.$message.active['MESSAGE.PROXY_ERROR']) {
+              $sessionStorage.$message.active['MESSAGE.PROXY_ERROR'].close();
+            }
+            if ($sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']) {
+              $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'].close();
+            }
+
+            delete $sessionStorage.$message.active['MESSAGE.PROXY_ERROR'];
+            delete $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'];
+          }
+        }
       }
     }
 
