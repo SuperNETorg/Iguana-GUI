@@ -145,23 +145,22 @@ html {
       position: fixed;
       top: 50%;
       bottom: 50%;
-      left: 45%;
       right: 47%;
-      border: 72px solid #fb5b27;
+      border: 35px solid #fb5b27;
       border-radius: 50%;
     }
     .loader-image {
       position: absolute;
-      border: 12px solid #fb5b27;
+      border: 3px solid #fb5b27;
       border-radius: 50%;
-      border-top: 12px solid #f3f3f3;
-      width: 120px;
-      height: 120px;
+      border-top: 3px solid #f3f3f3;
+      width: 50px;
+      height: 50px;
       -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
-      top: -60px;
+      top: -25px;
       bottom: 50%;
-      left: -60px;
+      left: -25px;
       right: 47%;
     }
     @-webkit-keyframes spin {
@@ -176,12 +175,12 @@ html {
       display: none;
     }
     .loader-image-effect {
-      -ms-transition: all 150ms ease-in;
-      -ms-transform: scale(10,10);
-      -webkit-transition: all 150ms ease-in;
-      -webkit-transform: scale(10,10);
-      transition: all 150ms ease-in;
-      transform: scale(10,10);
+      -ms-transition: all 350ms ease-in;
+      -ms-transform: scale(20,20);
+      -webkit-transition: all 350ms ease-in;
+      -webkit-transform: scale(20,20);
+      transition: all 350ms ease-in;
+      transform: scale(20,20);
     }
   }
 }
