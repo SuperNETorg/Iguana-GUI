@@ -174,9 +174,7 @@ var lang = {
     },
     'MESSAGE': {
       'DAEMONS_ERROR': 'Looks like no relevant daemon is running on your machine. Please, verify you have it active with the right configuration',
-      'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements: </br>' +
-      '1 Setup a proxy server </br>' +
-      '2 Run  the proxy server </br>',
+      'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements. ',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. ',
       'APP_FAILURE_ALT': 'We\'re sorry but it seems that Iguana has crashed. Please login again. ',
       'MINIMUM_DAEMON_CONF': 'Minimum daemon configuration to comminicate via http requests and a proxy server.',
