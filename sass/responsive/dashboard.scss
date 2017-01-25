@@ -167,9 +167,6 @@ body {
               }
             }
           }
-          .currency-content {
-            padding-top: 100px;
-          }
         }
       }
     }
@@ -483,9 +480,10 @@ body {
     .modal .modal-dialog.modal-lg {
       width: 100%;
     }
-    .form-container .modal .modal-dialog .modal-header .btn-close,
+    //.form-container .modal .modal-dialog .modal-header .btn-close,
     .modal .modal-dialog .modal-content .modal-header .btn-back {
-      margin-left: -8px;
+      //margin-left: -8px;
+      margin-top: -2px;
     }
     .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
       margin-left: 6px;
@@ -599,7 +597,7 @@ body {
     }
   }
 
-  @media only screen and (max-width: 380px) {
+  @media only screen and (max-width: 412px) {
     .reference-currency-main .currency-content .currency-loop .country-li {
       display: inline-block;
       float: none;
