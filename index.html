@@ -44,7 +44,7 @@
   <body ng-class="{ 'dashboard-page': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.settings' }">
     <div class="app-background" ng-class="{ 'auth-orange-gradient': background }"></div>
     <div class="app-container" loader>
-      <div class="app-container-inner" ui-view uimodal scroll></div>
+      <div class="app-container-inner" ui-view ui-modal scroll></div>
       <div class="global-loader" global-loader
            ng-if="!dev.isNightwatch"
            ng-class="{'hide-loader' : true}">

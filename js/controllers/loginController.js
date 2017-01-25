@@ -20,7 +20,13 @@ angular.module('IguanaGUIApp')
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
-    if (!$rootScope.allowLoginStateChange) $storage['iguana-login-active-coin'] = {};
+
+    if (
+      !$rootScope.allowLoginStateChange &&
+      !$storage['dashboard-pending-coins']
+    ) {
+      $storage['iguana-login-active-coin'] = {};
+    }
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isCoinsConnected = isCoinsConnected;
@@ -146,6 +152,7 @@ angular.module('IguanaGUIApp')
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
           $scope.coins = data;
           $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+          $storage['dashboard-pending-coins'] = !!coinKeys;
           $state.go('login.step2');
         } else {
           $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
@@ -193,15 +200,29 @@ angular.module('IguanaGUIApp')
       return pageTitle;
     }
 
-     function isChanged() {
+    function isChanged() {
       $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
       $scope.isChanged = true;
     }
 
     function goBack() {
+      var state;
       $storage['iguana-login-active-coin'] = {};
-      $state.go('login');
-      openCoinModal('signin');
+      if (!$auth._userIdentify()) {
+        state = 'login';
+      } else {
+        state = 'dashboard.main';
+      }
+      goAndOpen(state)
+    }
+
+    function goAndOpen(state) {
+      $state.go(state).then(function() {
+        $scope.modal.coinModal.appendTo = angular.element(
+          document.querySelector('.auth-add-coin-modal')
+        );
+        openCoinModal('signin');
+      });
     }
   }
 ]);

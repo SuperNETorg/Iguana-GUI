@@ -27,7 +27,7 @@ var _settings = {
     day: 10
   },
   defaultRelayFee: 0.00001,
-  apiCheckTimeout: 1801000, // 1801000 3 minutes
+  apiCheckTimeout: 3, // minutes
   defaultIguanaConnectionTimeOut: 500,
   minEpochTimestamp: 1471620867
 };

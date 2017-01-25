@@ -91,7 +91,7 @@ angular.module('IguanaGUIApp')
                 }
               };
 
-            result.bitcoinFeesAll.data.fees.forEach(function (el) {
+            result.bitcoinFeesAll.data.fees.forEach(function(el) {
               if (el.maxFee === 0) {
                 feeTime.default = {
                   min: el.minMinutes,
@@ -205,7 +205,7 @@ angular.module('IguanaGUIApp')
       $timeout.cancel(controllerIntervals);
       controllerIntervals = $timeout(function() {
         onInit();
-      }, settings.apiCheckTimeout);
+      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
     }
   }
 ]);
