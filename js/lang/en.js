@@ -72,7 +72,7 @@ var lang = {
       'TYPE_OR_PASTE_THE_PASSPHRASE_P1': 'Type or paste the passphrase ',
       'TYPE_OR_PASTE_THE_PASSPHRASE_P2': 'to confirm you saved it properly',
       'TERMS-HEADER': 'Accept "Terms and Conditions" to proceed to the wallet',
-      'TERMS_CONDITIONS': 'If you lose access to your wallet or your encrypted private keys and you have not separately stored a backup of your wallet and corresponding password, you acknowledge and agree that any bitcoin you have associated with that wallet will become inaccessible. ',
+      'TERMS_CONDITIONS': 'The software you are about to use functions as a free, open source, and multi-signature digital wallet. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR IGUANA WALLET, YOU ACKNOWLEDGE AND AGREE THAT ANY VALUABLES YOU HAVE ASSOCIATED WITH THAT IGUANA WALLET WILL BECOME INACCESSIBLE.All transaction requests are irreversible. The authors of the software cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Iguana network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time.',
       'ACCEPT': 'Accept',
       'DECLINE': 'Decline'
     },
@@ -130,7 +130,7 @@ var lang = {
     },
     'SETTINGS': {
       'REFERENCE_CURRENCY': 'Reference currency',
-      'CHOOSE_YOUR_CURRENCY': 'Choose your currency to see equivalent',
+      'CHOOSE_YOUR_CURRENCY': 'Choose your currency to see equivalent amount of transactions',
       'AMOUNT_OF_TRANSACTIONS': 'amount of transactions',
       'FEE_OPTIONS': 'Fee options',
       'FEE_DESCRIPTION': 'The higher the fee, the faster a transaction. Chosen fee option will be applied to all sending transactions. The final fee size depends on a currency itself and its network load.',

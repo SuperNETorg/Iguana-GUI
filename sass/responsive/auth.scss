@@ -23,6 +23,7 @@ body {
             .form-title {
               color: $color-dark-gray;
               font-size: 1.1em;
+              font-weight: 600;
             }
             .passphrase-word-count {
               strong {
@@ -175,7 +176,8 @@ body {
         .form-content {
           .form-content-inner {
             .form-title {
-              color: $color-dark-gray;
+              color: $login-content-color-bg;
+              font-weight: 600;
               font-size: 1.15em;
               line-height: 1.1em;
               max-width: 14em;
@@ -392,4 +394,10 @@ body {
       }
     }
   }
+  @media all and (max-height: 400px) {
+    .btn-verify-passphrase {
+      position: relative;
+    }
+  }
+
 }
