@@ -82,7 +82,6 @@ angular.module('IguanaGUIApp')
     $rootScope.$on('$stateChangeStart', stateChangeStart);
 
     $scope.showSyncInfo = function(itemId) {
-      console.log(itemId);
       if (itemId === $scope.activeSyncInfo) {
         $scope.activeSyncInfo = false;
       } else {
@@ -272,7 +271,7 @@ angular.module('IguanaGUIApp')
                       currentHeight = iguanaGetInfo[9].replace('h.', ''),
                       peers = iguanaGetInfo[16].split('/');
 
-                    _syncInfo.connections = peers[0].replace('peers.', '');
+                    _syncInfo.peers = peers[0].replace('peers.', '');
                     _syncInfo.blocks = currentHeight;
                     _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
                     _syncInfo.totalBundles = totalBundles[0];
