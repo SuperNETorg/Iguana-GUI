@@ -32,7 +32,7 @@ var lang = {
       'CREATE_ACCOUNT': 'Create wallet',
       'ADD': 'Add',
       'ENTER_A_PASSPHRASE_TO_ADD': 'Enter a passphrase to add',
-      'INCORRECT_INPUT': 'Incorrect input. Passphrase must consist of {{ count }} words. Try one more time',
+      'INCORRECT_INPUT': 'Incorrect input. Passphrase must consist of {{ count }} words. Try one more time.',
       'INCORRECT_INPUT_P1': 'Incorrect input. Passphrase must consist of',
       'INCORRECT_INPUT_P2': 'words. Try one more time.',
       'OR': 'or',
@@ -173,7 +173,7 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
-      'DAEMONS_ERROR': 'Looks like no relevant daemon is running on your machine. Please, verify you have it active with the right configuration',
+      'DAEMONS_ERROR': 'Looks like no relevant daemon is running on your machine. Please, verify you have it active with the right configuration.',
       'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements. ',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. ',
       'APP_FAILURE_ALT': 'We\'re sorry but it seems that Iguana has crashed. Please login again. ',

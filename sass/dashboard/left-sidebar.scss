@@ -16,9 +16,40 @@
     margin-bottom: 20px;
     position: relative;
 
+    .info-icon {
+      @include cursor-pointer;
+      border: solid 2px $color-dark-gray;
+      color: $color-dark-gray;
+      border-radius: 50%;
+      display: inline-block;
+      height: 17px;
+      text-align: center;
+      font-family: Arial;
+      font-size: 12px;
+      text-transform: lowercase;
+      position: absolute;
+      right: 6px;
+      bottom: 8px;
+      width: 17px;
+      z-index: 2010;
+    }
+    .sync-info {
+      position: absolute;
+      top: 7px;
+      right: 60px;
+    }
+    .progress-bar {
+      opacity: 0;
+      height: 5px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
     .clickable-area {
       height: 100%;
       width: 100%;
+      position: relative;
+      z-index: 2000;
     }
     .remove-coin:before {
       @include budicon;
@@ -92,6 +123,10 @@
     .loader .path4,
     .remove-coin:before {
       color: $color-absolute-white;
+    }
+    .info-icon {
+      color: $color-absolute-white;
+      border-color: $color-absolute-white;
     }
   }
   .item:not(.active) .active-arrow {

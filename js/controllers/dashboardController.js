@@ -77,7 +77,18 @@ angular.module('IguanaGUIApp')
       updateFeeParams: updateFeeParams,
       switchLayoutMode: switchLayoutMode
     };
+    $scope.activeSyncInfo = false;
+    $scope.coinSyncInfo = {};
     $rootScope.$on('$stateChangeStart', stateChangeStart);
+
+    $scope.showSyncInfo = function(itemId) {
+      console.log(itemId);
+      if (itemId === $scope.activeSyncInfo) {
+        $scope.activeSyncInfo = false;
+      } else {
+        $scope.activeSyncInfo = itemId;
+      }
+    };
 
     if (!$scope.coinsInfo) {
       constructAccountCoinRepeater(true, true);
@@ -248,6 +259,61 @@ angular.module('IguanaGUIApp')
                 }
               }
             );
+
+            // TODO: rewrite
+            if ($storage.isIguana) {
+              $api.getInfo(coinsSelectedByUser[i]).then(
+                function(response) {
+                  var _syncInfo = {};
+
+                  if (response[0].data) {
+                    var iguanaGetInfo = response[0].data.status.split(' '),
+                      totalBundles = iguanaGetInfo[20].split(':'),
+                      currentHeight = iguanaGetInfo[9].replace('h.', ''),
+                      peers = iguanaGetInfo[16].split('/');
+
+                    _syncInfo.connections = peers[0].replace('peers.', '');
+                    _syncInfo.blocks = currentHeight;
+                    _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
+                    _syncInfo.totalBundles = totalBundles[0];
+                    _syncInfo.bundlesPercentage = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2);
+
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('Connections: ' + peers[0].replace('peers.', ''));
+                    }
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('Blocks: ' + currentHeight);
+                    }
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+                        totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
+                    }
+                    if (response[0].data.status.indexOf('.RT0 ') > -1) {
+                      _syncInfo.isRT = false;
+
+                      if (dev.showConsoleMessages && dev.isDev)
+                        console.log('RT is not ready yet!');
+                    } else {
+                      _syncInfo.isRT = true;
+                    }
+
+                    if (Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]) !== 100) {
+                      _syncInfo.loaderBar = true;
+                      _syncInfo.loaderBarSize = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2);
+                    } else {
+                      _syncInfo.loaderBar = false;
+                    }
+                  }
+
+                  $scope.coinSyncInfo[response[1]] = _syncInfo;
+                },
+                function(response) {
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('request failed: ', response);
+                  }
+                }
+              );
+            }
         }
       }
     }

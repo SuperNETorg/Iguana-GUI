@@ -74,7 +74,6 @@ angular.module('IguanaGUIApp')
                   $storage.isIguana = dev.sessions[key];
                 }
               }
-
             } else {
               $storage.isIguana = true;
 
@@ -135,7 +134,6 @@ angular.module('IguanaGUIApp')
 
     //TODO: should be removed
     this.errorHandler = function(response, index) {
-
       if (response.data && response.data.error) {
         if (response.data.error.message === 'need to unlock wallet') {
           if ($state.current.name !== 'login') {
@@ -277,9 +275,9 @@ angular.module('IguanaGUIApp')
           response.status instanceof 'string'
         ) {
           var iguanaGetInfo = response.status.split(' '),
-            totalBundles = iguanaGetInfo[20].split(':'),
-            currentHeight = iguanaGetInfo[9].replace('h.', ''),
-            peers = iguanaGetInfo[16].split('/');
+              totalBundles = iguanaGetInfo[20].split(':'),
+              currentHeight = iguanaGetInfo[9].replace('h.', ''),
+              peers = iguanaGetInfo[16].split('/');
 
           this.coinsInfo[index].connection = true;
 
@@ -374,6 +372,28 @@ angular.module('IguanaGUIApp')
         },
         function(response) {
           deferred.reject([coins, response, ++_index, coinsKeys]);
+        }
+      );
+
+      return deferred.promise;
+    };
+
+    this.getInfo = function(coin) {
+      var fullUrl = this.getFullApiRoute('getinfo', null, coin),
+          postData = this.getBitcoinRPCPayloadObj('getinfo', null, coin),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getinfo'),
+          deferred = $q.defer();
+
+      http.post(fullUrl, postData, {
+        cache: false,
+        headers: postAuthHeaders
+      })
+      .then(
+        function(response) {
+          deferred.resolve([response, coin]);
+        },
+        function(response) {
+          deferred.reject([response, coin]);
         }
       );
 
@@ -1100,8 +1120,9 @@ angular.module('IguanaGUIApp')
           method !== 'settxfee' &&
           method !== 'listtransactions' &&
           method !== 'sendtoaddress') {
+          var upass = this.Iguana_GetRPCAuth();
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + '] }';
+            '\"method\": \"' + method + '\", \"immediate\": \"5000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
             '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
@@ -1112,7 +1133,7 @@ angular.module('IguanaGUIApp')
           //for testing
           // var upass = "wrong md5";
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"1000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+            '\"method\": \"' + method + '\", \"immediate\": \"5000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
             '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
