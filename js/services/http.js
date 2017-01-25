@@ -10,7 +10,8 @@ angular.module('IguanaGUIApp')
   '$timeout',
   function($q, $http, vars, error, $timeout) {
 
-    var intervalUpdate;
+    var intervalUpdate, firstTimeout;
+    vars.first = true;
 
     return {
       get: get,
@@ -58,9 +59,18 @@ angular.module('IguanaGUIApp')
     function loader(status) {
       intervalUpdate = $timeout(function() {
         vars.loading = status;
-        // vars.effect = !status;
+        if (!vars.effect) {
+          vars.effect = true;
+          angular.element(document.querySelector('.loader-image')).css('display','none');
+          firstTimeout = $timeout(function () {
+            vars.first = false;
+          }, 700)
+        } else if (!vars.first) {
+          $timeout.cancel(firstTimeout);
+          angular.element(document.querySelector('.loader-image')).css('display','block');
+          angular.element(document.querySelector('.loader-image-head')).removeClass('loader-image-effect');
+        }
       });
-      vars.effect = status ? false : true;
     }
   }
 ]);

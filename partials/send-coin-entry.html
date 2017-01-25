@@ -3,6 +3,7 @@
     <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
     <div class="title">{{ 'SEND.SENDING' | lang }}</div>
   </header>
+  <div class="line-loader" ng-class="{'hide-loader' : !vars.loading}"></div>
   <div class="form-content send-modal">
     <div class="modal-body">
       <div class="main-popup">

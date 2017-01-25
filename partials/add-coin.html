@@ -11,6 +11,7 @@
         {{ 'ADD_COIN.WALLET_TYPE' | lang }}
       </div>
     </header>
+    <div class="line-loader" ng-class="{'hide-loader' : !vars.loading}"></div>
     <div class="form-content">
       <div class="coins-title">
         {{ ( getType() === 'login' ? 'ADD_COIN.SELECT_LOGIN_WALLET' : 'ADD_COIN.SELECT_CREATED_WALLET' ) | lang }}
