@@ -62,7 +62,7 @@ angular.module('IguanaGUIApp')
       $scope.dropDown.items.forEach(function(el) {
         if (el.name === itemName) {
           $scope.sendCoin.fee = el.coin;
-          $scope.sendCoin.feeCurrency = el.amount;
+          $scope.sendCoin.feeCurrency = el.amount !== 'NaN' ? el.amount : '';
           $scope.feeAllText = $scope.sendCoin.fee + ' ' + $scope.sendCoin.coinId;
           $scope.feeCurrencyAllText = $scope.sendCoin.feeCurrency + ' ' + $scope.sendCoin.currency;
         }
@@ -136,7 +136,6 @@ angular.module('IguanaGUIApp')
 
     var coinCurrencyRate =$storage.feeSettings.currencyRate;
 
-
     initSendCoinModal($storage.feeSettings.coinValue, $storage.feeSettings.activeCoin);
 
     if (
@@ -189,13 +188,13 @@ angular.module('IguanaGUIApp')
     }
 
     function initSendCoinModal(balance, coin) {
-      $scope.sendCoin.currencyRate = $rates.updateRates(coin, defaultCurrency, true);
+      $scope.sendCoin.currencyRate = Number($rates.updateRates(coin, defaultCurrency, true)) !== NaN ? $rates.updateRates(coin, defaultCurrency, true) : 0;
       $scope.sendCoin.initStep = -$scope.sendCoin.initStep;
       $scope.sendCoin.currency = defaultCurrency;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
       $scope.sendCoin.coinId = $scope.activeCoin.toUpperCase();
       $scope.sendCoin.coinValue = balance;
-      $scope.sendCoin.currencyValue = balance * $scope.sendCoin.currencyRate;
+      $scope.sendCoin.currencyValue = balance * $scope.sendCoin.currencyRate || 0;
 
       try {
         if (dev && dev.isDev && sendDataTest && sendDataTest[coin]) {

@@ -315,43 +315,42 @@ angular.module('IguanaGUIApp')
               );
             } else {
               if (coinsSelectedByUser[i] === 'kmd') {
-              $api.getInfo(coinsSelectedByUser[i]).then(
-                function(response) {
-                  var _syncInfo = {};
+                $api.getInfo(coinsSelectedByUser[i]).then(
+                  function(response) {
+                    var _syncInfo = {};
 
-                  if (response[0].data.result) {
-                    console.log(response[0].data.result.blocks);
-                    _syncInfo.peers = response[0].data.result.connections;
-                    _syncInfo.localBlocks = response[0].data.result.blocks;
-                    _syncInfo.totalBlocks = response[0].data.result.longestchain;
-                    _syncInfo.blocksPercentage = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
+                    if (response[0].data.result) {
+                      _syncInfo.peers = response[0].data.result.connections;
+                      _syncInfo.localBlocks = response[0].data.result.blocks;
+                      _syncInfo.totalBlocks = response[0].data.result.longestchain;
+                      _syncInfo.blocksPercentage = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
 
-                    if (_syncInfo.localBlocks !== _syncInfo.totalBlocks) {
-                      _syncInfo.isRT = false;
+                      if (_syncInfo.localBlocks !== _syncInfo.totalBlocks) {
+                        _syncInfo.isRT = false;
 
-                      if (dev.showConsoleMessages && dev.isDev)
-                        console.log('RT is not ready yet!');
-                    } else {
-                      _syncInfo.isRT = true;
+                        if (dev.showConsoleMessages && dev.isDev)
+                          console.log('RT is not ready yet!');
+                      } else {
+                        _syncInfo.isRT = true;
+                      }
+
+                      if (Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks) !== 100) {
+                        _syncInfo.loaderBar = true;
+                        _syncInfo.loaderBarSize = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
+                      } else {
+                        _syncInfo.loaderBar = false;
+                      }
                     }
 
-                    if (Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks) !== 100) {
-                      _syncInfo.loaderBar = true;
-                      _syncInfo.loaderBarSize = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
-                    } else {
-                      _syncInfo.loaderBar = false;
+                    $scope.coinSyncInfo[response[1]] = _syncInfo;
+                    console.log($scope.coinSyncInfo);
+                  },
+                  function(response) {
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('request failed: ', response);
                     }
                   }
-
-                  $scope.coinSyncInfo[response[1]] = _syncInfo;
-                  console.log($scope.coinSyncInfo);
-                },
-                function(response) {
-                  if (dev.showConsoleMessages && dev.isDev) {
-                    console.log('request failed: ', response);
-                  }
-                }
-              );
+                );
               }
             }
         }
