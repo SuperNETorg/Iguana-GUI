@@ -72,7 +72,7 @@ angular.module('IguanaGUIApp')
             var fastestFee = checkFeeCount(result.bitcoinFees.data.fastestFee),
               halfHourFee = checkFeeCount(result.bitcoinFees.data.halfHourFee),
               hourFee = checkFeeCount(result.bitcoinFees.data.hourFee),
-              coinCurrencyRate = result.getExternalRate[0][coinName][currencyName],
+              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0,
               feeTime = {
                 default: {
                   min: '',
