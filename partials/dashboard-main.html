@@ -38,9 +38,15 @@
               <div class="info-icon" ng-click="showSyncInfo(item.id)">i</div>
               <div class="sync-info" ng-if="activeSyncInfo === item.id">
                 Peers: {{ coinSyncInfo[item.id].peers }}<br/>
-                Sync: {{ coinSyncInfo[item.id].bundlesPercentage }}%<br/>
-                Blocks: {{ coinSyncInfo[item.id].blocks }}<br/>
-                Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}
+                <span ng-if="isIguana">
+                  Sync: {{ coinSyncInfo[item.id].bundlesPercentage }}%<br/>
+                  Blocks: {{ coinSyncInfo[item.id].blocks }}<br/>
+                  Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}
+                </span>
+                <span ng-if="!isIguana">
+                  Sync: {{ coinSyncInfo[item.id].blocksPercentage }}%<br/>
+                  Blocks: {{ coinSyncInfo[item.id].localBlocks }} / {{ coinSyncInfo[item.id].totalBlocks }}<br/>
+                </span>
               </div>
               <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
             </span>
