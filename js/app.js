@@ -162,7 +162,6 @@ angular.module('IguanaGUIApp', [
   });
 
   if ((dev && dev.isDev && !dev.isKarma) || (dev && !dev.isDev)) {
-
     $api.testConnection().then(onResolve, onReject);
 
     function onResolve(coins) {

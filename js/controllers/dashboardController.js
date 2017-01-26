@@ -267,9 +267,9 @@ angular.module('IguanaGUIApp')
 
                   if (response[0].data) {
                     var iguanaGetInfo = response[0].data.status.split(' '),
-                      totalBundles = iguanaGetInfo[20].split(':'),
-                      currentHeight = iguanaGetInfo[9].replace('h.', ''),
-                      peers = iguanaGetInfo[16].split('/');
+                        totalBundles = iguanaGetInfo[20].split(':'),
+                        currentHeight = iguanaGetInfo[9].replace('h.', ''),
+                        peers = iguanaGetInfo[16].split('/');
 
                     _syncInfo.peers = peers[0].replace('peers.', '');
                     _syncInfo.blocks = currentHeight;
@@ -286,7 +286,7 @@ angular.module('IguanaGUIApp')
                     }
                     if (dev.showConsoleMessages && dev.isDev) {
                       console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
-                        totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
+                        totalBundles[0] + ' (' + _syncInfo.bundlesPercentage  + '% synced)');
                     }
                     if (response[0].data.status.indexOf('.RT0 ') > -1) {
                       _syncInfo.isRT = false;
@@ -299,10 +299,14 @@ angular.module('IguanaGUIApp')
 
                     if (Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]) !== 100) {
                       _syncInfo.loaderBar = true;
-                      _syncInfo.loaderBarSize = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2);
+                      _syncInfo.loaderBarSize = _syncInfo.bundlesPercentage;
                     } else {
                       _syncInfo.loaderBar = false;
                     }
+                  }
+
+                  if (_syncInfo.bundlesPercentage > 100) {
+                    _syncInfo = {};
                   }
 
                   $scope.coinSyncInfo[response[1]] = _syncInfo;
@@ -342,8 +346,11 @@ angular.module('IguanaGUIApp')
                       }
                     }
 
+                    if (_syncInfo.blocksPercentage > 100) {
+                      _syncInfo = {};
+                    }
+
                     $scope.coinSyncInfo[response[1]] = _syncInfo;
-                    console.log($scope.coinSyncInfo);
                   },
                   function(response) {
                     if (dev.showConsoleMessages && dev.isDev) {

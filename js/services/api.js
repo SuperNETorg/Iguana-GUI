@@ -1131,7 +1131,7 @@ angular.module('IguanaGUIApp')
       } else {
         if ($storage.isIguana) {
           var upass = this.Iguana_GetRPCAuth();
-          //for testing
+          // for testing
           // var upass = "wrong md5";
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
             '\"method\": \"' + method + '\", \"immediate\": \"10000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
