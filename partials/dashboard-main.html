@@ -19,7 +19,7 @@
                ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile() }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
                ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
-               title="Syncronized at {{ coinSyncInfo[item.id].bundlesPercentage }}%">
+               title="{{ coinSyncInfo[item.id].syncTitle }}">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
                  ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
@@ -34,14 +34,16 @@
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
-            <div class="info-icon" ng-click="showSyncInfo(item.id)">i</div>
-            <div class="sync-info" ng-if="activeSyncInfo === item.id">
-              Peers: {{ coinSyncInfo[item.id].peers }}<br/>
-              Sync: {{ coinSyncInfo[item.id].bundlesPercentage }}%<br/>
-              Blocks: {{ coinSyncInfo[item.id].blocks }}<br/>
-              Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}
-            </div>
-            <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
+            <span class="sync-info-block" ng-if="coinSyncInfo[item.id]">
+              <div class="info-icon" ng-click="showSyncInfo(item.id)">i</div>
+              <div class="sync-info" ng-if="activeSyncInfo === item.id">
+                Peers: {{ coinSyncInfo[item.id].peers }}<br/>
+                Sync: {{ coinSyncInfo[item.id].bundlesPercentage }}%<br/>
+                Blocks: {{ coinSyncInfo[item.id].blocks }}<br/>
+                Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}
+              </div>
+              <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
+            </span>
           </div>
         </div>
         <button class="btn btn-add-coin" ng-click="openAddCoinModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>

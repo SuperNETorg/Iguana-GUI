@@ -276,6 +276,7 @@ angular.module('IguanaGUIApp')
                     _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
                     _syncInfo.totalBundles = totalBundles[0];
                     _syncInfo.bundlesPercentage = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2);
+                    _syncInfo.syncTitle = 'Syncronized at ' + _syncInfo.bundlesPercentage + '%';
 
                     if (dev.showConsoleMessages && dev.isDev) {
                       console.log('Connections: ' + peers[0].replace('peers.', ''));
