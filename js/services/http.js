@@ -62,7 +62,7 @@ angular.module('IguanaGUIApp')
         if (!vars.effect) {
           vars.effect = true;
           angular.element(document.querySelector('.loader-image')).css('display','none');
-          firstTimeout = $timeout(function () {
+          firstTimeout = $timeout(function() {
             vars.first = false;
           }, 700)
         } else if (!vars.first) {

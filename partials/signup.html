@@ -32,7 +32,9 @@
                      ng-model="passphraseCheckbox"
                      class="checkbox" />
               <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer">
-                <span class="box"></span><span class="label-text unselectable">{{ 'CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE' | lang }}</span>
+                <span class="box"></span><span class="label-text unselectable">
+                  {{ 'CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE' | lang }}
+                </span>
               </label>
               <div class="non-iguana-coins-repeater hidden"></div>
               <div class="non-iguana-coins-repeater-errors"></div>
@@ -65,10 +67,10 @@
               </div>
               <textarea name="verifyPassphrase" id="passphrase"
                         class="login-passphrase-textarea offset-bottom-sm row center"
-                        ng-model="passphrase"></textarea>
+                        ng-model="passphraseModel"></textarea>
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
-              <button ng-disabled="!passphrase.length"
+              <button ng-disabled="!passphraseModel.length"
                       class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="validateStep3()">
                 {{ 'CREATE_ACCOUNT.CREATE' | lang }}
               </button>

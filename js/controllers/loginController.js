@@ -187,6 +187,8 @@ angular.module('IguanaGUIApp')
     }
 
     function setTitle() {
+      var coinNames = [];
+
       pageTitle = $filter('lang')('LOGIN.LOGIN_TO_WALLET');
 
       if (
@@ -194,7 +196,11 @@ angular.module('IguanaGUIApp')
         Object.keys($storage['iguana-login-active-coin']).length &&
         $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]
       ) {
-        pageTitle = pageTitle.replace('{{ coin }}', $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]].name);
+        for (var name in $scope.activeCoins) {
+          coinNames.push($scope.activeCoins[name].name);
+        }
+
+        pageTitle = pageTitle.replace('{{ coin }}', coinNames.join(', '));
       }
 
       return pageTitle;

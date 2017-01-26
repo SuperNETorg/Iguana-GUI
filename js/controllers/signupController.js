@@ -79,14 +79,20 @@ angular.module('IguanaGUIApp')
       if ($scope.passphrase.length) {
         if ($storage.isIguana) {
           $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
-          $auth.checkIguanaCoinsSelection(true)
-            .then(function(response) {
-              $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
-              .then(onResolve, onReject);
-            }, function(reason) {
-              if (dev.showConsoleMessages && dev.isDev)
-                console.log('request failed: ' + reason);
-            });
+          $auth
+            .checkIguanaCoinsSelection(true)
+            .then(
+              function(response) {
+                $api
+                  .walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+                  .then(onResolve, onReject);
+              },
+              function(reason) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('request failed: ', reason);
+                }
+              }
+            );
         } else {
           $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
           .then(onResolve, onReject);
@@ -100,7 +106,7 @@ angular.module('IguanaGUIApp')
 
       function onResolve() {
         var msg = $message.ngPrepMessageModal(
-          selectedCoindToEncrypt + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
+          coinKeys.join(', ') + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
           'green'
         );
 
@@ -108,7 +114,7 @@ angular.module('IguanaGUIApp')
           msg.closed.then(function() {
             $auth.login(
               $scope.getActiveCoins(),
-              $scope.passphrase,
+              $scope.passphraseModel,
               false
             );
           });
@@ -143,6 +149,7 @@ angular.module('IguanaGUIApp')
     }
 
     function setTitle() {
+      var coinNames = [];
       pageTitle = $filter('lang')('CREATE_ACCOUNT.ADD_ACCOUNT');
 
       if (
@@ -150,7 +157,11 @@ angular.module('IguanaGUIApp')
         Object.keys($storage['iguana-login-active-coin']).length &&
         $scope.activeCoins[Object.keys($scope.activeCoins)[0]]
       ) {
-        pageTitle = pageTitle.replace('{{ coin }}', $scope.activeCoins[Object.keys($scope.activeCoins)[0]].name);
+        for (var name in $scope.activeCoins) {
+          coinNames.push($scope.activeCoins[name].name);
+        }
+
+        pageTitle = pageTitle.replace('{{ coin }}', coinNames.join(', '));
       }
 
       return pageTitle;
@@ -210,7 +221,7 @@ angular.module('IguanaGUIApp')
     }
 
     function validateStep3() {
-      if ($scope.passphrase != $storage.passphrase) {
+      if ($scope.passphraseModel != $storage.passphrase) {
         var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3'),
             color = 'red';
 

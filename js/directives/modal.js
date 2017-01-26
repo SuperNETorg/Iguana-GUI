@@ -9,7 +9,7 @@ angular.module('IguanaGUIApp')
     return {
       scope: true,
       link: function(scope, element, attr) {
-        if(scope.$$watchers) {
+        if (scope.$$watchers) {
           var open = $uibModalStack.open,
               close = $uibModalStack.close,
               dismiss = $uibModalStack.dismiss;

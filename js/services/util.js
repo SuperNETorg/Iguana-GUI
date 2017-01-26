@@ -74,8 +74,8 @@ angular.module('IguanaGUIApp')
 
         try {
           document.execCommand('copy');
-          message = elementDisplayName + ' ' +
-                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
+          /*message = elementDisplayName + ' ' +
+                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';*/
           color = 'blue';
         } catch (e) {
           this.isExecCopyFailed = true;
@@ -84,7 +84,9 @@ angular.module('IguanaGUIApp')
         }
 
         temp.remove();
-        $message.ngPrepMessageModal(message, color);
+        if (message) {
+          $message.ngPrepMessageModal(message, color);
+        }
       }
     };
 

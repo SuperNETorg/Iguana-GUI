@@ -940,6 +940,7 @@ angular.module('IguanaGUIApp')
               .then(onResolve, onReject);
         }
       }
+
       function onReject(data) {
         var response = data[0],
             coin = data[1];
@@ -1163,7 +1164,9 @@ angular.module('IguanaGUIApp')
           method === 'getbalance' ||
           method === 'settxfee' ||
           method === 'listtransactions' ||
-          method === 'sendtoaddress')) reroutePort = 8368;
+          method === 'sendtoaddress')) {
+            reroutePort = 8368;
+        }
 
         if (conf) {
           var reroutePorfConf = (

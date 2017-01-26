@@ -13,8 +13,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$filter',
   'util',
+  '$datetime',
   function($scope, $state, $rates, $auth, $rootScope, $storage,
-           $timeout, $api, vars, $filter, util) {
+           $timeout, $api, vars, $filter, util, $datetime) {
     $scope.$state = $state;
     $rootScope.$state = $state;
     $scope.coinsInfo = vars.coinsInfo;
