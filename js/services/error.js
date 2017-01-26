@@ -97,7 +97,7 @@ angular.module('IguanaGUIApp')
     function noIguanaErrorSwich(statusSwich) {
       $timeout.cancel(vars.noIguanaTimeOut);
 
-      if (!statusSwich) {
+      if (typeof statusSwich !== 'undefined' && !statusSwich) {
         if (
           errors && errors.message &&
           errors.message.indexOf('connect ECONNREFUSED') !== -1 &&

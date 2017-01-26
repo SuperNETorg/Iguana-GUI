@@ -203,7 +203,7 @@
 @mixin btn-bottom($bottom) {
   bottom: $bottom;
   max-width: 90%;
-  @include absolute-horizontal-center;
+  @include fixed-horizontal-center;
 }
 
 @mixin text-vertical-center($parent-line-height, $children-line-height) {

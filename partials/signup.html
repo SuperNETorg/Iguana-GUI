@@ -39,9 +39,12 @@
               <div class="non-iguana-coins-repeater hidden"></div>
               <div class="non-iguana-coins-repeater-errors"></div>
               <div class="login-or-delim center"></div>
-              <button class="btn btn-block orange-gradient text-shadow row btn-verify-passphrase"
-                      ng-disabled="!passphraseCheckbox || isDisabled()"
-                      ng-click="$state.go('signup.step2')">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+              <div class="covered-sheet">
+                <button class="btn btn-block orange-gradient text-shadow row btn-verify-passphrase"
+                        ng-disabled="!passphraseCheckbox || isDisabled()"
+                        ng-click="$state.go('signup.step2')">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+              </div>
+
             </div>
           </div>
         </section>
@@ -70,10 +73,12 @@
                         ng-model="passphraseModel"></textarea>
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
-              <button ng-disabled="!passphraseModel.length"
-                      class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="validateStep3()">
-                {{ 'CREATE_ACCOUNT.CREATE' | lang }}
-              </button>
+              <div class="covered-sheet">
+                <button ng-disabled="!passphraseModel.length"
+                        class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="validateStep3()">
+                  {{ 'CREATE_ACCOUNT.CREATE' | lang }}
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -90,14 +95,18 @@
               <div class="login-input-directions no-padding-left-right unselectable offset-bottom-lg">
                 {{ 'CREATE_ACCOUNT.TERMS_CONDITIONS' | lang }}
               </div>
-              <button class="last-child btn btn-block width-gradient not-hover row btn-terms-conditions-decline offset-bottom-md hidden"
-                      ng-click="$state.go('signup.step2')">
-                {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
-              </button>
-              <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
-                      ng-click="addAccount()">
-                {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
-              </button>
+              <div class="covered-sheet">
+                <button class="last-child btn btn-block width-gradient not-hover row btn-terms-conditions-decline offset-bottom-md hidden"
+                        ng-click="$state.go('signup.step2')">
+                  {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
+                </button>
+
+                <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
+                        ng-click="addAccount()">
+                  {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
+                </button>
+              </div>
+
             </div>
           </div>
         </section>
