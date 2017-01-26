@@ -535,7 +535,7 @@ angular.module('IguanaGUIApp')
           var fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
               halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
               hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
-              coinCurrencyRate = result.getExternalRate[0][coinName][currencyName];
+              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0;
 
           $storage.feeSettings.sendCoin = {
             initStep: true,

@@ -126,7 +126,7 @@ angular.module('IguanaGUIApp')
       for (var key in vars.coinsInfo) {
         var iguanaPassphraseKey = 'iguana-' + key + '-passphrase';
 
-        if ($storage[iguanaPassphraseKey] && $storage[iguanaPassphraseKey].logged === 'yes' && key) {
+        if ($storage[iguanaPassphraseKey] && $storage[iguanaPassphraseKey].logged === 'yes' && key && result[key.toUpperCase()]) {
           $storage['iguana-rates-' + key] = {
             'shortName': defaultCurrency,
             'value': result[key.toUpperCase()][defaultCurrency.toUpperCase()],
