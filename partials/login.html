@@ -103,13 +103,15 @@
                     {{ 'LOGIN.TERMS_AND_CONDITIONS_P1' | lang }}
                     <span class="terms-condition-bold">{{ 'LOGIN.TERMS_AND_CONDITIONS_P2' | lang }}</span>
                     {{ 'LOGIN.TERMS_AND_CONDITIONS_P3' | lang }}
-                    <div class="container-arrow"></div>
                   </div>
+                  <div class="bottom-sheet"></div>
                 </div>
-                <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
-                        ng-click="login()">
-                  {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
-                </button>
+                <div class="covered-sheet">
+                  <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
+                          ng-click="login()">
+                    {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

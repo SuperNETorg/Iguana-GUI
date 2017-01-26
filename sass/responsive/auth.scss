@@ -29,7 +29,7 @@ body {
               }
             }
             .form-title {
-              color: $color-dark-gray;
+              color: $login-content-color-bg;
               font-size: 1.1em;
               font-weight: 600;
             }
@@ -149,6 +149,9 @@ body {
         .form-content {
           .form-content-inner {
             .login-input-directions {
+              .bottom-sheet {
+                height: 65px;
+              }
               font-size: 1.2em;
               @include bold;
               line-height: 1.25em;
@@ -158,7 +161,7 @@ body {
             }
 
             .container-arrow {
-              bottom: 10%;
+              bottom: 12%;
               height: 10%;
             }
           }
@@ -230,7 +233,6 @@ body {
       .form-container.terms-conditionals-form {
         .login-input-directions {
           top: 9em;
-          height: 70%;
           @include absolute-horizontal-center;
 
           .directives-text {
