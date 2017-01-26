@@ -135,7 +135,9 @@ angular.module('IguanaGUIApp')
             presponse = JSON.stringify(presponse);
             sessionStorage.setItem('IguanaActiveAccount', presponse);
 
-            if (
+            if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
+              $window.location.href = 'http://127.0.0.1:17777/gui/EasyDEX-GUI/index.html';
+            } else if (
               $window.location.href.indexOf('localhost') > -1 ||
               $window.location.href.indexOf('127.0.0.1') > -1
             ) {
