@@ -161,6 +161,7 @@ angular.module('IguanaGUIApp')
       if (!Object.keys(self.coinsSelectedToAdd).length) {
         self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
       }
+
       var coinKeys = Object.keys(self.coinsSelectedToAdd);
 
       if ($storage.isIguana) {
@@ -172,7 +173,7 @@ angular.module('IguanaGUIApp')
 
         delete $storage['dashboard-pending-coins'];
 
-        if (!isCheck) {
+        if (!isCheck && !$api.Iguana_GetRPCAuth()) {
           $api.Iguana_GenerateRPCAuth();
         }
 
@@ -385,6 +386,7 @@ angular.module('IguanaGUIApp')
         if (typeof isCheck == 'undefined') {
           isCheck = false;
         }
+
         if (!isCheck) {
           $storage['iguana-auth'] = { 'timestamp': Date.now() };
 

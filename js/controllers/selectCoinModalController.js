@@ -26,7 +26,9 @@ angular.module('IguanaGUIApp')
       'light-blue',
       'yellow'
     ];
-    $storage['iguana-login-active-coin'] = {};
+    if (!$storage.isIguana) {
+      $storage['iguana-login-active-coin'] = {};
+    }
 
     $scope.back = back;
     $scope.next = next;
@@ -121,7 +123,8 @@ angular.module('IguanaGUIApp')
                 'id': key.toUpperCase(),
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
-                'color': $scope.coinColors[index]
+                'color': $scope.coinColors[index],
+                'readonly': (key === 'kmd' ? true : false)
               });
 
               if (index === $scope.coinColors.length - 1) {

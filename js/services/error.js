@@ -166,7 +166,9 @@ angular.module('IguanaGUIApp')
           status = null;
           break;
         case 'authentication error':
-          isViewAndLogOut = true;
+          if (response.config.method == 'GET') {
+            isViewAndLogOut = false;
+          }
           if (!message) {
             message = 'AUTHENTICATION_ERROR';
           }

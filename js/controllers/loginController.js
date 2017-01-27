@@ -15,22 +15,14 @@ angular.module('IguanaGUIApp')
   '$filter',
   '$message',
   'vars',
-  function($scope, $http, $state, util, $auth, $uibModal, $api, $storage,
-           $timeout, $rootScope, $filter, $message, vars) {
+  function($scope, $http, $state, util, $auth, $uibModal, $api,
+           $storage, $timeout, $rootScope, $filter, $message, vars) {
     var pageTitle;
 
     $storage['iguana-active-coin'] = {};
 
-    if (
-      !$rootScope.allowLoginStateChange &&
-      !$storage['dashboard-pending-coins']
-    ) {
-      $storage['iguana-login-active-coin'] = {};
-    }
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
-    $scope.isCoinsConnected = isCoinsConnected;
-    $scope.isAppSetup = isAppSetup;
     $scope.isChanged = false;
     $scope.$auth = $auth;
     $scope.$state = $state;
@@ -42,11 +34,12 @@ angular.module('IguanaGUIApp')
     $scope.$modalInstance = {};
     $scope.coinResponses = [];
     $scope.coins = [];
-    $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
     $storage['iguana-active-coin'] = {};
     $scope.messages = '';
     $scope.loginActiveCoin = '';
     $rootScope.background = true;
+    $scope.isCoinsConnected = isCoinsConnected;
+    $scope.isAppSetup = isAppSetup;
     $scope.title = setTitle;
     $scope.loginCheck = loginCheck;
     $scope.login = login;
@@ -60,7 +53,18 @@ angular.module('IguanaGUIApp')
       setTitle: setTitle,
       stateChangeStart: stateChangeStart
     };
+    $scope.coinColors = [
+      'orange',
+      'breeze',
+      'light-blue',
+      'yellow'
+    ];
     $scope.$on('$stateChangeStart', stateChangeStart);
+    $rootScope.$on('onLoad', onLoad);
+
+    if (!$storage.isIguana) {
+      $scope.activeCoins = $storage['iguana-login-active-coin'] || {};
+    }
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -68,13 +72,13 @@ angular.module('IguanaGUIApp')
       onInit();
     }
 
-    if ($state.current.name === 'login.step2' || $state.current.name === 'login.step3') {
+    if ($state.current.name === 'login.step2' ||
+        $state.current.name === 'login.step3') {
       $rootScope.background = false;
     }
 
-    // TODO: will be removed
     function onInit() {
-      $scope.coins = [];
+      isCoinSelected();
     }
 
     function getActiveCoins() {
@@ -98,7 +102,79 @@ angular.module('IguanaGUIApp')
         $storage['iguana-login-active-coin'] = {};
       }
 
+      if ($storage.isIguana) {
+        if (!$storage['iguana-login-active-coin']['kmd']) {
+          $storage['iguana-login-active-coin'] = constructCoinRepeater('kmd');
+        }
+      }
+
       return Object.keys($storage['iguana-login-active-coin']).length === 0;
+    }
+
+    function constructCoinRepeater(coinName) {
+      var index = 0,
+        coinsArray = {},
+        coinsInfo = vars.coinsInfo;
+
+      if (coinsInfo) {
+        for (var key in supportedCoinsList) {
+          if (
+            (!$storage['iguana-' + key + '-passphrase'] ||
+              (
+                $storage['iguana-' + key + '-passphrase'] &&
+                ($storage['iguana-' + key + '-passphrase'].logged !== 'yes' ||
+                ($storage['iguana-' + key + '-passphrase'].logged === 'yes' &&
+                ($state.current.name.indexOf('login') > -1 || $state.current.name.indexOf('signup') > -1)))
+              )
+            )
+          ) {
+            if (
+              ($storage.isIguana && coinsInfo[key] && coinsInfo[key].iguana === true) ||
+              (
+                !$storage.isIguana &&
+                (coinsInfo[key] &&
+                  coinsInfo[key].connection === true ||
+                  (dev && dev.isDev && dev.showAllCoindCoins)
+                )
+              )
+            ) {
+              if (!coinName) {
+                coinsArray.push({
+                  'id': key.toUpperCase(),
+                  'coinId': key.toLowerCase(),
+                  'name': supportedCoinsList[key].name,
+                  'color': $scope.coinColors[index],
+                });
+              } else if (coinName === key){
+                coinsArray[key] = {
+                  'id': key.toUpperCase(),
+                  'coinId': key.toLowerCase(),
+                  'name': supportedCoinsList[key].name,
+                  'color': $scope.coinColors[index],
+                  'pass': getPassphrase(key),
+                };
+              }
+
+              if (index === $scope.coinColors.length - 1) {
+                index = 0;
+              } else {
+                index++;
+              }
+            }
+          }
+        }
+      }
+
+      return coinsArray;
+    }
+
+    function getPassphrase(coinId) {
+      if (dev && dev.coinPW) {
+        return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
+          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
+      } else {
+        return '';
+      }
     }
 
     function stateChangeStart() {
@@ -129,7 +205,7 @@ angular.module('IguanaGUIApp')
     }
 
     function openCoinModal(type) {
-      if (type === 'signin') {
+      if (type === 'signin' && !$scope.isIguana) {
         $storage['iguana-login-active-coin'] = {};
         $storage['iguana-active-coin'] = {};
       }
@@ -153,7 +229,15 @@ angular.module('IguanaGUIApp')
           $scope.coins = data;
           $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
           $storage['dashboard-pending-coins'] = !!coinKeys;
-          $state.go('login.step2');
+          if (!$storage.loginTermsAndConditions) {
+            $state.go('login.step3');
+          } else {
+            if ($storage.isIguana) {
+              login();
+            } else {
+              $state.go('login.step2');
+            }
+          }
         } else {
           $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
           $state.go('signup.step1');
@@ -169,21 +253,13 @@ angular.module('IguanaGUIApp')
         $scope.getActiveCoins(),
         $scope.passphraseModel
       );
-      $storage.loginTermsAndConditions = true;
     }
 
     function loginCheck() {
-      if ($storage.loginTermsAndConditions === true) {
-        $auth.login(
-          $scope.getActiveCoins(),
-          $scope.passphraseModel
-        );
-      } else {
-        $auth.loginCheck(
-          $scope.getActiveCoins(),
-          $scope.passphraseModel
-        );
-      }
+      $auth.loginCheck(
+        $scope.getActiveCoins(),
+        $scope.passphraseModel
+      );
     }
 
     function setTitle() {
@@ -191,17 +267,22 @@ angular.module('IguanaGUIApp')
 
       pageTitle = $filter('lang')('LOGIN.LOGIN_TO_WALLET');
 
-      if (
-        $storage['iguana-login-active-coin'] &&
-        Object.keys($storage['iguana-login-active-coin']).length &&
-        $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]
-      ) {
-        for (var name in $scope.activeCoins) {
-          coinNames.push($scope.activeCoins[name].name);
+      if (!$storage.isIguana) {
+        if (
+
+          $storage['iguana-login-active-coin'] &&
+          Object.keys($storage['iguana-login-active-coin']).length &&
+          $storage['iguana-login-active-coin'][Object.keys($storage['iguana-login-active-coin'])[0]]
+        ) {
+          for (var name in $scope.getActiveCoins()) {
+            coinNames.push($scope.getActiveCoins()[name].name);
+          }
         }
+      } else {
+        coinNames = ['Iguana'];
+      }
 
         pageTitle = pageTitle.replace('{{ coin }}', coinNames.join(', '));
-      }
 
       return pageTitle;
     }
@@ -213,22 +294,22 @@ angular.module('IguanaGUIApp')
 
     function goBack() {
       var state;
-      $storage['iguana-login-active-coin'] = {};
+
+      if (!$storage.isIguana) {
+        $storage['iguana-login-active-coin'] = {};
+      }
+
       if (!$auth._userIdentify()) {
         state = 'login';
       } else {
         state = 'dashboard.main';
       }
-      goAndOpen(state)
-    }
 
-    function goAndOpen(state) {
-      $state.go(state).then(function() {
-        $scope.modal.coinModal.appendTo = angular.element(
-          document.querySelector('.auth-add-coin-modal')
-        );
-        openCoinModal('signin');
-      });
+      $state.go(state);
+    }
+    
+    function onLoad() {
+      delete $storage['iguana-login-active-coin'];
     }
   }
 ]);

@@ -74,8 +74,10 @@ angular.module('IguanaGUIApp')
 
         try {
           document.execCommand('copy');
-          /*message = elementDisplayName + ' ' +
-                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';*/
+          message = elementDisplayName + ' ' +
+                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD')
+            // + ' </br>"' + element + '" '
+          ;
           color = 'blue';
         } catch (e) {
           this.isExecCopyFailed = true;

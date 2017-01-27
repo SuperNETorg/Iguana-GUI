@@ -6,7 +6,8 @@
         <section class="form-container create-account-form"
                  ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
           <header class="form-header orange-gradient box-shadow-bottom unselectable">
-            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="goBack()"></i>
+            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"
+               ng-click="goBack()"></i>
             <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content">
@@ -101,17 +102,16 @@
                         ng-click="$state.go('signup.step2')">
                   {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
                 </button>
-
                 <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
                         ng-click="addAccount()">
                   {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
                 </button>
               </div>
-
             </div>
           </div>
         </section>
         <!-- // verify passphrase form end -->
+        <div class="auth-add-coin-modal"></div>
         <div class="coin-select-modal"></div>
       </div>
     </div>
