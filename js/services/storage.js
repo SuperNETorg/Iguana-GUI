@@ -3,7 +3,13 @@
 angular.module('IguanaGUIApp')
 .service('$storage', [
   '$localStorage',
-  function($localStorage) {
-    return $localStorage;
+  '$sessionStorage',
+  '$rootScope',
+  function($localStorage, $sessionStorage, $rootScope) {
+    if ($rootScope.isElectron) {
+      return $sessionStorage;
+    } else {
+      return $localStorage;
+    }
   }
 ]);

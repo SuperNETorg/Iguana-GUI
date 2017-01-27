@@ -92,7 +92,9 @@ angular.module('IguanaGUIApp')
     if (!$scope.coinsInfo) {
       constructAccountCoinRepeater(true, true);
       $rootScope.$on('coinsInfo', onInit);
+      util.bodyBlurOff();
     } else {
+      util.bodyBlurOff();
       onInit();
     }
 
