@@ -86,7 +86,6 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            // this.errorHandler(response);
             this.testCoinPorts()
               .then(function(coins) {
                 deferred.resolve(coins);
@@ -116,7 +115,6 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            // this.errorHandler(response);
             this.testCoinPorts()
               .then(function(coins) {
                 deferred.resolve(coins);
@@ -359,8 +357,6 @@ angular.module('IguanaGUIApp')
           self.coinsInfo[index] = [];
         }
 
-        // self.errorHandler(response, index);
-
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('p2p test ' + index);
         }
@@ -426,8 +422,6 @@ angular.module('IguanaGUIApp')
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = [];
         }
-
-        // self.errorHandler(response, index);
 
         if ($storage['connected-coins']) {
           delete $storage['connected-coins'][index];
@@ -531,8 +525,6 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        // this.errorHandler(response, coin);
-
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
         }
@@ -598,8 +590,6 @@ angular.module('IguanaGUIApp')
       .then(onResolve, onReject);
 
       function onResolve(response) {
-        // self.errorHandler(response, coin);
-
         if (response.data.result) {
           defer.resolve(response.data.result);
           // non-iguana
@@ -698,8 +688,6 @@ angular.module('IguanaGUIApp')
         headers: postAuthHeaders
       })
       .then(function(response) {
-        // this.errorHandler(response, coin);
-
         if (response.data.result.bits) {
           result = true;
         } else {
@@ -785,8 +773,6 @@ angular.module('IguanaGUIApp')
         }
       }, function(response) {
         deferred.reject(response);
-        // this.errorHandler(response, coin);
-
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
         }
@@ -1170,8 +1156,6 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result);
       }.bind(this), function(response) {
-        // this.errorHandler(response, coin);
-
         if (vars.error.status === -13) {
           result = false;
 
@@ -1234,8 +1218,6 @@ angular.module('IguanaGUIApp')
         deferred.resolve(result);
       }.bind(this),
       function(response) {
-        // this.errorHandler(response, coin);
-
         deferred.resolve(false);
       }.bind(this));
 
@@ -1346,7 +1328,6 @@ angular.module('IguanaGUIApp')
 
         deferred.resolve(result, update);
       }.bind(this), function(response) {
-        // this.errorHandler(response, coin);
         deferred.reject(result, update);
 
       }.bind(this));

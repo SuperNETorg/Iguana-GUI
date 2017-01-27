@@ -260,7 +260,7 @@ angular.module('IguanaGUIApp')
         'feeSettings',
         'passphrase',
         'rates',
-        'iguanaNullReturnCount',
+        'iguanaNullReturnCount'
       ])
     };
 

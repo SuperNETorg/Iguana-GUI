@@ -216,13 +216,13 @@ angular.module('IguanaGUIApp')
                 )
               )
             ) {
-              if (coinName === key){
+              if (coinName === key) {
                 coinsArray[key] = {
                   'id': key.toUpperCase(),
                   'coinId': key.toLowerCase(),
                   'name': supportedCoinsList[key].name,
                   'color': $scope.coinColors[index],
-                  'pass': getPassphrase(key),
+                  'pass': getPassphrase(key)
                 };
               }
 
