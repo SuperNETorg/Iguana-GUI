@@ -102,70 +102,7 @@ angular.module('IguanaGUIApp')
         $storage['iguana-login-active-coin'] = {};
       }
 
-      if ($storage.isIguana) {
-        if (!$storage['iguana-login-active-coin']['kmd']) {
-          $storage['iguana-login-active-coin'] = constructCoinRepeater('kmd');
-        }
-      }
-
-      return Object.keys($storage['iguana-login-active-coin']).length === 0;
-    }
-
-    function constructCoinRepeater(coinName) {
-      var index = 0,
-        coinsArray = {},
-        coinsInfo = vars.coinsInfo;
-
-      if (coinsInfo) {
-        for (var key in supportedCoinsList) {
-          if (
-            (!$storage['iguana-' + key + '-passphrase'] ||
-              (
-                $storage['iguana-' + key + '-passphrase'] &&
-                ($storage['iguana-' + key + '-passphrase'].logged !== 'yes' ||
-                ($storage['iguana-' + key + '-passphrase'].logged === 'yes' &&
-                ($state.current.name.indexOf('login') > -1 || $state.current.name.indexOf('signup') > -1)))
-              )
-            )
-          ) {
-            if (
-              ($storage.isIguana && coinsInfo[key] && coinsInfo[key].iguana === true) ||
-              (
-                !$storage.isIguana &&
-                (coinsInfo[key] &&
-                  coinsInfo[key].connection === true ||
-                  (dev && dev.isDev && dev.showAllCoindCoins)
-                )
-              )
-            ) {
-              if (!coinName) {
-                coinsArray.push({
-                  'id': key.toUpperCase(),
-                  'coinId': key.toLowerCase(),
-                  'name': supportedCoinsList[key].name,
-                  'color': $scope.coinColors[index],
-                });
-              } else if (coinName === key){
-                coinsArray[key] = {
-                  'id': key.toUpperCase(),
-                  'coinId': key.toLowerCase(),
-                  'name': supportedCoinsList[key].name,
-                  'color': $scope.coinColors[index],
-                  'pass': getPassphrase(key),
-                };
-              }
-
-              if (index === $scope.coinColors.length - 1) {
-                index = 0;
-              } else {
-                index++;
-              }
-            }
-          }
-        }
-      }
-
-      return coinsArray;
+      return !$storage.isIguana ? Object.keys($storage['iguana-login-active-coin']).length === 0 : false;
     }
 
     function getPassphrase(coinId) {
@@ -227,7 +164,12 @@ angular.module('IguanaGUIApp')
         if (type === 'signin') {
           var coinKeys = Object.keys($storage['iguana-login-active-coin']);
           $scope.coins = data;
-          $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+          $scope.passphraseModel = !$scope.passphraseModel ?
+                                    (
+                                      dev.isDev && coinKeys.length ?
+                                        $storage['iguana-login-active-coin'][coinKeys[0]].pass :
+                                        ''
+                                    ) : $scope.passphraseModel;
           $storage['dashboard-pending-coins'] = !!coinKeys;
           if (!$storage.loginTermsAndConditions) {
             $state.go('login.step3');

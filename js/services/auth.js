@@ -255,6 +255,13 @@ angular.module('IguanaGUIApp')
       }
 
       $storage['dashboard-logged-in-coins'] = {};
+
+      util.removeStorageItems([
+        'feeSettings',
+        'passphrase',
+        'rates',
+        'iguanaNullReturnCount',
+      ])
     };
 
     this.logoutCoind = function() {
