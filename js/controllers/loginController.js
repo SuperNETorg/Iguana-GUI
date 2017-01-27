@@ -105,15 +105,6 @@ angular.module('IguanaGUIApp')
       return !$storage.isIguana ? Object.keys($storage['iguana-login-active-coin']).length === 0 : false;
     }
 
-    function getPassphrase(coinId) {
-      if (dev && dev.coinPW) {
-        return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
-          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
-      } else {
-        return '';
-      }
-    }
-
     function stateChangeStart() {
       // default attrs (event, toState, toParams, fromState, fromParams, options)
       var toState = arguments[1];
@@ -171,7 +162,7 @@ angular.module('IguanaGUIApp')
                                         ''
                                     ) : $scope.passphraseModel;
           $storage['dashboard-pending-coins'] = !!coinKeys;
-          if (!$storage.loginTermsAndConditions) {
+          if (!$storage.loginTermsAndConditions && $storage.isIguana) {
             $state.go('login.step3');
           } else {
             if ($storage.isIguana) {
