@@ -1024,7 +1024,7 @@ angular.module('IguanaGUIApp')
           method !== 'sendtoaddress') {
           var upass = this.Iguana_GetRPCAuth();
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"20000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+            '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
             '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
@@ -1035,7 +1035,7 @@ angular.module('IguanaGUIApp')
           // for testing
           // var upass = "wrong md5";
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"20000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+            '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
             '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';

@@ -146,9 +146,14 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state,
-              util, $timeout, $api, $auth, $datetime) {
+              util, $timeout, $api, $auth, $datetime, $window) {
   if (dev && dev.isDev && dev.isNightwatch) { // temp
     $rootScope.dev = dev;
+  }
+
+  if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
+    $rootScope.isElectron = true;
+    console.log('running electron app');
   }
 
   $rootScope.$on('$stateChangeStart',
