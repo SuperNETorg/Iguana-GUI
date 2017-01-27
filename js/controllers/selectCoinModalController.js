@@ -124,7 +124,13 @@ angular.module('IguanaGUIApp')
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
                 'color': $scope.coinColors[index],
-                'readonly': ($storage.isIguana && key === 'kmd' ? true : false)
+                'readonly':
+                  (
+                    $storage.isIguana && key === 'kmd' &&
+                    $state.current.name.indexOf('signup') !== -1 ?
+                    true :
+                    false
+                  )
               });
 
               if (index === $scope.coinColors.length - 1) {
