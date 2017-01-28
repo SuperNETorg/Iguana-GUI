@@ -154,5 +154,6 @@
   }
 }
 .modal-backdrop {
+  z-index: 0 !important;
   background-color: $color-white;
 }

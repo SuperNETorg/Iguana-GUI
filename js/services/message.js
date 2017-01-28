@@ -16,8 +16,8 @@ angular.module('IguanaGUIApp')
 
       return $uibModal.open({
         animation: true,
-        backdrop: messageType ? false : true,
-        keyboard: messageType ? false : true,
+        backdrop: true, //messageType ? false : true,
+        keyboard: true, //messageType ? false : true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         scope: $rootScope,
