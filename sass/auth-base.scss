@@ -174,7 +174,6 @@
   .passphrase-container {
     @include proxima;
     @include bold;
-    @include cursor-pointer;
     font-size: 1.3em;
     line-height: 1.3em;
     background: $color-white;
