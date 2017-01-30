@@ -173,6 +173,7 @@ angular.module('IguanaGUIApp')
 
         delete $storage['dashboard-pending-coins'];
 
+        //TODO: Temporary solution for the userpass
         if (!isCheck && !$api.Iguana_GetRPCAuth()) {
           $api.Iguana_GenerateRPCAuth();
         }

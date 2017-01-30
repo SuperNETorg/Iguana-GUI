@@ -89,7 +89,15 @@ angular.module('IguanaGUIApp')
       var coinKeys = Object.keys($scope.getActiveCoins()),
           selectedCoindToEncrypt = $scope.getActiveCoins()[coinKeys[0]].coinId;
 
-      if ($scope.passphrase.length) {
+      if (
+        (
+          $storage.isIguana &&
+          $scope.passphraseModel.split(' ').length === 24
+        ) || (
+          !$storage.isIguana &&
+          $scope.passphraseModel.split(' ').length === 12
+        )
+      ) {
         if ($storage.isIguana) {
           $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
           $auth
@@ -123,17 +131,18 @@ angular.module('IguanaGUIApp')
           'green'
         );
 
-        if ($storage['dashboard-pending-coins']) {
-          msg.closed.then(function() {
-            $auth.login(
-              $scope.getActiveCoins(),
-              $scope.passphraseModel,
-              false
-            );
-          });
+        msg.closed.then(function() {
+          $auth.login(
+            $scope.getActiveCoins(),
+            $scope.passphraseModel,
+            false
+          );
+        });
+        /*if ($storage['dashboard-pending-coins']) {
+
         } else {
           $state.go('login');
-        }
+        }*/
       }
 
       function onReject(response) {
@@ -300,7 +309,10 @@ angular.module('IguanaGUIApp')
 
     function validateStep3() {
       if (
-          !$storage.isIguana &&
+          (
+            $storage.isIguana &&
+            $scope.passphraseModel.split(' ').length < 24
+          ) ||
           $scope.passphraseModel != $storage.passphrase
       ) {
         var message = $filter('lang')('MESSAGE.INCORRECT_INPUT_P3'),

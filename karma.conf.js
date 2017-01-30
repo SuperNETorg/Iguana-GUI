@@ -25,6 +25,7 @@ module.exports = function(config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/angular-md5/angular-md5.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
@@ -47,6 +48,8 @@ module.exports = function(config) {
       'js/services/passPhraseGenerator.js',
       'js/services/util.js',
       'js/services/api.js',
+      'js/services/http.js',
+      'js/services/error.js',
       'js/directives/modal.js',
       'js/directives/spinner.js',
       'js/directives/resize.js',
