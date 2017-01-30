@@ -53,9 +53,6 @@ body {
           .amount {
             width: 9em;
           }
-          .text-vertical-center {
-            @include text-vertical-center(2em, 1em);
-          }
           .progress-status {
             .progress-indeterminate {
               top: 0;
@@ -457,6 +454,9 @@ body {
     .auth-main .container-fluid {
       display: block;
     }
+    .currency-content {
+      margin-top: 10.2em;
+    }
     .modal .modal-dialog {
       .modal-header {
         min-height: 50px;
@@ -610,6 +610,18 @@ body {
       width: 44% !important;
       font-size: 14px !important;
     }
+    .transactions-unit {
+      .row {
+        .unselectable {
+          .action-buttons{
+            .btn-send,
+            .btn-receive {
+              padding: 6px 0 4px 0;
+            }
+          }
+        }
+      }
+    }
   }
 
   @media (max-width: 360px) {
@@ -620,4 +632,19 @@ body {
       display: inherit;
     }
   }
-}
+  @media (min-width: 1300px) {
+    .status {
+      display: inline-block !important;
+    }
+    .text-vertical-center {
+      div.amount.unselectable.text-middle {
+        width: 6em;
+      }
+    }
+  }
+  @media (min-width: 1160px) {
+    .hash {
+      width: auto !important;
+    }
+  }
+  }
