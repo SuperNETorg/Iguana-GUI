@@ -62,7 +62,7 @@ angular.module('IguanaGUIApp')
 
         http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
-          timeout: settings.defaultIguanaConnectionTimeOut,
+          timeout: settings.defaultIguanaConnectionTimeOut
 
           //TODO: Temporary solution for the userpass
           // params: {
@@ -736,16 +736,25 @@ angular.module('IguanaGUIApp')
         return conf;
       }
 
-      if ($storage.activeCoin && $storage.activeCoin.length > 1 && !discardCoinSpecificPort) {
+      if (
+        $storage.activeCoin &&
+        $storage.activeCoin.length > 1 &&
+        !discardCoinSpecificPort
+      ) {
         conf.server.port = conf.coins[$storage.activeCoin].portp2p;
 
-        if (!$storage.isIguana)
-          if (conf.coins[$storage.activeCoin].coindPort) conf.server.port = conf.coins[$storage.activeCoin].coindPort;
+        if (!$storage.isIguana) {
+          if (conf.coins[$storage.activeCoin].coindPort) {
+
+          } conf.server.port = conf.coins[$storage.activeCoin].coindPort;
+        }
       } else {
         conf.server.port = conf.server.iguanaPort;
       }
 
-      if (coin) conf.server.port = conf.coins[coin].portp2p;
+      if (coin && conf.coins && conf.coins[coin]) {
+        conf.server.port = conf.coins[coin].portp2p;
+      }
 
       return conf;
     };

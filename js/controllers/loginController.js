@@ -240,7 +240,6 @@ angular.module('IguanaGUIApp')
 
       $state.go(state);
     }
-    
     function onLoad() {
       delete $storage['iguana-login-active-coin'];
     }

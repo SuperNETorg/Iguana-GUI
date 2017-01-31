@@ -148,6 +148,7 @@ angular.module('IguanaGUIApp')
       function onReject(response) {
         var message = '',
             color = '';
+
         if (response === -15) {
           message = $filter('lang')('MESSAGE.WALLET_IS_ALREADY_ENCRYPTED');
           color = 'red';
@@ -231,8 +232,8 @@ angular.module('IguanaGUIApp')
                   'coinId': key.toLowerCase(),
                   'name': supportedCoinsList[key].name,
                   'color': $scope.coinColors[index],
-                  'pass': getPassphrase(key)
-                };
+                  'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : ''
+                }
               }
 
               if (index === $scope.coinColors.length - 1) {

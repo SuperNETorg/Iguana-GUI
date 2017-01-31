@@ -160,7 +160,12 @@ angular.module('IguanaGUIApp')
 
       if (!$storage['iguana-login-active-coin'][item.coinId]) {
         coinElement.addClass('active');
-        item.pass = getPassphrase(item.coinId);
+
+        if (dev.isDev && !$storage.passphrase) {
+          item.pass = getPassphrase(item.coinId);
+        } else {
+          item.pass = $storage.passphrase;
+        }
         $storage['iguana-login-active-coin'][item.coinId] = item;
       } else {
         coinElement.removeClass('active');
