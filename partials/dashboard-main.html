@@ -83,12 +83,15 @@
           <div class="title unselectable">{{ 'DASHBOARD.HISTORY' | lang }}</div>
           <div class="transactions-list-repeater">
             <spinner visibility="txUnit.loading"></spinner>
-            <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}</div>
+            <div class="no-results"
+                 ng-if="txUnit.transactions.length === 0 && !txUnit.loading">
+              {{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}
+            </div>
             <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
                  ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
               <div class="status unselectable">{{ item.status }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-              <div class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
+              <div timeago-date="item.timestampDate" timeago-time="item.timestampTime" class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
                 <div timeago-date="item.timestampDate" class="timestamp-date time-ago-date"></div>
                 <div timeago-time="item.timestampTime" class="timestamp-time time-ago-time"></div>
               </div>

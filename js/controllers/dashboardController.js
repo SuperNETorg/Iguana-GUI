@@ -437,7 +437,10 @@ angular.module('IguanaGUIApp')
         $scope.txUnit.loading = true;
       }
 
-      $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
+      if (!$scope.txUnit.transactions) {
+        $scope.txUnit.transactions = [];
+      }
+      // TODO: tx unit flickers on active coin change
       $api.listTransactions(defaultAccount, $scope.activeCoin)
           .then(
             constructTransactionUnitRepeaterCB,
@@ -460,7 +463,9 @@ angular.module('IguanaGUIApp')
         }
 
         for (var i = 0; i < transactionsList.length; i++) {
-          $scope.txUnit.transactions[i] = {};
+          if (!$scope.txUnit.transactions[i]) {
+            $scope.txUnit.transactions[i] = {};
+          }
 
           if (transactionsList[i].txid) {
             // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
