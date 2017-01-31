@@ -602,6 +602,9 @@ body {
       display: inline-block;
       float: none;
     }
+    .timestamp-multi {
+      box-shadow: 0 2px 3px 2px rgba-black(0.1);
+    }
     .account-coins-repeater .item .coin .name:before {
       display: inherit;
     }
@@ -625,6 +628,11 @@ body {
   }
 
   @media (max-width: 360px) {
+    // the !important is required.
+    .text-vertical-center {
+      padding-left: 0!important;
+      margin-left: -10px!important;
+    }
     .share-address-section {
       width: 96%;
     }

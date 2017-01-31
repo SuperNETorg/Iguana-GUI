@@ -17,7 +17,7 @@ angular.module('IguanaGUIApp')
           function(newV, oldV) {
             scope.windowHeight = newV.h;
             scope.windowWidth = oldV.w;
-            scope.isMobile = scope.windowWidth < 768;
+            scope.isMobile = scope.windowWidth < 769;
             scope.isTablet = scope.windowWidth < 970;
             scope.$eval(attr.resize);
           },

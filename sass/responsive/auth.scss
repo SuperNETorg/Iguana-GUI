@@ -147,21 +147,22 @@ body {
       .form-container.terms-conditionals-form {
         .form-content {
           .form-content-inner {
+            .covered-sheet {
+              .container-arrow {
+                bottom: 60px;
+                height: 10%;
+              }
+            }
             .login-input-directions {
               .bottom-sheet {
                 height: 65px;
               }
               font-size: 1.2em;
-              @include bold;
+              font-weight: 300;
               line-height: 1.25em;
               /* csslint ignore:start */
               @include text-left;
               /* csslint ignore:end */
-            }
-
-            .container-arrow {
-              bottom: 12%;
-              height: 10%;
             }
           }
         }
