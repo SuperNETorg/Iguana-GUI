@@ -1472,11 +1472,11 @@ angular.module('IguanaGUIApp')
 
     this.Iguana_SetRPCAuth = function(RPCKey) {
       var tmpPass = md5.createHash(RPCKey);
-      $sessionStorage['IguanaRPCAuth'] = tmpPass;
+      $storage['IguanaRPCAuth'] = tmpPass;
     };
 
     this.Iguana_GetRPCAuth = function() {
-      return $sessionStorage['IguanaRPCAuth'];
+      return $storage['IguanaRPCAuth'];
     };
   }
 ]);
