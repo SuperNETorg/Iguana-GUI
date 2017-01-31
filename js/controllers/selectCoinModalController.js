@@ -37,6 +37,7 @@ angular.module('IguanaGUIApp')
     $scope.isCoinsConnected = isCoinsConnected;
     $scope.isAppSetup = isAppSetup;
     $scope.getType = getType;
+    $scope.clickOnMode = clickOnMode;
     $scope.type = type;
     $scope.modal = modal;
 
@@ -124,13 +125,13 @@ angular.module('IguanaGUIApp')
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
                 'color': $scope.coinColors[index],
-                'readonly':
-                  (
-                    $storage.isIguana && key === 'kmd' &&
-                    $state.current.name.indexOf('signup') !== -1 ?
+                'readonly': (
+                  $storage.isIguana && key === 'kmd' &&
+                  $state.current.name.indexOf('signup') !== -1 ?
                     true :
                     false
-                  )
+                ),
+                'mode': getMode(key)
               });
 
               if (index === $scope.coinColors.length - 1) {
@@ -179,6 +180,9 @@ angular.module('IguanaGUIApp')
       }
     }
 
+    function clickOnMode(mode) {
+    }
+
     function back() {
       if (isAppSetup()) {
         $state.go('login');
@@ -206,6 +210,38 @@ angular.module('IguanaGUIApp')
       }
     }
 
+    function getMode(key) {
+      var getedMode = iguanaCoinModes[key],
+          modeResult = [],
+          modeSwitch = {},
+          mode;
+
+      for (var i = 0; getedMode.length > i; i++) {
+        modeSwitch = {};
+        mode = getedMode[i];
+
+        switch (mode) {
+          case 0:
+            modeSwitch.name = 'Light';
+            modeSwitch.key = mode;
+            modeSwitch.status = true;
+            break;
+          case 1:
+            modeSwitch.name = 'Full';
+            modeSwitch.key = mode;
+            break;
+          case -1:
+            modeSwitch.name = 'Native';
+            modeSwitch.key = mode;
+            break;
+        }
+
+        modeResult.push(modeSwitch);
+      }
+
+      return modeResult;
+    }
+
     function openFlowModal(type) {
       $scope.modal.flowModal.appendTo = angular.element(document.querySelector('.flow-modal'));
       $scope.modal.flowModal.resolve = {
@@ -218,6 +254,16 @@ angular.module('IguanaGUIApp')
       };
       var modalInstance = $uibModal.open($scope.modal.flowModal);
     }
+
+    /*$scope.$watchCollection('coinModeRadioModel', function () {
+
+      $scope.checkResults = [];
+      angular.forEach($scope.coinModeRadioModel, function (value, key) {
+        if (value) {
+          $scope.coinModeRadioModel.push(key);
+        }
+      });
+    });*/
 
     $scope.$on('$destroy', function() {
       angular.element(document.querySelector('.auth-add-coin-modal .modal-content')).unbind('scroll');

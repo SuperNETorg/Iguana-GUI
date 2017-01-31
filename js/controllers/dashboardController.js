@@ -293,8 +293,9 @@ angular.module('IguanaGUIApp')
                     if (response[0].data.status.indexOf('.RT0 ') > -1) {
                       _syncInfo.isRT = false;
 
-                      if (dev.showConsoleMessages && dev.isDev)
+                      if (dev.showConsoleMessages && dev.isDev) {
                         console.log('RT is not ready yet!');
+                      }
                     } else {
                       _syncInfo.isRT = true;
                     }

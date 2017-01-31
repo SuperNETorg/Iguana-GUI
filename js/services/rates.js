@@ -12,10 +12,9 @@ angular.module('IguanaGUIApp')
 
     this.ratesUpdateElapsedTime = function(coin) {
       if ($storage['iguana-rates-' + coin.toLowerCase()]) {
-        var currentEpochTime = new Date(Date.now()) / 1000,
-            secondsElapsed = Number(currentEpochTime) - Number($storage['iguana-rates-' + coin.toLowerCase()].updatedAt / 1000);
+        var currentEpochTime = new Date(Date.now()) / 1000;
 
-        return secondsElapsed;
+        return Number(currentEpochTime) - Number($storage['iguana-rates-' + coin.toLowerCase()].updatedAt / 1000);
       } else {
         return false;
       }

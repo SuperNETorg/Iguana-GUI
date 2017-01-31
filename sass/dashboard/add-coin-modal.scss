@@ -30,7 +30,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
   margin: 20px auto;
 }
 .add-new-coin-form-login-state {
-  .btn {
+  .btn.btn-next:last-child {
     margin-top: 25px;
     @include fixed-horizontal-center;
     bottom: 15px;
@@ -123,51 +123,66 @@ body .add-coin-login-form .modal-add-coin-login-form,
       display: inline-block;
       margin: 0.6em 0.72em;
       opacity: 1;
-      padding: 0.9em 1.8em;
       text-align: center;
-      transition: opacity $transition-length;
-      width: 12.86em;
+      transition: all $transition-length;
+      width: 14.4em;
+      height: 120px;
 
-      .icon {
-        background-color: $color-absolute-white;
-        border-radius: 50%;
-        font-size: 2.5em;
-        margin-top: 12px;
-        padding: 2px;
-        width: 30%;
-      }
-      .name {
-        color: $receive-coin-input-color;
-        font-size: 1.05em;
-        padding: 1em 0.56em 10px 0.76em;
-        width: 70%;
+      .coin-inner {
+        margin-top: 1em;
+        padding: 0.9em 1.8em;
 
-        .help-block {
-          color: $receive-coin-input-color;
-          font-size: 16px;
-          margin: 0;
+        .icon {
+          background-color: $color-absolute-white;
+          border-radius: 50%;
+          font-size: 2.5em;
+          margin-top: 12px;
+          padding: 2px;
+          width: 30%;
         }
-        .help-block:first-child {
-          font-weight: 400;
-          line-height: 1.1;
-          overflow: hidden;
-          position: relative;
-          white-space: pre;
+        .name {
+          color: $receive-coin-input-color;
+          font-size: 1.05em;
+          padding: 1em 0.56em 10px 0.76em;
+          width: 70%;
 
-          &::after {
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, rgb(245, 248, 251) 100%);
-            content: '';
-            height: 100%;
-            position: absolute;
-            right: -10%;
-            top: 0;
-            width: 40%;
+          .help-block {
+            color: $receive-coin-input-color;
+            font-size: 16px;
+            margin: 0;
+          }
+          .help-block:first-child {
+            font-weight: 400;
+            line-height: 1.1;
+            overflow: hidden;
+            position: relative;
+            white-space: pre;
+
+            &::after {
+              background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, rgb(245, 248, 251) 100%);
+              content: '';
+              height: 100%;
+              position: absolute;
+              right: -10%;
+              top: 0;
+              width: 40%;
+            }
+          }
+          .help-block:last-child {
+            color: $add-coin-modal-help-block-color;
+            font-size: 13px;
+            font-weight: 400;
           }
         }
-        .help-block:last-child {
-          color: $add-coin-modal-help-block-color;
-          font-size: 13px;
-          font-weight: 400;
+      }
+
+      .btn-group {
+        display: none;
+        text-align: center;
+        width: 90%;
+
+        .btn {
+          width: 50%;
         }
       }
     }
@@ -178,11 +193,21 @@ body .add-coin-login-form .modal-add-coin-login-form,
     .coin.active {
       border: 2px solid $add-coin-modal-active-tile-color;
 
-      .name {
-        .help-block {
-          color: $add-coin-modal-active-tile-color;
-          font-weight: 700;
+      .coin-inner {
+        &.has-mode{
+          margin-top: 0;
+          padding-bottom: 0;
         }
+        .name {
+          .help-block {
+            color: $add-coin-modal-active-tile-color;
+            font-weight: 700;
+          }
+        }
+      }
+      .btn-group {
+        display: block;
+        margin: 0 auto;
       }
     }
     /* DEM tile fix */

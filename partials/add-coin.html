@@ -28,10 +28,26 @@
                  ng-repeat="(name, item) in coins | filter: coinSearchModel"
                  ng-click="(!item.readonly ? clickOnCoin(item, $event) : '')"
                  ng-class="{ 'active': isActive(item) }">
-              <i class="icon cc {{ item.id }}-alt col-{{ item.color }} pull-left"></i>
-              <div class="name pull-right text-left">
-                <div class="help-block">{{ item.name }}</div>
-                <div class="help-block">{{ item.id }}</div>
+              <div class="coin-inner"
+                   ng-class="{'has-mode': (item.mode.length > 1)}">
+                <i
+                  class="icon cc {{ item.id }}-alt col-{{ item.color }} pull-left"></i>
+                <div class="name pull-right text-left">
+                  <div class="help-block">{{ item.name }}</div>
+                  <div class="help-block">{{ item.id }}</div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="btn-group" ng-if="item.mode.length > 1">
+                <label ng-repeat="mode in item.mode" class="btn"
+                       ng-model="coinModeRadioModel"
+                       uib-btn-radio="mode.name"
+                       ng-bind="mode.name"
+                       ng-style="{'width': 100/item.mode.length + '%'}"
+                       ng-class="{'orange-bg': mode.status,'width-bg': !mode.status}"
+                       ng-click="clickOnMode(mode); $event.stopPropagation();"
+                ></label>
+                <div class="clearfix"></div>
               </div>
             </div>
           </div>

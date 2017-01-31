@@ -47,6 +47,12 @@ html {
     .btn.orange-gradient:hover {
       @include orange-gradient;
     }
+    .orange-bg,
+    .btn.orange,
+    .btn.orange:focus,
+    .btn.orange:hover {
+      @include orange;
+    }
     .green-gradient,
     .btn.green-gradient,
     .btn.green-gradient:focus,
@@ -58,6 +64,12 @@ html {
     .btn.width-gradient:focus,
     .btn.width-gradient:hover {
       @include width-gradient;
+    }
+    .width-bg,
+    .btn.width-bg,
+    .btn.width-bg:focus,
+    .btn.width-bg:hover {
+      @include width-bg;
     }
     .btn:disabled,
     .btn:disabled:hover,

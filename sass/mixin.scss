@@ -27,6 +27,18 @@
   /* csslint ignore:end */
 }
 
+@mixin orange {
+  /* csslint ignore:start */
+  background-color: #FE5724;
+  //background: -moz-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* FF3.6+ */
+  //background: -webkit-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Chrome10+,Safari5.1+ */
+  //background: -o-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Opera 11.10+ */
+  //background: -ms-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* IE10+ */
+  //background: radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* W3C */
+  color: $color-white;
+  /* csslint ignore:end */
+}
+
 @mixin orange-gradient {
   /* csslint ignore:start */
   background: -moz-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* FF3.6+ */
@@ -47,6 +59,13 @@
   background: radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* W3C */
   color: $color-white;
   /* csslint ignore:end */
+}
+
+@mixin width-bg {
+  /* csslint ignore:start */
+  background-color: $color-absolute-white;
+  color: #FE470D;
+  /* csslint ignore:start */
 }
 
 @mixin width-gradient {

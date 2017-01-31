@@ -183,6 +183,7 @@ angular.module('IguanaGUIApp')
           status = 10;
           break;
         case 'coin is busy processing':
+          isViewAndLogOut = false;
           consoleMessage = 'server is busy';
           status = 10;
           break;

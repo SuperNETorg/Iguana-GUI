@@ -1028,6 +1028,8 @@ angular.module('IguanaGUIApp')
     };
 
     this.getBitcoinRPCPayloadObj = function(method, params, coin) {
+      var upass = this.Iguana_GetRPCAuth();
+
       if (dev && dev.isNightwatch) { // wip, UAT
         if ($storage.isIguana && method !== 'settxfee' &&
           method !== 'getaccountaddress' &&
@@ -1035,7 +1037,6 @@ angular.module('IguanaGUIApp')
           method !== 'settxfee' &&
           method !== 'listtransactions' &&
           method !== 'sendtoaddress') {
-          var upass = this.Iguana_GetRPCAuth();
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
             '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
@@ -1044,9 +1045,6 @@ angular.module('IguanaGUIApp')
         }
       } else {
         if ($storage.isIguana) {
-          var upass = this.Iguana_GetRPCAuth();
-          // for testing
-          // var upass = "wrong md5";
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
             '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
@@ -1466,13 +1464,17 @@ angular.module('IguanaGUIApp')
     };
 
     this.Iguana_GenerateRPCAuth = function() {
-      var newRPCAuthKey = $passPhraseGenerator.generatePassPhrase($storage.isIguana ? 8 : 4);
-      this.Iguana_SetRPCAuth(newRPCAuthKey);
+      this.Iguana_SetRPCAuth(
+        $passPhraseGenerator.generatePassPhrase(
+          $storage.isIguana ?
+          8 :
+          4
+        )
+      );
     };
 
     this.Iguana_SetRPCAuth = function(RPCKey) {
-      var tmpPass = md5.createHash(RPCKey);
-      $storage['IguanaRPCAuth'] = tmpPass;
+      $storage['IguanaRPCAuth'] = md5.createHash(RPCKey);
     };
 
     this.Iguana_GetRPCAuth = function() {
