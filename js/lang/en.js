@@ -195,7 +195,7 @@ var lang = {
       'PROXY_IS_NOT_SET_UP': 'Proxy is not set up',
       'IGUANA_IS_NOT_SET_UP': 'Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
-      'X_WALLET_IS_CREATED': ' wallet is created. Login to access it.',
+      'X_WALLET_IS_CREATED': ' wallet is created.',
       'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',
       'PASSPHRASES_DONT_MATCH_ALT': 'Passphrases are not matching. Please repeat previous step one more time.',
       'COIN_ADD_P1': 'added.',

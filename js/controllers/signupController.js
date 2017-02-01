@@ -15,8 +15,9 @@ angular.module('IguanaGUIApp')
   '$message',
   'vars',
   '$auth',
+  '$timeout',
   function($scope, $http, $state, util, $passPhraseGenerator, $storage,
-           $api, $rootScope, $uibModal, $filter, $message, vars, $auth) {
+           $api, $rootScope, $uibModal, $filter, $message, vars, $auth, $timeout) {
 
     var pageTitle;
 
@@ -138,11 +139,10 @@ angular.module('IguanaGUIApp')
             false
           );
         });
-        /*if ($storage['dashboard-pending-coins']) {
 
-        } else {
-          $state.go('login');
-        }*/
+        $timeout(function () {
+          msg.close();
+        }, settings.appRedirectTimeout * 1000);
       }
 
       function onReject(response) {

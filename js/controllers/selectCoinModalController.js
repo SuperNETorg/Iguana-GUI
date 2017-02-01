@@ -131,7 +131,8 @@ angular.module('IguanaGUIApp')
                     true :
                     false
                 ),
-                'mode': getMode(key)
+                'mode': getMode(key),
+                'activeMode': getMode(key)[0].key
               });
 
               if (index === $scope.coinColors.length - 1) {
@@ -180,7 +181,15 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function clickOnMode(mode) {
+    function clickOnMode($event, coinId, key) {
+      angular
+        .element($event.currentTarget.offsetParent.children)
+        .removeClass('orange-bg').addClass('width-bg');
+      angular
+        .element($event.currentTarget)
+        .addClass('orange-bg').removeClass('width-bg');
+
+      $scope.coins[coinId].activeMode = key;
     }
 
     function back() {
@@ -211,14 +220,14 @@ angular.module('IguanaGUIApp')
     }
 
     function getMode(key) {
-      var getedMode = iguanaCoinModes[key],
+      var coinMode = iguanaCoinModes[key],
           modeResult = [],
           modeSwitch = {},
           mode;
 
-      for (var i = 0; getedMode.length > i; i++) {
+      for (var i = 0; coinMode.length > i; i++) {
         modeSwitch = {};
-        mode = getedMode[i];
+        mode = coinMode[i];
 
         switch (mode) {
           case 0:
@@ -254,16 +263,6 @@ angular.module('IguanaGUIApp')
       };
       var modalInstance = $uibModal.open($scope.modal.flowModal);
     }
-
-    /*$scope.$watchCollection('coinModeRadioModel', function () {
-
-      $scope.checkResults = [];
-      angular.forEach($scope.coinModeRadioModel, function (value, key) {
-        if (value) {
-          $scope.coinModeRadioModel.push(key);
-        }
-      });
-    });*/
 
     $scope.$on('$destroy', function() {
       angular.element(document.querySelector('.auth-add-coin-modal .modal-content')).unbind('scroll');

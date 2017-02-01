@@ -64,6 +64,7 @@
 @mixin width-bg {
   /* csslint ignore:start */
   background-color: $color-absolute-white;
+  border: 1px solid #FE470D;
   color: #FE470D;
   /* csslint ignore:start */
 }

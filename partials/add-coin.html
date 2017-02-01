@@ -38,16 +38,16 @@
                 </div>
                 <div class="clearfix"></div>
               </div>
-              <div class="btn-group" ng-if="item.mode.length > 1">
-                <label ng-repeat="mode in item.mode" class="btn"
-                       ng-model="coinModeRadioModel"
-                       uib-btn-radio="mode.name"
-                       ng-bind="mode.name"
-                       ng-style="{'width': 100/item.mode.length + '%'}"
-                       ng-class="{'orange-bg': mode.status,'width-bg': !mode.status}"
-                       ng-click="clickOnMode(mode); $event.stopPropagation();"
+              <div class="btn-group clearfix" ng-if="item.mode.length > 1">
+                <label ng-repeat="(id, mode) in item.mode" class="btn"
+                       ng-bind="mode.name" data-mode="{{mode}}"
+                       ng-style="{
+                        'width': 100/item.mode.length + '%',
+                        'padding-left': (mode.name.length > 5 ? 12 / 2 + 'px': '')
+                       }"
+                       ng-class="{'orange-bg': mode.status, 'width-bg': !mode.status}"
+                       ng-click="clickOnMode($event, name, mode.key); $event.stopPropagation();"
                 ></label>
-                <div class="clearfix"></div>
               </div>
             </div>
           </div>

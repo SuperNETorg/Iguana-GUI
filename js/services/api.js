@@ -56,18 +56,15 @@ angular.module('IguanaGUIApp')
         var defaultIguanaServerUrl = this.getConf().server.protocol +
                                      this.getConf().server.ip +
                                      ':' +
-                                     this.getConf().server.iguanaPort;
-        //TODO: Temporary solution for the userpass
-        // upass = this.Iguana_GetRPCAuth();
+                                     this.getConf().server.iguanaPort,
+            upass = this.Iguana_GetRPCAuth();
 
         http.get(defaultIguanaServerUrl + '/api/iguana/getconnectioncount', {
           cache: false,
-          timeout: settings.defaultIguanaConnectionTimeOut
-
-          //TODO: Temporary solution for the userpass
-          // params: {
-          //   userpass: upass ? upass : 'null'
-          // }
+          timeout: settings.defaultIguanaConnectionTimeOut,
+          params: {
+            userpass: upass ? upass : 'null'
+          }
         })
         .then(
           function(response) {
@@ -745,8 +742,8 @@ angular.module('IguanaGUIApp')
 
         if (!$storage.isIguana) {
           if (conf.coins[$storage.activeCoin].coindPort) {
-
-          } conf.server.port = conf.coins[$storage.activeCoin].coindPort;
+            conf.server.port = conf.coins[$storage.activeCoin].coindPort;
+          }
         }
       } else {
         conf.server.port = conf.server.iguanaPort;
@@ -806,6 +803,9 @@ angular.module('IguanaGUIApp')
       var params = JSON.parse(iguanaAddCoinParams[coin.coinId]);
 
       params['userpass'] = this.Iguana_GetRPCAuth();
+      params['RELAY'] = coin.activeMode;
+      params['VALIDATE'] = coin.activeMode;
+
       params = JSON.stringify(params);
 
       http.post(fullUrl, params, {
