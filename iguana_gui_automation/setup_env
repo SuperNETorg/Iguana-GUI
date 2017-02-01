@@ -1,0 +1,75 @@
+#!/bin/bash
+clear
+printf "\n"
+echo "                         ***************************************"
+echo "                         *       Protractor Setup              *"
+echo "                         *   Dependencies installation         *"
+echo "                         *          script                     *"
+echo "                         ***************************************"
+printf "\n\n"
+
+# check installation of JAVA jdk, if not installed then install it
+printf "JAVA:\n"
+printf "=========\n\n"
+if type -p java; then
+    echo found java executable in PATH
+    _java=java
+    version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+    echo version "$version"
+
+    printf "Skipping JAVA installation, already have JAVA Installed\n\n"
+
+elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
+    echo found java executable in JAVA_HOME     
+    _java="$JAVA_HOME/bin/java"
+    printf "Skipping JAVA installation, already have JAVA Installed\n\n"
+
+else
+    printf "Java not found: installing it...\n\n"
+    sudo add-apt-repository ppa:webupd8team/java
+    sudo apt-get update
+    sudo apt-get -y install oracle-java8-installer
+    if [[ "$_java" ]]; then
+    version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+    echo version "$version"
+
+    if [[ "$version" == "command not found" ]]; then
+        echo ERROR: Java failed to installed correctly! ...
+        echo Please, try to install it manually...
+    fi
+fi
+
+fi
+
+
+# check if Protractor binary is available, if not then install it
+printf "\n\n"
+printf "NODEJS:\n"
+printf "=========\n\n"
+
+if type -p node; then
+  echo found nodejs in PATH
+  nodejs --version
+  printf "Skipping nodejs installation ...\n\n"
+
+else
+  printf "nodesjs not found, installing it...\n\n"
+  sudo npm install protractor
+  cd node_modules/protractor/bin
+  ./webdriver-manager update
+  ./webdriver-manager update -versions.standalone=3.0.1
+
+fi
+
+
+printf "PROTRACTOR:\n"
+printf "=========\n\n"
+
+
+printf "CUCUMBER:\n"
+printf "=========\n\n"
+
+
+printf "CUCUMBER-FRAMEWORK:\n"
+printf "=========\n\n"
+
