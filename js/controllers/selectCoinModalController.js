@@ -231,7 +231,7 @@ angular.module('IguanaGUIApp')
 
         switch (mode) {
           case 0:
-            modeSwitch.name = 'Light';
+            modeSwitch.name = 'Lite';
             modeSwitch.key = mode;
             modeSwitch.status = true;
             break;

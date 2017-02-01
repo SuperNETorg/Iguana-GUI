@@ -26,6 +26,7 @@ angular.module('IguanaGUIApp')
         isShowConsole = dev.showConsoleMessages && dev.isDev;
 
     vars.response = {};
+    $sessionStorage.$message = {};
 
     return {
       'check': function() {
@@ -54,15 +55,24 @@ angular.module('IguanaGUIApp')
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
           // if (vars.$auth._userIdentify()) {
-            $timeout.cancel(vars.noIguanaTimeOut);
-            vars.noIguanaTimeOut = $timeout(function() {
+          $timeout.cancel(vars.noIguanaTimeOut);
+          if (
+            !$sessionStorage.$message.active ||
+            !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']
+          ) {
+            vars.noIguanaTimeOut = $timeout(function () {
+              messageType = 'logout';
               message = 'DAEMONS_ERROR';
+              hideErrors(message)
               viewErrors();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
+          }
           // }
           if (isShowConsole) {
             console.log('connection error');
           }
+        } else {
+          hideErrors();
         }
       } else {
         if (
@@ -156,8 +166,16 @@ angular.module('IguanaGUIApp')
           break;
         case 'null return from iguana_bitcoinRPC':
           isViewAndLogOut = true;
-          if (!message) {
-            message = 'APP_FAILURE_ALT';
+          if (response.config.method == 'GET') {
+            isViewAndLogOut = false;
+          }
+          if (
+            $sessionStorage.$message.active &&
+            $sessionStorage.$message.active['MESSAGE.APP_FAILURE_ALT']
+          ) {
+            if (!message) {
+              message = 'APP_FAILURE_ALT';
+            }
           }
           if (messageType === true) {
             messageType = 'logout';
@@ -169,8 +187,13 @@ angular.module('IguanaGUIApp')
           if (response.config.method == 'GET') {
             isViewAndLogOut = false;
           }
-          if (!message) {
-            message = 'AUTHENTICATION_ERROR';
+          if (
+            $sessionStorage.$message.active &&
+            $sessionStorage.$message.active['MESSAGE.AUTHENTICATION_ERROR']
+          ) {
+            if (!message) {
+              message = 'AUTHENTICATION_ERROR';
+            }
           }
           if (messageType === true) {
             messageType = 'logout';
@@ -188,7 +211,20 @@ angular.module('IguanaGUIApp')
           status = 10;
           break;
         case 'getconnectioncount needs coin':
-          isShowConsole = isViewAndLogOut = false;
+          if (
+            $sessionStorage.$message.active &&
+            $sessionStorage.$message.active['MESSAGE.GET_CONNECTION_COUNT']
+          ) {
+            isViewAndLogOut = false;
+          } else {
+            isViewAndLogOut = true;
+            hideErrors(message)
+          }
+          isShowConsole = true;
+          message = 'GET_CONNECTION_COUNT';
+          if (messageType === true) {
+            messageType = 'logout';
+          }
           break;
         default :
           consoleMessage = 'unknown error';
@@ -208,13 +244,20 @@ angular.module('IguanaGUIApp')
       $message.viewErrors('MESSAGE.' + message, messageType);
     }
 
-    function hideErrors() {
+    function hideErrors(messageKey) {
       var activeMessage;
       if ($sessionStorage.$message &&
           $sessionStorage.$message.active) {
         for (var name in $sessionStorage.$message.active) {
           activeMessage = $sessionStorage.$message.active[name];
-          activeMessage.close();
+
+          if (messageKey && 'MESSAGE.' + messageKey !== name) {
+            activeMessage.close();
+          } else {
+            vars.iguanaTimeOut = $timeout(function(message) {
+              message.close();
+            }.bind(null, activeMessage), settings.iguanaNullReturnCountLogoutTimeout * 1000);
+          }
         }
       }
     }

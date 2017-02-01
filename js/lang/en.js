@@ -208,7 +208,8 @@ var lang = {
       'TOTAL_AMOUNT_CANNOT_EXCEED': 'Total amount cannot exceed',
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
       'INCORRECT_INPUT_P3': 'Invalid passphrase, please try again',
-      'AUTHENTICATION_ERROR': 'Authentication error'
+      'AUTHENTICATION_ERROR': 'Authentication error',
+      'GET_CONNECTION_COUNT': 'You dont have active coins, please relogin.'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

@@ -86,10 +86,15 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            this.testCoinPorts()
-              .then(function(coins) {
-                deferred.resolve(coins);
-              });
+            if (!response.data.error || vars.first) {
+              this.testCoinPorts()
+                  .then(function(coins) {
+                    deferred.resolve(coins);
+                  });
+            } else {
+              deferred.reject(response);
+              $interval.cancel(vars.dashboardUpdateRef);
+            }
           }.bind(this),
           function(response) {
             // non-iguana env
@@ -115,10 +120,14 @@ angular.module('IguanaGUIApp')
               }
             }
 
-            this.testCoinPorts()
-              .then(function(coins) {
-                deferred.resolve(coins);
-              });
+            if (!$storage.isIguana) {
+              this.testCoinPorts()
+                  .then(function(coins) {
+                    deferred.resolve(coins);
+                  });
+            } else {
+              deferred.reject(response);
+            }
           }.bind(this)
         );
       } else {
@@ -909,67 +918,78 @@ angular.module('IguanaGUIApp')
           fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
           deferred = $q.defer();
 
-      http.get(fullUrl, '', {
-        cache: false
-      })
-      .then(function(response) {
-        response = response.data;
-
-        if (response && Object.keys(response).length) {
-          result = response; //response[quoteComponents[1]];
-
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
-          }
-        } else {
-          result = false;
-        }
-        deferred.resolve([result, quoteComponents[0]]);
-      }, function() {
-        console.log('falling back to ext service #2');
-
-        http.get('http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(), '', {
+      http
+        .get(fullUrl, '', {
           cache: false
         })
-        .then(function(response) {
-          var response = response.data;
+        .then(
+          function(response) {
+            response = response.data;
 
-          if (response.price) {
-            var btcToCurrency = response.price;
+            if (response && Object.keys(response).length) {
+              result = response; //response[quoteComponents[1]];
 
-            // get btc -> altcoin rate
-            http.get('https://poloniex.com/public?command=returnTicker', '', {
-              cache: false
-            })
-            .then(function(response) {
-              var response = response.data;
-
-              if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
-                result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
-
-                if (dev.showConsoleMessages && dev.isDev) {
-                  console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
-                }
-              } else {
-                result = false;
-              }
-
-              deferred.resolve([result, quoteComponents[0]]);
-            }, function(response) {
               if (dev.showConsoleMessages && dev.isDev) {
-                console.log('both services are failed to respond');
+                console.log(
+                  'rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
               }
-            });
+            } else {
+              result = false;
+            }
+            deferred.resolve([result, quoteComponents[0]]);
+          },
+          function() {
+            console.log('falling back to ext service #2');
 
-          } else {
-            deferred.resolve([false]);
+            http.get(
+              'http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(),
+              '', {
+                cache: false
+              })
+                .then(function(response) {
+                  var response = response.data;
+
+                  if (response.price) {
+                    var btcToCurrency = response.price;
+
+                    // get btc -> altcoin rate
+                    http.get(
+                      'https://poloniex.com/public?command=returnTicker', '',
+                      {
+                        cache: false
+                      })
+                        .then(function(response) {
+                          var response = response.data;
+
+                          if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
+                            result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
+
+                            if (dev.showConsoleMessages && dev.isDev) {
+                              console.log(
+                                'rates source http://api.cryptocoincharts.info and https://poloniex.com');
+                            }
+                          } else {
+                            result = false;
+                          }
+
+                          deferred.resolve([result, quoteComponents[0]]);
+                        }, function(response) {
+                          if (dev.showConsoleMessages && dev.isDev) {
+                            console.log(
+                              'both services are failed to respond');
+                          }
+                        });
+
+                  } else {
+                    deferred.resolve([false]);
+                  }
+                }, function(response) {
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('both services failed to respond');
+                  }
+                })
           }
-        }, function(response) {
-          if (dev.showConsoleMessages && dev.isDev) {
-            console.log('both services failed to respond');
-          }
-        })
-      });
+        );
 
       return deferred.promise;
     };
