@@ -32,7 +32,7 @@ var lang = {
       'CREATE_ACCOUNT': 'Create wallet',
       'ADD': 'Add',
       'ENTER_A_PASSPHRASE_TO_ADD': 'Enter a passphrase to add',
-      'INCORRECT_INPUT': 'Incorrect input. Passphrase must consist of {{ count }} words. Try one more time.',
+      'INCORRECT_INPUT': 'Incorrect input. Passphrase must be consisted of {{ count }} words. Try one more time.',
       'INCORRECT_INPUT_P1': 'Incorrect input. Passphrase must consist of',
       'INCORRECT_INPUT_P2': 'words. Try one more time.',
       'OR': 'or',

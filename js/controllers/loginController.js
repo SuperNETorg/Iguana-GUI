@@ -221,8 +221,20 @@ angular.module('IguanaGUIApp')
     }
 
     function isChanged() {
-      $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
-      $scope.isChanged = true;
+      if (
+        (
+          $storage.isIguana &&
+          $scope.passphraseModel.split(' ').length !== 24
+        ) || (
+          !$storage.isIguana &&
+          $scope.passphraseModel.split(' ').length !== 12
+        )
+      ) {
+        $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
+        $scope.isChanged = true;
+      } else {
+        $scope.isChanged = false;
+      }
     }
 
     function goBack() {
