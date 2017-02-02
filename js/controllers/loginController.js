@@ -225,9 +225,11 @@ angular.module('IguanaGUIApp')
         (
           $storage.isIguana &&
           $scope.passphraseModel.split(' ').length !== 24
+          && $rootScope.isElectron
         ) || (
           !$storage.isIguana &&
           $scope.passphraseModel.split(' ').length !== 12
+          && $rootScope.isElectron
         )
       ) {
         $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
