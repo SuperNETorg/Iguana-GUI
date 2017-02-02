@@ -53,6 +53,7 @@ angular.module('IguanaGUIApp')
           iguanaErrorsSwitch();
         } else {
           hideErrors();
+          $timeout.cancel(vars.noIguanaTimeOut);
         }
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
