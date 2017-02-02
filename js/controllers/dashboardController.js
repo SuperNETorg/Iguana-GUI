@@ -92,11 +92,9 @@ angular.module('IguanaGUIApp')
 
     util.bodyBlurOff();
     delete $storage['dashboard-pending-coins'];
+    $rootScope.$on('coinsInfo', onInit);
 
-    if (!$scope.coinsInfo) {
-      // constructAccountCoinRepeater(true, true);
-      $rootScope.$on('coinsInfo', onInit);
-    } else {
+    if ($scope.coinsInfo) {
       onInit();
     }
 
@@ -105,7 +103,7 @@ angular.module('IguanaGUIApp')
       checkAddCoinButton();
       constructAccountCoinRepeater(true);
       updateFeeParams();
-      updateDashboardView(settings.dashboardUpdateTimout);
+      // updateDashboardView(settings.dashboardUpdateTimout);
     }
 
     var modalInstance = {};
@@ -578,14 +576,14 @@ angular.module('IguanaGUIApp')
     }
 
     function updateDashboardView(timeout) {
-      vars.dashboardUpdateRef = $interval(function() {
+      /*vars.dashboardUpdateRef = $interval(function() {
         $auth.checkSession();
         $rates.updateRates(null, null, null, true);
         constructAccountCoinRepeater();
         updateFeeParams();
         if (dev.showConsoleMessages && dev.isDev)
           console.log('dashboard updated');
-      }, timeout * 1000);
+      }, timeout * 1000);*/
     }
 
     function updateFeeParams() {

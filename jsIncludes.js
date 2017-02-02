@@ -27,6 +27,7 @@
 <!-- filters -->
 <script type="text/javascript" src="js/filters/decimalPlacesFormat.js"></script>
 <script type="text/javascript" src="js/filters/lang.js"></script>
+<script type="text/javascript" src="js/filters/objectFilter.js"></script>
 <!-- services -->
 <script type="text/javascript" src="js/services/error.js"></script>
 <script type="text/javascript" src="js/services/http.js"></script>

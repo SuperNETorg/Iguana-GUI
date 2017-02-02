@@ -95,7 +95,7 @@ angular.module('IguanaGUIApp')
 
     function constructCoinRepeater() {
       var index = 0,
-          coinsArray = [],
+          coinsObject = {},
           coinsInfo = vars.coinsInfo;
 
       if (coinsInfo) {
@@ -120,7 +120,7 @@ angular.module('IguanaGUIApp')
                 )
               )
             ) {
-              coinsArray.push({
+              coinsObject[key] = {
                 'id': key.toUpperCase(),
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
@@ -133,7 +133,7 @@ angular.module('IguanaGUIApp')
                 ),
                 'mode': getMode(key),
                 'activeMode': getMode(key)[0].key
-              });
+              };
 
               if (index === $scope.coinColors.length - 1) {
                 index = 0;
@@ -145,7 +145,7 @@ angular.module('IguanaGUIApp')
         }
       }
 
-      return coinsArray;
+      return coinsObject;
     }
 
     function clickOnCoin(item, $event) {

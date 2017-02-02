@@ -58,6 +58,7 @@ angular.module('IguanaGUIApp')
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
           // if (vars.$auth._userIdentify()) {
+          $interval.cancel(vars.dashboardUpdateRef);
           $timeout.cancel(vars.noIguanaTimeOut);
           if (
             !$sessionStorage.$message.active ||
@@ -67,7 +68,6 @@ angular.module('IguanaGUIApp')
               messageType = 'logout';
               message = 'DAEMONS_ERROR';
               hideErrors(message);
-              $interval.cancel(vars.dashboardUpdateRef);
               viewErrors();
             }, settings.appViewMessageTimeout * 1000);
           }

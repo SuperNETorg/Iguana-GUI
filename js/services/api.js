@@ -23,7 +23,7 @@ angular.module('IguanaGUIApp')
     // bitcoin rpc error code ref: https://github.com/bitcoin/bitcoin/blob/62f2d769e45043c1f262ed45babb70fe237ad2bb/src/rpc/protocol.h#L30
 
     vars.$api = this;
-    this.coinsInfo = [];
+    this.coinsInfo = {};
     this.isRT = false;
     $storage.isProxy = true;
     $storage.iguanaNullReturnCount = 0;
@@ -126,6 +126,7 @@ angular.module('IguanaGUIApp')
                     deferred.resolve(coins);
                   });
             } else {
+              $interval.cancel(vars.dashboardUpdateRef);
               deferred.reject(response);
             }
           }.bind(this)
@@ -339,7 +340,7 @@ angular.module('IguanaGUIApp')
       } else {
         for (var i in coins) {
           if (!this.coinsInfo[i]) {
-            this.coinsInfo[i] = [];
+            this.coinsInfo[i] = {};
           }
 
           this.coinsInfo[i].connection = false;
@@ -360,11 +361,11 @@ angular.module('IguanaGUIApp')
             index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo) {
-          self.coinsInfo = [];
+          self.coinsInfo = {};
         }
 
         if (!self.coinsInfo[index]) {
-          self.coinsInfo[index] = [];
+          self.coinsInfo[index] = {};
         }
 
         if (dev.showConsoleMessages && dev.isDev) {
@@ -427,10 +428,10 @@ angular.module('IguanaGUIApp')
             index = coinsKeys[_index - 1];
 
         if (!self.coinsInfo) {
-          self.coinsInfo = [];
+          self.coinsInfo = {};
         }
         if (!self.coinsInfo[index]) {
-          self.coinsInfo[index] = [];
+          self.coinsInfo[index] = {};
         }
 
         if ($storage['connected-coins']) {
@@ -1422,7 +1423,7 @@ angular.module('IguanaGUIApp')
               response.data.error === 'coin is busy processing'
             ) {
               if (!this.coinsInfo[coin]) {
-                this.coinsInfo[coin] = [];
+                this.coinsInfo[coin] = {};
               }
               this.coinsInfo[coin].connection = true;
             }
