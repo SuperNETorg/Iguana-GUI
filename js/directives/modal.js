@@ -12,7 +12,8 @@ angular.module('IguanaGUIApp')
         if (scope.$$watchers) {
           var open = $uibModalStack.open,
               close = $uibModalStack.close,
-              dismiss = $uibModalStack.dismiss;
+              dismiss = $uibModalStack.dismiss,
+              windowClass = '';
 
           scope.modal = {
             flowModal: {
@@ -73,8 +74,9 @@ angular.module('IguanaGUIApp')
 
           $uibModalStack.open = function(modalInstance, modal) {
             modalInstance.rendered.then(function() {
+              windowClass = (modal && typeof modal.windowClass !== 'undefined' && modal.windowClass.indexOf('message') !== -1);
               if (activeModal === 0) {
-                util.bodyBlurOn();
+                util.bodyBlurOn(windowClass);
               }
 
               if (activeModal >= 0) {
@@ -87,12 +89,13 @@ angular.module('IguanaGUIApp')
 
           $uibModalStack.close = function(modalInstance, modal) {
             modalInstance.closed.then(function() {
+              windowClass = (modal && typeof modal.windowClass !== 'undefined' && modal.windowClass.indexOf('message') !== -1);
               if (activeModal > 0) {
                 --activeModal;
               }
 
               if (activeModal === 0) {
-                util.bodyBlurOff();
+                util.bodyBlurOff(windowClass);
               }
             });
 
@@ -101,12 +104,13 @@ angular.module('IguanaGUIApp')
 
           $uibModalStack.dismiss = function(modalInstance, modal) {
             modalInstance.closed.then(function() {
-            if (activeModal > 0) {
+              windowClass = (modal && typeof modal.windowClass !== 'undefined' && modal.windowClass.indexOf('message') !== -1);
+              if (activeModal > 0) {
               --activeModal;
             }
 
             if (activeModal === 0) {
-              util.bodyBlurOff();
+              util.bodyBlurOff(windowClass);
             }
           });
 

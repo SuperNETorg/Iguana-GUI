@@ -29,6 +29,7 @@ var _settings = {
   defaultRelayFee: 0.00001,
   apiCheckTimeout: 3, // minutes
   appRedirectTimeout: 1,
+  appViewMessageTimeout: 3,
   defaultIguanaConnectionTimeOut: 500,
   minEpochTimestamp: 1471620867
 };

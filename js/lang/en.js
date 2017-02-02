@@ -184,8 +184,7 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
-      'DAEMONS_ERROR': 'Looks like no relevant daemon is running on your machine. Please, verify you have it active with the right configuration.',
-      'IGUANA_CORE_ERROR': 'Looks like Iguna Core is not running on your machine. Please, verify you have it active.',
+      'DAEMONS_ERROR': 'Looks like Iguana Core is not running.',
       'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements. ',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. ',
       'APP_FAILURE_ALT': 'We\'re sorry but it seems that Iguana has crashed. Please login again. ',
@@ -198,7 +197,7 @@ var lang = {
       'COPIED_TO_CLIPBOARD': 'copied to clipboard',
       'ADDRESS_COPIED_TO_CLIPBOARD': 'Address copied to clipboard:',
       'PLEASE_SELECT_A_COIN': 'Please select a coin',
-      'WALLET_IS_CREATED': 'Wallet is created. Login to access it.',
+      'WALLET_IS_CREATED': '  successfully added.',
       'PASSPHRASES_DONT_MATCH': 'Passphrases do not match!',
       'PLEASE_SELECT_A_WALLET': 'Please select a wallet',
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
@@ -207,7 +206,7 @@ var lang = {
       'PROXY_IS_NOT_SET_UP': 'Proxy is not set up',
       'IGUANA_IS_NOT_SET_UP': 'Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
-      'X_WALLET_IS_CREATED': ' wallet is created.',
+      'X_WALLET_IS_CREATED': ' successfully created.',
       'WALLET_IS_ALREADY_ENCRYPTED': 'Wallet is already encrypted with another passphrase! Try another wallet or login with your passphrase.',
       'PASSPHRASES_DONT_MATCH_ALT': 'Passphrases are not matching. Please repeat previous step one more time.',
       'COIN_ADD_P1': 'added.',

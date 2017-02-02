@@ -17,14 +17,18 @@ angular.module('IguanaGUIApp')
     this.coindWalletLockCount = 0;
     this.minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
-    this.bodyBlurOn = function() {
-      angular.element(document.body).addClass('modal-open');
-      angular.element(document.querySelector('html')).addClass('modal-open');
+    this.bodyBlurOn = function(isModal) {
+      angular
+        .element(document.body)
+        .addClass('modal-open' + (isModal ? ' message-modal' : ''));
+      angular
+        .element(document.querySelector('html'))
+        .addClass('modal-open' + (isModal ? ' message-modal' : ''));
     };
 
-    this.bodyBlurOff = function() {
-      angular.element(document.body).removeClass('modal-open');
-      angular.element(document.querySelector('html')).removeClass('modal-open');
+    this.bodyBlurOff = function(isModal) {
+      angular.element(document.body).removeClass('modal-open' + (isModal ? 'message-modal' : ''));
+      angular.element(document.querySelector('html')).removeClass('modal-open' + (isModal ? 'message-modal' : ''));
     };
 
     this.reindexAssocArray = function(object) {
