@@ -26,7 +26,10 @@
             <div class="clickable-area">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
-                <div class="name pull-left" ng-if="activeSyncInfo !== item.id">{{ item.name }}</div>
+                <div class="pull-left">
+                  <div class="name" ng-if="activeSyncInfo !== item.id">{{ item.name }}</div>
+                  <div class="mode" ng-if="activeSyncInfo !== item.id">{{ item.mode }}</div>
+                </div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }" ng-if="activeSyncInfo !== item.id">
                 <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue.toFixed(8) | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>

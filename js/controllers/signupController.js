@@ -116,8 +116,9 @@ angular.module('IguanaGUIApp')
               }
             );
         } else {
-          $api.walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
-          .then(onResolve, onReject);
+          $api
+            .walletEncrypt($scope.passphrase, selectedCoindToEncrypt)
+            .then(onResolve, onReject);
         }
       } else {
         $message.ngPrepMessageModal(
@@ -128,7 +129,7 @@ angular.module('IguanaGUIApp')
 
       function onResolve() {
         var msg = $message.ngPrepMessageModal(
-          coinKeys.join(', ') + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
+          coinKeys.join(', ') + (coinKeys.length > 1 ?' are' : ' is') + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
           'green'
         );
 
@@ -232,7 +233,9 @@ angular.module('IguanaGUIApp')
                   'coinId': key.toLowerCase(),
                   'name': supportedCoinsList[key].name,
                   'color': $scope.coinColors[index],
-                  'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : ''
+                  'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : '',
+                  'mode': getMode(key),
+                  'activeMode': getMode(key)[0].key
                 }
               }
 
@@ -330,6 +333,38 @@ angular.module('IguanaGUIApp')
           openCoinModal('signup')
         }
       }
+    }
+
+    function getMode(key) {
+      var coinMode = iguanaCoinModes[key],
+        modeResult = [],
+        modeSwitch = {},
+        mode;
+
+      for (var i = 0; coinMode.length > i; i++) {
+        modeSwitch = {};
+        mode = coinMode[i];
+
+        switch (mode) {
+          case 0:
+            modeSwitch.name = 'Lite';
+            modeSwitch.key = mode;
+            modeSwitch.status = true;
+            break;
+          case 1:
+            modeSwitch.name = 'Full';
+            modeSwitch.key = mode;
+            break;
+          case -1:
+            modeSwitch.name = 'Native';
+            modeSwitch.key = mode;
+            break;
+        }
+
+        modeResult.push(modeSwitch);
+      }
+
+      return modeResult;
     }
   }
 ]);

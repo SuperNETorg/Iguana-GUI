@@ -6,7 +6,7 @@
 @import 'dev.scss';
 
 body .dashboard.blur,
-body.modal-open .dashboard {
+body.modal-open:not(.message-modal) .dashboard {
   @include blur;
 }
 
