@@ -63,6 +63,12 @@
     .currency-parent {
       margin-top: 30px;
 
+      .loader {
+        width: 100%;
+        height: 35px;
+        top: -10px;
+        left: -20px;
+      }
       .fee-notice {
         color: $reference-currency-txamount;
         margin: 10px 10px;

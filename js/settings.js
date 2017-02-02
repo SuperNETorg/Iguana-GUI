@@ -3,7 +3,7 @@
 var _settings = {
   iguanaPort: '7778',
   proxy: 'http://127.0.0.1:1337/', // https://github.com/gr2m/CORS-Proxy
-  ratesUpdateTimeout: 15, // sec, see dashboard/rates.js
+  ratesUpdateTimeout: 15, // sec, see services/rates.js
   ratesUpdateMultiply: 0, // sec
   decimalPlacesCoin: 1,
   decimalPlacesCurrency: 2,
@@ -31,7 +31,8 @@ var _settings = {
   appRedirectTimeout: 1,
   appViewMessageTimeout: 3,
   defaultIguanaConnectionTimeOut: 500,
-  minEpochTimestamp: 1471620867
+  minEpochTimestamp: 1471620867,
+  globalFeeLoaderTimeout: 1 // sec
 };
 
 // create a new object with non-writable values

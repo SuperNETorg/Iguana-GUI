@@ -28,6 +28,7 @@
       <h4 class="transaction-amount">{{ 'SETTINGS.FEE_DESCRIPTION' | lang }}</h4>
     </div>
     <div class="col-md-7 col-sm-6 currency-parent">
+      <spinner visibility="feeLoader"></spinner>
       <div class="btn-group segment-select">
         <label class="btn btn-success item-segment-select col-xs-3 col-sm-3 col-md-2 col-lg-2"
                ng-class="{
@@ -37,6 +38,7 @@
                ng-repeat="item in items"
                ng-model="checkModel.type"
                ng-click="change()"
+               ng-hide="feeLoader"
                uib-btn-radio="'{{ item }}'">
           <span>{{ item.name }}</span>
         </label>
