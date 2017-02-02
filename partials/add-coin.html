@@ -45,8 +45,9 @@
                         'width': 100/item.mode.length + '%',
                         'padding-left': (mode.name.length > 5 ? 12 / 2 + 'px': '')
                        }"
+                       ng-disabled="mode.disabled"
                        ng-class="{'orange-bg': mode.status, 'width-bg': !mode.status}"
-                       ng-click="clickOnMode($event, name, mode.key); $event.stopPropagation();"
+                       ng-click="(!mode.disabled ? clickOnMode($event, name, mode.key, !mode.disabled) : ''); $event.stopPropagation();"
                 ></label>
               </div>
             </div>

@@ -233,21 +233,34 @@ angular.module('IguanaGUIApp')
           case 0:
             modeSwitch.name = 'Lite';
             modeSwitch.key = mode;
-            modeSwitch.status = true;
+            if (coinMode.length === 1) {
+              modeSwitch.disabled = true;
+            }
             break;
           case 1:
             modeSwitch.name = 'Full';
             modeSwitch.key = mode;
+            modeSwitch.status = true;
+            modeSwitch.disabled = false;
             break;
           case -1:
             modeSwitch.name = 'Native';
             modeSwitch.key = mode;
+            modeSwitch.disabled = false;
             break;
+        }
+
+        if (coinMode.length === 1) {
+          modeResult.push({
+            name: 'Lite',
+            key: 0,
+            status: false,
+            disabled: true,
+          });
         }
 
         modeResult.push(modeSwitch);
       }
-
       return modeResult;
     }
 
