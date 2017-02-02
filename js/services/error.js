@@ -32,6 +32,7 @@ angular.module('IguanaGUIApp')
       'check': function() {
         vars.response.data = arguments[0];
         status = arguments[0].status;
+
         if ($storage.isIguana) {
           checkIguanaErrors.apply(this, arguments);
         } else {
@@ -58,11 +59,11 @@ angular.module('IguanaGUIApp')
           $timeout.cancel(vars.noIguanaTimeOut);
           if (
             !$sessionStorage.$message.active ||
-            !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']
+            !$sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR']
           ) {
-            vars.noIguanaTimeOut = $timeout(function () {
+            vars.noIguanaTimeOut = $timeout(function() {
               messageType = 'logout';
-              message = 'DAEMONS_ERROR';
+              message = $storage.isIguana ? 'IGUANA_CORE_ERROR' : 'DAEMONS_ERROR';
               hideErrors(message)
               viewErrors();
             }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
@@ -78,12 +79,13 @@ angular.module('IguanaGUIApp')
         if (
           $sessionStorage.$message &&
           $sessionStorage.$message.active &&
-          $sessionStorage.$message.active.hasOwnProperty('MESSAGE.DAEMONS_ERROR')
+          $sessionStorage.$message.active.hasOwnProperty($storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR')
         ) {
-          if ($sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']) {
-            $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'].close();
+          if ($sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR']) {
+            $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'].close();
           }
-          delete $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'];
+
+          delete $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'];
         }
       }
 
@@ -94,6 +96,7 @@ angular.module('IguanaGUIApp')
 
       if (response.data) {
         errors = response.data;
+
         if (response.data.error) {
           noIguanaErrorSwich();
         } else {
@@ -114,7 +117,7 @@ angular.module('IguanaGUIApp')
           (!$storage['connected-coins'] || vars.$auth._userIdentify())
         ) {
           vars.noIguanaTimeOut = $timeout(function() {
-            message = 'DAEMONS_ERROR';
+            message = $storage.isIguana ? 'IGUANA_CORE_ERROR' : 'DAEMONS_ERROR';
             viewErrors();
           }, settings.iguanaNullReturnCountLogoutTimeout * 1000)
         } else if (response.status === -1) {
@@ -130,20 +133,20 @@ angular.module('IguanaGUIApp')
         ) {
           if (
             (
-              $sessionStorage.$message.active.hasOwnProperty('MESSAGE.PROXY_ERROR') ||
-              $sessionStorage.$message.active.hasOwnProperty('MESSAGE.DAEMONS_ERROR')
+              $sessionStorage.$message.active.hasOwnProperty($storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.PROXY_ERROR') ||
+              $sessionStorage.$message.active.hasOwnProperty($storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR')
             ) &&
             response.status !== -1 && response.config.url.indexOf(':1337') !== -1
           ) {
-            if ($sessionStorage.$message.active['MESSAGE.PROXY_ERROR']) {
-              $sessionStorage.$message.active['MESSAGE.PROXY_ERROR'].close();
+            if ($sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.PROXY_ERROR']) {
+              $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.PROXY_ERROR'].close();
             }
-            if ($sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']) {
-              $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'].close();
+            if ($sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR']) {
+              $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'].close();
             }
 
             delete $sessionStorage.$message.active['MESSAGE.PROXY_ERROR'];
-            delete $sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'];
+            delete $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'];
           }
         }
       }
@@ -220,13 +223,15 @@ angular.module('IguanaGUIApp')
             isViewAndLogOut = true;
             hideErrors(message)
           }
+
           isShowConsole = true;
           message = 'GET_CONNECTION_COUNT';
+
           if (messageType === true) {
             messageType = 'logout';
           }
           break;
-        default :
+        default:
           consoleMessage = 'unknown error';
       }
 
@@ -235,6 +240,7 @@ angular.module('IguanaGUIApp')
           viewErrors();
         }, settings.iguanaNullReturnCountLogoutTimeout * 1000);
       }
+
       if (isShowConsole) {
         console.log(consoleMessage);
       }
@@ -246,6 +252,7 @@ angular.module('IguanaGUIApp')
 
     function hideErrors(messageKey) {
       var activeMessage;
+
       if ($sessionStorage.$message &&
           $sessionStorage.$message.active) {
         for (var name in $sessionStorage.$message.active) {
