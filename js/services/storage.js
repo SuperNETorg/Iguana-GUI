@@ -6,6 +6,9 @@ angular.module('IguanaGUIApp')
   '$sessionStorage',
   '$rootScope',
   function($localStorage, $sessionStorage, $rootScope) {
+    if ( typeof require ==='function') {
+      $rootScope.isElectron = true;
+    }
     if ($rootScope.isElectron) {
       return $sessionStorage;
     } else {

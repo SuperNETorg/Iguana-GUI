@@ -151,9 +151,10 @@ angular.module('IguanaGUIApp', [
     $rootScope.dev = dev;
   }
 
-  if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
+  //it's moved to storage.js
+  /*if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
     $rootScope.isElectron = true;
-  }
+  }*/
 
   $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
