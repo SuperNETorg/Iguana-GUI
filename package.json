@@ -4,6 +4,9 @@
   "description": "Iguana GUI",
   "main": "gulpfile.js",
   "scripts": {
+    "app": "cd ~/iguana/Iguana-GUI/mytests/iguana/iguana && npm start ",
+    "dev": "gulp dev",
+    "prod": "gulp prod",
     "test": "karma start karma.conf.js",
     "test-single": "karma start karma.conf.js --single-run"
   },

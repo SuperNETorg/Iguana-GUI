@@ -27,7 +27,7 @@ var _settings = {
     day: 10
   },
   defaultRelayFee: 0.00001,
-  apiCheckTimeout: 3, // minutes
+  apiCheckTimeout: 0.1, // minutes
   appRedirectTimeout: 1,
   appViewMessageTimeout: 3,
   defaultIguanaConnectionTimeOut: 500,

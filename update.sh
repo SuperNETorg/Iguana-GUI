@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 git checkout 0.3
 git pull
 npm install
