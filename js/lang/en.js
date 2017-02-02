@@ -145,7 +145,7 @@ var lang = {
       'FEE_DESCRIPTION': 'The higher the fee, the faster a transaction. ' +
                          'Chosen fee option will be applied to all sending transactions. ' +
                          'The final fee size depends on a currency itself and its network load.',
-      'FEE_OPTIONS_NOTIFICATION': 'Please, mind all four options are available for bitcoins transactions only at the moment.'
+      'FEE_OPTIONS_NOTIFICATION': 'Please, mind all four options are available for Bitcoin transactions only at the moment.'
     },
     'SEND': {
       'TRANSACTION_IS_SENT': 'Transaction is sent',
