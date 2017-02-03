@@ -52,7 +52,6 @@ angular.module('IguanaGUIApp')
     };
 
     $scope.isActive = function(item) {
-      debugger;
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = {};
       }

@@ -276,7 +276,6 @@ angular.module('IguanaGUIApp')
 
         return false;
       } else {
-        debugger;
 
         $storage['iguana-login-active-coin']['kmd'] = constructCoinRepeater()['kmd'];
       }
