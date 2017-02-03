@@ -26,33 +26,32 @@ exports.copyFonts = function(buildMode) {
 
 exports.copySVG = function(buildMode) {
   var flagsSVGPaths = [],
-      coinsSVGPats = [];
+      coinsSVGPaths = [];
 
   for (var i = 0; i < paths.svg.flags.length; i++) {
-    flagsSVGPaths.push(
-      paths.svg.default + '/' + paths.svg.size + '/' + paths.svg.flags[i] + '.svg');
+    flagsSVGPaths.push(paths.svg.default + '/' + paths.svg.size + '/' + paths.svg.flags[i] + '.svg');
   }
 
   for (var i = 0; i < paths.svg.coins.length; i++) {
-    coinsSVGPats.push(
-      paths.svg.coinsPath + '/' + paths.svg.coins[i] + '.svg');
+    coinsSVGPaths.push(paths.svg.coinsPath + '/' + paths.svg.coins[i] + '.svg');
   }
 
   if (buildMode === 'dev') {
     return gulp
-      .src(flagsSVGPaths)
-      .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/flags'))
-      .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags')),
-      gulp.src(coinsSVGPats)
+          .src(flagsSVGPaths)
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/flags'))
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags')),
+          gulp
+          .src(coinsSVGPaths)
           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/coins'))
-          .pipe(
-            gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/coins'));
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/coins'));
   } else {
     return gulp
-      .src(flagsSVGPaths)
-      .pipe(gulp.dest(paths.build[buildMode] + '/svg/flags')),
-      gulp.src(coinsSVGPats)
-          .pipe(gulp.dest(paths.build[buildMode] + '/svg/coins'));
+           .src(flagsSVGPaths)
+           .pipe(gulp.dest(paths.build[buildMode] + '/svg/flags')),
+           gulp
+           .src(coinsSVGPaths)
+           .pipe(gulp.dest(paths.build[buildMode] + '/svg/coins'));
   }
 }
 

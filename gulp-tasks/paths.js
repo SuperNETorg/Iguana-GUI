@@ -87,15 +87,15 @@ exports.getPaths = function(isDev) {
           'us', 'za'
         ],
         coins: [
-          'ABC', 'ANC', 'BCN', 'BLK', 'BTC', 'BTM', 'C2', 'CARB',
-          'DEM', 'DGB', 'DGC', 'DOGE', 'EMC2', 'FLO', 'FRC', 'FRK',
-          'FTC', 'GAME', 'IFC', 'KMD', 'LMC', 'LTC', 'MEC', 'MZC',
-          'NLG', 'NMC', 'NVC', 'PPC', 'QRK', 'SC', 'SRC', 'SYS',
-          'UNO', 'VTR', 'WDC', 'XEN', 'XPM', 'XRP', 'XST', 'ZCC',
-          'ZET',
+          'ABC', 'ANC', 'APC', 'BCN', 'BLK', 'BTC', 'BTCD', 'BTM',
+          'C21', 'CARB', 'DEM', 'DGB', 'DGC', 'DOGE', 'EMC2', 'FLO',
+          'FRC', 'FRK', 'FTC', 'GMC', 'IFC', 'KMD', 'LMC', 'LTC',
+          'MEC', 'MZC', 'NLG', 'NMC', 'NVC', 'PPC', 'QRK', 'SC',
+          'SRC', 'SYS', 'UNO', 'VTR', 'WDC', 'XEN', 'XPM', 'XRP',
+          'XST', 'ZCC', 'ZET'
         ],
       },
-      image:{
+      image: {
         default: 'images'
       }
     };
