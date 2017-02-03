@@ -147,9 +147,38 @@ angular.module('IguanaGUIApp')
         }
       };
 
-      var modalInstance = $uibModal.open($scope.modal.coinModal);
+      $api.getSelectedCoins().then(
+        function (response) {
+          var selectedCoins = [];
+          if (response['data']['full'].length) {
+            selectedCoins = response['data']['full'];
+          }
+          if(response['data']['basilisk'].length) {
+            selectedCoins.push(response['data']['basilisk']);
+          }
+          if(response['data']['native'].length) {
+            selectedCoins.push(response['data']['native']);
+          }
 
-      modalInstance.result.then(resultPromise);
+          if(selectedCoins.length >0) {
+            var constructCoins = constructCoinRepeater();
+
+            for (var key in selectedCoins) {
+              var selectedCoin = selectedCoins[key].toLowerCase();
+              $storage['iguana-login-active-coin'][selectedCoin] = constructCoins[selectedCoin];
+            }
+            login();
+
+          } else {
+            var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+            modalInstance.result.then(resultPromise);
+            $scope.karma.modal = modalInstance; // tests
+          }
+        }.bind(this),
+        function (response) {
+          console.log(response);
+        });
 
       function resultPromise(data) {
         if (type === 'signin') {
@@ -176,8 +205,108 @@ angular.module('IguanaGUIApp')
           $state.go('signup.step1');
         }
       }
+    }
 
-      $scope.karma.modal = modalInstance; // tests
+    function constructCoinRepeater() {
+      var index = 0,
+        coinsArray = {},
+        coinsInfo = vars.coinsInfo;
+
+      if (coinsInfo) {
+        for (var key in supportedCoinsList) {
+          if (
+            (!$storage['iguana-' + key + '-passphrase'] ||
+              (
+                $storage['iguana-' + key + '-passphrase'] &&
+                ($storage['iguana-' + key + '-passphrase'].logged !== 'yes' ||
+                ($storage['iguana-' + key + '-passphrase'].logged === 'yes' &&
+                ($state.current.name.indexOf('login') > -1 || $state.current.name.indexOf('signup') > -1)))
+              )
+            )
+          ) {
+            if (
+              ($storage.isIguana && coinsInfo[key] && coinsInfo[key].iguana === true) ||
+              (
+                !$storage.isIguana &&
+                (coinsInfo[key] &&
+                  coinsInfo[key].connection === true ||
+                  (dev && dev.isDev && dev.showAllCoindCoins)
+                )
+              )
+            ) {
+              coinsArray[key] = {
+                'id': key.toUpperCase(),
+                'coinId': key.toLowerCase(),
+                'name': supportedCoinsList[key].name,
+                'color': $scope.coinColors[index],
+                'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : '',
+                'mode': getMode(key),
+                'activeMode': getMode(key)[0].key
+              }
+              if (index === $scope.coinColors.length - 1) {
+                index = 0;
+              } else {
+                index++;
+              }
+            }
+          }
+        }
+      }
+      return coinsArray;
+    }
+
+    function getPassphrase(coinId) {
+      if (dev && dev.coinPW) {
+        return ($scope.isIguana && dev.coinPW.iguana ? dev.coinPW.iguana :
+          (dev.coinPW.coind[coinId] ? dev.coinPW.coind[coinId] : ''));
+      } else {
+        return '';
+      }
+    }
+
+    function getMode(key) {
+      var coinMode = iguanaCoinModes[key],
+        modeResult = [],
+        modeSwitch = {},
+        mode;
+
+      for (var i = 0; coinMode.length > i; i++) {
+        modeSwitch = {};
+        mode = coinMode[i];
+
+        switch (mode) {
+          case 0:
+            modeSwitch.name = 'Lite';
+            modeSwitch.key = mode;
+            if (coinMode.length === 1) {
+              modeSwitch.disabled = true;
+            }
+            break;
+          case 1:
+            modeSwitch.name = 'Full';
+            modeSwitch.key = mode;
+            modeSwitch.status = true;
+            modeSwitch.disabled = false;
+            break;
+          case -1:
+            modeSwitch.name = 'Native';
+            modeSwitch.key = mode;
+            modeSwitch.disabled = false;
+            break;
+        }
+
+        if (coinMode.length === 1) {
+          modeResult.push({
+            name: 'Lite',
+            key: 0,
+            status: false,
+            disabled: true,
+          });
+        }
+
+        modeResult.push(modeSwitch);
+      }
+      return modeResult;
     }
 
     function login() {

@@ -53,7 +53,7 @@ angular.module('IguanaGUIApp')
       var result = [];
 
       for (var i = 0; coins.length > i; i++) {
-        if (coins[i].coinId)
+        if (coins[i] && coins[i].coinId)
           result.push(coins[i].coinId);
       }
 

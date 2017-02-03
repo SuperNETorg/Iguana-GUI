@@ -1501,5 +1501,24 @@ angular.module('IguanaGUIApp')
     this.Iguana_GetRPCAuth = function() {
       return $storage['IguanaRPCAuth'];
     };
+
+    this.getSelectedCoins = function () {
+      var deferred = $q.defer(),
+          defaultIguanaServerUrl = this.getConf().server.protocol +
+                                    this.getConf().server.ip +
+                                    ':' +
+                                    this.getConf().server.iguanaPort,
+          upass = this.Iguana_GetRPCAuth();
+
+      http.get(defaultIguanaServerUrl + '/api/InstantDEX/allcoins', {
+        cache: false,
+        timeout: settings.defaultIguanaConnectionTimeOut,
+        params: {
+          userpass: upass ? upass : 'null'
+        }
+      }).then(deferred.resolve, deferred.reject);
+
+      return deferred.promise;
+    }
   }
 ]);
