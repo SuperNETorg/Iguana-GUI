@@ -129,22 +129,23 @@ body .add-coin-login-form .modal-add-coin-login-form,
       height: 120px;
 
       .coin-inner {
-        margin-top: 1em;
+        margin-top: 0.5em;
         padding: 0.9em 1.8em;
 
         .icon {
           background-color: $color-absolute-white;
-          border-radius: 50%;
+          background-size: 50px 50px;
           font-size: 2.5em;
           margin-top: 12px;
           padding: 2px;
-          width: 30%;
+          width: 34%;
+          height: 50px;
         }
         .name {
           color: $receive-coin-input-color;
           font-size: 1.05em;
-          padding: 1em 0.56em 10px 0.76em;
-          width: 70%;
+          padding: 1.4em 0.56em 10px 0.76em;
+          width: 66%;
 
           .help-block {
             color: $receive-coin-input-color;
@@ -198,7 +199,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       border: 2px solid $add-coin-modal-active-tile-color;
 
       .coin-inner {
-        &.has-mode{
+        &.has-mode {
           margin-top: 0;
           padding-bottom: 0;
         }
@@ -215,7 +216,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
       }
     }
     /* DEM tile fix */
-    .coin.dem {
+    /*.coin.dem {
       padding: 24px 0 10px 0;
 
       .icon {
@@ -227,7 +228,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
         position: relative;
         top: 2px;
       }
-    }
+    }*/
   }
   .supported-coins-repeater.override-opacity .coin {
     opacity: 1 !important; /* override opacity set in js */

@@ -53,30 +53,29 @@ angular.module('IguanaGUIApp')
           iguanaErrorsSwitch();
         } else {
           hideErrors();
-          $timeout.cancel(vars.noIguanaTimeOut);
+          $timeout.cancel(vars.iguanaTimeOut);
         }
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
-          // if (vars.$auth._userIdentify()) {
           $interval.cancel(vars.dashboardUpdateRef);
-          $timeout.cancel(vars.noIguanaTimeOut);
+          $timeout.cancel(vars.iguanaTimeOut);
           if (
             !$sessionStorage.$message.active ||
             !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']
           ) {
-            vars.noIguanaTimeOut = $timeout(function () {
+            vars.iguanaTimeOut = $timeout(function () {
               messageType = 'logout';
               message = 'DAEMONS_ERROR';
               hideErrors(message);
               viewErrors();
             }, settings.appViewMessageTimeout * 1000);
           }
-          // }
           if (isShowConsole) {
             console.log('connection error');
           }
         } else {
           hideErrors();
+          $interval.cancel(vars.iguanaTimeOut);
         }
       } else {
         if (
@@ -90,7 +89,7 @@ angular.module('IguanaGUIApp')
 
           delete $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'];
         }
-        $timeout.cancel(vars.noIguanaTimeOut);
+        $timeout.cancel(vars.iguanaTimeOut);
       }
 
     }

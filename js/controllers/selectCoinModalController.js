@@ -38,6 +38,7 @@ angular.module('IguanaGUIApp')
     $scope.isAppSetup = isAppSetup;
     $scope.getType = getType;
     $scope.clickOnMode = clickOnMode;
+    $scope.getLength = getLength;
     $scope.type = type;
     $scope.modal = modal;
 
@@ -51,6 +52,7 @@ angular.module('IguanaGUIApp')
     };
 
     $scope.isActive = function(item) {
+      debugger;
       if (!$storage['iguana-login-active-coin']) {
         $storage['iguana-login-active-coin'] = {};
       }
@@ -93,6 +95,10 @@ angular.module('IguanaGUIApp')
       return $scope.type;
     }
 
+    function getLength(obj) {
+      return Object.keys(obj).length;
+    }
+
     function constructCoinRepeater() {
       var index = 0,
           coinsObject = {},
@@ -125,6 +131,7 @@ angular.module('IguanaGUIApp')
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
                 'color': $scope.coinColors[index],
+                'svg': 'css/fonts/svg/coins/' + key.toUpperCase() + '.svg',
                 'readonly': (
                   $storage.isIguana && key === 'kmd' &&
                   $state.current.name.indexOf('signup') !== -1 ?
@@ -132,7 +139,7 @@ angular.module('IguanaGUIApp')
                     false
                 ),
                 'mode': getMode(key),
-                'activeMode': getMode(key)[0].key
+                'activeMode': (getMode(key)['Full'] ? getMode(key)['Full'].key : false)
               };
 
               if (index === $scope.coinColors.length - 1) {
@@ -220,46 +227,51 @@ angular.module('IguanaGUIApp')
     }
 
     function getMode(key) {
-      var coinMode = iguanaCoinModes[key],
-          modeResult = [],
+      var modeResult = {};
+
+      if ($storage.isIguana) {
+        var coinMode = iguanaCoinModes[key],
           modeSwitch = {},
           mode;
 
-      for (var i = 0; coinMode.length > i; i++) {
-        modeSwitch = {};
-        mode = coinMode[i];
+        for (var i = 0; coinMode.length > i; i++) {
+          modeSwitch = {};
+          mode = coinMode[i];
 
-        switch (mode) {
-          case 0:
-            modeSwitch.name = 'Lite';
-            modeSwitch.key = mode;
-            if (coinMode.length === 1) {
-              modeSwitch.disabled = true;
-            }
-            break;
-          case 1:
-            modeSwitch.name = 'Full';
-            modeSwitch.key = mode;
-            modeSwitch.status = true;
-            modeSwitch.disabled = false;
-            break;
-          case -1:
-            modeSwitch.name = 'Native';
-            modeSwitch.key = mode;
-            modeSwitch.disabled = false;
-            break;
+          if (coinMode.length === 1) {
+            modeResult['Lite'] = {
+              name: 'Lite',
+              key: 0,
+              status: false,
+              disabled: true,
+            };
+          }
+
+          switch (mode) {
+            case 0:
+              modeResult['Lite'] = {
+                name: 'Lite',
+                key: mode,
+                disabled: coinMode.length === 1
+              };
+              break;
+            case 1:
+              modeResult['Full'] = {
+                name: 'Full',
+                key: mode,
+                status: true,
+                disabled: false
+              };
+              break;
+            case -1:
+              modeResult['Native'] = {
+                name: 'Native',
+                key: mode,
+                disabled: false
+              };
+              break;
+          }
         }
-
-        if (coinMode.length === 1) {
-          modeResult.push({
-            name: 'Lite',
-            key: 0,
-            status: false,
-            disabled: true,
-          });
-        }
-
-        modeResult.push(modeSwitch);
       }
       return modeResult;
     }
