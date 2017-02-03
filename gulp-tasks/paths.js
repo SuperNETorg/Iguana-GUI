@@ -76,6 +76,7 @@ exports.getPaths = function(isDev) {
       },
       svg: {
         default: bowerDir + '/flag-icon-css/flags',
+        coinsPath: bowerDir + '/Iguana-GUI-font/svg/color',
         size: '1x1',
         flags: [
           'au', 'bg', 'br', 'ca', 'ch', 'cn',
@@ -84,7 +85,15 @@ exports.getPaths = function(isDev) {
           'mx', 'my', 'no', 'nz', 'ph', 'pl',
           'ro', 'ru', 'se', 'sg', 'th', 'tr',
           'us', 'za'
-        ]
+        ],
+        coins: [
+          'ABC', 'ANC', 'BCN', 'BLK', 'BTC', 'BTM', 'C2', 'CARB',
+          'DEM', 'DGB', 'DGC', 'DOGE', 'EMC2', 'FLO', 'FRC', 'FRK',
+          'FTC', 'GAME', 'IFC', 'KMD', 'LMC', 'LTC', 'MEC', 'MZC',
+          'NLG', 'NMC', 'NVC', 'PPC', 'QRK', 'SC', 'SRC', 'SYS',
+          'UNO', 'VTR', 'WDC', 'XEN', 'XPM', 'XRP', 'XST', 'ZCC',
+          'ZET',
+        ],
       },
       image:{
         default: 'images'
