@@ -6,7 +6,7 @@
 
 'use strict';
 
-var supportedCoinsList = {
+var list = {
   'btc': {
     'name': 'Bitcoin',
     'portp2p': 8332,
@@ -298,3 +298,11 @@ var supportedCoinsList = {
     'currentBlockHeightExtSource': ''
   }
 };
+
+var supportedCoinsList = {
+  'kmd': list.kmd
+};
+
+Object.keys(list).sort().forEach(function(key) {
+  supportedCoinsList[key] = list[key];
+});
