@@ -19,7 +19,7 @@
                   <span class="name">{{ sendCoin.coinId }}</span>
                 </span>
                 <p class="rs balance-currency">
-                  <span class="value">{{ sendCoin.currencyValue.toFixed(8) | decimalPlacesFormat: 'currency' }}</span>
+                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat: 'currency' }}</span>
                   <span class="name">{{ sendCoin.currency }}</span>
                 </p>
               </div>

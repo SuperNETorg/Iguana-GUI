@@ -362,7 +362,7 @@ angular.module('IguanaGUIApp')
     }
 
     function isChanged() {
-      if (
+      /*if (
         (
           $storage.isIguana &&
           $scope.passphraseModel.split(' ').length !== 24
@@ -374,6 +374,12 @@ angular.module('IguanaGUIApp')
         )
       ) {
         $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT').replace('{{ count }}', $scope.isIguana ? '24' : '12');
+        $scope.isChanged = true;
+      } else {
+        $scope.isChanged = false;
+      }*/
+      if (!$scope.passphraseModel.length) {
+        $scope.messages = $filter('lang')('LOGIN.INCORRECT_INPUT_ALT');
         $scope.isChanged = true;
       } else {
         $scope.isChanged = false;

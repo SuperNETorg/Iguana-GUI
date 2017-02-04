@@ -40,10 +40,10 @@
               </div>
               <div class="col-sm-6 hd-right col-xs-6 balance">
                 <span class="balance-coin">
-                  <span class="value">{{ sendCoin.coinValue.toFixed(8) | decimalPlacesFormat: 'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
+                  <span class="value">{{ sendCoin.coinValue | decimalPlacesFormat: 'coin' }}</span> <span class="name">{{ sendCoin.coinId }}</span>
                 </span>
                 <p class="rs balance-currency">
-                  <span class="value">{{ sendCoin.currencyValue.toFixed(8) | decimalPlacesFormat: 'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
+                  <span class="value">{{ sendCoin.currencyValue | decimalPlacesFormat: 'currency' }}</span> <span class="name">{{ sendCoin.currency }}</span>
                 </p>
               </div>
             </div>

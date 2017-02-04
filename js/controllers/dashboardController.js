@@ -103,7 +103,6 @@ angular.module('IguanaGUIApp')
       checkAddCoinButton();
       constructAccountCoinRepeater(true);
       updateFeeParams();
-      // updateDashboardView(settings.dashboardUpdateTimout);
     }
 
     var modalInstance = {};
@@ -576,17 +575,6 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function updateDashboardView(timeout) {
-      /*vars.dashboardUpdateRef = $interval(function() {
-        $auth.checkSession();
-        $rates.updateRates(null, null, null, true);
-        constructAccountCoinRepeater();
-        updateFeeParams();
-        if (dev.showConsoleMessages && dev.isDev)
-          console.log('dashboard updated');
-      }, timeout * 1000);*/
-    }
-
     function updateFeeParams() {
       var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
@@ -604,19 +592,18 @@ angular.module('IguanaGUIApp')
           currencyName,
           coinName
         ).then(function(result) {
-          $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
+          var coin = result.getBalance[1],
+              fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
+              halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
+              hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
+              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0;
 
-          var coin = result.getBalance[1];
+          $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
           $storage.feeSettings.currency = defaultCurrency;
           $storage.feeSettings.coinName = supportedCoinsList[coin].name;
           $storage.feeSettings.coinId = activeCoin.toUpperCase();
           $storage.feeSettings.coinValue = result.getBalance[0];
           $storage.feeSettings.currencyValue = result.getBalance[0] * $storage.feeSettings.currencyRate;
-
-          var fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
-              halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
-              hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
-              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0;
 
           $storage.feeSettings.sendCoin = {
             initStep: true,
@@ -689,6 +676,7 @@ angular.module('IguanaGUIApp')
                 };
               }
             });
+
             $storage.feeSettings.items = [{
               id: 0,
               name: $filter('lang')('SEND.FEE_MIN'),

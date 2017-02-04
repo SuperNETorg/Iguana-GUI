@@ -194,7 +194,7 @@ angular.module('IguanaGUIApp')
       $scope.sendCoin.currency = defaultCurrency;
       $scope.sendCoin.coinName = supportedCoinsList[coin].name;
       $scope.sendCoin.coinId = $scope.activeCoin.toUpperCase();
-      $scope.sendCoin.coinValue = balance;
+      $scope.sendCoin.coinValue = Number(balance);
       $scope.sendCoin.currencyValue = balance * $scope.sendCoin.currencyRate || 0;
 
       try {
