@@ -129,12 +129,14 @@ body .add-coin-login-form .modal-add-coin-login-form,
       height: 120px;
 
       .coin-inner {
-        margin-top: 0.5em;
+        margin-top: 0.7em;
         padding: 0.9em 1.8em;
 
         .icon {
           background-color: $color-absolute-white;
-          background-size: 50px 50px;
+          background-size: 38px 50px;
+          background-position-x: 11px;
+          background-repeat: no-repeat;
           font-size: 2.5em;
           margin-top: 12px;
           padding: 2px;
@@ -160,7 +162,7 @@ body .add-coin-login-form .modal-add-coin-login-form,
             white-space: pre;
 
             &::after {
-              background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, rgb(245, 248, 251) 100%);
+              background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0, $color-absolute-white 100%);
               content: '';
               height: 100%;
               position: absolute;
@@ -197,8 +199,13 @@ body .add-coin-login-form .modal-add-coin-login-form,
     }
     .coin.active {
       border: 2px solid $add-coin-modal-active-tile-color;
+      box-shadow: none;
 
       .coin-inner {
+        padding: 0.1em 1.8em;
+        position: relative;
+        top: -2px;
+
         &.has-mode {
           margin-top: 0;
           padding-bottom: 0;
@@ -206,29 +213,27 @@ body .add-coin-login-form .modal-add-coin-login-form,
         .name {
           .help-block {
             color: $add-coin-modal-active-tile-color;
-            font-weight: 700;
+            font-weight: 600;
+          }
+          .help-block:last-child {
+            font-size: 0.88em;
+            margin-top: 2px;
           }
         }
       }
       .btn-group {
         display: block;
         margin: 0 auto;
+        width: 85%;
+
+        .btn {
+          box-shadow: none;
+        }
+        .orange-bg {
+          font-weight: 600;
+        }
       }
     }
-    /* DEM tile fix */
-    /*.coin.dem {
-      padding: 24px 0 10px 0;
-
-      .icon {
-        position: relative;
-        top: -11px;
-      }
-      .name {
-        padding: 0;
-        position: relative;
-        top: 2px;
-      }
-    }*/
   }
   .supported-coins-repeater.override-opacity .coin {
     opacity: 1 !important; /* override opacity set in js */

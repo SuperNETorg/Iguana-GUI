@@ -92,6 +92,7 @@ angular.module('IguanaGUIApp')
 
           delete $sessionStorage.$message.active[$storage.isIguana ? 'MESSAGE.IGUANA_CORE_ERROR' : 'MESSAGE.DAEMONS_ERROR'];
         }
+
         $timeout.cancel(vars.iguanaTimeOut);
       }
 

@@ -40,10 +40,6 @@
               <div class="btn-group clearfix">
                 <label ng-repeat="(id, mode) in item.mode" class="btn"
                        ng-bind="mode.name" data-mode="{{ mode }}"
-                       ng-style="{
-                        'width': 100 / getLength(item.mode) + '%',
-                        'padding-left': (mode.name.length > 5 ? 12 / 2 + 'px' : '')
-                       }"
                        ng-disabled="mode.disabled"
                        ng-class="{ 'orange-bg': mode.status, 'width-bg': !mode.status }"
                        ng-click="(!mode.disabled ? clickOnMode($event, name, mode.key, !mode.disabled) : ''); $event.stopPropagation();"

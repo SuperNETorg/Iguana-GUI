@@ -140,18 +140,20 @@ body {
                     @include margin-top-bottom(0.2em);
 
                     .name {
-                      font-size: 0.714em;
+                      font-size: 0.85em;
                       margin-left: 0.4em;
-                      margin-top: 1.1em;
+                      margin-top: 0em;
                     }
                     .mode {
-                      font-size: 0.714em;
-                      line-height: 1.4em;
-                      margin-left: 5px;
-                      text-align: center;
-                      height: 16px;
                       background-color: #C7CCD0;
+                      border-radius: 2px;
                       color: #FFFFFF;
+                      font-size: 0.714em;
+                      height: 18px;
+                      line-height: 1.5em;
+                      margin-left: 5px;
+                      margin-top: 5px;
+                      text-align: center;
                     }
                   }
                   .balance {
@@ -197,7 +199,6 @@ body {
                 padding-bottom: 0.4em;
                 padding-left: 12px;
               }
-
               .transactions-list-repeater {
                 .item {
                   padding: 1.2em 0.8em 1.3em 0.8em;

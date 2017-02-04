@@ -90,6 +90,9 @@
         color: $color-dark-gray;
         font-weight: normal;
       }
+      .pull-left:last-child {
+        padding-left: 5px;
+      }
     }
     .loader {
       display: block;
