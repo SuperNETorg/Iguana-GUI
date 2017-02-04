@@ -263,7 +263,8 @@ angular.module('IguanaGUIApp')
         'feeSettings',
         'passphrase',
         'rates',
-        'iguanaNullReturnCount'
+        'iguanaNullReturnCount',
+        'guiModeAtLogin'
       ]);
     };
 
@@ -408,6 +409,7 @@ angular.module('IguanaGUIApp')
           $storage['iguana-login-active-coin'] = {};
 
           if (!edexRedirect) {
+            $storage.guiModeAtLogin = $storage.isIguana;
             $state.go('dashboard.main');
           }
         } else {

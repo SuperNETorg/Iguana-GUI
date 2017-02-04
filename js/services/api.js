@@ -75,7 +75,11 @@ angular.module('IguanaGUIApp')
                 }
               }
             } else {
-              $storage.isIguana = true;
+              if ($storage.guiModeAtLogin !== undefined) {
+                $storage.isIguana = $storage.guiModeAtLogin;
+              } else {
+                $storage.isIguana = true;
+              }
 
               if (dev.showConsoleMessages) {
                 if (!$storage.isIguana) {
@@ -109,7 +113,11 @@ angular.module('IguanaGUIApp')
                 deferred.reject(-1);
               }
             } else {
-              $storage.isIguana = false;
+              if ($storage.guiModeAtLogin !== undefined) {
+                $storage.isIguana = $storage.guiModeAtLogin;
+              } else {
+                $storage.isIguana = false;
+              }
 
               if (dev.showConsoleMessages) {
                 if (!$storage.isIguana) {
