@@ -32,6 +32,7 @@ var lang = {
       'CREATE_ACCOUNT': 'Create wallet',
       'ADD': 'Add',
       'ENTER_A_PASSPHRASE_TO_ADD': 'Enter a passphrase to add',
+      'INCORRECT_INPUT_ALT': 'Incorrect input',
       'INCORRECT_INPUT': 'Incorrect input. Passphrase must consist of {{ count }} words. Try one more time.',
       'INCORRECT_INPUT_P1': 'Incorrect input. Passphrase must consist of',
       'INCORRECT_INPUT_P2': 'words. Try one more time.',
@@ -111,7 +112,12 @@ var lang = {
       'SENT': 'sent',
       'RECEIVED': 'received',
       'IN_PROCESS': 'in process',
-      'ARE_YOU_SURE_YOU_WANT': 'Are you sure you want to remove'
+      'ARE_YOU_SURE_YOU_WANT': 'Are you sure you want to remove',
+      'SYNCING': 'Syncing',
+      'OF': 'of',
+      'LITE': 'Lite',
+      'NATIVE': 'Native',
+      'FULL': 'Full'
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',
