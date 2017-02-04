@@ -233,7 +233,6 @@ angular.module('IguanaGUIApp')
                 'coinId': key.toLowerCase(),
                 'name': supportedCoinsList[key].name,
                 'color': $scope.coinColors[index],
-                'svg': 'css/fonts/svg/coins/' + key.toUpperCase() + '.svg',
                 'readonly': (
                   $storage.isIguana && key === 'kmd' &&
                   $state.current.name.indexOf('signup') !== -1 ?

@@ -253,3 +253,15 @@ body .add-coin-login-form .modal-add-coin-login-form,
 DGC-alt:before {
   content: '\e978';
 }
+
+/*
+  coin icons in color
+*/
+$coins-svg-path: 'svg/coins';
+$coins-list: ABC ANC APC BCN BLK BTC BTCD BTM C21 CARB DEM DGB DGC DOGE EMC2 FLO FRC FRK FTC GMC IFC KMD LMC LTC MEC MZC NLG NMC NVC PPC QRK SC SRC SYS UNO VTR WDC XEN XPM XRP XST ZCC ZET;
+
+@each $current-icon in $coins-list {
+  .igf .#{to-lower-case($current-icon)} .icon {
+    background-image: url('#{$coins-svg-path}/#{$current-icon}.svg');
+  }
+}

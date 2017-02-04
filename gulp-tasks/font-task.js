@@ -43,8 +43,7 @@ exports.copySVG = function(buildMode) {
           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags')),
           gulp
           .src(coinsSVGPaths)
-          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/coins'))
-          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/coins'));
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/dashboard/svg/coins'))
   } else {
     return gulp
            .src(flagsSVGPaths)

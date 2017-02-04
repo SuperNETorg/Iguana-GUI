@@ -109,6 +109,7 @@ angular.module('IguanaGUIApp')
 
       angular.element(formHeaderEl).addClass('hidden');
       angular.element(formContentEl).addClass('hidden');
+
       $scope.modal.sendCoinPassphraseModal.resolve = {
         receivedObject: function() {
           return $scope.receivedObject;
