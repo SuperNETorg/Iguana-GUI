@@ -27,7 +27,8 @@ var iguanaAddCoinParams = {
 // 0 Lite
 // 1 Full
 var iguanaCoinModes = {
-  'kmd': [0, 1, -1],
+  //'kmd': [0, 1, -1],
+  'kmd': [0, 1],
   'btc': [0, 1],
   'btcd': [1],
   'ltc': [1],
