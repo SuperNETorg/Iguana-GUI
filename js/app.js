@@ -39,11 +39,11 @@ angular.module('IguanaGUIApp', [
       }
     })
     .state('login.step3', {
-        // url: '/step3',
-        data: {
-          pageTitle: 'PAGE.LOGIN'
-        }
-      })
+      // url: '/step3',
+      data: {
+        pageTitle: 'PAGE.LOGIN'
+      }
+    })
     .state('signup', {
       templateUrl: 'partials/signup.html',
       controller: 'signupController'
@@ -173,13 +173,13 @@ angular.module('IguanaGUIApp', [
       $rootScope.$broadcast('coinsInfo', coins);
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout))
+      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
     }
 
     function onReject() {
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout))
+      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
     }
   }
 

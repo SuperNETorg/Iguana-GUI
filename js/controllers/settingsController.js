@@ -67,7 +67,7 @@ angular.module('IguanaGUIApp')
       };
 
       var currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
-        coinName = $storage['iguana-active-coin']['id'].toUpperCase();
+          coinName = $storage['iguana-active-coin']['id'].toUpperCase();
 
       $api.feeCoins(
         $scope.activeCoin,

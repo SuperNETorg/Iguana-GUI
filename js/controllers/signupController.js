@@ -33,7 +33,6 @@ angular.module('IguanaGUIApp')
     $scope.passphraseCount = $storage.isIguana ? 24 : 12;
     $scope.title = setTitle();
     $rootScope.background = false;
-
     $scope.copyPassphraseWord = copyPassphraseWord;
     $scope.addAccount = addAccount;
     $scope.goBack = goBack;
@@ -129,7 +128,7 @@ angular.module('IguanaGUIApp')
 
       function onResolve() {
         var msg = $message.ngPrepMessageModal(
-          coinKeys.join(', ') + (coinKeys.length > 1 ?' are' : ' is') + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
+          coinKeys.join(', ') + (coinKeys.length > 1 ? ' are' : ' is') + $filter('lang')('MESSAGE.X_WALLET_IS_CREATED'),
           'green'
         );
 
@@ -141,7 +140,7 @@ angular.module('IguanaGUIApp')
           );
         });
 
-        $timeout(function () {
+        $timeout(function() {
           msg.close();
         }, settings.appRedirectTimeout * 1000);
       }
@@ -165,6 +164,7 @@ angular.module('IguanaGUIApp')
           message = $filter('lang')($scope.isIguana ? 'MESSAGE.IGUANA_IS_NOT_SET_UP' : 'MESSAGE.PROXY_IS_NOT_SET_UP');
           color = 'red';
         }
+
         $message.ngPrepMessageModal(
           message,
           color
@@ -202,8 +202,8 @@ angular.module('IguanaGUIApp')
 
     function constructCoinRepeater() {
       var index = 0,
-        coinsObject = {},
-        coinsInfo = vars.coinsInfo;
+          coinsObject = {},
+          coinsInfo = vars.coinsInfo;
 
       if (coinsInfo) {
         for (var key in supportedCoinsList) {
@@ -276,7 +276,6 @@ angular.module('IguanaGUIApp')
 
         return false;
       } else {
-
         $storage['iguana-login-active-coin']['kmd'] = constructCoinRepeater()['kmd'];
       }
 
@@ -294,6 +293,7 @@ angular.module('IguanaGUIApp')
           return $scope.modal;
         }
       };
+
       var modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
@@ -343,10 +343,11 @@ angular.module('IguanaGUIApp')
 
     function getMode(key) {
       var modeResult = {};
+
       if ($storage.isIguana) {
         var coinMode = iguanaCoinModes[key],
-          modeSwitch = {},
-          mode;
+            modeSwitch = {},
+            mode;
 
         for (var i = 0; coinMode.length > i; i++) {
           modeSwitch = {};
@@ -357,7 +358,7 @@ angular.module('IguanaGUIApp')
               name: 'Lite',
               key: 0,
               status: false,
-              disabled: true,
+              disabled: true
             };
           }
 
@@ -387,6 +388,7 @@ angular.module('IguanaGUIApp')
           }
         }
       }
+
       return modeResult;
     }
   }

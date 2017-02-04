@@ -151,22 +151,22 @@ angular.module('IguanaGUIApp')
       };
 
       $api.getSelectedCoins().then(
-        function (response) {
+        function(response) {
           var selectedCoins = [];
 
           if (response['data'] && response['data']['full'] && response['data']['full'].length) {
             selectedCoins = response['data']['full'];
           }
 
-          if(response['data'] && response['data']['basilisk'] && response['data']['basilisk'].length) {
+          if (response['data'] && response['data']['basilisk'] && response['data']['basilisk'].length) {
             selectedCoins.push(response['data']['basilisk']);
           }
 
-          if(response['data'] && response['data']['native'] && response['data']['native'].length) {
+          if (response['data'] && response['data']['native'] && response['data']['native'].length) {
             selectedCoins.push(response['data']['native']);
           }
 
-          if(selectedCoins.length >0) {
+          if (selectedCoins.length > 0) {
             var constructCoins = constructCoinRepeater();
 
             for (var key in selectedCoins) {
@@ -182,7 +182,7 @@ angular.module('IguanaGUIApp')
             $scope.karma.modal = modalInstance; // tests
           }
         }.bind(this),
-        function (response) {
+        function(response) {
           console.log(response);
         });
 
@@ -198,6 +198,7 @@ angular.module('IguanaGUIApp')
                                         ''
                                     ) : $scope.passphraseModel;
           $storage['dashboard-pending-coins'] = !!coinKeys;
+
           if (!$storage.loginTermsAndConditions && $storage.isIguana) {
             $state.go('login.step3');
           } else {
@@ -260,6 +261,7 @@ angular.module('IguanaGUIApp')
           }
         }
       }
+
       return coinsArray;
     }
 
@@ -310,7 +312,7 @@ angular.module('IguanaGUIApp')
             name: 'Lite',
             key: 0,
             status: false,
-            disabled: true,
+            disabled: true
           });
         }
 

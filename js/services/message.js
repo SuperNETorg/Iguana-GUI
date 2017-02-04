@@ -34,8 +34,8 @@ angular.module('IguanaGUIApp')
 
     this.viewErrors = function(message, type) {
       var inLogin = $state.current.name.indexOf('login') != -1,
-        inSignup = $state.current.name.indexOf('signup') != -1,
-        inAuth = (inLogin || inSignup);
+          inSignup = $state.current.name.indexOf('signup') != -1,
+          inAuth = (inLogin || inSignup);
 
       if (!$sessionStorage.$message) {
         $sessionStorage.$message = {}
@@ -49,12 +49,13 @@ angular.module('IguanaGUIApp')
         if (type === 'logout' && inAuth) {
           return;
         }
+
         $sessionStorage.$message.active[message] = this.ngPrepMessageModal($filter('lang')(message), 'red', type);
       }
 
       $sessionStorage.$message.active[message].closed.then(function() {
         delete $sessionStorage.$message.active[message];
-      })
+      });
     }
   }
 ]);

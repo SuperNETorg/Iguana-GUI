@@ -41,7 +41,6 @@ angular.module('IguanaGUIApp')
     $scope.getLength = getLength;
     $scope.type = type;
     $scope.modal = modal;
-
     $scope.coins = constructCoinRepeater();
     $scope.selectedCoins = getSelectedCoins();
 
@@ -174,6 +173,7 @@ angular.module('IguanaGUIApp')
         } else {
           item.pass = $storage.passphrase;
         }
+
         $storage['iguana-login-active-coin'][item.coinId] = item;
       } else {
         coinElement.removeClass('active');
@@ -230,8 +230,8 @@ angular.module('IguanaGUIApp')
 
       if ($storage.isIguana) {
         var coinMode = iguanaCoinModes[key],
-          modeSwitch = {},
-          mode;
+            modeSwitch = {},
+            mode;
 
         for (var i = 0; coinMode.length > i; i++) {
           modeSwitch = {};
@@ -242,7 +242,7 @@ angular.module('IguanaGUIApp')
               name: 'Lite',
               key: 0,
               status: false,
-              disabled: true,
+              disabled: true
             };
           }
 
@@ -285,6 +285,7 @@ angular.module('IguanaGUIApp')
           return $scope.modal;
         }
       };
+
       var modalInstance = $uibModal.open($scope.modal.flowModal);
     }
 
@@ -300,7 +301,8 @@ angular.module('IguanaGUIApp')
           modalContainer = document.querySelector('.auth-add-coin-modal .modal-content');
 
       function applyGradient() {
-        if (document.querySelector('.auth-add-coin-modal .form-content') && document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
+        if (document.querySelector('.auth-add-coin-modal .form-content') &&
+            document.querySelector('.auth-add-coin-modal .form-content').clientHeight <= modalContainer.clientHeight ||
             modalContainer && modalContainer.scrollTop === (modalContainer.scrollHeight - modalContainer.offsetHeight)) {
           gradientElement.css({ 'opacity': 0 });
         } else {

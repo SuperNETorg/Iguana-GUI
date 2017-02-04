@@ -87,7 +87,7 @@ angular.module('IguanaGUIApp')
 
       return (!$storage['dashboard-pending-coins'] ? Math.floor(secondsElapsedSinceLastAuth) <
         Number(
-          $storage['isIguana'] ?
+          $storage.isIguana ?
             settings.defaultSessionLifetimeIguana :
             settings.defaultSessionLifetimeCoind
         ) : true);
@@ -121,11 +121,13 @@ angular.module('IguanaGUIApp')
       if (!Object.keys(self.coinsSelectedToAdd).length) {
         self.coinsSelectedToAdd = $storage['dashboard-logged-in-coins'];
       }
+
       var coinKeys = Object.keys(self.coinsSelectedToAdd);
 
       if (!self.passphraseModel) {
         self.passphraseModel = self.coinsSelectedToAdd[coinKeys[0]].pass;
       }
+
       walletLogin(true)
         .then(
           function(response) {
@@ -166,14 +168,14 @@ angular.module('IguanaGUIApp')
 
       if ($storage.isIguana) {
         var deferred = $q.defer(),
-          suppressAddCoin =
-            $storage['dashboard-pending-coins'] ?
-              $storage['dashboard-pending-coins'] :
-              false;
+            suppressAddCoin =
+              $storage['dashboard-pending-coins'] ?
+                $storage['dashboard-pending-coins'] :
+                false;
 
         delete $storage['dashboard-pending-coins'];
 
-        //TODO: Temporary solution for the userpass
+        // TODO: Temporary solution for the userpass
         if (!isCheck && !$api.Iguana_GetRPCAuth()) {
           $api.Iguana_GenerateRPCAuth();
         }
@@ -190,12 +192,12 @@ angular.module('IguanaGUIApp')
                 }
 
                 $api
-                  .walletEncrypt(
-                    self.passphraseModel,
-                    self.coinsSelectedToAdd[coinKeys[0]].coinId)
-                  .then(function() {
-                    walletLogin(edexRedirect, isCheck);
-                  });
+                .walletEncrypt(
+                  self.passphraseModel,
+                  self.coinsSelectedToAdd[coinKeys[0]].coinId)
+                .then(function() {
+                  walletLogin(edexRedirect, isCheck);
+                });
               } else {
                 deferred.resolve(data);
               }
@@ -262,7 +264,7 @@ angular.module('IguanaGUIApp')
         'passphrase',
         'rates',
         'iguanaNullReturnCount'
-      ])
+      ]);
     };
 
     this.logoutCoind = function() {
@@ -372,6 +374,7 @@ angular.module('IguanaGUIApp')
                   message = 'MESSAGE.AUTHENTICATION_ERROR';
                 }
               }
+
               if (response.data.message) {
                 if (response.data.message.indexOf('connect ECONNREFUSED') !== -1) {
                   message = 'MESSAGE.NO_DAEMON_IS_RUNNING';
@@ -401,6 +404,7 @@ angular.module('IguanaGUIApp')
           if (!$storage.isIguana) {
             $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
           }
+
           $storage['iguana-login-active-coin'] = {};
 
           if (!edexRedirect) {

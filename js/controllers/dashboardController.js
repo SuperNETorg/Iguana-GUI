@@ -139,8 +139,9 @@ angular.module('IguanaGUIApp')
             $auth
               .checkIguanaCoinsSelection(true)
               .then(
-                function () {
+                function() {
                   var coinNames = [];
+
                   for (var name in $auth.coinsSelectedToAdd) {
                     if (!$storage['dashboard-logged-in-coins'][name]) {
                       $storage['dashboard-logged-in-coins'][name] = $auth.coinsSelectedToAdd[name];
@@ -149,13 +150,13 @@ angular.module('IguanaGUIApp')
                   }
 
                   $message.ngPrepMessageModal(
-                    coinNames.join(', ') + (coinNames.length > 1 ?' are' : ' is') + $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
+                    coinNames.join(', ') + (coinNames.length > 1 ? ' are' : ' is') + $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
                     'green'
                   );
 
                   constructAccountCoinRepeater();
                 },
-                function (reason) {
+                function(reason) {
                   if (dev.showConsoleMessages && dev.isDev)
                     console.log('request failed: ' + reason);
                 }

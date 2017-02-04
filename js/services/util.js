@@ -90,6 +90,7 @@ angular.module('IguanaGUIApp')
         }
 
         temp.remove();
+
         if (message) {
           $message.ngPrepMessageModal(message, color);
         }
@@ -100,6 +101,7 @@ angular.module('IguanaGUIApp')
       if (str[str.length - 1] === ' ') {
         str = str.replace(/, $/, '');
       }
+
       if (str[str.length - 1] === ',') {
         str = str.replace(/,$/, '');
       }

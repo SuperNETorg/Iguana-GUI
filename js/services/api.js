@@ -149,6 +149,7 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('Connections: ' + response.data.result.connections);
           }
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(
               'Blocks: ' +
@@ -224,9 +225,11 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('Connections: ' + peers[0].replace('peers.', ''));
           }
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('Blocks: ' + currentHeight);
           }
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
               totalBundles[0] + ' (' + (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2) + '% synced)');
@@ -371,13 +374,16 @@ angular.module('IguanaGUIApp')
         if (dev.showConsoleMessages && dev.isDev) {
           console.log('p2p test ' + index);
         }
+
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
         }
+
         if (response.data && response.data.error === 'coin is busy processing') {
           self.coinsInfo[index].connection = true;
           self.coinsInfo[index].RT = false;
         }
+
         if (response.data && response.data.result && response.data.result.relayfee) {
           self.coinsInfo[index].relayFee = response.data.result.relayfee;
         }
@@ -395,6 +401,7 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('portp2p con test passed');
           }
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(index + ' daemon is detected');
           }
@@ -430,6 +437,7 @@ angular.module('IguanaGUIApp')
         if (!self.coinsInfo) {
           self.coinsInfo = {};
         }
+
         if (!self.coinsInfo[index]) {
           self.coinsInfo[index] = {};
         }
@@ -451,12 +459,14 @@ angular.module('IguanaGUIApp')
               console.log('server is busy, check back later');
             }
           }
+
           if (response.data.error &&
             response.data.error.indexOf('Verifying blocks...') > -1) {
             if (dev.showConsoleMessages && dev.isDev) {
               console.log(index + ' is verifying blocks...');
             }
           }
+
           if (dev.showConsoleMessages && dev.isDev) {
             console.log('coind response: ', response.data);
           }
@@ -673,6 +683,7 @@ angular.module('IguanaGUIApp')
           } else if (response.data.error.message.indexOf('Error: running with an unencrypted wallet, but walletpassphrase was called') > -1) {
             result = -15;
           }
+
           if (dev.showConsoleMessages && dev.isDev)
             console.log(response);
         } else {
@@ -793,6 +804,7 @@ angular.module('IguanaGUIApp')
         }
       }, function(response) {
         deferred.reject(response);
+
         if (dev.showConsoleMessages && dev.isDev) {
           console.log(response);
         }
@@ -812,9 +824,9 @@ angular.module('IguanaGUIApp')
 
       var params = JSON.parse(iguanaAddCoinParams[coin.coinId]);
 
-      params['userpass'] = this.Iguana_GetRPCAuth();
-      params['RELAY'] = coin.activeMode;
-      params['VALIDATE'] = coin.activeMode;
+      params.userpass = this.Iguana_GetRPCAuth();
+      params.RELAY = coin.activeMode;
+      params.VALIDATE = coin.activeMode;
 
       params = JSON.stringify(params);
 
@@ -826,12 +838,14 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(response);
           }
+
           if (response.data.result === 'coin added' ||
             response.data.result === 'coin already there') {
             result.push([coin.coinId, response]);
           } else {
             result.push([coin.coinId, response]);
           }
+
           deferred.resolve([result, ++_index]);
         },
         function(response) {
@@ -919,78 +933,72 @@ angular.module('IguanaGUIApp')
           fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
           deferred = $q.defer();
 
-      http
-        .get(fullUrl, '', {
-          cache: false
-        })
-        .then(
-          function(response) {
-            response = response.data;
+      http.get(fullUrl, '', {
+        cache: false
+      })
+      .then(
+        function(response) {
+          response = response.data;
 
-            if (response && Object.keys(response).length) {
-              result = response; //response[quoteComponents[1]];
+          if (response && Object.keys(response).length) {
+            result = response; //response[quoteComponents[1]];
 
-              if (dev.showConsoleMessages && dev.isDev) {
-                console.log(
-                  'rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
-              }
-            } else {
-              result = false;
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(
+                'rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
             }
-            deferred.resolve([result, quoteComponents[0]]);
-          },
-          function() {
-            console.log('falling back to ext service #2');
+          } else {
+            result = false;
+          }
 
-            http.get(
-              'http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(),
-              '', {
+          deferred.resolve([result, quoteComponents[0]]);
+        },
+        function() {
+          console.log('falling back to ext service #2');
+
+          http.get(
+            'http://api.cryptocoincharts.info/tradingPair/btc_' + quoteComponents[1].toLowerCase(),
+            '', { cache: false }
+          )
+          .then(function(response) {
+            var response = response.data;
+
+            if (response.price) {
+              var btcToCurrency = response.price;
+
+              // get btc -> altcoin rate
+              http.get('https://poloniex.com/public?command=returnTicker', '', {
                 cache: false
               })
-                .then(function(response) {
-                  var response = response.data;
+              .then(function(response) {
+                var response = response.data;
 
-                  if (response.price) {
-                    var btcToCurrency = response.price;
+                if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
+                  result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
 
-                    // get btc -> altcoin rate
-                    http.get(
-                      'https://poloniex.com/public?command=returnTicker', '',
-                      {
-                        cache: false
-                      })
-                        .then(function(response) {
-                          var response = response.data;
-
-                          if (response['BTC_' + quoteComponents[0].toUpperCase()]) {
-                            result = btcToCurrency * response['BTC_' + quoteComponents[0].toUpperCase()].last;
-
-                            if (dev.showConsoleMessages && dev.isDev) {
-                              console.log(
-                                'rates source http://api.cryptocoincharts.info and https://poloniex.com');
-                            }
-                          } else {
-                            result = false;
-                          }
-
-                          deferred.resolve([result, quoteComponents[0]]);
-                        }, function(response) {
-                          if (dev.showConsoleMessages && dev.isDev) {
-                            console.log(
-                              'both services are failed to respond');
-                          }
-                        });
-
-                  } else {
-                    deferred.resolve([false]);
-                  }
-                }, function(response) {
                   if (dev.showConsoleMessages && dev.isDev) {
-                    console.log('both services failed to respond');
+                    console.log('rates source http://api.cryptocoincharts.info and https://poloniex.com');
                   }
-                })
-          }
-        );
+                } else {
+                  result = false;
+                }
+
+                deferred.resolve([result, quoteComponents[0]]);
+              }, function(response) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('both services are failed to respond');
+                }
+              });
+            } else {
+              deferred.resolve([false]);
+            }
+          }, function(response) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('both services failed to respond');
+            }
+          })
+        }
+      );
 
       return deferred.promise;
     };
@@ -1109,30 +1117,30 @@ angular.module('IguanaGUIApp')
             method === 'settxfee') ? (conf.coindPort ? conf.coindPort : conf.portp2p) : conf.portp2p;
 
           return $storage['isIguana'] ? (reroute +
-            this.getConf().server.ip + ':' +
-            reroutePorfConf + '/api/bitcoinrpc/' + method) : (settings.proxy +
-            this.getConf().server.ip + ':' +
-            (conf.coindPort ? conf.coindPort : conf.portp2p));
+                                         this.getConf().server.ip + ':' +
+                                         reroutePorfConf + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                                         this.getConf().server.ip + ':' +
+                                         (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
           return $storage['isIguana'] ? (reroute +
-            this.getConf().server.ip + ':' +
-            reroutePort) : (settings.proxy +
-            this.getConf().server.ip + ':' +
-            this.getConf(false, coin).server.port);
+                                         this.getConf().server.ip + ':' +
+                                         reroutePort) : (settings.proxy +
+                                         this.getConf().server.ip + ':' +
+                                         this.getConf(false, coin).server.port);
         }
       } else {
         if (conf) {
           return $storage.isIguana ? (this.getConf().server.protocol +
-            this.getConf().server.ip + ':' +
-            conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
-            this.getConf().server.ip + ':' +
-            (conf.coindPort ? conf.coindPort : conf.portp2p));
+                                      this.getConf().server.ip + ':' +
+                                      conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                                      this.getConf().server.ip + ':' +
+                                      (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
           return $storage.isIguana ? (this.getConf().server.protocol +
-            this.getConf().server.ip + ':' +
-            this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
-            this.getConf().server.ip + ':' +
-            this.getConf(false, coin).server.port);
+                                      this.getConf().server.ip + ':' +
+                                      this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                                      this.getConf().server.ip + ':' +
+                                      this.getConf(false, coin).server.port);
         }
       }
     };
@@ -1175,6 +1183,7 @@ angular.module('IguanaGUIApp')
               if (dev.showConsoleMessages && dev.isDev) {
                 console.log('error: ' + response.data.error);
               }
+
               result = false;
             } else {
               if (response.data.result.length) {
@@ -1218,6 +1227,7 @@ angular.module('IguanaGUIApp')
           if (dev.showConsoleMessages && dev.isDev) {
             console.log(_response);
           }
+
           if (_response.data.result) {
             // non-iguana
             result = _response.data.result;
@@ -1235,8 +1245,8 @@ angular.module('IguanaGUIApp')
               if (dev.showConsoleMessages && dev.isDev) {
                 console.log('error: ' + response.error);
               }
-              result = false;
 
+              result = false;
             } else {
               if (response.data.result.length) {
                 result = response.data.result;
@@ -1314,6 +1324,7 @@ angular.module('IguanaGUIApp')
           account = dev.coinAccountsDev.coind[coin];
         }
       }
+
       if (dev.isNightwatch && $storage.isIguana) {
         account = '';
       }
@@ -1347,6 +1358,7 @@ angular.module('IguanaGUIApp')
               if (dev.showConsoleMessages && dev.isDev) {
                 console.log('error: ' + response.data.error);
               }
+
               result = false;
             } else {
               if (response.data.result.length) {
@@ -1361,7 +1373,6 @@ angular.module('IguanaGUIApp')
         deferred.resolve(result, update);
       }.bind(this), function(response) {
         deferred.reject(result, update);
-
       }.bind(this));
 
       return deferred.promise;
@@ -1376,6 +1387,7 @@ angular.module('IguanaGUIApp')
           account = dev.coinAccountsDev.coind[coin];
         }
       }
+
       if (dev.isNightwatch && $storage.isIguana) {
         account = '';
       }
@@ -1416,6 +1428,7 @@ angular.module('IguanaGUIApp')
                 }
               }
             }
+
             deferred.resolve([result, coin]);
           } else {
             if (
@@ -1425,6 +1438,7 @@ angular.module('IguanaGUIApp')
               if (!this.coinsInfo[coin]) {
                 this.coinsInfo[coin] = {};
               }
+
               this.coinsInfo[coin].connection = true;
             }
           }
@@ -1495,19 +1509,19 @@ angular.module('IguanaGUIApp')
     };
 
     this.Iguana_SetRPCAuth = function(RPCKey) {
-      $storage['IguanaRPCAuth'] = md5.createHash(RPCKey);
+      $storage.IguanaRPCAuth = md5.createHash(RPCKey);
     };
 
     this.Iguana_GetRPCAuth = function() {
-      return $storage['IguanaRPCAuth'];
+      return $storage.IguanaRPCAuth;
     };
 
-    this.getSelectedCoins = function () {
+    this.getSelectedCoins = function() {
       var deferred = $q.defer(),
           defaultIguanaServerUrl = this.getConf().server.protocol +
-                                    this.getConf().server.ip +
-                                    ':' +
-                                    this.getConf().server.iguanaPort,
+                                   this.getConf().server.ip +
+                                   ':' +
+                                   this.getConf().server.iguanaPort,
           upass = this.Iguana_GetRPCAuth();
 
       http.get(defaultIguanaServerUrl + '/api/InstantDEX/allcoins', {

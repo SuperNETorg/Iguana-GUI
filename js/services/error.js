@@ -12,8 +12,9 @@ angular.module('IguanaGUIApp')
   '$timeout',
   '$rootScope',
   '$interval',
+  '$window',
   function($q, vars, util, $state, $storage, $sessionStorage,
-           $message, $timeout, $rootScope, $interval) {
+           $message, $timeout, $rootScope, $interval, $window) {
 
     vars.error = this;
 
@@ -59,17 +60,19 @@ angular.module('IguanaGUIApp')
         if (response.status === -1 && response.statusText === '') {
           $interval.cancel(vars.dashboardUpdateRef);
           $timeout.cancel(vars.iguanaTimeOut);
+
           if (
             !$sessionStorage.$message.active ||
             !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']
           ) {
-            vars.iguanaTimeOut = $timeout(function () {
+            vars.iguanaTimeOut = $timeout(function() {
               messageType = 'logout';
               message = 'DAEMONS_ERROR';
               hideErrors(message);
               viewErrors();
             }, settings.appViewMessageTimeout * 1000);
           }
+
           if (isShowConsole) {
             console.log('connection error');
           }
@@ -127,7 +130,7 @@ angular.module('IguanaGUIApp')
           vars.noIguanaTimeOut = $timeout(function() {
             message = 'PROXY_ERROR';
             viewErrors();
-          }, settings.appViewMessageTimeout * 1000)
+          }, settings.appViewMessageTimeout * 1000);
         }
       } else {
         if (
@@ -161,20 +164,25 @@ angular.module('IguanaGUIApp')
       switch (errors) {
         case 'need to unlock wallet':
           isViewAndLogOut = true;
+
           if (!message) {
             message = 'APP_FAILURE';
           }
+
           if (messageType === true) {
             messageType = 'logout';
           }
+
           consoleMessage = '';
           status = 10;
           break;
         case 'null return from iguana_bitcoinRPC':
           isViewAndLogOut = true;
-          if (response.config.method == 'GET') {
+
+          if (response.config.method === 'GET') {
             isViewAndLogOut = false;
           }
+
           if (
             $sessionStorage.$message.active &&
             $sessionStorage.$message.active['MESSAGE.APP_FAILURE_ALT']
@@ -185,16 +193,19 @@ angular.module('IguanaGUIApp')
               message = 'APP_FAILURE_ALT';
             }
           }
+
           if (messageType === true) {
             messageType = 'logout';
           }
+
           consoleMessage = 'iguana crashed? attempts: ' + $storage.activeCoin + ' of ' + settings.iguanaNullReturnCountThreshold + ' max';
           status = null;
           break;
         case 'authentication error':
-          if (response.config.method == 'GET') {
+          if (response.config.method === 'GET') {
             isViewAndLogOut = false;
           }
+
           if (
             $sessionStorage.$message.active &&
             $sessionStorage.$message.active['MESSAGE.AUTHENTICATION_ERROR']
@@ -205,9 +216,11 @@ angular.module('IguanaGUIApp')
               message = 'AUTHENTICATION_ERROR';
             }
           }
+
           if (messageType === true) {
             messageType = 'logout';
           }
+
           consoleMessage = 'authentication error';
           status = null;
           break;
@@ -230,6 +243,7 @@ angular.module('IguanaGUIApp')
             isViewAndLogOut = true;
             hideErrors(message)
           }
+
           $interval.cancel(vars.dashboardUpdateRef);
 
           isShowConsole = true;

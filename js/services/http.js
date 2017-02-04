@@ -10,7 +10,9 @@ angular.module('IguanaGUIApp')
   '$timeout',
   function($q, $http, vars, error, $timeout) {
 
-    var intervalUpdate, firstTimeout;
+    var intervalUpdate,
+        firstTimeout;
+
     vars.first = true;
 
     return {
@@ -19,10 +21,11 @@ angular.module('IguanaGUIApp')
     };
 
     function get() {
+      var deferred = $q.defer();
+
       $timeout.cancel(intervalUpdate);
       loader(true);
 
-      var deferred = $q.defer();
       $http
         .get.apply(null, arguments)
         .then(onResolve.bind(this, deferred), onReject.bind(this, deferred));
@@ -31,10 +34,11 @@ angular.module('IguanaGUIApp')
     }
 
     function post() {
+      var deferred = $q.defer();
+
       $timeout.cancel(intervalUpdate);
       loader(true);
 
-      var deferred = $q.defer();
       $http
         .post.apply(null, arguments)
         .then(onResolve.bind(this, deferred), onReject.bind(this, deferred));
@@ -59,15 +63,16 @@ angular.module('IguanaGUIApp')
     function loader(status) {
       intervalUpdate = $timeout(function() {
         vars.loading = status;
+
         if (!vars.effect) {
           vars.effect = true;
-          angular.element(document.querySelector('.loader-image')).css('display','none');
+          angular.element(document.querySelector('.loader-image')).css('display', 'none');
           firstTimeout = $timeout(function() {
             vars.first = false;
-          }, 700)
+          }, 700);
         } else if (!vars.first) {
           $timeout.cancel(firstTimeout);
-          angular.element(document.querySelector('.loader-image')).css('display','block');
+          angular.element(document.querySelector('.loader-image')).css('display', 'block');
           angular.element(document.querySelector('.loader-image-head')).removeClass('loader-image-effect');
         }
       });

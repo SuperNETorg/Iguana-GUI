@@ -18,6 +18,7 @@ angular.module('IguanaGUIApp')
       if (format === 'DDMMMYYYY') {
         return date + ' ' + month + ' ' + year;
       }
+
       if (format === 'HHMM') {
         return hour + ':' + min;
       }

@@ -83,16 +83,16 @@ angular.module('IguanaGUIApp')
     this.checkIfIguanaOrCoindIsPresent = function() { // TODO: move portpoll service
       var numPortsResponding = 0;
 
-      if (coinsInfo != undefined)
+      if (coinsInfo !== undefined)
         for (var key in coinsInfo) {
           if (coinsInfo[key].connection === true && coinsInfo[key].coin !== 'undefined') numPortsResponding++;
         }
 
       if (this.setPortPollResponseDS && ((!$storage['isIguana'] && !numPortsResponding) ||
-        (this.setPortPollResponseDS.isIguana === false &&
-        this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
-        (this.setPortPollResponseDS.isIguana === false &&
-        this.setPortPollResponseDS.proxy === false))) {
+          (this.setPortPollResponseDS.isIguana === false &&
+          this.setPortPollResponseDS.proxy === true && !numPortsResponding) ||
+          (this.setPortPollResponseDS.isIguana === false &&
+          this.setPortPollResponseDS.proxy === false))) {
         $message.ngPrepMessageNoDaemonModal();
 
         // logout
@@ -117,7 +117,8 @@ angular.module('IguanaGUIApp')
          }, 250);*/
 
         var messageModal = angular.element('.iguana-modal'),
-        iguanaNullReturnCount = 0;
+            iguanaNullReturnCount = 0;
+
         messageModal.removeClass('in');
 
         setTimeout(function() {
