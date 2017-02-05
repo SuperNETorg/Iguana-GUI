@@ -21,7 +21,7 @@
                ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
-                 ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
+                 ng-class="{ 'hidden': sideBarCoins.length === 1 }"></div>
             <div class="clickable-area">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
