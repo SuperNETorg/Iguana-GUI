@@ -139,10 +139,16 @@ body {
                     margin-left: -0.36em;
                     @include margin-top-bottom(0.2em);
 
+                    .pull-left:last-child {
+                      position: relative;
+                      top: -2px;
+                    }
                     .name {
                       font-size: 0.85em;
                       margin-left: 0.4em;
                       margin-top: 0em;
+                      position: relative;
+                      top: 3px;
                     }
                     .mode {
                       background-color: #C7CCD0;

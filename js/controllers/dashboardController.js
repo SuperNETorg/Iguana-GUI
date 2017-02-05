@@ -283,7 +283,7 @@ angular.module('IguanaGUIApp')
                 function(response) {
                   var _syncInfo = {};
 
-                  if (response[0].data) {
+                  if (response[0].data && response[0].data.status) {
                     var iguanaGetInfo = response[0].data.status.split(' '),
                         totalBundles = iguanaGetInfo[20].split(':'),
                         currentHeight = iguanaGetInfo[9].replace('h.', ''),
@@ -293,8 +293,7 @@ angular.module('IguanaGUIApp')
                     _syncInfo.blocks = currentHeight;
                     _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
                     _syncInfo.totalBundles = totalBundles[0];
-                    _syncInfo.bundlesPercentage = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(2);
-                    _syncInfo.syncTitle = 'Syncronized at ' + _syncInfo.bundlesPercentage + '%';
+                    _syncInfo.bundlesPercentage = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(1);
 
                     if (dev.showConsoleMessages && dev.isDev) {
                       console.log('Connections: ' + peers[0].replace('peers.', ''));
@@ -346,7 +345,7 @@ angular.module('IguanaGUIApp')
                       _syncInfo.peers = response[0].data.result.connections;
                       _syncInfo.localBlocks = response[0].data.result.blocks;
                       _syncInfo.totalBlocks = response[0].data.result.longestchain;
-                      _syncInfo.blocksPercentage = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
+                      _syncInfo.blocksPercentage = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
 
                       if (_syncInfo.localBlocks !== _syncInfo.totalBlocks) {
                         _syncInfo.isRT = false;

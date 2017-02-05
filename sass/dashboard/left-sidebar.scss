@@ -33,6 +33,11 @@
       width: 17px;
       z-index: 200;
     }
+    .sync {
+      font-size: 0.72em;
+      font-weight: 500;
+      padding-left: 6px;
+    }
     .sync-info {
       position: absolute;
       top: 7px;
@@ -106,6 +111,42 @@
 
       circle {
         stroke-width: 3px;
+      }
+    }
+  }
+  .item.syncing {
+    background: #FFEDE7;
+
+    .progress-bar-container {
+      background: #EEE1E0;
+      height: 3px;
+      margin-top: 3px;
+      margin-left: 6px;
+      width: 85px;
+      position: absolute;
+
+      .progress-bar {
+        background: #C7CCD0;
+        box-shadow: none;
+        height: 3px;
+        border-radius: 6px;
+      }
+    }
+  }
+  .item.active.syncing {
+    .progress-bar-container {
+      height: 3px;
+      background: #FE8656;
+      margin-top: 3px;
+      margin-left: 6px;
+      width: 85px;
+      position: absolute;
+
+      .progress-bar {
+        height: 3px;
+        background: $color-absolute-white;
+        border-radius: 6px;
+        box-shadow: 0 0 3px $color-orange;
       }
     }
   }

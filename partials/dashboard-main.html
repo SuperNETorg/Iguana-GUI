@@ -16,10 +16,9 @@
         <div class="account-coins-repeater">
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
-               ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile() }"
+               ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile(), 'syncing': coinSyncInfo[item.id].loaderBar }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
-               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
-               title="{{ coinSyncInfo[item.id].syncTitle }}">
+               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
                  ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
@@ -27,8 +26,12 @@
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
                 <div class="pull-left">
-                  <div class="name" ng-if="activeSyncInfo !== item.id">{{ item.name }}</div>
-                  <div class="mode" ng-if="activeSyncInfo !== item.id">{{ item.mode }}</div>
+                  <div class="name">{{ item.name }}</div>
+                  <div class="sync" ng-if="coinSyncInfo[item.id].loaderBar">{{ 'DASHBOARD.SYNCING' | lang }}: {{ isIguana ? coinSyncInfo[item.id].bundlesPercentage : coinSyncInfo[item.id].blocksPercentage }}%</div>
+                  <div class="progress-bar-container" ng-if="coinSyncInfo[item.id].loaderBar">
+                    <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
+                  </div>
+                  <div class="mode" ng-if="!coinSyncInfo[item.id].loaderBar">{{ item.mode }}</div>
                 </div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }" ng-if="activeSyncInfo !== item.id">
@@ -37,7 +40,7 @@
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
-            <span class="sync-info-block" ng-if="coinSyncInfo[item.id] && coinSyncInfo[item.id].loaderBar">
+            <!--span class="sync-info-block" ng-if="coinSyncInfo[item.id] && coinSyncInfo[item.id].loaderBar">
               <div class="info-icon" ng-click="showSyncInfo(item.id)">i</div>
               <div class="sync-info" ng-if="activeSyncInfo === item.id">
                 Peers: {{ coinSyncInfo[item.id].peers }}<br/>
@@ -51,8 +54,7 @@
                   Blocks: {{ coinSyncInfo[item.id].localBlocks }} / {{ coinSyncInfo[item.id].totalBlocks }}<br/>
                 </span>
               </div>
-              <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
-            </span>
+            </span-->
           </div>
         </div>
         <button class="btn btn-add-coin" ng-click="openAddCoinModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
@@ -83,11 +85,15 @@
           <div class="clearfix"></div>
         </div>
         <div class="transactions-list">
+          <div class="progress-bar-syncing" ng-if="coinSyncInfo[activeCoin].loaderBar">{{ 'DASHBOARD.SYNCING' | lang }}: {{ isIguana ? coinSyncInfo[activeCoin].bundlesPercentage : coinSyncInfo[activeCoin].blocksPercentage }}% <span class="max-value pull-right">100%</span></div>
+          <div class="progress-bar-container" ng-if="coinSyncInfo[activeCoin].loaderBar">
+            <div class="progress-bar" ng-style="coinSyncInfo[activeCoin].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[activeCoin].loaderBarSize + '%' } : {}"></div>
+          </div>
           <div class="title unselectable">{{ 'DASHBOARD.HISTORY' | lang }}</div>
           <div class="transactions-list-repeater">
             <spinner visibility="txUnit.loading"></spinner>
             <div class="no-results"
-                 ng-if="txUnit.transactions.length === 0 && !txUnit.loading">
+                 ng-if="txUnit.transactions.length === 1 && !txUnit.loading">
               {{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}
             </div>
             <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"

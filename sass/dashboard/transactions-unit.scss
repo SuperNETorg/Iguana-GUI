@@ -8,6 +8,26 @@
 .transactions-unit {
   border-radius: $border-radius-smaller;
 
+  .progress-bar-container {
+    height: 3px;
+    background: #F5F8FB;
+    margin-bottom: 20px;
+    margin-top: 5px;
+
+    .progress-bar {
+      background: $color-orange;
+      border-radius: 6px;
+      box-shadow: 0 0 3px $color-orange;
+    }
+  }
+  .progress-bar-syncing {
+    color: $color-orange;
+    font-size: 1.07em;
+
+    .max-value {
+      color: $color-dark-gray;
+    }
+  }
   .top-bar {
     @include bold;
     @include orange-gradient;
