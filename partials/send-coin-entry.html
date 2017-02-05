@@ -68,7 +68,7 @@
                          'line-height-empty': dropDown.emptyItems,
                          'active': sendCoin.checkedAmountType == item.name,
                          'disabled': sendCoin.checkedAmountType !== item.name && (activeCoin !== 'btc' || dropDown.emptyItems)
-                        }"
+                       }"
                        ng-repeat="item in dropDown.items"
                        ng-model="checkModel.type"
                        ng-click="change()"

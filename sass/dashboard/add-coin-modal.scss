@@ -192,6 +192,15 @@ body .add-coin-login-form .modal-add-coin-login-form,
           width: 50%;
         }
       }
+      .btn-group.all-modes {
+        width: 100%;
+
+        .btn {
+          width: 33.33%;
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
     }
     .coin.fade {
       opacity: 0 !important; /* override opacity set in js */
