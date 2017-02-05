@@ -293,7 +293,8 @@ angular.module('IguanaGUIApp')
                     _syncInfo.blocks = currentHeight;
                     _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
                     _syncInfo.totalBundles = totalBundles[0];
-                    _syncInfo.bundlesPercentage = (iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(1);
+                    _syncInfo.bundlesPercentage = Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(1);
+                    if (_syncInfo.bundlesPercentage === NaN) _syncInfo.bundlesPercentage = 0;
 
                     if (dev.showConsoleMessages && dev.isDev) {
                       console.log('Connections: ' + peers[0].replace('peers.', ''));
@@ -345,7 +346,8 @@ angular.module('IguanaGUIApp')
                       _syncInfo.peers = response[0].data.result.connections;
                       _syncInfo.localBlocks = response[0].data.result.blocks;
                       _syncInfo.totalBlocks = response[0].data.result.longestchain;
-                      _syncInfo.blocksPercentage = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
+                      _syncInfo.blocksPercentage = Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
+                      if (_syncInfo.blocksPercentage === NaN) _syncInfo.blocksPercentage = 0;
 
                       if (_syncInfo.localBlocks !== _syncInfo.totalBlocks) {
                         _syncInfo.isRT = false;
