@@ -571,6 +571,8 @@ angular.module('IguanaGUIApp')
             }
           }
         }
+      } else {
+        delete $scope.txUnit.transactions;
       }
     }
 
