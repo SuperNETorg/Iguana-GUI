@@ -8,7 +8,8 @@ var _settings = {
   decimalPlacesCoin: 1,
   decimalPlacesCurrency: 2,
   decimalPlacesTxUnit: 5,
-  dashboardUpdateTimout: 15, // sec
+  maxDecimalPlacesLimit: 8,
+  dashboardUpdateTimeout: 15, // sec, deprecated
   defaultCurrency: 'USD',
   defaultLang: 'EN',
   portPollUpdateTimeout: 60, // sec

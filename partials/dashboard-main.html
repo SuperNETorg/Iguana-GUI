@@ -5,7 +5,7 @@
     <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
-        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency') : 0 }}</span>
+        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency' : true) : 0 }}</span>
         <span class="currency">{{ currency }}</span>
       </div>
     </div>
@@ -18,7 +18,8 @@
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
                ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile(), 'syncing': coinSyncInfo[item.id].loaderBar }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
-               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )">
+               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
+               title="isIguana ? Blocks: {{ coinSyncInfo[item.id].localBlocks }} / {{ coinSyncInfo[item.id].totalBlocks }} Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
                  ng-class="{ 'hidden': sideBarCoins.length === 1 }"></div>
@@ -35,26 +36,11 @@
                 </div>
               </div>
               <div class="balance" ng-class="{ 'invisible': item.loading }" ng-if="activeSyncInfo !== item.id">
-                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
-                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency') : 0 }}</span> {{ item.currencyName }}</div>
+                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin' : true) : 0 }}</span> {{ item.coinIdUc }}</div>
+                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency' : true) : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
-            <!--span class="sync-info-block" ng-if="coinSyncInfo[item.id] && coinSyncInfo[item.id].loaderBar">
-              <div class="info-icon" ng-click="showSyncInfo(item.id)">i</div>
-              <div class="sync-info" ng-if="activeSyncInfo === item.id">
-                Peers: {{ coinSyncInfo[item.id].peers }}<br/>
-                <span ng-if="isIguana">
-                  Sync: {{ coinSyncInfo[item.id].bundlesPercentage }}%<br/>
-                  Blocks: {{ coinSyncInfo[item.id].blocks }}<br/>
-                  Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}
-                </span>
-                <span ng-if="!isIguana">
-                  Sync: {{ coinSyncInfo[item.id].blocksPercentage }}%<br/>
-                  Blocks: {{ coinSyncInfo[item.id].localBlocks }} / {{ coinSyncInfo[item.id].totalBlocks }}<br/>
-                </span>
-              </div>
-            </span-->
           </div>
         </div>
         <button class="btn btn-add-coin" ng-click="openAddCoinModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
@@ -71,11 +57,11 @@
             <span>{{ 'DASHBOARD.INFORMATION' | lang }}</span>
           </div>
           <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat: 'coin') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat: 'coin' : true) : 0 }}</span>
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
           </div>
           <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency' : true) : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
           <div class="action-buttons unselectable">

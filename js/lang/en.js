@@ -271,7 +271,7 @@ var lang = {
       'DAY': 'day ago',
       'DAYS': 'days ago'
     },
-    'EXPERIMENTAL':{
+    'EXPERIMENTAL': {
       'ARE': 'are',
       'IS': 'is',
       'DASHBOARD_OUT_OF_SYNC_P3': 'out of sync. Information about balances, transactions and send/receive functions is limited.',
