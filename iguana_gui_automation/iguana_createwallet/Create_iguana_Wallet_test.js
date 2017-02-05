@@ -43,7 +43,7 @@ afterEach(function(){
  it('verify that login button is present on iguana gui',function()
  {
    var loginButton = element(by.css('.btn.row.btn-signin.ng-binding')).getText();
-                      expect(loginButton).toContain('Log in');
+                      expect(loginButton).toContain('Login');
 
 
 });
