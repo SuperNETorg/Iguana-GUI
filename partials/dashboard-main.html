@@ -19,7 +19,7 @@
                ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile(), 'syncing': coinSyncInfo[item.id].loaderBar }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
                ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
-               title="isIguana ? Blocks: {{ coinSyncInfo[item.id].localBlocks }} / {{ coinSyncInfo[item.id].totalBlocks }} Bundles: {{ coinSyncInfo[item.id].localBundles }} / {{ coinSyncInfo[item.id].totalBundles }}">
+               title="{{ coinSyncInfo[item.id].title }}">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
                  ng-class="{ 'hidden': sideBarCoins.length === 1 }"></div>
