@@ -53,8 +53,8 @@ angular.module('IguanaGUIApp')
           errors = response.data.error;
           iguanaErrorsSwitch();
         } else {
-          hideErrors();
           $timeout.cancel(vars.iguanaTimeOut);
+          hideErrors();
         }
       } else if (response.data === null) {
         if (response.status === -1 && response.statusText === '') {
@@ -77,8 +77,8 @@ angular.module('IguanaGUIApp')
             console.log('connection error');
           }
         } else {
-          hideErrors();
           $interval.cancel(vars.iguanaTimeOut);
+          hideErrors();
         }
       } else {
         if (

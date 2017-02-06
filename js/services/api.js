@@ -296,18 +296,19 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(conf),
           deferred = $q.defer();
 
-      http.post(fullUrl, postData, {
-        cache: false,
-        headers: postAuthHeaders
-      })
-      .then(
-        function(response) {
-          deferred.resolve([coins, response, ++_index, coinsKeys]);
-        },
-        function(response) {
-          deferred.reject([coins, response, ++_index, coinsKeys]);
-        }
-      );
+      http
+        .post(fullUrl, postData, {
+          cache: false,
+          headers: postAuthHeaders
+        })
+        .then(
+          function(response) {
+            deferred.resolve([coins, response, ++_index, coinsKeys]);
+          },
+          function(response) {
+            deferred.reject([coins, response, ++_index, coinsKeys]);
+          }
+        );
 
       return deferred.promise;
     };
@@ -549,58 +550,62 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'encryptwallet'),
           deferred = $q.defer();
 
-      http.post(fullUrl, postData, {
-        cache: false,
-        headers: postAuthHeaders
-      })
-      .then(function(response) {
-        if (dev.showConsoleMessages && dev.isDev) {
-          console.log(response);
-        }
-
-        if (response.result) {
-          // non-iguana
-          if (_response.result) {
-            deferred.resolve(response.result);
-          } else {
-            deferred.resolve(false);
-          }
-        } else {
-          // iguana
-          if (response.data.error) {
-            // do something
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log('error: ' + response.data.error);
-            }
-
-            deferred.resolve(response.data);
-          } else {
-            if (response.data.result === 'success') {
-              deferred.resolve(response.data);
-            } else {
-              deferred.resolve(false);
-            }
-          }
-        }
-      }.bind(this), function(response) {
-        if (response.data) {
-          if (response.data.error.code) {
-            deferred.reject(response.data.error.code);
-            if (dev.showConsoleMessages && dev.isDev) {
-              console.log(response.statusText);
-            }
-          } else {
+      http
+        .post(fullUrl, postData, {
+          cache: false,
+          headers: postAuthHeaders
+        })
+        .then(
+          function(response) {
             if (dev.showConsoleMessages && dev.isDev) {
               console.log(response);
             }
-            deferred.reject(response.data);
-          }
-        } else {
-          if (response.status === -1) {
-            deferred.reject(response.status);
-          }
-        }
-      }.bind(this));
+
+            if (response.result) {
+              // non-iguana
+              if (_response.result) {
+                deferred.resolve(response.result);
+              } else {
+                deferred.resolve(false);
+              }
+            } else {
+              // iguana
+              if (response.data.error) {
+                // do something
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('error: ' + response.data.error);
+                }
+
+                deferred.resolve(response.data);
+              } else {
+                if (response.data.result === 'success') {
+                  deferred.resolve(response.data);
+                } else {
+                  deferred.resolve(false);
+                }
+              }
+            }
+          }.bind(this),
+          function(response) {
+            if (response.data) {
+              if (response.data.error.code) {
+                deferred.reject(response.data.error.code);
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log(response.statusText);
+                }
+              } else {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log(response);
+                }
+                deferred.reject(response.data);
+              }
+            } else {
+              if (response.status === -1) {
+                deferred.reject(response.status);
+              }
+            }
+          }.bind(this)
+        );
 
       return deferred.promise;
     };
@@ -615,8 +620,7 @@ angular.module('IguanaGUIApp')
       http.post(fullUrl, postData, {
         cache: false,
         headers: postAuthHeaders
-      })
-      .then(onResolve, onReject);
+      }).then(onResolve, onReject);
 
       function onResolve(response) {
         if (response.data.result) {
@@ -668,10 +672,11 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'walletpassphrase'),
           deferred = $q.defer();
 
-      http.post($storage.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
-        headers: postAuthHeaders
-      })
-      .then(onResolve, onReject);
+      http
+        .post($storage.isIguana ? defaultIguanaServerUrl : fullUrl, postData, {
+          headers: postAuthHeaders
+        })
+        .then(onResolve, onReject);
 
       function onResolve(response) {
         if (dev.showConsoleMessages && dev.isDev) {
@@ -713,34 +718,39 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getblocktemplate'),
           deferred = $q.defer();
 
-      http.post(fullUrl, postData, {
-        cache: false,
-        headers: postAuthHeaders
-      })
-      .then(function(response) {
-        if (response.data.result.bits) {
-          result = true;
-        } else {
-          result = false;
-        }
+      http
+        .post(fullUrl, postData, {
+          cache: false,
+          headers: postAuthHeaders
+        })
+        .then(
+          function(response) {
+            if (response.data.result.bits) {
+              result = true;
+            } else {
+              result = false;
+            }
 
-        deferred.resolve(result);
-      }.bind(this), function(response) {
-        if (dev.showConsoleMessages && dev.isDev) {
-          console.log(response.data.responseText);
-        }
+            deferred.resolve(result);
+          },
+          function(response) {
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response.data.responseText);
+            }
 
-        if (response.data && response.data.responseText && response.data.responseText.indexOf(':-10') === -1) {
-          result = true;
-        } else {
-          result = false;
-        }
+            if (response.data && response.data.responseText && response.data.responseText.indexOf(
+                ':-10') === -1) {
+              result = true;
+            } else {
+              result = false;
+            }
 
-        deferred.resolve(result);
+            deferred.resolve(result);
 
-        //TODO: not tested
-        /*deferred.reject(result);*/
-      });
+            //TODO: not tested
+            /*deferred.reject(result);*/
+          }
+        );
 
       return deferred.promise;
     };
@@ -797,26 +807,30 @@ angular.module('IguanaGUIApp')
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'getaccountaddress'),
           deferred = $q.defer();
 
-      http.post(fullUrl, postData, {
-        cache: false,
-        headers: postAuthHeaders
-      })
-      .then(function(response) {
-        if (dev.showConsoleMessages && dev.isDev)
-          console.log(response);
-        // iguana
-        if (response.data.address) {
-          deferred.resolve(response.data.address);
-        } else {
-          deferred.resolve(response.data.result); // non-iguana
-        }
-      }, function(response) {
-        deferred.reject(response);
+      http
+        .post(fullUrl, postData, {
+          cache: false,
+          headers: postAuthHeaders
+        })
+        .then(
+          function(response) {
+            if (dev.showConsoleMessages && dev.isDev)
+              console.log(response);
+            // iguana
+            if (response.data.address) {
+              deferred.resolve(response.data.address);
+            } else {
+              deferred.resolve(response.data.result); // non-iguana
+            }
+          },
+          function(response) {
+            deferred.reject(response);
 
-        if (dev.showConsoleMessages && dev.isDev) {
-          console.log(response);
-        }
-      }.bind(this));
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log(response);
+            }
+          }
+        );
 
       return deferred.promise;
     };
@@ -911,26 +925,29 @@ angular.module('IguanaGUIApp')
           '&rel=' +
           quoteComponents[1];
 
-      http.get(fullUrl, '', {
-        cache: false
-      })
-      .then(function(_response) {
-        var response = JSON.parse(_response);
+      http
+        .get(fullUrl, '', {
+          cache: false
+        })
+        .then(
+          function(_response) {
+            var response = JSON.parse(_response);
 
-        if (response.result === 'success') {
-          result = response.quote;
-        } else {
-          deferred.resolve(false);
-        }
-      },
-      function(_response) {
-        // do something
-        if (dev.showConsoleMessages && dev.isDev) {
-          console.log('error: ' + _response.error);
-        }
+            if (response.result === 'success') {
+              result = response.quote;
+            } else {
+              deferred.resolve(false);
+            }
+          },
+          function(_response) {
+            // do something
+            if (dev.showConsoleMessages && dev.isDev) {
+              console.log('error: ' + _response.error);
+            }
 
-        deferred.resolve(false);
-      });
+            deferred.resolve(false);
+          }
+        );
 
       return deferred.promise;
     };
@@ -1028,36 +1045,36 @@ angular.module('IguanaGUIApp')
           method === 'listtransactions' ||
           method === 'sendtoaddress')) { // wip, UAT
         if (conf) {
-            return $storage.isIguana ?
-            {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass)
-            } :
-            { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
-          } else if ($storage.activeCoin || coin) {
-            return $storage.isIguana ?
-              {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
-                                  this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
-              } :
-              {
-                'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
-                                  this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
-              };
-          }
+          return $storage.isIguana ?
+                  {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass)
+                  } :
+                  { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+        } else if ($storage.activeCoin || coin) {
+          return $storage.isIguana ?
+                  {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                      this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+                  } :
+                  {
+                    'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                      this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+                  };
+        }
       } else {
         if (conf) {
           return $storage.isIguana ?
-          { 'Content-Type': 'application/x-www-form-urlencoded' } :
-          { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
+                  { 'Content-Type': 'application/x-www-form-urlencoded' } :
+                  { 'Authorization': 'Basic ' + btoa(conf.user + ':' + conf.pass) };
         } else if ($storage.activeCoin || coin) {
           return $storage.isIguana ?
-            { 'Content-Type': 'application/x-www-form-urlencoded' } :
-            {
-              'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
-                                this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
-            };
+                  { 'Content-Type': 'application/x-www-form-urlencoded' } :
+                  {
+                    'Authorization': 'Basic ' + btoa(this.getConf().coins[coin ? coin : $storage.activeCoin].user + ':' +
+                                      this.getConf().coins[coin ? coin : $storage.activeCoin].pass)
+                  };
         }
       }
 
@@ -1075,18 +1092,20 @@ angular.module('IguanaGUIApp')
           method !== 'listtransactions' &&
           method !== 'sendtoaddress') {
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+                    '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' +
+                    (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
-            '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+                    '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
         }
       } else {
         if ($storage.isIguana) {
           return '{ ' + (coin ? ('\"coin\": \"' + coin.toUpperCase() + '\", ') : '') +
-            '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' + (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
+                    '\"method\": \"' + method + '\", \"immediate\": \"120000\", \"params\": [' +
+                    (!params ? '' : params) + ']' + (upass ? ', \"userpass\": \"' + upass + '\" ' : '') + ' }';
         } else {
           return '{ \"agent\": \"bitcoinrpc\",' +
-            '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
+                    '\"method\": \"' + method + '\", \"timeout\": \"2000\", \"params\": [' + (!params ? '' : params) + '] }';
         }
       }
     };

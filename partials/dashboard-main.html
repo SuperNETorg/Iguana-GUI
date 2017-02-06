@@ -16,7 +16,12 @@
         <div class="account-coins-repeater">
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
-               ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile(), 'syncing': coinSyncInfo[item.id].loaderBar }"
+               ng-class="{
+                        'active': ( activeCoin === item.id || activeCoin === $index ) &&
+                                    !util.isMobile(),
+                        'new': addedByUserCoins.indexOf(item.id) !== -1,
+                        'syncing': coinSyncInfo[item.id].loaderBar
+                }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
                ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
                title="{{ coinSyncInfo[item.id].title }}">

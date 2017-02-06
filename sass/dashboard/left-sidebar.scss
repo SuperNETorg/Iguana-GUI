@@ -16,6 +16,9 @@
     margin-bottom: 20px;
     position: relative;
 
+    &.new {
+      border: 1px solid #FE450D;
+    }
     .info-icon {
       @include cursor-pointer;
       border: solid 2px $color-dark-gray;
