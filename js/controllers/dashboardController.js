@@ -307,6 +307,13 @@ angular.module('IguanaGUIApp')
                       console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
                         totalBundles[0] + ' (' + _syncInfo.bundlesPercentage  + '% synced)');
                     }
+
+                    if (Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]) !== 100) {
+                      _syncInfo.loaderBar = true;
+                      _syncInfo.loaderBarSize = _syncInfo.bundlesPercentage;
+                    } else {
+                      _syncInfo.loaderBar = false;
+                    }
                     if (response[0].data.status.indexOf('.RT0 ') > -1) {
                       _syncInfo.isRT = false;
 
@@ -315,12 +322,6 @@ angular.module('IguanaGUIApp')
                       }
                     } else {
                       _syncInfo.isRT = true;
-                    }
-
-                    if (Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]) !== 100) {
-                      _syncInfo.loaderBar = true;
-                      _syncInfo.loaderBarSize = _syncInfo.bundlesPercentage;
-                    } else {
                       _syncInfo.loaderBar = false;
                     }
                   }
