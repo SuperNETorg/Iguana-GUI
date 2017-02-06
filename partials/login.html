@@ -72,14 +72,13 @@
                   <span ng-if="isChanged" class="error-msg">{{ messages }}</span>
                 </div>
                 <textarea name="loginPassphrase" id="passphrase"
-                          class="login-passphrase-textarea row"
-                          ng-model="passphraseModel"
+                          class="login-passphrase-textarea row" ng-model="passphraseModel"
                           ng-class="{ 'error-field': isChanged && !passphraseModel.length }"
                           ng-change="setIsChanged(true)">
                 </textarea>
                 <button class="btn btn-block row btn-signin-account form-control"
                         ng-click="$storage.isIguana ? openCoinModal('signin') : login()"
-                        ng-disabled="isChanged || isCoinSelected()">
+                        ng-disabled="isChanged || isCoinSelected() || !passphraseModel.length">
                   {{ 'LOGIN.LOGIN' | lang }}
                 </button>
               </div>
