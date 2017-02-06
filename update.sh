@@ -1,4 +1,5 @@
-git checkout 0.2
+#!/usr/bin/env bash
+git checkout 0.3
 git pull
 npm install
 bower install

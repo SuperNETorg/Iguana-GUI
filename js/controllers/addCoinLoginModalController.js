@@ -14,8 +14,9 @@ angular.module('IguanaGUIApp')
   'vars',
   '$rootScope',
   '$auth',
+  'type',
   function($scope, $uibModalInstance, util, $storage, $state, $api,
-           $uibModal, receivedObject, $filter, vars, $rootScope, $auth) {
+           $uibModal, receivedObject, $filter, vars, $rootScope, $auth, type) {
 
     var pageTitle;
 
@@ -37,12 +38,16 @@ angular.module('IguanaGUIApp')
     $scope.messages = '';
     $scope.loginActiveCoin = '';
     $scope.title = setTitle;
+    $scope.type = type;
     $scope.login = login;
     $scope.setIsChanged = isChanged;
     $scope.isCoinSelected = isCoinSelected;
     $scope.getActiveCoins = getActiveCoins;
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
+    $scope.karma = { // test
+      setTitle: setTitle
+    };
 
     if (!$scope.coinsInfo) {
       $rootScope.$on('coinsInfo', onInit);
@@ -95,6 +100,8 @@ angular.module('IguanaGUIApp')
         $scope.step = 'login.step2';
         //$state.go('login.step2');
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function openSignupCoinModal() {
@@ -113,6 +120,8 @@ angular.module('IguanaGUIApp')
         $scope.loginActiveCoin = $storage['iguana-login-active-coin'];
         //$state.go('signup.step1');
       }
+
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function login() {
@@ -123,7 +132,8 @@ angular.module('IguanaGUIApp')
       .then(function(response) {
         $uibModalInstance.close(true);
       }, function(reason) {
-        console.log('request failed: ' + reason);
+        if (dev.showConsoleMessages && dev.isDev)
+          console.log('request failed: ' + reason);
       });
     }
 
@@ -149,98 +159,5 @@ angular.module('IguanaGUIApp')
     $scope.close = function() {
       $uibModalInstance.dismiss();
     };
-  //}
-
-    /*$scope.isIguana = $storage['isIguana'];
-    $scope.open = open;
-    $scope.close = close;
-    $scope.util = util;
-
-    $scope.$state = $state;
-    $scope.passphrase = '';
-    $scope.dev = dev;
-    $scope.coinsSelectedToAdd = [];
-    $scope.$modalInstance = {};
-    $scope.receivedObject = undefined;
-
-    $storage['iguana-login-active-coin'] = [];
-    $storage['iguana-active-coin'] = {};
-
-    /*if (!vars.coinsInfo) {
-      $rootScope.$on('coinsInfo', onInit);
-    } else {
-      onInit(null, vars.coinsInfo);
-    }
-
-    function openLoginCoinModal() {
-      selectCoinModal.resolve = {
-        'type': function() {
-          return 'login';
-        }
-      };
-      var modalInstance = $uibModal.open(selectCoinModal);
-
-      modalInstance.result.then(resultPromise);
-
-      function resultPromise(event, data) {
-        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
-
-        $scope.coins = data;
-        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
-      }
-    }
-
-    function onInit() {
-      $scope.availableCoins = [];
-
-      $scope.openAddCoinModal = function() {
-        var modalInstanceObj = {//$uibModal.open({
-              animation: true,
-              ariaLabelledBy: 'modal-title',
-              ariaDescribedBy: 'modal-body',
-              controller: 'selectCoinModalController',
-              templateUrl: 'partials/add-coin.html',
-              appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
-            };//);
-
-        modalInstance.result.then(resultPromise);
-
-        $rootScope.$on('modal.dismissed', function(event, coins) {
-          resultPromise(coins);
-        });
-
-        function resultPromise(data) {
-          var coinKeys = Object.keys($storage['iguana-login-active-coin']);
-
-          $scope.coins = data;
-          $scope.passphrase = (
-            coinKeys.length ?
-              $storage['iguana-login-active-coin'][coinKeys[0]].pass :
-              ''
-          );
-        }
-      };
-
-      $scope.login = function() {
-        $auth.login(
-          $scope.getActiveCoins(),
-          $scope.passphrase
-        )
-        .then(function(response) {
-          $uibModalInstance.close(true);
-        }, function(reason) {
-          console.log('request failed: ' + reason);
-        });
-      };
-    }
-
-    $scope.close = function() {
-      $uibModalInstance.dismiss();
-    };
-
-    $scope.getActiveCoins = function() {
-      return $storage['iguana-login-active-coin'];
-    };*/
-
   }
 ]);

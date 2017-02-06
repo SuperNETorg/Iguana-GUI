@@ -5,14 +5,12 @@
 
 @import 'dev.scss';
 
-$iguana-modal-boxshadow: #DEA5AB;
-
 .iguana-modal.message-container::before {
   display: initial;
 }
 .iguana-modal.message-container {
   @include proxima;
-  background: rgba(255, 255, 255, 0.7);
+  //background: rgba(255, 255, 255, 0.7);
   z-index: 5000;
 
   a,
@@ -39,7 +37,7 @@ $iguana-modal-boxshadow: #DEA5AB;
     top: 34px;
   }
   .msgbox-header {
-    padding: 16px 15px 14px 15px
+    padding: 16px 15px 14px 15px;
   }
 }
 .iguana-modal.message-container.msg-blue .msgbox-header,

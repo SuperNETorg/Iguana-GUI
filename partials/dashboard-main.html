@@ -5,7 +5,7 @@
     <div class="balance-block unselectable" ng-hide="$state.current.name === 'dashboard.mobileTransactions'">
       <div class="label">{{ 'DASHBOARD.TOTAL_BALANCE' | lang }}</div>
       <div class="balance">
-        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency') : 0 }}</span>
+        <span class="value">{{ totalBalance > 0 ? (totalBalance | decimalPlacesFormat: 'currency' : true) : 0 }}</span>
         <span class="currency">{{ currency }}</span>
       </div>
     </div>
@@ -16,31 +16,44 @@
         <div class="account-coins-repeater">
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
-               ng-class="{ 'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile() }"
+               ng-class="{
+                        'active': ( activeCoin === item.id || activeCoin === $index ) &&
+                                    !util.isMobile(),
+                        'new': addedByUserCoins.indexOf(item.id) !== -1,
+                        'syncing': coinSyncInfo[item.id].loaderBar
+                }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
-               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )">
+               ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
+               title="{{ coinSyncInfo[item.id].title }}">
             <spinner visibility="item.loading"></spinner>
             <div class="remove-coin cursor-pointer" ng-click="removeCoin(item.id)"
-                 ng-class="{ 'hidden': sideBarCoins.length === 1 || disableRemoveCoin }"></div>
+                 ng-class="{ 'hidden': sideBarCoins.length === 1 }"></div>
             <div class="clickable-area">
               <div class="coin">
                 <i class="icon cc {{ item.coinIdUc }}-alt pull-left"></i>
-                <div class="name pull-left">{{ item.name }}</div>
+                <div class="pull-left">
+                  <div class="name">{{ item.name }}</div>
+                  <div class="sync" ng-if="coinSyncInfo[item.id].loaderBar">{{ 'DASHBOARD.SYNCING' | lang }}: {{ isIguana ? coinSyncInfo[item.id].bundlesPercentage : coinSyncInfo[item.id].blocksPercentage }}%</div>
+                  <div class="progress-bar-container" ng-if="coinSyncInfo[item.id].loaderBar">
+                    <div class="progress-bar" ng-style="coinSyncInfo[item.id].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[item.id].loaderBarSize + '%' } : {}"></div>
+                  </div>
+                  <div class="mode" ng-if="!coinSyncInfo[item.id].loaderBar">{{ item.mode }}</div>
+                </div>
               </div>
-              <div class="balance" ng-class="{ 'invisible': item.loading }">
-                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin') : 0 }}</span> {{ item.coinIdUc }}</div>
-                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency') : 0 }}</span> {{ item.currencyName }}</div>
+              <div class="balance" ng-class="{ 'invisible': item.loading }" ng-if="activeSyncInfo !== item.id">
+                <div class="coin-value"><span class="val">{{ item.coinValue > 0 ? (item.coinValue | decimalPlacesFormat: 'coin' : true) : 0 }}</span> {{ item.coinIdUc }}</div>
+                <div class="currency-value"><span class="val">{{ item.currencyValue > 0 ? (item.currencyValue | decimalPlacesFormat: 'currency' : true) : 0 }}</span> {{ item.currencyName }}</div>
               </div>
             </div>
             <div class="bi_interface-right active-arrow"></div>
           </div>
         </div>
-        <button class="btn btn-add-coin" ng-click="isIguana ? openAddCoinModal() : openAddCoinLoginModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
+        <button class="btn btn-add-coin" ng-click="openAddCoinModal()" ng-class="{ 'disabled': !addCoinButtonState }">{{ ( isIguana ? 'DASHBOARD.ADD_COIN' : 'LOGIN.ADD_WALLET' ) | lang }}</button>
       </div>
     </aside>
     <div class="transactions-unit col-lg-8 col-md-8 col-sm-7 col-xs-12 pull-right"
          ng-hide="$state.current.name === 'dashboard.mobileCoins'"
-         ng-style="!isMobile ? ({ 'width': (windowWidth - (isTablet ? 360 : 455)) + 'px' }) : {}">
+         ng-style="!isMobile ? { 'width': (windowWidth - (isTablet ? 360 : 455)) + 'px', 'max-width': '1060px' } : {}">
       <div class="row">
         <div class="top-bar unselectable">
           <spinner visibility="txUnit.loading"></spinner>
@@ -49,29 +62,36 @@
             <span>{{ 'DASHBOARD.INFORMATION' | lang }}</span>
           </div>
           <div class="active-coin-balance" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat: 'coin') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalance > 0 ? (txUnit.activeCoinBalance | decimalPlacesFormat: 'coin' : true) : 0 }}</span>
             <span class="coin-name">{{ activeCoin.toUpperCase() }}</span>
           </div>
           <div class="active-coin-balance-currency" ng-class="{ 'invisible': txUnit.loading }">
-            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency') : 0 }}</span>
+            <span class="value">{{ txUnit.activeCoinBalanceCurrency > 0 ? (txUnit.activeCoinBalanceCurrency | decimalPlacesFormat: 'currency' : true) : 0 }}</span>
             <span class="currency">{{ currency }}</span>
           </div>
           <div class="action-buttons unselectable">
             <button class="btn btn-send offset-right-sm" ng-click="openSendCoinModal()" ng-class="{ 'disabled': sideBarCoinsUnsorted[activeCoin].coinValue === 0 }">{{ 'DASHBOARD.SEND' | lang }}</button>
-            <button class="btn btn-receive coinaddress offset-right-sm" ng-click="openReceiveCoinModal()">{{ 'DASHBOARD.RECEIVE' | lang }}</button>
+            <button class="btn btn-receive coinaddress" ng-click="openReceiveCoinModal()">{{ 'DASHBOARD.RECEIVE' | lang }}</button>
           </div>
           <div class="clearfix"></div>
         </div>
         <div class="transactions-list">
+          <div class="progress-bar-syncing" ng-if="coinSyncInfo[activeCoin].loaderBar">{{ 'DASHBOARD.SYNCING' | lang }}: {{ isIguana ? coinSyncInfo[activeCoin].bundlesPercentage : coinSyncInfo[activeCoin].blocksPercentage }}% <span class="max-value pull-right">100%</span></div>
+          <div class="progress-bar-container" ng-if="coinSyncInfo[activeCoin].loaderBar">
+            <div class="progress-bar" ng-style="coinSyncInfo[activeCoin].loaderBar ? { 'opacity': 1, 'width': coinSyncInfo[activeCoin].loaderBarSize + '%' } : {}"></div>
+          </div>
           <div class="title unselectable">{{ 'DASHBOARD.HISTORY' | lang }}</div>
           <div class="transactions-list-repeater">
             <spinner visibility="txUnit.loading"></spinner>
-            <div class="no-results" ng-if="txUnit.transactions.length === 0 && !txUnit.loading">{{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}</div>
+            <div class="no-results"
+                 ng-if="txUnit.transactions.length === 1 && !txUnit.loading">
+              {{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}
+            </div>
             <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
                  ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
               <div class="status unselectable">{{ item.status }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-              <div class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
+              <div timeago-date="item.timestampDate" timeago-time="item.timestampTime" class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
                 <div timeago-date="item.timestampDate" class="timestamp-date time-ago-date"></div>
                 <div timeago-time="item.timestampTime" class="timestamp-time time-ago-time"></div>
               </div>

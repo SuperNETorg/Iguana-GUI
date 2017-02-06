@@ -7,15 +7,18 @@ angular.module('IguanaGUIApp')
   '$auth',
   'util',
   '$window',
-  function($scope, $state, $auth, util) {
+  '$storage',
+  '$rootScope',
+  function($scope, $state, $auth, util, $window, $storage, $rootScope) {
     $scope.$state = $state;
     $scope.$auth = $auth;
+    $scope.isIguana = $storage.isIguana;
     $scope.navbarStyle = { 'margin-left': 0 };
 
     var element,
         item,
         bundClRect,
-        topMenu = document.getElementById('top-menu'),
+        topMenu = document.querySelector('#top-menu'),
         itemsParent = topMenu.querySelector('.top-menu'),
         items = topMenu.querySelectorAll('.item');
 
@@ -29,9 +32,10 @@ angular.module('IguanaGUIApp')
         }
       }
     });
+
     $scope.clickLeft = function() {
       if ($scope.isMobile) {
-        if (window.innerWidth < itemsParent.offsetWidth) {
+        if ($window.innerWidth < itemsParent.offsetWidth) {
           for (var i = 0; items.length > i; i++) {
             bundClRect = items[i].getBoundingClientRect();
 
@@ -49,11 +53,11 @@ angular.module('IguanaGUIApp')
 
     $scope.clickRight = function() {
       if ($scope.isMobile) {
-        if (window.innerWidth < itemsParent.offsetWidth) {
+        if ($window.innerWidth < itemsParent.offsetWidth) {
           for (var i = items.length - 1; 0 <= i; i--) {
             bundClRect = items[i].getBoundingClientRect();
 
-            if (bundClRect.right > window.innerWidth) {
+            if (bundClRect.right > $window.innerWidth) {
               $scope.navbarStyle = {
                 'margin-left': parseInt($scope.navbarStyle['margin-left'].replace('px', '')) - (bundClRect.width) + 'px'
               };
@@ -68,6 +72,8 @@ angular.module('IguanaGUIApp')
     $scope.getNavbarStyle = function() {
       return $scope.navbarStyle;
     };
+
+    $scope.clickOnEasyDEX = $auth.loginEasyDEX;
 
     $scope.enabled = $auth.checkSession(true);
   }

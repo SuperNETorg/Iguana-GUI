@@ -21,7 +21,7 @@ The app also may serve as a monocoin-wallet (Non-Iguana mode) giving a better us
 
 >rpcport=altcoinport
 
-3) Proxy server is set up,(optionally)
+3) Proxy server is set up, (optionally)
 
 4)  Supported coins script is modified accordingly to respective blockchain RPC-credentials
 

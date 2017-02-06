@@ -1,0 +1,34 @@
+[
+  {
+    "id": 0,
+    "name": "Minimum",
+    "coin": "0.0000100",
+    "amount": "0.007875200000",
+    "feeMinTime": 110,
+    "feeMaxTime": 10000
+  },
+  {
+    "id": 1,
+    "name": "Low",
+    "coin": "0.0007168",
+    "amount": "0.564494336000",
+    "feeMinTime": "",
+    "feeMaxTime": ""
+  },
+  {
+    "id": 2,
+    "name": "Normal",
+    "coin": "0.0008192",
+    "amount": "0.645136384000",
+    "feeMinTime": "",
+    "feeMaxTime": ""
+  },
+  {
+    "id": 3,
+    "name": "High",
+    "coin": "0.0008192",
+    "amount": "0.645136384000",
+    "feeMinTime": "",
+    "feeMaxTime": ""
+  }
+]

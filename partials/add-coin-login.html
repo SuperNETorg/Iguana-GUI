@@ -68,7 +68,7 @@
                 </textarea>
                 <button class="btn btn-block orange-gradient text-shadow row btn-signin-account form-control"
                         ng-click="login()" ng-disabled="!passphraseModel.length || errPassphrase.length || isCoinSelected()">
-                    {{ 'LOGIN.LOGIN' | lang }}
+                  {{ 'LOGIN.LOGIN' | lang }}
                 </button>
               </div>
             </div>
@@ -95,8 +95,15 @@
           </div>
         </div>
       </div>
-      <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} {{ wordCount }} {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
-      <div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">{{ 'LOGIN.ENTER_A_PASSPHRASE_TO_ADD' | lang }} wallet</div>
+      <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable">
+        {{ 'LOGIN.INCORRECT_INPUT_P1' | lang }}
+        {{ wordCount }}
+        {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}
+      </div>
+      <div class="login-input-directions center offset-bottom-sm unselectable passphrase-text">
+        {{ 'LOGIN.ENTER_A_PASSPHRASE_TO_ADD' | lang }}
+        {{ 'ADD_COIN.A_WALLET' | lang }}
+      </div>
       <textarea name="loginPassphrase" id="passphrase" class="login-passphrase-textarea offset-bottom-sm row center" ng-model="$parent.passphrase"></textarea>
       <button class="btn btn-block orange-gradient box-shadow-all text-shadow row btn-signin" ng-click="login()" ng-class="{ 'disabled': !$parent.passphrase.length || !coinsSelectedToAdd.length }">{{ 'LOGIN.ADD' | lang }}</button>
       <div class="login-or-delim center unselectable hidden" ng-hide="isIguana">{{ 'LOGIN.OR' | lang }}</div>

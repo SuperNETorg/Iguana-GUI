@@ -10,6 +10,14 @@
   height: 100%;
   width: 100%;
 
+  .navbar-header {
+    .navbar-brand {
+      color: $color-absolute-white;
+      font-family: 'FuturaPTDemi', sans-serif;
+      font-size: 1.6em;
+      font-weight: 400;
+    }
+  }
   .form-container {
     display: table;
     height: 90%;
@@ -27,7 +35,6 @@
 
       .title {
         font-size: 1.4em;
-        margin-left: 1em;
         margin-top: 0.2em;
       }
     }
@@ -56,11 +63,12 @@
       .login-passphrase-textarea {
         border-radius: 4px;
         display: block;
-        font-size: 1.28em;
-        font-weight: 700;
+        font-size: 1.344em;
+        @include bold;
         height: 112px;
+        line-height: 1.224em;
         margin: 28px auto;
-        padding: 15px 50px;
+        padding: 20px 40px 16px 40px;
       }
     }
   }
@@ -79,17 +87,22 @@
   .login-passphrase-textarea {
     display: block;
     font-size: 1.24em;
-    font-weight: 600;
+    @include bold;
     height: 85px;
     margin-left: auto;
     margin-right: auto;
     padding: 15px 50px;
     resize: none;
+    @include center;
     width: 100%;
+  }
+  .btn-signin-account:not([disabled='disabled']) {
+    @include orange-gradient;
   }
   .btn-signin-account {
     margin-top: 50px;
     max-width: none;
+    text-shadow: 0 1px 3px rgba-black(0.25);
     width: 100%;
   }
   .error-msg {
@@ -105,14 +118,6 @@
   .advanced-benefits {
     font-size: 1.1em;
     font-weight: bold;
-  }
-  .navbar {
-    .navbar-header {
-      .navbar-brand {
-        font-size: 22px;
-        @include bold;
-      }
-    }
   }
 }
 .auth-orange-gradient {
@@ -144,11 +149,12 @@
     box-shadow: 0 1px 1px 0 rgba-black(0.2);
   }
   .login-or-delim {
-    color: $login-delim-color;
+    color: $color-white;
     font-family: sans-serif;
+    font-size: 1em;
     letter-spacing: 1px;
-    padding: 20px 0;
-
+    padding: 1.38em 0;
+    @include center;
   }
   .login-add-coin-selection {
     text-align: center;
@@ -168,13 +174,12 @@
   .passphrase-container {
     @include proxima;
     @include bold;
-    @include cursor-pointer;
     font-size: 1.3em;
     line-height: 1.3em;
     background: $color-white;
     border-radius: $border-radius-smaller;
     box-shadow: 0 2px 3px 2px rgba-black(0.12);
-    padding: 40px 12px;
+    padding: 39px 12px;
     margin: 30px auto;
     width: 100%;
 
@@ -196,9 +201,11 @@
   }
   .bi_interface-arrow-left {
     color: $color-white;
-    font-size: 26px;
+    font-size: 2.26em;
+    left: 0.3em;
     position: absolute;
     text-shadow: 1px 1px 3px rgba-black(0.3);
+    top: 0.38em;
 
     ::before {
       font-weight: 900;
@@ -211,7 +218,7 @@
     text-align: center;
   }
   .advanced-benefits {
-    color: $login-advanced-benefits;
+    color: $color-white;
   }
   .create-account-form,
   .login-account-form,
@@ -220,6 +227,10 @@
       font-size: 1.05em;
       margin-bottom: 0;
       margin-top: 4em;
+      /* csslint ignore:start */
+      @include offset-bottom-md;
+      @include center;
+      /* csslint ignore:end */
       word-wrap: break-word;
     }
   }
@@ -236,11 +247,11 @@
   }
   .form-header {
     height: 50px;
+    @include orange-gradient;
 
     .title {
-      font-size: 1.15em;
-      margin-left: 0.5em;
-      margin-top: 0.2em;
+      font-size: 1.46em;
+      margin-top: 0.1em;
     }
   }
   .btn {
@@ -255,12 +266,28 @@
     color: $color-white;
   }
   .btn.btn-hover-orange:not([disabled]):hover,
-  .btn.btn-hover-orange:not([disabled]):focus {
+  .btn.btn-hover-orange:not([disabled]):focus,
+  .btn.row.btn-signin:not([disabled]):hover,
+  .btn.row.btn-signup:not([disabled]):hover {
     background: $login-button-hover-color;
   }
+  .btn.row.btn-signin,
+  .btn.row.btn-signup {
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#FE470D)';/*IE 8*/
+    -moz-box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/*FF 3.5+*/
+    -webkit-box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    box-shadow: 0 0 5px 2px rgba(254, 71, 13, 0.3);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#FE470D); /*IE 5.5-7*/
+    text-shadow: 0 1px 3px rgba-black(0.25);
+    /* csslint ignore:start */
+    @include orange-gradient;
+    /* csslint ignore:end */
+  }
   .btn.row {
+    display: block;
     font-size: 1.02em;
     height: 34px;
+    width: 100%;
     max-width: 300px;
   }
   .checkbox {
@@ -276,7 +303,7 @@
   input[type='checkbox'] + label {
     display: block;
     font-weight: normal;
-    margin-bottom: 1.6em;
+    margin-bottom: 0.44em;
     text-align: center;
 
     .box {
@@ -343,85 +370,18 @@
   background-color: $color-absolute-white;
   color: $dropdown-button-style-color;
 }
-.crncy {
-  .dropdown-fee {
-    padding: 0;
-
-    .btn-group {
-      width: 100%;
-
-      button:first-child {
-        max-width: none;
-        width: 92%;
+.pop-form {
+  .segment {
+    .segment-select {
+      .send-coin-line-height {
+        line-height: 14px;
       }
-      button:nth-child(2) {
-        max-width: none;
-        width: 8%;
-      }
-      ul {
-        width: 100%;
+      .line-height-empty {
+        height: inherit;
       }
     }
   }
 }
-.custom-fee-inputs {
-  input {
-    background: $color-absolute-white;
-  }
-}
-.custom-fee-inputs {
-  margin-top: 15px;
-}
-.pay-dtl h3 {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-.pay-dtl h5 {
-  margin-top: 0;
-}
-.segment-select .item-segment-select {
-  background: $color-white;
-  border: solid 1px $dashboard-send-currency-orange;
-  color: $dashboard-send-currency-orange;
-  height: 40px;
-  line-height: 14px;
-}
-.segment-select .active,
-.segment-select .active:hover,
-.segment-select .item-segment-select:active,
-.segment-select .item-segment-select:focus {
-  background-color: $dashboard-send-currency-orange;
-  border: solid 1px $dashboard-send-currency-orange;
-  color: $color-white;
-}
-.segment-select {
-  width: 100%;
-}
-.item-segment-select .second-fee-text {
-  color: $dashboard-send-currency-orange;
-  font-size: 10px;
-  margin-top: 0;
-}
-.pop-detail .segment-select .item-segment-select.active {
-  span {
-    color: $dashboard-send-currency-white;
-  }
-}
-.segment-select .tem-segment-select {
-  min-width: 25%;
-}
-.item-segment-select {
-  span {
-    font-weight: 400;
-  }
-}
-.item-segment-select {
-  span:first-child {
-    font-size: 15px;
-  }
-}
-.pop-detail {
-  p{
-    color:$dashboard-send-popup-err;
-  }
+.terms-condition-bold {
+  font-weight: 700;
 }

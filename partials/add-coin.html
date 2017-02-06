@@ -1,8 +1,13 @@
 <script type="text/ng-template" id="partials/add-coin.html">
   <section class="form-container add-new-coin-form-login-state unselectable">
     <header class="modal-header form-header orange-gradient box-shadow-bottom">
-      <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-      <div class="title text-shadow">
+      <i class="text-shadow cursor-pointer"
+         ng-class="{
+           'bi_interface-arrow-left btn-back': !isIguana,
+           'bi_interface-cross btn-close': isIguana
+         }"
+         ng-click="!isIguana ? back() : close()"></i>
+      <div class="title">
         {{ 'ADD_COIN.WALLET_TYPE' | lang }}
       </div>
     </header>
@@ -12,24 +17,44 @@
       </div>
       <div class="quick-search col-xs-12">
         <i class="icon bi_tool-magnifier"></i>
-        <input type="text" class="input text" placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
-               ng-model="coinSearchModel"/>
+        <input type="text" class="input text"
+               placeholder="{{ 'ADD_COIN.FOR_EXAMPLE' | lang }}"
+               ng-model="coinSearchModel" />
       </div>
       <div class="supported-coins-repeater-container col-xs-12 col-md-10 col-md-offset-1">
         <div class="supported-coins-repeater row">
-          <div class="supported-coins-repeater-inner">
+          <div class="supported-coins-repeater-inner igf">
             <div class="coin {{ item.coinId }}" data-coin-id="{{ item.coinId }}"
-                 ng-repeat="(name, item) in coins | filter: coinSearchModel"
-                 ng-click="clickOnCoin(item, $event)"
+                 ng-repeat="(name, item) in coins | objectFilter: coinSearchModel"
+                 ng-click="(!item.readonly ? clickOnCoin(item, $event) : '')"
                  ng-class="{ 'active': isActive(item) }">
-              <i class="icon cc {{ item.id }}-alt col-{{ item.color }} pull-left"></i>
-              <div class="name pull-right text-left">
-                <div class="help-block">{{ item.name }}</div>
-                <div class="help-block">{{ item.id }}</div>
+              <div class="coin-inner"
+                   ng-class="{ 'has-mode': (getLength(item.mode) > 1) }">
+                <i class="icon pull-left"></i>
+                <div class="name pull-right text-left">
+                  <div class="help-block">{{ item.name }}</div>
+                  <div class="help-block">{{ item.id }}</div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="btn-group clearfix" ng-class="{ 'all-modes': item.coinId === 'kmd' }">
+                <label ng-repeat="(id, mode) in item.mode" class="btn"
+                       ng-bind="mode.name" data-mode="{{ mode }}"
+                       ng-disabled="mode.name !== 'Full'"
+                       ng-class="{ 'orange-bg': mode.status, 'width-bg': !mode.status }"
+                       ng-click="(mode.name === 'Full' ? clickOnMode($event, name, mode.key, !mode.disabled) : ''); $event.stopPropagation();"
+                ></label>
               </div>
             </div>
           </div>
+          <div class="container-arrow"></div>
         </div>
+        <button ng-click="next()"
+                ng-disabled="isDisabled()"
+                ng-if="isIguana"
+                class="btn-next btn btn-block orange-gradient text-shadow row">
+          {{ 'CREATE_ACCOUNT.NEXT' | lang }}
+        </button>
       </div>
       <div class="clearfix"></div>
     </div>

@@ -24,6 +24,7 @@
  *  Page specific styling
  */
 @import 'auth-base'; /* order matters */
+@import 'flow-modal';
 @import 'dashboard/left-sidebar';
 @import 'dashboard/transactions-unit';
 @import 'dashboard/add-coin-modal';

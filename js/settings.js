@@ -2,13 +2,14 @@
 
 var _settings = {
   iguanaPort: '7778',
-  proxy: 'http://localhost:1337/', // https://github.com/gr2m/CORS-Proxy
-  ratesUpdateTimeout: 15, // sec, see dashboard/rates.js
+  proxy: 'http://127.0.0.1:1337/', // https://github.com/gr2m/CORS-Proxy
+  ratesUpdateTimeout: 15, // sec, see services/rates.js
   ratesUpdateMultiply: 0, // sec
   decimalPlacesCoin: 1,
   decimalPlacesCurrency: 2,
   decimalPlacesTxUnit: 5,
-  dashboardUpdateTimout: 15, // sec
+  maxDecimalPlacesLimit: 8,
+  dashboardUpdateTimeout: 15, // sec, deprecated
   defaultCurrency: 'USD',
   defaultLang: 'EN',
   portPollUpdateTimeout: 60, // sec
@@ -20,12 +21,19 @@ var _settings = {
   defaultAccountNameCoind: '',
   txUnitProgressStatusMinConf: 10,
   iguanaNullReturnCountThreshold: 30,
-  iguanaNullReturnCountLogoutTimeout: 10, // sec
+  iguanaNullReturnCountLogoutTimeout: 1, // sec
   addCoinInfoModalTimeout: 5, // sec
   addCoinTimeout: 2, // sec
   thresholdTimeAgo: {
     day: 10
-  }
+  },
+  defaultRelayFee: 0.00001,
+  apiCheckTimeout: 0.1, // minutes
+  appRedirectTimeout: 1,
+  appViewMessageTimeout: 3,
+  defaultIguanaConnectionTimeOut: 500,
+  minEpochTimestamp: 1471620867,
+  globalFeeLoaderTimeout: 1 // sec
 };
 
 // create a new object with non-writable values

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="155px" height="139px" viewBox="0 0 155 139" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>hard_drive</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.996078431   0 0 0 0 0.270588235   0 0 0 0 0.0509803922  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="97.8296397%" id="linearGradient-3">
+            <stop stop-color="#FF7B1E" offset="0%"></stop>
+            <stop stop-color="#FE3A0D" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-4" cx="75" cy="51" r="3"></circle>
+        <path d="M42.0000196,36.5658051 L42.0000196,1.5 C42.0000196,0.671572875 42.6715925,0 43.5000196,0 C44.3284468,0 45.0000196,0.671572875 45.0000196,1.5 L45.0000196,36.5658051 L52.3726413,28.1654765 C52.9191014,27.5428426 53.8668392,27.4810916 54.4894731,28.0275516 C55.1121069,28.5740116 55.173858,29.5217495 54.627398,30.1443834 L44.627398,41.5383338 C44.0299504,42.2190626 42.9700888,42.2190626 42.3726413,41.5383338 L32.3726413,30.1443834 C31.8261813,29.5217495 31.8879324,28.5740116 32.5105662,28.0275516 C33.1332001,27.4810916 34.0809379,27.5428426 34.627398,28.1654765 L42.0000196,36.5658051 Z" id="path-5"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="hard_drive">
+            <g filter="url(#filter-1)" transform="translate(34.000000, 6.000000)">
+                <g transform="translate(0.000000, 55.000000)">
+                    <path d="M87.924545,39.4530225 C87.8957861,39.2514436 87.85879,39.0731698 87.8153258,38.9303589 L76.5837385,1.91799805 C76.2610237,0.857649338 75.1030927,0 73.9967014,0 L14.0032986,0 C12.9047241,0 11.7386514,0.858716975 11.4162615,1.91799805 L0.21472168,38.9303589 C0.184002017,39.0312949 0.156266471,39.1498911 0.132181431,39.2818706 C0.0467648885,39.5038967 0,39.7449995 0,39.9970047 L0,62.0029953 C0,63.1050211 0.898613942,64 2.00711042,64 L85.9928896,64 C87.1042531,64 88,63.1059106 88,62.0029953 L88,39.9970047 C88,39.8084691 87.9736988,39.6259935 87.924545,39.4530225 Z" id="Combined-Shape" fill="url(#linearGradient-2)"></path>
+                    <polygon id="Path" fill="#FFFFFF" points="5.88208352 38 82.1346977 38 72.2952977 5 15.7047023 5"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" points="5 59 83 59 83 43 5 43"></polygon>
+                    <g id="Oval-2-Copy">
+                        <use fill="url(#linearGradient-3)" xlink:href="#path-4"></use>
+                        <use fill-opacity="0.5" fill="#FFFFFF" xlink:href="#path-4"></use>
+                    </g>
+                </g>
+                <g id="arrow">
+                    <use fill="url(#linearGradient-3)" xlink:href="#path-5"></use>
+                    <use fill-opacity="0.5" fill="#FFFFFF" xlink:href="#path-5"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

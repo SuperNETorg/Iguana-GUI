@@ -1,16 +1,21 @@
 'use strict';
 
-if (!dev) var dev = { // prod
-  isDev: false,
-  showSyncDebug: false,
-  showConsoleMessages: false,
-  coinPW: null,
-  coinAccountsDev: null,
-  sessions: null
-};
+if (!dev) {
+  var dev = { // prod
+    isDev: false,
+    isNightwatch: false,
+    isKarma: false,
+    showSyncDebug: false,
+    showConsoleMessages: false,
+    coinPW: null,
+    coinAccountsDev: null,
+    sessions: null
+  };
+}
 
 angular.module('IguanaGUIApp', [
   'ui.router',
+  'angular-md5',
   'ngSanitize',
   'ngAnimate',
   'ngStorage',
@@ -18,17 +23,6 @@ angular.module('IguanaGUIApp', [
 ])
 .value('vars', {})
 .config(function($stateProvider, $urlRouterProvider) {
-  //ToDo history provider
-  /*--historyProvider
-  $provider.decorator('$window', function($delegate) {
-    Object.defineProperty($delegate, 'history',
-      {get: function () {
-        return null;
-      }});
-    return $delegate;
-  });
-  endHistoryProvider--*/
-
   $stateProvider
     .state('login', {
       url: '/login',
@@ -40,6 +34,12 @@ angular.module('IguanaGUIApp', [
     })
     .state('login.step2', {
       // url: '/step2',
+      data: {
+        pageTitle: 'PAGE.LOGIN'
+      }
+    })
+    .state('login.step3', {
+      // url: '/step3',
       data: {
         pageTitle: 'PAGE.LOGIN'
       }
@@ -140,14 +140,23 @@ angular.module('IguanaGUIApp', [
     });
 
   $urlRouterProvider.otherwise(function($injector) {
-    var $state = $injector.get("$state");
+    var $state = $injector.get('$state');
 
-    $state.go("login");
+    $state.go('login');
   });
 })
-.run(function($rootScope, $location, $state, util, $timeout, $api, $auth) {
+.run(function($rootScope, $location, $state,
+              util, $timeout, $api, $auth, $datetime, $window) {
+  if (dev && dev.isDev && dev.isNightwatch) { // temp
+    $rootScope.dev = dev;
+  }
 
-  $rootScope.$on("$stateChangeStart",
+  //it's moved to storage.js
+  /*if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
+    $rootScope.isElectron = true;
+  }*/
+
+  $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
       $auth.toState = toState;
       $auth.toParams = toParams;
@@ -157,7 +166,24 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
-  $api.testConnection().then(function(coins) {
-    $rootScope.$broadcast('coinsInfo', coins);
-  }); // switch with Api service once it's finished
+  if ((dev && dev.isDev && !dev.isKarma) || (dev && !dev.isDev)) {
+    $api.testConnection().then(onResolve, onReject);
+
+    function onResolve(coins) {
+      $rootScope.$broadcast('coinsInfo', coins);
+      $timeout(function() {
+        $api.testConnection().then(onResolve, onReject);
+      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+    }
+
+    function onReject() {
+      $timeout(function() {
+        $api.testConnection().then(onResolve, onReject);
+      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+    }
+  }
+
+  try {
+    if (chrome && chrome.storage) $rootScope.isChromeApp = true;
+  } catch (e) {}
 });

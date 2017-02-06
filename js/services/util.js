@@ -2,38 +2,33 @@
 
 angular.module('IguanaGUIApp')
 .service('util', [
-  '$storage',
-  '$uibModal',
-  '$rootScope',
-  '$timeout',
-  '$interval',
-  '$http',
-  '$q',
-  '$document',
   '$window',
-  '$state',
   '$filter',
   '$message',
-  '$localStorage',
-  function($storage, $uibModal, $rootScope, $timeout, $interval,
-           $http, $q, $document, $window, $state, $filter, $message) {
+  '$storage',
+  function($window, $filter, $message, $storage) {
 
     var self = this;
 
-    this.isIguana = $storage['isIguana'];
     this.defaultSessionLifetime = 0;
     this.portPollUpdateTimeout = settings.portPollUpdateTimeout;
     this.coindWalletLockResults = [];
     this.isExecCopyFailed = false;
     this.coindWalletLockCount = 0;
-    this.minEpochTimestamp = 1471620867; // Jan 01 1970
+    this.minEpochTimestamp = settings.minEpochTimestamp; // Jan 01 1970
 
-    this.bodyBlurOn = function() {
-      angular.element(document.body).addClass('modal-open');
+    this.bodyBlurOn = function(isModal) {
+      angular
+        .element(document.body)
+        .addClass('modal-open' + (isModal ? ' message-modal' : ''));
+      angular
+        .element(document.querySelector('html'))
+        .addClass('modal-open' + (isModal ? ' message-modal' : ''));
     };
 
-    this.bodyBlurOff = function() {
-      angular.element(document.body).removeClass('modal-open');
+    this.bodyBlurOff = function(isModal) {
+      angular.element(document.body).removeClass('modal-open' + (isModal ? 'message-modal' : ''));
+      angular.element(document.querySelector('html')).removeClass('modal-open' + (isModal ? 'message-modal' : ''));
     };
 
     this.reindexAssocArray = function(object) {
@@ -47,6 +42,7 @@ angular.module('IguanaGUIApp')
         if (!_array[_index]) {
           _array.push(item);
         }
+
         ++_index;
       }
 
@@ -57,7 +53,8 @@ angular.module('IguanaGUIApp')
       var result = [];
 
       for (var i = 0; coins.length > i; i++) {
-        result.push(coins[i].coinId);
+        if (coins[i] && coins[i].coinId)
+          result.push(coins[i].coinId);
       }
 
       return result;
@@ -82,7 +79,9 @@ angular.module('IguanaGUIApp')
         try {
           document.execCommand('copy');
           message = elementDisplayName + ' ' +
-                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD') + ' </br>"' + element + '" ';
+                      $filter('lang')('MESSAGE.COPIED_TO_CLIPBOARD')
+            // + ' </br>"' + element + '" '
+          ;
           color = 'blue';
         } catch (e) {
           this.isExecCopyFailed = true;
@@ -91,7 +90,10 @@ angular.module('IguanaGUIApp')
         }
 
         temp.remove();
-        $message.ngPrepMessageModal(message, color);
+
+        if (message) {
+          $message.ngPrepMessageModal(message, color);
+        }
       }
     };
 
@@ -99,6 +101,7 @@ angular.module('IguanaGUIApp')
       if (str[str.length - 1] === ' ') {
         str = str.replace(/, $/, '');
       }
+
       if (str[str.length - 1] === ',') {
         str = str.replace(/,$/, '');
       }
@@ -107,7 +110,7 @@ angular.module('IguanaGUIApp')
     };
 
     this.isMobile = function() {
-      return $window.innerWidth < 768;
+      return $window.innerWidth < 769;
     };
 
     // native javascript
@@ -119,6 +122,38 @@ angular.module('IguanaGUIApp')
         top: boundClientRect.top + window.pageYOffset - docEl.clientTop,
         left: boundClientRect.left + window.pageXOffset - docEl.clientLeft
       };
+    };
+
+    this.checkFeeCount = function(fee, currencyRate) {
+      var coin = fee * 1024 / 100000000, // satoshi per kb
+          amount = currencyRate * coin;
+
+      return {
+        'coin': coin,
+        'amount': amount
+      };
+    };
+
+    this.getActiveCoin = function() {
+      return $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    };
+
+    this.removeStorageItems = function(keys) {
+      var storageKeys = Object.keys($storage);
+
+      storageKeys.find(function(el, id) {
+        if (typeof keys === 'string') {
+          if (el.indexOf(keys) !== -1) {
+            delete $storage[el];
+          }
+        } else if (keys instanceof Array) {
+          for (var i = 0; keys.length > i; i++) {
+            if (el.indexOf(keys[i]) !== -1) {
+              delete $storage[el];
+            }
+          }
+        }
+      });
     };
   }
 ]);

@@ -2,148 +2,81 @@
  * Iguana dashboard/send-to-address
  *
  */
-
 @import 'dev.scss';
 
-$send-coin-head-color: #E8CEC6;
-$send-coin-title-color: #282828;
-$send-coin-text-color: #90929B;
-$send-coin-input-color: #333333;
-$send-coin-input-error-bg-color: #FFF5F5;
-$send-coin-input-error-border-color: #FD2F2F;
-$send-coin-p-color: #37373A;
-$send-coin-small-title-color: #A2A3AC;
-$send-coin-eq-sign-color: #FC6538;
-$send-coin-dropdown-color: #74767D;
-
-.send-modal {
-  .dropdown-fee .btn.btn-primary.dropdown-button-style {
-    border: 1px solid $color-medium-gray;
-    border-radius: 4px;
-    box-shadow: none;
-    color: $send-coin-dropdown-color;
-    font-size: 1.1em;
-    font-weight: 500;
-    margin-top: 5px;
-    outline: none;
-    padding: 5px 20px;
-    text-align: left;
-    width: 100%;
-
-    strong {
-      color: $color-black;
-      font-size: 1.05em;
-      font-weight: 500;
-    }
-  }
-  .dropdown-fee .btn.btn-primary.dropdown-button-style:before {
-    @include budicon;
-    transform: rotate(180deg);
-    display: inline-block;
-    content: '\eb24';
-    position: absolute;
-    right: 17px;
-    top: 19px;
-  }
-  .dropdown-fee .btn.btn-primary.dropdown-button-style.open:before {
-    right: 15px;
-    transform: rotate(0deg);
-  }
-  .dropdown-fee .btn.btn-primary.dropdown-button-style:focus {
-    border: 1px solid $color-medium-gray;
-    box-shadow: none;
-    outline: none;
-  }
-  .dropdown-fee .btn.btn-primary.dropdown-button-style.open {
-    border: solid 1px $color-orange;
-    box-shadow: 0 0 2px 3px rgba(254, 69, 13, 0.25);
-    outline: none;
-  }
-  .dropdown-fee {
-    text-align: left;
-
-    .dropdown-menu {
-      max-height: 196px;
-      overflow-y: auto;
-      padding: 0;
-    }
-    .dropdown-menu a {
-      color: $send-coin-dropdown-color;
-      @include cursor-pointer;
-      font-size: 1.1em;
-      font-weight: 500;
-      padding: 10px 20px;
-
-      strong {
-        color: $color-black;
-        font-size: 1.05em;
-        font-weight: 500;
-      }
-    }
-    .dropdown-menu a:hover {
-      @include cursor-pointer;
-    }
-  }
-  .headd {
-    border-radius: $border-radius-smaller;
-    box-shadow: 0 0 7px 4px $send-coin-head-color;
-    color: $color-white;
-    margin-top: 0.5em;
-    padding: 23px 21px 20px;
-    position: relative;
-  }
-  .headd::before {
-    color: $color-form-arrow;
-    content: '\eac5';
-    @include budicon;
-    font-size: 2.0em;
-    height: 40px;
-    left: 18px;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 100px;
-    width: 40px;
-  }
+.send-coin-modal-container {
   .modal-content {
-    .modal-header {
-      border-bottom: medium none;
-      border-radius: $border-radius-smaller $border-radius-smaller 0 0;
-      color: $color-white;
-      padding: 16px 40px;
-      position: relative;
-      text-align: center;
-    }
-    .modal-body {
-      background: $color-modal-bg none repeat scroll 0 0;
-      padding: 50px 0;
+    .form-content.send-modal {
+      padding: 2.4em 10px 1.4em 10px;
+
+      .modal-body {
+        padding: 0.7em 0;
+
+        .headd {
+          border-radius: $border-radius-smaller;
+          box-shadow: 0 0 7px 4px $send-coin-head-color;
+          color: $color-white;
+          margin-top: 0.5em;
+          padding: 26px 21px 23px;
+          position: relative;
+        }
+        .headd::before {
+          color: $color-form-arrow;
+          content: '\eac5';
+          @include budicon;
+          font-size: 2.0em;
+          height: 40px;
+          left: 18px;
+          margin: auto;
+          position: absolute;
+          right: 0;
+          top: 100px;
+          width: 40px;
+        }
+      }
     }
   }
   .main-popup {
     margin: 0 auto;
-    max-width: 360px;
+    max-width: 300px;
   }
   .hd-right > span {
-    @include bold;
     display: block;
     font-size: 18px;
+    @include bold;
     white-space: nowrap;
   }
   .pop-form {
-    margin-top: 40px;
+    margin-top: 3.78em;
+  }
+  .pop-detail.send {
+    margin-bottom: 2.86em;
+  }
+  .pop-detail.pay-dtl {
+    margin-bottom: 3.48em;
   }
   .pop-detail {
-    margin-bottom: 20px;
+    margin-bottom: 2em;
 
     h4 {
       color: $send-coin-title-color;
-      font-size: 1.07em;
+      font-size: 1.14em;
       font-weight: 400;
-      margin: 0 0 5px 0;
+      margin: 0;
     }
     p {
+      color: $dashboard-send-popup-err;
       font-size: 13px;
-      margin: 4px 0;
+      margin: 2px 0 4px 0;
+    }
+    .col-red {
+      color: $color-red;
+    }
+    input[type='text']::-webkit-input-placeholder,
+    input[type='text']:-ms-input-placeholder,
+    input[type='text']::-moz-placeholder {
+      color: $color-red;
+      display: block !important;
     }
     input[type='text'] {
       border: 1px solid $color-medium-gray;
@@ -159,10 +92,13 @@ $send-coin-dropdown-color: #74767D;
       border-radius: $border-radius-smaller;
       font-weight: normal;
       height: 34px;
-      margin-top: 4px;
+      margin-top: 6px;
       padding: 4px 12px;
-      resize: none;
       width: 100%;
+    }
+    .validation-field-error {
+      background: $send-coin-input-error-bg-color;
+      border-color: $send-coin-input-error-border-color;
     }
   }
   .modal {
@@ -174,31 +110,31 @@ $send-coin-dropdown-color: #74767D;
   }
   .pop-detail.crncy {
     display: inline-block;
+    margin-bottom: 1.6em;
     width: 100%;
 
     .eq-sign {
       color: $dashboard-send-popup-err;
       float: left;
-      font-size: 1.8em;
+      font-size: 1.4em;
       font-weight: 500;
-      padding: 0 1.3%;
+      padding: 1% 1.3%;
     }
     input[type='text'] {
       float: left;
-      width: 46%;
+      font-size: 1.14em;
+      width: 47%;
     }
   }
   .pop-form .btn-next,
   .pop-form .btn-confirm-tx {
     border: 0 none;
     border-radius: $border-radius-smaller;
-    box-shadow: 0 0 2px 1px rgba-black(0.2);
     color: $color-white;
     @include proxima;
     font-size: 1.075em;
     @include bold;
     height: 34px;
-    margin-top: 10px;
     padding-top: 3px;
     width: 100%;
   }
@@ -206,7 +142,7 @@ $send-coin-dropdown-color: #74767D;
     .tx-address-icon {
       height: 20px;
       position: absolute;
-      right: 3px;
+      right: 0;
       top: -3px;
       width: 20px;
     }
@@ -219,15 +155,15 @@ $send-coin-dropdown-color: #74767D;
       content: '\ea16';
       display: block;
       @include budicon;
-      font-size: 1.2em;
+      font-size: 1.16em;
       position: absolute;
       right: 6px;
     }
   }
   .chk-crncy {
     h3 {
-      font-size: 21px;
-      font-weight: 500;
+      font-size: 1.4em;
+      @include bold;
       margin: 0;
     }
     h4 {
@@ -236,24 +172,18 @@ $send-coin-dropdown-color: #74767D;
     }
     h5 {
       font-size: 16px;
-      margin-top: -1px;
+      margin-top: 0;
     }
   }
   .pop-detail.pay-dtl p {
     color: $send-coin-p-color;
-    font-size: 1.1em;
-  }
-  .pop-detail.crncy.chk-crncy {
-    margin: 30px 0;
+    font-size: 1.14em;
+    margin: 5px 0 4px 0;
   }
   .rs {
     margin: 0;
     position: relative;
     top: -3px;
-  }
-  .modal-dialog {
-    margin: 20px auto;
-    width: 800px;
   }
   .pop-detail.send.check {
     h4 {
@@ -262,34 +192,111 @@ $send-coin-dropdown-color: #74767D;
     p {
       color: $color-black;
       font-size: 1em;
-      letter-spacing: 1px;
       margin-top: 7px;
     }
   }
   .pop-detail.pay-dtl h4 {
     color: $send-coin-small-title-color;
   }
-  .chk-crncy.crncy-rs h5 {
-    margin-top: -1px;
-  }
-  .pop-detail.crncy.chk-crncy.crncy-rs {
-    margin: 0 0 10px;
-  }
   .pop-detail.crncy.chk-crncy.crncy-fee {
     margin: 0 0 13px;
   }
-  .col-red {
-    color: $color-red;
+  .pop-detail.crncy.segment {
+    margin: 10px 0 32px;
   }
-  .pop-detail .validation-field-error {
-    background: $send-coin-input-error-bg-color;
-    border-color: $send-coin-input-error-border-color;
+  .crncy {
+    .dropdown-fee {
+      padding: 0;
+
+      .btn-group {
+        width: 100%;
+
+        button:first-child {
+          max-width: none;
+          width: 92%;
+        }
+        button:nth-child(2) {
+          max-width: none;
+          width: 8%;
+        }
+        ul {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .custom-fee-inputs {
+    margin-top: 8px;
+
+    input {
+      background: $color-absolute-white;
+    }
+  }
+  .pay-dtl h3 {
+    font-size: 1.46em;
+    margin-bottom: 0;
+    margin-top: 4px;
+  }
+  .pay-dtl h5 {
+    font-size: 1.2em;
+    margin-top: 0;
+  }
+  .segment-select {
+    cursor: default;
+    margin-top: 6px;
+    width: 100%;
+
+    .item-segment-select {
+      background: $color-modal-bg;
+      border: solid 1px $dashboard-send-currency-orange;
+      @include no-box-shadow;
+      color: $dashboard-send-currency-orange;
+      height: 42px;
+      padding: 8px;
+      width: 25%;
+    }
+    .item-segment-select.disabled {
+      border: solid 1px $dashboard-coins-sidebar-currency-color;
+      color: $dashboard-coins-sidebar-currency-color;
+
+      .second-fee-text {
+        color: $dashboard-coins-sidebar-currency-color;
+      }
+    }
+    .item-segment-select.active,
+    .item-segment-select.active:hover {
+      background-color: $dashboard-send-currency-orange;
+      border: solid 1px $dashboard-send-currency-orange;
+      color: $color-white;
+
+      span {
+        @include bold;
+        margin-top: 2px;
+      }
+    }
+  }
+  .item-segment-select .second-fee-text {
+    color: $dashboard-send-currency-orange;
+    font-size: 10px;
+    margin-top: 0;
+  }
+  .pop-detail .segment-select .item-segment-select.active {
+    span {
+      color: $color-absolute-white;
+    }
+  }
+  .item-segment-select {
+    span {
+      font-weight: 400;
+    }
+  }
+  .item-segment-select {
+    span:first-child {
+      font-size: 15px;
+    }
   }
 }
-.modal .modal-content {
-  border-radius: $border-radius-small;
-  overflow: hidden;
-}
+
 .modal-header .modal-title {
   font-size: 19px;
   font-weight: 400;
@@ -299,42 +306,59 @@ $send-coin-dropdown-color: #74767D;
   ! not going to work in IE,
     TODO: gracefull fallback(?) !
 */
-.send-modal.blur {
+.form-content.blur,
+.form-header.blur {
   @include blur;
 }
+
 .send-coin-progress-overlay,
 .send-coin-success-overlay {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.4);
   height: 100%;
   position: absolute;
   width: 100%;
-  z-index: 100;
+  z-index: 10000;
 }
+
 .send-coin-progress-overlay .send-coin-status,
 .send-coin-success-overlay .send-coin-status {
-  font-size: 1.1em;
-  padding-top: 50%;
+  font-size: 1.44em;
+  line-height: 1.2em;
+  padding-top: 35%;
   text-align: center;
+
+  .help-block {
+    /* csslint ignore:start */
+    color: $color-black;
+    @include no-margin;
+    @include no-padding;
+    /* csslint ignore:end */
+  }
 }
-.send-coin-progress-overlay .btn-next {
-  margin-top: 25%;
+
+.send-coin-success-overlay {
+  .send-coin-background {
+    @include blur;
+  }
+  .btn-confirmed,
+  .btn-confirmed:focus {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
+    background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    bottom: 25px;
+    /* csslint ignore:start */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    /* csslint ignore:end */
+    font-size: 1.3em;
+    left: 20%;
+    max-width: 300px;
+    position: absolute;
+    right: 20%;
+    text-shadow: 0 3px 5px rgba-black(0.25);
+  }
 }
-.send-coin-success-overlay .btn-confirmed,
-.send-coin-success-overlay .btn-confirmed:focus {
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#19b760+0,19b760+100&0.8+0,1+100 */
-  background: -moz-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* FF3.6-15 */
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(25, 183, 96, 0.8) 0%, rgba(25, 183, 96, 1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: radial-gradient(ellipse at center, rgba(25, 183, 96, 0.8) 0%,rgba(25, 183, 96, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  bottom: 12.1%;
-  /* csslint ignore:start */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc19b760', endColorstr='#19b760',GradientType=1); /* IE6-9 fallback on horizontal gradient */
-  /* csslint ignore:end */
-  font-size: 1.3em;
-  left: 20%;
-  max-width: 359px;
-  position: absolute;
-  text-shadow: 0 3px 5px rgba-black(0.25);
-}
+
 .modal-send-coin {
   background: none;
   border-radius: $border-radius-smaller;
@@ -342,34 +366,30 @@ $send-coin-dropdown-color: #74767D;
 
   .bi_interface-arrow-left {
     font-size: 26px;
-    margin-left: -2px;
-    margin-top: 7px;
+    margin-left: -4px;
+    margin-top: -4px;
   }
   .coin {
     float: left;
 
-    .icon {
-      height: 35px;
-      width: 35px;
-    }
     i {
       color: $color-white;
       display: inline-block;
-      font-size: 3.5em;
+      font-size: 3.2em;
       margin-left: -6px;
       text-shadow: 0 1px 3px rgba-black(0.25);
     }
     .name {
       color: $color-absolute-white;
+      font-size: 0.94em;
       font-weight: normal;
-      left: 19px;
+      left: 0.38em;
       position: relative;
-      text-shadow: 0 1px 3px rgba-black(0.25);
-      top: -15px;
+      top: 0.94em;
     }
   }
-  .col-sm-6.hd-right.col-xs-6.balance {
-    padding-right: 11px;
+  .balance {
+    padding-right: 1.16em;
   }
   .balance {
     text-shadow: 0 1px 3px rgba-black(0.25);
@@ -377,17 +397,19 @@ $send-coin-dropdown-color: #74767D;
   .hd-right.balance {
     .balance-coin {
       font-size: 1.7em;
+      font-weight: 900;
+      line-height: 1.2em;
     }
     .balance-currency {
-      font-size: 1.2em;
+      font-size: 1.1em;
+      @include bold;
+      line-height: 1.6em;
     }
   }
   .modal-header {
     .bi_interface-cross {
-      margin-top: 6px;
-    }
-    .title {
-      padding-top: 3px;
+      margin-left: 0.3em;
+      margin-top: 2px;
     }
   }
 
@@ -405,9 +427,9 @@ $send-coin-dropdown-color: #74767D;
   }
   .over {
     -webkit-animation: rotator 1.5s ease-in-out infinite;
-    stroke-dasharray: 107,38;
+    stroke-dasharray: 107, 38;
   }
-  .modal-dialog .modal-content .modal-header{
+  .modal-dialog .modal-content .modal-header {
     i {
       margin-left: 6px;
     }
@@ -419,19 +441,21 @@ $send-coin-dropdown-color: #74767D;
     position: absolute;
   }
 }
+
 .modal-send-coin.entry {
   max-height: 770px;
 }
+
 .modal-send-coin .bi_interface-arrow-left,
 .modal-add-coin-login .bi_interface-arrow-left {
   color: $color-white;
-  font-size: 26px;
-  margin-left: 10px;
-  margin-top: -1px;
+  font-size: 2.2em;
   position: absolute;
   text-shadow: 1px 1px 3px rgba-black(0.3);
+  top: 0.5em;
   z-index: 100;
 }
+
 @-webkit-keyframes rotator {
   0% {
     transform: rotate(0deg);

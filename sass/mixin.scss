@@ -27,17 +27,46 @@
   /* csslint ignore:end */
 }
 
-@mixin orange-gradient {
+@mixin orange {
   /* csslint ignore:start */
-  background: -moz-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, 90deg, color-stop(20%, FE450D), color-stop(100%, FE780D)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(90deg, #FE450D 20%, #FE780D 100%); /* IE10+ */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
-  //background: linear-gradient(90deg, #FE450D 20%, #FE780D 100%);/* W3C */
+  background-color: #FE5724;
+  //background: -moz-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* FF3.6+ */
+  //background: -webkit-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Chrome10+,Safari5.1+ */
+  //background: -o-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Opera 11.10+ */
+  //background: -ms-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* IE10+ */
+  //background: radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* W3C */
   color: $color-white;
   /* csslint ignore:end */
+}
+
+@mixin orange-gradient {
+  /* csslint ignore:start */
+  background: -moz-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* FF3.6+ */
+  background: -webkit-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* Opera 11.10+ */
+  background: -ms-radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* IE10+ */
+  background: radial-gradient(50% 0%, ellipse cover, #FE7A0D 0, #FE5724 60%, #FE4108 82%, #FE450D 100%);/* W3C */
+  color: $color-white;
+  /* csslint ignore:end */
+}
+
+@mixin green-gradient {
+  /* csslint ignore:start */
+  background: -moz-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* FF3.6+ */
+  background: -webkit-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* Opera 11.10+ */
+  background: -ms-radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* IE10+ */
+  background: radial-gradient(50% 0%, ellipse cover, #17e173 0, #0fcb65 60%, #08b959 82%, #08ae54 100%);/* W3C */
+  color: $color-white;
+  /* csslint ignore:end */
+}
+
+@mixin width-bg {
+  /* csslint ignore:start */
+  background-color: $color-absolute-white;
+  border: 1px solid #FE470D;
+  color: #FE470D;
+  /* csslint ignore:start */
 }
 
 @mixin width-gradient {
@@ -79,7 +108,7 @@
 
 @mixin blur {
   /* csslint ignore:start */
-  -webkit-filter: blur(2px); /* Chrome, Safari, Opera */
+  -webkit-filter: blur(6px); /* Chrome, Safari, Opera */
   filter: blur(6px);
   /* csslint ignore:end */
 }
@@ -143,10 +172,37 @@
   }
 }
 
+@mixin padding($name, $size, $auto, $important) {
+  @if ($auto) {
+    padding: 0 auto;
+  }
+  @if ($name == 'left') {
+    padding-left: $size $important;
+  } @else if ($name == 'right') {
+    padding-right: $size $important;
+  } @else if ($name == 'top') {
+    padding-top: $size $important;
+  } @else if ($name == 'bottom') {
+    padding-bottom: $size $important;
+  }
+}
+
 @mixin absolute-horizontal-center {
   left: 15px;
   position: absolute;
   right: 15px;
+}
+
+@mixin fixed-horizontal-center {
+  left: 15px;
+  position: fixed;
+  right: 15px;
+}
+
+@mixin relative-horizontal-center {
+  margin-left: 15px;
+  margin-right: 15px;
+  position: relative;
 }
 
 @mixin disabled {
@@ -167,7 +223,7 @@
 @mixin btn-bottom($bottom) {
   bottom: $bottom;
   max-width: 90%;
-  @include absolute-horizontal-center;
+  @include fixed-horizontal-center;
 }
 
 @mixin text-vertical-center($parent-line-height, $children-line-height) {
@@ -178,4 +234,84 @@
     line-height: $children-line-height;
     vertical-align: middle;
   }
+}
+
+@mixin quick-search-placeholder {
+  color: $color-form-arrow;
+  font-size: 1.07em;
+  position: relative;
+  top: .08em;
+}
+@mixin quick-search-placeholder-mobile {
+  color: $color-form-arrow;
+  font-size: 0.95em;
+  position: relative;
+  top: 0;
+}
+
+@mixin orange-shadow  {
+  box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=14, Direction=135, Color=#FE470D); /*IE 5.5-7*/
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=14, Direction=0, Color=#FE470D)';/*IE 8*/
+  -moz-box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/*FF 3.5+*/
+  -webkit-box-shadow: 0 0 14px 4px rgba(254,71,13,0.2);/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+}
+
+@mixin nav-buttons($position) {
+  #{$position}: 0;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  z-index: 10000;
+}
+
+@mixin offset-bottom-sm {
+  @include margin('bottom', 15px, true, !important);
+}
+@mixin offset-bottom-md {
+  @include margin('bottom', 30px, true, !important);
+}
+@mixin offset-bottom-lg {
+  @include margin('bottom', 45px, true, !important);
+}
+@mixin offset-top-sm {
+  @include margin('top', 15px, true, !important);
+}
+@mixin offset-top-md {
+  @include margin('top', 30px, true, !important);
+}
+@mixin offset-top-lg {
+  @include margin('top', 45px, true, !important);
+}
+@mixin offset-left-sm {
+  @include margin('left', 15px, false, !important);
+}
+@mixin offset-left-md {
+  @include margin('left', 30px, false, !important);
+}
+@mixin offset-left-lg {
+  @include margin('left', 45px, false, !important);
+}
+@mixin offset-right-sm {
+  @include margin('right', 15px, false, !important);
+}
+@mixin offset-right-md {
+  @include margin('right', 30px, false, !important);
+}
+@mixin offset-right-lg {
+  @include margin('right', 45px, false, !important);
+}
+@mixin no-margin {
+  @include margin('top', 0, true, !important);
+  @include margin('bottom', 0, true, !important);
+}
+@mixin no-padding {
+  @include padding('top', 0, true, !important);
+  @include padding('bottom', 0, true, !important);
+}
+
+@mixin relative-scrolling-container {
+  position: relative;
+  overflow-x: hidden;
 }

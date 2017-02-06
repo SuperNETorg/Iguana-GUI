@@ -34,6 +34,8 @@
     <!-- partial -->
     <!-- partial:partials/send-coin.html -->
     <!-- partial -->
+    <!-- partial:partials/flow.html -->
+    <!-- partial -->
     <!-- partial:partials/signup.html -->
     <!-- partial -->
     <!-- partial:partials/login.html -->
@@ -41,8 +43,15 @@
   </head>
   <body ng-class="{ 'dashboard-page': $state.current.name === 'dashboard.main' || $state.current.name === 'dashboard.settings' }">
     <div class="app-background" ng-class="{ 'auth-orange-gradient': background }"></div>
-    <div class="app-container">
-      <div class="app-container-inner" ui-view uimodal></div>
+    <div class="app-container" loader>
+      <div class="app-container-inner" ui-view ui-modal scroll window></div>
+      <!--div class="global-loader" global-loader
+           ng-if="!dev.isNightwatch"
+           ng-class="{ 'hide-loader': true }">
+        <div class="loader-image-head" ng-class="{ 'loader-image-effect': vars.effect }">
+          <div class="loader-image"></div>
+        </div>
+      </div-->
     </div>
   </body>
 </html>

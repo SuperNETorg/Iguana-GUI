@@ -20,8 +20,8 @@ angular.module('IguanaGUIApp')
   '$datetime',
   '$window',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $window) {
-//$storage['iguana-mzc-passphrase'] = { 'logged': 'yes' };
+           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+
     var coinsInfo = [],
         coinBalances = [],
         _sideBarCoins = {},
@@ -51,18 +51,19 @@ angular.module('IguanaGUIApp')
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = !dev.isDev || isIguana; // dev
     $rootScope.background = false;
-    // receive coin updated logic
     $scope.$receiveCoinInstance = {};
-    // add coin login modal updated logic
     $scope.passphrase = '';
     $scope.dev = dev;
     $scope.coinsSelectedToAdd = [];
     $scope.$modalInstance = {};
     $scope.receivedObject = undefined;
-    // send coin updated logic
     $scope.$sendCoinInstance = {};
+    $scope.loggedCoins = $storage['dashboard-logged-in-coins'];
+    $storage['dashboard-added-by-user-coins'] = (
+      $storage['dashboard-added-by-user-coins'] ? $storage['dashboard-added-by-user-coins'] : []
+    );
+    $scope.addedByUserCoins = $storage['dashboard-added-by-user-coins'];
     $scope.openAddCoinModal = openAddCoinModal;
-    $scope.openAddCoinLoginModal = openAddCoinLoginModal;
     $scope.openReceiveCoinModal = openReceiveCoinModal;
     $scope.openSendCoinModal = openSendCoinModal;
     $scope.setActiveCoin = setActiveCoin;
@@ -70,105 +71,132 @@ angular.module('IguanaGUIApp')
     $scope.removeCoin = removeCoin;
     $scope.getActiveCoins = getActiveCoins;
     $scope.switchLayoutMode = switchLayoutMode;
-    $rootScope.$on("$stateChangeStart", stateChangeStart);
+    $scope.karma = { // tests
+      constructAccountCoinRepeater: constructAccountCoinRepeater,
+      constructAccountCoinRepeaterCB: constructAccountCoinRepeaterCB,
+      removeCoin: removeCoin,
+      checkAddCoinButton: checkAddCoinButton,
+      updateTotalBalance: updateTotalBalance,
+      constructTransactionUnitRepeater: constructTransactionUnitRepeater,
+      constructTransactionUnitRepeaterCB: constructTransactionUnitRepeaterCB,
+      updateFeeParams: updateFeeParams,
+      switchLayoutMode: switchLayoutMode
+    };
+    $scope.activeSyncInfo = false;
+    $scope.coinSyncInfo = {};
+    $rootScope.$on('$stateChangeStart', stateChangeStart);
 
-    if (!$scope.coinsInfo) {
-      constructAccountCoinRepeater(true, true);
-      $rootScope.$on('coinsInfo', onInit);
-    } else {
+    $scope.showSyncInfo = function(itemId) {
+      if (itemId === $scope.activeSyncInfo) {
+        $scope.activeSyncInfo = false;
+      } else {
+        $scope.activeSyncInfo = itemId;
+      }
+    };
+
+    util.bodyBlurOff();
+    delete $storage['dashboard-pending-coins'];
+    $rootScope.$on('coinsInfo', onInit);
+
+    if ($scope.coinsInfo) {
       onInit();
     }
 
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
-      constructAccountCoinRepeater(true);
-      updateDashboardView(settings.dashboardUpdateTimout);
+      constructAccountCoinRepeater();
+      updateFeeParams();
     }
 
-    var modalInstance = {},
-        addCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          size: 'lg',
-          controller: 'loginSelectCoinModalController',
-          templateUrl: 'partials/add-coin.html',
-          appendTo: angular.element(document.querySelector('.auth-add-coin-modal-container'))
-        },
-        addCoinLoginModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          controller: 'addCoinLoginModalController',
-          templateUrl: 'partials/add-coin-login.html',
-          appendTo: angular.element(document.querySelector('.add-coin-login-container')),
-          resolve: {
-            receivedObject: function() {
-              return $scope.receivedObject;
-            }
-          }
-        },
-        receiveCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          size: 'lg',
-          controller: 'receiveCoinModalController',
-          templateUrl: 'partials/receive-coin.html',
-          appendTo: angular.element(document.querySelector('.receive-coin-modal-container'))
-        },
-        sendCoinModal = {
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          controller: 'sendCoinModalController',
-          templateUrl: 'partials/send-coin.html',
-          appendTo: angular.element(document.querySelector('.send-coin-modal-container'))
-        };
-
+    var modalInstance = {};
     // Modals start
     function openAddCoinModal() {
-      modalInstance = $uibModal.open(addCoinModal);
+      $scope.modal.coinModal.resolve = {
+        'type': function() {
+          return 'signin';
+        },
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      modalInstance = $uibModal.open($scope.modal.coinModal);
 
       modalInstance.result.then(resultPromise);
 
-      $rootScope.$on('modal.dismissed', resultPromise);
-
-      function resultPromise(event, coins) {
+      function resultPromise(data) {
         $scope.receivedObject = util.getCoinKeys(util.reindexAssocArray($scope.getActiveCoins()));
 
-        $auth.login(
-          $scope.getActiveCoins(),
-          null,
-          true
-        )
-        .then(
-          constructAccountCoinRepeater,
-          function(reason) {
-            console.log('request failed: ', reason);
-          });
+        var coinKeys = Object.keys($storage['iguana-login-active-coin']);
+
+        $storage['dashboard-pending-coins'] = !!coinKeys;
+        $scope.coins = data;
+        $scope.passphraseModel = coinKeys.length ? $storage['iguana-login-active-coin'][coinKeys[0]].pass : '';
+
+        modalInstance.closed.then(function() {
+          $rootScope.allowLoginStateChange = true;
+
+          if ($storage.isIguana) {
+            $auth.coinsSelectedToAdd = $storage['iguana-login-active-coin'];
+            $auth
+              .checkIguanaCoinsSelection(true)
+              .then(
+                function() {
+                  var coinNames = [];
+
+                  for (var name in $auth.coinsSelectedToAdd) {
+                    if (!$storage['dashboard-logged-in-coins'][name]) {
+                      $storage['dashboard-added-by-user-coins'].push(name);
+                      $storage['dashboard-logged-in-coins'][name] = $auth.coinsSelectedToAdd[name];
+                      coinNames.push($auth.coinsSelectedToAdd[name].name);
+                    }
+                  }
+
+                  var message = $message.ngPrepMessageModal(
+                    coinNames.join(', ') + (coinNames.length > 1 ? ' are' : ' is') + $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
+                    'green'
+                  );
+
+                  //TODO: not completed
+                  $timeout(function () {
+                    message.close();
+                  }, 2500);
+
+                  constructAccountCoinRepeater();
+                },
+                function(reason) {
+                  if (dev.showConsoleMessages && dev.isDev)
+                    console.log('request failed: ' + reason);
+                }
+              );
+          } else {
+            $state.go('login.step2');
+          }
+        });
       }
-    }
 
-    function openAddCoinLoginModal() {
-      modalInstance = $uibModal.open(addCoinLoginModal);
-
-      modalInstance.result.then(onDone);
-
-      function onDone(receivedObject) {
-        if (receivedObject) {
-          constructAccountCoinRepeater(); // TODO: fix, not effecient
-        }
-      }
+      $scope.karma.modal = modalInstance; // tests
     }
 
     function openReceiveCoinModal() {
-      modalInstance = $uibModal.open(receiveCoinModal);
+      $scope.modal.receiveCoinModal.resolve = {
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      modalInstance = $uibModal.open($scope.modal.receiveCoinModal);
     }
 
     function openSendCoinModal() {
-      modalInstance = $uibModal.open(sendCoinModal);
+      $scope.modal.sendCoinModal.resolve = {
+        'modal': function() {
+          return $scope.modal;
+        }
+      };
+
+      modalInstance = $uibModal.open($scope.modal.sendCoinModal);
     }
     // Modals end
 
@@ -177,8 +205,9 @@ angular.module('IguanaGUIApp')
       $scope.activeCoin = item.id;
       $scope.setTxUnitBalance(item);
       constructTransactionUnitRepeater();
+      updateFeeParams();
 
-      if ($scope.isMobile && $state.current.name === 'dashboard.mobileCoins') {
+      if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
       }
     }
@@ -210,12 +239,13 @@ angular.module('IguanaGUIApp')
       return $storage['iguana-login-active-coin'];
     }
 
-    function constructAccountCoinRepeater(isFirstRun, renderNow) {
+    function constructAccountCoinRepeater() {
       var index = 0;
 
       coinsSelectedByUser = [];
 
       var lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
+
       for (var key in lookupArray) {
         if ($storage['iguana-' + key + '-passphrase'] &&
           $storage['iguana-' + key + '-passphrase'].logged === 'yes') {
@@ -232,27 +262,135 @@ angular.module('IguanaGUIApp')
       coinBalances = [];
 
       for (var i = 0; i < coinsSelectedByUser.length; i++) {
-        if (isFirstRun) {
-          _sideBarCoins[coinsSelectedByUser[i]] = {
-            id: coinsSelectedByUser[i],
-            coinIdUc: coinsSelectedByUser[i].toUpperCase(),
-            name: supportedCoinsList[coinsSelectedByUser[i]].name,
-            loading: true
-          };
+        _sideBarCoins[coinsSelectedByUser[i]] = {
+          id: coinsSelectedByUser[i],
+          coinIdUc: coinsSelectedByUser[i].toUpperCase(),
+          name: supportedCoinsList[coinsSelectedByUser[i]].name,
+          loading: true
+        };
 
-          $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
-            return _sideBarCoins[key];
-          });
-        }
+        $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
+          return _sideBarCoins[key];
+        });
 
-        if (!renderNow) {
-          $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-              .then(function(response) {
-                constructAccountCoinRepeaterCB(response[0], response[1]);
-              }, function(reason) {
-                console.log('request failed: ' + reason);
-              });
-        }
+        $api.getBalance(defaultAccount, coinsSelectedByUser[i])
+          .then(
+            function(response) {
+              constructAccountCoinRepeaterCB(response[0], response[1]);
+            },
+            function(response) {
+              if (dev.showConsoleMessages && dev.isDev) {
+                console.log('request failed: ', response);
+              }
+            }
+          );
+
+          // TODO: rewrite
+          if ($storage.isIguana) {
+            $api.getInfo(coinsSelectedByUser[i]).then(
+              function(response) {
+                var _syncInfo = {};
+
+                if (response[0].data && response[0].data.status) {
+                  var iguanaGetInfo = response[0].data.status.split(' '),
+                      totalBundles = iguanaGetInfo[20].split(':'),
+                      currentHeight = iguanaGetInfo[9].replace('h.', ''),
+                      peers = iguanaGetInfo[16].split('/');
+
+                  _syncInfo.peers = peers[0].replace('peers.', '');
+                  _syncInfo.blocks = currentHeight;
+                  _syncInfo.localBundles = iguanaGetInfo[14].replace('E.', '');
+                  _syncInfo.totalBundles = totalBundles[0];
+                  _syncInfo.bundlesPercentage = Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]).toFixed(1);
+                  _syncInfo.title = 'Bundles: ' + _syncInfo.localBundles + ' / ' + _syncInfo.totalBundles;
+                  if (_syncInfo.bundlesPercentage === NaN) _syncInfo.bundlesPercentage = 0;
+
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('Connections: ' + peers[0].replace('peers.', ''));
+                  }
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('Blocks: ' + currentHeight);
+                  }
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('Bundles: ' + iguanaGetInfo[14].replace('E.', '') + '/' +
+                      totalBundles[0] + ' (' + _syncInfo.bundlesPercentage  + '% synced)');
+                  }
+
+                  if (Number(iguanaGetInfo[14].replace('E.', '') * 100 / totalBundles[0]) !== 100) {
+                    _syncInfo.loaderBar = true;
+                    _syncInfo.loaderBarSize = _syncInfo.bundlesPercentage;
+                  } else {
+                    _syncInfo.loaderBar = false;
+                  }
+                  if (response[0].data.status.indexOf('.RT0 ') > -1) {
+                    _syncInfo.isRT = false;
+
+                    if (dev.showConsoleMessages && dev.isDev) {
+                      console.log('RT is not ready yet!');
+                    }
+                  } else {
+                    _syncInfo.isRT = true;
+                    _syncInfo.loaderBar = false;
+                  }
+                }
+
+                if (_syncInfo.bundlesPercentage > 100) {
+                  _syncInfo = {};
+                }
+
+                $scope.coinSyncInfo[response[1]] = _syncInfo;
+              },
+              function(response) {
+                if (dev.showConsoleMessages && dev.isDev) {
+                  console.log('request failed: ', response);
+                }
+              }
+            );
+          } else {
+            if (coinsSelectedByUser[i] === 'kmd') {
+              $api.getInfo(coinsSelectedByUser[i]).then(
+                function(response) {
+                  var _syncInfo = {};
+
+                  if (response[0].data.result) {
+                    _syncInfo.peers = response[0].data.result.connections;
+                    _syncInfo.localBlocks = response[0].data.result.blocks;
+                    _syncInfo.totalBlocks = response[0].data.result.longestchain;
+                    _syncInfo.blocksPercentage = Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
+                    _syncInfo.title = 'Blocks:' + _syncInfo.localBlocks + ' / ' + _syncInfo.totalBlocks;
+                    if (_syncInfo.blocksPercentage === NaN) _syncInfo.blocksPercentage = 0;
+
+                    if (_syncInfo.localBlocks !== _syncInfo.totalBlocks) {
+                      _syncInfo.isRT = false;
+
+                      if (dev.showConsoleMessages && dev.isDev)
+                        console.log('RT is not ready yet!');
+                    } else {
+                      _syncInfo.isRT = true;
+                    }
+
+                    if (Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks) !== 100) {
+                      _syncInfo.loaderBar = true;
+                      _syncInfo.loaderBarSize = (_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(2);
+                    } else {
+                      _syncInfo.loaderBar = false;
+                    }
+                  }
+
+                  if (_syncInfo.blocksPercentage > 100) {
+                    _syncInfo = {};
+                  }
+
+                  $scope.coinSyncInfo[response[1]] = _syncInfo;
+                },
+                function(response) {
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('request failed: ', response);
+                  }
+                }
+              );
+            }
+          }
       }
     }
 
@@ -261,18 +399,28 @@ angular.module('IguanaGUIApp')
       var coinLocalRate = $rates.updateRates(coin.toUpperCase(), defaultCurrency, true) || 0,
           currencyCalculatedValue = balance * coinLocalRate,
           coinBalanceVal = balance || 0,
-          coinBalanceCurrencyVal = currencyCalculatedValue || 0;
+          coinBalanceCurrencyVal = currencyCalculatedValue || 0,
+          activeMode = $scope.loggedCoins[coin].activeMode;
 
       coinBalances[coin] = balance;
+
       _sideBarCoins[coin] = {
         id: coin,
         name: supportedCoinsList[coin].name,
-        coinBalanceUnformatted: balance,
-        coinValue: coinBalanceVal,
+        coinBalanceUnformatted: Number(balance),
+        coinValue: Number(coinBalanceVal),
         coinIdUc: coin.toUpperCase(),
-        currencyValue: coinBalanceCurrencyVal,
+        currencyValue: Number(coinBalanceCurrencyVal),
         currencyName: defaultCurrency,
-        loading: false
+        loading: false,
+        mode: (
+          activeMode === -1 ?
+            'Native' : (
+              activeMode === 0 ?
+                'Lite' :
+                'Full'
+            )
+        )
       };
 
       $scope.sideBarCoins = Object.keys(_sideBarCoins).map(function(key) {
@@ -298,8 +446,8 @@ angular.module('IguanaGUIApp')
           $storage['iguana-' + key + '-passphrase'] &&
           $storage['iguana-' + key + '-passphrase'].logged !== 'yes') {
           if ((isIguana && coinsInfo[key] && coinsInfo[key].iguana !== false) ||
-            (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
-            _coinsLeftToAdd++;
+              (!isIguana && coinsInfo[key] && coinsInfo[key].connection === true)) {
+                _coinsLeftToAdd++;
           }
         }
       }
@@ -326,12 +474,16 @@ angular.module('IguanaGUIApp')
         $scope.txUnit.loading = true;
       }
 
-      $scope.txUnit.transactions = []; // TODO: tx unit flickers on active coin change
+      if (!$scope.txUnit.transactions) {
+        $scope.txUnit.transactions = [];
+      }
+      // TODO: tx unit flickers on active coin change
       $api.listTransactions(defaultAccount, $scope.activeCoin)
           .then(
             constructTransactionUnitRepeaterCB,
             function(reason) {
-              console.log('request failed: ' + reason);
+              if (dev.showConsoleMessages && dev.isDev)
+                console.log('request failed: ' + reason);
             });
     }
 
@@ -348,7 +500,9 @@ angular.module('IguanaGUIApp')
         }
 
         for (var i = 0; i < transactionsList.length; i++) {
-          $scope.txUnit.transactions[i] = {};
+          if (!$scope.txUnit.transactions[i]) {
+            $scope.txUnit.transactions[i] = {};
+          }
 
           if (transactionsList[i].txid) {
             // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
@@ -418,29 +572,156 @@ angular.module('IguanaGUIApp')
               }
 
               $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time;
+                                                                 transactionDetails.timestamp ||
+                                                                 transactionDetails.time;
               $scope.txUnit.transactions[i].timestampDate = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time, 'DDMMMYYYY');
+                                                                                      transactionDetails.timestamp ||
+                                                                                      transactionDetails.time, 'DDMMMYYYY');
               $scope.txUnit.transactions[i].timestampTime = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                transactionDetails.timestamp ||
-                transactionDetails.time, 'HHMM');
+                                                                                      transactionDetails.timestamp ||
+                                                                                      transactionDetails.time, 'HHMM');
             }
           }
         }
+      } else {
+        delete $scope.txUnit.transactions;
       }
     }
 
-    function updateDashboardView(timeout) {
-      vars.dashboardUpdateRef = $interval(function() {
-        // console.clear();
-        $auth.checkSession();
-        $rates.updateRates(null, null, null, true);
-        constructAccountCoinRepeater();
+    function updateFeeParams() {
+      var activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0,
+          defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+          currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
+          coinName = activeCoin ? activeCoin.toUpperCase() : '',
+          defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
 
-        if (dev.showConsoleMessages && dev.isDev) console.log('dashboard updated');
-      }, timeout * 1000);
+      if (activeCoin) {
+        $storage.feeSettings = {};
+        $storage.feeSettings.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : undefined;
+
+        $api.feeCoins(
+          activeCoin,
+          defaultAccount,
+          currencyName,
+          coinName
+        ).then(function(result) {
+          var coin = result.getBalance[1],
+              fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
+              halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
+              hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
+              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0;
+
+          $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
+          $storage.feeSettings.currency = defaultCurrency;
+          $storage.feeSettings.coinName = supportedCoinsList[coin].name;
+          $storage.feeSettings.coinId = activeCoin.toUpperCase();
+          $storage.feeSettings.coinValue = result.getBalance[0];
+          $storage.feeSettings.currencyValue = result.getBalance[0] * $storage.feeSettings.currencyRate;
+
+          $storage.feeSettings.sendCoin = {
+            initStep: true,
+            success: false,
+            address: '',
+            amount: '',
+            amountCurrency: '',
+            fee: '',
+            minFee: coinsInfo[activeCoin].relayFee || 0.00001,
+            feeCurrency: '',
+            note: '',
+            passphrase: '',
+            valid: {
+              address: true,
+              amount: {
+                empty: false,
+                notEnoughMoney: false
+              },
+              fee: {
+                empty: false,
+                notEnoughMoney: false
+              }
+            },
+            entryFormIsValid: false
+          };
+
+          if ($scope.activeCoin === 'btc') {
+            var feeTime = {
+              default: {
+                min: '',
+                max: ''
+              },
+              low: {
+                min: '',
+                max: ''
+              },
+              normal: {
+                min: '',
+                max: ''
+              },
+              high: {
+                min: '',
+                max: ''
+              }
+            };
+
+            result.bitcoinFeesAll.data.fees.forEach(function(el) {
+              if (el.maxFee === 0) {
+                feeTime.default = {
+                  min: el.minMinutes,
+                  max: el.maxMinutes
+                };
+              }
+              if (el.maxFee === result.bitcoinFees.data.fastestFee) {
+                feeTime.high = {
+                  min: el.minMinutes,
+                  max: el.maxMinutes
+                };
+              }
+              if (el.maxFee === result.bitcoinFees.data.halfHourFee) {
+                feeTime.normal = {
+                  min: el.minMinutes,
+                  max: el.maxMinutes
+                };
+              }
+              if (el.maxFee === result.bitcoinFees.data.hourFee) {
+                feeTime.low = {
+                  min: el.minMinutes,
+                  max: el.maxMinutes
+                };
+              }
+            });
+
+            $storage.feeSettings.items = [{
+              id: 0,
+              name: $filter('lang')('SEND.FEE_MIN'),
+              coin: $storage.feeSettings.sendCoin.minFee.toFixed(7),
+              amount: (coinCurrencyRate * $storage.feeSettings.sendCoin.minFee).toFixed(12),
+              feeMinTime: feeTime.default.min,
+              feeMaxTime: feeTime.default.max
+            }, {
+              id: 1,
+              name: $filter('lang')('SEND.FEE_LOW'),
+              coin: hourFee.coin.toFixed(7),
+              amount: (coinCurrencyRate * hourFee.coin).toFixed(12),
+              feeMinTime: feeTime.low.min,
+              feeMaxTime: feeTime.low.max
+            }, {
+              id: 2,
+              name: $filter('lang')('SEND.FEE_NORMAL'),
+              coin: halfHourFee.coin.toFixed(7),
+              amount: (coinCurrencyRate * halfHourFee.coin).toFixed(12),
+              feeMinTime: feeTime.normal.min,
+              feeMaxTime: feeTime.normal.max
+            }, {
+              id: 3,
+              name: $filter('lang')('SEND.FEE_HIGH'),
+              coin: fastestFee.coin.toFixed(7),
+              amount: (coinCurrencyRate * fastestFee.coin).toFixed(12),
+              feeMinTime: feeTime.high.min,
+              feeMaxTime: feeTime.high.max
+            }];
+          }
+        }.bind(this));
+      }
     }
 
     function stateChangeStart() {
@@ -448,13 +729,28 @@ angular.module('IguanaGUIApp')
     }
 
     function switchLayoutMode() {
-      if ($scope.isMobile && $state.current.name === 'dashboard.main' &&
+      if (util.isMobile() && $state.current.name === 'dashboard.main' &&
           $state.current.name !== 'dashboard.mobileTransactions') {
         $state.go('dashboard.mobileCoins');
       }
-      if (!$scope.isMobile && $state.current.name !== 'dashboard.main') {
+      if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
         $state.go('dashboard.main');
       }
     }
+
+    //TODO: not not completed
+    $scope.$watchCollection(
+      function () {
+        return $scope.addedByUserCoins;
+      },
+      function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $timeout(function () {
+            $scope.addedByUserCoins =
+              $storage['dashboard-added-by-user-coins'] = [];
+          }, 10000)
+        }
+      }
+    )
   }
 ]);

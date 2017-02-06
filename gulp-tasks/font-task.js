@@ -15,7 +15,8 @@ exports.copyFonts = function(buildMode) {
     return gulp
            .src(extendFont)
            .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts'))
-           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts'));
+           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts'))
+           .pipe(gulp.dest(paths.build[buildMode] + '/fonts'));
   } else {
     return gulp
            .src(extendFont)
@@ -24,21 +25,32 @@ exports.copyFonts = function(buildMode) {
 }
 
 exports.copySVG = function(buildMode) {
-  var flagsSVGPaths = [];
+  var flagsSVGPaths = [],
+      coinsSVGPaths = [];
 
-  for (var i=0; i < paths.svg.flags.length; i++) {
+  for (var i = 0; i < paths.svg.flags.length; i++) {
     flagsSVGPaths.push(paths.svg.default + '/' + paths.svg.size + '/' + paths.svg.flags[i] + '.svg');
+  }
+
+  for (var i = 0; i < paths.svg.coins.length; i++) {
+    coinsSVGPaths.push(paths.svg.coinsPath + '/' + paths.svg.coins[i] + '.svg');
   }
 
   if (buildMode === 'dev') {
     return gulp
-           .src(flagsSVGPaths)
-           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/flags'))
-           .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags'));
+          .src(flagsSVGPaths)
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/svg/flags'))
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/fonts/fonts/svg/flags')),
+          gulp
+          .src(coinsSVGPaths)
+          .pipe(gulp.dest(paths.build[buildMode] + '/css/dashboard/svg/coins'))
   } else {
     return gulp
            .src(flagsSVGPaths)
-           .pipe(gulp.dest(paths.build[buildMode] + '/svg/flags'));
+           .pipe(gulp.dest(paths.build[buildMode] + '/svg/flags')),
+           gulp
+           .src(coinsSVGPaths)
+           .pipe(gulp.dest(paths.build[buildMode] + '/svg/coins'));
   }
 }
 

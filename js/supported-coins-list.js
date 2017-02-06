@@ -6,7 +6,7 @@
 
 'use strict';
 
-var supportedCoinsList = {
+var list = {
   'btc': {
     'name': 'Bitcoin',
     'portp2p': 8332,
@@ -226,5 +226,83 @@ var supportedCoinsList = {
     'user': 'user', // add your rpc pair here
     'pass': 'pass',
     'currentBlockHeightExtSource': ''
+  },
+  'nvc': {
+    'name': 'Novacoin',
+    'portp2p': 8344,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'flo': {
+    'name': 'FlorinCoin',
+    'portp2p': 7313,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'vtr': {
+    'name': 'vTorrent',
+    'portp2p': 22524,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'qrk': {
+    'name': 'Quark',
+    'portp2p': 8372,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'ifc': {
+    'name': 'Infinitecoin',
+    'portp2p': 9322,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'ftc': {
+    'name': 'Feathercoin',
+    'portp2p': 9337,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'bcn': {
+    'name': 'Bytecoin',
+    'portp2p': 8080,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'xst': {
+    'name': 'StealthCoin',
+    'portp2p': 46502,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'xen': {
+    'name': 'Xenixcoin',
+    'portp2p': 15555,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
+  },
+  'c21': {
+    'name': 'Coin2.1',
+    'portp2p': 12366,
+    'user': 'user', // add your rpc pair here
+    'pass': 'pass',
+    'currentBlockHeightExtSource': ''
   }
 };
+
+var supportedCoinsList = {
+  'kmd': list.kmd
+};
+
+Object.keys(list).sort().forEach(function(key) {
+  supportedCoinsList[key] = list[key];
+});

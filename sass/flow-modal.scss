@@ -1,0 +1,95 @@
+/*!
+ * Iguana auth/flow
+ *
+ */
+
+@import 'dev.scss';
+
+.flow-modal-login-state {
+  h2 {
+    margin-top: 21px;
+    margin-bottom: 2px;
+  }
+  .flow-title {
+    font-size: 1.14em;
+    @include center;
+  }
+  .flow-content {
+    background-color: $color-absolute-white;
+    box-shadow: 0 2px 2px 2px rgba-black(0.1); /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+    margin: 3.67em auto 1.8em auto;
+    padding: 6em 6em 4.2em 6em;
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=0, Color=#000000)'; /*IE 8*/
+    -moz-box-shadow: 0 2px 2px 2px rgba-black(0.1); /*FF 3.5+*/
+    -webkit-box-shadow: 0 2px 2px 2px rgba-black(0.1); /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+    /* csslint ignore:start */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color=#000000); /*IE 5.5-7*/
+    /* csslint ignore:end */
+
+    .proxy-block {
+      padding-top: 14px;
+
+      .right-side {
+        padding-top: 20px;
+      }
+    }
+    .hdd-block {
+      .right-side {
+        padding-top: 7px;
+      }
+    }
+    .cmd-block {
+      padding-top: 11px;
+
+      .left-side {
+        padding-top: 30px;
+      }
+    }
+    .proxy,
+    .hard-drive,
+    .command-line {
+      img {
+        width: 96%;
+      }
+    }
+    .left-side {
+      float: left;
+      margin-left: 4.24em;
+
+    }
+    .right-side {
+      float: left;
+      margin-left: 1.64em;
+
+
+      .text-info-block {
+        font-size: 1.142em;
+        line-height: 1.3em;
+        width: 90%;
+      }
+    }
+  }
+  .need-help {
+    display: block;
+    font-size: 1.14em;
+    margin: 1.56em auto 1.82em auto;
+    text-align: center;
+    width: 200px;
+
+    .link {
+      @include cursor-pointer;
+      color: $txunit-item-progress-amount-color;
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+  .help-block {
+    font-size: 1.145em;
+    line-height: 1.27em;
+  }
+  .after-flow-btn {
+    font-size: 1.06em;
+    max-width: 600px;
+    width: 600px;
+  }
+}

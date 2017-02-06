@@ -1,22 +1,22 @@
 <script type="text/ng-template" id="partials/receive-coin.html">
-  <section class="modal-content receiving-coin-content">
-    <span class="form-container">
-      <header class="modal-header form-header orange-gradient box-shadow-bottom">
-        <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
-        <div class="title text-shadow">{{ 'RECEIVE.RECEIVING_COINS' | lang }}</div>
-      </header>
-    </span>
+  <section class="form-container receiving-coin-content">
+    <header class="modal-header form-header orange-gradient box-shadow-bottom">
+      <i class="bi_interface-cross cursor-pointer btn-close" ng-click="close()"></i>
+      <div class="title text-shadow">{{ 'RECEIVE.RECEIVING_COINS' | lang }}</div>
+    </header>
     <div class="form-content modal-body">
       <div class="share-address-section">
-        <!--div>
-          <span class="text-section text-something">Something 2</span>
-        </div-->
         <div class="my-label my-address">{{ 'RECEIVE.MY_ADDRESS' | lang }}:</div>
         <h4 id="address">{{ receiveCoin.addressFormatted }}</h4>
-        <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="invisible" />
+        <div>
+          <span class="text-section text-something">{{ activeCoin.name }}</span>
+        </div>
+        <input type="text" id="addressHidden" ng-model="receiveCoin.address" class="hidden" />
         <div class="buttons text-center">
           <button class="btn copy-btn margin-bottom pull-left" ng-click="copyAddressToClipboard()">{{ 'RECEIVE.COPY' | lang }}</button>
-          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}">{{ 'RECEIVE.SHARE' | lang }}</a>
+          <a class="btn btn-share-email share-btn margin-bottom pull-right" href="{{ receiveCoin.shareUrl }}" target="{{ isChromeApp ? '_blank' : '_self' }}">
+          {{ 'RECEIVE.SHARE' | lang }}
+          </a>
         </div>
         <div class="qr-code" id="qrcode">
           <img ng-src="{{ receiveCoin.qrCode }}" />

@@ -15,8 +15,13 @@ angular.module('IguanaGUIApp')
           min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(),
           sec = a.getSeconds();
 
-      if (format === 'DDMMMYYYY') return date + ' ' + month + ' ' + year + ' ';
-      if (format === 'HHMM') return hour + ':' + min;
+      if (format === 'DDMMMYYYY') {
+        return date + ' ' + month + ' ' + year;
+      }
+
+      if (format === 'HHMM') {
+        return hour + ':' + min;
+      }
     };
 
     // in seconds
@@ -26,5 +31,10 @@ angular.module('IguanaGUIApp')
 
       return secondsElapsed;
     };
+
+    // minutes to seconds
+    this.minuteMilliSec = function(minute) {
+      return 60 * 1000 * parseFloat(minute);
+    }
   }
 ]);

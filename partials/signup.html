@@ -6,25 +6,25 @@
         <section class="form-container create-account-form"
                  ng-class="{ 'hidden': !($state.current.name === 'signup.step1' ||  $state.current.name === 'signup') }" >
           <header class="form-header orange-gradient box-shadow-bottom unselectable">
-            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('login')"></i>
+            <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back"
+               ng-click="goBack()"></i>
             <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content">
             <div class="form-content-inner">
               <div class="login-input-directions center offset-bottom-md unselectable passphrase-word-count">
                 <div>
-                  {{ ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang) }}
-                  {{ passphraseCount + ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang) }}
+                  {{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P1' | lang }}
+                  {{ passphraseCount }}{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P2' | lang }}
                 </div>
                 <div>
-                  {{ ('CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang) }}
+                  {{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P3' | lang }}
                 </div>
                 <div>
                   <strong>{{ 'CREATE_ACCOUNT.WRITE_DOWN_THIS_P4' | lang }}</strong>
                 </div>
               </div>
-              <div class="passphrase-container row center" ng-click="copyPassphraseWord($event)">
-                <!--<div class="title unselectable">{{ 'CREATE_ACCOUNT.COPY_PASSPHRASE' | lang }}: {{ generatedPassphrase }}</div>-->
+              <div class="passphrase-container row center">
                 <div class="generated-passhprase">{{ passphrase }}</div>
               </div>
               <input type="checkbox"
@@ -33,14 +33,19 @@
                      ng-model="passphraseCheckbox"
                      class="checkbox" />
               <label for="passphrase-saved-checkbox" class="checkbox-label cursor-pointer">
-                <span class="box"></span><span class="label-text unselectable">{{ 'CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE' | lang }}</span>
+                <span class="box"></span><span class="label-text unselectable">
+                  {{ 'CREATE_ACCOUNT.I_SAVED_A_PASSPHRASE' | lang }}
+                </span>
               </label>
               <div class="non-iguana-coins-repeater hidden"></div>
               <div class="non-iguana-coins-repeater-errors"></div>
               <div class="login-or-delim center"></div>
-              <button class="btn btn-block orange-gradient text-shadow row btn-verify-passphrase"
-                      ng-disabled="!passphraseCheckbox || isDisabled()"
-                      ng-click="$state.go('signup.step2')">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+              <div class="covered-sheet">
+                <button class="btn btn-block orange-gradient text-shadow row btn-verify-passphrase"
+                        ng-disabled="!passphraseCheckbox || isDisabled()"
+                        ng-click="$state.go('signup.step2')">{{ 'CREATE_ACCOUNT.NEXT' | lang }}</button>
+              </div>
+
             </div>
           </div>
         </section>
@@ -48,26 +53,33 @@
         <!-- // verify passphrase form start -->
         <section class="form-container verify-passphrase-form"
                  ng-class="{ 'hidden': $state.current.name !== 'signup.step2' }">
-          <header class="form-header orange-gradient box-shadow-bottom">
+          <header class="form-header orange-gradient box-shadow-bottom unselectable">
             <i class="bi_interface-arrow-left text-shadow cursor-pointer btn-back" ng-click="$state.go('signup.step1')"></i>
-            <div class="title text-shadow unselectable">{{ title }}</div>
+            <div class="title text-shadow">{{ title }}</div>
           </header>
           <div class="form-content">
             <div class="form-content-inner">
-              <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">{{ 'LOGIN.INCORRECT_INPUT_P1' | lang }} 24 {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}</div>
+              <div class="login-input-directions-error center offset-bottom-sm col-red hidden unselectable passphrase-word-count">
+                {{ 'LOGIN.INCORRECT_INPUT_P1' | lang }}
+                24
+                {{ 'LOGIN.INCORRECT_INPUT_P2' | lang }}
+              </div>
               <div class="login-input-directions center offset-bottom-sm unselectable">
-                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }} <br/>
+                {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P1' | lang }}
+                <br/>
                 {{ 'CREATE_ACCOUNT.TYPE_OR_PASTE_THE_PASSPHRASE_P2' | lang }}
               </div>
               <textarea name="verifyPassphrase" id="passphrase"
                         class="login-passphrase-textarea offset-bottom-sm row center"
-                        ng-model="passPhraseText"></textarea>
+                        ng-model="passphraseModel"></textarea>
               <div class="non-iguana-walletpassphrase-errors"></div>
               <div class="login-or-delim center unselectable"></div>
-              <button ng-disabled="!passPhraseText.length"
-                      class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="$state.go('signup.step3')">
-                {{ 'CREATE_ACCOUNT.CREATE' | lang }}
-              </button>
+              <div class="covered-sheet">
+                <button ng-disabled="!passphraseModel.length"
+                        class="btn btn-block orange-gradient text-shadow row btn-add-account" ng-click="validateStep3()">
+                  {{ 'CREATE_ACCOUNT.CREATE' | lang }}
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -75,23 +87,27 @@
         <!-- // verify passphrase form start -->
         <section class="form-container terms-conditionals-form"
                  ng-class="{ 'hidden': $state.current.name !== 'signup.step3' }" >
-          <header class="form-header orange-gradient box-shadow-bottom">
+          <header class="form-header orange-gradient box-shadow-bottom unselectable">
             <div class="title text-shadow">{{ 'PAGE.CONFIRMATION' | lang }}</div>
           </header>
           <div class="form-content">
             <div class="form-content-inner">
               <div class="center unselectable form-title offset-bottom-lg">{{ 'CREATE_ACCOUNT.TERMS-HEADER' | lang }}</div>
               <div class="login-input-directions no-padding-left-right unselectable offset-bottom-lg">
-                {{ 'CREATE_ACCOUNT.TERMS-CONDITIONALS' | lang }}
+                {{ 'CREATE_ACCOUNT.TERMS_CONDITIONS' | lang }}
+                <div class="bottom-sheet"></div>
               </div>
-              <button class="last-child btn btn-block width-gradient not-hover row btn-terms-conditions-decline offset-bottom-md"
-                      ng-click="$state.go('signup.step2')">
-                {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
-              </button>
-              <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
-                      ng-click="addAccount()">
-                {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
-              </button>
+              <div class="covered-sheet">
+                <div class="container-arrow"></div>
+                <button class="last-child btn btn-block width-gradient not-hover row btn-terms-conditions-decline offset-bottom-md hidden"
+                        ng-click="$state.go('signup.step2')">
+                  {{ 'CREATE_ACCOUNT.DECLINE' | lang }}
+                </button>
+                <button class="last-child btn btn-block orange-gradient not-hover row btn-terms-conditions-accept"
+                        ng-click="addAccount()">
+                  {{ 'CREATE_ACCOUNT.ACCEPT' | lang }}
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -100,4 +116,5 @@
       </div>
     </div>
   </div>
+  <div class="auth-add-coin-modal"></div>
 </script>

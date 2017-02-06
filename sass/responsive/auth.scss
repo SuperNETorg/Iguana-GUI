@@ -20,22 +20,33 @@ body {
             margin: 0 auto;
             max-width: 600px;
 
+            //we need '!IMPORTANT' for this size
+            .covered-sheet{
+              .btn-verify-passphrase,
+              .btn-add-account,
+              .btn-terms-conditions-accept {
+                max-width: 600px !important;
+              }
+            }
             .form-title {
-              color: $color-dark-gray;
+              color: $login-content-color-bg;
               font-size: 1.1em;
             }
             .passphrase-word-count {
               strong {
-                @include bold
+                @include bold;
               }
             }
             .btn.row {
-              font-size: 1em;
-              font-weight: 700;
+              font-size: 1.014em;
+              @include bold;
               height: 34px;
               @include left-right-auto;
               max-width: none;
               width: 100%;
+            }
+            .container-arrow {
+              display: none;
             }
           }
         }
@@ -44,17 +55,27 @@ body {
           line-height: 1.26em;
           padding-left: 12px;
           padding-right: 12px;
+
+          .terms-condition2 {
+            font-weight: 800;
+          }
         }
         .generated-passhprase {
           line-height: 1.3em;
-          padding: 0 35px;
+          padding: 0 30px;
         }
         .login-or-delim {
-          padding: 12px 0;
+          padding: 1.4em 0;
         }
       }
       .login-buttons-container {
-        margin-top: 40px;
+        margin-top: 4.7em;
+      }
+      .form-content-inner-login-state {
+        .login-input-directions-login-state {
+          margin-top: 1.02em;
+          @include center;
+        }
       }
     }
     .form-container.mdl .form-header,
@@ -65,10 +86,11 @@ body {
       border-radius: 0;
     }
     .form-container .form-content {
-      padding: 3.6em 10px;
+      padding: 3.5em 10px;
     }
     .auth-add-coin-modal {
-      .modal-full {
+      .modal-full,
+      .modal-lg {
         .add-new-coin-form-login-state {
           .form-header {
             .btn-close {
@@ -82,6 +104,22 @@ body {
           }
         }
       }
+    }
+    .flow-modal-login-state {
+      .flow-content {
+        width: 90%;
+        max-width: 786px;
+
+        .left-side {
+          width: 25%;
+        }
+        .right-side {
+          width: 60%;
+        }
+      }
+    }
+    .no-margin {
+      margin: 0;
     }
   }
   /* for mobile resolution */
@@ -98,7 +136,7 @@ body {
     }
     .body-wrapper.auth-main {
       .btn.row {
-        font-size: 1.2em;
+        font-size: 1.28em;
       }
       .form-container.login-form {
         .form-content {
@@ -107,13 +145,24 @@ body {
         }
       }
       .form-container.terms-conditionals-form {
-        .form-content{
+        .form-content {
           .form-content-inner {
+            .covered-sheet {
+              .container-arrow {
+                bottom: 60px;
+                height: 10%;
+              }
+            }
             .login-input-directions {
+              .bottom-sheet {
+                height: 65px;
+              }
               font-size: 1.2em;
-              @include bold;
+              font-weight: 300;
               line-height: 1.25em;
+              /* csslint ignore:start */
               @include text-left;
+              /* csslint ignore:end */
             }
           }
         }
@@ -132,35 +181,62 @@ body {
             font-size: 2.4em;
             left: 8px;
             line-height: 0.4em;
+            text-shadow: 0 1px 3px rgba-black(0.25);
           }
         }
-        .form-content{
+        .form-content {
           .form-content-inner {
             .form-title {
-              color: $color-dark-gray;
+              color: $login-content-color-bg;
+              font-weight: 600;
               font-size: 1.15em;
               line-height: 1.1em;
               max-width: 14em;
               top: 5.4em;
+              /* csslint ignore:start */
               @include absolute-horizontal-center;
+              /* csslint ignore:end */
             }
-            .login-input-directions{
+            .login-input-directions {
+              font-size: 1.1em;
+              //@include bold;
+              /* csslint ignore:start */
               @include center;
+              @include offset-bottom-sm;
+              /* csslint ignore:end */
             }
             .login-passphrase-textarea {
               font-size: 1.2em;
               height: 133px;
+              margin: 20px auto;
               padding: 15px 10px;
             }
             .btn.row:last-child {
+              /* csslint ignore:start */
               @include btn-bottom(15px);
+              /* csslint ignore:end */
+              height: 47px;
             }
             .btn.row.btn-terms-conditions-accept {
+              /* csslint ignore:start */
               @include btn-bottom(15px);
+              /* csslint ignore:end */
             }
             .btn.row.btn-terms-conditions-decline {
+              /* csslint ignore:start */
               @include btn-bottom(45px);
+              /* csslint ignore:end */
             }
+          }
+        }
+      }
+      .form-container.terms-conditionals-form {
+        .login-input-directions {
+          top: 9em;
+          @include absolute-horizontal-center;
+
+          .directives-text {
+            @include relative-scrolling-container;
           }
         }
       }
@@ -181,7 +257,7 @@ body {
           .form-content-inner,
           .form-content-inner-login-state {
             .login-input-directions-login-state {
-              margin: 2.7em 1.1em;
+              margin: 2.7em 1.1em 6.4em 1.3em;
               max-width: 23em;
               text-align: left;
             }
@@ -191,11 +267,11 @@ body {
             .advanced-benefits {
               font-size: 1.17em;
               font-weight: bold;
-              line-height: 1em;
+              line-height: 1.3em;
             }
             .login-buttons-container {
-              margin-bottom: 20%;
-              margin-top: 20%;
+              margin-bottom: 15%;
+              margin-top: 15%;
 
               .btn.row {
                 height: 47px;
@@ -206,8 +282,20 @@ body {
         }
       }
     }
+    .flow-modal-login-state {
+      .flow-content {
+        width: 95%;
+
+        .left-side {
+          width: 100%;
+        }
+        .right-side {
+          width: 100%;
+        }
+      }
+    }
     .coins-title {
-      margin-top: 30px;
+      margin-top: 34px;
       padding-top: 0;
     }
     .form-container.mdl .bi_interface-cross {
@@ -222,7 +310,7 @@ body {
       vertical-align: middle;
     }
     .txt-massage {
-      margin-bottom:0;
+      margin-bottom: 0;
     }
     .btn-signin-account {
       bottom: 15px;
@@ -239,7 +327,7 @@ body {
               margin-left: auto;
             }
             .title {
-              font-size: 1.4em;
+              font-size: 1.36em;
               margin-left: 0.5em;
               margin-top: 0.1em;
             }
@@ -249,23 +337,38 @@ body {
           .form-content {
             margin: 0 auto;
             max-width: 30em;
+            padding-bottom: 30px;
 
             .coins-title {
-              font-size: 1.18em;
+              font-size: 1.16em;
+              @include bold;
             }
             .quick-search {
-              padding-bottom: 1em;
-              padding-top: 1em;
+              padding: 1.4em;
 
               .input.text {
-                height: 42px
+                height: 48px;
               }
               .icon {
-                margin-left: 0.5em;
-                margin-top: 0.6em;
+                font-size: 1.16em;
+                margin-left: 0.38em;
+                margin-top: 0.74em;
+              }
+              .input.text::-webkit-input-placeholder {
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text:-moz-placeholder { /* Firefox 18- */
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text::-moz-placeholder { /* Firefox 19+ */
+                @include quick-search-placeholder-mobile;
+              }
+              .input.text:-ms-input-placeholder {
+                @include quick-search-placeholder-mobile;
               }
             }
             .supported-coins-repeater-container {
+              margin-bottom: 10%;
               margin-top: auto;
 
               .coin {
@@ -277,10 +380,59 @@ body {
                   font-size: 2.6em;
                 }
               }
+              /* DEM tile fix */
+              .coin.dem {
+                padding: 24px 0 10px 0;
+
+                .icon {
+                  position: relative;
+                  top: -11px;
+                }
+                .name {
+                  padding: 0;
+                  position: relative;
+                  top: 2px;
+                }
+              }
+              .btn-block.row {
+                height: 47px;
+                width: 90%;
+              }
             }
           }
         }
       }
     }
+  }
+  @media all and (max-height: 420px) {
+    //we need '!IMPORTANT' for this size
+    div.app-container {
+      div.app-container-inner.ng-scope {
+        div {
+          div {
+            div {
+              section.form-container {
+                height: 120%;
+                div {
+                  div {
+                    button.btn-verify-passphrase {
+                      //position: relative !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .covered-sheet {
+    background-color: #F5FAFD;
+    bottom: 0;
+    left: 15px;
+    position: fixed;
+    right: 15px;
+    height: 64px;
   }
 }
