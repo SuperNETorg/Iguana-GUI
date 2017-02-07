@@ -209,7 +209,7 @@ var lang = {
       'PLEASE_SELECT_A_WALLET': 'Please select a wallet',
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
       'NO_DAEMON_IS_RUNNING': 'No daemon is running',
-      'NO_WALLET_IS_ENCRYPTED': 'No Wallet is encrypted',
+      'NO_WALLET_IS_ENCRYPTED': 'Wallet is unencrypted',
       'PROXY_IS_NOT_SET_UP': 'Proxy is not set up',
       'IGUANA_IS_NOT_SET_UP': 'Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',
