@@ -142,6 +142,9 @@ angular.module('IguanaGUIApp')
 
         $timeout(function() {
           msg.close();
+
+          if (!$storage.isIguana)
+            $state.go('login');
         }, settings.appRedirectTimeout * 1000);
       }
 
