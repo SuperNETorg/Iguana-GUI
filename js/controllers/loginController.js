@@ -150,7 +150,8 @@ angular.module('IguanaGUIApp')
         }
       };
 
-      $api.getSelectedCoins().then(
+      if ($storage.isIguana) {
+        $api.getSelectedCoins().then(
         function(response) {
           var selectedCoinsCount = 0;
 
@@ -194,6 +195,11 @@ angular.module('IguanaGUIApp')
         function(response) {
           console.log(response);
         });
+      } else {
+        var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+        modalInstance.result.then(resultPromise);
+      }
 
       function resultPromise(data) {
         if (type === 'signin') {
