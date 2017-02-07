@@ -190,6 +190,7 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
+      'CONGRATULATIONS': 'Congratulations ',
       'DAEMONS_ERROR': 'Looks like Iguana Core is not running.',
       'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements. ',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. ',

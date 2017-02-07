@@ -13,6 +13,19 @@
   //background: rgba(255, 255, 255, 0.7);
   z-index: 5000;
 
+  &.msg-green {
+    .msgbox-header,
+    .modal-content {
+      border: none;
+      border-radius: $border-radius-smaller;
+      box-shadow: 0 0 20px 0 $iguana-modal-boxshadow;
+      margin: 0 auto;
+      width: 300px;
+      text-shadow: 1px 1px 3px rgba-black(0.3);
+      top: 5.5em;
+    }
+  }
+
   a,
   a:visited,
   a:active {
@@ -24,6 +37,7 @@
     color: $color-white;
     font-size: 1.1em;
     text-align: center;
+    vertical-align: middle;
   }
   .msgbox-header,
   .modal-content {

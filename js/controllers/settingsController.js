@@ -220,7 +220,7 @@ angular.module('IguanaGUIApp')
       $timeout.cancel(controllerIntervals);
       controllerIntervals = $timeout(function() {
         onInit();
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+      }, $datetime.secMilliSec(settings.apiCheckTimeout));
     }
   }
 ]);

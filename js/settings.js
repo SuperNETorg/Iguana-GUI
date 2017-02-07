@@ -28,7 +28,9 @@ var _settings = {
     day: 10
   },
   defaultRelayFee: 0.00001,
-  apiCheckTimeout: 0.1, // minutes
+  apiCheckTimeout: 10, // sec
+  messageHideTimeout: 3, // sec
+  newAddedCoinViewTimeout: 20, // sec
   appRedirectTimeout: 1,
   appViewMessageTimeout: 3,
   defaultIguanaConnectionTimeOut: 500,

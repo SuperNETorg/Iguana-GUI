@@ -154,14 +154,16 @@ angular.module('IguanaGUIApp')
                   }
 
                   var message = $message.ngPrepMessageModal(
-                    coinNames.join(', ') + (coinNames.length > 1 ? ' are' : ' is') + $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
+                    $filter('lang')('MESSAGE.CONGRATULATIONS') +
+                    coinNames.join(', ') +
+                    (coinNames.length > 1 ? ' are' : ' is') +
+                    $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
                     'green'
                   );
 
-                  //TODO: not completed
-                  $timeout(function () {
+                  $timeout(function() {
                     message.close();
-                  }, 2500);
+                  }, $datetime.secMilliSec(settings.messageHideTimeout));
 
                   constructAccountCoinRepeater();
                 },
@@ -738,17 +740,16 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    //TODO: not not completed
     $scope.$watchCollection(
-      function () {
+      function() {
         return $scope.addedByUserCoins;
       },
       function (newVal, oldVal) {
         if (newVal !== oldVal) {
-          $timeout(function () {
+          $timeout(function() {
             $scope.addedByUserCoins =
               $storage['dashboard-added-by-user-coins'] = [];
-          }, 10000)
+          }, $datetime.secMilliSec(settings.newAddedCoinViewTimeout))
         }
       }
     )

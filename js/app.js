@@ -173,13 +173,13 @@ angular.module('IguanaGUIApp', [
       $rootScope.$broadcast('coinsInfo', coins);
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+      }, $datetime.secMilliSec(settings.apiCheckTimeout));
     }
 
     function onReject() {
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+      }, $datetime.secMilliSec(settings.apiCheckTimeout));
     }
   }
 
