@@ -1630,6 +1630,6 @@ angular.module('IguanaGUIApp')
       }).then(deferred.resolve, deferred.reject);
 
       return deferred.promise;
-    }
+    };
   }
 ]);

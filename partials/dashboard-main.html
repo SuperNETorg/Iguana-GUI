@@ -87,8 +87,11 @@
                  ng-if="txUnit.transactions.length === 1 && !txUnit.loading">
               {{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}
             </div>
-            <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
+            <div history-animate class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
                  ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
+              <div class="close-history-sheet col-xs-12 col-md-12 col-sm-12 col-lg-12" history-animate>
+                <span class="bi_interface-cross close-button close-hide" ng-click="hideHistoryAnimate($event)"></span>
+              </div>
               <div class="status unselectable">{{ item.status }}</div>
               <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
               <div timeago-date="item.timestampDate" timeago-time="item.timestampTime" class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
@@ -109,6 +112,30 @@
                   </svg>
                 </div>
                 <div class="hash text-middle">{{ item.hash }}</div>
+              </div>
+
+              <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 animate-sheet hide-sheet non-padding">
+                <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2 non-padding">
+                  <span class="grey-color">Not Confirmed</span>
+                </div>
+                <div class="col-xs-3 col-md-3 col-sm-3 col-lg-3 non-padding">
+                  <span class="grey-color">-523$ (11.01.17 12:34)</span>
+                </div>
+                <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7 non-padding">
+                  <span class="grey-color">Fee: {{item.fee}} BTC</span>
+                </div>
+                <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 left-sheet non-padding">
+                  <span>4 confirmations</span>
+                  <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                    <span class="grey-color">Description:</span>
+                  </div>
+                  <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                    <span class="grey-color">Long text about transactions and</span>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 right-sheet non-padding">
+                  <span class="pull-right grey-rate sheet-rate">1 {{activeCoin.toUpperCase() }} = {{txUnit.activeCoinBalanceCurrency/txUnit.activeCoinBalance}}$ = 0.002555BTC{{ rate }}</span>
+                </div>
               </div>
             </div>
           </div>

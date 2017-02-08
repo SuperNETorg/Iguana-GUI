@@ -585,6 +585,7 @@ angular.module('IguanaGUIApp')
               $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
               $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
               $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
+              $scope.txUnit.transactions[i].fee = transactionsList[i].fee ? transactionsList[i].fee : 0;
 
               if (txAmount) {
                 // mobile only

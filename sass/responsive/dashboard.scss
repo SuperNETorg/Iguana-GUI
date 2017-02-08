@@ -671,4 +671,24 @@ body {
       width: auto !important;
     }
   }
+  .fadeIn {
+    height: 200px;
+  }
+  .close-hide {
+    display: none;
+  }
+  .hide-sheet {
+    display: none !important;
+  }
+  .grey-color{
+    color: #82848A;
+    font-size: 12px;
+  }
+  .grey-rate {
+    color: #82848A;
+  }
+  .non-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
