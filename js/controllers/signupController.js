@@ -356,8 +356,8 @@ angular.module('IguanaGUIApp')
           mode = coinMode[i];
 
           if (coinMode.length === 1) {
-            modeResult['Lite'] = {
-              name: 'Lite',
+            modeResult['Basilisk'] = {
+              name: 'Basilisk',
               key: 0,
               status: false,
               disabled: true
@@ -366,8 +366,8 @@ angular.module('IguanaGUIApp')
 
           switch (mode) {
             case 0:
-              modeResult['Lite'] = {
-                name: 'Lite',
+              modeResult['Basilisk'] = {
+                name: 'Basilisk',
                 key: mode,
                 disabled: coinMode.length === 1
               };

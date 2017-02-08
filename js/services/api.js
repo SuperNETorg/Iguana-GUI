@@ -1110,7 +1110,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.getFullApiRoute = function(method, conf, coin) {
+    this.getFullApiRoute = function(method, conf, coin, agent) {
       if (dev && dev.isNightwatch) { // wip, UAT
         var reroute = (
           method === 'settxfee' ||
@@ -1156,19 +1156,70 @@ angular.module('IguanaGUIApp')
                                          this.getConf(false, coin).server.port);
         }
       } else {
+        agent = agent || 'bitcoinrpc';
+
         if (conf) {
           return $storage.isIguana ? (this.getConf().server.protocol +
                                       this.getConf().server.ip + ':' +
-                                      conf.portp2p + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                                      conf.portp2p + '/api/' + agent + '/' + method) : (settings.proxy +
                                       this.getConf().server.ip + ':' +
                                       (conf.coindPort ? conf.coindPort : conf.portp2p));
         } else {
           return $storage.isIguana ? (this.getConf().server.protocol +
                                       this.getConf().server.ip + ':' +
-                                      this.getConf(true).server.port + '/api/bitcoinrpc/' + method) : (settings.proxy +
+                                      this.getConf(true).server.port + '/api/' + agent + '/' + method) : (settings.proxy +
                                       this.getConf().server.ip + ':' +
                                       this.getConf(false, coin).server.port);
         }
+      }
+    };
+
+    this.getDexApiPayloadObj = function (method, params) {
+      var paramsPayl = {},
+          upass = this.Iguana_GetRPCAuth(),
+          isDex = false,
+          agent = 'dex';
+
+      switch (method) {
+        case 'listtransactions':
+        case 'sendrawtransaction':
+        case 'getinfo':
+        case 'checkaddress':
+        case 'importaddress':
+        case 'alladdresses':
+        case 'listunspent':
+        case 'gettransaction':
+        case 'getbestblockhash':
+        case 'getblockhash':
+        case 'kvsearch':
+        case 'kvupdate':
+        case 'send':
+        case 'getnotaries':
+          if (params) isDex = true;
+          break;
+      }
+
+      if (isDex) {
+        paramsPayl.agent = agent;
+        paramsPayl.method = method;
+
+        if (upass) paramsPayl.userpass = upass;
+        if (params.symbol) paramsPayl.symbol = params.symbol.toUpperCase();
+        if (params.address) paramsPayl.address = params.address;
+        if (params.hash) paramsPayl.hash = params.hash;
+        if (params.height) paramsPayl.height = params.height;
+        if (params.txid) paramsPayl.txid = params.txid;
+        if (params.vout) paramsPayl.vout = params.vout;
+        if (params.key) paramsPayl.key = params.key;
+        if (params.flags) paramsPayl.flags = params.flags;
+        if (params.count) paramsPayl.count = params.count;
+        if (params.skip) paramsPayl.skip = params.skip;
+        if (params.hex) paramsPayl.hex = params.hex;
+        if (params.signedtx) paramsPayl.signedtx = params.signedtx;
+
+        return JSON.stringify(paramsPayl);
+      } else {
+        return '{}';
       }
     };
 
@@ -1341,9 +1392,10 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };*/
 
-    this.listTransactions = function(account, coin, update) {
+    this.listTransactions = function(account, coin, update, data) {
       var result = false,
-          deferred = $q.defer();
+          deferred = $q.defer(),
+          agent;
 
       // dev account lookup override
       if (dev.coinAccountsDev && !$storage.isIguana && !dev.isNightwatch) {
@@ -1356,9 +1408,22 @@ angular.module('IguanaGUIApp')
         account = '';
       }
 
-      var fullUrl = this.getFullApiRoute('listtransactions', null, coin),
-          postData = this.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", '
-            + settings.defaultTransactionsCount, coin), // last N tx
+      if (data && data.activeMode === 0) {
+        agent = 'dex';
+      }
+
+      var fullUrl = this.getFullApiRoute('listtransactions', null, coin, agent),
+          postData = (
+            (data && data.activeMode === 0) ?
+              this.getDexApiPayloadObj('listtransactions', {
+                address: data.address,
+                count: settings.defaultTransactionsCount,
+                symbol: coin,
+                skip: '0'
+              }) :
+              this.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", '
+                + settings.defaultTransactionsCount, coin)
+          ), // last N tx
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'listtransactions');
 
       http.post(fullUrl, postData, {
@@ -1388,8 +1453,13 @@ angular.module('IguanaGUIApp')
 
               result = false;
             } else {
-              if (response.data.result.length) {
-                result = response.data.result;
+              if (
+                  (response.data.result && response.data.result.length) ||
+                  response.data.length
+              ) {
+                result = (
+                  response.data.result ? response.data.result : response.data
+                );
               } else {
                 result = false;
               }

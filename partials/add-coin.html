@@ -40,9 +40,9 @@
               <div class="btn-group clearfix" ng-class="{ 'all-modes': item.coinId === 'kmd' }">
                 <label ng-repeat="(id, mode) in item.mode" class="btn"
                        ng-bind="mode.name" data-mode="{{ mode }}"
-                       ng-disabled="mode.name !== 'Full'"
+                       ng-disabled="mode.disabled"
                        ng-class="{ 'orange-bg': mode.status, 'width-bg': !mode.status }"
-                       ng-click="(mode.name === 'Full' ? clickOnMode($event, name, mode.key, !mode.disabled) : ''); $event.stopPropagation();"
+                       ng-click="(!mode.disabled ? clickOnMode($event, name, mode.key, !mode.disabled) : ''); $event.stopPropagation();"
                 ></label>
               </div>
             </div>

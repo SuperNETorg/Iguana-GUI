@@ -191,7 +191,7 @@ angular.module('IguanaGUIApp')
             modalInstance.result.then(resultPromise);
             $scope.karma.modal = modalInstance; // tests
           }
-        }.bind(this),
+        },
         function(response) {
           console.log(response);
         });
@@ -265,7 +265,7 @@ angular.module('IguanaGUIApp')
                 'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : '',
                 'mode': getMode(key),
                 'activeMode': (getMode(key)['Full'] ? getMode(key)['Full'].key : false)
-              }
+              };
 
               if (index === $scope.coinColors.length - 1) {
                 index = 0;
@@ -302,8 +302,8 @@ angular.module('IguanaGUIApp')
           mode = coinMode[i];
 
           if (coinMode.length === 1) {
-            modeResult['Lite'] = {
-              name: 'Lite',
+            modeResult['Basilisk'] = {
+              name: 'Basilisk',
               key: 0,
               status: false,
               disabled: true
@@ -312,8 +312,8 @@ angular.module('IguanaGUIApp')
 
           switch (mode) {
             case 0:
-              modeResult['Lite'] = {
-                name: 'Lite',
+              modeResult['Basilisk'] = {
+                name: 'Basilisk',
                 key: mode,
                 disabled: coinMode.length === 1
               };

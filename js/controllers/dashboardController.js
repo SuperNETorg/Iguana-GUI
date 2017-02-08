@@ -419,7 +419,7 @@ angular.module('IguanaGUIApp')
           activeMode === -1 ?
             'Native' : (
               activeMode === 0 ?
-                'Lite' :
+                'Basilisk' :
                 'Full'
             )
         )
@@ -471,16 +471,34 @@ angular.module('IguanaGUIApp')
     }
 
     // construct transaction unit array
-    function constructTransactionUnitRepeater(update) {
-      if (!update) {
-        $scope.txUnit.loading = true;
-      }
+    function constructTransactionUnitRepeater() {
+      var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+
+      $scope.txUnit.loading = true;
 
       if (!$scope.txUnit.transactions) {
         $scope.txUnit.transactions = [];
       }
+
+      if ($scope.loggedCoins[$scope.activeCoin].activeMode === 0) {
+        $api.getAccountAddress($scope.activeCoin, defaultAccount).then(getListTransactions);
+      } else {
+        getListTransactions()
+      }
+    }
+
+    function getListTransactions(address) {
+      var transactionData;
+
+      if (address) {
+        transactionData = {
+          activeMode: $scope.loggedCoins[$scope.activeCoin].activeMode,
+          address: address
+        };
+      }
+
       // TODO: tx unit flickers on active coin change
-      $api.listTransactions(defaultAccount, $scope.activeCoin)
+      $api.listTransactions(defaultAccount, $scope.activeCoin, false, transactionData)
           .then(
             constructTransactionUnitRepeaterCB,
             function(reason) {
@@ -744,7 +762,7 @@ angular.module('IguanaGUIApp')
       function() {
         return $scope.addedByUserCoins;
       },
-      function (newVal, oldVal) {
+      function(newVal, oldVal) {
         if (newVal !== oldVal) {
           $timeout(function() {
             $scope.addedByUserCoins =
