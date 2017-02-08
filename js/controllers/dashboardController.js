@@ -402,7 +402,7 @@ angular.module('IguanaGUIApp')
           currencyCalculatedValue = balance * coinLocalRate,
           coinBalanceVal = balance || 0,
           coinBalanceCurrencyVal = currencyCalculatedValue || 0,
-          activeMode = $scope.loggedCoins[coin].activeMode;
+          activeMode = $scope.loggedCoins[coin].activeMode ? $scope.loggedCoins[coin].activeMode : null;
 
       coinBalances[coin] = balance;
 
