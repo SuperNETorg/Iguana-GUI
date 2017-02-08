@@ -358,7 +358,12 @@ angular.module('IguanaGUIApp')
                     _syncInfo.peers = response[0].data.result.connections;
                     _syncInfo.localBlocks = response[0].data.result.blocks;
                     _syncInfo.totalBlocks = response[0].data.result.longestchain;
-                    _syncInfo.blocksPercentage = Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
+                    if (($scope.coinSyncInfo[response[1]] &&
+                         $scope.coinSyncInfo[response[1]].blocksPercentage &&
+                         Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1) > $scope.coinSyncInfo[response[1]].blocksPercentage) ||
+                         !$scope.coinSyncInfo[response[1]]) {
+                      _syncInfo.blocksPercentage = Number(_syncInfo.localBlocks * 100 / _syncInfo.totalBlocks).toFixed(1);
+                    }
                     _syncInfo.title = 'Blocks:' + _syncInfo.localBlocks + ' / ' + _syncInfo.totalBlocks;
                     if (_syncInfo.blocksPercentage === NaN) _syncInfo.blocksPercentage = 0;
 
