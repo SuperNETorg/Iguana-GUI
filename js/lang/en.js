@@ -117,7 +117,11 @@ var lang = {
       'OF': 'of',
       'LITE': 'Lite',
       'NATIVE': 'Native',
-      'FULL': 'Full'
+      'FULL': 'Full',
+      'NOT_CONFIRMED': 'Not Confirmed',
+      'FEE':'Fee',
+      'CONFIRMATIONS':'Confirmations',
+      'DESCRIPTION':'Description'
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',

@@ -8,17 +8,18 @@ angular.module('IguanaGUIApp')
   '$state', function($rootScope, $filter) {
     return {
       link: function(scope, element) {
+
+        scope.closeTransaction = function ($event) {
+          $event.stopPropagation();
+          var hiddenTags = element[0].querySelectorAll('[hidden-content]');
+          angular.element(hiddenTags).addClass('hidden');
+          element.removeClass('fadeIn');
+        };
+
         element.on('click', function () {
-          if(element.hasClass('close-history-sheet')) {
-            debugger;
-            element.parent('.fadeIn').children('.animate-sheet').addClass('hide-sheet');;
-            element.children('.close-button').addClass('close-hide');
-            element.parent('.fadeIn').removeClass('fadeIn');
-          } else {
-            element.addClass('fadeIn');
-            element.children('.animate-sheet').removeClass('hide-sheet');
-            element.children('.close-button').children('.close-history-sheet').removeClass('close-hide');
-          }
+          var hiddenTags = element[0].querySelectorAll('[hidden-content]');
+          angular.element(hiddenTags).removeClass('hidden');
+          element.addClass('fadeIn');
         });
       }
     };
