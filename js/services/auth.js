@@ -403,14 +403,29 @@ angular.module('IguanaGUIApp')
           $storage['iguana-auth'] = { 'timestamp': Date.now() };
 
           if (!$storage.isIguana) {
-            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
+            $storage['iguana-' + self.coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
           }
 
           $storage['iguana-login-active-coin'] = {};
 
           if (!edexRedirect) {
+            var coinsSelectedToAdd;
+
             $storage.guiModeAtLogin = $storage.isIguana;
-            $state.go('dashboard.main');
+
+            for (var name in self.coinsSelectedToAdd) {
+              coinsSelectedToAdd = self.coinsSelectedToAdd[name].coinId;
+
+              $api
+                .getAccountAddress(coinsSelectedToAdd, 'default')
+                .then(function(coinSelectedToAdd, address) {
+                  $storage['dashboard-logged-in-coins'][name].address = address;
+
+                  if (Object.keys(self.coinsSelectedToAdd).length === Object.keys(self.coinsSelectedToAdd).indexOf(coinSelectedToAdd) + 1) {
+                    $state.go('dashboard.main');
+                  }
+                }.bind(null, coinsSelectedToAdd));
+            }
           }
         } else {
           if (!edexRedirect) {

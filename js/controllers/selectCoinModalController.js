@@ -208,11 +208,11 @@ angular.module('IguanaGUIApp')
     }
 
     function close() {
-      $uibModalInstance.dismiss(constructCoinRepeater());
+      $uibModalInstance.dismiss($scope.coins);
     }
 
     function next() {
-      $uibModalInstance.close(constructCoinRepeater());
+      $uibModalInstance.close($scope.coins);
     }
 
     function getPassphrase(coinId) {

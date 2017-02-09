@@ -1174,7 +1174,7 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    this.getDexApiPayloadObj = function (method, params) {
+    this.getDexApiPayloadObj = function(method, params) {
       var paramsPayl = {},
           upass = this.Iguana_GetRPCAuth(),
           isDex = false,
@@ -1391,6 +1391,23 @@ angular.module('IguanaGUIApp')
 
       return deferred.promise;
     };*/
+
+    this.listUnspentDex = function(coin, address) {
+      var deferred = $q.defer(),
+          fullUrl = this.getFullApiRoute('listunspent', null, coin, 'dex'),
+          postData = this.getDexApiPayloadObj('listunspent', {
+                        address: address,
+                        symbol: coin
+                      }),
+          postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'listunspent');
+
+      http.post(fullUrl, postData, {
+        cache: false,
+        headers: postAuthHeaders
+      }).then(deferred.resolve, deferred.reject);
+
+      return deferred.promise;
+    };
 
     this.listTransactions = function(account, coin, update, data) {
       var result = false,

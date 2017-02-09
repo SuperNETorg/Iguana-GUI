@@ -1,5 +1,4 @@
-//'use strict';
-// TODO: fix Uncaught SyntaxError: Unexpected eval or arguments in strict mode, line 17
+'use strict';
 
 angular.module('IguanaGUIApp')
 .service('http', [

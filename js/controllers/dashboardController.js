@@ -246,7 +246,9 @@ angular.module('IguanaGUIApp')
 
       coinsSelectedByUser = [];
 
-      var lookupArray = coinsInfo && coinsInfo.length ? coinsInfo : supportedCoinsList;
+      var lookupArray = coinsInfo && Object.keys(coinsInfo).length ?
+                          coinsInfo :
+                          supportedCoinsList;
 
       for (var key in lookupArray) {
         if ($storage['iguana-' + key + '-passphrase'] &&
@@ -275,17 +277,43 @@ angular.module('IguanaGUIApp')
           return _sideBarCoins[key];
         });
 
-        $api.getBalance(defaultAccount, coinsSelectedByUser[i])
-          .then(
-            function(response) {
-              constructAccountCoinRepeaterCB(response[0], response[1]);
-            },
-            function(response) {
-              if (dev.showConsoleMessages && dev.isDev) {
-                console.log('request failed: ', response);
+        if ($scope.loggedCoins[coinsSelectedByUser[i]].activeMode === 0) {
+          $api.listUnspentDex(coinsSelectedByUser[i], $scope.loggedCoins[coinsSelectedByUser[i]].address)
+              .then(
+                function(coinSelectedByUser, response) {
+                  var balance = 0;
+
+                  if (dev.isDev && dev.showConsoleMessages) {
+                    console.debug(response);
+                  }
+
+                  if (response.data) {
+                    for (var i = 0; response.data.length > i; i++) {
+                      balance += response.data[i].amount;
+                    }
+                  }
+
+                  constructAccountCoinRepeaterCB(balance, coinSelectedByUser);
+                }.bind(null, coinsSelectedByUser[i]),
+                function(response) {
+                if (dev.isDev && dev.showConsoleMessages) {
+                  console.log('request failed: ', response);
+                }
               }
-            }
-          );
+              );
+        } else if ($scope.loggedCoins[coinsSelectedByUser[i]].activeMode === 1) {
+          $api.getBalance(defaultAccount, coinsSelectedByUser[i])
+              .then(
+                function(response) {
+                  constructAccountCoinRepeaterCB(response[0], response[1]);
+                },
+                function(response) {
+                  if (dev.showConsoleMessages && dev.isDev) {
+                    console.log('request failed: ', response);
+                  }
+                }
+              );
+        }
 
           // TODO: rewrite
           if ($storage.isIguana) {
@@ -477,7 +505,7 @@ angular.module('IguanaGUIApp')
 
     // construct transaction unit array
     function constructTransactionUnitRepeater() {
-      var defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+      var address;
 
       $scope.txUnit.loading = true;
 
@@ -486,14 +514,17 @@ angular.module('IguanaGUIApp')
       }
 
       if ($scope.loggedCoins[$scope.activeCoin].activeMode === 0) {
-        $api.getAccountAddress($scope.activeCoin, defaultAccount).then(getListTransactions);
-      } else {
-        getListTransactions()
+        address = $scope.loggedCoins[$scope.activeCoin].address;
       }
+
+      getListTransactions(address)
     }
 
     function getListTransactions(address) {
-      var transactionData;
+      var transactionData,
+          defaultAccount = $scope.isIguana ?
+                            settings.defaultAccountNameIguana :
+                            settings.defaultAccountNameCoind;
 
       if (address) {
         transactionData = {
