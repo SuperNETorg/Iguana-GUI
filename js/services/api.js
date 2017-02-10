@@ -1182,12 +1182,14 @@ angular.module('IguanaGUIApp')
 
       switch (method) {
         case 'listtransactions':
+        case 'listtransactions2':
         case 'sendrawtransaction':
         case 'getinfo':
         case 'checkaddress':
         case 'importaddress':
         case 'alladdresses':
         case 'listunspent':
+        case 'listunspent2':
         case 'gettransaction':
         case 'getbestblockhash':
         case 'getblockhash':
@@ -1623,11 +1625,15 @@ angular.module('IguanaGUIApp')
     };
 
     this.Iguana_SetRPCAuth = function(RPCKey) {
-      $storage.IguanaRPCAuth = md5.createHash(RPCKey);
+      var md5Hash = md5.createHash(RPCKey);
+
+      //TODO: for EasyDEX-GUI
+      sessionStorage.setItem('IguanaRPCAuth', md5Hash);
+      $storage.IguanaRPCAuth = md5Hash;
     };
 
     this.Iguana_GetRPCAuth = function() {
-      return $storage.IguanaRPCAuth;
+      return $storage.IguanaRPCAuth ? 'tmpIgRPCUser@' + $storage.IguanaRPCAuth : undefined;
     };
 
     this.getSelectedCoins = function() {

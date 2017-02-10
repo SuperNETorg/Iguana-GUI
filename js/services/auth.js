@@ -418,13 +418,13 @@ angular.module('IguanaGUIApp')
 
               $api
                 .getAccountAddress(coinsSelectedToAdd, 'default')
-                .then(function(coinSelectedToAdd, address) {
-                  $storage['dashboard-logged-in-coins'][name].address = address;
+                .then(function(coinSelectedToAdd, coinName, address) {
+                  $storage['dashboard-logged-in-coins'][coinName].address = address;
 
                   if (Object.keys(self.coinsSelectedToAdd).length === Object.keys(self.coinsSelectedToAdd).indexOf(coinSelectedToAdd) + 1) {
                     $state.go('dashboard.main');
                   }
-                }.bind(null, coinsSelectedToAdd));
+                }.bind(null, coinsSelectedToAdd, name));
             }
           }
         } else {

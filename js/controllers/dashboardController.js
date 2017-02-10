@@ -28,7 +28,8 @@ angular.module('IguanaGUIApp')
         coinsSelectedByUser = [],
         isIguana = $storage.isIguana,
         defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
-        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind;
+        defaultAccount = isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
+        addedByUserCoinsTimeout;
 
     $scope.util = util;
     $scope.$state = $state;
@@ -143,29 +144,39 @@ angular.module('IguanaGUIApp')
               .checkIguanaCoinsSelection(true)
               .then(
                 function() {
-                  var coinNames = [];
+                  var coinNames = [],
+                      coinsSelectedToAdd;
 
                   for (var name in $auth.coinsSelectedToAdd) {
                     if (!$storage['dashboard-logged-in-coins'][name]) {
+                      coinsSelectedToAdd = $auth.coinsSelectedToAdd[name].coinId;
                       $storage['dashboard-added-by-user-coins'].push(name);
                       $storage['dashboard-logged-in-coins'][name] = $auth.coinsSelectedToAdd[name];
                       coinNames.push($auth.coinsSelectedToAdd[name].name);
+
+                      $api
+                        .getAccountAddress(coinsSelectedToAdd, 'default')
+                        .then(function(coinSelectedToAdd, coinName, address) {
+                          $storage['dashboard-logged-in-coins'][coinName].address = address;
+
+                          if (Object.keys($auth.coinsSelectedToAdd).length === Object.keys($auth.coinsSelectedToAdd).indexOf(coinSelectedToAdd) + 1) {
+                            var message = $message.ngPrepMessageModal(
+                              $filter('lang')('MESSAGE.CONGRATULATIONS') +
+                              coinNames.join(', ') +
+                              (coinNames.length > 1 ? ' are' : ' is') +
+                              $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
+                              'green'
+                            );
+
+                            $timeout(function() {
+                              message.close();
+                            }, $datetime.secMilliSec(settings.messageHideTimeout));
+
+                            constructAccountCoinRepeater();
+                          }
+                        }.bind(null, coinsSelectedToAdd, name));
                     }
                   }
-
-                  var message = $message.ngPrepMessageModal(
-                    $filter('lang')('MESSAGE.CONGRATULATIONS') +
-                    coinNames.join(', ') +
-                    (coinNames.length > 1 ? ' are' : ' is') +
-                    $filter('lang')('MESSAGE.WALLET_IS_CREATED'),
-                    'green'
-                  );
-
-                  $timeout(function() {
-                    message.close();
-                  }, $datetime.secMilliSec(settings.messageHideTimeout));
-
-                  constructAccountCoinRepeater();
                 },
                 function(reason) {
                   if (dev.showConsoleMessages && dev.isDev)
@@ -296,10 +307,10 @@ angular.module('IguanaGUIApp')
                   constructAccountCoinRepeaterCB(balance, coinSelectedByUser);
                 }.bind(null, coinsSelectedByUser[i]),
                 function(response) {
-                if (dev.isDev && dev.showConsoleMessages) {
-                  console.log('request failed: ', response);
+                  if (dev.isDev && dev.showConsoleMessages) {
+                    console.log('request failed: ', response);
+                  }
                 }
-              }
               );
         } else if ($scope.loggedCoins[coinsSelectedByUser[i]].activeMode === 1) {
           $api.getBalance(defaultAccount, coinsSelectedByUser[i])
@@ -796,16 +807,19 @@ angular.module('IguanaGUIApp')
     }
 
     $scope.$watchCollection(
-      function() {
-        return $scope.addedByUserCoins;
-      },
+      'addedByUserCoins',
       function(newVal, oldVal) {
-        if (newVal !== oldVal) {
-          $timeout(function() {
-            $scope.addedByUserCoins =
-              $storage['dashboard-added-by-user-coins'] = [];
-          }, $datetime.secMilliSec(settings.newAddedCoinViewTimeout))
+        var time = 1;
+
+        if (newVal === oldVal) {
+          time = 2;
         }
+
+        $timeout.cancel(addedByUserCoinsTimeout);
+        addedByUserCoinsTimeout = $timeout(function() {
+          $scope.addedByUserCoins =
+            $storage['dashboard-added-by-user-coins'] = [];
+        }, $datetime.secMilliSec(settings.newAddedCoinViewTimeout * time))
       }
     )
   }
