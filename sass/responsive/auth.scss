@@ -124,6 +124,10 @@ body {
   }
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .coin-inner {
+      margin-top: 0 !important;
+      padding: 0 !important;
+    }
     .mobile-hidden {
       display: none;
     }
