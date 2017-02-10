@@ -166,6 +166,8 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
+  var rejectTimeout = 0;
+
   if ((dev && dev.isDev && !dev.isKarma) || (dev && !dev.isDev)) {
     $api.testConnection().then(onResolve, onReject);
 
@@ -177,9 +179,10 @@ angular.module('IguanaGUIApp', [
     }
 
     function onReject() {
+      ++rejectTimeout;
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.secMilliSec(settings.apiCheckTimeout/5));
+      }, $datetime.secMilliSec((rejectTimeout < 5 ? settings.apiCheckTimeout/5 : settings.apiCheckTimeout)));
     }
   }
 

@@ -8,19 +8,22 @@ angular.module('IguanaGUIApp')
   '$state', function($rootScope, $filter) {
     return {
       link: function(scope, element) {
+        scope.closeTransaction = toggleHistoryContent.bind(null, false);
+        element.on('click', toggleHistoryContent.bind(null, true));
 
-        scope.closeTransaction = function ($event) {
+        function toggleHistoryContent(notToggle, $event) {
           $event.stopPropagation();
-          var hiddenTags = element[0].querySelectorAll('[hidden-content]');
-          angular.element(hiddenTags).addClass('hidden');
-          element.removeClass('fadeIn');
-        };
 
-        element.on('click', function () {
-          var hiddenTags = element[0].querySelectorAll('[hidden-content]');
-          angular.element(hiddenTags).removeClass('hidden');
-          element.addClass('fadeIn');
-        });
+          var hiddenTags = element[0].querySelectorAll('[hidden-content]'),
+              fnName = 'toggleClass';
+
+          if (notToggle) {
+            fnName = 'removeClass';
+          }
+
+          angular.element(hiddenTags)[fnName]('hidden');
+
+        }
       }
     };
   }

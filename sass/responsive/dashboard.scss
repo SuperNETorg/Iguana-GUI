@@ -179,6 +179,47 @@ body {
                   margin-top: 1.64em;
                 }
               }
+              .transactions-list {
+                  .transactions-list-repeater {
+                    .item {
+                      .close-history-sheet {
+                        display: block;
+                      }
+                      .close-hide {
+                        display: none;
+                      }
+                      .hide-sheet {
+                        display: none !important;
+                      }
+                      .grey-color{
+                        color: #82848A;
+                        font-size: 12px;
+                      }
+                      .grey-rate {
+                        color: #82848A;
+                        font-weight: 400;
+                      }
+                      .non-padding {
+                        padding-left: 0;
+                        padding-right: 0;
+                      }
+                      .leave-comment {
+                        margin-top: 20px;
+                      }
+                      .leave-comment-btn {
+                        font-weight: 600;
+                        background: #FFF;
+                        border-radius: 4px;
+                        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.125);
+                        color: #FE450D;
+                        font-size: 1em;
+                        line-height: 1.14em;
+                        padding: .3em 1em;
+                        width: 100%;
+                      }
+                    }
+                  }
+                }
             }
           }
         }
@@ -671,38 +712,5 @@ body {
       width: auto !important;
     }
   }
-  .fadeIn {
-    height: 200px;
-  }
-  .close-hide {
-    display: none;
-  }
-  .hide-sheet {
-    display: none !important;
-  }
-  .grey-color{
-    color: #82848A;
-    font-size: 12px;
-  }
-  .grey-rate {
-    color: #82848A;
-  }
-  .non-padding {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .leave-comment {
-    margin-top: 20px;
-  }
-  .leave-comment-btn {
-    font-weight: 600;
-    background: #FFF;
-    border-radius: 4px;
-    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.125);
-    color: #FE450D;
-    font-size: 1em;
-    line-height: 1.14em;
-    padding: .3em 1em;
-    width: 100%;
-  }
+
 }

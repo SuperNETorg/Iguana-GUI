@@ -955,7 +955,7 @@ angular.module('IguanaGUIApp')
     this.getExternalRate = function(quote) {
       var result = false,
           quoteComponents = quote.split('/'),
-          fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1],
+          fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=BTC,' + quoteComponents[1],
           deferred = $q.defer();
 
       http.get(fullUrl, '', {
@@ -1193,6 +1193,9 @@ angular.module('IguanaGUIApp')
         case 'gettransaction':
         case 'getbestblockhash':
         case 'getblockhash':
+        case 'getbalance':
+        case 'listspent':
+        case 'gettxin':
         case 'kvsearch':
         case 'kvupdate':
         case 'send':

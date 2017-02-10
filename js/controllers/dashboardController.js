@@ -18,9 +18,9 @@ angular.module('IguanaGUIApp')
   '$auth',
   '$message',
   '$datetime',
-  '$window',
+  '$q',
   function($scope, $state, util, $passPhraseGenerator, $timeout, $interval, $storage, $uibModal,
-           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime) {
+           $api, vars, $rootScope, $filter, $rates, $auth, $message, $datetime, $q) {
 
     var coinsInfo = [],
         coinBalances = [],
@@ -106,8 +106,10 @@ angular.module('IguanaGUIApp')
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
-      constructAccountCoinRepeater();
-      updateFeeParams();
+
+      updateFeeParams().then(function () {
+        constructAccountCoinRepeater();
+      });
     }
 
     var modalInstance = {};
@@ -566,6 +568,10 @@ angular.module('IguanaGUIApp')
           $scope.txUnit.loading = false;
         }
 
+        if (dev.isDev && dev.showConsoleMessages) {
+          console.debug($storage.feeSettings);
+        }
+
         for (var i = 0; i < transactionsList.length; i++) {
           if (!$scope.txUnit.transactions[i]) {
             $scope.txUnit.transactions[i] = {};
@@ -580,8 +586,11 @@ angular.module('IguanaGUIApp')
                 txCategory = '',
                 txAddress = '',
                 txAmount = 'N/A',
+                txConfirmations = 'N/A',
                 iconSentClass = 'bi_interface-minus',
-                iconReceivedClass = 'bi_interface-plus';
+                iconReceivedClass = 'bi_interface-plus',
+                txFee = 0,
+                txFeeObj = {};
 
             if (transactionDetails) {
               if (transactionDetails.details) {
@@ -604,6 +613,9 @@ angular.module('IguanaGUIApp')
                 txAmount = transactionsList[i].amount;
                 txStatus = transactionDetails.category || transactionsList[i].category;
                 txCategory = transactionDetails.category || transactionsList[i].category;
+                txConfirmations = transactionDetails.confirmations || transactionsList[i].confirmations;
+                txFee = transactionDetails.fee || transactionsList[i].fee || $storage.feeSettings.currencyRate;
+                txFeeObj = $storage.feeSettings;
 
                 if (txStatus === 'send') {
                   txIncomeOrExpenseFlag = iconSentClass;
@@ -624,6 +636,7 @@ angular.module('IguanaGUIApp')
                 $scope.txUnit.transactions[i].txId = transactionDetails.txid;
               }
 
+              $scope.txUnit.transactions[i].confirmations = txConfirmations;
               $scope.txUnit.transactions[i].status = txStatus;
               $scope.txUnit.transactions[i].statusClass = transactionDetails.confirmations ? txCategory : 'process';
               $scope.txUnit.transactions[i].confs = transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a';
@@ -632,7 +645,8 @@ angular.module('IguanaGUIApp')
               $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
               $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
               $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
-              $scope.txUnit.transactions[i].fee = transactionsList[i].fee ? transactionsList[i].fee : 0;
+              $scope.txUnit.transactions[i].fee = txFee;
+              $scope.txUnit.transactions[i].feeObj = txFeeObj;
 
               if (txAmount) {
                 // mobile only
@@ -651,6 +665,11 @@ angular.module('IguanaGUIApp')
             }
           }
         }
+
+        if (dev.isDev && dev.showConsoleMessages) {
+          console.debug($scope.txUnit);
+        }
+
       } else {
         delete $scope.txUnit.transactions;
       }
@@ -661,7 +680,8 @@ angular.module('IguanaGUIApp')
           defaultAccount = $scope.isIguana ? settings.defaultAccountNameIguana : settings.defaultAccountNameCoind,
           currencyName = $rates.getCurrency() ? $rates.getCurrency().name : settings.defaultCurrency,
           coinName = activeCoin ? activeCoin.toUpperCase() : '',
-          defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency;
+          defaultCurrency = $rates.getCurrency() ? $rates.getCurrency().name : null || settings.defaultCurrency,
+          defer = $q.defer();
 
       if (activeCoin) {
         $storage.feeSettings = {};
@@ -677,7 +697,8 @@ angular.module('IguanaGUIApp')
               fastestFee = util.checkFeeCount(result.bitcoinFees.data.fastestFee, $storage.feeSettings.currencyRate),
               halfHourFee = util.checkFeeCount(result.bitcoinFees.data.halfHourFee, $storage.feeSettings.currencyRate),
               hourFee = util.checkFeeCount(result.bitcoinFees.data.hourFee, $storage.feeSettings.currencyRate),
-              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0;
+              coinCurrencyRate = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName][currencyName] : 0,
+              coinCurrencyRateObj = result.getExternalRate[0][coinName] ? result.getExternalRate[0][coinName] : {};
 
           $storage.feeSettings.currencyRate = $rates.updateRates(result.getBalance[1], defaultAccount, true);
           $storage.feeSettings.currency = defaultCurrency;
@@ -685,6 +706,7 @@ angular.module('IguanaGUIApp')
           $storage.feeSettings.coinId = activeCoin.toUpperCase();
           $storage.feeSettings.coinValue = result.getBalance[0];
           $storage.feeSettings.currencyValue = result.getBalance[0] * $storage.feeSettings.currencyRate;
+          $storage.feeSettings.coinCurrencyRateObj = coinCurrencyRateObj;
 
           $storage.feeSettings.sendCoin = {
             initStep: true,
@@ -788,7 +810,10 @@ angular.module('IguanaGUIApp')
               feeMaxTime: feeTime.high.max
             }];
           }
+          defer.resolve($storage.feeSettings);
         }.bind(this));
+
+        return defer.promise;
       }
     }
 
