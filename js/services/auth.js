@@ -403,28 +403,28 @@ angular.module('IguanaGUIApp')
           $storage['iguana-auth'] = { 'timestamp': Date.now() };
 
           if (!$storage.isIguana) {
-            $storage['iguana-' + self.coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
+            $storage['iguana-' + coinsSelectedToAdd[0].coinId + '-passphrase'] = { 'logged': 'yes' };
           }
 
           $storage['iguana-login-active-coin'] = {};
 
           if (!edexRedirect) {
-            var coinsSelectedToAdd;
+            var iguanaCoinsSelectedToAdd;
 
             $storage.guiModeAtLogin = $storage.isIguana;
 
             for (var name in self.coinsSelectedToAdd) {
-              coinsSelectedToAdd = self.coinsSelectedToAdd[name].coinId;
+              iguanaCoinsSelectedToAdd = self.coinsSelectedToAdd[name].coinId;
 
               $api
-                .getAccountAddress(coinsSelectedToAdd, 'default')
-                .then(function(coinSelectedToAdd, coinName, address) {
-                  $storage['dashboard-logged-in-coins'][coinName].address = address;
+                .getAccountAddress(iguanaCoinsSelectedToAdd, 'default')
+                .then(function(coinSelectedToAdd, address) {
+                  $storage['dashboard-logged-in-coins'][name].address = address;
 
                   if (Object.keys(self.coinsSelectedToAdd).length === Object.keys(self.coinsSelectedToAdd).indexOf(coinSelectedToAdd) + 1) {
                     $state.go('dashboard.main');
                   }
-                }.bind(null, coinsSelectedToAdd, name));
+                }.bind(null, iguanaCoinsSelectedToAdd));
             }
           }
         } else {

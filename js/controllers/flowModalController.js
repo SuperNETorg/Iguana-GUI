@@ -9,7 +9,8 @@ angular.module('IguanaGUIApp')
   '$uibModalInstance',
   'type',
   'modal',
-  function($scope, $state, $storage, $uibModal, $uibModalInstance, type, modal) {
+  'vars',
+  function($scope, $state, $storage, $uibModal, $uibModalInstance, type, modal,vars) {
     $scope.openLoginCoinModal = openLoginCoinModal;
     $scope.openSignupCoinModal = openSignupCoinModal;
     $scope.next = next;
@@ -18,6 +19,11 @@ angular.module('IguanaGUIApp')
     $scope.close = close;
     $scope.type = type;
     $scope.modal = modal;
+    if (vars.response.data.status === 200) {
+      $scope.iguanConnected = true
+    } else {
+      $scope.iguanConnected = false
+    }
     $scope.karma = { // tests
       next: next,
       close: close,
@@ -26,18 +32,17 @@ angular.module('IguanaGUIApp')
     };
 
     function next() {
-      if (isCoinsConnected()) {
-        $storage.isAppSetup = true;
-        $uibModalInstance.close();
+      $storage.isAppSetup = true;
+      $uibModalInstance.close();
 
-        $uibModalInstance.closed.then(function() {
-          if ($scope.type === 'signin') {
-            openLoginCoinModal();
-          } else if ($scope.type === 'signup') {
-            openSignupCoinModal();
-          }
-        });
-      }
+      $uibModalInstance.closed.then(function() {
+        if ($scope.type === 'signin') {
+          openLoginCoinModal();
+        } else if ($scope.type === 'signup') {
+          openSignupCoinModal();
+        }
+      });
+
 
       $scope.karma.modal = $uibModalInstance; // tests
     }
@@ -99,9 +104,12 @@ angular.module('IguanaGUIApp')
     }
 
     function isCoinsConnected() {
-      var coins = getConnectedCoins();
-
-      return coins && Object.keys(coins).length > 0;
+      if ($storage.isIguana ) {
+        return vars.response.data.status === 200 ? true : false;
+      } else {
+        var coins = getConnectedCoins();
+        return coins && Object.keys(coins).length > 0;
+      }
     }
   }
 ]);

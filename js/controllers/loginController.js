@@ -91,11 +91,19 @@ angular.module('IguanaGUIApp')
     }
 
     function isCoinsConnected() {
-      return Object.keys(getConnectedCoins()).length > 0;
+      if (!$storage.isIguana) {
+        return Object.keys(getConnectedCoins()).length > 0;
+      } else {
+        if (vars.response.data.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
 
     function isAppSetup() {
-      return $storage.isAppSetup && isCoinsConnected();
+      return ($storage.isIguana || $storage.isAppSetup) && isCoinsConnected();
     }
 
     function isCoinSelected() {

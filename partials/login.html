@@ -24,27 +24,17 @@
                 <div class="login-buttons-container col-xs-12">
                   <div class="row">
                     <button class="btn row btn-signin" ng-click="
-                    (
-                      !$storage.isIguana ?
-                      (
+
                         !isAppSetup() ?
                           openFlowModal('signin') :
-                          openCoinModal('signin')
-                      ) :
-                       $state.go('login.step2')
-                    )">
+                          ($storage.isIguana ? $state.go('login.step2') : openCoinModal('signin'))">
                       {{ 'LOGIN.LOGIN' | lang }}
                     </button>
                     <div class="login-or-delim unselectable">{{ 'LOGIN.OR' | lang }}</div>
                     <button class="btn row btn-signup" ng-click="
-                    (
-                      !$storage.isIguana ?
-                      (
                         !isAppSetup() ?
                           openFlowModal('signup') :
-                          openCoinModal('signup')
-                      ) :
-                        $state.go('signup'))">
+                          ($storage.isIguana ? $state.go('signup') : openCoinModal('signup'))">
                       {{ 'LOGIN.CREATE_ACCOUNT' | lang }}
                     </button>
                   </div>
