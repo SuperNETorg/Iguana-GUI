@@ -22,7 +22,6 @@ angular.module('IguanaGUIApp')
           }
 
           angular.element(hiddenTags)[fnName]('hidden');
-
         }
       }
     };

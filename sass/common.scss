@@ -146,42 +146,50 @@ html {
     }
     .global-loader {
       z-index: 999;
-      top:0;
+      top: 0;
       position: fixed;
       height: 100%;
       width: 100%;
       opacity: 0.7;
-      background-color: #f3f3f3;
+      background-color: $color-global-loader-var1;
     }
     .loader-image-head {
       position: fixed;
       top: 40%;
       bottom: 50%;
       right: 46%;
-      border: 35px solid #fb5b27;
+      border: 35px solid $color-global-loader-var2;
       border-radius: 50%;
     }
     .loader-image {
-      position: absolute;
-      border: 3px solid #fb5b27;
+      border: 3px solid $color-global-loader-var2;
       border-radius: 50%;
-      border-top: 3px solid #f3f3f3;
-      width: 50px;
+      border-top: 3px solid $color-global-loader-var1;
+      bottom: 50%;
       height: 50px;
+      left: -25px;
+      position: absolute;
+      right: 47%;
+      top: -25px;
+      width: 50px;
       -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
-      top: -25px;
-      bottom: 50%;
-      left: -25px;
-      right: 47%;
     }
     @-webkit-keyframes spin {
-      0% { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
     }
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
     .hide-loader{
       display: none;

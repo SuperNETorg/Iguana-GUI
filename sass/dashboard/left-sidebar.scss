@@ -17,7 +17,7 @@
     position: relative;
 
     &.new {
-      border: 1px solid #FE450D;
+      border: 1px solid $color-orange;
     }
     .info-icon {
       @include cursor-pointer;
@@ -119,10 +119,10 @@
     }
   }
   .item.syncing {
-    background: #FFEDE7;
+    background: $color-sync-item-bg;
 
     .progress-bar-container {
-      background: #EEE1E0;
+      background: $color-sync-progress-bar-container;
       height: 3px;
       margin-top: 3px;
       margin-left: 6px;
@@ -130,7 +130,7 @@
       position: absolute;
 
       .progress-bar {
-        background: #C7CCD0;
+        background: $color-sync-progress-bar-slider;
         box-shadow: none;
         height: 3px;
         border-radius: 6px;
@@ -140,7 +140,7 @@
   .item.active.syncing {
     .progress-bar-container {
       height: 3px;
-      background: #FE8656;
+      background: $color-sync-progress-bar-container-active;
       margin-top: 3px;
       margin-left: 6px;
       width: 85px;

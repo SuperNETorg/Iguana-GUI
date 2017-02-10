@@ -10,7 +10,6 @@
 }
 .iguana-modal.message-container {
   @include proxima;
-  //background: rgba(255, 255, 255, 0.7);
   z-index: 5000;
 
   &.msg-green {

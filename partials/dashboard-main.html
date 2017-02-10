@@ -90,16 +90,14 @@
                  class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }} clearfix"
                  title="confirmations: {{ item.confs }}"
                  ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
-              <div
-                class="close-history-sheet clearfix"
-                ng-click="closeTransaction($event)">
+              <div class="close-history-sheet clearfix"
+                   ng-click="closeTransaction($event)">
                 <span hidden-content
                       class="bi_interface-cross close-button hidden"></span>
               </div>
               <div class="clearfix">
                 <div class="status unselectable">{{ item.status }}</div>
-                <div class="timestamp unselectable">{{ item.timestampSingle }}
-                </div>
+                <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
                 <div timeago-date="item.timestampDate"
                      timeago-time="item.timestampTime"
                      class="timestamp unselectable time-ago" timeago
@@ -127,40 +125,31 @@
                   </div>
                   <div class="hash text-middle">{{ item.hash }}</div>
                 </div>
-
                 <div hidden-content
                      class="col-xs-12 animate-sheet non-padding hidden">
                   <div class="clearfix">
-                    <div
-                      class="col-xs-2 col-md-2 col-sm-2 col-lg-2 non-padding">
+                    <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2 non-padding">
                       <span class="grey-color"
-                            ng-if="item.confirmations === 0"
-                            ng-bind="('DASHBOARD.NOT_CONFIRMED' | lang)"></span>
+                            ng-if="item.confirmations === 0">{{ 'DASHBOARD.NOT_CONFIRMED' | lang }}</span>
                     </div>
-                    <div
-                      class="col-xs-3 col-md-3 col-sm-3 col-lg-3 non-padding">
+                    <div class="col-xs-3 col-md-3 col-sm-3 col-lg-3 non-padding">
                       <span class="grey-color">-523$ (11.01.17 12:34)</span>
                     </div>
-                    <div
-                      class="col-xs-7 col-md-7 col-sm-7 col-lg-7 non-padding">
+                    <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7 non-padding">
                       <span class="grey-color">{{ 'DASHBOARD.FEE' | lang }}: {{item.fee}} {{item.feeObj.currency}}</span>
                     </div>
-                    <div
-                      class="col-xs-6 col-md-6 col-sm-6 col-lg-6 left-sheet non-padding">
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 left-sheet non-padding">
                       <a href="#">
                         <span>{{item.confirmations}} {{ 'DASHBOARD.CONFIRMATIONS' | lang }}</span>
                       </a>
-                      <div
-                        class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                      <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
                         <span class="grey-color">{{ 'DASHBOARD.DESCRIPTION' | lang }}</span>
                       </div>
-                      <div
-                        class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                      <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
                         <span class="grey-color">Long text about transactions and</span>
                       </div>
                     </div>
-                    <div
-                      class="col-xs-6 col-md-6 col-sm-6 col-lg-6 right-sheet non-padding">
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 right-sheet non-padding">
                         <span class="pull-right grey-rate sheet-rate"
                               ng-bind="'1' + item.coin + ' = ' +
                                         item.feeObj.coinCurrencyRateObj[item.feeObj.currency] +

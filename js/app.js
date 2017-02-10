@@ -182,7 +182,7 @@ angular.module('IguanaGUIApp', [
       ++rejectTimeout;
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.secMilliSec((rejectTimeout < 5 ? settings.apiCheckTimeout/5 : settings.apiCheckTimeout)));
+      }, $datetime.secMilliSec((rejectTimeout < 5 ? settings.apiCheckTimeout / 5 : settings.apiCheckTimeout)));
     }
   }
 

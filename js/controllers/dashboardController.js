@@ -48,7 +48,7 @@ angular.module('IguanaGUIApp')
       transactions: []
     };
     $scope.sideBarCoinsUnsorted = {};
-    $scope.activeCoin = $storage['iguana-active-coin'] && $storage['iguana-active-coin'].id ? $storage['iguana-active-coin'].id : 0;
+    $scope.activeCoin = util.getActiveCoin();
     $scope.addCoinButtonState = true;
     $scope.disableRemoveCoin = !dev.isDev || isIguana; // dev
     $rootScope.background = false;
@@ -60,9 +60,6 @@ angular.module('IguanaGUIApp')
     $scope.receivedObject = undefined;
     $scope.$sendCoinInstance = {};
     $scope.loggedCoins = $storage['dashboard-logged-in-coins'];
-    $storage['dashboard-added-by-user-coins'] = (
-      $storage['dashboard-added-by-user-coins'] ? $storage['dashboard-added-by-user-coins'] : []
-    );
     $scope.addedByUserCoins = $storage['dashboard-added-by-user-coins'];
     $scope.openAddCoinModal = openAddCoinModal;
     $scope.openReceiveCoinModal = openReceiveCoinModal;
@@ -85,7 +82,19 @@ angular.module('IguanaGUIApp')
     };
     $scope.activeSyncInfo = false;
     $scope.coinSyncInfo = {};
+
+    $storage['dashboard-added-by-user-coins'] = (
+      $storage['dashboard-added-by-user-coins'] ? $storage['dashboard-added-by-user-coins'] : []
+    );
     $rootScope.$on('$stateChangeStart', stateChangeStart);
+    $rootScope.$on('coinsInfo', onInit);
+
+    util.bodyBlurOff();
+    delete $storage['dashboard-pending-coins'];
+
+    if ($scope.coinsInfo) {
+      onInit();
+    }
 
     $scope.showSyncInfo = function(itemId) {
       if (itemId === $scope.activeSyncInfo) {
@@ -95,19 +104,11 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    util.bodyBlurOff();
-    delete $storage['dashboard-pending-coins'];
-    $rootScope.$on('coinsInfo', onInit);
-
-    if ($scope.coinsInfo) {
-      onInit();
-    }
-
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
 
-      updateFeeParams().then(function () {
+      updateFeeParams().then(function() {
         constructAccountCoinRepeater();
       });
     }
@@ -813,6 +814,8 @@ angular.module('IguanaGUIApp')
           defer.resolve($storage.feeSettings);
         }.bind(this));
 
+        return defer.promise;
+      } else {
         return defer.promise;
       }
     }

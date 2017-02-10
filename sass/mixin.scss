@@ -61,18 +61,19 @@
   /* csslint ignore:end */
 }
 
+$color-width: #FE470D;
 @mixin width-bg {
   /* csslint ignore:start */
   background-color: $color-absolute-white;
-  border: 1px solid #FE470D;
-  color: #FE470D;
+  border: 1px solid $color-width;
+  color: $color-width;
   /* csslint ignore:start */
 }
 
 @mixin width-gradient {
   /* csslint ignore:start */
   background: $color-absolute-white;
-  color: #FE470D;
+  color: $color-width;
   @include btn-default-shadow;
   /* csslint ignore:start */
 }

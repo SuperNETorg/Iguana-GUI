@@ -356,7 +356,7 @@ angular.module('IguanaGUIApp')
           mode = coinMode[i];
 
           if (coinMode.length === 1) {
-            modeResult['Basilisk'] = {
+            modeResult.Basilisk = {
               name: 'Basilisk',
               key: 0,
               status: false,
@@ -366,14 +366,14 @@ angular.module('IguanaGUIApp')
 
           switch (mode) {
             case 0:
-              modeResult['Basilisk'] = {
+              modeResult.Basilisk = {
                 name: 'Basilisk',
                 key: mode,
                 disabled: coinMode.length === 1
               };
               break;
             case 1:
-              modeResult['Full'] = {
+              modeResult.Full = {
                 name: 'Full',
                 key: mode,
                 status: true,
@@ -381,7 +381,7 @@ angular.module('IguanaGUIApp')
               };
               break;
             case -1:
-              modeResult['Native'] = {
+              modeResult.Native = {
                 name: 'Native',
                 key: mode,
                 disabled: false

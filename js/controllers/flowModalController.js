@@ -19,17 +19,13 @@ angular.module('IguanaGUIApp')
     $scope.close = close;
     $scope.type = type;
     $scope.modal = modal;
-    if (vars.response.data.status === 200) {
-      $scope.iguanConnected = true
-    } else {
-      $scope.iguanConnected = false
-    }
     $scope.karma = { // tests
       next: next,
       close: close,
       openLoginCoinModal: openLoginCoinModal,
       openSignupCoinModal: openSignupCoinModal
     };
+    $scope.iguanaConnected = readIguanaStatus();
 
     function next() {
       $storage.isAppSetup = true;
@@ -45,6 +41,10 @@ angular.module('IguanaGUIApp')
 
 
       $scope.karma.modal = $uibModalInstance; // tests
+    }
+
+    function readIguanaStatus() {
+      return vars.response.data.status === 200 ? true : false;
     }
 
     function close() {
@@ -104,8 +104,8 @@ angular.module('IguanaGUIApp')
     }
 
     function isCoinsConnected() {
-      if ($storage.isIguana ) {
-        return vars.response.data.status === 200 ? true : false;
+      if ($storage.isIguana) {
+        return readIguanaStatus();
       } else {
         var coins = getConnectedCoins();
         return coins && Object.keys(coins).length > 0;
