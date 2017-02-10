@@ -104,6 +104,8 @@ angular.module('IguanaGUIApp')
       }
     };
 
+    constructAccountCoinRepeater(true);
+
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
@@ -811,6 +813,7 @@ angular.module('IguanaGUIApp')
               feeMaxTime: feeTime.high.max
             }];
           }
+
           defer.resolve($storage.feeSettings);
         }.bind(this));
 
