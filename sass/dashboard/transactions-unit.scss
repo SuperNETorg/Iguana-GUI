@@ -10,7 +10,7 @@
 
   .progress-bar-container {
     height: 3px;
-    background: #F5F8FB;
+    background: $color-modal-bg;
     margin-bottom: 20px;
     margin-top: 5px;
 
@@ -176,8 +176,6 @@
       }
     }
     .progress-status {
-      //@include margin-left-right(1.1em);
-
       .icon:before {
         display: block;
         font-size: 1.2em;
@@ -246,7 +244,7 @@
       .progress-indeterminate > circle {
         animation:
           $duration ease-in-out infinite flow,
-          $duration/.75 linear infinite rotation;
+          $duration / 0.75 linear infinite rotation;
         fill: none;
         stroke: $txunit-item-progress-icon-color;
         stroke-linecap: round;
@@ -260,8 +258,8 @@
           stroke-dashoffset: 0;
         }
         50% {
-          stroke-dasharray: 0.75*$circumference 0.25*$circumference;
-          stroke-dashoffset: -0.25*$circumference;
+          stroke-dasharray: 0.75 * $circumference 0.25 * $circumference;
+          stroke-dashoffset: -0.25 * $circumference;
         }
         100% {
           stroke-dasharray: $bit ($circumference - $bit);

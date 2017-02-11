@@ -20,8 +20,6 @@ angular.module('IguanaGUIApp')
 
     var pageTitle;
 
-    $storage['iguana-active-coin'] = {};
-
     $scope.util = util;
     $scope.coinsInfo = vars.coinsInfo;
     $scope.isChanged = false;
@@ -91,11 +89,19 @@ angular.module('IguanaGUIApp')
     }
 
     function isCoinsConnected() {
-      return Object.keys(getConnectedCoins()).length > 0;
+      if (!$storage.isIguana) {
+        return Object.keys(getConnectedCoins()).length > 0;
+      } else {
+        if (vars.response.data.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
 
     function isAppSetup() {
-      return $storage.isAppSetup && isCoinsConnected();
+      return ($storage.isIguana || $storage.isAppSetup) && isCoinsConnected();
     }
 
     function isCoinSelected() {
@@ -150,20 +156,21 @@ angular.module('IguanaGUIApp')
         }
       };
 
-      $api.getSelectedCoins().then(
+      if ($storage.isIguana) {
+        $api.getSelectedCoins().then(
         function(response) {
           var selectedCoinsCount = 0;
 
-          for (var i in response['data']) {
+          for (var i in response.data) {
             switch (i) {
               case 'basilisk':
-                setModes(0, response['data'][i]);
+                setModes(0, response.data[i]);
                 break;
               case 'full':
-                setModes(1, response['data'][i]);
+                setModes(1, response.data[i]);
                 break;
               case 'native':
-                setModes(-1, response['data'][i]);
+                setModes(-1, response.data[i]);
                 break;
               default:
                 break;
@@ -190,10 +197,15 @@ angular.module('IguanaGUIApp')
             modalInstance.result.then(resultPromise);
             $scope.karma.modal = modalInstance; // tests
           }
-        }.bind(this),
+        },
         function(response) {
           console.log(response);
         });
+      } else {
+        var modalInstance = $uibModal.open($scope.modal.coinModal);
+
+        modalInstance.result.then(resultPromise);
+      }
 
       function resultPromise(data) {
         if (type === 'signin') {
@@ -259,7 +271,7 @@ angular.module('IguanaGUIApp')
                 'pass': dev.isDev && !$storage.passphrase ? getPassphrase(key) : '',
                 'mode': getMode(key),
                 'activeMode': (getMode(key)['Full'] ? getMode(key)['Full'].key : false)
-              }
+              };
 
               if (index === $scope.coinColors.length - 1) {
                 index = 0;
@@ -288,16 +300,16 @@ angular.module('IguanaGUIApp')
 
       if ($storage.isIguana) {
         var coinMode = iguanaCoinModes[key],
-          modeSwitch = {},
-          mode;
+            modeSwitch = {},
+            mode;
 
         for (var i = 0; coinMode.length > i; i++) {
           modeSwitch = {};
           mode = coinMode[i];
 
           if (coinMode.length === 1) {
-            modeResult['Lite'] = {
-              name: 'Lite',
+            modeResult.Basilisk = {
+              name: 'Basilisk',
               key: 0,
               status: false,
               disabled: true
@@ -306,14 +318,14 @@ angular.module('IguanaGUIApp')
 
           switch (mode) {
             case 0:
-              modeResult['Lite'] = {
-                name: 'Lite',
+              modeResult.Basilisk = {
+                name: 'Basilisk',
                 key: mode,
                 disabled: coinMode.length === 1
               };
               break;
             case 1:
-              modeResult['Full'] = {
+              modeResult.Full = {
                 name: 'Full',
                 key: mode,
                 status: true,
@@ -321,7 +333,7 @@ angular.module('IguanaGUIApp')
               };
               break;
             case -1:
-              modeResult['Native'] = {
+              modeResult.Native = {
                 name: 'Native',
                 key: mode,
                 disabled: false
@@ -400,16 +412,13 @@ angular.module('IguanaGUIApp')
 
     function goBack() {
       var state;
+
       $scope.passphraseModel = '';
       if (!$storage.isIguana) {
         $storage['iguana-login-active-coin'] = {};
       }
 
-      if (!$auth._userIdentify()) {
-        state = 'login';
-      } else {
-        state = 'dashboard.main';
-      }
+      state = !$auth._userIdentify() ? 'login' : 'dashboard.main';
 
       $state.go(state);
     }

@@ -32,9 +32,14 @@ angular.module('IguanaGUIApp')
       return secondsElapsed;
     };
 
-    // minutes to seconds
+    // minutes to timestamp
     this.minuteMilliSec = function(minute) {
       return 60 * 1000 * parseFloat(minute);
-    }
+    };
+
+    // sec to timestamp
+    this.secMilliSec = function(second) {
+      return 1000 * parseFloat(second);
+    };
   }
 ]);

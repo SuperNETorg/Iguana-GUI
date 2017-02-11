@@ -117,7 +117,11 @@ var lang = {
       'OF': 'of',
       'LITE': 'Lite',
       'NATIVE': 'Native',
-      'FULL': 'Full'
+      'FULL': 'Full',
+      'NOT_CONFIRMED': 'Not Confirmed',
+      'FEE':'Fee',
+      'CONFIRMATIONS':'Confirmations',
+      'DESCRIPTION':'Description'
     },
     'RECEIVE': {
       'RECEIVING_COINS': 'Receiving coins',
@@ -190,6 +194,7 @@ var lang = {
       'CONFIRM': 'Confirm'
     },
     'MESSAGE': {
+      'CONGRATULATIONS': 'Congratulations ',
       'DAEMONS_ERROR': 'Looks like Iguana Core is not running.',
       'PROXY_ERROR': 'Looks like you need to make sure that proxy is meeting these requirements. ',
       'APP_FAILURE': 'We\'re sorry but something went wrong while logging you in. Please try again. ',
@@ -208,7 +213,7 @@ var lang = {
       'PLEASE_SELECT_A_WALLET': 'Please select a wallet',
       'WRONG_PASSPHRASE': 'Wrong passphrase!',
       'NO_DAEMON_IS_RUNNING': 'No daemon is running',
-      'NO_WALLET_IS_ENCRYPTED': 'No Wallet is encrypted',
+      'NO_WALLET_IS_ENCRYPTED': 'Wallet is unencrypted',
       'PROXY_IS_NOT_SET_UP': 'Proxy is not set up',
       'IGUANA_IS_NOT_SET_UP': 'Iguana is not set up',
       'PLEASE_ENCRYPT_YOUR_WALLET': 'Please encrypt your wallet with a passphrase!',

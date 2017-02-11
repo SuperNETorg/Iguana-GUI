@@ -142,6 +142,9 @@ angular.module('IguanaGUIApp')
 
         $timeout(function() {
           msg.close();
+
+          if (!$storage.isIguana)
+            $state.go('login');
         }, settings.appRedirectTimeout * 1000);
       }
 
@@ -353,8 +356,8 @@ angular.module('IguanaGUIApp')
           mode = coinMode[i];
 
           if (coinMode.length === 1) {
-            modeResult['Lite'] = {
-              name: 'Lite',
+            modeResult.Basilisk = {
+              name: 'Basilisk',
               key: 0,
               status: false,
               disabled: true
@@ -363,14 +366,14 @@ angular.module('IguanaGUIApp')
 
           switch (mode) {
             case 0:
-              modeResult['Lite'] = {
-                name: 'Lite',
+              modeResult.Basilisk = {
+                name: 'Basilisk',
                 key: mode,
                 disabled: coinMode.length === 1
               };
               break;
             case 1:
-              modeResult['Full'] = {
+              modeResult.Full = {
                 name: 'Full',
                 key: mode,
                 status: true,
@@ -378,7 +381,7 @@ angular.module('IguanaGUIApp')
               };
               break;
             case -1:
-              modeResult['Native'] = {
+              modeResult.Native = {
                 name: 'Native',
                 key: mode,
                 disabled: false

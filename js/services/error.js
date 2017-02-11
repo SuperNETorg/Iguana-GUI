@@ -14,7 +14,7 @@ angular.module('IguanaGUIApp')
   '$interval',
   '$window',
   function($q, vars, util, $state, $storage, $sessionStorage,
-           $message, $timeout, $rootScope, $interval, $window) {
+           $message, $timeout, $rootScope, $interval) {
 
     vars.error = this;
 
@@ -114,10 +114,10 @@ angular.module('IguanaGUIApp')
       }
     }
 
-    function noIguanaErrorSwich(statusSwich) {
+    function noIguanaErrorSwich(statusSwitch) {
       $timeout.cancel(vars.noIguanaTimeOut);
 
-      if (typeof statusSwich !== 'undefined' && !statusSwich) {
+      if (typeof statusSwitch !== 'undefined' && !statusSwitch) {
         if (
           errors && errors.message &&
           errors.message.indexOf('connect ECONNREFUSED') !== -1 &&

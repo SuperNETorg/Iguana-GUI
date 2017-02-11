@@ -166,6 +166,8 @@ angular.module('IguanaGUIApp', [
       $timeout($auth.checkSession);
   });
 
+  var rejectTimeout = 0;
+
   if ((dev && dev.isDev && !dev.isKarma) || (dev && !dev.isDev)) {
     $api.testConnection().then(onResolve, onReject);
 
@@ -173,13 +175,14 @@ angular.module('IguanaGUIApp', [
       $rootScope.$broadcast('coinsInfo', coins);
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+      }, $datetime.secMilliSec(settings.apiCheckTimeout));
     }
 
     function onReject() {
+      ++rejectTimeout;
       $timeout(function() {
         $api.testConnection().then(onResolve, onReject);
-      }, $datetime.minuteMilliSec(settings.apiCheckTimeout));
+      }, $datetime.secMilliSec((rejectTimeout < 5 ? settings.apiCheckTimeout / 5 : settings.apiCheckTimeout)));
     }
   }
 

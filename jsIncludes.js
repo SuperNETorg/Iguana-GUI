@@ -24,6 +24,7 @@
 <script type="text/javascript" src="js/directives/timeAgo.js"></script>
 <script type="text/javascript" src="js/directives/numberOnly.js"></script>
 <script type="text/javascript" src="js/directives/appTitle.js"></script>
+<script type="text/javascript" src="js/directives/historyAnimate.js"></script>
 <!-- filters -->
 <script type="text/javascript" src="js/filters/decimalPlacesFormat.js"></script>
 <script type="text/javascript" src="js/filters/lang.js"></script>

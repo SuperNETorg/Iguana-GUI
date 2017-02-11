@@ -247,18 +247,6 @@ body .add-coin-login-form .modal-add-coin-login-form,
   .supported-coins-repeater.override-opacity .coin {
     opacity: 1 !important; /* override opacity set in js */
   }
-  .col-orange {
-    color: $color-add-coin-orange !important;
-  }
-  .col-breeze {
-    color: $color-add-coin-breeze !important;
-  }
-  .col-yellow {
-    color: $color-add-coin-yellow !important;
-  }
-  .col-light-blue {
-    color: $color-add-coin-light-blue !important;
-  }
 }
 /* dgc icon fix */
 .DGC:before {

@@ -151,7 +151,7 @@ body {
                       top: 3px;
                     }
                     .mode {
-                      background-color: #C7CCD0;
+                      background-color: $color-sync-progress-bar-slider;
                       border-radius: 2px;
                       color: $color-absolute-white;
                       font-size: 0.714em;
@@ -179,6 +179,47 @@ body {
                   margin-top: 1.64em;
                 }
               }
+              .transactions-list {
+                  .transactions-list-repeater {
+                    .item {
+                      .close-history-sheet {
+                        display: block;
+                      }
+                      .close-hide {
+                        display: none;
+                      }
+                      .hide-sheet {
+                        display: none !important;
+                      }
+                      .grey-color {
+                        color: $color-dark-gray;
+                        font-size: 12px;
+                      }
+                      .grey-rate {
+                        color: $color-dark-gray;
+                        font-weight: 400;
+                      }
+                      .non-padding {
+                        padding-left: 0;
+                        padding-right: 0;
+                      }
+                      .leave-comment {
+                        margin-top: 20px;
+                      }
+                      .leave-comment-btn {
+                        background: $color-orange;
+                        border-radius: 4px;
+                        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.125);
+                        color: $color-orange;
+                        font-size: 1em;
+                        @include bold;
+                        line-height: 1.14em;
+                        padding: .3em 1em;
+                        width: 100%;
+                      }
+                    }
+                  }
+                }
             }
           }
         }
@@ -496,9 +537,7 @@ body {
     .modal .modal-dialog.modal-lg {
       width: 100%;
     }
-    //.form-container .modal .modal-dialog .modal-header .btn-close,
     .modal .modal-dialog .modal-content .modal-header .btn-back {
-      //margin-left: -8px;
       margin-top: -2px;
     }
     .send-coin-confirm-passphrase .modal-add-coin-login .modal-header .btn-back {
@@ -625,6 +664,7 @@ body {
       display: inherit;
     }
     //important required
+    // WHY?
     .hash {
       width: 44% !important;
       font-size: 14px !important;
@@ -645,9 +685,10 @@ body {
 
   @media (max-width: 360px) {
     // the !important is required.
+    // WHY?
     .text-vertical-center {
-      padding-left: 0!important;
-      margin-left: -10px!important;
+      padding-left: 0 !important;
+      margin-left: -10px !important;
     }
     .share-address-section {
       width: 96%;

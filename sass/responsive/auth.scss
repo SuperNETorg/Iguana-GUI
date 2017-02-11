@@ -21,7 +21,8 @@ body {
             max-width: 600px;
 
             //we need '!IMPORTANT' for this size
-            .covered-sheet{
+            // WHY?
+            .covered-sheet {
               .btn-verify-passphrase,
               .btn-add-account,
               .btn-terms-conditions-accept {
@@ -124,6 +125,10 @@ body {
   }
   /* for mobile resolution */
   @media #{$small-max-Resolution} {
+    .coin-inner {
+      margin-top: 0 !important;
+      padding: 0 !important;
+    }
     .mobile-hidden {
       display: none;
     }
@@ -405,7 +410,6 @@ body {
     }
   }
   @media all and (max-height: 420px) {
-    //we need '!IMPORTANT' for this size
     div.app-container {
       div.app-container-inner.ng-scope {
         div {
@@ -413,13 +417,6 @@ body {
             div {
               section.form-container {
                 height: 120%;
-                div {
-                  div {
-                    button.btn-verify-passphrase {
-                      //position: relative !important;
-                    }
-                  }
-                }
               }
             }
           }
@@ -428,7 +425,7 @@ body {
     }
   }
   .covered-sheet {
-    background-color: #F5FAFD;
+    background-color: $color-body-bg;
     bottom: 0;
     left: 15px;
     position: fixed;

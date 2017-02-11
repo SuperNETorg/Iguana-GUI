@@ -9,6 +9,9 @@ body {
     .modal-dialog {
       .modal-content {
         .send-coin-confirm-passphrase {
+          .orange-gradient {
+            border-radius: 4px;
+          }
           .login-passphrase-textarea {
             @include bold;
             @include proxima;

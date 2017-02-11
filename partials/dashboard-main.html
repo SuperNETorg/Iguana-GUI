@@ -17,11 +17,10 @@
           <div class="item {{ item.id }}" data-coin-id="{{ item.coinId }}"
                data-coin-balance-value="{{ item.coinBalanceUnformatted }}"
                ng-class="{
-                        'active': ( activeCoin === item.id || activeCoin === $index ) &&
-                                    !util.isMobile(),
-                        'new': addedByUserCoins.indexOf(item.id) !== -1,
-                        'syncing': coinSyncInfo[item.id].loaderBar
-                }"
+                'active': ( activeCoin === item.id || activeCoin === $index ) && !util.isMobile(),
+                'new': addedByUserCoins.indexOf(item.id) !== -1,
+                'syncing': coinSyncInfo[item.id].loaderBar
+               }"
                ng-repeat="item in sideBarCoins | orderBy: 'id'"
                ng-click="util.isMobile() ? setActiveCoin(item) : ( activeCoin !== item.id ? setActiveCoin(item) : null )"
                title="{{ coinSyncInfo[item.id].title }}">
@@ -87,28 +86,82 @@
                  ng-if="txUnit.transactions.length === 1 && !txUnit.loading">
               {{ 'DASHBOARD.NO_TRANSACTION_HISTORY_IS_AVAILABLE' | lang }}
             </div>
-            <div class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }}" title="confirmations: {{ item.confs }}"
+            <div history-animate
+                 class="item {{ item.statusClass }} {{ item.timestampFormat }} {{ item.txId }} clearfix"
+                 title="confirmations: {{ item.confs }}"
                  ng-repeat="item in txUnit.transactions | orderBy: '-timestampUnchanged'">
-              <div class="status unselectable">{{ item.status }}</div>
-              <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
-              <div timeago-date="item.timestampDate" timeago-time="item.timestampTime" class="timestamp unselectable time-ago" timeago ng-class="timeAgoClass">
-                <div timeago-date="item.timestampDate" class="timestamp-date time-ago-date"></div>
-                <div timeago-time="item.timestampTime" class="timestamp-time time-ago-time"></div>
+              <div class="close-history-sheet clearfix"
+                   ng-click="closeTransaction($event)">
+                <span hidden-content
+                      class="bi_interface-cross close-button hidden"></span>
               </div>
-              <div class="text-vertical-center">
-                <div class="amount unselectable text-middle" ng-class="{ 'smaller': item.switchStyle }">
-                  <span class="in-out {{ item.inOut }}"></span>
-                  <span class="value">{{ item.amount }}</span>
-                  <span class="coin-name">{{ item.coin }}</span>
+              <div class="clearfix">
+                <div class="status unselectable">{{ item.status }}</div>
+                <div class="timestamp unselectable">{{ item.timestampSingle }}</div>
+                <div timeago-date="item.timestampDate"
+                     timeago-time="item.timestampTime"
+                     class="timestamp unselectable time-ago" timeago
+                     ng-class="timeAgoClass">
+                  <div timeago-date="item.timestampDate"
+                       class="timestamp-date time-ago-date"></div>
+                  <div timeago-time="item.timestampTime"
+                       class="timestamp-time time-ago-time"></div>
                 </div>
-                <div class="progress-status unselectable text-middle">
-                  <i class="icon bi_interface-arrow-right"></i>
-                  <svg class="progress-indeterminate hidden" viewBox="0 0 24 24"
-                       xmlns="http://www.w3.org/2000/svg" height="30" width="30">
-                    <circle  cx="12" cy="12" r="7"></circle>
-                  </svg>
+                <div class="text-vertical-center">
+                  <div class="amount unselectable text-middle"
+                       ng-class="{ 'smaller': item.switchStyle }">
+                    <span class="in-out {{ item.inOut }}"></span>
+                    <span class="value">{{ item.amount }}</span>
+                    <span class="coin-name">{{ item.coin }}</span>
+                  </div>
+                  <div class="progress-status unselectable text-middle">
+                    <i class="icon bi_interface-arrow-right"></i>
+                    <svg class="progress-indeterminate hidden"
+                         viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg" height="30"
+                         width="30">
+                      <circle cx="12" cy="12" r="7"></circle>
+                    </svg>
+                  </div>
+                  <div class="hash text-middle">{{ item.hash }}</div>
                 </div>
-                <div class="hash text-middle">{{ item.hash }}</div>
+                <div hidden-content
+                     class="col-xs-12 animate-sheet non-padding hidden">
+                  <div class="clearfix">
+                    <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2 non-padding">
+                      <span class="grey-color"
+                            ng-if="item.confirmations === 0">{{ 'DASHBOARD.NOT_CONFIRMED' | lang }}</span>
+                    </div>
+                    <div class="col-xs-3 col-md-3 col-sm-3 col-lg-3 non-padding">
+                      <span class="grey-color">-523$ (11.01.17 12:34)</span>
+                    </div>
+                    <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7 non-padding">
+                      <span class="grey-color">{{ 'DASHBOARD.FEE' | lang }}: {{item.fee}} {{item.feeObj.currency}}</span>
+                    </div>
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 left-sheet non-padding">
+                      <a href="#">
+                        <span>{{item.confirmations}} {{ 'DASHBOARD.CONFIRMATIONS' | lang }}</span>
+                      </a>
+                      <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                        <span class="grey-color">{{ 'DASHBOARD.DESCRIPTION' | lang }}</span>
+                      </div>
+                      <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 non-padding">
+                        <span class="grey-color">Long text about transactions and</span>
+                      </div>
+                    </div>
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 right-sheet non-padding">
+                        <span class="pull-right grey-rate sheet-rate"
+                              ng-bind="'1' + item.coin + ' = ' +
+                                        item.feeObj.coinCurrencyRateObj[item.feeObj.currency] +
+                                        item.feeObj.currency + ' = ' +
+                                        item.feeObj.coinCurrencyRateObj.BTC + 'BTC'"></span>
+                      <div class="clearfix"></div>
+                      <div class="leave-comment pull-right">
+                        <button class="leave-comment-btn btn">Leave Comment</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
