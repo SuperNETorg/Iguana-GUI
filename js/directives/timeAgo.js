@@ -11,6 +11,7 @@ angular.module('IguanaGUIApp')
         $rootScope.$watch(
           function() {
             var children = element[0].children;
+
             if (children.length) {
               var date = scope.$eval(children[0].getAttribute('timeago-date')),
                   time = scope.$eval(children[1].getAttribute('timeago-time'));
@@ -20,22 +21,24 @@ angular.module('IguanaGUIApp')
                   time = scope.$eval(children.getAttribute('timeago-time'));
             }
             var threshold = settings.thresholdTimeAgo,
-              displayText = '',
-              dateTime = date + ' ' + time,
-              original = new Date(dateTime),
-              current = new Date(),
-              dayTemplate = 24 * 60 * 60 * 1000,
-              timeTemplate = 60 * 60 * 1000,
-              minuteTemplate = 60 * 1000,
-              difference = current - original;
+                displayText = '',
+                dateTime = date + ' ' + time,
+                original = new Date(dateTime),
+                current = new Date(),
+                dayTemplate = 24 * 60 * 60 * 1000,
+                timeTemplate = 60 * 60 * 1000,
+                minuteTemplate = 60 * 1000,
+                difference = current - original;
 
             if (
               (threshold.hasOwnProperty('day') && (difference / dayTemplate) > threshold.day) ||
               (threshold.hasOwnProperty('time') && (difference / timeTemplate) > threshold.time) ||
               (threshold.hasOwnProperty('minute') && (difference / minuteTemplate) > threshold.minute)
             ) {
-              children[0].innerText = date;
-              children[1].innerText = time;
+              if (children[0])
+                children[0].innerText = date;
+              if (children[1])
+                children[1].innerText = time;
               scope.timeAgoClass = 'two-lines';
             } else {
               if (difference / dayTemplate < 1) {
@@ -57,7 +60,9 @@ angular.module('IguanaGUIApp')
 
                 displayText = days + ' ' + $filter('lang')(days > 1 ? 'TIME_AGO.DAYS' : 'TIME_AGO.DAY');
               }
+
               scope.timeAgoClass = '';
+
               return displayText;
             }
           },
