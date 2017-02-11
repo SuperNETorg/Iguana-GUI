@@ -160,11 +160,19 @@ body {
                       margin-left: 5px;
                       margin-top: 5px;
                       text-align: center;
+                      text-shadow: none;
                     }
                   }
                   .balance {
                     font-weight: 900;
                     @include margin-top-bottom(0.739em)
+                  }
+                  &.active {
+                    .mode {
+                      background-color: $color-absolute-white;
+                      color: $color-orange;
+                      text-shadow: none;
+                    }
                   }
                 }
               }
