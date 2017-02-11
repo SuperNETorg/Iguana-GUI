@@ -44,6 +44,17 @@ angular.module('IguanaGUIApp')
       'status': status
     };
 
+    function isBasiliskConnected() { // temp workaround to prevent constant error message
+      var isBasilisk = false;
+
+      for (var key in $storage['dashboard-logged-in-coins']) {
+        if ($storage['dashboard-logged-in-coins'][key].activeMode === 0)
+          isBasilisk = true;
+      }
+
+      return isBasilisk;
+    }
+
     function checkIguanaErrors() {
       response = arguments[0];
 
@@ -61,8 +72,9 @@ angular.module('IguanaGUIApp')
           $timeout.cancel(vars.iguanaTimeOut);
 
           if (
-            !$sessionStorage.$message.active ||
-            !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR']
+            (!$sessionStorage.$message.active ||
+            !$sessionStorage.$message.active['MESSAGE.DAEMONS_ERROR'])
+            && !isBasiliskConnected()
           ) {
             vars.iguanaTimeOut = $timeout(function() {
               messageType = 'logout';
@@ -268,9 +280,10 @@ angular.module('IguanaGUIApp')
         console.log(consoleMessage);
       }
 
-      $timeout(function() {
-        $rootScope.$broadcast('logout');
-      }, settings.messageHideTimeout * 1000);
+      if (consoleMessage !== null)
+        $timeout(function() {
+          $rootScope.$broadcast('logout');
+        }, settings.messageHideTimeout * 1000);
     }
 
     function viewErrors() {

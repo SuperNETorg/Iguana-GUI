@@ -33,7 +33,7 @@ var _settings = {
   newAddedCoinViewTimeout: 20, // sec
   appRedirectTimeout: 1,
   appViewMessageTimeout: 3,
-  defaultIguanaConnectionTimeOut: 500,
+  defaultIguanaConnectionTimeOut: 3000,
   minEpochTimestamp: 1471620867,
   globalFeeLoaderTimeout: 1 // sec
 };
