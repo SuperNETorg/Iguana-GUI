@@ -12,7 +12,6 @@ angular.module('IguanaGUIApp')
   '$timeout',
   '$rootScope',
   '$interval',
-  '$window',
   function($q, vars, util, $state, $storage, $sessionStorage,
            $message, $timeout, $rootScope, $interval) {
 
@@ -75,6 +74,7 @@ angular.module('IguanaGUIApp')
 
           if (isShowConsole) {
             console.log('connection error');
+            console.log(response);
           }
         } else {
           $interval.cancel(vars.iguanaTimeOut);
@@ -267,6 +267,10 @@ angular.module('IguanaGUIApp')
       if (isShowConsole) {
         console.log(consoleMessage);
       }
+
+      $timeout(function() {
+        $rootScope.$broadcast('logout');
+      }, settings.messageHideTimeout * 1000);
     }
 
     function viewErrors() {

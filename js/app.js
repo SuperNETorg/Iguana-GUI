@@ -155,6 +155,9 @@ angular.module('IguanaGUIApp', [
   /*if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
     $rootScope.isElectron = true;
   }*/
+  $rootScope.$on('logout', function() {
+    $auth.logout();
+  });
 
   $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
