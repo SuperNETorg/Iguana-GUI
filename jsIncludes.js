@@ -41,6 +41,7 @@
 <script type="text/javascript" src="js/services/passPhraseGenerator.js"></script>
 <script type="text/javascript" src="js/services/util.js"></script>
 <script type="text/javascript" src="js/services/api.js"></script>
+<script type="text/javascript" src="js/services/basilisk.js"></script>
 <!-- controllers -->
 <script type="text/javascript" src="js/controllers/flowModalController.js"></script>
 <script type="text/javascript" src="js/controllers/loginController.js"></script>

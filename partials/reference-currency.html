@@ -50,5 +50,15 @@
       </div>
     </div>
     <div class="clearfix"></div>
+    <div class="col-md-3 col-md-offset-1 col-sm-5 container-left">
+      <h3 class="choose-currency">{{ 'SETTINGS.NOTARIES' | lang }}:</h3>
+      <h4>{{ 'SETTINGS.CONNECTED_NOTARIES' | lang }} {{ notaries.connected }} / {{ notaries.notariesList.length }}</h4>
+    </div>
+    <div class="col-md-7 col-sm-6 currency-parent container-left">
+      <button class="btn btn-success item-segment-select col-xs-4 col-sm-4 col-md-4 col-lg-4"
+              ng-disabled="notaries.updating || notaries.connected < notaries.initNotariesCount"
+              ng-click="connectAllNotaries()">{{ notaries.updating || notaries.connected < notaries.initNotariesCount ? 'SETTINGS.CONNECTING_NOTARY' : 'SETTINGS.UPDATE' | lang }} <span ng-if="notaries.updating || notaries.connected < notaries.initNotariesCount">{{ notaries.notariesList[notaries.connected] }}</span></button>
+    </div>
+    <div class="clearfix"></div>
   </div>
 </script>

@@ -264,7 +264,8 @@ angular.module('IguanaGUIApp')
         'passphrase',
         'rates',
         'iguanaNullReturnCount',
-        'guiModeAtLogin'
+        'guiModeAtLogin',
+        'notaries'
       ]);
     };
 

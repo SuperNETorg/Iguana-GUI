@@ -146,15 +146,11 @@ angular.module('IguanaGUIApp', [
   });
 })
 .run(function($rootScope, $location, $state,
-              util, $timeout, $api, $auth, $datetime, $window) {
+              util, $timeout, $api, $auth, $datetime, $window, $storage, $basilisk) {
   if (dev && dev.isDev && dev.isNightwatch) { // temp
     $rootScope.dev = dev;
   }
 
-  //it's moved to storage.js
-  /*if ($window.location.href.indexOf('http://127.0.0.1:17777/gui/') > -1) {
-    $rootScope.isElectron = true;
-  }*/
   $rootScope.$on('logout', function() {
     $auth.logout();
   });
@@ -187,6 +183,10 @@ angular.module('IguanaGUIApp', [
         $api.testConnection().then(onResolve, onReject);
       }, $datetime.secMilliSec((rejectTimeout < 5 ? settings.apiCheckTimeout / 5 : settings.apiCheckTimeout)));
     }
+  }
+
+  if ($storage.isIguana) { // connect KMD, BTC, USD, EUR notary nodes
+    $basilisk.connectNotaries(0, settings.initNotariesCount);
   }
 
   try {

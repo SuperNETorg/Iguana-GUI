@@ -1657,5 +1657,43 @@ angular.module('IguanaGUIApp')
 
       return deferred.promise;
     };
+
+    this.getNotaryList = function() {
+      var deferred = $q.defer(),
+          defaultIguanaServerUrl = this.getConf().server.protocol +
+                                   this.getConf().server.ip +
+                                   ':' +
+                                   this.getConf().server.iguanaPort,
+          upass = this.Iguana_GetRPCAuth();
+
+      http.get(defaultIguanaServerUrl + '/api/dpow/notarychains', {
+        cache: false,
+        timeout: settings.defaultIguanaConnectionTimeOut,
+        params: {
+          userpass: upass ? upass : 'null'
+        }
+      }).then(deferred.resolve, deferred.reject);
+
+      return deferred.promise;
+    };
+
+    this.getNotaryInfo = function(symbol) {
+      var deferred = $q.defer(),
+          defaultIguanaServerUrl = this.getConf().server.protocol +
+                                   this.getConf().server.ip +
+                                   ':' +
+                                   this.getConf().server.iguanaPort,
+          upass = this.Iguana_GetRPCAuth();
+
+      http.get(defaultIguanaServerUrl + '/api/dex/getinfo?symbol=' + symbol, {
+        cache: false,
+        timeout: settings.defaultIguanaConnectionTimeOut,
+        params: {
+          userpass: upass ? upass : 'null'
+        }
+      }).then(deferred.resolve, deferred.reject);
+
+      return deferred.promise;
+    };
   }
 ]);

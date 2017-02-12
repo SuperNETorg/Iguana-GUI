@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: adjust iguana full node vs basilisk timings
+
 var _settings = {
   iguanaPort: '7778',
   proxy: 'http://127.0.0.1:1337/', // https://github.com/gr2m/CORS-Proxy
@@ -28,14 +30,17 @@ var _settings = {
     day: 10
   },
   defaultRelayFee: 0.00001,
-  apiCheckTimeout: 10, // sec
+  apiCheckTimeout: 60, // sec
   messageHideTimeout: 3, // sec
   newAddedCoinViewTimeout: 20, // sec
   appRedirectTimeout: 1,
   appViewMessageTimeout: 3,
-  defaultIguanaConnectionTimeOut: 3000,
+  defaultIguanaConnectionTimeOut: 60000,
   minEpochTimestamp: 1471620867,
-  globalFeeLoaderTimeout: 1 // sec
+  globalFeeLoaderTimeout: 1, // sec
+  initNotariesCount: 4,
+  notaryRequestDelay: 10, // sec
+  initNotariesTimeoutCheck: 60 // sec
 };
 
 // create a new object with non-writable values

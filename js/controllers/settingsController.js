@@ -14,8 +14,9 @@ angular.module('IguanaGUIApp')
   '$filter',
   'util',
   '$datetime',
+  '$basilisk',
   function($scope, $state, $rates, $auth, $rootScope, $storage,
-           $timeout, $api, vars, $filter, util, $datetime) {
+           $timeout, $api, vars, $filter, util, $datetime, $basilisk) {
 
     $scope.$state = $state;
     $rootScope.$state = $state;
@@ -28,6 +29,12 @@ angular.module('IguanaGUIApp')
     $scope.sendCoin = {};
     $scope.checkModel = {};
     $scope.feeLoader = true;
+    $scope.notaries = {
+      initNotariesCount: settings.initNotariesCount,
+      connected: $storage.notaries,
+      notariesList: notariesList,
+      updating: false
+    };
 
     var isFeeLoaderTimeout = false,
         currencyArr =
@@ -55,6 +62,14 @@ angular.module('IguanaGUIApp')
     } else {
       onInit();
     }
+
+    $rootScope.$on('notaryConnUpdate', function() {
+      $scope.notaries.connected = $storage.notaries;
+    });
+
+    $rootScope.$on('notaryConnUpdateFinished', function() {
+      $scope.notaries.updating = false;
+    });
 
     $timeout(function() { // force display fee loader for N seconds
       isFeeLoaderTimeout = true;
@@ -222,5 +237,10 @@ angular.module('IguanaGUIApp')
         onInit();
       }, $datetime.secMilliSec(settings.apiCheckTimeout));
     }
+
+    $scope.connectAllNotaries = function() {
+      $scope.notaries.updating = true;
+      $basilisk.connectNotaries($scope.notaries.connected, $scope.notaries.notariesList.length);
+    };
   }
 ]);
