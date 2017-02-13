@@ -952,14 +952,22 @@ angular.module('IguanaGUIApp')
       return deferred.promise;
     };
 
-    this.getExternalRate = function(quote) {
+    this.getExternalRate = function(quote, byHistory) {
+      var method = (byHistory ? 'pricehistorical' : 'pricemulti');
       var result = false,
           quoteComponents = quote.split('/'),
-          fullUrl = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=BTC,' + quoteComponents[1],
+          fullUrl = 'https://min-api.cryptocompare.com/data/' + method,
+          params = {},
           deferred = $q.defer();
 
-      http.get(fullUrl, '', {
-        cache: false
+      params[(byHistory ? 'fsym': 'fsyms')] = quoteComponents[0];
+      params['tsyms'] = 'BTC,' + quoteComponents[1];
+      params['ts'] = quoteComponents[2];
+
+
+      http.get(fullUrl, {
+        cache: false,
+        params: params
       })
       .then(
         function(response) {
@@ -970,7 +978,7 @@ angular.module('IguanaGUIApp')
 
             if (dev.showConsoleMessages && dev.isDev) {
               console.log(
-                'rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=' + quoteComponents[1]);
+                'rates source https://min-api.cryptocompare.com/data/pricemulti?fsyms=' + quoteComponents[0] + '&tsyms=BTC,' + quoteComponents[1]);
             }
           } else {
             result = false;
@@ -1443,7 +1451,7 @@ angular.module('IguanaGUIApp')
                 symbol: coin,
                 skip: '0'
               }) :
-              this.getBitcoinRPCPayloadObj('listtransactions', '\"' + account + '\", '
+              this.getBitcoinRPCPayloadObj('listtransactions2', '\"' + account + '\", '
                 + settings.defaultTransactionsCount, coin)
           ), // last N tx
           postAuthHeaders = this.getBasicAuthHeaderObj(null, coin, 'listtransactions');
@@ -1590,10 +1598,24 @@ angular.module('IguanaGUIApp')
     };
 
     this.feeCoins = function(activeCoin, defaultAccount, currencyName, coinName) {
-      var deferred = $q.defer(),
-          result = {};
+      var deferred = $q.defer();
 
-      this
+      return $q
+        .all([
+          this.getBalance(defaultAccount, activeCoin),
+          this.bitcoinFees(),
+          this.bitcoinFeesAll(),
+          this.getExternalRate(coinName + '/' + currencyName)
+        ])
+        .then(function (values) {
+          var deferResult = {};
+          deferResult.getBalance = values[0];
+          deferResult.bitcoinFees = values[1];
+          deferResult.bitcoinFeesAll = values[2];
+          deferResult.getExternalRate = values[3];
+          return deferResult
+        })
+      /*this
         .getBalance(defaultAccount, activeCoin)
         .then(
           function(response) {
@@ -1612,9 +1634,9 @@ angular.module('IguanaGUIApp')
               }.bind(this));
             }.bind(this));
           }.bind(this)
-        );
+        );*/
 
-      return deferred.promise;
+      /*return deferred.promise;*/
     };
 
     this.Iguana_GenerateRPCAuth = function() {
