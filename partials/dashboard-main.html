@@ -133,10 +133,15 @@
                             ng-if="item.confirmations === 0">{{ 'DASHBOARD.NOT_CONFIRMED' | lang }}</span>
                     </div>
                     <div class="col-xs-3 col-md-3 col-sm-3 col-lg-3 non-padding">
-                      <span class="grey-color">-523$ (11.01.17 12:34)</span>
+                      <span class="grey-color">
+                        {{coinCurrencyBuilder(item)}}
+                        {{item.timestampDate + ' ' + item.timestampTime}}
+                      </span>
                     </div>
                     <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7 non-padding">
-                      <span class="grey-color">{{ 'DASHBOARD.FEE' | lang }}: {{item.fee}} {{item.feeObj.currency}}</span>
+                      <span class="grey-color">
+                        {{ 'DASHBOARD.FEE' | lang }}: {{coinFeeBuilder(item)}}
+                      </span>
                     </div>
                     <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 left-sheet non-padding">
                       <a href="#">

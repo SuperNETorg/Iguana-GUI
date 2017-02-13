@@ -231,7 +231,9 @@ var lang = {
       'IS_A_MIN_REQUIRED_FEE': 'is a min. required fee.',
       'INCORRECT_INPUT_P3': 'Invalid passphrase, please try again',
       'AUTHENTICATION_ERROR': 'Authentication error',
-      'GET_CONNECTION_COUNT': 'You dont have active coins, please relogin.'
+      'GET_CONNECTION_COUNT': 'You don\'t have active coins, please relogin.',
+      'NO_FIAT_CURRENCY' : 'No currency',
+      'NO_FIAT_FEE' : 'No fee'
     },
     'CURRENCY': {
       'USD': 'United States Dollar',

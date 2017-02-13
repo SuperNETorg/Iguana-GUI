@@ -82,6 +82,10 @@ angular.module('IguanaGUIApp')
     };
     $scope.activeSyncInfo = false;
     $scope.coinSyncInfo = {};
+    $scope.coinCurrencyBuilder = coinCurrencyBuilder;
+    $scope.coinFeeBuilder = coinFeeBuilder;
+    $scope.valToFixed = valToFixed;
+    $scope.valIsNaN = valIsNaN;
 
     $storage['dashboard-added-by-user-coins'] = (
       $storage['dashboard-added-by-user-coins'] ? $storage['dashboard-added-by-user-coins'] : []
@@ -104,15 +108,10 @@ angular.module('IguanaGUIApp')
       }
     };
 
-    constructAccountCoinRepeater(true);
-
     function onInit() {
       coinsInfo = vars.coinsInfo;
       checkAddCoinButton();
-
-      updateFeeParams().then(function() {
-        constructAccountCoinRepeater();
-      });
+      setActiveCoin()
     }
 
     var modalInstance = {};
@@ -219,11 +218,26 @@ angular.module('IguanaGUIApp')
     // Modals end
 
     function setActiveCoin(item) {
-      $storage['iguana-active-coin'] = { id: item.id };
+      if (typeof item === 'undefined') {
+        item = {id: $scope.loggedCoins[Object.keys($scope.loggedCoins)[0]].coinId}
+      }
+
+      if (
+        !$storage['iguana-active-coin'] ||
+        Object.keys($storage['iguana-active-coin']).length === 0
+      ) {
+        $storage['iguana-active-coin'] = { id: item.id };
+      }
+
       $scope.activeCoin = item.id;
-      $scope.setTxUnitBalance(item);
-      constructTransactionUnitRepeater();
-      updateFeeParams();
+
+      if (item.coinValue) {
+        $scope.setTxUnitBalance(item);
+      }
+
+      updateFeeParams().then(function() {
+        constructAccountCoinRepeater();
+      });
 
       if (util.isMobile() && $state.current.name === 'dashboard.mobileCoins') {
         $state.go('dashboard.mobileTransactions');
@@ -258,7 +272,8 @@ angular.module('IguanaGUIApp')
     }
 
     function constructAccountCoinRepeater() {
-      var index = 0;
+      var index = 0,
+          deferArray = [];
 
       coinsSelectedByUser = [];
 
@@ -294,7 +309,7 @@ angular.module('IguanaGUIApp')
         });
 
         if ($scope.loggedCoins[coinsSelectedByUser[i]].activeMode === 0) {
-          $api.listUnspentDex(coinsSelectedByUser[i], $scope.loggedCoins[coinsSelectedByUser[i]].address)
+          var listUnspentDex = $api.listUnspentDex(coinsSelectedByUser[i], $scope.loggedCoins[coinsSelectedByUser[i]].address)
               .then(
                 function(coinSelectedByUser, response) {
                   var balance = 0;
@@ -317,8 +332,9 @@ angular.module('IguanaGUIApp')
                   }
                 }
               );
+          deferArray.push(listUnspentDex);
         } else if ($scope.loggedCoins[coinsSelectedByUser[i]].activeMode === 1) {
-          $api.getBalance(defaultAccount, coinsSelectedByUser[i])
+          var getBalance = $api.getBalance(defaultAccount, coinsSelectedByUser[i])
               .then(
                 function(response) {
                   constructAccountCoinRepeaterCB(response[0], response[1]);
@@ -329,11 +345,12 @@ angular.module('IguanaGUIApp')
                   }
                 }
               );
+          deferArray.push(getBalance);
         }
 
-          // TODO: rewrite
-          if ($storage.isIguana) {
-            $api.getInfo(coinsSelectedByUser[i]).then(
+        // TODO: rewrite
+        if ($storage.isIguana) {
+            var getInfo = $api.getInfo(coinsSelectedByUser[i]).then(
               function(response) {
                 var _syncInfo = {};
 
@@ -392,9 +409,10 @@ angular.module('IguanaGUIApp')
                 }
               }
             );
-          } else {
+          deferArray.push(getInfo);
+        } else {
             if (coinsSelectedByUser[i] === 'kmd') {
-              $api.getInfo(coinsSelectedByUser[i]).then(
+              var getInfo = $api.getInfo(coinsSelectedByUser[i]).then(
                 function(response) {
                   var _syncInfo = {};
 
@@ -440,9 +458,12 @@ angular.module('IguanaGUIApp')
                   }
                 }
               );
+              deferArray.push(getInfo);
             }
           }
       }
+
+      return $q.all(deferArray);
     }
 
     // construct account coins array
@@ -575,16 +596,23 @@ angular.module('IguanaGUIApp')
           console.debug($storage.feeSettings);
         }
 
-        for (var i = 0; i < transactionsList.length; i++) {
-          if (!$scope.txUnit.transactions[i]) {
-            $scope.txUnit.transactions[i] = {};
-          }
-
-          if (transactionsList[i].txid) {
-            // TODO: add func to evaluate tx time in seconds/minutes/hours/a day from now e.g. 'a moment ago', '1 day ago' etc
-            // timestamp is converted to 24h format
-            var transactionDetails = transactionsList[i],
-                txIncomeOrExpenseFlag = '',
+        for (var l = 0; l < transactionsList.length; l++) {
+          if (transactionsList[l].txid) {
+            $api.getExternalRate(
+              $scope.activeCoin.toUpperCase() + '/' +
+              Object.keys($storage.feeSettings.coinCurrencyRateObj)
+                    .join(',') + '/' +
+              transactionsList[l].blocktime ||
+              transactionsList[l].timestamp ||
+              transactionsList[l].time, true
+            ).then(function(transactionDetails, i, response) {
+              if (!$scope.txUnit.transactions[i]) {
+                $scope.txUnit.transactions[i] = {};
+              }
+              // TODO: add func to evaluate tx time in
+              // seconds/minutes/hours/a day from now e.g. 'a moment ago', '1
+              // day ago' etc timestamp is converted to 24h format
+              var txIncomeOrExpenseFlag = '',
                 txStatus = 'N/A',
                 txCategory = '',
                 txAddress = '',
@@ -593,9 +621,10 @@ angular.module('IguanaGUIApp')
                 iconSentClass = 'bi_interface-minus',
                 iconReceivedClass = 'bi_interface-plus',
                 txFee = 0,
-                txFeeObj = {};
+                txFeeObj = JSON.parse(JSON.stringify($storage.feeSettings));
 
-            if (transactionDetails) {
+              txFeeObj.coinCurrencyRateObj = response[0][response[1]];
+
               if (transactionDetails.details) {
                 txAddress = transactionDetails.details[0].address;
                 txAmount = transactionDetails.details[0].amount;
@@ -612,13 +641,12 @@ angular.module('IguanaGUIApp')
                 }
               } else {
                 // iguana
-                txAddress = transactionsList[i].address || transactionDetails.address;
-                txAmount = transactionsList[i].amount;
-                txStatus = transactionDetails.category || transactionsList[i].category;
-                txCategory = transactionDetails.category || transactionsList[i].category;
-                txConfirmations = transactionDetails.confirmations || transactionsList[i].confirmations;
-                txFee = transactionDetails.fee || transactionsList[i].fee || $storage.feeSettings.currencyRate;
-                txFeeObj = $storage.feeSettings;
+                txAddress = transactionDetails.address;
+                txAmount = transactionDetails.amount;
+                txStatus = transactionDetails.category;
+                txCategory = transactionDetails.category;
+                txConfirmations = transactionDetails.confirmations;
+                txFee = transactionDetails.fee || $storage.feeSettings.currencyRate;
 
                 if (txStatus === 'send') {
                   txIncomeOrExpenseFlag = iconSentClass;
@@ -630,7 +658,8 @@ angular.module('IguanaGUIApp')
               }
 
               if (Number(transactionDetails.confirmations) &&
-                  Number(transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
+                Number(
+                  transactionDetails.confirmations) < settings.txUnitProgressStatusMinConf) {
                 txStatus = $filter('lang')('DASHBOARD.IN_PROCESS');
                 txCategory = 'process';
               }
@@ -644,7 +673,8 @@ angular.module('IguanaGUIApp')
               $scope.txUnit.transactions[i].statusClass = transactionDetails.confirmations ? txCategory : 'process';
               $scope.txUnit.transactions[i].confs = transactionDetails.confirmations ? transactionDetails.confirmations : 'n/a';
               $scope.txUnit.transactions[i].inOut = txIncomeOrExpenseFlag;
-              $scope.txUnit.transactions[i].amount = txAmount > 0 ? Math.abs(txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount);
+              $scope.txUnit.transactions[i].amount = txAmount > 0 ? Math.abs(
+                  txAmount.toFixed(decimalPlacesTxUnit)) : Math.abs(txAmount);
               $scope.txUnit.transactions[i].timestampFormat = 'timestamp-multi';
               $scope.txUnit.transactions[i].coin = $scope.activeCoin.toUpperCase();
               $scope.txUnit.transactions[i].hash = txAddress !== undefined ? txAddress : 'N/A';
@@ -657,22 +687,23 @@ angular.module('IguanaGUIApp')
               }
 
               $scope.txUnit.transactions[i].timestampUnchanged = transactionDetails.blocktime ||
-                                                                 transactionDetails.timestamp ||
-                                                                 transactionDetails.time;
-              $scope.txUnit.transactions[i].timestampDate = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                                                                                      transactionDetails.timestamp ||
-                                                                                      transactionDetails.time, 'DDMMMYYYY');
-              $scope.txUnit.transactions[i].timestampTime = $datetime.convertUnixTime(transactionDetails.blocktime ||
-                                                                                      transactionDetails.timestamp ||
-                                                                                      transactionDetails.time, 'HHMM');
-            }
+                transactionDetails.timestamp ||
+                transactionDetails.time;
+              $scope.txUnit.transactions[i].timestampDate = $datetime.convertUnixTime(
+                transactionDetails.blocktime ||
+                transactionDetails.timestamp ||
+                transactionDetails.time, 'DDMMMYYYY');
+              $scope.txUnit.transactions[i].timestampTime = $datetime.convertUnixTime(
+                transactionDetails.blocktime ||
+                transactionDetails.timestamp ||
+                transactionDetails.time, 'HHMM');
+            }.bind(this, transactionsList[l], l))
+          }
+
+          if (dev.isDev && dev.showConsoleMessages) {
+            console.debug($scope.txUnit);
           }
         }
-
-        if (dev.isDev && dev.showConsoleMessages) {
-          console.debug($scope.txUnit);
-        }
-
       } else {
         delete $scope.txUnit.transactions;
       }
@@ -816,11 +847,9 @@ angular.module('IguanaGUIApp')
 
           defer.resolve($storage.feeSettings);
         }.bind(this));
-
-        return defer.promise;
-      } else {
-        return defer.promise;
       }
+
+      return defer.promise;
     }
 
     function stateChangeStart() {
@@ -835,6 +864,32 @@ angular.module('IguanaGUIApp')
       if (!util.isMobile() && $state.current.name !== 'dashboard.main') {
         $state.go('dashboard.main');
       }
+    }
+
+    function valToFixed(val) {
+      if (valIsNaN(val) === 0 || val === undefined) {
+        return 0
+      }
+
+      return val.toString().length < 8 ? val : val.toFixed(6);
+    }
+
+    function valIsNaN(val) {
+      if (isNaN(parseFloat(val))) {
+        return 0;
+      }
+      return val;
+    }
+
+    function coinCurrencyBuilder(item) {
+      var val = item ? valToFixed(valIsNaN(item.amount) * item.feeObj.coinCurrencyRateObj[item.feeObj.currency]) : 0;
+      return (val === 0 ? $filter('lang')('MESSAGE.NO_FIAT_CURRENCY') : '- ' + val + item.feeObj.currency);
+    }
+
+
+    function coinFeeBuilder(item) {
+      var val = item ? item.feeObj.coinCurrencyRateObj[item.feeObj.currency] : 0;
+      return (val === 0 ? $filter('lang')('MESSAGE.NO_FIAT_FEE') : '- ' + val + item.feeObj.currency);
     }
 
     $scope.$watchCollection(
