@@ -53,6 +53,13 @@ angular.module('IguanaGUIApp')
       'yellow'
     ];
 
+    if(($storage.isIguana || $storage.isAppSetup) && isCoinsConnected()) {
+      $storage.signupConnected = true;
+    } else {
+      $storage.signupConnected = false;
+      $state.go('login');
+    }
+
     if ($storage.isIguana) {
       $scope.title = setTitle($filter('lang')('IGUANA.APP_TITLE'));
     }
@@ -392,6 +399,14 @@ angular.module('IguanaGUIApp')
       }
 
       return modeResult;
+    }
+
+    function isCoinsConnected() {
+      if (!$storage.isIguana) {
+        return Object.keys(getConnectedCoins()).length > 0;
+      } else {
+        return Object.keys(vars.response).length > 0 && vars.response.data.status === 200;
+      }
     }
   }
 ]);

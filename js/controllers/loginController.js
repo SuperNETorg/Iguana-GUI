@@ -71,10 +71,6 @@ angular.module('IguanaGUIApp')
       onInit();
     }
 
-    if ($state.current.name === 'login.step2' ||
-        $state.current.name === 'login.step3') {
-      $rootScope.background = false;
-    }
 
     function onInit() {
       isCoinSelected();
@@ -124,11 +120,18 @@ angular.module('IguanaGUIApp')
         $rootScope.background = false;
       }
 
+      if ($storage.signupConnected === false) {
+        $timeout(function() {
+          openFlowModal('signup');
+        });
+      }
+
       $rootScope.allowLoginStateChange = false;
     }
 
     function openFlowModal(type) {
       $scope.modal.flowModal.animation = type ? true : false;
+      $scope.modal.flowModal.appendTo = angular.element(document.querySelector('.app-container-inner .flow-modal'));
       $scope.modal.flowModal.resolve = {
         'type': function() {
           return type ? type : 'signin';
