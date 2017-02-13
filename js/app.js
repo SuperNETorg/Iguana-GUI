@@ -2,7 +2,7 @@
 
 if (!dev) {
   var dev = { // prod
-    isDev: false,
+    isDev: true,
     isNightwatch: false,
     isKarma: false,
     showSyncDebug: false,
